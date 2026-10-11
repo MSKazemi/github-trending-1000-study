@@ -131,3 +131,20 @@ python -m unittest discover -s tests -v
 ```
 
 This does **not** label real packages, measure true recall, or validate actual reuse. An unknown candidate must not silently become an irrelevant one. See [CLI notes](docs/GOLDSET_VALIDATION_CLI.md).
+
+
+## Strategic vision: 2027–2031 (five-year research program)
+
+The **scientific question remains falsifiable:** when does **discovering, verifying and reusing** existing code create more independently accepted value per whole-lifecycle human, maintainer, security and ecological cost than ordinary development? Trending is an observed discovery/attention *surface*, not evidence of usefulness.
+
+The original 2026–2027 study is **Year 1 of a proposed five-year program**, not an indefinitely expanding single paper. New waves should remain subject to science, budget, ethics, source permissions and replicated negative results.
+
+- [Hypothetical senior scientific/CEO/CTO advisory perspectives](docs/ADVISORY_BOARD_STRATEGY_2027_2031.md) — no actual external endorsement implied
+- [Annual scientific and engineering milestones 2027–2031](docs/FIVE_YEAR_ROADMAP_2027_2031.md) — explicit annual gates and stop conditions
+- [Conditional 2027–2031 scenarios and disconfirming signals](docs/FUTURE_SCENARIOS_2027_2031.md)
+- [Professor/CEO/CTO/maintainer leadership scorecard](docs/LEADERSHIP_SCORECARD_2027_2031.md) — verified outcomes, not arbitrary success score
+- [Independent multi-stakeholder governance and research ethics](docs/RESEARCH_PROGRAM_GOVERNANCE_2027_2031.md)
+- [Immediate 2026–early 2027 launch gates](docs/INCEPTION_CHECKLIST_2026_2027.md) — do not collect a confirmatory cohort before baseline freeze
+- [Quarterly advisory review template](templates/quarterly_advisory_review.md) and [curated source register](references/five_year_strategy_sources_2026.json)
+
+**As of 2026-10-11:** only methods, examples and tooling exist; a funded board, 1,000-repository sample, task-level trial, kWh savings and 2027–2031 forecast outcomes do **not** exist.

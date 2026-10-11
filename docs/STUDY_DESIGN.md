@@ -87,3 +87,7 @@ We extend the **research questions** but do not modify the already described obs
 
 ## Design amendment and timeline conflict tracking (2026-10-11)
 The older **12-week recruitment target** was a provisional feasibility assumption, **not an outcome-derived optimum**. The newer [SELECTION_PROTOCOL_2027.md](SELECTION_PROTOCOL_2027.md) proposes six calendar months of recruitment **2026-11-01–2027-04-30**, plus baseline+7/30/90/180 days; final followups occur around late October 2027. Both time plans remain **unfrozen drafts** pending collector capacity and pilot power, and this conflict must be resolved in the preregistered primary protocol. Other independent reuse/task-value cohorts are described in [GREEN_REUSE_MISSION_2027.md](GREEN_REUSE_MISSION_2027.md).
+
+
+## Five-year perspective — supplementary waves, not retrospective changes to 2027 outcomes
+This paper-focused prospective study remains a candidate **2027 Year 1** cohort. A five-year follow-on [roadmap](FIVE_YEAR_ROADMAP_2027_2031.md) and [advisory/governance model](ADVISORY_BOARD_STRATEGY_2027_2031.md) should not be construed as extra confirmatory endpoints in the original cohort. Any new five-year research hypothesis, repeated 2028–2031 challenge tasks, ecological measurement, partner field study or recommendation index requires a **separate versioned protocol/registration**. No human/energy results or formal collaborators are currently established.

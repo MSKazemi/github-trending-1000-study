@@ -52,3 +52,16 @@ Keep negative/null results, update links when new versions supersede old ones, a
 | C030 | Vibe-coded tasks save a fixed amount of emissions per token | **unsupported:** [SCI](https://sci.greensoftware.foundation/) and [GSF multidimensional sustainability](https://greensoftware.foundation/articles/revisiting-green-software-from-silicon-to-screen/) require task/region/hardware boundaries |
 | C031 | Reuse has net societal gains independent of upstream burden | **proposed, not validated:** [Census III](https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study); study must measure shifted maintenance |
 | C032 | Studying only tasks already known to have reuse opportunities estimates average reuse-first benefit | **unsupported design:** selecting on opportunity is nonrepresentative; preregister an all-task ITT contrast |
+
+
+## Strategic 2027–2031 claims and forecast provenance — added 2026-10-11
+| ID | Proposition | Current evidence grade / boundary |
+|---|---|---|
+| C033 | AI-generated code volume will outpace verified value throughout 2027–2031 | **scenario, not observed forecast** — may be falsified by growing acceptance/security metrics; [scenario register](FUTURE_SCENARIOS_2027_2031.md) |
+| C034 | Agents will become better at integrating existing software by 2031 | **scenario**, requires time-heldout independent functional task studies, actual model versions and full review costs |
+| C035 | Reuse-first development is universally cheaper/greener than generating new code | **unsupported and deliberately testable**; depends on integration, security, lifetime runtime, upstream burden and model/hardware |
+| C036 | A five-year study requires a funded advisory board of named professors/CTOs/CEOs | **not established**; [proposed governance](RESEARCH_PROGRAM_GOVERNANCE_2027_2031.md) is a role model, not a roster or endorsement |
+| C037 | 2026 Stack Overflow named tool use percentages measure all GitHub developer adoption | **unsupported** — optional self-selected respondent question n=12,255, multiple tools used; [survey](https://survey.stackoverflow.co/2026/ai/data/ai-code-agent) |
+| C038 | GitHub Trending shows actual software usefulness or green impact | **unsupported** — observable inclusion, rank and labels only; [Trending](https://github.com/trending) |
+| C039 | AI productivity benefits are uniform in mature and greenfield OSS | **unsupported** — tool/task/developer selection and time accounting threaten inference; [METR update](https://metr.org/blog/2026-02-24-uplift-update/) |
+| C040 | The proposed 2027–2031 roadmap is already executed or validated | **false at 2026-10-11** — methodology and synthetic tools exist, field research and funded board do not |

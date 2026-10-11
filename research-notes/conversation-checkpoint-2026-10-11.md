@@ -93,3 +93,15 @@ The user explicitly requested archiving study-relevant discussion in this public
 A focused audit of the existing repository identified 12 critical, under-specified or unimplemented research safeguards. The highest-priority corrections are independent task-to-code **functional ground truth**; task sampling independent of already-known reusable solutions; retrieval coverage and incomplete relevance pools; versioned identity, license and supply-chain security checks; and end-to-end energy/carbon/water/runtime break-even. Secondary concerns include upstream maintainer burden, developer comprehension, benchmark leakage, safe agent use, time-varying tool versions and costs, educational/public-good niches, interference, and the search overhead itself.
 
 These are study design decisions and testable hypotheses, **not** observed results. Related artifacts: [gap audit](../docs/CRITICAL_RESEARCH_GAPS_2027.md), [gold set](../docs/REUSE_GOLD_STANDARD_2027.md), [supply chain](../docs/SUPPLY_CHAIN_PROVENANCE_2027.md), [life cycle](../docs/FULL_LIFECYCLE_BREAK_EVEN_2027.md), [upstream community](../docs/MAINTAINER_EXTERNALITIES_2027.md), [scientific governance](../docs/SCIENTIFIC_GOVERNANCE_2027.md). This section preserves the user's research question verbatim but, as before, is **not** a raw full tool/assistant transcript.
+
+
+## U8 — Five-year multidisciplinary advisory perspective (verbatim)
+> What you suggest as teams of full professors and ceo and cto of several big companies 
+> What you suggest 
+> What are you guidelines 
+> Which aspects need to check
+> What will happen in future 5 years 
+> What are your plans for the future 5 years and how this can affect the target of this research 
+
+## Summary of corresponding assistant recommendation
+The study should evolve toward **trusted, efficient and maintainable OSS reuse** with a role-based **hypothetical** multidisciplinary advisory model (not endorsements from real people or companies). Focus on registered all-task questions, proper retrieval/functional ground truth, rights and safety gates, independent user outcomes, whole-lifecycle environmental and social externalities, source/version drift, real funding and ethical partnerships. Maintain annual 2027–2031 research waves with explicit feasibility and stop/pivot criteria, quarterly evidence and scenario revisions, and no assumed future outcomes. Canonical files: [advisory strategy](../docs/ADVISORY_BOARD_STRATEGY_2027_2031.md), [five-year roadmap](../docs/FIVE_YEAR_ROADMAP_2027_2031.md), [futures](../docs/FUTURE_SCENARIOS_2027_2031.md), [leadership scorecard](../docs/LEADERSHIP_SCORECARD_2027_2031.md), [governance](../docs/RESEARCH_PROGRAM_GOVERNANCE_2027_2031.md), [inception checklist](../docs/INCEPTION_CHECKLIST_2026_2027.md).

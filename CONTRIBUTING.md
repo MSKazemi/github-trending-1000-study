@@ -39,3 +39,10 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 - Preserve original upstream credit and limit the burden on external maintainers; do not automate unapproved contributions or CI execution of downloaded code.
 - Include real alternative choices (do nothing, integrate, upstream patch, compose or bounded build), and life-cycle sensitivity instead of token-only green claims.
 - Proposed goldset tool and its synthetic data are methodological guards, not a benchmark of real repositories.
+
+
+## Multi-year study contributors and advisors
+- Scientific decisions must have registered RQ, version, bounded sample frame, independent evidence, uncertainty and a dated decision record. A five-year roadmap is a plan, not permission to silently change the 2027 primary outcome.
+- Collaborations with universities, companies, communities or new agent providers require documented permissions and conflict disclosures. Invite reviewers as independently credited contributors **only if they actually participate**.
+- Keep cohort and retrospective task panels frozen and add fresh time-stamped holdout panels when agent tools evolve. Report model/tool version and exact conditions for comparative claims.
+- Quarterly evidence and forecast review should use [the template](templates/quarterly_advisory_review.md), not promotional star charts.
