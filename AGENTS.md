@@ -35,3 +35,12 @@
 - Assess human and maintainer effort plus development and runtime energy; no exact CO2/tokens multiplier, no false global-recall claim from an incomplete pool.
 - Run python -m trending_study.goldset --input examples/goldset.synthetic.json --k 2 for the declared synthetic demonstration only and python -m unittest discover -s tests -v for offline regression tests.
 - Do not assert the 2027 study has been preregistered, collected or externally validated until it actually has been.
+
+
+## Five-year research and trust rules
+- Read docs/ADVISORY_BOARD_STRATEGY_2027_2031.md, docs/FIVE_YEAR_ROADMAP_2027_2031.md and docs/LEADERSHIP_SCORECARD_2027_2031.md when changes affect strategic goals or research claims.
+- Never claim real professorial/CEO/CTO oversight or partner-company endorsement. The 'board' is a hypothetical role-based framework until named experts actually consent.
+- Prefer portable task specifications, independent acceptance, valid provenance and benchmark repeatability across changing agent models.
+- Do not optimize 2027–2031 'success' by increasing project N, stars, merged PRs, token generation or unlabeled reused code. Quantify independently verified user/task value, safety/rights, lifecycle cost and full/partial environmental boundaries.
+- Do not build a commercial ranking marketplace or change gold labels for sponsors; maintain independent open research data, registered hypotheses and null findings.
+- Follow docs/INCEPTION_CHECKLIST_2026_2027.md; if October pilot or permissions are incomplete, amend enrollment dates rather than backdate samples.

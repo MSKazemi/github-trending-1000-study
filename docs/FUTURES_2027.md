@@ -39,3 +39,7 @@ For each quarter, publish:
 - If 2027 data contradicts any scenario, record the contradiction and revise the scenario rather than rationalizing.
 
 For actual practice see [developer decision playbook](DEVELOPER_DECISION_PLAYBOOK.md); for science see [AI substudy](AI_CODING_STUDY_2027.md) and [lesson derivation](EVIDENCE_TO_LESSON_PROTOCOL.md).
+
+
+## Five-year extension (do not reinterpret this one-year scenario as a 2031 forecast)
+This file records the initial 2027 scenario vintage. A **separate**, dated 2027–2031 scenario register now explores six plausible developments with falsification triggers in [FUTURE_SCENARIOS_2027_2031.md](FUTURE_SCENARIOS_2027_2031.md). Earlier forecasts remain on record for hindsight evaluation, and neither file predicts market share, energy totals or project growth rates with false numeric precision.

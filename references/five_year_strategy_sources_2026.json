@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "as_of_utc": "2026-10-11",
+  "status": "curated, source-dated evidence anchors for conditional 2027-2031 strategy; not a systematic literature review or future prediction",
+  "sources": [
+    {
+      "id": "FY01",
+      "type": "survey-primary",
+      "year": 2026,
+      "title": "Stack Overflow Developer Survey 2026 — named coding agents/assistants",
+      "url": "https://survey.stackoverflow.co/2026/ai/data/ai-code-agent",
+      "finding": "Claude Code 65.5%, Copilot 58.7%, Codex 29.5% of n=12,255 named-tool question respondents reporting use in preceding year; multi-select.",
+      "caveat": "Self-selected, question-specific denominator. Not population-wide adoption, usage intensity or causal impact."
+    },
+    {
+      "id": "FY02",
+      "type": "survey-methodology",
+      "year": 2026,
+      "title": "Stack Overflow 2026 developer survey methodology",
+      "url": "https://survey.stackoverflow.co/2026/methodology",
+      "finding": "30,903 valid respondents and fielding/recruitment rules",
+      "caveat": "Community outreach, no global developer probability sample."
+    },
+    {
+      "id": "FY03",
+      "type": "study-primary",
+      "year": 2026,
+      "title": "METR: We are Changing our Developer Productivity Experiment Design",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "finding": "AI uplift experiments face selective task entry/refusal, concurrent-agent accounting and tooling change; no reliable universal contemporaneous speedup magnitude",
+      "caveat": "Original 19%-longer early 2025 result was specific to experienced OSS tasks and then-available tools."
+    },
+    {
+      "id": "FY04",
+      "type": "research-institute",
+      "year": 2025,
+      "title": "DORA State of AI-assisted Software Development (2025)",
+      "url": "https://dora.dev/research/publications/",
+      "finding": "AI acts as amplifier depending on organizational fundamentals",
+      "caveat": "Survey/organization correlations and versioned errata, not a universal randomized causal effect."
+    },
+    {
+      "id": "FY05",
+      "type": "research-interpretation",
+      "year": 2026,
+      "title": "DORA: Balancing AI tensions",
+      "url": "https://dora.dev/insights/balancing-ai-tensions/",
+      "finding": "Higher adoption associated with throughput gains and instability; generation savings can migrate to verification/review",
+      "caveat": "Organizational association; avoid claiming a task-level causal rate."
+    },
+    {
+      "id": "FY06",
+      "type": "platform-report",
+      "year": 2025,
+      "title": "GitHub Octoverse 2025",
+      "url": "https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/",
+      "finding": "Platform-defined AI-related repository and activity increase",
+      "caveat": "AI-related application != confirmed agent-authored source or actual user usefulness."
+    },
+    {
+      "id": "FY07",
+      "type": "platform-ui",
+      "year": 2026,
+      "title": "GitHub Trending",
+      "url": "https://github.com/trending",
+      "finding": "Observed page membership, rank, filter, label at specific UTC capture",
+      "caveat": "Opaque selection/ranking, not a software quality, adoption or carbon score."
+    },
+    {
+      "id": "FY08",
+      "type": "standard",
+      "year": 2024,
+      "title": "ISO/IEC 21031:2024 SCI",
+      "url": "https://www.iso.org/standard/86612.html",
+      "finding": "Software carbon intensity method with operational + embodied per functional unit",
+      "caveat": "Requires coherent source boundary, measured or calibrated E/I/M, not automatic token-to-emissions factor."
+    },
+    {
+      "id": "FY09",
+      "type": "foundation-standard",
+      "year": 2026,
+      "title": "GSF Software Carbon Intensity for AI",
+      "url": "https://greensoftware.foundation/standards/sci-ai/",
+      "finding": "AI lifecycle provider/consumer boundaries and appropriate functional units",
+      "caveat": "Transparent full data may be unavailable for black-box commercial API usage; report partial bounds."
+    },
+    {
+      "id": "FY10",
+      "type": "security-reference",
+      "year": 2026,
+      "title": "OpenSSF Scorecard",
+      "url": "https://openssf.org/projects/scorecard/",
+      "finding": "Automated security process signals for OSS",
+      "caveat": "Not proof that a candidate has no vulnerabilities or matches task semantics."
+    },
+    {
+      "id": "FY11",
+      "type": "evaluation-methodology",
+      "year": 2026,
+      "title": "NIST TREC overview and judgment method",
+      "url": "https://trec.nist.gov/howto.html",
+      "finding": "Independent relevance judgments and documented benchmark protocols",
+      "caveat": "Retrieval-pool incompleteness prevents claiming global absolute recall."
+    },
+    {
+      "id": "FY12",
+      "type": "open-source-health",
+      "year": 2024,
+      "title": "Census III public library study",
+      "url": "https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study",
+      "finding": "Operational dependence on OSS libraries and associated maintainer/security issues",
+      "caveat": "Specific production dependency instrumentation is not a random sample of all software."
+    }
+  ]
+}

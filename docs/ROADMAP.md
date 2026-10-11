@@ -73,3 +73,16 @@ Do not mark sample goals complete without public methodology and verified counts
 - [ ] Preregister all-task primary outcome, experiment power, stop rules and feasible dates
 - [ ] Measure complete lifecycle, provider-energy unknowns, water and upstream maintainer spillovers
 - [ ] Report null findings, uncertainty and context-limited 2027 lessons; no training data leakage
+
+
+## M8 — Adaptive 2027–2031 strategy and stakeholder governance (proposed)
+- [x] Define hypothetical professor/statistician/climate/CEO/CTO/OSS/ethics advisory questions and dissent/veto criteria
+- [x] Specify research waves for 2027, 2028, 2029, 2030, 2031 with stop/pivot conditions, and *no assumption of funding or partners*
+- [x] Define outcome-focused leadership scorecard and quarterly versioned review template
+- [x] Register future scenarios with observable triggers and possible disconfirmation
+- [x] Define short-term launch/preregistration checks before the first confirmatory cohort
+- [ ] Recruit actual independent scientific/statistical review if resources allow; do not imply formal board exists
+- [ ] Resolve 2027 sample timeline from actual pilot yield, ethics/access permissions and statistical power
+- [ ] Publish first versioned quarterly review with *actual* missingness, protocol amendments and source updates
+- [ ] Validate one real task cohort, external evidence and verifiable total cost before building a product
+- [ ] Repeat experiment and revisit product decision at 2028/2029 stage gates; no assumed year-2031 outcomes
