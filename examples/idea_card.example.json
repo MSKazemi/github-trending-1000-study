@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "project_name": "SYNTHETIC DEMO — Annotated File Diff",
+  "project_type": "cli",
+  "target_user": "a developer comparing domain-specific configuration files",
+  "problem_statement": "manual comparisons omit relevant context",
+  "existing_alternative": "standard diff utilities",
+  "differentiator": "adds field-aware annotations not provided by baseline tool",
+  "acceptance_task": "given two fixed fixture files, produce a correct annotated diff on fresh install",
+  "risk_level": "low",
+  "security_review": "not_done",
+  "independent_evidence": {
+    "kind": "none",
+    "count": 0
+  },
+  "task_evaluation": {
+    "attempted": 0,
+    "succeeded": 0,
+    "acceptance_criteria_frozen": true
+  },
+  "effort": {},
+  "budgets": {
+    "max_human_minutes": 180,
+    "max_total_tokens": 50000
+  }
+}
