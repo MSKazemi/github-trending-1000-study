@@ -54,3 +54,11 @@ Prior GitHub dissemination discussions emphasized 0 paid promotion; genuine disc
 
 ## How to update
 A proposal is **not** a recorded result. For each substantive change add date, exact study phase, rationale, issue/PR link, whether decided before inspecting outcomes, and any divergence from frozen protocol. Raw private conversation archives must **not** be dumped into this public repository by default.
+
+
+## 2026-10-11 — Full study discussion checkpoint and green mission amendment
+All substantive user research prompts **through the green/sustainable coding request** have been recorded verbatim in [research-notes/conversation-checkpoint-2026-10-11.md](../research-notes/conversation-checkpoint-2026-10-11.md). Assistant findings and actions are consolidated with exact document links, not copied as a private raw transcript. The central *normative objective* is now to **help others discover and reuse high-quality existing software instead of unnecessarily generating duplicate code**, and to reduce human effort, token use, electricity and lifecycle maintenance **when evidence shows a true benefit**.
+
+This changes emphasis but does not establish a study result: GitHub Trending is a useful **observable attention sample**, not a trustworthy proxy for software quality, code reuse or green performance. An independent OSS reuse frame and randomized task-level reuse comparison are necessary. Read [green mission](GREEN_REUSE_MISSION_2027.md), [Trending audit](TRENDING_VALIDITY_AUDIT.md), [experiment](REUSE_FIRST_EXPERIMENT.md), [metrics](REUSE_SUSTAINABILITY_METRICS.md) and [source registry](../references/green_reuse_sources_2026.json).
+
+**Proposed plan amendment:** early drafts suggested 12-week recruitment; newer draft proposes 2026-11 to 2027-04 to cover 2027 availability and complete 180-day followups by late 2027. The extension needs frozen preregistration and pilot-based power review **before** confirmatory enrollment; date/period choices are design hypotheses, not existing evidence.

@@ -17,3 +17,12 @@
 - Use the prospective templates for experiments and lesson cards; unknown measures must remain unknown, not become 0 or fabricated observations.
 - Coding agents must favor reuse, minimal patches, user-task acceptance tests, review/security and budget-aware iterations. Be transparent that example project assessments are synthetic.
 - Neither AGENTS.md nor stylistic fingerprints establish undisclosed AI authorship. Do not identify individual developers from detector guesses.
+
+
+## Mandatory reuse-first checks for agent contributions
+- Before generating source, read `docs/GREEN_REUSE_MISSION_2027.md`, `docs/REUSE_FIRST_PLAYBOOK.md`, `docs/REUSE_SUSTAINABILITY_METRICS.md`, and `docs/TRENDING_VALIDITY_AUDIT.md`.
+- Search repository code and appropriate public packages/peer implementations first. Log time-boxed candidates and compare functional fit, valid licenses, security and maintenance; a GitHub star or Trending rank does NOT verify suitability.
+- Prefer a tiny tested upstream patch or a compatible reused library over rebuilding functionality, **where independent acceptance tests support the choice**. Reuse is never mandatory when safety/maintainability makes it inferior.
+- Every new feature should have a practical external task, fixed acceptance criteria, bounded human/token budget, existing-code comparison and transparent limitations.
+- Run both `python -m trending_study.value_gate --input examples/idea_card.example.json` and `python -m trending_study.reuse_gate --input examples/reuse_check.example.json` as synthetic CLI smoke tests, plus the full unit suite.
+- Never invent kWh or gCO2e from token count. Only report reproducible measured or clearly modeled environmental impacts with uncertainty and system boundary.

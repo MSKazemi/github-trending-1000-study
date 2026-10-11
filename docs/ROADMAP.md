@@ -43,3 +43,18 @@ Do not mark sample goals complete without public methodology and verified counts
 - [ ] Capture real task, adoption, agent-cost and 30/90-day maintenance outcomes
 - [ ] Publish null/negative results and graded decision-ready practice cards
 - [ ] Review scenarios and source version drift quarterly through 2027
+
+
+## M6 — 2027 green reuse and Trending construct validity (draft; not yet executed)
+- [x] Write full study discussion checkpoint with substantive user messages and decisions
+- [x] Evaluate Trading/Trending (observed exposure vs unproven utility) construct validity and sampling risks
+- [x] Create independent low-star/older reusable component cohort proposal
+- [x] Define reuse opportunity, candidate precision/recall, independently accepted task/effort/energy measures
+- [x] Publish 2×2 human/AI × conventional/reuse-first experiment candidate protocol
+- [x] Publish ISO SCI and SCI for AI measurement boundaries plus source registry
+- [x] Build offline reuse-first decision gate + synthetic unit tests
+- [ ] Pilot independent open-source reuse sampling and safe software-candidate verification
+- [ ] Human audit for functional equivalence, license, CVE and dependencies
+- [ ] Obtain ethics/consent and complete registered task experiments
+- [ ] Measure kWh (instrumented where feasible) and honestly bound unobservable inference emissions
+- [ ] Publish net value, verified software reuse, negative findings and late-2027 evidence-graded practices

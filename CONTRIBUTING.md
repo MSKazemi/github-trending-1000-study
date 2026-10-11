@@ -23,3 +23,11 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 - No publication of private conversations, private prompt logs, user identities, API keys, or unconsented telemetry. Conversation synthesis is not a verbatim archive.
 - Document null/negative results, alternative explanations, project-type boundaries and real cost (human time, review/rework, token consumption when observable).
 - New idea → bounded issue → preregistered success criterion → minimal tested change → independent reviewer → measured result → documentation and provenance.
+
+
+## Reuse-first / green engineering requirements
+- Before adding new code, document the task, searched prior implementations and at least one realistic reuse/extension alternative when available. Make clear if the search was constrained; no ceremonial empty checkbox.
+- Reuse candidates must have reviewed license compatibility, task fit, security and maintenance; independent acceptance tests matter more than GitHub stars. Do not commit unlicensed copied code or raw third-party repositories.
+- For research claims, distinguish clone detection from true redundant functionality and independently accepted user benefit. Energy claims require [SCI-style boundary and uncertainty](docs/REUSE_SUSTAINABILITY_METRICS.md), not token multiplication.
+- Align any proposed parser, sample or methodology change with [Trending validity](docs/TRENDING_VALIDITY_AUDIT.md), [selection](docs/SELECTION_PROTOCOL_2027.md), and [reuse experimental design](docs/REUSE_FIRST_EXPERIMENT.md). Maintain a dated design amendment before analyzing outcomes.
+- Use `python -m trending_study.reuse_gate --input examples/reuse_check.example.json` to demonstrate the evidence gate (synthetic only), plus the full offline unit tests.

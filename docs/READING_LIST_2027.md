@@ -118,3 +118,7 @@
 5. Prefer journal/conference version over preliminary preprint if methods/results changed; maintain version-specific results. Chen/Stratton: the author's homepage describes a later expanded paper while the currently linked PDF may be an earlier 500-firm edition—do not silently mix it with news figures describing 718 firms.
 6. Preserve a PRISMA-style screening flow only if a complete systematic review is actually performed. No fabricated search counts or citation metrics.
 7. Literature-revision checkpoint: 2027-01-15, 2027-04-15, 2027-07-15, 2027-10-15. Dates are planned, not performed.
+
+
+## Green and sustainable code reuse sources
+The [2026 sustainability/reuse reference registry](../references/green_reuse_sources_2026.json) contains 16 curated entries, including ACM 2025 *Beyond Dependencies*, FSE 2025 code clones, ACM 2026 *More Code, Less Reuse*, ISO/IEC 21031:2024 SCI, GSF SCI for AI, Joule 2026 energy inference, Impact Framework, CodeCarbon and classic clone detection. **These sources are a curated start, not a systematic review.** Cross-check publications and publisher final versions before quantitative meta-analysis. The corresponding RQs and metrics are in [mission](GREEN_REUSE_MISSION_2027.md), [experiment](REUSE_FIRST_EXPERIMENT.md) and [carbon metrics](REUSE_SUSTAINABILITY_METRICS.md).

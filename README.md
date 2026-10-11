@@ -1,5 +1,7 @@
 # GitHub Trending 1000 Study
 
+**2027 mission:** Discover, verify and reuse existing open-source code before reinventing it, so developers can deliver **genuinely useful software** with less unnecessary human effort, AI-token expenditure, technical debt and environmental impact. GitHub Trending measures *observed attention*, not proven utility or sustainability.
+
 **A reproducible, longitudinal observational study of open-source repository visibility, community practices, and growth.**
 
 [![CI](https://github.com/MSKazemi/github-trending-1000-study/actions/workflows/ci.yml/badge.svg)](https://github.com/MSKazemi/github-trending-1000-study/actions/workflows/ci.yml)
@@ -82,3 +84,28 @@ This deterministic **heuristic** shows the next evidence gate and budget warning
 
 ### Research commitments
 No generated 'findings' without observed data; no fabricated users, installations or savings; no claim that AI attribution is perfectly detectable; no manipulation of stars/traffic; and no paid growth services. A verified small niche tool may be more useful than a large popular repo.
+
+
+## New central research track: Green, reusable software by 2027
+
+We now explicitly study **reuse before generation**, not only repository popularity. The scientific question is whether finding, evaluating, integrating and maintaining existing code can improve independently verified user outcomes and reduce total human/energy cost relative to a matched new-build alternative. No energy/CO2 savings have yet been demonstrated.
+
+- **[Green reuse research mission](docs/GREEN_REUSE_MISSION_2027.md)** — updated overarching goal and additional independent reuse cohort
+- **[Trending validity and weakness audit](docs/TRENDING_VALIDITY_AUDIT.md)** — what rank/stars do and do not validate
+- **[Selection period and eligibility](docs/SELECTION_PROTOCOL_2027.md)** — 2026 Oct pilot; Nov 2026–Apr 2027 candidate enrollment; 180-day follow-ups
+- **[Coding agent chronology](docs/AGENT_RELEASE_ADOPTION_TIMELINE.md)** — why 2024+ baseline and verified agent-use events
+- **[Reuse/green measurement dictionary](docs/REUSE_SUSTAINABILITY_METRICS.md)** — functional proof, time, token, kWh and SCI-style CO2 bounds
+- **[Reuse-first randomized study](docs/REUSE_FIRST_EXPERIMENT.md)** — human vs agent × normal vs reuse-first workflows
+- **[Agent development reuse guide](docs/REUSE_FIRST_PLAYBOOK.md)** — practical search, license, security, validation, stop rules
+- **[Reusable evidence gate](docs/REUSE_GATE_TOOL.md)** — offline deterministic heuristic; unknown is not pass
+- **[Scientific source list](docs/READING_LIST_2027.md)**; [35 AI/GitHub/tech news sources](references/study_sources_2026.json); [16 green/reuse/energy sources](references/green_reuse_sources_2026.json)
+- **[Conversation checkpoint](research-notes/conversation-checkpoint-2026-10-11.md)** — all study-related user prompts in this chat, dated assistant findings and decision history
+
+To use the **offline reuse-first evidence check**:
+
+```bash
+python -m trending_study.reuse_gate --input examples/reuse_check.example.json
+python -m unittest discover -s tests -v
+```
+
+The example is synthetic and should request verification, not install code or claim carbon savings. New code may be desirable when no safe, compatible or suitable prior implementation exists. A 1,000-repository Trending sample cannot by itself represent the global universe of useful reusable software.

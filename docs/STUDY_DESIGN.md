@@ -83,3 +83,7 @@ Additional features: primary language, dominant domains/topics (human-audited mu
 
 ## Addendum 2026-10-11 — usefulness and 2027 AI development
 We extend the **research questions** but do not modify the already described observational estimands post hoc. A distinct, prospectively designed, opt-in human/task-level substudy is necessary to evaluate AI-related net productivity, accepted correctness, external user value and total lifecycle economics. See [AI_CODING_STUDY_2027.md](AI_CODING_STUDY_2027.md), [USEFULNESS_FRAMEWORK.md](USEFULNESS_FRAMEWORK.md), [TOKEN_TIME_ECONOMICS.md](TOKEN_TIME_ECONOMICS.md), [EVIDENCE_TO_LESSON_PROTOCOL.md](EVIDENCE_TO_LESSON_PROTOCOL.md), [REFERENCES_AI_2027.md](REFERENCES_AI_2027.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md). No 2027 findings or actual task-level data are claimed. Register and freeze amendments before outcomes become available.
+
+
+## Design amendment and timeline conflict tracking (2026-10-11)
+The older **12-week recruitment target** was a provisional feasibility assumption, **not an outcome-derived optimum**. The newer [SELECTION_PROTOCOL_2027.md](SELECTION_PROTOCOL_2027.md) proposes six calendar months of recruitment **2026-11-01–2027-04-30**, plus baseline+7/30/90/180 days; final followups occur around late October 2027. Both time plans remain **unfrozen drafts** pending collector capacity and pilot power, and this conflict must be resolved in the preregistered primary protocol. Other independent reuse/task-value cohorts are described in [GREEN_REUSE_MISSION_2027.md](GREEN_REUSE_MISSION_2027.md).

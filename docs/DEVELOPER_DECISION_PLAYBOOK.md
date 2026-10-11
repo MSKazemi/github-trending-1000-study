@@ -58,3 +58,7 @@ Do not classify an entirely new niche tool as worthless simply because its stars
 For each idea record one user/task outcome, nearest competing alternative, verified tests, independent activity, total human hours, AI token count (or unknown), unresolved regressions, next smallest experiment, and a pause/pivot/continue decision with a date. Do **not** optimize for tokens saved per se if it degrades validated outcomes.
 
 See [cost measurement](TOKEN_TIME_ECONOMICS.md), [usefulness](USEFULNESS_FRAMEWORK.md) and [example assessment](../examples/idea_card.example.json).
+
+
+## Green software addendum: discover, assess, adapt, then build
+The [reuse-first playbook](REUSE_FIRST_PLAYBOOK.md) is mandatory review before a new feature in this project's agent instruction guide; it requires time-boxed search, **functional** acceptance tests, real license/security/dependency checks, a choice between reuse, upstream contribution, configuration or minimal new code, and a reusable README example for the output. The **offline** [reuse-gate CLI](REUSE_GATE_TOOL.md) is a conservative self-reported evidence checklist, not a package recommendation or green certification. Track electricity or emissions only when bounded, instrumented or legitimately modeled [per metric guidance](REUSE_SUSTAINABILITY_METRICS.md).

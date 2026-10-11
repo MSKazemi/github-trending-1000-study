@@ -55,3 +55,9 @@ Observation: a repository's AI-associated PR and commit counts increase. Alterna
 
 ## Negative and null results are valuable
 Explicitly publish features that have uncertain, negative or context-dependent results. Avoid selective publication of only 'growth tips'. Do not recommend purchased stars, mass-posting, low-value PRs or engagement exchange; ethical organic improvements are the only eligible interventions.
+
+
+## Green reuse lesson gate (2027 extension)
+Do not publish 'reuse saves electricity' based solely on code length, cloned fragments, token counts or a GitHub rank. Require a predeclared functional unit (accepted user task), independent correctness/safety review, matched reuse/build baselines, human and maintenance effort, measured/modelled energy provenance, SCI-style carbon boundary/uncertainty and re-use licensing. Where inference energy is unknowable, publish only cost/task findings and a **conditional environmental scenario**, not a numeric saving.
+
+Lessons should answer 'what existed already?', 'why was reuse feasible or unsafe?', 'how much entire development/maintenance effort differed?', 'who independently verified the outcome?', 'what changed under 2027 agent versions?', and 'for which repo types does it apply?'. Link to [GREEN_REUSE_MISSION_2027.md](GREEN_REUSE_MISSION_2027.md), [REUSE_FIRST_EXPERIMENT.md](REUSE_FIRST_EXPERIMENT.md), [REUSE_SUSTAINABILITY_METRICS.md](REUSE_SUSTAINABILITY_METRICS.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md). Preserve contradictory and null outcomes.

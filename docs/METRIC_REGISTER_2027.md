@@ -75,3 +75,7 @@ Each metric has an **object, unit, denominator, source, observation window and b
 
 ## References
 [Reading list](READING_LIST_2027.md), [selection](SELECTION_PROTOCOL_2027.md), [agent adoption](AGENT_ADOPTION_MEASUREMENT.md), [source register](../references/study_sources_2026.json), [evidence-to-lesson protocol](EVIDENCE_TO_LESSON_PROTOCOL.md).
+
+
+## Reuse-first and energy metrics added to the study (R/G keys)
+The [green metrics register](REUSE_SUSTAINABILITY_METRICS.md) defines (R01–R14) viable pre-existing candidate coverage, top-K discovery precision/recall, reuse task success, unnecessary implementation candidate fraction, clone vs **functional** overlap, licensing/supply-chain risk, independently verified integrations and 30/90-day upkeep; (G01–G06) measured/estimated development energy, SCI gCO2e per independently accepted task, total lifecycle energy, paired build-vs-reuse difference, tokens/accepted task and uncertainty. These are **not** criteria for selecting only already-popular repositories. A separate independent OSS reuse sample and randomized task study are essential. Star/Trending ranks remain descriptive exposure, not a value label.
