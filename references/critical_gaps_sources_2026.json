@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-10-11",
+  "status": "curated research and standards references; not a systematic review",
+  "sources": [
+    {
+      "id": "CG01",
+      "year": "2024",
+      "type": "systematic-review",
+      "title": "Industrial reuse cost/benefits systematic review",
+      "url": "https://doi.org/10.1016/j.infsof.2024.107451",
+      "role": "Measures, costs and benefits in heterogeneous industrial reuse"
+    },
+    {
+      "id": "CG02",
+      "year": "2007",
+      "type": "peer-reviewed",
+      "title": "A Comparison of Pooled and Sampled Relevance Judgments",
+      "url": "https://www.nist.gov/publications/comparison-pooled-and-sampled-relevance-judgments",
+      "role": "Pooling bias in incomplete candidate ground truth"
+    },
+    {
+      "id": "CG03",
+      "year": "2026",
+      "type": "official-methods",
+      "title": "NIST How To TREC",
+      "url": "https://trec.nist.gov/howto.html",
+      "role": "Assessor judgment guidelines and pooling"
+    },
+    {
+      "id": "CG04",
+      "year": "2025",
+      "type": "peer-reviewed",
+      "title": "Revisiting SWE-bench: On the Importance of Data Quality for LLM-Based Code Models",
+      "url": "https://doi.org/10.1109/ICSE-Companion66252.2025.00075",
+      "role": "Solution leakage and weak acceptance tests"
+    },
+    {
+      "id": "CG05",
+      "year": "2024",
+      "type": "research-census",
+      "title": "Census III of Free and Open Source Software",
+      "url": "https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study",
+      "role": "Real production library usage and maintainer concentration"
+    },
+    {
+      "id": "CG06",
+      "year": "2026",
+      "type": "standard",
+      "title": "OpenSSF OSPS Baseline",
+      "url": "https://baseline.openssf.org/",
+      "role": "Versioned project security requirements; not a security guarantee"
+    },
+    {
+      "id": "CG07",
+      "year": "2026",
+      "type": "standard",
+      "title": "SLSA supply-chain specification v1.2",
+      "url": "https://slsa.dev/spec/v1.2/",
+      "role": "Verifiable provenance; not functional correctness"
+    },
+    {
+      "id": "CG08",
+      "year": "2026",
+      "type": "standard",
+      "title": "SPDX License List",
+      "url": "https://spdx.org/licenses/",
+      "role": "License identifiers; not complete legal analysis"
+    },
+    {
+      "id": "CG09",
+      "year": "2026",
+      "type": "security-database",
+      "title": "OSV API",
+      "url": "https://google.github.io/osv.dev/api/",
+      "role": "Known vulnerabilities, not proof of vulnerability absence"
+    },
+    {
+      "id": "CG10",
+      "year": "2026",
+      "type": "tool-guidance",
+      "title": "OpenSSF Scorecard",
+      "url": "https://openssf.org/projects/scorecard/",
+      "role": "Security practices, not a universal software quality measure"
+    },
+    {
+      "id": "CG11",
+      "year": "2025",
+      "type": "research-report",
+      "title": "We Have a Package for You! — package hallucinations in code LLMs",
+      "url": "https://www.usenix.org/publications/loginonline/we-have-package-you-comprehensive-analysis-package-hallucinations-code",
+      "role": "Versioned model/prompt-dependent nonexistent package risk"
+    },
+    {
+      "id": "CG12",
+      "year": "2024",
+      "type": "standard",
+      "title": "Software Carbon Intensity",
+      "url": "https://sci.greensoftware.foundation/",
+      "role": "Functional-unit software carbon methodology"
+    },
+    {
+      "id": "CG13",
+      "year": "2026",
+      "type": "foundation-guidance",
+      "title": "Revisiting Green Software: From Silicon to Screen",
+      "url": "https://greensoftware.foundation/articles/revisiting-green-software-from-silicon-to-screen/",
+      "role": "Carbon, water, materials and operational boundaries"
+    },
+    {
+      "id": "CG14",
+      "year": "2026",
+      "type": "foundation-guidance",
+      "title": "Beyond Watts: What Should AI Efficiency Really Measure?",
+      "url": "https://greensoftware.foundation/articles/beyond-watts-what-should-ai-efficiency-really-measure/",
+      "role": "Measure actual outcome per unit resource"
+    },
+    {
+      "id": "CG15",
+      "year": "2024",
+      "type": "survey",
+      "title": "Maintainer Motivations, Challenges, and Best Practices on Open Source Software Security",
+      "url": "https://www.linuxfoundation.org/blog/maintainer-motivations-challenges-and-best-practices-on-open-source-software-security",
+      "role": "Human maintainer experience, observational limitations"
+    }
+  ]
+}
