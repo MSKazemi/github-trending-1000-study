@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "task": "SYNTHETIC: produce a domain-aware config diff",
+  "acceptance_test": "Given fixture A and fixture B, run a clean-install command and compare to expected annotated diff output.",
+  "search_log": [
+    "2026-10-11: searched PyPI/npm/GitHub concepts; actual results NOT collected (synthetic sample)"
+  ],
+  "candidates": [
+    {
+      "name": "SYNTHETIC: candidate package",
+      "source_url": "https://example.org/not-a-real-project",
+      "functional_test": "unknown",
+      "license_compatibility": "unknown",
+      "security_review": "unknown",
+      "maintenance_review": "unknown"
+    }
+  ]
+}

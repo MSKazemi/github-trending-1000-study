@@ -26,3 +26,16 @@ Proposed → observed → analyzed → independently reviewed → context-valida
 
 ## Correction policy
 Keep negative/null results, update links when new versions supersede old ones, and preserve the earlier version with a dated explanation. Never silently delete contradictory studies.
+
+
+## Green software and reuse claims (added 2026-10-11)
+| ID | Claim | Status | Evidence / boundaries |
+|---|---|---|---|
+| C017 | GitHub Trending appearances and within-page ranks measure observed visibility, not validated product usefulness | **supported as construct distinction** | Captured [GitHub page](https://github.com/trending) and [validity audit](TRENDING_VALIDITY_AUDIT.md); algorithm/candidate rules opaque |
+| C018 | A large share of reused code may originate in less-famous projects | **study-backed, sample-dependent** | [G05](../references/green_reuse_sources_2026.json), ACM TOSEM 2025; copying does not equal end-user adoption |
+| C019 | Some studied AI-generated code/agent PRs introduce code cloning/redundancy | **study-backed within studied samples** | [G06/G07](../references/green_reuse_sources_2026.json); no global clone rate or carbon conversion |
+| C020 | Reusing more components automatically improves security and sustainability | **unsupported** | [G08/G09/G12](../references/green_reuse_sources_2026.json); dependency, license, security, versioning and runtime risks |
+| C021 | Reuse-first development lowers total engineer time and electricity compared with agent generate-first | **proposed falsifiable hypothesis** | [2×2 experimental design](REUSE_FIRST_EXPERIMENT.md); no collected task outcomes |
+| C022 | Saving a fixed number of tokens proves a fixed amount of carbon emissions avoided | **unsupported** | [ISO SCI/SCI AI](../references/green_reuse_sources_2026.json); unknown provider energy, grid, cache/hardware, full lifecycle |
+| C023 | An agent's AGENTS.md or Trending status proves human-authored code was displaced by AI | **unsupported** | [agent evidence tiers](AGENT_ADOPTION_MEASUREMENT.md) |
+| C024 | Older quiet libraries should remain in the discovery evaluation despite low star count | **sampling design recommendation** | [G05](../references/green_reuse_sources_2026.json), [mission](GREEN_REUSE_MISSION_2027.md); outcomes not measured |

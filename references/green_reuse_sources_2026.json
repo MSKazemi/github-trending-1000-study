@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-11",
+  "status": "curated, not systematic; validation and scope caveats recorded",
+  "sources": [
+    {
+      "id": "G01",
+      "type": "standard",
+      "date": "2024-03",
+      "title": "ISO/IEC 21031:2024 Software Carbon Intensity",
+      "author": "International Organization for Standardization",
+      "url": "https://www.iso.org/standard/86612.html",
+      "why_included": "SCI=(E*I+M)/R, bounded energy/carbon per functional unit",
+      "limitations": "Standard for software; emissions require measurements or calibrated estimates",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G02",
+      "type": "standard-extension",
+      "date": "2025-12-17",
+      "title": "SCI for AI specification ratified",
+      "author": "Green Software Foundation",
+      "url": "https://greensoftware.foundation/articles/sci-ai-specification-ratified-standard-for-measuring-ai-emissions-across-the/",
+      "why_included": "AI lifecycle boundary and provider-versus-consumer SCI reporting",
+      "limitations": "GSF ratified extension; do not claim independently ISO accredited",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G03",
+      "type": "measurement-tool",
+      "date": "2026",
+      "title": "Impact Framework",
+      "author": "Green Software Foundation",
+      "url": "https://if.greensoftware.foundation/intro/",
+      "why_included": "Reproducible conversion of observed software metrics into environmental impacts",
+      "limitations": "Model/plugin assumptions and coverage must be reported",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G04",
+      "type": "measurement-tool",
+      "date": "2026",
+      "title": "CodeCarbon power estimation",
+      "author": "CodeCarbon maintainers",
+      "url": "https://docs.codecarbon.io/3.3/explanation/power-estimation/",
+      "why_included": "RAPL/NVML and fallback models for local workload tracking",
+      "limitations": "Estimated for unsupported hardware; cannot infer all provider inference energy",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G05",
+      "type": "peer-reviewed",
+      "date": "2025-10-06",
+      "title": "Beyond Dependencies: The Role of Copy-Based Reuse in Open Source Software Development",
+      "author": "Jahanshahi, Reid, Mockus",
+      "url": "https://doi.org/10.1145/3715907",
+      "why_included": "Large-scale observed OSS copying; at least half of reused resources originate from small/medium projects; includes risks and attribution",
+      "limitations": "Copying != a successful reusable component or true avoided energy; duplication may bring license/security debt",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G06",
+      "type": "peer-reviewed",
+      "date": "2025-06-19",
+      "title": "An Empirical Study of Code Clones from Commercial AI Code Generators",
+      "author": "Wu et al.",
+      "url": "https://doi.org/10.1145/3729397",
+      "why_included": "84,000 prompted examples from GitHub; detected Type-1/2 clones with up-to-7.5% rates in specific Java/test/model conditions",
+      "limitations": "Cannot generalize 7.5% to all AI output or classify all clones as waste",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G07",
+      "type": "peer-reviewed",
+      "date": "2026",
+      "title": "More Code, Less Reuse: Investigating Code Quality and Reviewer Sentiment towards AI-generated Pull Requests",
+      "author": "Huang et al.",
+      "url": "https://doi.org/10.1145/3793302.3793622",
+      "why_included": "AI agent PR reuse/redundancy and reviewer sentiment contrast",
+      "limitations": "Observed PR samples and specific clone metrics; not causal universal AI effect",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G08",
+      "type": "peer-reviewed",
+      "date": "2020",
+      "title": "Software reuse cuts both ways: An empirical analysis of its relationship with security vulnerabilities",
+      "author": "Empirical Java OSS reuse study",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0164121220301199",
+      "why_included": "1,244 Java projects; dependency reuse/vulnerability relationship",
+      "limitations": "Java sample and known-disclosure/static proxies; reuse is not universally risk-free",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G09",
+      "type": "peer-reviewed",
+      "date": "2024-04",
+      "title": "Variability debt in opportunistic reuse: A multi-project field study",
+      "author": "Journal of Systems and Software",
+      "url": "https://doi.org/10.1016/j.jss.2024.111969",
+      "why_included": "Opportunistic cloning/reuse generates future variant maintenance debt",
+      "limitations": "Qualitative field scope; not direct energy measurements",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G10",
+      "type": "preprint",
+      "date": "2015",
+      "title": "SourcererCC: Scaling Code Clone Detection to Big Code",
+      "author": "Sajnani, Saini, Svajlenko, Roy, Lopes",
+      "url": "https://arxiv.org/abs/1512.06448",
+      "why_included": "Scalable token-based near-duplicate detection and precision/recall benchmarks",
+      "limitations": "Clone syntax similarity != requirements equivalence",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G11",
+      "type": "peer-reviewed",
+      "date": "2026-04-22",
+      "title": "Energy use of AI inference, efficiency pathways, and test-time scaling",
+      "author": "Joule 2026 research article",
+      "url": "https://doi.org/10.1016/j.joule.2026.102430",
+      "why_included": "Energy per request varies with model, reasoning length, serving and hardware",
+      "limitations": "Context-dependent; do not apply a fixed Wh/token coefficient to coding tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G12",
+      "type": "research-preprint",
+      "date": "2024-12",
+      "title": "Opportunities and Security Risks of Technical Leverage: A Replication Study on the NPM Ecosystem",
+      "author": "Samaana, Costa, Abdellatif, Shihab",
+      "url": "https://arxiv.org/abs/2412.06948",
+      "why_included": "14,042 npm releases; reuse productivity and vulnerability risk tradeoffs",
+      "limitations": "Ecosystem-specific; preprint findings and effects not universal",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G13",
+      "type": "platform-observation",
+      "date": "2026-10",
+      "title": "GitHub Trending (today/this-week/this-month)",
+      "author": "GitHub",
+      "url": "https://github.com/trending",
+      "why_included": "Displayed repo appearance, rank, total stars and stars-gained labels",
+      "limitations": "GitHub does not disclose exact ranking formula or public impressions; page snapshot only",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G14",
+      "type": "third-party-documentation",
+      "date": "2026-10-03",
+      "title": "How GitHub Trending Today collects lists and what is unknown",
+      "author": "GitHub Trending Today",
+      "url": "https://githubtrending.today/methodology/",
+      "why_included": "External page-capture method; confirms page order vs proprietary scoring unknown",
+      "limitations": "Independent collector; not an official GitHub algorithm explanation",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G15",
+      "type": "standard-extension",
+      "date": "2026",
+      "title": "SCI for AI specification text",
+      "author": "Green Software Foundation",
+      "url": "https://github.com/Green-Software-Foundation/sci-ai/blob/main/SPEC.md",
+      "why_included": "AI-specific measurement boundaries and denominators",
+      "limitations": "Do not presume all model providers disclose measured E and M",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "id": "G16",
+      "type": "benchmark",
+      "date": "2016+",
+      "title": "BigCloneBench",
+      "author": "CloneBench researchers",
+      "url": "https://github.com/clonebench/BigCloneBench",
+      "why_included": "Cloning detector ground truth and code attribution cues",
+      "limitations": "Benchmark license restrictions; clones do not equal useful functional substitutes",
+      "checked_on": "2026-10-11"
+    }
+  ]
+}

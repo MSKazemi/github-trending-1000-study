@@ -29,3 +29,15 @@ The individual ingredients (stars, Trending scrapes, OSS health metrics) already
 - Record search dates, deduplicate DOIs, screen title/abstract then full text with logged exclusions; apply backward/forward snowballing. Separate peer-reviewed articles from blog posts and vendor claims.
 - Extraction schema: paper/year/venue/DOI, sample frame/size, outcomes, time window, covariates, confounders, statistical approach, code/data, threats and direct relevance to each RQ.
 - Quality appraisal: prospective vs retrospective outcomes; sampling and leakage risk; construct validity; controls/uncertainty; public replication artifacts. Report a PRISMA-style flow if review becomes systematic.
+
+
+## Green, reusable code and environmental measurement (new study direction)
+- Jahanshahi, Reid & Mockus. **Beyond Dependencies: The Role of Copy-Based Reuse in Open Source Software Development**, ACM TOSEM, Oct 2025. [DOI](https://doi.org/10.1145/3715907). Critically important finding: substantial reused code originates in small/medium projects; Trending-only samples would miss important reuse sources. This is copy-based reuse, not a direct measure of avoided electricity.
+- Wu et al. **An Empirical Study of Code Clones from Commercial AI Code Generators**, FSE 2025. [DOI](https://doi.org/10.1145/3729397). Shows specific clone concerns, not universal carbon waste.
+- Huang et al. **More Code, Less Reuse**, ACM 2026. [DOI](https://doi.org/10.1145/3793302.3793622). Agent PR redundancy and reviewer sentiment; interpret source-sample scope.
+- **Software reuse cuts both ways**, JSS (2020). [Full article](https://www.sciencedirect.com/science/article/pii/S0164121220301199). Copying/importing more dependencies can also raise security risks.
+- [ISO/IEC 21031:2024](https://www.iso.org/standard/86612.html), **Software Carbon Intensity**. Environmental boundary, energy, location-specific carbon intensity, embodied hardware and functional unit.
+- [GSF SCI for AI](https://greensoftware.foundation/standards/sci-ai/) (ratified extension), [Impact Framework](https://if.greensoftware.foundation/), [CodeCarbon](https://docs.codecarbon.io/3.3/explanation/power-estimation/). Measurement tools have limitations; provider model energy is not automatically visible.
+- [Joule 2026 inference energy study](https://doi.org/10.1016/j.joule.2026.102430). Large workload/model effects mean tokens alone cannot be converted into a universal energy saving.
+
+Full fields and caveats: [green/reuse references](../references/green_reuse_sources_2026.json). Separate a bibliographic starting list from a systematic literature review.
