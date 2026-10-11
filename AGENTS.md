@@ -26,3 +26,12 @@
 - Every new feature should have a practical external task, fixed acceptance criteria, bounded human/token budget, existing-code comparison and transparent limitations.
 - Run both `python -m trending_study.value_gate --input examples/idea_card.example.json` and `python -m trending_study.reuse_gate --input examples/reuse_check.example.json` as synthetic CLI smoke tests, plus the full unit suite.
 - Never invent kWh or gCO2e from token count. Only report reproducible measured or clearly modeled environmental impacts with uncertainty and system boundary.
+
+
+## Critical gap checks before recommending new software or scientific conclusions
+- Consult docs/CRITICAL_RESEARCH_GAPS_2027.md and docs/REUSE_GOLD_STANDARD_2027.md. Do not claim a reusable implementation doesn't exist solely because search failed.
+- Do not let a coding agent evaluate its own correctness with self-authored acceptance tests. Freeze task requirements and arrange independent review, and keep no-solution tasks in the primary treatment denominator.
+- Inspect exact package+version, first availability date, license, provenance, security and maintenance evidence; no arbitrary unreviewed scripts or untrusted dependency installation.
+- Assess human and maintainer effort plus development and runtime energy; no exact CO2/tokens multiplier, no false global-recall claim from an incomplete pool.
+- Run python -m trending_study.goldset --input examples/goldset.synthetic.json --k 2 for the declared synthetic demonstration only and python -m unittest discover -s tests -v for offline regression tests.
+- Do not assert the 2027 study has been preregistered, collected or externally validated until it actually has been.

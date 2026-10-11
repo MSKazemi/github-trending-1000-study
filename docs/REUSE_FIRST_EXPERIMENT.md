@@ -49,3 +49,12 @@ Block randomization by developer experience, language, task type (CLI, library, 
 Freeze registered tasks/metrics and definitions. Include code and raw measurement provenance where privacy/platform permission permits; independent evaluator adjudication, clean reproduction, qualitative interviews on *why* reuse failed/succeeded, and an evidence-graded lesson card. Publish valuable failures and null findings.
 
 Resources: [metrics](REUSE_SUSTAINABILITY_METRICS.md), [green mission](GREEN_REUSE_MISSION_2027.md), [reuse-first playbook](REUSE_FIRST_PLAYBOOK.md), [source registry](../references/green_reuse_sources_2026.json).
+
+
+## Scientific correction: avoid an outcome-selected reuse-positive cohort (2026-10-11 amendment)
+
+The main analysis must include **all prospectively sampled and randomized tasks**, whether a viable existing component was found or not. Otherwise the study would be biased in favor of reuse by choosing only tasks on which it was possible. Eligibility for a secondary reuse-opportunity subgroup must be judged by independent assessors **before intervention outcome**.
+
+The gold set must be created independently of the agent under study and include old, small and non-GitHub components where legally available. Pair a time-stamped task with components available at that time, assess independent functional tests, license, security and maintenance, and label unresolved opportunities unknown (not 'none exist'). Use a [pooled judged candidate protocol](REUSE_GOLD_STANDARD_2027.md) and [supply-chain validation](SUPPLY_CHAIN_PROVENANCE_2027.md).
+
+Prevent hidden leakage from historical public PR patches and agent-accessible answer pages; include new held-out tasks, identical functional requirements across workflows, and independent tests for correctness/security. The intervention itself consumes retrieval/index compute and can shift support work to upstream maintainers; capture these in the lifecycle [break-even and externalities](FULL_LIFECYCLE_BREAK_EVEN_2027.md).

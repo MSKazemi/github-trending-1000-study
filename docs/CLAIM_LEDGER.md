@@ -39,3 +39,16 @@ Keep negative/null results, update links when new versions supersede old ones, a
 | C022 | Saving a fixed number of tokens proves a fixed amount of carbon emissions avoided | **unsupported** | [ISO SCI/SCI AI](../references/green_reuse_sources_2026.json); unknown provider energy, grid, cache/hardware, full lifecycle |
 | C023 | An agent's AGENTS.md or Trending status proves human-authored code was displaced by AI | **unsupported** | [agent evidence tiers](AGENT_ADOPTION_MEASUREMENT.md) |
 | C024 | Older quiet libraries should remain in the discovery evaluation despite low star count | **sampling design recommendation** | [G05](../references/green_reuse_sources_2026.json), [mission](GREEN_REUSE_MISSION_2027.md); outcomes not measured |
+
+
+## Additional validity claims and caveats (2026-10-11)
+| ID | Statement | Status and supporting evidence |
+|---|---|---|
+| C025 | Top-K retrieval absence proves that no reusable code exists | **unsupported:** [TREC pooling](https://trec.nist.gov/howto.html) / [NIST pooled vs sampled relevance](https://www.nist.gov/publications/comparison-pooled-and-sampled-relevance-judgments); incomplete ground truth |
+| C026 | Benchmark success always proves agent task competence | **unsupported:** [ICSE 2025 SWE-bench data-quality study](https://doi.org/10.1109/ICSE-Companion66252.2025.00075) shows model/dataset-specific leakage and weak tests |
+| C027 | High OpenSSF Scorecard implies a dependency is guaranteed safe | **unsupported:** [OpenSSF Scorecard](https://openssf.org/projects/scorecard/) describes heuristic practices; time/version and unseen vulnerabilities still matter |
+| C028 | No published vulnerability advisory implies no vulnerability | **unsupported:** [OSV API](https://google.github.io/osv.dev/api/) lists *known* reported vulnerabilities |
+| C029 | SLSA provenance guarantees a functionally correct package | **unsupported:** [SLSA v1.2](https://slsa.dev/spec/v1.2/) records how artifacts were produced, not task correctness |
+| C030 | Vibe-coded tasks save a fixed amount of emissions per token | **unsupported:** [SCI](https://sci.greensoftware.foundation/) and [GSF multidimensional sustainability](https://greensoftware.foundation/articles/revisiting-green-software-from-silicon-to-screen/) require task/region/hardware boundaries |
+| C031 | Reuse has net societal gains independent of upstream burden | **proposed, not validated:** [Census III](https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study); study must measure shifted maintenance |
+| C032 | Studying only tasks already known to have reuse opportunities estimates average reuse-first benefit | **unsupported design:** selecting on opportunity is nonrepresentative; preregister an all-task ITT contrast |

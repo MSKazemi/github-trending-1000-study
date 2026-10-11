@@ -14,3 +14,11 @@
 - Publishing a derived repo dataset does not authorize private logs, traffic data, hidden telemetry, identity scraping, or sharing revoked/removed content.
 - Treat paid/organic star manipulation, spam PRs and inflated activity as invalid research interventions and counter to the study's purpose.
 - Risk-sensitive software requires stronger verification; tool-generated 'go' guidance is not a security or legal clearance.
+
+
+## Additional protections for the 2027 gold set and human externalities
+- Candidate search results and source URLs may point to malicious packages; no automatic installation or execution inside credentialed GitHub Actions, uncontrolled development environments or machines with secrets.
+- Opt-in experimental upstream interaction must not spam uninvolved maintainers. Measure upstream cost only with permission and appropriate anonymization.
+- No forced ranking of niche/educational/public-interest software as 'garbage'. Evaluate against declared function and audience.
+- A verified reusable candidate requires documented permission/license/compatible obligation checks; repository publicity does not establish right to copy.
+- Evaluator contamination from known public patches/AI training and self-authored acceptance suites needs independent review.

@@ -61,3 +61,16 @@ Explicitly publish features that have uncertain, negative or context-dependent r
 Do not publish 'reuse saves electricity' based solely on code length, cloned fragments, token counts or a GitHub rank. Require a predeclared functional unit (accepted user task), independent correctness/safety review, matched reuse/build baselines, human and maintenance effort, measured/modelled energy provenance, SCI-style carbon boundary/uncertainty and re-use licensing. Where inference energy is unknowable, publish only cost/task findings and a **conditional environmental scenario**, not a numeric saving.
 
 Lessons should answer 'what existed already?', 'why was reuse feasible or unsafe?', 'how much entire development/maintenance effort differed?', 'who independently verified the outcome?', 'what changed under 2027 agent versions?', and 'for which repo types does it apply?'. Link to [GREEN_REUSE_MISSION_2027.md](GREEN_REUSE_MISSION_2027.md), [REUSE_FIRST_EXPERIMENT.md](REUSE_FIRST_EXPERIMENT.md), [REUSE_SUSTAINABILITY_METRICS.md](REUSE_SUSTAINABILITY_METRICS.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md). Preserve contradictory and null outcomes.
+
+
+## 2027 lesson rejection criteria
+Reject or downgrade any practical recommendation when:
+1. An alternative component is merely text-similar, but untested, incorrectly licensed or insecure.
+2. Search failed and the authors claim 'no existing implementation' despite an incomplete candidate frame.
+3. The task set was chosen after learning which arm performs best or after seeing agent-generated results.
+4. A benchmark uses leaked final patches, weak tests, self-authored answer keys or evaluator contamination.
+5. Lower initial cost obscures increased runtime, upstream maintenance, dependency repair, water or embodied impact.
+6. An apparently popular/trending or high-Scorecard project is assumed to be actually safe, useful or green without relevant evidence.
+7. A small, niche, education or public-good project is declared useless merely because it has few stars/users.
+
+Before issuing 'reuse-first saves energy', report signed net environmental effects and uncertainty at matched functional workloads and full or expressly partial boundaries. See [science governance](SCIENTIFIC_GOVERNANCE_2027.md).
