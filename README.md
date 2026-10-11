@@ -56,3 +56,29 @@ MIT applies to original code and text here. Third-party repository metadata rema
 
 ## Contribute
 Open an issue for reproducibility defects, language coverage, validity threats, sampling improvements, visualization or replication. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+## 2027 research track: Useful software in the AI-agent era
+
+**Our goal extends beyond trending:** learn what makes a public project *useful, independently verifiable, economical to maintain, and worth building* as AI-assisted coding expands. This is a proposed sub-study, not a completed set of results.
+
+- [Discussion synthesis / decision history](docs/CONVERSATION_SYNTHESIS.md)
+- [Usefulness constructs and metrics](docs/USEFULNESS_FRAMEWORK.md)
+- [AI-assisted and vibe-coding sub-study](docs/AI_CODING_STUDY_2027.md)
+- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md)
+- [Developer build/reuse/pivot playbook](docs/DEVELOPER_DECISION_PLAYBOOK.md)
+- [Total token, human and maintenance economics](docs/TOKEN_TIME_ECONOMICS.md)
+- [2027 conditional scenarios and monitoring](docs/FUTURES_2027.md)
+- [Reference register](docs/REFERENCES_AI_2027.md) and [claim ledger](docs/CLAIM_LEDGER.md)
+- [Project idea validation template](templates/idea_validation_card.md), [evidence-graded lesson template](templates/lesson_card.md) and [experiment registration](templates/experiment_registration.md)
+
+### Assess a proposed idea offline
+
+\`\`\`bash
+python -m trending_study.value_gate --input examples/idea_card.example.json
+\`\`\`
+
+This deterministic **heuristic** shows the next evidence gate and budget warnings. It does **not** claim to predict the popularity or usefulness of a project, classify trained-on-1,000 data, or validate a product. The example is synthetic. See [its specification](docs/USEFULNESS_EVALUATION_TOOL.md).
+
+### Research commitments
+No generated 'findings' without observed data; no fabricated users, installations or savings; no claim that AI attribution is perfectly detectable; no manipulation of stars/traffic; and no paid growth services. A verified small niche tool may be more useful than a large popular repo.

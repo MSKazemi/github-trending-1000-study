@@ -32,3 +32,14 @@
 - [ ] Reuse guides and optional interactive dashboard
 
 Do not mark sample goals complete without public methodology and verified counts.
+
+## M5 — Evidence-to-usefulness research (2027 extension, not started)
+- [x] Define distinct user value, quality, sustainable growth and cost constructs
+- [x] Publish AI workflow substudy design and study-specific threats
+- [x] Publish evidence-to-lesson grades, templates and claim ledger
+- [x] Add deterministic, offline project idea validation gate with synthetic tests
+- [ ] Pre-register independent user-task and task-randomization studies
+- [ ] Complete human subject/consent and privacy review as appropriate
+- [ ] Capture real task, adoption, agent-cost and 30/90-day maintenance outcomes
+- [ ] Publish null/negative results and graded decision-ready practice cards
+- [ ] Review scenarios and source version drift quarterly through 2027

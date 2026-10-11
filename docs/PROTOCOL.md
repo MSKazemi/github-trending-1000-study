@@ -45,3 +45,6 @@ Freeze raw snapshots and manifests (checksums, UTC, source URL, collector/parser
 
 ## Pilot acceptance criteria
 A fixture-based parser with fail-closed behavior; verified real-page parser QA; audit of at least 30 rows across windows; ID-based dedupe; collection-completeness log; explicit baseline and longitudinal snapshots; no conclusions before full data audit.
+
+## Extension: usefulness and AI-assisted coding track (2026-10-11 draft)
+The Trending cohort is still an **observational visibility study** and cannot alone establish usefulness, attributable AI authorship, user outcomes or causal value. A second, opt-in, separately powered task-level sub-study is proposed in [AI_CODING_STUDY_2027.md](AI_CODING_STUDY_2027.md). Review [USEFULNESS_FRAMEWORK.md](USEFULNESS_FRAMEWORK.md), [EVIDENCE_TO_LESSON_PROTOCOL.md](EVIDENCE_TO_LESSON_PROTOCOL.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md) before offering user-facing recommendations. These additions are draft amendments pending freezing the main protocol.
