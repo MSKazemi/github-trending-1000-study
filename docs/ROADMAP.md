@@ -58,3 +58,18 @@ Do not mark sample goals complete without public methodology and verified counts
 - [ ] Obtain ethics/consent and complete registered task experiments
 - [ ] Measure kWh (instrumented where feasible) and honestly bound unobservable inference emissions
 - [ ] Publish net value, verified software reuse, negative findings and late-2027 evidence-graded practices
+
+
+## M7 — Fix remaining scientific validity gaps before confirmatory 2027 study
+- [x] Audit 12 high-impact missing or under-specified dimensions and identify P0 blockers
+- [x] Draft independent task/candidate gold-label protocol, multi-retriever pooling and unknown handling
+- [x] Draft versioned supply-chain provenance, licensing/security and malicious package gates
+- [x] Draft lifecycle break-even, water/hardware/rebound, upstream maintainer and human comprehension measures
+- [x] Draft research governance with independent tasks, consent, contamination safeguards and all-task ITT estimand
+- [x] Implement offline, synthetic goldset validation with fail-closed unknown judgments, CI tests and README
+- [ ] Pilot diverse task recruitment independently of search systems and future outcomes
+- [ ] Assess inter-rater agreement on real cases, third-party evidence and false positives/negatives
+- [ ] Obtain complete project/security/legal provenance and verify viability on isolated fixtures
+- [ ] Preregister all-task primary outcome, experiment power, stop rules and feasible dates
+- [ ] Measure complete lifecycle, provider-energy unknowns, water and upstream maintainer spillovers
+- [ ] Report null findings, uncertainty and context-limited 2027 lessons; no training data leakage

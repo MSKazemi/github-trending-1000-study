@@ -41,3 +41,15 @@ The individual ingredients (stars, Trending scrapes, OSS health metrics) already
 - [Joule 2026 inference energy study](https://doi.org/10.1016/j.joule.2026.102430). Large workload/model effects mean tokens alone cannot be converted into a universal energy saving.
 
 Full fields and caveats: [green/reuse references](../references/green_reuse_sources_2026.json). Separate a bibliographic starting list from a systematic literature review.
+
+
+## Scientific/standards sources addressing the critical gaps
+- [2024 systematic review of software reuse costs and benefits](https://doi.org/10.1016/j.infsof.2024.107451) — historical evidence often reports benefits more readily than measurable costs.
+- [NIST TREC evaluation method](https://trec.nist.gov/howto.html) and [pooled versus sampled judgments](https://www.nist.gov/publications/comparison-pooled-and-sampled-relevance-judgments) — candidate pooling requires unknown/coverage caveats.
+- [2025 ICSE-Companion: Revisiting SWE-bench](https://doi.org/10.1109/ICSE-Companion66252.2025.00075) — benchmark leakage and weak tests can change reported success.
+- [Linux Foundation and Harvard Census III](https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study) — real-world library adoption and concentrated maintainer capacity.
+- [OpenSSF OSPS Baseline](https://baseline.openssf.org/), [OpenSSF Scorecard](https://openssf.org/projects/scorecard/), [SLSA v1.2](https://slsa.dev/spec/v1.2/), [SPDX](https://spdx.org/licenses/) and [OSV](https://google.github.io/osv.dev/api/) — supply-chain/identity/security evidence rather than rank.
+- [USENIX: package hallucinations](https://www.usenix.org/publications/loginonline/we-have-package-you-comprehensive-analysis-package-hallucinations-code) — risk of generated nonexistent dependency recommendations.
+- [Green Software Foundation: Silicon to Screen](https://greensoftware.foundation/articles/revisiting-green-software-from-silicon-to-screen/) and [Beyond Watts](https://greensoftware.foundation/articles/beyond-watts-what-should-ai-efficiency-really-measure/) — task-level energy/carbon, water and embodied hardware.
+
+Structured entries with caveats: [critical-gap source register](../references/critical_gaps_sources_2026.json). This remains a curated review rather than a completed systematic review.

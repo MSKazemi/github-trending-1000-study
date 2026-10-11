@@ -50,3 +50,17 @@ Same task accepted by independent reviewer; no critical open security/functional
 
 ## Analysis
 Paired / task-blocked 2x2 experimental outcomes; participant/project clustered CIs; intention-to-treat; no exclusion of failed tasks; pilot-derived power, stage-appropriate outcome hierarchy, preregistered interaction tests. Report separate human time, tokens, kWh and carbon estimates, with robustness to unknown server-side energy.
+
+
+## Additional scientifically necessary measurements (October 2026 protocol amendment)
+- **Judgment coverage@K and P@K bounds:** report the count and fraction of unjudged top-K candidates, lower/upper precision bounds, and do not label pooled-relative recall as absolute/global recall.
+- **Non-availability confidence:** cannot infer no safe reusable solution exists from zero retrieved candidates; preserve unresolved/missing.
+- **Time-indexed provenance:** a candidate released after the task baseline is ineligible for a historical reuse opportunity.
+- **Upstream maintainer workload:** where consented and observable, review/support/upgrade effort moved from downstream developers; if unavailable state unknown.
+- **Developer comprehension/knowledge transfer:** independent maintainer succeeds at future fix with specified acceptance suite, human time, defect burden.
+- **Supply-chain hallucination rate:** proportion of suggested packages with missing/incorrect official registry identity and audited version, plus typosquat or incompatible license/safety review.
+- **Lifecycle break-even:** signed reuse-vs-build impact over declared number of accepted task executions and maintenance horizon; include upfront candidate discovery/indexing, model inference, CI, deployment/runtime and environmental source coverage.
+- **Water, embodied hardware and rebound:** separate axes, not derived from fixed tokens×carbon constants. Carbon-aware does not imply water-efficient.
+- **All-task analysis denominator:** the reuse-eligible stratum is secondary; primary assigned-workflow analysis includes no-opportunity and failed tasks.
+
+References: [critical gaps](CRITICAL_RESEARCH_GAPS_2027.md), [gold labeling](REUSE_GOLD_STANDARD_2027.md), [trust](SUPPLY_CHAIN_PROVENANCE_2027.md), [life cycle](FULL_LIFECYCLE_BREAK_EVEN_2027.md), [human externalities](MAINTAINER_EXTERNALITIES_2027.md).

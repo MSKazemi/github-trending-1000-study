@@ -84,3 +84,12 @@ The project stores curated references (not a complete systematic review) in [AI 
 
 ## Privacy and integrity
 The user explicitly requested archiving study-relevant discussion in this public repository. This checkpoint records their project-specific prompts and associated scientific decisions. It deliberately excludes unrelated personal/private chats, private tool transcripts, personal messages and unpublished source material. The word `verbatim` applies to the copied user questions above, **not** to assistant responses or raw application chat export. For full literal transcript preservation, an authorized export process would be needed and should be reviewed for private material before publication.
+
+
+## U7 — Which important aspects have we overlooked? (verbatim)
+> Go head which aspects I did not considered which is important
+
+## Research design response checkpoint
+A focused audit of the existing repository identified 12 critical, under-specified or unimplemented research safeguards. The highest-priority corrections are independent task-to-code **functional ground truth**; task sampling independent of already-known reusable solutions; retrieval coverage and incomplete relevance pools; versioned identity, license and supply-chain security checks; and end-to-end energy/carbon/water/runtime break-even. Secondary concerns include upstream maintainer burden, developer comprehension, benchmark leakage, safe agent use, time-varying tool versions and costs, educational/public-good niches, interference, and the search overhead itself.
+
+These are study design decisions and testable hypotheses, **not** observed results. Related artifacts: [gap audit](../docs/CRITICAL_RESEARCH_GAPS_2027.md), [gold set](../docs/REUSE_GOLD_STANDARD_2027.md), [supply chain](../docs/SUPPLY_CHAIN_PROVENANCE_2027.md), [life cycle](../docs/FULL_LIFECYCLE_BREAK_EVEN_2027.md), [upstream community](../docs/MAINTAINER_EXTERNALITIES_2027.md), [scientific governance](../docs/SCIENTIFIC_GOVERNANCE_2027.md). This section preserves the user's research question verbatim but, as before, is **not** a raw full tool/assistant transcript.

@@ -109,3 +109,25 @@ python -m unittest discover -s tests -v
 ```
 
 The example is synthetic and should request verification, not install code or claim carbon savings. New code may be desirable when no safe, compatible or suitable prior implementation exists. A 1,000-repository Trending sample cannot by itself represent the global universe of useful reusable software.
+
+
+## Newly identified scientific risks — read before interpreting results
+
+The October 2026 critical-gap review found that three ideas need independent validation: **a search that fails to find code cannot prove no viable code exists**, an apparently suitable package is not necessarily safe/legal/functionally equivalent, and fewer tokens do not establish net environmental benefit.
+
+- **[Critical gaps and prioritized research actions](docs/CRITICAL_RESEARCH_GAPS_2027.md)** — 12 risks with P0/P1/P2 safeguards
+- **[Independent gold-standard task-to-code judging](docs/REUSE_GOLD_STANDARD_2027.md)** — stratified tasks, mixed retriever pools, two raters, blind adjudication and incomplete relevance
+- **[Supply-chain identity/security/rights](docs/SUPPLY_CHAIN_PROVENANCE_2027.md)** — actual package versions, OpenSSF, SLSA, SPDX, OSV and no blind execution
+- **[Lifecycle break-even and rebound](docs/FULL_LIFECYCLE_BREAK_EVEN_2027.md)** — development versus runtime, carbon/water/hardware, maintained full-boundary comparison
+- **[Upstream maintainers and human learning](docs/MAINTAINER_EXTERNALITIES_2027.md)** — support burden, comprehension, fair reuse
+- **[Research governance](docs/SCIENTIFIC_GOVERNANCE_2027.md)** — study eligibility, data leakage, preregistration and selection effects
+- **[New research and standards sources](references/critical_gaps_sources_2026.json)** — 15 contextual and methodological references
+
+Offline, self-reported *synthetic* gold-set validator:
+
+```bash
+python -m trending_study.goldset --input examples/goldset.synthetic.json --k 2
+python -m unittest discover -s tests -v
+```
+
+This does **not** label real packages, measure true recall, or validate actual reuse. An unknown candidate must not silently become an irrelevant one. See [CLI notes](docs/GOLDSET_VALIDATION_CLI.md).

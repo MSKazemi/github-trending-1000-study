@@ -31,3 +31,11 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 - For research claims, distinguish clone detection from true redundant functionality and independently accepted user benefit. Energy claims require [SCI-style boundary and uncertainty](docs/REUSE_SUSTAINABILITY_METRICS.md), not token multiplication.
 - Align any proposed parser, sample or methodology change with [Trending validity](docs/TRENDING_VALIDITY_AUDIT.md), [selection](docs/SELECTION_PROTOCOL_2027.md), and [reuse experimental design](docs/REUSE_FIRST_EXPERIMENT.md). Maintain a dated design amendment before analyzing outcomes.
 - Use `python -m trending_study.reuse_gate --input examples/reuse_check.example.json` to demonstrate the evidence gate (synthetic only), plus the full offline unit tests.
+
+
+## Methodology protection: incomplete retrieval and lifecycle inference
+- For every reproducible reuse discovery claim, document task baseline UTC, frozen spec and acceptance tests, all candidate sources including package registries, judged pool coverage, non-judged results and blinded independent verification. False negatives and rejected candidates are valuable outcomes.
+- Rater consensus without functional/license/safety verification is not a golden answer. Never mark missing values as zero or use absolute recall without a complete candidate universe.
+- Preserve original upstream credit and limit the burden on external maintainers; do not automate unapproved contributions or CI execution of downloaded code.
+- Include real alternative choices (do nothing, integrate, upstream patch, compose or bounded build), and life-cycle sensitivity instead of token-only green claims.
+- Proposed goldset tool and its synthetic data are methodological guards, not a benchmark of real repositories.
