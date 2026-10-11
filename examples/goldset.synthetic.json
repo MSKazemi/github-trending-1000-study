@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "tasks": [
+    {
+      "task_id": "SYNTHETIC-ONLY-T1",
+      "baseline_utc": "2026-10-11T08:00:00Z",
+      "spec_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "acceptance_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "candidates": [
+        {
+          "id": "SYNTHETIC-PKG-A",
+          "final_label": "viable",
+          "reviewer_labels": [
+            "viable",
+            "viable"
+          ],
+          "available_since_utc": "2026-09-01T00:00:00Z",
+          "gates": {
+            "functional": "pass",
+            "license": "pass",
+            "security": "pass",
+            "maintenance": "pass"
+          },
+          "evidence_ref": "SYNTHETIC DEMO, NO REAL VERIFICATION"
+        },
+        {
+          "id": "SYNTHETIC-PKG-B",
+          "final_label": "unknown",
+          "reviewer_labels": [
+            "unknown",
+            "unknown"
+          ],
+          "available_since_utc": null,
+          "gates": {
+            "functional": "unknown",
+            "license": "unknown",
+            "security": "unknown",
+            "maintenance": "unknown"
+          },
+          "evidence_ref": null
+        },
+        {
+          "id": "SYNTHETIC-PKG-C",
+          "final_label": "not_viable",
+          "reviewer_labels": [
+            "not_viable",
+            "not_viable"
+          ],
+          "available_since_utc": "2026-09-01T00:00:00Z",
+          "gates": {
+            "functional": "fail",
+            "license": "pass",
+            "security": "unknown",
+            "maintenance": "unknown"
+          },
+          "evidence_ref": "SYNTHETIC DEMO FAILURE"
+        }
+      ],
+      "systems": [
+        {
+          "name": "lexical-demo",
+          "ranked_candidate_ids": [
+            "SYNTHETIC-PKG-A",
+            "SYNTHETIC-PKG-C"
+          ]
+        },
+        {
+          "name": "agent-demo",
+          "ranked_candidate_ids": [
+            "SYNTHETIC-PKG-B",
+            "SYNTHETIC-PKG-A"
+          ]
+        }
+      ]
+    }
+  ]
+}
