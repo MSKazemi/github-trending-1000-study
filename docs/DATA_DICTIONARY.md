@@ -44,3 +44,29 @@ Null = unavailable or uncollected, **not zero**. Raw snapshots should be checksu
 - `analysis_results`: script SHA, preregistration version, cohort snapshot digest and numerical results.
 
 A file in `data/processed/` does **not** automatically represent a validated dataset of 1,000 repositories.
+
+## Proposed separate AI development sub-study schema — NOT part of public Trending observations
+These fields belong to an **opt-in, access-controlled** task dataset and should not be published as row-level identifiable data by default.
+
+| Field | Type | Meaning / validity |
+|---|---|---|
+| task_id | random pseudonymous ID | Stable within consented study, no GitHub identity embedded |
+| project_type | enum/string | CLI/library/app/dataset/research/etc.; applicability |
+| new_vs_existing_code | enum | New project vs modification of existing code |
+| task_type | enum | Bugfix/feature/docs/refactor/security/etc. |
+| treatment_assignment | enum | Randomized AI-allowed/no-AI when feasible, else observational status |
+| observed_assistance | enum/null | Verified opt-in workflow record; different from assignment |
+| planned_acceptance_sha | SHA/text ID | Frozen before assignment to prevent outcome manipulation |
+| task_started_utc, task_closed_utc | ISO8601 | Wall clock, including unfinished tasks |
+| human_*_minutes | numeric/null | Planning/prompt/review/repair/shipping/30–90d support; nonoverlap |
+| agent_wall_minutes | numeric/null | Report separately; concurrency may overlap human time |
+| input_tokens, output_tokens, cached_tokens | int/null | Provider-reported where accessible; not comparable across versions without accounting |
+| accepted | bool/null | Independently validated against predeclared criteria |
+| failure_severity | enum/null | Predeclared severity rubric, missing distinct from zero |
+| independent_user_attempts, independent_user_successes | int/null | Fixed user task & eligible denominator with consent |
+| verified_repeat_use | int/null | Only when an auditable consented method exists |
+| security_review_state | enum | Passing checks != no vulnerabilities |
+| completed_followup_days | int/null | Actual observation exposure and censoring |
+| model_and_tool_version | string/null | Only with permission and identifiable-risk assessment |
+
+The offline `examples/idea_card.example.json` is **synthetic** and excluded from any empirical cohort. Its `schema_version=1.0` describes an assessment *input*, not observed research evidence.

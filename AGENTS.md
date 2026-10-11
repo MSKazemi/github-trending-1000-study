@@ -12,7 +12,7 @@
 - Research protocol changes need explicit justification, versioning and human approval.
 
 ## 2027 value research and lessons
-- Read \`docs/CONVERSATION_SYNTHESIS.md\`, \`docs/USEFULNESS_FRAMEWORK.md\`, \`docs/AI_CODING_STUDY_2027.md\`, \`docs/EVIDENCE_TO_LESSON_PROTOCOL.md\`, \`docs/REFERENCES_AI_2027.md\`, and \`docs/CLAIM_LEDGER.md\` before making evidence claims.
+- Read `docs/CONVERSATION_SYNTHESIS.md`, `docs/USEFULNESS_FRAMEWORK.md`, `docs/AI_CODING_STUDY_2027.md`, `docs/EVIDENCE_TO_LESSON_PROTOCOL.md`, `docs/REFERENCES_AI_2027.md`, and `docs/CLAIM_LEDGER.md` before making evidence claims.
 - Never conflate GitHub stars/commits/PR counts with user benefit, adoption, correctness or total developer productivity.
 - Use the prospective templates for experiments and lesson cards; unknown measures must remain unknown, not become 0 or fabricated observations.
 - Coding agents must favor reuse, minimal patches, user-task acceptance tests, review/security and budget-aware iterations. Be transparent that example project assessments are synthetic.

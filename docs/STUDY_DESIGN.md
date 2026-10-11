@@ -80,3 +80,6 @@ Additional features: primary language, dominant domains/topics (human-audited mu
 - 'First seen trending' != first ever trending. 'No trending observation' != never trending.
 - Bots, bought stars, and social promotion are not directly observable with high certainty. Flag anomalous patterns, don't accuse named maintainers.
 - **Any dashboard ranking is descriptive**, and should not claim 'best-performing practice' without independent confirmatory evidence.
+
+## Addendum 2026-10-11 — usefulness and 2027 AI development
+We extend the **research questions** but do not modify the already described observational estimands post hoc. A distinct, prospectively designed, opt-in human/task-level substudy is necessary to evaluate AI-related net productivity, accepted correctness, external user value and total lifecycle economics. See [AI_CODING_STUDY_2027.md](AI_CODING_STUDY_2027.md), [USEFULNESS_FRAMEWORK.md](USEFULNESS_FRAMEWORK.md), [TOKEN_TIME_ECONOMICS.md](TOKEN_TIME_ECONOMICS.md), [EVIDENCE_TO_LESSON_PROTOCOL.md](EVIDENCE_TO_LESSON_PROTOCOL.md), [REFERENCES_AI_2027.md](REFERENCES_AI_2027.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md). No 2027 findings or actual task-level data are claimed. Register and freeze amendments before outcomes become available.

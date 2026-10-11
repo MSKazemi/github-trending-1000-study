@@ -74,9 +74,9 @@ Open an issue for reproducibility defects, language coverage, validity threats, 
 
 ### Assess a proposed idea offline
 
-\`\`\`bash
+```bash
 python -m trending_study.value_gate --input examples/idea_card.example.json
-\`\`\`
+```
 
 This deterministic **heuristic** shows the next evidence gate and budget warnings. It does **not** claim to predict the popularity or usefulness of a project, classify trained-on-1,000 data, or validate a product. The example is synthetic. See [its specification](docs/USEFULNESS_EVALUATION_TOOL.md).
 
