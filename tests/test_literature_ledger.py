@@ -59,5 +59,12 @@ class LiteratureLedgerTests(unittest.TestCase):
         self.assertEqual(audit(p)["decisions"]["include"], 1)
 
 
+    def test_malformed_source_type_is_rejected(self):
+        p = source()
+        p["records"][0]["source_type"] = {}
+        with self.assertRaises(LiteratureError):
+            audit(p)
+
+
 if __name__ == "__main__":
     unittest.main()
