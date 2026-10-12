@@ -223,7 +223,7 @@ def audit_costs(frame, assignments, outcomes, ledger):
             raise CostAuditError(f"task_id {tid} is unknown, excluded, or duplicated")
         seen_tasks.add(tid)
         coverage = _object(task["coverage"], f"{tid}.coverage", {"human", "events", "monetary"})
-        if set(coverage.values()) - COVERAGES:
+        if any(not isinstance(v, str) or v not in COVERAGES for v in coverage.values()):
             raise CostAuditError(f"{tid}: coverage must be complete/partial/missing")
         outcome = outcomes_by_id[tid]
         closed = outcome["closed_at_utc"]
@@ -239,7 +239,7 @@ def audit_costs(frame, assignments, outcomes, ledger):
             name = f"{tid}.human_intervals[{index}]"
             _object(item, name, HUMAN_KEYS)
             actor = _identifier(item["actor_slot"], name + ".actor_slot")
-            if item["category"] not in HUMAN_CATEGORIES:
+            if not isinstance(item["category"], str) or item["category"] not in HUMAN_CATEGORIES:
                 raise CostAuditError(f"{name}: unknown work category")
             start, end = _interval(item, name, locked, upper)
             minutes += (end - start).total_seconds() / 60
@@ -272,7 +272,7 @@ def audit_costs(frame, assignments, outcomes, ledger):
                 raise CostAuditError(f"duplicate event_id {eid}")
             global_event_ids.add(eid)
             kind = event["kind"]
-            if kind not in KINDS:
+            if not isinstance(kind, str) or kind not in KINDS:
                 raise CostAuditError(f"{name}: unsupported event kind")
             spans.append(_interval(event, name, locked, upper))
             model = event["model_id"]
@@ -311,7 +311,7 @@ def audit_costs(frame, assignments, outcomes, ledger):
                     raise CostAuditError(f"{name}: unknown amount requires null basis")
                 cost_unknown = True
             else:
-                if basis not in COST_BASES or (
+                if not isinstance(basis, str) or basis not in COST_BASES or (
                     ledger["dataset_kind"] != "synthetic" and basis == "synthetic"
                 ):
                     raise CostAuditError(f"{name}: cost basis must identify provenance")
