@@ -117,3 +117,11 @@ Counter deltas can be negative. No follow-up in this schema currently constitute
 ## Supported-selector completeness diagnostic (2026-10-12, NOT live QA)
 
 Strict pilot audit includes `selector_box_row_count` (number of matched `article.Box-row` elements in the **saved** HTML), `structural_parser_status` (`matched_selector_rows_consistent` or `not_separately_instrumented` when no inspector supplied), and `structural_scope_warning`. Every supported article must contribute exactly one validated, nonduplicate repository and preserve its rank. The original `parser_qa_status` stays `requires_independent_manual_audit`. **Selector coverage is not total visible-page recall.** See [verification plan](PARSER_STRUCTURE_QA_2026_10_12.md).
+
+## Follow-up event replay contract (2026-10-12 hardening; not empirical data)
+
+The published event schema remains `followup-event-1.0` with `event_id` (32 lowercase hexadecimal characters), plan/task/study/ID/horizon keys, exact scheduled and expiry timestamp copies, and one UTC observation timestamp. Only two exhaustive field sets are permitted on replay: **(1)** an API attempt with all declared HTTP/request/counter/header/lag fields, or **(2)** an expired `missed_window` with `reason`, `http_status=null`, and `stars=null`. Unrecognized or partial records fail auditing instead of being labeled successes.
+
+`ok` requires observed time inside the planned window plus HTTP 200, stable ID match, canonical repo name and nonnegative integer counters. `late_observation` retains otherwise successful evidence outside expiry but **never counts as on-time completion**. Other HTTP/network/identity statuses cannot carry success counters. A replay may not contain multiple terminal outcomes or two request attempts for the same task on one UTC date. The loader rejects symlinked JSON records. Explicit failures remain in the ledger; no unknown may be silently converted to zero.
+
+These rules check **internal JSON consistency**. They cannot authenticate externally supplied API payloads, human approvals, third-party user consent, real elapsed time or data provenance. See [longitudinal operations and limitations](LONGITUDINAL_FOLLOWUPS_2026_10_12.md).
