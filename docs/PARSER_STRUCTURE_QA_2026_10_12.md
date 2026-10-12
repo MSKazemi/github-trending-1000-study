@@ -41,3 +41,7 @@ The fixture `tests/fixtures/trending.html` now has two unique valid rows. Malfor
 Submit a reviewable **real** pilot page-QA record: capture SHA, code commit, UTC page date/window, audit reviewers, selection frame, counts and denominators, TP/FP/FN, rank disagreements and exact unsupported layouts. Version the record and attach raw audit file only where distribution is permitted. The tool must not claim `verified` until this actually happens.
 
 Related: [pilot SOP](PILOT_CAPTURE_AND_PREFLIGHT.md), [capture immutability](CAPTURE_IMMUTABILITY_2026_10_12.md), [selection](SELECTION_PROTOCOL_2027.md), [source ethics](ETHICS.md), [readiness gates](PROTOCOL_FREEZE_STATUS_2026_10_12.md).
+
+## Complementary independent label comparison (2026-10-12)
+
+An [offline two-reviewer page QA tool](PAGE_QA_COMPARISON.md) has been proposed under issue #2. It checks a source-hash-linked manually declared full-page row list against parser output (rank-sensitive TP/FP/FN and reviewer disagreement), including **off-selector rows** the supported Box-row parser cannot detect on its own. Tests are synthetic; no real 30-row human-reviewed pilot exists yet. Source access, actual human annotation and independent signoff remain open pre-enrollment requirements.
