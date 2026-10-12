@@ -69,3 +69,17 @@ python -m unittest discover -s tests -v
 Unit tests use synthetic, clearly marked baselines and mocked API responses for stable IDs, renames, identity mismatch, rate limiting, interrupted/missed windows, immutability, safe resume and CLI planning. They do not prove experimental scientific validity or capture completeness.
 
 **Next scientific dependencies:** #2 real-page independent rank/completeness audit and access permission; #3 verified sampling/power; #21 externally adjudicated reuse tasks; reviewer-signed consolidated protocol. See [integrated mission](AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+
+## Event-ledger replay validation — 2026-10-12 integrity hardening
+
+This issue-#4 follow-up hardening makes `status`, `collect` resume, and any later export **fail closed when event records contradict their own frozen plan**. It does not change the network opt-in or permit enrollment.
+
+- Every `followup-event-1.0` JSON record must contain the exact fields emitted by the collector for an API attempt, or the separate `missed_window` field set. Unexpected keys (including accidental confidential data) and missing required fields are rejected; event IDs remain 32-character lowercase hexadecimal values.
+- A replayed event must match its plan SHA, task ID, study ID, repository ID, horizon and *exact stored* scheduled/expiry timestamps; UTC time and reported lag must agree. An `ok` event cannot be before due or after expiry. `late_observation` and `missed_window` require observation after the frozen expiry.
+- `ok` and `late_observation` require HTTP 200, the same immutable repository ID, a canonical GitHub owner/repository name, and nonnegative integer star/fork/issue+PR counters. The API response must explicitly say `"private": false` (JSON boolean), not omit `private` or supply a string/integer: ambiguous visibility becomes `invalid_response`, while `"private": true` becomes `not_public`. Other statuses must not carry success counters. A `missed_window` record must not masquerade as an HTTP request.
+- The collector refuses replay if a task contains multiple terminal outcomes, a recorded request occurs after a terminal outcome, or multiple HTTP attempts for one task share the same UTC date. Missingness-only events do not count as HTTP attempts. Symlinked event JSON files are rejected because they are not reliably immutable file artifacts.
+- Valid original v1.0 records written by the collector retain the same format. Malformed or manually modified records are **not repaired, deleted, counted as zero, or silently excluded**: the operator must quarantine/investigate the ledger with its original bytes preserved. Recovery requires a documented incident and new, reviewed data version.
+
+**Scope and evidence:** these are local structural consistency guards, not tamper-proof cryptographic signatures. An attacker or operator could still forge a self-consistent unsigned record; official GitHub source authentication, original HTTP logs, actual source access permission, human review, proper time synchronization and external protocol approval remain separate. The offline tests create fictional positive, negative, late, missing, duplicate and damaged events; **no real follow-up collection occurred** in this change.
+
+Run `python -m unittest discover -s tests -v`. Do not treat successful tests as human verification of historical GitHub measurements.

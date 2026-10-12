@@ -132,7 +132,7 @@ Search DOI-indexed bibliographic systems with publication-year, language and doc
 
 For vendor/platform releases, include model/tool names, release date, provenance and usage metric denominators separately. Run backward/forward snowballing from the reviewed papers in [READING_LIST_2027](READING_LIST_2027.md).
 
-## 8. Monitoring cadence and source-record protocol (weekly briefing scheduled)
+## 8. Monitoring cadence and source-record protocol (weekly briefing configured, currently disabled)
 
 | Cadence | Activity | Output |
 |---|---|---|
@@ -142,7 +142,7 @@ For vendor/platform releases, include model/tool names, release date, provenance
 | Quarterly (already planned) | Revalidate release/adoption chronology, journal/CFP conditions, threat models and prospective design | Frozen vintage + dated corrections in advisory evidence template |
 
 
-**2026-10-12 operational update:** A weekly *evidence briefing*, separate from GitHub Trending collection, was scheduled for **Monday mornings around 08:00 Europe/Rome**, beginning **2026-10-19**. It is a flexible delivery window, not a guaranteed exact-minute publication. Each run should check the latest repository sources first, review the prior seven days, capture primary links/DOIs and contradictory results, then **attempt to save a dated research note via a GitHub branch and PR for human review if connector permissions allow**. If repo write fails, it must declare that plainly and supply repository-ready Markdown. This scheduled briefing does **not** authorize bulk scraping, create an automatic GitHub Action, amend a frozen cohort or automatically merge PRs; no weekly findings have been produced yet.
+**2026-10-12 operational update (verified configuration):** A weekly *evidence briefing*, separate from GitHub Trending collection, was configured for **Monday mornings around 08:00 Europe/Rome**, with first planned slot **2026-10-19**; **it is currently disabled**, so no briefing is scheduled to execute unless explicitly enabled. It is a flexible delivery window, not a guaranteed exact-minute publication. Each run should check the latest repository sources first, review the prior seven days, capture primary links/DOIs and contradictory results, then **attempt to save a dated research note via a GitHub branch and PR for human review if connector permissions allow**. If repo write fails, it must declare that plainly and supply repository-ready Markdown. This scheduled briefing does **not** authorize bulk scraping, create an automatic GitHub Action, amend a frozen cohort or automatically merge PRs; no weekly findings have been produced yet.
 
 **For each reviewed item, retain at minimum:** `source_id, source_type, outlet, title, authors/organization, url, doi_or_persistent_id, published_date, event_date, retrieved_at_utc, peer_review_status, version, study_design, population_frame, denominator, treatment/exposure_definition, comparator, outcomes, uncertainty, funding/conflicts, relevant_RQs, positive_negative_neutral, limitations, duplicates_or_derivative_of, reviewer, decision, exclusion_reason`. A vendor claim should have `vendor_self_reported=true` and any rate should store its exact numerator, denominator and collection interval. No invented or universal claims. A source *on a watch list* is not evidence it has been comprehensively screened.
 
@@ -167,6 +167,6 @@ For this curated watch (not a full literature review), official track sources we
 - [MSR 2027 official dates](https://conf.researchr.org/dates/msr-2027) confirm 2026-10-20/23 technical abstracts/papers, 2026-11-05/10 data/tool abstracts/papers, and 2026-11-13/20 Registered Report initial abstract/report.
 - [MSR 2027 Registered Reports CFP](https://2027.msrconf.org/track/msr-2027-registered-reports) confirms the Stage 1 design-before-execution requirement, the 2027-02-04 decision, and the conditional 2027-09-30 EMSE Stage 2 submission. **Stage 1 approval is not acceptance of the completed manuscript.**
 - [ICSE 2027 Research CFP](https://conf.researchr.org/track/icse-2027/icse-2027-research-track) confirms the 2026-06-30 deadline has passed and explicitly warns authors that fabricated references can cause desk rejection.
-- A user-authorized weekly evidence-briefing automation with first scheduled Monday **2026-10-19 08:00 Europe/Rome** was independently found configured and enabled at integration time. No briefing has yet run; it is not a GitHub crawler, and future deliveries depend on task/tool permissions.
+- A weekly evidence-briefing task was independently confirmed as **configured but disabled** at this review. Its first planned slot is **2026-10-19 around 08:00 Europe/Rome**, but it will **not run in its current disabled state**. No briefing has yet run; it is not a GitHub crawler, and future delivery requires the user to enable it and grant any necessary task/tool access.
 
 **No systematic source screening, discovered empirical effect or scientifically validated strategy is implied.** Record dated updates when deadlines or calls change; these links are **edition-specific** and should not be projected into 2028 schedules.

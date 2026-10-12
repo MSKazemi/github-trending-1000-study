@@ -54,3 +54,7 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 - Do not mark an item `verified` in a preflight checklist without dated independent review, source evidence and authorization; even documentary completion requires qualified human signoff.
 - Store raw captures outside Git through the ignored `data/raw` directory; don't commit provider auth tokens, access keys or private test participants.
 - No full preregistration, sample goal, approved repeat scraping or real user study is claimed by this pilot implementation. Consult docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PREREGISTRATION_DRAFT_2027.md.
+
+
+## Captured-page QA evidence requirements
+Any PR alleging fixed GitHub Trending parser completeness must include (subject to source redistribution rights) original source manifest SHA/UTC, two **independent** blind full-page reviewer lists, per-window TP/FP/FN with rank disagreements, parser-abstention counts, page-level identity and URLs, unresolved human disagreements/adjudication and actual source-access review. Run the `audit-pages` offline script with a preserved bundle and keep reports write-once. Synthetic cases are necessary regression tests but do **not** fulfill the minimum 30 real-row QA. See [QA method](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md).

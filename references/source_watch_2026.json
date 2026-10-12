@@ -517,14 +517,17 @@
     }
   ],
   "monitoring_schedule": {
-    "status": "scheduled",
+    "status": "configured_disabled",
     "configured_date": "2026-10-12",
-    "first_expected_local_date": "2026-10-19",
+    "first_expected_local_date": null,
     "local_weekday": "Monday",
     "approximate_local_time": "08:00",
     "timezone": "Europe/Rome",
     "delivery_mode": "flexible_schedule",
     "scope": "weekly evidence briefing only; no automated GitHub scraping or automatic merge",
-    "repository_record_policy": "dated source-supported research note via pull request when available; otherwise repository-ready report"
+    "repository_record_policy": "dated source-supported research note via pull request when available; otherwise repository-ready report",
+    "is_enabled": false,
+    "planned_first_local_date": "2026-10-19",
+    "status_checked_on": "2026-10-12"
   }
 }

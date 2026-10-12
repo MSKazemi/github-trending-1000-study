@@ -82,3 +82,8 @@ See [Issue #27](https://github.com/MSKazemi/github-trending-1000-study/issues/27
 ## Additional parser drift gate — 2026-10-12
 
 The current parser now **fails closed** if any recognized `article.Box-row` is truncated, has zero/multiple repository headers/links, invalid canonical link, or a duplicate identity. The pilot audit JSON now records a *structural-only* selector count; it cannot identify rows rendered outside that CSS selector. Read [the row-completeness rationale and independent >=30-real-row audit plan](PARSER_STRUCTURE_QA_2026_10_12.md) before any research decision. Passing synthetic tests is not permission or proof of a correct live page.
+
+
+## New parser QA evidence step — still not signoff
+
+After explicitly permitted daily/weekly/monthly captures with original UTC/SHA manifests, two real reviewers must independently transcribe **all displayed** ranks and owner/repo links, blind to parser output. Combine these into a local `data/raw/qa-bundle.json` following [the template](../templates/page_audit_bundle.template.json), then run `python -m trending_study audit-pages --bundle data/raw/qa-bundle.json --output data/processed/qa-report.json --min-rows 30 --require-consistent`. This tool distinguishes full-page enumeration from self-consistent partial parsing and handles disagreements/rejections. A `pass` means only recorded **documentary consistency**; method approval, live source review, immutable IDs and preregistration are separate. See [detailed runbook](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).

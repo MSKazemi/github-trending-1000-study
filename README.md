@@ -23,8 +23,10 @@
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
 - [**Execution plan after the audit**](docs/NEXT_STEPS_EXECUTION_2026-10-12.md) — evidence-gated development tasks, human approvals, PR dependencies, go/no-go milestones and a bounded feasibility pilot.
+- [Faculty-style methodological review](docs/FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) — evidence-grounded advice, **not actual professorial endorsement**; [first expanded task intake](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md).
 - [Observed sampling visualization CLI](docs/SAMPLING_VISUALIZATION_CLI.md) — offline F01 SVG and T02 Markdown/JSON audit; **not empirical findings**.
 - [Publication figures and tables](docs/FIGURE_TABLE_PLAN_2027_2031.md) — proposed **18 figures and 14 tables** across 2027 observational research and conditional 2028–2031 trials; **no empirical results yet**. [Machine-readable register](references/figure_table_register_2027.json).
+- **[News, scientific journal and conference evidence watch (2026–2027)](docs/SOURCE_MONITORING_AND_JOURNALS_2027.md)** — research windows, journals and verified 2027 submission dates; [49-source curated watch register](references/source_watch_2026.json). The weekly briefing configuration is currently **disabled**.
 
 ## Install & run
 
@@ -37,7 +39,9 @@ python -m trending_study parse-trending --input tests/fixtures/trending.html --d
 python -m trending_study summarize --input /tmp/trending.jsonl
 ```
 
-To capture a *live*, public Trending page (explicit opt-in, no automatic scraping):
+**Source-access warning (2026-10-12):** [GitHub's published robots.txt](https://github.com/robots.txt) currently lists `Disallow: /*since=*` under `User-agent: *`, which includes the collector's `/trending?since=daily|weekly|monthly` URLs. **Do not run the live Trending collector until access rules have been independently reviewed and the proposed method is permitted or amended.** Code availability and one-request rate limiting do not constitute permission. This does not restrict the separately documented, bounded public REST API issue-candidate intake.
+
+To capture a *live*, public Trending page (explicit opt-in, no automatic scraping, **subject to the access restriction above**):
 
 For an explicitly permitted **current-day** single-page pilot, use the UTC-date and checksum-manifest workflow in the [pilot instructions](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture safety contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md). Do not reuse a raw, manifest, JSONL or audit filename; accidental overwrites now fail closed. Historical pages cannot be recreated from today's endpoint.
 
@@ -227,6 +231,12 @@ See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for t
 
 An [offline task-intake validator and documented exploratory public-issue frame](docs/PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md) now demonstrate **pre-reuse** deterministic candidate sampling with provenance, preserved pull-request exclusions, and explicit unknown/unreviewed states. The selected open GitHub issues are task leads, **not** verified reusable-software opportunities or randomized study assignments. Human screening, frozen acceptance tests, consent, independent adjudication, and a preregistration decision remain pending. Run `python -m trending_study.task_intake --input examples/task_intake.public_2026-10-12.json --output /tmp/task-intake-audit.json` and inspect the complete ledger.
 
+**New real public metadata intake (2026-10-12, exploratory, not enrolled):** Six deliberately chosen Python/JS-TS/Rust/Go repositories yielded **90** first-page REST issue/PR entries: 44 non-PR issue leads and 46 excluded PRs. The frozen-seed selector identified **16 unreviewed public issue leads**. See the [source and validity report](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md), [directly clickable 16-issue screening queue](research-notes/task-screen-queue-2026-10-12.md), [independent human screening template](templates/feasibility_task_review_card.md), and [pending human evidence issue #65](https://github.com/MSKazemi/github-trending-1000-study/issues/65). No real experiments, independent acceptance tests, verified reusable solutions or environmental results have been produced.
+
+```bash
+python -m trending_study.task_intake --input examples/task_intake.cross_ecosystem_2026-10-12.json --output /tmp/task-intake-cross-ecosystem-2026-10-12.json
+```
+
 ## 2026-10-12: reproducible, synthetic 2027 task-trial pilot instrument
 
 For the **separate, opt-in randomized reuse-first experiment** (not the observational Trending cohort), the initial [offline task-frame allocation and outcome audit](docs/TRIAL_PILOT_INSTRUMENT.md) is available. It validates frozen task/acceptance hashes, prespecified screening exclusions, deterministic task-cluster randomization across the proposed 2×2 human/agent × usual/reuse-first arms, and all-assigned-task outcome accounting including failures, refusals, pending work and missing human time.
@@ -236,6 +246,40 @@ python -m trending_study.trial assign --frame examples/trial_frame.synthetic.jso
 python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json --assignments /tmp/trial-allocation.synthetic.json --outcomes examples/trial_outcomes.synthetic.json
 ```
 
-**Important:** both fixtures are **synthetic only**; no task trial, recruited participants, study preregistration, independent human review, verified reuse outcome or energy saving has occurred. [Start-of-study checkpoint (2026-10-12)](docs/TASK_TRIAL_START_2026-10-12.md) records the decisions, engineering scope and next approval gates. This is a bounded partial contribution to [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), which remains open pending independent protocol/ethics review, power simulation and a real pilot.
+**Important:** both fixtures are **synthetic only**; no task trial, recruited participants, study preregistration, independent human review, verified reuse outcome or energy saving has occurred. [Start-of-study checkpoint (2026-10-12)](docs/TASK_TRIAL_START_2026-10-12.md) records the decisions, engineering scope and next approval gates. This is a bounded tooling contribution tracked in [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), now **closed**; its closure does **not** establish independent protocol/ethics review, power simulation, real-task screening or a real randomized pilot. The remaining real-world task acceptance gate is tracked separately in [issue #65](https://github.com/MSKazemi/github-trending-1000-study/issues/65).
 
-- **[News, scientific journal and conference evidence watch (2026–2027)](docs/SOURCE_MONITORING_AND_JOURNALS_2027.md)** — historical source windows, publication fit, weekly/monthly screening and 2027 official submission dates; [49-source machine-readable watch register](references/source_watch_2026.json) (curated only, not a systematic review)
+
+## Independent Github Trending page QA (2026-10-12, Issue #2)
+
+The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
+
+[Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
+
+```bash
+python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
+  --output data/processed/qa-report.json --min-rows 30 --require-consistent
+```
+
+Populate the bundle **only after permitted captures and independent human labeling**. The committed test suite simulates 36 rows across daily/weekly/monthly, but these are synthetic: **no current raw Trending captures or >=30 real row human audit were obtained**. Direct source access was unavailable in this runtime, and independent access/legal review remains outstanding. [Issue #2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) must remain open.
+
+## 2026 AI software and coding-agent company watchlist (exploratory)
+
+- [100 named companies across 10 ecosystem layers](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md) — dated, non-ranked company/brand landscape, ownership corrections, research questions and practical reuse-first lessons.
+- [Machine-readable 100-company register](references/ai_software_companies_100_2026-10-12.csv) — official-source URLs and editorial study lenses; **not** a verified success ranking, complete company population or sampled GitHub repository cohort.
+
+
+## Six-month 100-company AI and software intelligence (2026-10-12)
+
+**100 GitHub issues created** for the [100-company industry watchlist](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md). Each ticket requests a **2026-04-12 through 2026-10-12** official website/release-note/roadmap and independent-news screening, a feature/change chronology, attributed future plans, conditional 2027–2031 scenarios, and a falsifiable reuse-first lesson for our own open-source repositories. **Issues created ≠ company research completed.**
+
+- [Browse the 100 company-specific GitHub issues grouped by sector](docs/COMPANY_ISSUE_INDEX_2026_10.md)
+- [Machine-readable 100-issue URL index](references/ai_software_company_issue_index_2026-10-12.csv)
+- [Scientific evidence/coverage protocol](docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [report template](templates/company_six_month_intelligence.md)
+- [Issue task template](templates/company_intelligence_issue.md)
+- [Initial dated source-checked company news leads](research-notes/company-intelligence-initial-leads-2026-10-12.md) — examples only; all full company reviews pending
+
+The index and watchlist are **editorial, non-ranked snapshots**, not empirical firm-performance/market-share datasets; future plans and vendor assertions are not verified outcomes.
+
+## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
+
+- [**2027–2031 technology outlook: programming, applications, operating systems, LLMs and agents**](docs/STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md) — source-checked 2026 forecast vintage, *uncertain falsifiable* scenarios, practical 2027 implementation and measurement gates; [**18-source, nine-forecast, seven-metric register**](references/industry_technology_outlook_2026_10_12.json); [issue #58](https://github.com/MSKazemi/github-trending-1000-study/issues/58). **Not personal views of any real executive, a completed empirical study, or a protocol amendment.**

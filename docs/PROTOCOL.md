@@ -58,3 +58,7 @@ The initial visibility design cannot answer whether AI developers reinvent code 
 - [Preliminary v0.3 consolidated design](PREREGISTRATION_DRAFT_2027.md) specifies separately the observability association in Study A and the all-task randomized ITT contrast in Study B. The earlier drafts and proposed November 1 enrollment remain conditional; no retrospective research design is frozen.
 - Capture-time SHA/UTC provenance is now **instrumented in code** for one user-initiated, unfiltered global Trending surface. The new `pilot-parse` command rejects mutated raw files and contradictory source-window/date metadata. No independent real-page audit, numeric ID, language-panel support or source permission review has been completed.
 - The `pilot-preflight` documentary gate defaults to `not_ready` and does not create a scientific signoff. See [status](PROTOCOL_FREEZE_STATUS_2026_10_12.md).
+
+
+## 2026-10-12 source audit extension — NOT a frozen protocol
+A new [two-reviewer audit](INDEPENDENT_PAGE_AUDIT_2026_10_12.md) can document parser completeness against *externally supplied full-page labels* for saved SHA-verified captures. It treats entire parser rejections as non-emitted pages and requires all three global windows with >=30 agreed labels for documentary completeness, plus independent human signoff for any scientific claim. In-unit synthetic examples are not field samples. The planned six programming-language panels are not covered by this first audit; their own source schema and actual permission/quality review are required before enrollment.
