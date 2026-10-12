@@ -10,7 +10,7 @@ import unittest
 
 from trending_study.__main__ import extract_repos
 from trending_study.page_audit import (
-    PageAuditError, assess_page, assess_bundle, audit_bundle_file,
+    PageAuditError, assess_page, assess_bundle, audit_bundle_file, markdown_report,
 )
 from trending_study.pilot import build_capture_manifest, PilotValidationError
 
@@ -404,6 +404,64 @@ class IndependentPageAuditTests(unittest.TestCase):
         self.assertEqual(report["automated_documentary_check"], "blocked")
         self.assertIsNone(report["pages"][1]["correct_identity_at_rank"])
         self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+
+    def test_derived_markdown_keeps_original_json_as_source_of_truth(self):
+        bundle, files = bundle_for()
+        reviewers = bundle["pages"][0]["reviewers"]
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(reviewers)
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        markdown = markdown_report(report)
+        self.assertIn("| Pages resolved by C | 1 |", markdown)
+        self.assertIn("| Unresolved pages | 0 |", markdown)
+        self.assertIn("| Confirmatory cohort eligible | no |", markdown)
+        self.assertIn("synthetic_only_not_empirical_evidence", markdown)
+        self.assertNotIn("synthetic-third-reviewer", markdown)
+        self.assertNotIn("https://github.com/trending?", markdown)
+
+    def test_optional_cli_markdown_is_write_once_and_does_not_overwrite_json(self):
+        bundle, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name, data in files.items():
+                (root / name).write_bytes(data)
+            inp, out, md = root / "bundle.json", root / "result.json", root / "summary.md"
+            inp.write_text(json.dumps(bundle), encoding="utf-8")
+            cmd = [
+                sys.executable, "-m", "trending_study", "audit-pages",
+                "--bundle", str(inp), "--output", str(out),
+                "--markdown-output", str(md), "--require-consistent",
+            ]
+            first = subprocess.run(cmd, text=True, capture_output=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            report = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(report["audited_gold_rows"], 36)
+            self.assertIn("Confirmatory cohort eligible | no", md.read_text())
+            before_json, before_md = out.read_bytes(), md.read_bytes()
+            again = subprocess.run(cmd, text=True, capture_output=True)
+            self.assertNotEqual(again.returncode, 0)
+            self.assertEqual(out.read_bytes(), before_json)
+            self.assertEqual(md.read_bytes(), before_md)
+
+    def test_existing_markdown_path_blocks_partial_json_publication(self):
+        bundle, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name, data in files.items():
+                (root / name).write_bytes(data)
+            inp, out, md = root / "bundle.json", root / "result.json", root / "summary.md"
+            inp.write_text(json.dumps(bundle), encoding="utf-8")
+            md.write_bytes(b"preserved prior human notes\n")
+            proc = subprocess.run([
+                sys.executable, "-m", "trending_study", "audit-pages",
+                "--bundle", str(inp), "--output", str(out),
+                "--markdown-output", str(md),
+            ], text=True, capture_output=True)
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertFalse(out.exists())
+            self.assertEqual(md.read_bytes(), b"preserved prior human notes\n")
 
 
 if __name__ == "__main__":
