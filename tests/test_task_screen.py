@@ -168,6 +168,9 @@ class ScreenTests(unittest.TestCase):
         result = audit(self.frame, self.recheck, a, b)
         self.assertEqual(result["status_counts"].get("unresolved_disagreement"), 1)
         c = self.make_review("C", "defer_unknown")
+        c["reviewed_at_utc"] = (datetime.fromisoformat(
+            self.recheck["rechecked_at_utc"].replace("Z", "+00:00")
+        ) + timedelta(seconds=1)).isoformat()
         c["decisions"] = [c["decisions"][0]]
         result = audit(self.frame, self.recheck, a, b, c)
         self.assertEqual(result["status_counts"].get("adjudicated_provisional"), 1)
@@ -181,6 +184,9 @@ class ScreenTests(unittest.TestCase):
         a, b, c = (self.make_review("A"), self.make_review("B"),
                    self.make_review("C", "defer_unknown"))
         c["decisions"] = [c["decisions"][0]]
+        c["reviewed_at_utc"] = (datetime.fromisoformat(
+            self.recheck["rechecked_at_utc"].replace("Z", "+00:00")
+        ) + timedelta(seconds=1)).isoformat()
         with self.assertRaisesRegex(TaskScreenError, "adjudication allowed only"):
             audit(self.frame, self.recheck, a, b, c)
 
@@ -229,6 +235,32 @@ class ScreenTests(unittest.TestCase):
             third = subprocess.run(alias, capture_output=True, text=True)
             self.assertEqual(third.returncode, 2)
             self.assertIn("overlap", third.stderr)
+
+
+    def test_case_only_reviewer_alias_and_unknown_are_not_independent(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        b["reviewer_ref"] = a["reviewer_ref"].upper()
+        with self.assertRaisesRegex(TaskScreenError, "distinct"):
+            audit(self.frame, self.recheck, a, b)
+        b = self.make_review("B")
+        b["reviewer_ref"] = "unknown"
+        with self.assertRaisesRegex(TaskScreenError, "pseudonymous"):
+            audit(self.frame, self.recheck, a, b)
+
+    def test_cannot_adjudicate_at_same_time_or_case_alias_as_a_b(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        b["decisions"][0]["label"] = "exclude_candidate"
+        b["decisions"][0]["reason_code"] = "scope"
+        c = self.make_review("C", "defer_unknown")
+        c["decisions"] = [c["decisions"][0]]
+        with self.assertRaisesRegex(TaskScreenError, "strictly after"):
+            audit(self.frame, self.recheck, a, b, c)
+        c["reviewed_at_utc"] = (datetime.fromisoformat(
+            self.recheck["rechecked_at_utc"].replace("Z", "+00:00")
+        ) + timedelta(seconds=1)).isoformat()
+        c["reviewer_ref"] = b["reviewer_ref"].upper()
+        with self.assertRaisesRegex(TaskScreenError, "distinct"):
+            audit(self.frame, self.recheck, a, b, c)
 
 
 if __name__ == "__main__":
