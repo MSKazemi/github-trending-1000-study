@@ -1,0 +1,13 @@
+# Conversation decision checkpoint — 2026-10-12
+
+**Source:** user's project conversation on 2026-10-12; decision synopsis, not a full transcript and not independent empirical data.
+
+The user's primary intention is to study the **new generation of coding methods** (AI assistance, agentic development and prompt-led/vibe coding), what they have changed about open-source engineering and repositories, which conditions yield safe well-designed reusable code, and how to attract substantive organic attention, contribution and actual downstream usage by researchers, individual developers and companies. They want *practical scientifically justified lessons for their own GitHub repositories*. Environmental motivation is to reduce unnecessary duplicate implementation, human time and energy/token cost—*but this is a falsifiable ambition, not a demonstrated impact*. A smaller repository count is not inherently preferable. Historical old repositories should not dominate the focal **new-workflow trend** but remain needed as historical controls and as potential reused components.
+
+**Current repository review:** README, AGENTS.md, PROTOCOL.md, STUDY_DESIGN.md, SELECTION_PROTOCOL_2027.md, METRIC_REGISTER_2027.md, DATA_DICTIONARY.md, ETHICS.md and existing green-reuse/agent/lesson documents were inspected; these already contain extensive safeguards. The addition makes the modern-development question and practical application explicit without removing existing commitments or secretly changing preregistration. Source monitoring and publication plots are in separate open PRs and are not duplicated here.
+
+**Change classification:** new mission synthesis + practical heuristic/templates only, awaiting human confirmation and consolidated protocol preregistration. No 1,000-repo sample, own experimental results, quantified carbon saving, true AI-use prevalence or successful dissemination intervention is claimed. Maintain independent evidence levels and null results.
+
+**Important new caution:** Do not equate *fewer repositories* with *less ecological impact*. Fragmentation versus modular specialization, duplicated dependencies, search burden, maintainer time, runtime energy, useful competition and software diversity must be compared at equivalent user/task demand. A green claim requires operational boundaries, matched correctness and actual/defensible modeled resource estimates.
+
+**Next eligible implementation:** take #41 through human-reviewed PR; prioritize the preexisting core issues for capture validation, real dataset enrollment and the independently adjudicated reuse task set. Never backdate pilot captures.
