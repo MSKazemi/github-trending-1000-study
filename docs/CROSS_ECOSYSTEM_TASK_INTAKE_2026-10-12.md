@@ -1,6 +1,6 @@
 # Cross-ecosystem GitHub issue-candidate intake (2026-10-12)
 
-**Status: real public REST metadata observed; exploratory, convenience-selected candidate frame; zero accepted tasks, zero independent human reviews, zero randomized assignments and zero measured reuse/energy outcomes.** This is an operational continuation of the [faculty-style scientific priorities](FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) and the [initial three-Python-repository intake](PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md), *not* a confirmatory study.
+**Status: real public REST metadata observed; exploratory, convenience-selected candidate frame; zero accepted tasks, zero independent human reviews, zero randomized assignments and zero measured reuse/energy outcomes.** This is an operational continuation of the [faculty-style scientific priorities](https://github.com/MSKazemi/github-trending-1000-study/pull/61) and the [initial three-Python-repository intake](PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md), *not* a confirmatory study.
 
 ## Why this limited exercise matters
 
