@@ -236,6 +236,17 @@ class PageQATests(unittest.TestCase):
         with self.assertRaisesRegex(PageQAError, "inconsistent report confusion"):
             aggregate([report])
 
+    def test_committed_synthetic_reviewer_examples_match_fixture_bytes(self):
+        root = Path(__file__).resolve().parents[1]
+        manifest = (root / "examples/page_qa_manifest.synthetic.json").read_bytes()
+        review_a = json.loads((root / "examples/page_qa_review_A.synthetic.json").read_text())
+        review_b = json.loads((root / "examples/page_qa_review_B.synthetic.json").read_text())
+        raw = FIXTURE.read_bytes()
+        result = audit(raw, manifest, review_a, review_b)
+        self.assertEqual(result["qa_status"], "synthetic_only")
+        self.assertEqual(result["metrics"]["rank_and_identity"]["tp"], 2)
+        self.assertTrue(result["metrics"]["full_page_exact_match"])
+
     def test_cli_is_offline_and_immutable(self):
         raw, manifest, a, b = page()
         with tempfile.TemporaryDirectory() as folder:
