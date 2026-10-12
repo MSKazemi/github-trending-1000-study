@@ -91,3 +91,11 @@
 - Include *every* displayed row, not only valid `article.Box-row` hits. Compare identity and exact rank, and count parser-rejected pages as missing emissions rather than silently excluding them.
 - Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once QA report. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
 - Never call the 36-row synthetic regression test a real 30-entry live audit, or infer current robots/Terms permission when source access is unavailable.
+
+
+## Task-cost ledger and privacy requirement (issue #10; 2026-10-12)
+
+- Read [task cost ledger contract](docs/TASK_COST_LEDGER_2026-10-12.md) before changing per-task economics or agent telemetry; do **not** collect real provider, Copilot/Codex/Claude or human traces without participant consent and explicit human scientific approval.
+- Use `trending_study.task_costs` **offline** with frozen trial frame/assignment/outcome inputs, one record per randomized task, explicit missingness, fail-closed field checks and write-once output. A log validator cannot authenticate instrumented data.
+- Treat currency as provenance-tagged **event scope only**; tokens are not kWh, parallel agent duration is not extra human hours, and a missing record is never a zero-cost result.
+- Use `python -m unittest discover -s tests -v`; disclose that all committed task-cost fixtures and performance values are synthetic, without generating or publishing human identities or prompt content.
