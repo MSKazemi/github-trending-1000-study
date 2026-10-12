@@ -1,0 +1,415 @@
+{
+  "schema_version": "1.0",
+  "forecast_vintage_utc": "2026-10-12",
+  "research_status": "proposal_and_source_register_only",
+  "not_a_systematic_review": true,
+  "no_empirical_project_results": true,
+  "no_external_endorsement": true,
+  "source_policy": "Primary linked pages inspected as of forecast vintage; sources, survey percentages and platform claims retain population and causal limitations.",
+  "sources": [
+    {
+      "id": "E01",
+      "signal_id": "S1",
+      "title": "Stack Overflow Developer Survey 2026 — AI tool usage",
+      "publisher": "Stack Exchange",
+      "source_type": "survey_original",
+      "published_on": "2026",
+      "url": "https://survey.stackoverflow.co/2026/ai/data/ai-select",
+      "limitation": "Optional multi-select question n=17,464; 65.9% assistants/agents, 26.2% automated workflows among respondents; not representative of all developers.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E02",
+      "signal_id": "S1",
+      "title": "Stack Overflow Developer Survey 2026 — methodology",
+      "publisher": "Stack Exchange",
+      "source_type": "survey_methodology",
+      "published_on": "2026",
+      "url": "https://survey.stackoverflow.co/2026/methodology",
+      "limitation": "30,903 valid overall responses; online promoted survey, varying optional-question denominators, not a random population sample.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E03",
+      "signal_id": "S2",
+      "title": "METR early-2025 AI impact on experienced OSS developers",
+      "publisher": "METR",
+      "source_type": "primary_experimental_study",
+      "published_on": "2025-07-10",
+      "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "limitation": "Randomized mature-OSS tasks and selected experienced developers; an early-2025 estimate cannot be generalized to later models or other tasks.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E04",
+      "signal_id": "S2",
+      "title": "METR changing developer-productivity experiment design",
+      "publisher": "METR",
+      "source_type": "primary_methodological_update",
+      "published_on": "2026-02-24",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "limitation": "Selection bias, nonparticipation, concurrent agents and imperfect time measurement make late-2025 speed estimates unreliable.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E05",
+      "signal_id": "S3",
+      "title": "Balancing AI tensions: effective software-development lifecycle use",
+      "publisher": "DORA / Google Cloud",
+      "source_type": "observational_research_synthesis",
+      "published_on": "2026-03-10",
+      "url": "https://dora.dev/insights/balancing-ai-tensions/",
+      "limitation": "Association of AI adoption with throughput and instability is not a causal universal benefit/harm.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E06",
+      "signal_id": "S4",
+      "title": "GitHub Octoverse 2025",
+      "publisher": "GitHub",
+      "source_type": "platform_report",
+      "published_on": "2025",
+      "url": "https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/",
+      "limitation": "Platform-defined AI-related repository counts and activity are not agent-authored-code prevalence or verified external reuse.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E07",
+      "signal_id": "S5",
+      "title": "Build 2026: Furthering Windows as the trusted platform for development",
+      "publisher": "Microsoft Windows Developer Blog",
+      "source_type": "vendor_announcement",
+      "published_on": "2026-06-02",
+      "url": "https://blogs.windows.com/windowsdeveloper/2026/06/02/build-2026-furthering-windows-as-the-trusted-platform-for-development/",
+      "limitation": "Vendor-announced MXC, agent identity, containment and Windows 365 for Agents; feature availability differs across preview/GA, not evidence of universal use.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E08",
+      "signal_id": "S5",
+      "title": "Identity and security in Windows 365 for Agents",
+      "publisher": "Microsoft Learn",
+      "source_type": "vendor_technical_docs",
+      "published_on": null,
+      "url": "https://learn.microsoft.com/en-us/windows-365/agents/identity-security",
+      "limitation": "Describes vendor-specific Entra identities, isolated stateless sessions and audit; not independent security validation.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E09",
+      "signal_id": "S5",
+      "title": "Model Context Protocol 2026-07-28 specification",
+      "publisher": "MCP project",
+      "source_type": "protocol_specification",
+      "published_on": "2026-07-28",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28",
+      "limitation": "Versioned protocol spec, stateless core. Availability of the spec does not guarantee cross-implementation support or backward compatibility.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E10",
+      "signal_id": "S5",
+      "title": "Agent2Agent protocol",
+      "publisher": "A2A project / Linux Foundation",
+      "source_type": "protocol_specification",
+      "published_on": null,
+      "url": "https://a2a-protocol.org/latest/",
+      "limitation": "Standardizes agent-to-agent communication; not a security certification or evidence that all platforms support it.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E11",
+      "signal_id": "S6",
+      "title": "Energy and AI (2025)",
+      "publisher": "International Energy Agency",
+      "source_type": "energy_report",
+      "published_on": "2025-04-10",
+      "url": "https://www.iea.org/reports/energy-and-ai",
+      "limitation": "Energy scenarios and datasets refer to particular energy-system boundaries; do not convert code tokens to emissions.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E12",
+      "signal_id": "S6",
+      "title": "Key Questions on Energy and AI (2026)",
+      "publisher": "International Energy Agency",
+      "source_type": "energy_update",
+      "published_on": "2026-04-16",
+      "url": "https://www.iea.org/reports/key-questions-on-energy-and-ai",
+      "limitation": "Updated energy analysis, not measured footprint of this repository's tasks or any coding agent.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E13",
+      "signal_id": "S6",
+      "title": "SCI for AI",
+      "publisher": "Green Software Foundation",
+      "source_type": "measurement_specification",
+      "published_on": "2026",
+      "url": "https://greensoftware.foundation/standards/sci-ai/",
+      "limitation": "Lifecycle carbon-intensity methodology; implementing it requires metering or transparent assumptions, actual functional units and scope.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E14",
+      "signal_id": "S7",
+      "title": "SLSA v1.2 specification",
+      "publisher": "SLSA / Linux Foundation",
+      "source_type": "supply_chain_specification",
+      "published_on": null,
+      "url": "https://slsa.dev/spec/v1.2/",
+      "limitation": "Provenance and supply-chain assurance are distinct from user-task correctness and license compatibility.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E15",
+      "signal_id": "S7",
+      "title": "OSV open-source vulnerability database",
+      "publisher": "OSV project",
+      "source_type": "vulnerability_data_service",
+      "published_on": null,
+      "url": "https://osv.dev/",
+      "limitation": "Covers known advisories by package/commit; no advisory does not mean no vulnerability.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E16",
+      "signal_id": "S7",
+      "title": "OpenSSF Scorecard",
+      "publisher": "Open Source Security Foundation",
+      "source_type": "security_practice_assessment",
+      "published_on": null,
+      "url": "https://securityscorecards.dev/",
+      "limitation": "Heuristic checks for security practices; aggregate score alone does not establish safety.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E17",
+      "signal_id": "S8",
+      "title": "OWASP Top 10 for Agentic Applications 2026",
+      "publisher": "OWASP GenAI Security Project",
+      "source_type": "security_guidance",
+      "published_on": "2025-12-09",
+      "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+      "limitation": "Practitioner-reviewed risk taxonomy, not a measured prevalence or guarantee from implementing a checklist.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    },
+    {
+      "id": "E18",
+      "signal_id": "S8",
+      "title": "Summary of responses on security considerations for AI agents",
+      "publisher": "NIST",
+      "source_type": "consultation_summary",
+      "published_on": "2026-05-18",
+      "url": "https://www.nist.gov/publications/summary-analysis-responses-request-information-regarding-security-considerations-ai",
+      "limitation": "Summary of stakeholder responses to an RFI; opinions and reported risks, not a randomized security experiment.",
+      "checked_on": "2026-10-12",
+      "check_level": "primary_web_page_inspected"
+    }
+  ],
+  "forecasts": [
+    {
+      "id": "F1",
+      "qualitative_confidence": "high",
+      "evidence_ids": [
+        "E01",
+        "E03",
+        "E04"
+      ],
+      "leading_indicator": "Share of opt-in tasks with verified agent delegation; split by complexity and model version",
+      "disconfirming_signal": "No increase in independently accepted agent-delivered tasks at controlled difficulty and cost",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F2",
+      "qualitative_confidence": "high",
+      "evidence_ids": [
+        "E04",
+        "E05",
+        "E17"
+      ],
+      "leading_indicator": "Independent defect, review/rework, comprehension and upgrade outcomes",
+      "disconfirming_signal": "Quality and comprehension improve without growing review burdens",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F3",
+      "qualitative_confidence": "high",
+      "evidence_ids": [
+        "E09",
+        "E10"
+      ],
+      "leading_indicator": "Third-party acceptance of same task over CLI/API/MCP; version compatibility",
+      "disconfirming_signal": "Tool protocols add no reliable task benefit versus stable CLI/API",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F4",
+      "qualitative_confidence": "high",
+      "evidence_ids": [
+        "E07",
+        "E08",
+        "E17"
+      ],
+      "leading_indicator": "Isolated tool execution, permission checks, rollback and negative permission tests",
+      "disconfirming_signal": "Secure agent execution remains niche or ordinary non-agent controls consistently suffice",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F5",
+      "qualitative_confidence": "medium-high",
+      "evidence_ids": [
+        "E09",
+        "E06"
+      ],
+      "leading_indicator": "Different model runtimes available, cost and independent task success under fixed specs",
+      "disconfirming_signal": "Model-specific vertically integrated deployments consistently dominate",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F6",
+      "qualitative_confidence": "medium-high",
+      "evidence_ids": [
+        "E04",
+        "E09",
+        "E17",
+        "E18"
+      ],
+      "leading_indicator": "Long-running agent tasks with checkpoints, audit/recovery and real misaction rates",
+      "disconfirming_signal": "Autonomy's total review, error and recovery cost exceeds its measured benefits",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F7",
+      "qualitative_confidence": "medium-high",
+      "evidence_ids": [
+        "E06",
+        "E14",
+        "E15",
+        "E16"
+      ],
+      "leading_indicator": "Task-first correctly integrated upstream component discovery across old, quiet and new sources",
+      "disconfirming_signal": "Well-structured metadata does not improve safe independent reuse over current discovery tools",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F8",
+      "qualitative_confidence": "medium",
+      "evidence_ids": [
+        "E01",
+        "E05",
+        "E06"
+      ],
+      "leading_indicator": "New releases, sustained externally accepted workflows and maintenance burden by team size",
+      "disconfirming_signal": "Higher code-release volume does not improve repeat-use success or sustainability",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    },
+    {
+      "id": "F9",
+      "qualitative_confidence": "high_value_uncertain_adoption",
+      "evidence_ids": [
+        "E11",
+        "E12",
+        "E13"
+      ],
+      "leading_indicator": "Metered kWh and coverage per independently accepted task plus absolute workload",
+      "disconfirming_signal": "Energy telemetry remains inaccessible or intensity changes fail to improve real decisions",
+      "claim_status": "forecast_not_observed",
+      "last_reviewed_on": "2026-10-12"
+    }
+  ],
+  "proposed_metrics": [
+    {
+      "id": "M01",
+      "name": "Independent first-use task success",
+      "unit": "successful independent users / consenting attempted users",
+      "denominator": "all consented prospective first-use attempts, including failures",
+      "evidence": "versioned task + original runtime logs + evaluator record",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M02",
+      "name": "All-task accepted completion",
+      "unit": "independently accepted tasks / all randomized assigned tasks",
+      "denominator": "all preregistered allocations incl no-reuse, refusals, abandoned and unfinished",
+      "evidence": "frozen tests and blinded independent assessment; opt-in and preregistration required",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M03",
+      "name": "Human and compute task cost",
+      "unit": "human-active minutes and compute cost per assignment; report failures separately",
+      "denominator": "all assignments with missingness/censoring ledger",
+      "evidence": "time log + model version + provider token/billing where permitted",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M04",
+      "name": "Verified reuse",
+      "unit": "independently validated third-party integrations, by task/source stratum",
+      "denominator": "all prospectively framed tasks; report unknown viable candidates separately",
+      "evidence": "independent reproducible integration test, version/license/security check",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M05",
+      "name": "Unauthorized agent action",
+      "unit": "unsafe/unauthorized actions per observed actionable tool invocation",
+      "denominator": "all logged action opportunities, including denied and failed",
+      "evidence": "policy simulation and sandbox audit; no real secrets or production actions in tests",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M06",
+      "name": "Maintenance and upstream burden",
+      "unit": "human review/support/upgrade minutes and observed defects per unit over 30/90/180 days",
+      "denominator": "all eligible accepted releases/changes and censored followups",
+      "evidence": "permissioned issue/PR time accounting and reproducible regression testing",
+      "status": "unmeasured"
+    },
+    {
+      "id": "M07",
+      "name": "Lifecycle energy per accepted task",
+      "unit": "kWh per independently accepted functional task (if meterable)",
+      "denominator": "accepted tasks plus explicit assignment count and meter-coverage fraction",
+      "evidence": "metered source, time region, hardware, power boundary, embodied/operational assumptions",
+      "status": "unmeasured"
+    }
+  ],
+  "prospective_study_guardrails": [
+    "Do not change registered primary estimands with a strategy document.",
+    "Sample prospective tasks before search or known reuse availability.",
+    "Use independent task acceptance and human review, not self-authored agent tests.",
+    "Store true UTC timestamps, source versions and missingness.",
+    "Separate attention from actual use; avoid GitHub Trending as reuse proof.",
+    "No token-to-kWh or carbon conversion without direct metering or explicit modeled scope.",
+    "Obtain consent and source rights before human data or automated collection."
+  ],
+  "next_review_due_utc": "2027-01-12",
+  "review_rule": "Preserve this forecast vintage. Append separately dated quarterly forecast-vs-evidence comparisons, including contradictory and null findings."
+}
