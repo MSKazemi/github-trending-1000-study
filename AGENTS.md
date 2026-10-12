@@ -83,3 +83,11 @@
 ## Planned task-trial instrumentation guard (#25)
 - Use [trial pilot instrument](docs/TRIAL_PILOT_INSTRUMENT.md) only to validate prospective **synthetic or independently authorized opt-in pilot** records. Verify frame SHA binding, write-once assignment, all randomized task outcomes including refused/abandoned/pending and actual consent; no pilot data is authenticated by the script.
 - A public deterministic assignment seed is not allocation concealment or a real preregistration; do not convert public issue intake leads to trial participants automatically. Keep hidden acceptance tests independently authored and out of agent context.
+
+
+## New independent page-QA guardrails (#2)
+- Read docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md before claiming any real GitHub Trending parser validity.
+- Use two actually independent reviewers who inspect the original preserved source **before** looking at parser output. The QA scorer cannot independently establish the people exist or were blind; a matching pair of generated annotations is **not** independent verification.
+- Include *every* displayed row, not only valid `article.Box-row` hits. Compare identity and exact rank, and count parser-rejected pages as missing emissions rather than silently excluding them.
+- Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once QA report. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Never call the 36-row synthetic regression test a real 30-entry live audit, or infer current robots/Terms permission when source access is unavailable.
