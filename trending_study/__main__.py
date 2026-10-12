@@ -12,8 +12,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
-from .pilot import (build_capture_manifest, evaluate_preflight,
-                    validate_capture, write_json)
+from .pilot import (build_capture_manifest, evaluate_preflight, validate_capture)
+from .safe_io import (disjoint, refuse_existing, publish_once, publish_json,
+                      publish_jsonl, jsonl_bytes)
 
 VERSION = "0.2.0"
 GITHUB_HOST = "https://github.com"
@@ -83,11 +84,8 @@ def extract_repos(html):
 
 
 def write_jsonl(path, rows):
-    output = Path(path)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("w", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
+    """Write a *new* complete JSONL artifact; never replace research records."""
+    publish_jsonl(path, rows)
 
 
 def read_jsonl(path):
@@ -104,6 +102,9 @@ def capture(args):
     """One explicit network request; optional manifest records provenance at fetch."""
     if args.date != datetime.now(timezone.utc).date().isoformat():
         raise ValueError("Capture date must be today's UTC date; historic Trending pages cannot be backfilled")
+    # Reject repeated capture filenames and path aliases *before* network access.
+    disjoint(args.output, args.manifest_output)
+    refuse_existing(args.output, args.manifest_output)
     url = f"{GITHUB_HOST}/trending?since={args.window}"
     request = Request(
         url,
@@ -127,12 +128,13 @@ def capture(args):
         captured_at_utc=captured_at, content_type=content_type,
         http_status=http_status, response_date_header=response_date,
     )
-    if args.manifest_output and Path(args.manifest_output).resolve() == Path(args.output).resolve():
-        raise ValueError("Manifest output must differ from the raw capture file")
-    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.output).write_bytes(raw)
+    artifacts = [(args.output, raw)]
     if args.manifest_output:
-        write_json(args.manifest_output, manifest)
+        artifacts.append((
+            args.manifest_output,
+            (json.dumps(manifest, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
+        ))
+    publish_once(artifacts)
     print(json.dumps({
         "source_url": manifest["source_url"],
         "sha256": manifest["source_sha256"],
@@ -145,6 +147,8 @@ def capture(args):
 
 
 def parse_trending(args):
+    disjoint(args.input, args.output)
+    refuse_existing(args.output)
     raw = Path(args.input).read_bytes()
     repos = extract_repos(raw.decode("utf-8"))
     # A locally stored capture may come from a past date; state only supplied metadata, never assert validated source date.
@@ -159,10 +163,8 @@ def parse_trending(args):
 
 def pilot_parse(args):
     """Strictly parse a stored raw capture with its matching manifest."""
-    if Path(args.input).resolve() == Path(args.output).resolve():
-        raise ValueError("Refusing to overwrite raw source with parsed output")
-    if Path(args.manifest).resolve() == Path(args.output).resolve():
-        raise ValueError("Refusing to overwrite source manifest with parsed output")
+    disjoint(args.input, args.manifest, args.output, args.audit_output)
+    refuse_existing(args.output, args.audit_output)
     raw = Path(args.input).read_bytes()
     manifest_raw = Path(args.manifest).read_bytes()
     manifest = json.loads(manifest_raw.decode("utf-8"))
@@ -174,14 +176,13 @@ def pilot_parse(args):
         row["source_manifest_sha256"] = manifest_hash
         row["parser_version"] = VERSION
     audit["source_manifest_sha256"] = manifest_hash
-    if args.audit_output and Path(args.audit_output).resolve() in (
-        Path(args.input).resolve(), Path(args.manifest).resolve(),
-        Path(args.output).resolve(),
-    ):
-        raise ValueError("Audit output must differ from input, manifest and JSONL output")
-    write_jsonl(args.output, rows)
+    artifacts = [(args.output, jsonl_bytes(rows))]
     if args.audit_output:
-        write_json(args.audit_output, audit)
+        artifacts.append((
+            args.audit_output,
+            (json.dumps(audit, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
+        ))
+    publish_once(artifacts)
     print(json.dumps(audit, sort_keys=True))
 
 
@@ -195,6 +196,8 @@ def pilot_preflight(args):
 
 
 def enrich(args):
+    disjoint(args.input, args.output)
+    refuse_existing(args.output)
     token = os.environ.get("GITHUB_TOKEN", "")
     result = []
     for row in read_jsonl(args.input):

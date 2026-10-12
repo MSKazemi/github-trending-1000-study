@@ -92,3 +92,8 @@ The `pilot-parse` schema `pilot-1.0` additionally records original `captured_at_
 `examples/pilot-preflight.example.json` contains eleven named documentary gates, each with `status=pending|blocked|verified`, `evidence_ref`, `reviewer`, and `reviewed_at_utc`. An entry marked verified without complete source/reviewer metadata is invalid. A complete document returns **ready_for_human_review**, never independent permission, formal preregistration or consent approval. See [SOP](PILOT_CAPTURE_AND_PREFLIGHT.md).
 
 Actual captures, stable IDs, task logs and signed protocols are **not present** in this repository.
+
+
+## Write-once storage and explicit failure states (implementation note 2026-10-12)
+
+Source captures and parsed/enriched outputs are immutable file artifacts. The write-once publisher rejects existing paths and aliases, stages bytes before publication and never replaces stored observations. A partial raw+manifest pair is a **failed publication**, not a valid captured observation; a future error/attempt ledger must record the missing artifact and correction, not silently hide it. See [capture immutability contract](CAPTURE_IMMUTABILITY_2026_10_12.md). The research data schema and prospective cohort requirements remain unchanged.
