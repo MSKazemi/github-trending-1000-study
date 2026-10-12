@@ -150,3 +150,32 @@ The original 2026–2027 study is **Year 1 of a proposed five-year program**, no
 - [Quarterly advisory review template](templates/quarterly_advisory_review.md) and [curated source register](references/five_year_strategy_sources_2026.json)
 
 **As of 2026-10-11:** only methods, examples and tooling exist; a funded board, 1,000-repository sample, task-level trial, kWh savings and 2027–2031 forecast outcomes do **not** exist.
+
+
+## October 2026 pilot instrumentation — status: not enrolled
+
+The first code implementation for issue [#27](https://github.com/MSKazemi/github-trending-1000-study/issues/27) adds SHA-256-linked capture manifests and a strict pilot parser. **A test passing is not pilot data collection, a validated real-page ranking or preregistration.** The latest status is [pending scientific gates](docs/PROTOCOL_FREEZE_STATUS_2026_10_12.md), with the [pilot SOP](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [draft v0.3 protocol](docs/PREREGISTRATION_DRAFT_2027.md).
+
+A single user-initiated, currently observed **unfiltered** Trending page can be captured after permitted-access review:
+
+```bash
+UTC_DAY="$(date -u +%F)"
+python -m trending_study capture --date "$UTC_DAY" --window daily \
+  --output "data/raw/$UTC_DAY-daily.html" \
+  --manifest-output "data/raw/$UTC_DAY-daily.manifest.json"
+
+python -m trending_study pilot-parse \
+  --input "data/raw/$UTC_DAY-daily.html" \
+  --manifest "data/raw/$UTC_DAY-daily.manifest.json" \
+  --output "data/processed/$UTC_DAY-daily.pilot.jsonl" \
+  --audit-output "data/processed/$UTC_DAY-daily.audit.json"
+```
+
+Validate unresolved study prerequisites offline:
+
+```bash
+python -m trending_study pilot-preflight \
+  --input examples/pilot-preflight.example.json --stage confirmatory
+```
+
+**The example must report `not_ready`.** Actual approvals, pilot sample QA, stable repository IDs, permission-safe language panels, sample/power analysis, independent task-frame and consent review remain **pending**. Output is *not* cohort eligible until those steps are documented. Existing `parse-trending` remains supported for legacy fixtures but explicitly marks its capture timestamp unverified.

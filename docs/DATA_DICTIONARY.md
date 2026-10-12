@@ -70,3 +70,25 @@ These fields belong to an **opt-in, access-controlled** task dataset and should 
 | model_and_tool_version | string/null | Only with permission and identifiable-risk assessment |
 
 The offline `examples/idea_card.example.json` is **synthetic** and excluded from any empirical cohort. Its `schema_version=1.0` describes an assessment *input*, not observed research evidence.
+
+
+## Pilot capture manifest v1.0 (October 2026, separate from legacy observation v0.1)
+| Field | Type | Meaning |
+|---|---|---|
+| schema_version | literal `1.0` | Manifest version, **not** observation-record schema |
+| capture_method | `explicit_cli` | Single user-initiated request, not independently signed by GitHub |
+| source_url | exact `https://github.com/trending?since=...` | Only unfiltered daily/weekly/monthly currently accepted |
+| window / language_filter | enum / null | Time window, language panels **not supported** by this strict implementation |
+| capture_date_utc / captured_at_utc | YYYY-MM-DD / UTC ISO8601 | Determined at fetch time and checked for consistency |
+| source_sha256 / bytes | string / integer | Integrity of original raw HTML, checked at parse time |
+| http_status / content_type | integer / string | Declared source response metadata; HTML and 200 required |
+| response_date_header | string/null | Server response Date header when available, not independently authenticated |
+| source_file_at_capture | path | Original stored source path, files may be relocated if bytes/hash unchanged |
+| provenance_warning | string | Explicit source/clock limitation |
+
+The `pilot-parse` schema `pilot-1.0` additionally records original `captured_at_utc`, `parsed_at_utc`, source manifest path and SHA, resolved rank, `metadata_identity_status=unresolved`, and `eligible_for_confirmatory_cohort=false`. A SHA match proves **local integrity**, not that the page is an authenticated GitHub archive. The legacy `parse-trending` v0.1 now explicitly labels `capture_time_status=unverified_parse_only` and `eligible_for_confirmatory_cohort=false`, even if a user supplies an observation date.
+
+### Pilot study gate schema v1.0
+`examples/pilot-preflight.example.json` contains eleven named documentary gates, each with `status=pending|blocked|verified`, `evidence_ref`, `reviewer`, and `reviewed_at_utc`. An entry marked verified without complete source/reviewer metadata is invalid. A complete document returns **ready_for_human_review**, never independent permission, formal preregistration or consent approval. See [SOP](PILOT_CAPTURE_AND_PREFLIGHT.md).
+
+Actual captures, stable IDs, task logs and signed protocols are **not present** in this repository.

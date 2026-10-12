@@ -52,3 +52,9 @@ The Trending cohort is still an **observational visibility study** and cannot al
 
 ## Proposed green-reuse study amendment (2026-10-11, NOT preregistered)
 The initial visibility design cannot answer whether AI developers reinvent code that already exists or whether reuse improves sustainability. Additional research questions, an independent reuse cohort and opt-in 2×2 task experiment are proposed in [GREEN_REUSE_MISSION_2027.md](GREEN_REUSE_MISSION_2027.md), [REUSE_FIRST_EXPERIMENT.md](REUSE_FIRST_EXPERIMENT.md) and [REUSE_SUSTAINABILITY_METRICS.md](REUSE_SUSTAINABILITY_METRICS.md). Trending rank and stars will remain **secondary visibility indicators**, not validated measures of usefulness. SCI/SCI-for-AI figures require a declared boundary, independently accepted task denominator, measured or modeled kWh with uncertainty, grid intensity and allocated embodied emissions; no CO2-per-token inventions. All pilot and final cohort decisions must be frozen in a consolidated preregistered version.
+
+
+## Pilot instrumentation amendment v0.3 (2026-10-12, UNFROZEN)
+- [Preliminary v0.3 consolidated design](PREREGISTRATION_DRAFT_2027.md) specifies separately the observability association in Study A and the all-task randomized ITT contrast in Study B. The earlier drafts and proposed November 1 enrollment remain conditional; no retrospective research design is frozen.
+- Capture-time SHA/UTC provenance is now **instrumented in code** for one user-initiated, unfiltered global Trending surface. The new `pilot-parse` command rejects mutated raw files and contradictory source-window/date metadata. No independent real-page audit, numeric ID, language-panel support or source permission review has been completed.
+- The `pilot-preflight` documentary gate defaults to `not_ready` and does not create a scientific signoff. See [status](PROTOCOL_FREEZE_STATUS_2026_10_12.md).

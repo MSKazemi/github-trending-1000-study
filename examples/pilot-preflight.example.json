@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "study_id": "github-trending-1000-2027-green-reuse",
+  "template_note": "Example only. Pending gates are not scientific or ethical approval. Do not fill with invented evidence.",
+  "as_of_utc": "2026-10-12T08:23:00+00:00",
+  "planned_pilot": {
+    "start_utc": "2026-10-15",
+    "end_utc": "2026-10-31",
+    "status": "proposed_unconfirmed"
+  },
+  "proposed_cohort": {
+    "start_utc": "2026-11-01",
+    "end_utc": "2027-04-30",
+    "status": "conditional_not_frozen"
+  },
+  "gates": {
+    "source_access_review": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "capture_schedule": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "capture_manifest_instrumented": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "parser_audit": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "stable_identity_resolution": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "independent_task_frame": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "task_acceptance_freeze": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "sample_size_power": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "privacy_consent": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "preregistration": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    },
+    "independent_methods_review": {
+      "status": "pending",
+      "evidence_ref": null,
+      "reviewer": null,
+      "reviewed_at_utc": null
+    }
+  }
+}
