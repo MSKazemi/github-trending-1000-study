@@ -38,7 +38,7 @@ def evaluate(data):
         if not isinstance(item.get("criterion"), str) or not item["criterion"].strip():
             raise RubricError("criterion required on every item")
         x, y = item.get("rating_a"), item.get("rating_b")
-        if x not in ALLOWED or y not in ALLOWED:
+        if not isinstance(x, str) or x not in ALLOWED or not isinstance(y, str) or y not in ALLOWED:
             raise RubricError("rating must be pass/fail/not_applicable/unknown")
         if "unknown" in (x, y):
             unknown += 1
