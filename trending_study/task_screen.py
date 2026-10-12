@@ -179,7 +179,7 @@ def _submission(packet, submission, slot):
             submission["reviewer_slot"] != slot):
         raise TaskScreenError(f"review {slot}: packet/version/slot mismatch")
     reviewer = _string(submission["reviewer_ref"], f"reviewer {slot}", 80)
-    if not IDENTIFIER.fullmatch(reviewer):
+    if not IDENTIFIER.fullmatch(reviewer) or reviewer.casefold() == "unknown":
         raise TaskScreenError(f"review {slot}: invalid pseudonymous reviewer ref")
     timestamp = _utc(submission["reviewed_at_utc"], f"review {slot} UTC")
     if timestamp < _utc(packet["rechecked_at_utc"], "recheck UTC"):
@@ -224,12 +224,13 @@ def audit(frame, recheck, review_a, review_b, adjudication=None):
     packet = prepare(frame, recheck)
     ra, time_a, a = _submission(packet, review_a, "A")
     rb, time_b, b = _submission(packet, review_b, "B")
-    if ra == rb:
+    if ra.casefold() == rb.casefold():
         raise TaskScreenError("distinct independent reviewer references required")
     if adjudication is not None:
         rc, time_c, c = _submission(packet, adjudication, "C")
-        if rc in (ra, rb) or time_c < max(time_a, time_b):
-            raise TaskScreenError("adjudicator must be distinct and act after reviews")
+        if (rc.casefold() in (ra.casefold(), rb.casefold())
+                or time_c <= max(time_a, time_b)):
+            raise TaskScreenError("adjudicator must be distinct and act strictly after reviews")
     else:
         c = {}
     rows = []
