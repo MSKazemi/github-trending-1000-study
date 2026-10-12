@@ -1,0 +1,868 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "public_issue_intake_unreviewed",
+  "source_panel": "predeclared-six-ecosystem-repo-convenience-panel-first-15-open-issue-api-rows-2026-10-12",
+  "captured_at_utc": "2026-10-12T20:11:31.062Z",
+  "selection_seed": "oss-feasibility-multi-ecosystem-2026-10-12-v1",
+  "per_repo_target": 3,
+  "sources": [
+    {
+      "repository": "pallets/click",
+      "api_url": "https://api.github.com/repos/pallets/click/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5570412223,
+          "number": 3880,
+          "html_url": "https://github.com/pallets/click/pull/3880",
+          "state": "open",
+          "created_at_utc": "2026-09-24T15:09:01Z",
+          "updated_at_utc": "2026-10-08T11:12:16Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5564322398,
+          "number": 3878,
+          "html_url": "https://github.com/pallets/click/pull/3878",
+          "state": "open",
+          "created_at_utc": "2026-09-24T06:46:22Z",
+          "updated_at_utc": "2026-10-05T11:51:16Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5387953669,
+          "number": 3859,
+          "html_url": "https://github.com/pallets/click/pull/3859",
+          "state": "open",
+          "created_at_utc": "2026-09-08T14:24:45Z",
+          "updated_at_utc": "2026-09-22T06:29:25Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5361921880,
+          "number": 3847,
+          "html_url": "https://github.com/pallets/click/issues/3847",
+          "state": "open",
+          "created_at_utc": "2026-09-06T00:43:13Z",
+          "updated_at_utc": "2026-09-20T13:39:02Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5358377381,
+          "number": 3840,
+          "html_url": "https://github.com/pallets/click/issues/3840",
+          "state": "open",
+          "created_at_utc": "2026-09-05T13:49:09Z",
+          "updated_at_utc": "2026-09-14T12:06:35Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5313011514,
+          "number": 3827,
+          "html_url": "https://github.com/pallets/click/pull/3827",
+          "state": "open",
+          "created_at_utc": "2026-09-01T14:22:20Z",
+          "updated_at_utc": "2026-10-05T12:27:34Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 4905857464,
+          "number": 3696,
+          "html_url": "https://github.com/pallets/click/issues/3696",
+          "state": "open",
+          "created_at_utc": "2026-07-16T20:45:19Z",
+          "updated_at_utc": "2026-08-10T17:48:51Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 4771260298,
+          "number": 3652,
+          "html_url": "https://github.com/pallets/click/issues/3652",
+          "state": "open",
+          "created_at_utc": "2026-06-29T20:09:14Z",
+          "updated_at_utc": "2026-08-15T02:56:10Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 4409717891,
+          "number": 3412,
+          "html_url": "https://github.com/pallets/click/pull/3412",
+          "state": "open",
+          "created_at_utc": "2026-05-08T22:14:10Z",
+          "updated_at_utc": "2026-08-08T05:45:21Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 4379284998,
+          "number": 3406,
+          "html_url": "https://github.com/pallets/click/issues/3406",
+          "state": "open",
+          "created_at_utc": "2026-05-04T20:01:47Z",
+          "updated_at_utc": "2026-08-08T13:07:59Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 4301938328,
+          "number": 3362,
+          "html_url": "https://github.com/pallets/click/issues/3362",
+          "state": "open",
+          "created_at_utc": "2026-04-21T10:23:55Z",
+          "updated_at_utc": "2026-10-11T15:51:55Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 3654986254,
+          "number": 3156,
+          "html_url": "https://github.com/pallets/click/issues/3156",
+          "state": "open",
+          "created_at_utc": "2025-11-22T19:08:51Z",
+          "updated_at_utc": "2026-08-08T13:05:23Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 3654976581,
+          "number": 3154,
+          "html_url": "https://github.com/pallets/click/issues/3154",
+          "state": "open",
+          "created_at_utc": "2025-11-22T18:57:01Z",
+          "updated_at_utc": "2026-09-08T11:53:27Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 3462494702,
+          "number": 3097,
+          "html_url": "https://github.com/pallets/click/issues/3097",
+          "state": "open",
+          "created_at_utc": "2025-09-28T20:35:35Z",
+          "updated_at_utc": "2026-08-08T13:03:45Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 3459681552,
+          "number": 3094,
+          "html_url": "https://github.com/pallets/click/issues/3094",
+          "state": "open",
+          "created_at_utc": "2025-09-27T03:57:01Z",
+          "updated_at_utc": "2026-08-08T13:03:37Z",
+          "is_pull_request": false
+        }
+      ]
+    },
+    {
+      "repository": "Textualize/rich",
+      "api_url": "https://api.github.com/repos/Textualize/rich/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5753377703,
+          "number": 4235,
+          "html_url": "https://github.com/Textualize/rich/issues/4235",
+          "state": "open",
+          "created_at_utc": "2026-10-07T23:31:37Z",
+          "updated_at_utc": "2026-10-10T21:13:35Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5740538692,
+          "number": 4234,
+          "html_url": "https://github.com/Textualize/rich/issues/4234",
+          "state": "open",
+          "created_at_utc": "2026-10-07T06:34:37Z",
+          "updated_at_utc": "2026-10-08T10:12:14Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5717426560,
+          "number": 4233,
+          "html_url": "https://github.com/Textualize/rich/issues/4233",
+          "state": "open",
+          "created_at_utc": "2026-10-05T18:55:57Z",
+          "updated_at_utc": "2026-10-05T18:56:57Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5570377346,
+          "number": 4229,
+          "html_url": "https://github.com/Textualize/rich/issues/4229",
+          "state": "open",
+          "created_at_utc": "2026-09-24T15:06:21Z",
+          "updated_at_utc": "2026-10-07T15:06:39Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5533971674,
+          "number": 4225,
+          "html_url": "https://github.com/Textualize/rich/issues/4225",
+          "state": "open",
+          "created_at_utc": "2026-09-22T00:35:11Z",
+          "updated_at_utc": "2026-09-27T14:17:02Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5500581700,
+          "number": 4224,
+          "html_url": "https://github.com/Textualize/rich/issues/4224",
+          "state": "open",
+          "created_at_utc": "2026-09-18T14:12:41Z",
+          "updated_at_utc": "2026-09-18T14:12:41Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5478327510,
+          "number": 4223,
+          "html_url": "https://github.com/Textualize/rich/issues/4223",
+          "state": "open",
+          "created_at_utc": "2026-09-16T18:17:31Z",
+          "updated_at_utc": "2026-09-18T06:25:50Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5478326411,
+          "number": 4222,
+          "html_url": "https://github.com/Textualize/rich/issues/4222",
+          "state": "open",
+          "created_at_utc": "2026-09-16T18:17:27Z",
+          "updated_at_utc": "2026-10-08T23:58:39Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5350697837,
+          "number": 4216,
+          "html_url": "https://github.com/Textualize/rich/issues/4216",
+          "state": "open",
+          "created_at_utc": "2026-09-04T16:42:03Z",
+          "updated_at_utc": "2026-09-05T21:23:10Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5333652358,
+          "number": 4215,
+          "html_url": "https://github.com/Textualize/rich/issues/4215",
+          "state": "open",
+          "created_at_utc": "2026-09-03T07:28:23Z",
+          "updated_at_utc": "2026-09-18T01:30:13Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5332213241,
+          "number": 4214,
+          "html_url": "https://github.com/Textualize/rich/issues/4214",
+          "state": "open",
+          "created_at_utc": "2026-09-03T04:24:48Z",
+          "updated_at_utc": "2026-09-18T01:30:12Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5294747565,
+          "number": 4213,
+          "html_url": "https://github.com/Textualize/rich/issues/4213",
+          "state": "open",
+          "created_at_utc": "2026-08-30T22:37:02Z",
+          "updated_at_utc": "2026-09-15T12:44:10Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5220258582,
+          "number": 4211,
+          "html_url": "https://github.com/Textualize/rich/issues/4211",
+          "state": "open",
+          "created_at_utc": "2026-08-22T05:13:21Z",
+          "updated_at_utc": "2026-08-27T22:28:53Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5213245589,
+          "number": 4210,
+          "html_url": "https://github.com/Textualize/rich/issues/4210",
+          "state": "open",
+          "created_at_utc": "2026-08-21T10:44:41Z",
+          "updated_at_utc": "2026-09-29T19:02:36Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5181275963,
+          "number": 4209,
+          "html_url": "https://github.com/Textualize/rich/issues/4209",
+          "state": "open",
+          "created_at_utc": "2026-08-18T11:31:09Z",
+          "updated_at_utc": "2026-09-20T07:27:09Z",
+          "is_pull_request": false
+        }
+      ]
+    },
+    {
+      "repository": "psf/requests",
+      "api_url": "https://api.github.com/repos/psf/requests/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5806823841,
+          "number": 7634,
+          "html_url": "https://github.com/psf/requests/issues/7634",
+          "state": "open",
+          "created_at_utc": "2026-10-12T00:55:23Z",
+          "updated_at_utc": "2026-10-12T03:15:53Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5727743197,
+          "number": 7632,
+          "html_url": "https://github.com/psf/requests/issues/7632",
+          "state": "open",
+          "created_at_utc": "2026-10-06T11:40:32Z",
+          "updated_at_utc": "2026-10-11T16:20:21Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5647586466,
+          "number": 7631,
+          "html_url": "https://github.com/psf/requests/issues/7631",
+          "state": "open",
+          "created_at_utc": "2026-09-30T13:54:45Z",
+          "updated_at_utc": "2026-10-03T14:31:31Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5571965961,
+          "number": 7630,
+          "html_url": "https://github.com/psf/requests/issues/7630",
+          "state": "open",
+          "created_at_utc": "2026-09-24T17:18:05Z",
+          "updated_at_utc": "2026-10-07T11:49:04Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5552751394,
+          "number": 7629,
+          "html_url": "https://github.com/psf/requests/issues/7629",
+          "state": "open",
+          "created_at_utc": "2026-09-23T11:31:17Z",
+          "updated_at_utc": "2026-10-09T16:11:54Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5490769672,
+          "number": 7627,
+          "html_url": "https://github.com/psf/requests/issues/7627",
+          "state": "open",
+          "created_at_utc": "2026-09-17T17:40:45Z",
+          "updated_at_utc": "2026-09-26T11:08:37Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5386476764,
+          "number": 7620,
+          "html_url": "https://github.com/psf/requests/issues/7620",
+          "state": "open",
+          "created_at_utc": "2026-09-08T12:06:24Z",
+          "updated_at_utc": "2026-09-17T10:56:59Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5377299556,
+          "number": 7619,
+          "html_url": "https://github.com/psf/requests/pull/7619",
+          "state": "open",
+          "created_at_utc": "2026-09-07T16:54:40Z",
+          "updated_at_utc": "2026-10-05T16:54:53Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5304952828,
+          "number": 7617,
+          "html_url": "https://github.com/psf/requests/issues/7617",
+          "state": "open",
+          "created_at_utc": "2026-08-31T21:14:20Z",
+          "updated_at_utc": "2026-09-04T05:48:19Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5255457456,
+          "number": 7610,
+          "html_url": "https://github.com/psf/requests/issues/7610",
+          "state": "open",
+          "created_at_utc": "2026-08-26T09:28:13Z",
+          "updated_at_utc": "2026-09-06T22:58:03Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5058569197,
+          "number": 7599,
+          "html_url": "https://github.com/psf/requests/issues/7599",
+          "state": "open",
+          "created_at_utc": "2026-08-04T08:53:23Z",
+          "updated_at_utc": "2026-09-04T05:49:27Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 4919594086,
+          "number": 7586,
+          "html_url": "https://github.com/psf/requests/pull/7586",
+          "state": "open",
+          "created_at_utc": "2026-07-18T18:48:33Z",
+          "updated_at_utc": "2026-10-06T22:53:58Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 4859919693,
+          "number": 7579,
+          "html_url": "https://github.com/psf/requests/pull/7579",
+          "state": "open",
+          "created_at_utc": "2026-07-11T01:35:52Z",
+          "updated_at_utc": "2026-08-12T14:42:29Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 4844615862,
+          "number": 7574,
+          "html_url": "https://github.com/psf/requests/issues/7574",
+          "state": "open",
+          "created_at_utc": "2026-07-09T08:31:40Z",
+          "updated_at_utc": "2026-07-09T22:46:59Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 4827149379,
+          "number": 7564,
+          "html_url": "https://github.com/psf/requests/issues/7564",
+          "state": "open",
+          "created_at_utc": "2026-07-07T09:30:57Z",
+          "updated_at_utc": "2026-09-13T17:53:35Z",
+          "is_pull_request": false
+        }
+      ]
+    },
+    {
+      "repository": "vitejs/vite",
+      "api_url": "https://api.github.com/repos/vitejs/vite/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5815448813,
+          "number": 23738,
+          "html_url": "https://github.com/vitejs/vite/pull/23738",
+          "state": "open",
+          "created_at_utc": "2026-10-12T14:29:56Z",
+          "updated_at_utc": "2026-10-12T14:39:29Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5810031016,
+          "number": 23737,
+          "html_url": "https://github.com/vitejs/vite/pull/23737",
+          "state": "open",
+          "created_at_utc": "2026-10-12T07:32:08Z",
+          "updated_at_utc": "2026-10-12T07:32:26Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5809566335,
+          "number": 23736,
+          "html_url": "https://github.com/vitejs/vite/pull/23736",
+          "state": "open",
+          "created_at_utc": "2026-10-12T06:49:06Z",
+          "updated_at_utc": "2026-10-12T07:33:59Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5809559337,
+          "number": 23735,
+          "html_url": "https://github.com/vitejs/vite/issues/23735",
+          "state": "open",
+          "created_at_utc": "2026-10-12T06:48:24Z",
+          "updated_at_utc": "2026-10-12T06:48:24Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5807580823,
+          "number": 23733,
+          "html_url": "https://github.com/vitejs/vite/pull/23733",
+          "state": "open",
+          "created_at_utc": "2026-10-12T02:40:18Z",
+          "updated_at_utc": "2026-10-12T02:40:19Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5807219667,
+          "number": 23731,
+          "html_url": "https://github.com/vitejs/vite/pull/23731",
+          "state": "open",
+          "created_at_utc": "2026-10-12T01:49:56Z",
+          "updated_at_utc": "2026-10-12T09:40:37Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5801452296,
+          "number": 23728,
+          "html_url": "https://github.com/vitejs/vite/pull/23728",
+          "state": "open",
+          "created_at_utc": "2026-10-11T13:22:48Z",
+          "updated_at_utc": "2026-10-12T02:39:52Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5800371529,
+          "number": 23727,
+          "html_url": "https://github.com/vitejs/vite/issues/23727",
+          "state": "open",
+          "created_at_utc": "2026-10-11T10:49:53Z",
+          "updated_at_utc": "2026-10-11T10:49:53Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5797329644,
+          "number": 23725,
+          "html_url": "https://github.com/vitejs/vite/pull/23725",
+          "state": "open",
+          "created_at_utc": "2026-10-11T02:37:24Z",
+          "updated_at_utc": "2026-10-11T06:44:37Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5795015445,
+          "number": 23719,
+          "html_url": "https://github.com/vitejs/vite/issues/23719",
+          "state": "open",
+          "created_at_utc": "2026-10-10T20:29:52Z",
+          "updated_at_utc": "2026-10-10T20:29:52Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5789261256,
+          "number": 23717,
+          "html_url": "https://github.com/vitejs/vite/pull/23717",
+          "state": "open",
+          "created_at_utc": "2026-10-10T07:41:13Z",
+          "updated_at_utc": "2026-10-10T07:41:13Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5788129326,
+          "number": 23716,
+          "html_url": "https://github.com/vitejs/vite/pull/23716",
+          "state": "open",
+          "created_at_utc": "2026-10-10T04:38:10Z",
+          "updated_at_utc": "2026-10-10T05:18:40Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5783942293,
+          "number": 23715,
+          "html_url": "https://github.com/vitejs/vite/pull/23715",
+          "state": "open",
+          "created_at_utc": "2026-10-09T20:02:51Z",
+          "updated_at_utc": "2026-10-10T05:34:09Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5778147426,
+          "number": 23714,
+          "html_url": "https://github.com/vitejs/vite/pull/23714",
+          "state": "open",
+          "created_at_utc": "2026-10-09T12:32:44Z",
+          "updated_at_utc": "2026-10-09T12:33:53Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5775934838,
+          "number": 23713,
+          "html_url": "https://github.com/vitejs/vite/pull/23713",
+          "state": "open",
+          "created_at_utc": "2026-10-09T09:29:18Z",
+          "updated_at_utc": "2026-10-12T09:38:55Z",
+          "is_pull_request": true
+        }
+      ]
+    },
+    {
+      "repository": "tokio-rs/axum",
+      "api_url": "https://api.github.com/repos/tokio-rs/axum/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5797887180,
+          "number": 3937,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3937",
+          "state": "open",
+          "created_at_utc": "2026-10-11T04:17:10Z",
+          "updated_at_utc": "2026-10-12T03:10:56Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5762944268,
+          "number": 3936,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3936",
+          "state": "open",
+          "created_at_utc": "2026-10-08T13:47:47Z",
+          "updated_at_utc": "2026-10-08T15:04:03Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5747757344,
+          "number": 3934,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3934",
+          "state": "open",
+          "created_at_utc": "2026-10-07T15:45:58Z",
+          "updated_at_utc": "2026-10-07T15:48:18Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5747652254,
+          "number": 3933,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3933",
+          "state": "open",
+          "created_at_utc": "2026-10-07T15:39:10Z",
+          "updated_at_utc": "2026-10-08T04:22:32Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5747501006,
+          "number": 3932,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3932",
+          "state": "open",
+          "created_at_utc": "2026-10-07T15:28:34Z",
+          "updated_at_utc": "2026-10-07T15:36:23Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5747339064,
+          "number": 3931,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3931",
+          "state": "open",
+          "created_at_utc": "2026-10-07T15:18:38Z",
+          "updated_at_utc": "2026-10-07T15:32:59Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5747240783,
+          "number": 3930,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3930",
+          "state": "open",
+          "created_at_utc": "2026-10-07T15:04:28Z",
+          "updated_at_utc": "2026-10-07T15:32:59Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5707270686,
+          "number": 3926,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3926",
+          "state": "open",
+          "created_at_utc": "2026-10-05T06:11:44Z",
+          "updated_at_utc": "2026-10-07T14:27:19Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5702304557,
+          "number": 3920,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3920",
+          "state": "open",
+          "created_at_utc": "2026-10-04T18:58:37Z",
+          "updated_at_utc": "2026-10-04T19:07:35Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5697868562,
+          "number": 3917,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3917",
+          "state": "open",
+          "created_at_utc": "2026-10-04T09:12:48Z",
+          "updated_at_utc": "2026-10-04T15:43:31Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5677712491,
+          "number": 3915,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3915",
+          "state": "open",
+          "created_at_utc": "2026-10-02T12:56:13Z",
+          "updated_at_utc": "2026-10-11T14:52:28Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5667813131,
+          "number": 3914,
+          "html_url": "https://github.com/tokio-rs/axum/issues/3914",
+          "state": "open",
+          "created_at_utc": "2026-10-01T19:19:25Z",
+          "updated_at_utc": "2026-10-05T10:40:09Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5664004385,
+          "number": 3913,
+          "html_url": "https://github.com/tokio-rs/axum/issues/3913",
+          "state": "open",
+          "created_at_utc": "2026-10-01T14:40:53Z",
+          "updated_at_utc": "2026-10-02T06:32:07Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5641673781,
+          "number": 3911,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3911",
+          "state": "open",
+          "created_at_utc": "2026-09-30T05:51:30Z",
+          "updated_at_utc": "2026-10-08T00:24:30Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5641624050,
+          "number": 3910,
+          "html_url": "https://github.com/tokio-rs/axum/pull/3910",
+          "state": "open",
+          "created_at_utc": "2026-09-30T05:46:00Z",
+          "updated_at_utc": "2026-10-08T00:26:34Z",
+          "is_pull_request": true
+        }
+      ]
+    },
+    {
+      "repository": "prometheus/prometheus",
+      "api_url": "https://api.github.com/repos/prometheus/prometheus/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5815816084,
+          "number": 20001,
+          "html_url": "https://github.com/prometheus/prometheus/pull/20001",
+          "state": "open",
+          "created_at_utc": "2026-10-12T14:56:30Z",
+          "updated_at_utc": "2026-10-12T14:56:30Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5814460283,
+          "number": 20000,
+          "html_url": "https://github.com/prometheus/prometheus/issues/20000",
+          "state": "open",
+          "created_at_utc": "2026-10-12T13:21:27Z",
+          "updated_at_utc": "2026-10-12T13:21:29Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5803625268,
+          "number": 19998,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19998",
+          "state": "open",
+          "created_at_utc": "2026-10-11T17:53:19Z",
+          "updated_at_utc": "2026-10-12T18:37:35Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5801717571,
+          "number": 19997,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19997",
+          "state": "open",
+          "created_at_utc": "2026-10-11T13:57:13Z",
+          "updated_at_utc": "2026-10-11T13:57:14Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5801123623,
+          "number": 19996,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19996",
+          "state": "open",
+          "created_at_utc": "2026-10-11T12:39:24Z",
+          "updated_at_utc": "2026-10-11T14:52:25Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5800131719,
+          "number": 19995,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19995",
+          "state": "open",
+          "created_at_utc": "2026-10-11T10:15:02Z",
+          "updated_at_utc": "2026-10-12T13:03:57Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5800131431,
+          "number": 19994,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19994",
+          "state": "open",
+          "created_at_utc": "2026-10-11T10:14:59Z",
+          "updated_at_utc": "2026-10-12T13:03:54Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5800131137,
+          "number": 19993,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19993",
+          "state": "open",
+          "created_at_utc": "2026-10-11T10:14:57Z",
+          "updated_at_utc": "2026-10-12T13:03:51Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5800130535,
+          "number": 19991,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19991",
+          "state": "open",
+          "created_at_utc": "2026-10-11T10:14:53Z",
+          "updated_at_utc": "2026-10-12T13:19:18Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5795180059,
+          "number": 19989,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19989",
+          "state": "open",
+          "created_at_utc": "2026-10-10T20:52:50Z",
+          "updated_at_utc": "2026-10-11T00:52:45Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5794629313,
+          "number": 19987,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19987",
+          "state": "open",
+          "created_at_utc": "2026-10-10T19:38:59Z",
+          "updated_at_utc": "2026-10-10T19:39:01Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5793576330,
+          "number": 19985,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19985",
+          "state": "open",
+          "created_at_utc": "2026-10-10T17:22:35Z",
+          "updated_at_utc": "2026-10-10T17:23:14Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5793567042,
+          "number": 19984,
+          "html_url": "https://github.com/prometheus/prometheus/issues/19984",
+          "state": "open",
+          "created_at_utc": "2026-10-10T17:21:33Z",
+          "updated_at_utc": "2026-10-10T17:21:33Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5791120591,
+          "number": 19983,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19983",
+          "state": "open",
+          "created_at_utc": "2026-10-10T12:16:10Z",
+          "updated_at_utc": "2026-10-12T13:06:19Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5786399602,
+          "number": 19982,
+          "html_url": "https://github.com/prometheus/prometheus/pull/19982",
+          "state": "open",
+          "created_at_utc": "2026-10-10T00:27:34Z",
+          "updated_at_utc": "2026-10-10T01:31:44Z",
+          "is_pull_request": true
+        }
+      ]
+    }
+  ]
+}
