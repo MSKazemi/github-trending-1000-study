@@ -275,5 +275,6 @@ Populate the bundle **only after permitted captures and independent human labeli
 - [Machine-readable 100-issue URL index](references/ai_software_company_issue_index_2026-10-12.csv)
 - [Scientific evidence/coverage protocol](docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [report template](templates/company_six_month_intelligence.md)
 - [Issue task template](templates/company_intelligence_issue.md)
+- [Initial dated source-checked company news leads](research-notes/company-intelligence-initial-leads-2026-10-12.md) — examples only; all full company reviews pending
 
 The index and watchlist are **editorial, non-ranked snapshots**, not empirical firm-performance/market-share datasets; future plans and vendor assertions are not verified outcomes.
