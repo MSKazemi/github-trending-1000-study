@@ -26,61 +26,118 @@ def utc_now():
 
 
 class TrendingParser(HTMLParser):
-    """Extract h2 > a repository links nested in article.Box-row.
+    """Check that EVERY supported article.Box-row has exactly one repo heading.
 
-    This deliberately does not attempt a broad heuristic HTML extraction:
-    layout changes should result in an explicit failure, not false observations.
+    A positive subset is never considered a successful parse when a supported
+    article is malformed. This is structural self-consistency, NOT an independent
+    audit of GitHub's live or changing page layout.
     """
+
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.article_depth = 0
         self.h2_depth = 0
-        self.active_links = []
+        self.article_rows = 0
+        self.heading_count = 0
+        self.header_links = []
         self.repos = []
+        self.errors = []
+        self._seen = set()
 
     def handle_starttag(self, tag, attrs):
         attr = dict(attrs)
-        if tag == "article" and "Box-row" in attr.get("class", "").split():
-            self.article_depth += 1
-        elif tag == "article" and self.article_depth:
-            self.article_depth += 1
+        if tag == "article":
+            if self.article_depth:
+                self.article_depth += 1
+                self.errors.append(f"nested article inside Box-row #{self.article_rows}")
+                return
+            if "Box-row" in attr.get("class", "").split():
+                self.article_depth = 1
+                self.article_rows += 1
+                self.heading_count = 0
+                self.header_links = []
+                self.h2_depth = 0
+                return
         if not self.article_depth:
             return
         if tag == "h2":
             self.h2_depth += 1
-        if tag == "a" and self.h2_depth:
-            self.active_links.append(attr.get("href", ""))
+            self.heading_count += 1
+        elif tag == "a" and self.h2_depth:
+            self.header_links.append(attr.get("href", ""))
 
     def handle_endtag(self, tag):
         if not self.article_depth:
             return
-        if tag == "h2" and self.h2_depth:
-            self.h2_depth -= 1
-        if tag == "article":
+        if tag == "h2":
+            if not self.h2_depth:
+                self.errors.append(f"unmatched h2 in Box-row #{self.article_rows}")
+            else:
+                self.h2_depth -= 1
+        elif tag == "article":
             self.article_depth -= 1
+            if not self.article_depth:
+                self._finalize_row()
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
         self.handle_endtag(tag)
 
+    def _finalize_row(self):
+        row = self.article_rows
+        if self.h2_depth or self.heading_count != 1 or len(self.header_links) != 1:
+            self.errors.append(
+                f"Box-row #{row} has {self.heading_count} h2 and "
+                f"{len(self.header_links)} header links (expected exactly one of each)"
+            )
+            return
+        href = self.header_links[0].strip()
+        name = href.strip("/") if href.startswith("/") else ""
+        if not href.startswith("/") or not REPO.fullmatch(name):
+            self.errors.append(f"Box-row #{row} has unsupported or malformed repository link")
+            return
+        key = name.casefold()
+        if key in self._seen:
+            self.errors.append(f"duplicate repository in supported Box-row #{row}")
+            return
+        self._seen.add(key)
+        self.repos.append(name)
 
-def extract_repos(html):
+    def check(self):
+        if self.article_depth:
+            self.errors.append("HTML ended with an unclosed Box-row article")
+        if not self.article_rows:
+            raise ValueError("No supported Trending article.Box-row elements found")
+        if self.errors or len(self.repos) != self.article_rows:
+            details = "; ".join(self.errors[:4]) or "row-count inconsistency"
+            raise ValueError(
+                f"Trending structural completeness failed: "
+                f"{len(self.repos)}/{self.article_rows} valid Box-row entries; {details}"
+            )
+
+
+def _parse_supported_trending_layout(html):
     parser = TrendingParser()
     parser.feed(html)
-    found = []
-    seen = set()
-    for href in parser.active_links:
-        href = href.strip()
-        if href.startswith("/"):
-            name = href.strip("/")
-        else:
-            continue
-        if REPO.fullmatch(name) and name not in seen:
-            seen.add(name)
-            found.append(name)
-    if not found:
-        raise ValueError("No Trending repository entries found; aborting rather than returning empty data")
-    return found
+    parser.close()
+    parser.check()
+    return parser
+
+
+def inspect_trending_structure(html):
+    """Internal selector coverage only, NOT human-confirmed live-page recall."""
+    p = _parse_supported_trending_layout(html)
+    return {
+        "selector_box_row_count": p.article_rows,
+        "extracted_repository_count": len(p.repos),
+        "structural_parser_status": "matched_selector_rows_consistent",
+        "limitation": "Off-selector rows and upstream layout changes still need independent page QA.",
+    }
+
+
+def extract_repos(html):
+    """One repo per supported article; fail closed on duplicates or partial rows."""
+    return _parse_supported_trending_layout(html).repos
 
 
 def write_jsonl(path, rows):
