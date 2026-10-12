@@ -76,6 +76,7 @@ Do not mark sample goals complete without public methodology and verified counts
 
 
 ## M9 — Publication figures and tables (planned; not empirical)
+- [x] Offline F01/T02 observed-only audit with synthetic tests, no inferred cohort or follow-up ([usage](SAMPLING_VISUALIZATION_CLI.md))
 - [x] Register 18 figures and 14 tables with manuscript/supplement/future tiers, estimands, denominators, evidence gates and source contracts
 - [x] Record dated user visualization request and discussion summary
 - [ ] Freeze main-paper visual/estimand mapping during preregistration and independent review
