@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 import re
 
+from .safe_io import disjoint, publish_json
+
 
 ARMS = ("human_usual", "human_reuse_first", "agent_usual", "agent_reuse_first")
 BLOCK = ("language", "project_type", "difficulty", "experience_band")
@@ -88,6 +90,8 @@ def _frame(frame):
     if isinstance(seed, bool) or not isinstance(seed, int) or not (0 <= seed < 2**63):
         raise TrialError("randomization_seed must be a nonnegative integer smaller than 2**63")
     if kind == "pilot":
+        if locked > datetime.now(timezone.utc) + timedelta(minutes=5):
+            raise TrialError("pilot frame lock timestamp cannot be in the future")
         _text(frame.get("ethics_review_ref"), "ethics_review_ref")
     elif frame.get("ethics_review_ref") is not None:
         raise TrialError("synthetic frame must have null ethics_review_ref")
@@ -192,8 +196,13 @@ def audit(frame, assignments, outcomes):
     if assignments != expected:
         raise TrialError("assignments disagree with recalculated locked-frame assignment")
     _obj(outcomes, "outcomes")
-    if set(outcomes) != {"schema_version", "dataset_kind", "protocol_id", "outcomes"}:
-        raise TrialError("outcomes requires only schema_version/dataset_kind/protocol_id/outcomes")
+    required = {"schema_version", "dataset_kind", "protocol_id", "outcomes"}
+    if not required.issubset(outcomes) or set(outcomes) - required - {"frame_sha256"}:
+        raise TrialError("outcomes must contain schema_version/dataset_kind/protocol_id/outcomes; optional frame_sha256")
+    if expected["dataset_kind"] == "pilot" and "frame_sha256" not in outcomes:
+        raise TrialError("pilot outcomes require frame_sha256 binding to the assigned task frame")
+    if "frame_sha256" in outcomes and outcomes["frame_sha256"] != expected["frame_sha256"]:
+        raise TrialError("outcomes.frame_sha256 does not match assigned task frame")
     for key in ("schema_version", "dataset_kind", "protocol_id"):
         if outcomes.get(key) != expected[key]:
             raise TrialError(f"outcomes.{key} mismatches frame")
@@ -282,12 +291,11 @@ def main(argv=None):
         frame = json.loads(Path(args.frame).read_text(encoding="utf-8"))
         if args.command == "assign":
             artifact = assign(frame)
+            # Publication is exclusive and staged: no input/output alias, no
+            # overwrite race between a preflight check and writing the plan.
+            disjoint(args.frame, args.output)
             target = Path(args.output)
-            if target.resolve() == Path(args.frame).resolve():
-                raise TrialError("output must not overwrite input frame")
-            if target.exists():
-                raise TrialError("output exists; preserve allocation audit history")
-            target.write_text(json.dumps(artifact, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            publish_json(target, artifact)
             print(json.dumps({"assigned": len(artifact["assigned"]), "excluded_pre_assignment": len(artifact["excluded_before_assignment"]), "frame_sha256": artifact["frame_sha256"], "path": str(target)}))
         else:
             assignments = json.loads(Path(args.assignments).read_text(encoding="utf-8"))
