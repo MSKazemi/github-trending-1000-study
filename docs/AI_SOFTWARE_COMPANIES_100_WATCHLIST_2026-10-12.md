@@ -224,3 +224,7 @@ This is an **intentional case-study frame**, not the 1,000-repo cohort. Predefin
 11. [CoreWeave acquired Weights & Biases, official](https://www.coreweave.com/companies/weights-and-biases)
 
 **Next validation gate:** Before using this as a scientific dataset, dual-review company identity/ownership, record source retrieval timestamps and archived URLs where permitted, verify all 100 product URLs, stratify by exact research question, document omissions and competing providers, and keep the independently selected GitHub repository cohort separate. No such full 100-site independent verification has been completed.
+
+## Follow-on six-month research assignments (issues created, research pending)
+
+A [100-issue grouped work index](COMPANY_ISSUE_INDEX_2026_10.md) and [100-row CSV of issue URLs](../references/ai_software_company_issue_index_2026-10-12.csv) track the source-verified April 12–October 12, 2026 investigation for each organization. See the [methodology](COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [report template](../templates/company_six_month_intelligence.md). None of the new issue creation proves the underlying company reports are complete.
