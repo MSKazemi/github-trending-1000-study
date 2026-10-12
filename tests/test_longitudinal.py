@@ -419,12 +419,13 @@ class EventLedgerIntegrityTests(unittest.TestCase):
         )
         # Use a genuine missed-event schema but put it *before* expiration.
         def early_missed(event, task):
+            digest = event["plan_sha256"]
             event.clear()
             event.update(_event(
-                task, "a" * 64, utc(task["scheduled_at_utc"], "due"),
+                task, digest, utc(task["scheduled_at_utc"], "due"),
                 status="missed_window", http_status=None, stars=None,
                 reason="synthetic premature missingness"))
-        self.assert_bad_event(early_missed, "event does not belong")
+        self.assert_bad_event(early_missed, "missed/late status contradicts")
 
     def test_failing_fetch_cannot_report_success_counters(self):
         def forged(event, task):
