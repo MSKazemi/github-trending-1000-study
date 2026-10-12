@@ -323,6 +323,20 @@ def load_events(events_dir, plan_by_id, plan_digest):
             raise FollowupError(f"unrecognized event status in {item}")
         validate_event(record, expected)
         events[key].append(record)
+    for key, history in events.items():
+        history.sort(key=lambda event: utc(event["observed_at_utc"], "event time"))
+        final_positions = [i for i, event in enumerate(history)
+                           if event["status"] in FINAL_STATES]
+        if len(final_positions) > 1 or (final_positions and final_positions[0] != len(history) - 1):
+            raise FollowupError(f"multiple or non-terminal final outcomes for follow-up task {key}")
+        request_dates = set()
+        for event in history:
+            if event["status"] == "missed_window":
+                continue  # a clock-driven missingness event is not an HTTP request
+            day = utc(event["observed_at_utc"], "event time").date()
+            if day in request_dates:
+                raise FollowupError(f"multiple HTTP attempts recorded on the same UTC day for {key}")
+            request_dates.add(day)
     return events
 
 
