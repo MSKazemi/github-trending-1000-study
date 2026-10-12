@@ -71,8 +71,10 @@ class CaptureProvenanceTests(unittest.TestCase):
 
     def test_changed_capture_detected(self):
         manifest = make_manifest()
+        tampered = bytearray(FIXTURE.read_bytes())
+        tampered[0] ^= 1
         with self.assertRaisesRegex(PilotValidationError, "SHA-256"):
-            validate_capture(FIXTURE.read_bytes() + b"!", manifest, extract_repos=extract_repos)
+            validate_capture(bytes(tampered), manifest, extract_repos=extract_repos)
 
     def test_wrong_date_detected(self):
         manifest = make_manifest()

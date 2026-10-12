@@ -174,13 +174,13 @@ def pilot_parse(args):
         row["source_manifest_sha256"] = manifest_hash
         row["parser_version"] = VERSION
     audit["source_manifest_sha256"] = manifest_hash
+    if args.audit_output and Path(args.audit_output).resolve() in (
+        Path(args.input).resolve(), Path(args.manifest).resolve(),
+        Path(args.output).resolve(),
+    ):
+        raise ValueError("Audit output must differ from input, manifest and JSONL output")
     write_jsonl(args.output, rows)
     if args.audit_output:
-        if Path(args.audit_output).resolve() in (
-            Path(args.input).resolve(), Path(args.manifest).resolve(),
-            Path(args.output).resolve(),
-        ):
-            raise ValueError("Audit output must differ from input, manifest and JSONL output")
         write_json(args.audit_output, audit)
     print(json.dumps(audit, sort_keys=True))
 
