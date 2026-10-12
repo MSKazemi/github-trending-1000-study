@@ -32,3 +32,7 @@ Human review and preregistration; real task sourcing and independent hidden acce
 ## Next gate
 
 Have an independent methods/statistics and privacy reviewer verify [#25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), the separate observational versus randomized population, the ITT estimand, sampling lock and consent regime. Then time-stamp an approved task frame, pilot a small number of real eligible tasks under explicit permission, capture a complete dropout/unknowns ledger and quantify feasibility. Do not auto-merge methodology amendments without human review.
+
+## Integration review — 2026-10-12
+
+Before incorporation into the current main branch, the trial module was aligned with the repo's newer write-once data publishing standard. For an actual consented pilot, outcome files are now tied explicitly to the frozen frame SHA; a hash mismatch fails rather than silently combining similarly named tasks from different versions. The audit still reports user-supplied synthetic/pilot claims only. Real external task frame lock, acceptance, review and science/ethics approval remain unmet. See [trial instrument](TRIAL_PILOT_INSTRUMENT.md).
