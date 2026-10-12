@@ -44,6 +44,22 @@ class TaskCostTests(unittest.TestCase):
         self.assertEqual(len(report["tasks"]), 8)
         self.assertFalse(any("co2" in key or "kwh" in key for key in report["overall"]))
 
+    def test_empty_randomized_arms_remain_explicitly_unmeasured(self):
+        frame, allocations, outcomes, ledger = inputs()
+        for task in frame["tasks"][1:]:
+            task["eligibility_status"] = "excluded_pre_assignment"
+            task["exclusion_reason"] = "duplicate"
+        allocations = assign(frame)
+        outcomes["outcomes"] = outcomes["outcomes"][:1]
+        ledger["task_costs"] = ledger["task_costs"][:1]
+        report = audit_costs(frame, allocations, outcomes, ledger)
+        self.assertEqual(report["overall"]["assigned"], 1)
+        self.assertEqual(len(report["by_arm"]), 4)
+        empty = [v for v in report["by_arm"].values() if v["assigned"] == 0]
+        self.assertEqual(len(empty), 3)
+        self.assertTrue(all(v["human_active_minutes_total"] is None for v in empty))
+        self.assertTrue(all(v["observed_event_cost_usd"] is None for v in empty))
+
     def test_measured_per_task_cost_and_predeclared_budgets(self):
         report = audit_costs(*inputs())
         rows = {row["task_id"]: row for row in report["tasks"]}
