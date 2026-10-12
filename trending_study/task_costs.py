@@ -22,7 +22,7 @@ from .trial import ARMS, TrialError, assign as trial_assign, audit as trial_audi
 ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,79}\Z")
 PRICE = re.compile(r"(?:0|[1-9][0-9]{0,6})(?:\.[0-9]{1,6})?\Z")
 COVERAGES = {"complete", "partial", "missing"}
-HUMAN_CATEGORIES = {"plan", "prompt", "review", "repair", "ship", "followup", "other"}
+HUMAN_CATEGORIES = {"plan", "prompt", "review", "repair", "ship", "other"}
 KINDS = {"model_call", "tool_call", "ci_job", "retry", "idle"}
 COST_BASES = {"provider_billed", "provider_estimate", "synthetic"}
 ROOT_KEYS = {"schema_version", "dataset_kind", "protocol_id", "task_costs"}
@@ -101,6 +101,31 @@ def _money(value, name):
     if not isinstance(value, str) or not PRICE.fullmatch(value):
         raise CostAuditError(f"{name} must be a decimal string (up to six places) or null")
     return Decimal(value)
+
+
+def _unique_json_fields(pairs):
+    """Reject duplicate object keys rather than silently losing evidence."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise CostAuditError(f"duplicate JSON key {key!r}")
+        result[key] = value
+    return result
+
+
+def _bad_json_constant(value):
+    raise CostAuditError(f"nonfinite/nonstandard JSON constant {value!r}")
+
+
+def _read_json(path):
+    # Bound offline memory use; never transmit files or make network requests.
+    if path.stat().st_size > 64 * 1024 * 1024:
+        raise CostAuditError(f"input file exceeds 64 MiB limit: {path}")
+    return json.loads(
+        path.read_text(encoding="utf-8"),
+        object_pairs_hook=_unique_json_fields,
+        parse_constant=_bad_json_constant,
+    )
 
 
 def _canonical_hash(value):
@@ -427,10 +452,10 @@ def main(argv=None):
     try:
         if args.output:
             disjoint(args.frame, args.assignments, args.outcomes, args.input, args.output)
-        frame = json.loads(args.frame.read_text(encoding="utf-8"))
-        allocations = json.loads(args.assignments.read_text(encoding="utf-8"))
-        outcomes = json.loads(args.outcomes.read_text(encoding="utf-8"))
-        ledger = json.loads(args.input.read_text(encoding="utf-8"))
+        frame = _read_json(args.frame)
+        allocations = _read_json(args.assignments)
+        outcomes = _read_json(args.outcomes)
+        ledger = _read_json(args.input)
         report = audit_costs(frame, allocations, outcomes, ledger)
         if args.output:
             publish_json(args.output, report)
