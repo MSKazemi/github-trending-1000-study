@@ -16,7 +16,7 @@ from pathlib import Path
 import re
 
 from .safe_io import disjoint, publish_json
-from .trial import TrialError, assign as trial_assign, audit as trial_audit
+from .trial import ARMS, TrialError, assign as trial_assign, audit as trial_audit
 
 
 ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,79}\Z")
@@ -149,6 +149,17 @@ def _parse_budget(budget, locked):
 
 
 def _summarize(rows):
+    if not rows:
+        return {
+            "assigned": 0, "accepted": 0, "status_counts": {},
+            "human_active_minutes_total": None, "model_calls_total": None,
+            "tool_calls_total": None, "retries_total": None,
+            "token_totals": {"input_tokens": None, "output_tokens": None, "cached_input_tokens": None},
+            "observed_event_cost_usd": None, "cost_by_basis_usd": None,
+            "cost_per_accepted_task_usd": None, "accepted_per_human_hour": None,
+            "missing_human_tasks": 0, "missing_event_tasks": 0,
+            "missing_monetary_tasks": 0,
+        }
     accepted = sum(row["status"] == "accepted" for row in rows)
     def total_or_unknown(field):
         fields = [row[field] for row in rows]
@@ -164,6 +175,11 @@ def _summarize(rows):
     }
     costs = [row["observed_event_cost_usd"] for row in rows]
     cost = sum((Decimal(v) for v in costs), Decimal("0")) if all(v is not None for v in costs) else None
+    by_basis = defaultdict(lambda: Decimal("0"))
+    if cost is not None:
+        for row in rows:
+            for basis, value in row["cost_by_basis_usd"].items():
+                by_basis[basis] += Decimal(value)
     return {
         "assigned": len(rows),
         "accepted": accepted,
@@ -174,6 +190,7 @@ def _summarize(rows):
         "retries_total": retries,
         "token_totals": tokens,
         "observed_event_cost_usd": str(cost) if cost is not None else None,
+        "cost_by_basis_usd": ({k: str(v) for k, v in sorted(by_basis.items())} if cost is not None else None),
         "cost_per_accepted_task_usd": (
             str((cost / Decimal(accepted)).quantize(Decimal("0.000001"), rounding=ROUND_HALF_UP))
             if cost is not None and accepted > 0 else None
@@ -385,7 +402,7 @@ def audit_costs(frame, assignments, outcomes, ledger):
         "overall": _summarize(rows),
         "by_arm": {
             arm: _summarize([row for row in rows if row["arm"] == arm])
-            for arm in sorted(set(arms.values()))
+            for arm in ARMS
         },
         "tasks": rows,
         "limitations": [
