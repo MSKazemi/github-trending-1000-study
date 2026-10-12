@@ -53,7 +53,7 @@ def select(frame):
             raise FrameError("numeric positive unique repository ID required")
         seen.add(rid)
         stratum = row.get("stratum")
-        if stratum not in quotas:
+        if not isinstance(stratum, str) or stratum not in quotas:
             raise FrameError("each row must use a predeclared stratum")
         for field in ("package_id", "source_url"):
             if not isinstance(row.get(field), str) or not row[field].strip():
