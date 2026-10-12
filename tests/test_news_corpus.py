@@ -17,9 +17,18 @@ class NewsCorpusTests(unittest.TestCase):
 
     def test_all_committed_items_pass_structural_validation(self):
         result = validate_directory(ITEMS)
-        self.assertEqual(result["records"], 14)
-        self.assertEqual(result["distinct_urls"], 14)
+        self.assertGreaterEqual(result["records"], 20)
+        self.assertEqual(result["distinct_urls"], result["records"])
         self.assertEqual(result["evidence_status"], "provisional_structural_validation_only")
+
+    def test_initial_tranche_has_six_source_organizations_and_multiple_views(self):
+        records = [json.loads(p.read_text(encoding="utf-8"))
+                   for p in sorted(ITEMS.glob("NEWS-*.json"))]
+        self.assertGreaterEqual(len({r["publisher"] for r in records}), 6)
+        self.assertGreaterEqual(len({t for r in records for t in r["topics"]}), 6)
+        self.assertTrue(all(r["review_status"] == "pending" for r in records))
+        self.assertTrue(all(r["independent_reviewer"] is None for r in records))
+        self.assertTrue(all(r["fulltext_stored"] is False for r in records))
 
     def test_duplicate_canonical_source_even_with_tracking_query(self):
         copied = copy.deepcopy(self.item)
