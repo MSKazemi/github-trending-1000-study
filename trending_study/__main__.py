@@ -16,7 +16,7 @@ from .pilot import (build_capture_manifest, evaluate_preflight, validate_capture
 from .safe_io import (disjoint, refuse_existing, publish_once, publish_json,
                       publish_jsonl, jsonl_bytes)
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 GITHUB_HOST = "https://github.com"
 REPO = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
@@ -225,7 +225,10 @@ def pilot_parse(args):
     raw = Path(args.input).read_bytes()
     manifest_raw = Path(args.manifest).read_bytes()
     manifest = json.loads(manifest_raw.decode("utf-8"))
-    rows, audit = validate_capture(raw, manifest, extract_repos=extract_repos)
+    rows, audit = validate_capture(
+        raw, manifest, extract_repos=extract_repos,
+        inspect_structure=inspect_trending_structure,
+    )
     manifest_hash = hashlib.sha256(manifest_raw).hexdigest()
     for row in rows:
         row["source_file"] = str(args.input)
