@@ -1,0 +1,41 @@
+# Issue #6 — synthetic Trending temporal-overlap pilot
+
+**2026-10-12 · implementation stage 1; no observed GitHub Trending validity result.**
+
+An offline, standard-library comparison of exactly two *supplied* ranked pages on the same
+URL, language filter and daily/weekly/monthly window is available as:
+
+```bash
+python -m trending_study.trending_overlap --input examples/trending_overlap.synthetic.json
+python -m unittest tests.test_trending_overlap -v
+```
+
+Input v1.0 is \`schema_version\`, \`dataset_kind\` = \`synthetic\` or
+\`self_reported_audit\`, and two \`captures\` with unique \`capture_id\`, strict
+UTC \`captured_at_utc\`, exact \`page_url\`, \`window\`, nullable
+\`language_filter\`, \`source_sha256\` and all displayed \`repository_ids\` in
+rank order. Numeric IDs must be independently resolved from original page names;
+this tool does not infer them from HTML or verify that source hashes represent
+authentic captures. Invalid/incomplete input fails closed.
+
+Output denominators: \`page_sizes\` (supplied displayed entries per capture),
+\`union_unique_ids\`, \`common_unique_ids\`; set Jaccard = common/union;
+Kendall tau on common IDs uses only comparable rank pairs and is null if fewer
+than two IDs overlap. \`discounted_prefix_overlap_lower_bound\` is
+\((1-p)\sum_{d=1}^{\max(n_a,n_b)} p^{d-1} \cdot |A_{1:d}\cap B_{1:d}|/d\),
+with \`p=0.9\` by default. It excludes any extrapolated tail and is **not**
+an infinite-list RBO estimate or cross-language coverage statistic. The
+source-pages' contents and reviewer independence are not authenticated.
+
+**Remaining issue work:** independently inspect saved live pages and source
+license/access policy; measure multi-timepoint rank drift and filter-level
+coverage *against an explicit eligible frame*; audit timestamp/window
+alignment; preregister prospective rank-proxy features, train/holdout
+chronological split and leakage safeguards. Never infer the opaque Github
+selection algorithm, true user adoption, or causal effect of Trending.
+
+**Practical repository lesson to test:** If project visibility fluctuates
+rapidly even on comparable pages, do not interpret a single trending rank or
+one-day star burst as evidence of reusable functionality. Instead instrument
+clean-install, independent adoption and 30/90-day maintenance outcomes.
+See [black-box audit proposal](TRENDING_ALGORITHM_AUDIT.md).
