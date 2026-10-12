@@ -34,21 +34,58 @@ The bundle has `schema_version: "1.0"`, `evidence_kind: "synthetic_fixture"|"fie
 
 Each reviewer has `schema_version: "1.0"`, `reviewer_id` (pseudonym), `reviewed_at_utc`, `blind_to_parser_output: true`, `source_sha256`, `source_url`, `captured_at_utc`, `window`, and a complete 1-based ordered `rows[]` list of `{"rank":1,"repository":"owner/repo"}`. Reviewed time cannot precede captured time; source fields must match the actual saved manifest; ranks must be contiguous and identities unique. Two copies from one annotator may **pass documentary checks but are not independent human evidence**—human source and review verification remains required.
 
+### Optional reviewer-C adjudication (issue #169, synthetic instrument)
+
+The **existing** `audit-pages` CLI accepts an optional `adjudicator` object for a page in the same local bundle. It is an addition to the existing A/B records, not a replacement for them and not a second page-QA command. **Only supply it when reviewers A and B genuinely disagree**. The third reviewer must inspect the preserved original source; the code checks the declared identity, timing, source fields and rank restrictions but cannot establish genuine human independence.
+
+The `adjudicator` object contains all ordinary reviewer fields and the *additional required* `disagreement_ranks` (the exact ascending ordinal ranks listed in the A/B discrepancy report) and a short `adjudication_reason` (1–500 characters, no personal details). Use a pseudonymous `reviewer_id` distinct from both A and B (case-insensitive), with an explicitly UTC `reviewed_at_utc` **later than both** original review records. It must repeat the original source SHA, URL, capture timestamp and window, and attest `blind_to_parser_output: true` truthfully.
+
+For example, if the first reviewer says rank 1 is `synthetic-team/one`, reviewer B says `synthetic-team/two`, and all other ranks agree, C may label that rank after a real reinspection. C **cannot change already agreed positions, invent extra undisputed rows, or omit agreed rows**. C may independently choose either reviewer's label or a different observed identity *at the disputed position only*. Both original A/B annotations, the disagreement ranks and C's reviewer reference are retained in the report. If C is absent, incorrect, or invalid, the page stays unscored or fails closed, never silently acquiring a gold standard.
+
+The report preserves `reviewer_agreement` as the unmodified A/B comparison and adds `reference_resolution` (`a_b_agreement`, `c_adjudicated`, or `unresolved`), `adjudicator_id`, `adjudicated_disagreement_ranks`, `labels_resolved`, `pages_with_adjudicated_annotations`, `pages_with_resolved_annotations`, and `windows_with_resolved_labels`. Aggregated denominators include only pages with full **resolved** labels (by A/B agreement or valid C); unresolved pages remain excluded and explicitly counted. The 30-row/three-window threshold uses resolved labels and never authenticates reviewers or permits confirmatory enrollment.
+
+For a synthetic C case in your **private** bundle (only one page shown, with normal capture metadata omitted):
+
+```json
+{
+  "pages": [{
+    "raw_path": "daily.html",
+    "manifest_path": "daily.manifest.json",
+    "reviewers": ["<existing complete reviewer A record>", "<existing complete reviewer B record>"],
+    "adjudicator": {
+      "schema_version": "1.0",
+      "reviewer_id": "reviewer-C-pseudonym",
+      "reviewed_at_utc": "2026-10-12T15:00:00+00:00",
+      "blind_to_parser_output": true,
+      "source_sha256": "<same checked manifest source_sha256>",
+      "source_url": "<same checked manifest source_url>",
+      "captured_at_utc": "<same checked manifest captured_at_utc>",
+      "window": "daily",
+      "rows": [{"rank": 1, "repository": "synthetic-team/one"}],
+      "disagreement_ranks": [1],
+      "adjudication_reason": "Synthetic illustration; actual C must independently inspect all rows."
+    }
+  }]
+}
+```
+
+The snippet is **illustrative, not a valid complete QA bundle or a real reviewed source**: C must enumerate *every* displayed row and all provenance fields must match the actual saved manifest. Reviewer identities/timestamps/notes are self-declarations, not third-party proof. Do not publish real reviewer names or private evidence in the repository. Actual approval is independent of these synthetic regression tests.
+
 The scorer uses the same validated manifest checks as `pilot-parse`, but **can report a parser rejection as an abstention** rather than discarding all human evidence. A rejected captured page counts as zero emitted entries (and missed manual rows) for the QA effective-recall denominator; this is operational noncoverage, not evidence of a non-trending day.
 
 ## Report interpretation, denominators and limitations
 
 | Field | Definition | Warning |
 |---|---|---|
-| `audited_gold_rows` | Sum of *agreed* complete-page reviewer labels, excluding unresolved pages | Never an actual observation count when input is synthetic |
+| `audited_gold_rows` | Sum of *resolved* complete-page labels (A/B agreement or valid C); excludes unresolved pages | Never an actual observation count when input is synthetic |
 | `correct_identity_at_rank` (TP) | Exact repository identity **at exact ordinal rank** matches parser output | Rank error adds one FP and one FN |
 | `false_positives_including_rank_errors` | Emitted entries not identical to gold at that ordinal position | Not a statement of GitHub algorithm quality |
-| `false_negatives_including_rank_errors` | All agreed visible entries without an exact emitted rank match, including entirely rejected pages | A parser-abstention is incomplete collection, not an empty source page |
+| `false_negatives_including_rank_errors` | All resolved visible entries without an exact emitted rank match, including entirely rejected pages | A parser-abstention is incomplete collection, not an empty source page |
 | `precision_on_emitted_rows` | TP / emitted entries (null if no emitted entries) | Descriptive for these observed pages, not a global estimate |
-| `effective_rank_recall_including_parser_abstentions` | TP / agreed labeled visible entries, counting rejected pages as emitting zero | Excludes unresolved rater-disagreement pages; report these counts separately |
+| `effective_rank_recall_including_parser_abstentions` | TP / resolved labeled visible entries, counting rejected pages as emitting zero | Excludes unresolved A/B disagreement without validated C; report these counts separately |
 | `annotation_disagreement_ranks` | Positions where reviewer A/B lists differ | Unresolved pages **must not** be scored as ground truth |
-| `coverage_minimum_met` | >=30 agreed labeled rows and daily+weekly+monthly all represented | Documentary threshold **alone cannot verify genuine independent reviewers** |
-| `automated_documentary_check` | Pass only when pages have two agreeing annotations, supported windows, 30+ rows, and exact parser/label matches | **Not** access/ethics clearance, GitHub source attestation or cohort eligibility |
+| `coverage_minimum_met` | >=30 resolved labeled rows and daily+weekly+monthly all represented | Documentary threshold **alone cannot verify genuine independent reviewers** |
+| `automated_documentary_check` | Pass only when each page has two agreeing annotations **or** valid C adjudication, supported windows, 30+ resolved rows, and exact parser/label matches | **Not** access/ethics clearance, GitHub source attestation or cohort eligibility |
 | `scientific_status` | `synthetic_only_not_empirical_evidence` or `self_reported_requires_independent_human_and_source_review` | No tool output can autonomously certify human independence |
 | `eligible_for_confirmatory_cohort` | Always false here | Other study gates and external signoff remain missing |
 
@@ -61,7 +98,7 @@ No population sampling interval or CI can be inferred from three nonrandomly sel
 - [x] Added a **36-row synthetic test across all three global windows**—this is **not** the requested 30 real audited rows.
 - [ ] Review current GitHub robots/Terms via a reliable live source and obtain approval for actual repeat capture frequency.
 - [ ] Capture actual day/week/month pages at documented UTC times and preserve raw bytes/manifests.
-- [ ] Recruit two independent human annotators to label >=30 **real** source entries; document adjudication and signed independent review.
+- [ ] Recruit two independent human annotators to label >=30 **real** source entries; any genuine third-person adjudication and signed independent review are still pending.
 - [ ] Measure real TP/FP/FN/missed classes; quarantine/patch any supported layout drift.
 - [ ] Validate six language-filtered pages separately if included in the preregistered sampling frame.
 
