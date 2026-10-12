@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import re
 import tempfile
 import unittest
 from trending_study.task_intake import sample, IntakeError
@@ -123,6 +124,24 @@ class IntakeTests(unittest.TestCase):
         frame["sources"][0]["issues"][0]["body"] = "should never be copied into the public reduced frame"
         with self.assertRaisesRegex(IntakeError, "unexpected issue fields"):
             sample(frame)
+
+
+    def test_human_screen_queue_matches_deterministic_frame_selection(self):
+        frame = json.loads(CROSS_ECOSYSTEM_FRAME.read_text(encoding="utf-8"))
+        expected = {
+            item["source_url"]
+            for item in sample(frame)["ledger"]
+            if item["selection_status"] == "selected_for_independent_task_screen"
+        }
+        queue = (
+            Path(__file__).resolve().parents[1]
+            / "research-notes" / "task-screen-queue-2026-10-12.md"
+        ).read_text(encoding="utf-8")
+        actual = re.findall(r"\]\((https://github\.com/[^)]+/issues/\d+)\)", queue)
+        self.assertEqual(len(actual), 16)
+        self.assertEqual(set(actual), expected)
+        self.assertIn("unreviewed", queue.lower())
+        self.assertIn("not_frozen", queue)
 
 
 if __name__=="__main__":
