@@ -41,3 +41,9 @@ The fixture `tests/fixtures/trending.html` now has two unique valid rows. Malfor
 Submit a reviewable **real** pilot page-QA record: capture SHA, code commit, UTC page date/window, audit reviewers, selection frame, counts and denominators, TP/FP/FN, rank disagreements and exact unsupported layouts. Version the record and attach raw audit file only where distribution is permitted. The tool must not claim `verified` until this actually happens.
 
 Related: [pilot SOP](PILOT_CAPTURE_AND_PREFLIGHT.md), [capture immutability](CAPTURE_IMMUTABILITY_2026_10_12.md), [selection](SELECTION_PROTOCOL_2027.md), [source ethics](ETHICS.md), [readiness gates](PROTOCOL_FREEZE_STATUS_2026_10_12.md).
+
+## Offline, independent full-page annotation instrument (2026-10-12 addition)
+
+The new [two-reviewer QA workflow](PAGE_QA_INDEPENDENT_AUDIT_2026_10_12.md) compares the existing strict parser against separately submitted *whole-page* references and records missed off-selector rows, rank errors, two-reviewer disagreement and optional third-reviewer adjudication. It can aggregate self-reported documentary coverage across windows but cannot independently prove reviewer identity or a legally permitted source fetch. The committed examples remain synthetic. **No real >30-row human audit has occurred under this implementation.**
+
+**Source stop gate:** the retrieved [GitHub robots.txt](https://github.com/robots.txt) general crawler rules disallow `/*since=*`, including current CLI `/trending?since=...` URLs. Do not run live automated collection without an independent allowed-access determination; revise the data source or seek appropriate permission instead of evading controls. The offline QA command makes no network calls.
