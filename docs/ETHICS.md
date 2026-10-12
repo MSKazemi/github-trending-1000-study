@@ -22,3 +22,7 @@
 - No forced ranking of niche/educational/public-interest software as 'garbage'. Evaluate against declared function and audience.
 - A verified reusable candidate requires documented permission/license/compatible obligation checks; repository publicity does not establish right to copy.
 - Evaluator contamination from known public patches/AI training and self-authored acceptance suites needs independent review.
+
+## Trending source-access review checkpoint (2026-10-12)
+
+At this checkpoint, the retrieved official [GitHub robots.txt](https://github.com/robots.txt) lists `Disallow: /*since=*` under `User-agent: *`, covering the repository's present `/trending?since=...` URLs. The official [GitHub Acceptable Use Policies](https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies) restrict automated excessive activity and condition research use of public, non-personal information. Do not infer collection permission from a green parser test, public page visibility or the general research-use clause. **Pause those URL fetches until source-access authority is actually verified by a human reviewer.** Recheck policies when deciding a future capture method, and preserve the negative permission decision if authorization is unavailable. The newly implemented independent page-QA utility reads only local files; it is not a workaround for obtaining unpermitted HTML.
