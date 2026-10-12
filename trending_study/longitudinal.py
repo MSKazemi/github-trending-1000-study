@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -25,6 +26,19 @@ FOLLOWUP_DAYS = (30, 90, 180)
 REPO_NAME = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
+EVENT_ID = re.compile(r"^[0-9a-f]{32}$")
+EVENT_COMMON = frozenset((
+    "schema_version", "event_id", "plan_sha256", "task_id", "study_id",
+    "repository_id", "followup_days", "scheduled_at_utc", "expires_at_utc",
+    "observed_at_utc", "status",
+))
+EVENT_REQUEST = frozenset((
+    "api_url", "http_status", "full_name_at_followup", "stars", "forks",
+    "open_issues_including_prs", "observed_repository_id",
+    "response_date_header", "rate_limit_remaining",
+    "rate_limit_reset_epoch", "lag_seconds",
+))
+EVENT_MISSED = frozenset(("http_status", "stars", "reason"))
 FINAL_STATES = frozenset(("ok", "missed_window", "late_observation"))
 EVENT_STATES = FINAL_STATES | frozenset((
     "http_error", "not_found_or_private_or_renamed", "rate_limited",
@@ -47,6 +61,15 @@ def utc(value, field):
     if stamp.tzinfo is None or stamp.utcoffset() != timedelta(0):
         raise FollowupError(f"{field}: UTC offset must be explicitly +00:00 or Z")
     return stamp.astimezone(timezone.utc)
+
+
+def valid_repo_name(value):
+    """Reject path-special segments accepted by a permissive owner/repo regex."""
+    return (
+        isinstance(value, str)
+        and REPO_NAME.fullmatch(value) is not None
+        and all(segment not in (".", "..") for segment in value.split("/"))
+    )
 
 
 def is_natural(value):
@@ -104,7 +127,7 @@ def make_plan(raw_baselines, grace_days):
         if row.get("metadata_status") != "ok":
             raise FollowupError(f"{loc}: no successful baseline metadata snapshot")
         name = text(row.get("full_name_at_enrichment"), loc + " full_name")
-        if not REPO_NAME.fullmatch(name):
+        if not valid_repo_name(name):
             raise FollowupError(f"{loc}: invalid repository full name")
         stars = row.get("stars")
         if not is_natural(stars):
@@ -181,7 +204,7 @@ def load_plan(path):
             study, rid, baseline.isoformat(), days, grace, protocol
         ):
             raise FollowupError("plan task ID does not match immutable parameters")
-        if not REPO_NAME.fullmatch(text(row.get("full_name_at_baseline"), "plan.full_name")):
+        if not valid_repo_name(text(row.get("full_name_at_baseline"), "plan.full_name")):
             raise FollowupError("plan repository name is invalid")
         if not is_natural(row.get("baseline_stars")):
             raise FollowupError("plan has invalid baseline stars")
@@ -199,6 +222,75 @@ def load_plan(path):
     return plan, by_id, sha256(raw).hexdigest()
 
 
+def validate_event(record, task):
+    """Check event/plan consistency, not authentic GitHub observations.
+
+    Structural checks cannot detect a deliberately forged but self-consistent
+    unsigned event. Independent source/protocol verification remains required.
+    """
+    status = record["status"]
+    expected = EVENT_COMMON | (EVENT_MISSED if status == "missed_window" else EVENT_REQUEST)
+    if set(record) != expected:
+        missing, extra = sorted(expected - set(record)), sorted(set(record) - expected)
+        raise FollowupError(f"event fields mismatch; missing={missing}, extra={extra}")
+    if record["study_id"] != task["study_id"]:
+        raise FollowupError("event study ID conflicts with frozen plan")
+    for field in ("scheduled_at_utc", "expires_at_utc"):
+        if record[field] != task[field]:
+            raise FollowupError(f"event {field} conflicts with frozen plan")
+    if not isinstance(record["event_id"], str) or not EVENT_ID.fullmatch(record["event_id"]):
+        raise FollowupError("event ID must be 32 lowercase hexadecimal characters")
+
+    observed = utc(record["observed_at_utc"], "event.observed_at_utc")
+    due = utc(task["scheduled_at_utc"], "plan.scheduled_at_utc")
+    expiry = utc(task["expires_at_utc"], "plan.expires_at_utc")
+    if observed < due:
+        raise FollowupError("event observation precedes scheduled follow-up")
+    if status == "ok" and observed > expiry:
+        raise FollowupError("event ok is outside its prespecified observation window")
+    if status in ("missed_window", "late_observation") and observed <= expiry:
+        raise FollowupError("event missed/late status contradicts observation window")
+
+    code = record["http_status"]
+    if code is not None and (type(code) is not int or not 100 <= code <= 599):
+        raise FollowupError("event HTTP status must be valid integer or null")
+    if status == "missed_window":
+        if code is not None or record["stars"] is not None:
+            raise FollowupError("missed follow-up may not report a fetch or stars")
+        text(record["reason"], "missed_window.reason")
+        return
+
+    prefix = "https://api.github.com/repos/"
+    api = record["api_url"]
+    if not isinstance(api, str) or not api.startswith(prefix) or not valid_repo_name(api[len(prefix):]):
+        raise FollowupError("event API URL is not the expected official repository path")
+    for field in ("rate_limit_remaining", "rate_limit_reset_epoch"):
+        if record[field] is not None and not is_natural(record[field]):
+            raise FollowupError(f"event {field} must be nonnegative integer or null")
+    if record["response_date_header"] is not None and not isinstance(record["response_date_header"], str):
+        raise FollowupError("event response date header must be text or null")
+    actual_id = record["observed_repository_id"]
+    if actual_id is not None and (type(actual_id) is not int or actual_id <= 0):
+        raise FollowupError("event observed repository ID must be a positive integer or null")
+    lag = record["lag_seconds"]
+    if (isinstance(lag, bool) or not isinstance(lag, (int, float))
+            or not math.isfinite(lag)
+            or abs(lag - (observed - due).total_seconds()) > 0.002):
+        raise FollowupError("event lag does not match observed/scheduled timestamps")
+
+    if status in ("ok", "late_observation"):
+        if code != 200 or actual_id != task["repository_id"]:
+            raise FollowupError("success requires HTTP 200 and exact stable repository ID")
+        if not valid_repo_name(record["full_name_at_followup"]):
+            raise FollowupError("success has invalid repository full name")
+        for field in ("stars", "forks", "open_issues_including_prs"):
+            if not is_natural(record[field]):
+                raise FollowupError(f"success has missing/invalid {field}")
+    elif any(record[field] is not None for field in
+             ("stars", "forks", "open_issues_including_prs")):
+        raise FollowupError("failed or uncertain event must not contain success counters")
+
+
 def load_events(events_dir, plan_by_id, plan_digest):
     path = Path(events_dir)
     events = {key: [] for key in plan_by_id}
@@ -208,6 +300,8 @@ def load_events(events_dir, plan_by_id, plan_digest):
         raise FollowupError("events-dir exists but is not a directory")
     ids = set()
     for item in sorted(path.glob("*.json")):
+        if item.is_symlink():
+            raise FollowupError(f"symlinked event is not an immutable record: {item}")
         try:
             record = json.loads(item.read_text(encoding="utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -227,7 +321,7 @@ def load_events(events_dir, plan_by_id, plan_digest):
         ids.add(event_id)
         if record.get("status") not in EVENT_STATES:
             raise FollowupError(f"unrecognized event status in {item}")
-        utc(record.get("observed_at_utc"), "event.observed_at_utc")
+        validate_event(record, expected)
         events[key].append(record)
     return events
 
@@ -279,7 +373,7 @@ def _headers_data(headers):
 
 def _request_snapshot(task, name, opener, token, clock):
     """One official REST get; no retry or sleep, no arbitrary URL execution."""
-    if not REPO_NAME.fullmatch(name):
+    if not valid_repo_name(name):
         raise FollowupError("unsafe repository name")
     url = "https://api.github.com/repos/" + name
     headers = {
@@ -322,7 +416,7 @@ def _request_snapshot(task, name, opener, token, clock):
                 stop = True
             else:
                 current_name = info.get("full_name")
-                if not isinstance(current_name, str) or not REPO_NAME.fullmatch(current_name):
+                if not valid_repo_name(current_name):
                     raise ValueError("invalid returned repository name")
                 for key in ("stargazers_count", "forks_count", "open_issues_count"):
                     if not is_natural(info.get(key)):
