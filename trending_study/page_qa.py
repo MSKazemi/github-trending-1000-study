@@ -124,9 +124,10 @@ def validate_review(review, slot, *, raw_sha, manifest_sha, capture_time):
 
 def _conflicts(a, b):
     conflicts = []
+    absent = object()  # Missing rows differ from explicitly unreadable rows.
     for rank in range(1, max(len(a), len(b)) + 1):
-        one = a[rank - 1] if rank <= len(a) else None
-        two = b[rank - 1] if rank <= len(b) else None
+        one = a[rank - 1] if rank <= len(a) else absent
+        two = b[rank - 1] if rank <= len(b) else absent
         if one != two:
             conflicts.append(rank)
     return conflicts
