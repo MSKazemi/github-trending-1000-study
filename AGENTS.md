@@ -83,3 +83,9 @@
 ## Planned task-trial instrumentation guard (#25)
 - Use [trial pilot instrument](docs/TRIAL_PILOT_INSTRUMENT.md) only to validate prospective **synthetic or independently authorized opt-in pilot** records. Verify frame SHA binding, write-once assignment, all randomized task outcomes including refused/abandoned/pending and actual consent; no pilot data is authenticated by the script.
 - A public deterministic assignment seed is not allocation concealment or a real preregistration; do not convert public issue intake leads to trial participants automatically. Keep hidden acceptance tests independently authored and out of agent context.
+
+## Offline Trending page QA and access gate (#2, 2026-10-12)
+
+- Read [full-page independent QA](docs/PAGE_QA_INDEPENDENT_AUDIT_2026_10_12.md) before any real Trending capture claim. The existing `capture` route includes `?since=...`, which matches a retrieved `robots.txt` disallow rule for general bots; **do not use automated live fetches against such URLs without independently documented permission and a current source-policy check**.
+- Use the new standard-library offline `python -m trending_study.page_qa audit` with immutable capture+manifest evidence and separate genuine human A/B full-page visual annotations; C can adjudicate only documented disagreement/ambiguity. The synthetic example is not a human review.
+- Metrics are finite-page rank-sensitive and identity-only TP/FP/FN/precision/recall. No reviewer identity, complete source coverage or allowed data rights is authenticated by the CLI. Aggregates never set cohort eligibility. Include off-selector/ambiguous entries and missing captures; no selective positive-result reporting.
