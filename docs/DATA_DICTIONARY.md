@@ -117,3 +117,13 @@ Counter deltas can be negative. No follow-up in this schema currently constitute
 ## Supported-selector completeness diagnostic (2026-10-12, NOT live QA)
 
 Strict pilot audit includes `selector_box_row_count` (number of matched `article.Box-row` elements in the **saved** HTML), `structural_parser_status` (`matched_selector_rows_consistent` or `not_separately_instrumented` when no inspector supplied), and `structural_scope_warning`. Every supported article must contribute exactly one validated, nonduplicate repository and preserve its rank. The original `parser_qa_status` stays `requires_independent_manual_audit`. **Selector coverage is not total visible-page recall.** See [verification plan](PARSER_STRUCTURE_QA_2026_10_12.md).
+
+## Proposed independent page-QA records (2026-10-12; NOT observed data)
+
+The new offline `trending_study.page_qa` workflow accepts a saved raw+manifest pair, and two separately prepared whole-page reviewer records. This **does not** attest to human independence, permitted access or live GitHub accuracy. Each submitted `page-qa-review-1.0` record contains `dataset_kind=synthetic|pilot`, `reviewer_slot=A|B|C`, pseudonymous `reviewer_ref`, UTC `reviewed_at_utc`, immutable `source_sha256` and `manifest_sha256`, `coverage=all_displayed_rows`, source-appropriate `inspection_mode`, complete consecutive `rows[]` (`rank`, `repository` or null, `note`) and an optional adjudication `decision_note` (required for C). Unknown repository names have a reason; rows must never be silently omitted.
+
+`page-qa-report-1.0` binds to capture/manifest digests, source window and observation date; preserves reviewer disagreement positions, manual/parsed row counts, rank-sensitive and identity-only TP/FP/FN plus finite-page precision/recall where fully resolved. Unresolved disagreement/ambiguity yields `metrics=null`. Pilot mismatches yield `qa_status=parser_mismatch_needs_revision`. An otherwise internally consistent pilot page yields only `requires_external_human_signoff`, never `verified`.
+
+`page-qa-summary-1.0` pools resolved-page counts across distinct capture *manifest hashes* and notes whether the **self-reported** minimum of >=30 fully reviewed visible rows spanning daily/weekly/monthly was reached. A protocol/sample reviewer must independently verify source rights, full rendered pages, annotations and QA before using data. `status` can remain blocked for mismatches, insufficient coverage or unresolved review, and `cohort_enrollment_status=not_enrolled` always. No confidence interval, approval, real 1,000-repo sample or sustainability effect is derived.
+
+Read [independent page-QA protocol and CLI](PAGE_QA_INDEPENDENT_AUDIT_2026_10_12.md) and [source rights limits](ETHICS.md).
