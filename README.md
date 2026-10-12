@@ -237,3 +237,17 @@ python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json
 ```
 
 **Important:** both fixtures are **synthetic only**; no task trial, recruited participants, study preregistration, independent human review, verified reuse outcome or energy saving has occurred. [Start-of-study checkpoint (2026-10-12)](docs/TASK_TRIAL_START_2026-10-12.md) records the decisions, engineering scope and next approval gates. This is a bounded partial contribution to [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), which remains open pending independent protocol/ethics review, power simulation and a real pilot.
+
+
+## Independent Github Trending page QA (2026-10-12, Issue #2)
+
+The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
+
+[Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
+
+```bash
+python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
+  --output data/processed/qa-report.json --min-rows 30 --require-consistent
+```
+
+Populate the bundle **only after permitted captures and independent human labeling**. The committed test suite simulates 36 rows across daily/weekly/monthly, but these are synthetic: **no current raw Trending captures or >=30 real row human audit were obtained**. Direct source access was unavailable in this runtime, and independent access/legal review remains outstanding. [Issue #2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) must remain open.

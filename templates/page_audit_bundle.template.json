@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "field_self_reported",
+  "pages": [
+    {
+      "raw_path": "EXACT_RAW_CAPTURE.html",
+      "manifest_path": "EXACT_RAW_CAPTURE.manifest.json",
+      "reviewers": [
+        {
+          "schema_version": "1.0",
+          "reviewer_id": "REVIEWER_A_PSEUDONYM",
+          "reviewed_at_utc": "YYYY-MM-DDTHH:MM:SS+00:00",
+          "blind_to_parser_output": true,
+          "source_sha256": "SHA256_FROM_MANIFEST",
+          "source_url": "https://github.com/trending?since=daily",
+          "captured_at_utc": "YYYY-MM-DDTHH:MM:SS+00:00",
+          "window": "daily",
+          "rows": [
+            {
+              "rank": 1,
+              "repository": "owner/repository"
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "reviewer_id": "REVIEWER_B_PSEUDONYM",
+          "reviewed_at_utc": "YYYY-MM-DDTHH:MM:SS+00:00",
+          "blind_to_parser_output": true,
+          "source_sha256": "SHA256_FROM_MANIFEST",
+          "source_url": "https://github.com/trending?since=daily",
+          "captured_at_utc": "YYYY-MM-DDTHH:MM:SS+00:00",
+          "window": "daily",
+          "rows": [
+            {
+              "rank": 1,
+              "repository": "owner/repository"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
