@@ -91,6 +91,7 @@ def make_plan(raw_baselines, grace_days):
     rows = jsonl_data(raw_baselines, "baseline")
     source_sha = sha256(raw_baselines).hexdigest()
     seen = set()
+    cohort_identity = None
     records = []
     for index, row in enumerate(rows, 1):
         loc = f"baseline row {index}"
@@ -119,6 +120,11 @@ def make_plan(raw_baselines, grace_days):
         protocol = text(row.get("protocol_commit"), loc + " protocol_commit")
         if not HEX40.fullmatch(protocol):
             raise FollowupError(f"{loc}: protocol_commit must be a fixed 40-hex SHA")
+        identity = (study_id, approval, protocol)
+        if cohort_identity is None:
+            cohort_identity = identity
+        elif identity != cohort_identity:
+            raise FollowupError("cannot combine different study/protocol/approval frames in one schedule")
         for days, grace in zip(FOLLOWUP_DAYS, grace_days):
             due = stamp + timedelta(days=days)
             end = due + timedelta(days=grace)
@@ -149,12 +155,17 @@ def load_plan(path):
     raw = Path(path).read_bytes()
     plan = jsonl_data(raw, "plan")
     by_id = {}
+    cohort_identity = None
+    repo_days = set()
     for row in plan:
         if row.get("schema_version") != PLAN_VERSION:
             raise FollowupError("unsupported plan version")
         rid, days, grace = row.get("repository_id"), row.get("followup_days"), row.get("grace_days")
-        if type(rid) is not int or rid <= 0 or days not in FOLLOWUP_DAYS:
+        if type(rid) is not int or rid <= 0 or type(days) is not int or days not in FOLLOWUP_DAYS:
             raise FollowupError("plan has invalid ID or follow-up days")
+        if (rid, days) in repo_days:
+            raise FollowupError("plan repeats a repository/horizon")
+        repo_days.add((rid, days))
         if type(grace) is not int or grace < 0 or grace > 60:
             raise FollowupError("plan has invalid grace duration")
         baseline = utc(row.get("baseline_at_utc"), "plan.baseline_at_utc")
@@ -176,7 +187,12 @@ def load_plan(path):
             raise FollowupError("plan has invalid baseline stars")
         if not isinstance(row.get("cohort_input_sha256"), str) or not HEX64.fullmatch(row["cohort_input_sha256"]):
             raise FollowupError("plan is missing source evidence hash")
-        text(row.get("cohort_approval_ref"), "plan.cohort_approval_ref")
+        approval = text(row.get("cohort_approval_ref"), "plan.cohort_approval_ref")
+        identity = (study, protocol, approval, row["cohort_input_sha256"])
+        if cohort_identity is None:
+            cohort_identity = identity
+        elif identity != cohort_identity:
+            raise FollowupError("plan has mixed cohort/protocol/source provenance")
         if row["task_id"] in by_id:
             raise FollowupError("duplicate follow-up task_id")
         by_id[row["task_id"]] = row
@@ -201,6 +217,10 @@ def load_events(events_dir, plan_by_id, plan_digest):
         key = record.get("task_id")
         if key not in events or record.get("plan_sha256") != plan_digest:
             raise FollowupError(f"event does not belong to the immutable plan: {item}")
+        expected = plan_by_id[key]
+        if (record.get("repository_id") != expected["repository_id"]
+                or record.get("followup_days") != expected["followup_days"]):
+            raise FollowupError(f"event identity or horizon mismatch: {item}")
         event_id = text(record.get("event_id"), "event_id")
         if event_id in ids:
             raise FollowupError("duplicate event_id")
@@ -336,6 +356,8 @@ def _request_snapshot(task, name, opener, token, clock):
         stop = True
     except (UnicodeDecodeError, ValueError):
         result["status"] = "invalid_response"
+        stop = True
+    if result["rate_limit_remaining"] is not None and result["rate_limit_remaining"] <= 1:
         stop = True
     observed = clock()
     result["observed_at_utc"] = observed.isoformat()
