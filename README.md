@@ -255,7 +255,7 @@ python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json
 
 The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. For a genuine A/B disagreement, the same command now also accepts an **optional third reviewer-C adjudication record**; original A/B disagreement and the separate C decision remain visible, never self-certifying reviewer independence. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
 
-[Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
+Use optional `--markdown-output <new-summary.md>` for a write-once **derived** review table; the JSON report remains canonical, and neither output proves human independence. [Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
 
 ```bash
 python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
