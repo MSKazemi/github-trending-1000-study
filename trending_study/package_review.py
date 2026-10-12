@@ -37,9 +37,12 @@ def evaluate(data):
     candidate = data.get("candidate")
     if not isinstance(candidate, dict):
         raise PackageReviewError("candidate object required")
-    for key in ("ecosystem", "package_name", "version", "spdx_expression"):
+    for key in ("ecosystem", "package_name", "version"):
         if not isinstance(candidate.get(key), str) or not candidate[key].strip():
             raise PackageReviewError(f"candidate.{key} required")
+    spdx = candidate.get("spdx_expression")
+    if spdx is not None and (not isinstance(spdx, str) or not spdx.strip()):
+        raise PackageReviewError("spdx_expression must be nonempty text or null if unknown")
     url = candidate.get("registry_url")
     if not isinstance(url, str):
         raise PackageReviewError("registry_url required")
@@ -63,10 +66,15 @@ def evaluate(data):
         cell = checks[key]
         if not isinstance(cell, dict) or cell.get("status") not in STATES:
             raise PackageReviewError(f"{key} must declare pass/fail/unknown")
-        if cell["status"] == "pass" and (
-            not isinstance(cell.get("evidence_url"), str) or not cell["evidence_url"].startswith("https://")
-        ):
-            raise PackageReviewError(f"{key} pass requires HTTPS evidence_url")
+        if cell["status"] == "pass":
+            source = cell.get("evidence_url")
+            if not isinstance(source, str):
+                raise PackageReviewError(f"{key} pass requires HTTPS evidence_url")
+            evidence = urlparse(source)
+            if evidence.scheme != "https" or not evidence.netloc or evidence.username is not None:
+                raise PackageReviewError(f"{key} pass requires valid HTTPS evidence_url")
+            if key == "license_compatibility" and not spdx:
+                raise PackageReviewError("license pass requires a declared SPDX expression")
         if cell["status"] == "fail":
             failed.append(key)
         elif cell["status"] == "unknown":
