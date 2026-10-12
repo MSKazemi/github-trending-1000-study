@@ -8,6 +8,7 @@ import unittest
 from trending_study.task_intake import sample, IntakeError
 
 FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.public_2026-10-12.json"
+CROSS_ECOSYSTEM_FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.cross_ecosystem_2026-10-12.json"
 
 class IntakeTests(unittest.TestCase):
     def frame(self):
@@ -90,6 +91,38 @@ class IntakeTests(unittest.TestCase):
         x["selection_seed"] = " "
         with self.assertRaisesRegex(IntakeError, "seed"):
             sample(x)
+
+
+    def test_cross_ecosystem_public_metadata_frame_is_bounded_and_unreviewed(self):
+        frame = json.loads(CROSS_ECOSYSTEM_FRAME.read_text(encoding="utf-8"))
+        self.assertEqual(frame["dataset_kind"], "public_issue_intake_unreviewed")
+        self.assertEqual(frame["per_repo_target"], 3)
+        self.assertEqual(len(frame["sources"]), 6)
+        self.assertEqual(sum(len(src["issues"]) for src in frame["sources"]), 90)
+        self.assertTrue(all(len(src["issues"]) == src["per_page"] == 15 for src in frame["sources"]))
+        result = sample(frame)
+        self.assertEqual(result["total_rows"], 90)
+        self.assertEqual(result["selected_issue_candidates"], 16)
+        self.assertEqual(sum(row["selection_status"] == "excluded_pr_not_issue" for row in result["ledger"]), 46)
+        self.assertEqual(sum(row["selection_status"] == "eligible_issue_not_sampled" for row in result["ledger"]), 28)
+        self.assertEqual(len({row["issue_id"] for row in result["ledger"]}), 90)
+        self.assertEqual(
+            [r["selected"] for r in result["per_repo"]],
+            [3, 3, 3, 3, 2, 2],
+        )
+        for row in result["ledger"]:
+            self.assertEqual(row["reuse_opportunity"], "unknown")
+            self.assertEqual(row["task_spec_status"], "not_frozen")
+            self.assertEqual(row["independent_acceptance_status"], "not_frozen")
+            self.assertEqual(row["experiment_enrollment_status"], "not_eligible_unreviewed")
+            if row["selection_status"] == "selected_for_independent_task_screen":
+                self.assertIn("/issues/", row["source_url"])
+
+    def test_cross_ecosystem_source_frame_rejects_privacy_leak(self):
+        frame = json.loads(CROSS_ECOSYSTEM_FRAME.read_text(encoding="utf-8"))
+        frame["sources"][0]["issues"][0]["body"] = "should never be copied into the public reduced frame"
+        with self.assertRaisesRegex(IntakeError, "unexpected issue fields"):
+            sample(frame)
 
 
 if __name__=="__main__":
