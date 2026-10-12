@@ -47,6 +47,19 @@ class LessonRegistryTests(unittest.TestCase):
         with self.assertRaises(LessonError):
             audit(p)
 
+    def test_nonfinite_estimate_rejected(self):
+        p = hypothesis()
+        x = p["lessons"][0]
+        x.update(status="validated_for_context", evidence_grade="E4",
+                 sources=[{"url": "https://example.org/paper",
+                           "published_at_utc": "2026-10-11T12:00:00Z"}],
+                 observed_data_ref="registry:snapshot-1", analyst="alice",
+                 independent_reviewer="bob", reviewed_at_utc="2026-10-12T12:00:00Z",
+                 analysis_commit="a"*40, sample_n=10, effect_size=float("nan"),
+                 interval=[-1, 1])
+        with self.assertRaises(LessonError):
+            audit(p)
+
     def test_duplicate_id(self):
         p = hypothesis()
         p["lessons"].append(dict(p["lessons"][0]))
