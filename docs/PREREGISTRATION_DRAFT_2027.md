@@ -49,3 +49,8 @@ GitHub Trending exposes attention, not independent software quality. Coding agen
 **Current source evidence and literature:** [Agent timeline](AGENT_RELEASE_ADOPTION_TIMELINE.md), [Selection](SELECTION_PROTOCOL_2027.md), [Existing design](STUDY_DESIGN.md), [Gold standard](REUSE_GOLD_STANDARD_2027.md), [AI experiment](REUSE_FIRST_EXPERIMENT.md), [Energy metrics](REUSE_SUSTAINABILITY_METRICS.md), [Claim ledger](CLAIM_LEDGER.md), [Science governance](SCIENTIFIC_GOVERNANCE_2027.md), [2027–2031 roadmap](FIVE_YEAR_ROADMAP_2027_2031.md).
 
 **This text is deliberately not a completed or frozen preregistration**. Amend with version, date, reviewers, rationale and exact code/data source once pilot evidence exists.
+
+
+## Decision reconciliation (2026-10-12)
+
+Before approving or registering this v0.3 draft, resolve all dated cross-document choices in [the protocol reconciliation register](PROTOCOL_RECONCILIATION_DECISIONS_2026_10_12.md). That register is **review guidance only**, not approval or registration, and explicitly preserves Study A (visibility) and Study B (independent user-task/reuse) endpoints, the inability to treat 2024 as AI-free, actual implemented capture surfaces, and the unresolved ethical/statistical gates.
