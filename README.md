@@ -17,6 +17,7 @@
 
 ## Start here
 - [Research protocol](docs/PROTOCOL.md) — operational definitions, sampling, confounding and analysis.
+- [**Scientific protocol reconciliation and outstanding decisions**](docs/PROTOCOL_RECONCILIATION_DECISIONS_2026_10_12.md) — conflict register for Study A/Study B and evidence gates. **Reviewer proposals only; no approved or frozen preregistration.**
 - [Data dictionary](docs/DATA_DICTIONARY.md) — schema, missingness and provenance.
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
@@ -27,6 +28,7 @@
 - [Observed sampling visualization CLI](docs/SAMPLING_VISUALIZATION_CLI.md) — offline F01 SVG and T02 Markdown/JSON audit; **not empirical findings**.
 - [Publication figures and tables](docs/FIGURE_TABLE_PLAN_2027_2031.md) — proposed **18 figures and 14 tables** across 2027 observational research and conditional 2028–2031 trials; **no empirical results yet**. [Machine-readable register](references/figure_table_register_2027.json).
 - [**One-repository, reuse-first first-use pilot (offline synthetic)**](docs/FIRST_USE_REUSE_PILOT_2026_10_12.md) — reproducible existing-CLI task, testable fail-closed output, source/uncertainty and build-vs-reuse decision card; **not a recruited user study or measured cost/energy benefit**. [Evidence card](examples/first_use_reuse_pilot.example.json).
+- **[News, scientific journal and conference evidence watch (2026–2027)](docs/SOURCE_MONITORING_AND_JOURNALS_2027.md)** — research windows, journals and verified 2027 submission dates; [49-source curated watch register](references/source_watch_2026.json). The weekly briefing configuration is currently **disabled**.
 
 ## Install & run
 
@@ -279,3 +281,27 @@ Populate the bundle **only after permitted captures and independent human labeli
 - [Initial dated source-checked company news leads](research-notes/company-intelligence-initial-leads-2026-10-12.md) — examples only; all full company reviews pending
 
 The index and watchlist are **editorial, non-ranked snapshots**, not empirical firm-performance/market-share datasets; future plans and vendor assertions are not verified outcomes.
+
+## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
+
+- [**2027–2031 technology outlook: programming, applications, operating systems, LLMs and agents**](docs/STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md) — source-checked 2026 forecast vintage, *uncertain falsifiable* scenarios, practical 2027 implementation and measurement gates; [**18-source, nine-forecast, seven-metric register**](references/industry_technology_outlook_2026_10_12.json); [issue #58](https://github.com/MSKazemi/github-trending-1000-study/issues/58). **Not personal views of any real executive, a completed empirical study, or a protocol amendment.**
+
+
+
+## October 2026: bounded human/agent cost ledger (offline, synthetic only)
+
+The [task-cost ledger audit](docs/TASK_COST_LEDGER_2026-10-12.md) extends the existing **all-assigned-task** randomized-trial instrument with privacy-minimized human work intervals, model/tool/retry/CI event counts, provider token quantities, provenance-tagged USD event amounts, missingness-aware summaries, and predeclared budget alerts. **It does not collect live agent telemetry, authenticate consent, observe real participants, calculate carbon, or prove productivity effects.**
+
+```bash
+python -m trending_study.trial assign \
+  --frame examples/trial_frame.synthetic.json \
+  --output /tmp/assigned-costs.synthetic.json
+python -m trending_study.task_costs \
+  --frame examples/trial_frame.synthetic.json \
+  --assignments /tmp/assigned-costs.synthetic.json \
+  --outcomes examples/trial_outcomes.synthetic.json \
+  --input examples/task_costs.synthetic.json \
+  --output /tmp/task-costs-report.synthetic.json
+```
+
+All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.

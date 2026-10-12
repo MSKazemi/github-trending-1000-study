@@ -129,3 +129,22 @@ These rules check **internal JSON consistency**. They cannot authenticate extern
 
 ## Independent page QA report v1.0 (2026-10-12, NOT empirical outcome schema)
 A separate offline `audit-pages` source-validation report has `schema_version=1.0`, `evidence_kind=synthetic_fixture|field_self_reported`, `pages[]`, capture manifest SHA/source URL/window/UTC, `reviewer_ids` (pseudonyms), `reviewer_agreement`, `annotation_disagreement_ranks`, per-page `page_status` and `parser_status`, `correct_identity_at_rank`, `gold_rows`, `emitted_rows`, `false_positives_including_rank_errors`, `false_negatives_including_rank_errors`, `precision_on_emitted_rows`, `effective_rank_recall`; and cross-page totals, `coverage_minimum_met`, `automated_documentary_check` and `scientific_status`. Page disagreements produce null scores; rejected pages contribute zero emitted rows and their agreed labels to missed operational coverage. `eligible_for_confirmatory_cohort=false` **always**. Note that QA counts use exact *rank AND identity*, not independent unique repository IDs or overall Github prevalence. See [definitions and limitations](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+
+## Proposed opt-in task cost ledger v1.0 (offline instrument; not Trending metadata)
+
+Separate from public GitHub observations and the task-trial outcomes, `trending_study.task_costs` validates a privacy-minimized per-task cost ledger. See [complete schema and example](TASK_COST_LEDGER_2026-10-12.md).
+
+| Column or object | Type | Meaning / missingness |
+|---|---|---|
+| `schema_version, dataset_kind, protocol_id` | strings | Must match the frozen trial source and its synthetic/pilot scope. |
+| `task_costs[].task_id` | pseudonymous string | Exactly one for every randomized task, including abandoned/refused/pending. |
+| `coverage.human/events/monetary` | complete/partial/missing | Explicit self-reported observation quality; partial/missing values must not be coerced to zero. |
+| `human_intervals[].actor_slot/category/started_at_utc/ended_at_utc` | opaque slot + enum + UTC timestamps | No names; cannot infer identity; overlapping slots rejected. |
+| `agent_events[].event_id/session_id/kind` | opaque IDs + enum | Supports model/tool/CI/retry/idle event markers; no prompt or code content. |
+| `agent_events[].input_tokens/output_tokens/cached_input_tokens` | nonnegative int/null | Provider-dependent; cached input is a subset of input when reported, not additional tokens. |
+| `agent_events[].amount_usd/cost_basis` | decimal string/null + enum/null | Explicit `provider_billed`, `provider_estimate`, or `synthetic`; no conversion to kWh. |
+| `budget` | object/null | Optional self-declared timestamped caps for human time, tools, retries, observed event USD; not enforced automatically. |
+| `report.overall/by_arm/tasks` | derived report | Cohort and per-task missing-aware summaries tied to audited frame, assignment and outcomes canonical SHA digests. |
+
+**Data-handling rule:** no raw prompts, user identities, proprietary source code, agent tool arguments, credentials, or other uncontrolled session traces in the public repository. Consent/ethics approval cannot be proven by a string, and this version performs no automatic data acquisition. A local SHA256 proves input **content consistency only**; it is not attestation of real consent, collection time or scientific validity.
