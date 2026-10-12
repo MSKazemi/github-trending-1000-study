@@ -7,7 +7,7 @@ python -m trending_study.package_review --input REVIEW.json
 python -m unittest tests.test_package_review -v
 ```
 
-The JSON includes `candidate`: `ecosystem`, `package_name`, exact `version`, `registry_url` (HTTPS without embedded secrets), `artifact_sha256`, `first_available_at_utc`, `spdx_expression`; `task_frozen_at_utc`; and the exact six `checks` keys: `registry_identity`, `license_compatibility`, `known_advisories`, `release_provenance`, `functional_fit`, `maintenance_suitability`. Each check declares `status: pass|fail|unknown` and a pass has an HTTPS `evidence_url`.
+The JSON includes `candidate`: `ecosystem`, `package_name`, exact `version`, `registry_url` (HTTPS without embedded secrets), `artifact_sha256`, `first_available_at_utc`, `spdx_expression` (null means unknown and cannot be a license pass); `task_frozen_at_utc`; and the exact six `checks` keys: `registry_identity`, `license_compatibility`, `known_advisories`, `release_provenance`, `functional_fit`, `maintenance_suitability`. Each check declares `status: pass|fail|unknown` and a pass has an HTTPS `evidence_url`.
 
 **Decision rules:** any supplied failed gate ⇒ `reject`; unknown ⇒ `defer`; all pass ⇒ `review_ready` **not install approval**. A first-availability timestamp after the frozen user task is rejected to avoid retrospective leakage. All reported checks are self-declared; HTTPS format does **not** authenticate the registry, digest, reviewer, file content, OSV feed, source or release history.
 
