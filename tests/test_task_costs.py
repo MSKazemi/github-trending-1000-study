@@ -171,6 +171,24 @@ class TaskCostTests(unittest.TestCase):
         with self.assertRaisesRegex(CostAuditError, "missing human"):
             audit_costs(frame, allocations, outcomes, ledger)
 
+    def test_structured_enum_injections_fail_as_validation_errors(self):
+        frame, allocations, outcomes, ledger = inputs()
+        ledger["task_costs"][0]["coverage"]["events"] = []
+        with self.assertRaises(CostAuditError):
+            audit_costs(frame, allocations, outcomes, ledger)
+        frame, allocations, outcomes, ledger = inputs()
+        ledger["task_costs"][0]["agent_events"][0]["kind"] = {"unknown": True}
+        with self.assertRaises(CostAuditError):
+            audit_costs(frame, allocations, outcomes, ledger)
+        frame, allocations, outcomes, ledger = inputs()
+        ledger["task_costs"][0]["human_intervals"][0]["category"] = []
+        with self.assertRaises(CostAuditError):
+            audit_costs(frame, allocations, outcomes, ledger)
+        frame, allocations, outcomes, ledger = inputs()
+        ledger["task_costs"][0]["agent_events"][0]["cost_basis"] = {}
+        with self.assertRaises(CostAuditError):
+            audit_costs(frame, allocations, outcomes, ledger)
+
     def test_budget_must_precede_assignment(self):
         frame, allocations, outcomes, ledger = inputs()
         ledger["task_costs"][0]["budget"]["locked_at_utc"] = "2026-10-11T12:05:00Z"
