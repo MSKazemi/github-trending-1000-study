@@ -17,6 +17,7 @@
 
 ## Start here
 - [Research protocol](docs/PROTOCOL.md) — operational definitions, sampling, confounding and analysis.
+- [**Scientific protocol reconciliation and outstanding decisions**](docs/PROTOCOL_RECONCILIATION_DECISIONS_2026_10_12.md) — conflict register for Study A/Study B and evidence gates. **Reviewer proposals only; no approved or frozen preregistration.**
 - [Data dictionary](docs/DATA_DICTIONARY.md) — schema, missingness and provenance.
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
