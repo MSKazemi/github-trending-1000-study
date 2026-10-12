@@ -266,3 +266,14 @@ Populate the bundle **only after permitted captures and independent human labeli
 - [100 named companies across 10 ecosystem layers](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md) — dated, non-ranked company/brand landscape, ownership corrections, research questions and practical reuse-first lessons.
 - [Machine-readable 100-company register](references/ai_software_companies_100_2026-10-12.csv) — official-source URLs and editorial study lenses; **not** a verified success ranking, complete company population or sampled GitHub repository cohort.
 
+
+## Six-month 100-company AI and software intelligence (2026-10-12)
+
+**100 GitHub issues created** for the [100-company industry watchlist](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md). Each ticket requests a **2026-04-12 through 2026-10-12** official website/release-note/roadmap and independent-news screening, a feature/change chronology, attributed future plans, conditional 2027–2031 scenarios, and a falsifiable reuse-first lesson for our own open-source repositories. **Issues created ≠ company research completed.**
+
+- [Browse the 100 company-specific GitHub issues grouped by sector](docs/COMPANY_ISSUE_INDEX_2026_10.md)
+- [Machine-readable 100-issue URL index](references/ai_software_company_issue_index_2026-10-12.csv)
+- [Scientific evidence/coverage protocol](docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [report template](templates/company_six_month_intelligence.md)
+- [Issue task template](templates/company_intelligence_issue.md)
+
+The index and watchlist are **editorial, non-ranked snapshots**, not empirical firm-performance/market-share datasets; future plans and vendor assertions are not verified outcomes.
