@@ -23,6 +23,8 @@ python -m trending_study audit-pages \
   --min-rows 30 --require-consistent
 ```
 
+Optionally add `--markdown-output data/processed/qa-summary.md` alongside `--output data/processed/qa-report.json` for a **derived, reviewer-readable** table of resolved/adjudicated/unresolved denominators and per-page dispositions. The JSON remains the canonical versioned audit; the Markdown intentionally omits reviewer identifiers and capture URLs. Both files use the existing write-once publisher and are prechecked for collisions. **They are not an atomic multi-file transaction**: if a second file cannot be published, preserve any first file for incident review rather than silently repairing it.
+
 If labels disagree or parsed rows omit/mis-rank a manually verified item, `--require-consistent` returns a nonzero exit code **but still writes the report once**. Do not erase or rewrite the report; record a new attempt/incident. No network requests occur during audit. The report is write-once and cannot clobber another study artifact.
 
 6. **Independent third-person check and disposition:** authenticate the source capture and reviewers' independence, resolve any disagreements explicitly in a separate amendment/annotation record rather than overwriting original labels, review missed/off-selector rows, confirm 30 actual rows spanning three windows, then decide which parser version should be used. Any document claiming signoff requires a named consenting reviewer and real evidence URI outside tool-generated JSON.
