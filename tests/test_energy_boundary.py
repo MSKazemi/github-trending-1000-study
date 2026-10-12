@@ -58,5 +58,12 @@ class EnergyBoundaryTests(unittest.TestCase):
         self.assertIsNone(compare(p)["net_gco2e_reuse_minus_build"])
 
 
+    def test_malformed_evidence_type_is_rejected(self):
+        p = example()
+        p["arms"]["reuse"]["ci"]["evidence"] = []
+        with self.assertRaises(EnergyError):
+            compare(p)
+
+
 if __name__ == "__main__":
     unittest.main()
