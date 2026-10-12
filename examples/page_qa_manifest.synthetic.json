@@ -1,0 +1,16 @@
+{
+  "bytes": 383,
+  "capture_date_utc": "2026-10-12",
+  "capture_method": "explicit_cli",
+  "captured_at_utc": "2026-10-12T12:00:00+00:00",
+  "content_type": "text/html",
+  "http_status": 200,
+  "language_filter": null,
+  "provenance_warning": "Client-recorded timestamp and SHA-256, not an authenticated GitHub attestation.",
+  "response_date_header": null,
+  "schema_version": "1.0",
+  "source_file_at_capture": "SYNTHETIC-local-fixture.html",
+  "source_sha256": "d4a8818bce0d141ae7e603a090c2a2039de776a356d1cda08be30766a0923fe4",
+  "source_url": "https://github.com/trending?since=daily",
+  "window": "daily"
+}
