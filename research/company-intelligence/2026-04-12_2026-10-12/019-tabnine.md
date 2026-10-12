@@ -1,0 +1,114 @@
+# Tabnine — company intelligence, preliminary six-month source screen
+
+- **Watchlist entry:** 019
+- **Research issue:** [#86](https://github.com/MSKazemi/github-trending-1000-study/issues/86)
+- **Retrospective publication interval:** 2026-04-12 to 2026-10-12 inclusive.
+- **Prepared/source-reviewed:** 2026-10-12.
+- **Status:** INITIAL screened research DRAFT (not fully systematically collected or independently reviewed).
+- **Coverage:** vendor/official notices for enterprise code assistance, provenance and governance; [official index](https://www.tabnine.com/blog/). Each event has canonical source URL in [CSV evidence ledger](019-tabnine.events.csv).
+- **Methods:** [company methodology](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+
+## 1. Discovery and inclusion audit (incomplete)
+
+This is a **bounded primary-document evidence shortlist**, not a systematic seven-month search. Source discovery/review occurred on 2026-10-12; **search-engine result counts, complete query clickstream, number screened, excluded URLs and full independent source screening were not preserved**, therefore they are **unknown**, not zero. Reproducibility queries below are **next-pass suggestions, not claims that each exact expression was executed**:
+
+- `"Tabnine" after:2026-04-11 before:2026-10-13 coding agent releases security`
+- `site:tabnine.com 2026 model tool changelog license agent`
+- `"Tabnine" 2026 API roadmap change security acquisition`
+- `"Tabnine" Reuters OR TechCrunch OR The Register 2026 criticism independent audit`
+
+For final issue acceptance, search each full/partial month separately in primary/independent outlets, log exact run UTC/timezone, immutable query/results and reason for inclusion/exclusion; inspect releases, product docs, public source licenses and pricing; preserve zero-result screens as **search results missing/not found**, not proof of corporate inactivity. Vendor news can change after initial publication and lacks immutable full-text snapshot here. Don't deduplicate separate feature announcements into mere publicity count or count syndications as independent product confirmations.
+
+## 2. Entity, products, availability and baseline
+
+Tabnine announced on July 30, 2026 that it **has been acquired by Tricentis**; treat it as a product/business within that ownership context, not automatically an independent 2026 company. Verify buyer's corporate filing/announcement separately and avoid double-counting vendors.
+
+**Rights/safety boundary:** Vendor architectural essays and annual analyst acknowledgements are not proof of an actual new feature release; distinguish May CLI safety descriptions from June opinions.
+
+**Specific correction/ambiguity to preserve:** Tabnine's Tricentis acquisition was reported by the company July 30, 2026; closing/legal details still need independent buyer confirmation. June design commentary is not a shipped multiagent memory product.
+
+## 3. Month-by-month dated candidate ledger
+
+| 2026 month segment | Included candidate event/source(s) | Coverage notes |
+|---|---|---|
+| Apr 12–30 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| May | [Tabnine April agent trust recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | First-party sources screened |
+| June | [Shared memory for multiagent development](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) | First-party sources screened |
+| July | [A new chapter for Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | First-party sources screened |
+| August | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| September | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| Oct 1–12 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+
+All dates are **as displayed by the source** and rendered as calendar dates; UTC publication timezone has not been independently established. Underlying launch/deployment date is **not assumed identical** to article date. If page describes a different earlier event, document discrepancy separately; follow-up source audit needed.
+
+## 4. Event and capability map with source-level confidence
+
+| Event ID | Published / underlying event date | Source | Claim or documented change | Reported status and restrictions | Evidence/construct |
+|---|---|---|---|---|---|
+| CI-019-01 | 2026-05-06; event date not separately verified | [Tabnine April agent trust recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | Company describes CLI agent plan/approval and sandbox capabilities. | shipped; Availability/security claims not independently assessed. | E1; M1;M2 |
+| CI-019-02 | 2026-06-18; event date not separately verified | [Shared memory for multiagent development](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) | Vendor publishes architecture perspective on cross-agent shared context. | reported_undetermined; Commentary is not evidence of a publicly shipped memory feature. | E1; M1;M5 |
+| CI-019-03 | 2026-07-30; event date not separately verified | [A new chapter for Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | Tabnine reports acquisition by Tricentis and integration with agentic quality engineering. | reported_undetermined; First-party corporate deal statement; independently verify closing/terms. | E1; M1;M2 |
+
+**Grade E1 for ALL 3 entries:** vendor/publication statements only. 'Shipped' means provider **reports** availability, not a tested implementation or independent adoption. The separate CSV has source type, first-seen review date, status and missingness fields. An independent assessment is needed for E3 validation; page popularity, benchmarks, stars, press coverage, merger announcements and provider security assertions do not qualify.
+
+### Product impact distinctions
+
+- **Product direction:** Tabnine stresses code-context-aware enterprise agent operation, provenance and quality-engineering combination following its public Tricentis transaction statement.
+- **Integration:** pin exact dependency, API, model/version, source commit/weight checksum, task context, deployment and subscription restrictions, instead of comparing names or marketing scores.
+- **Security/licensing:** Vendor architectural essays and annual analyst acknowledgements are not proof of an actual new feature release; distinguish May CLI safety descriptions from June opinions.
+- **Economics:** compare matched **independently accepted task** output including human/review minutes, CI/runtime, hosted inference and 30/90-day upkeep. Tokens do not imply kWh or carbon savings.
+
+## 5. Attributed roadmap versus realized release
+
+**Direction is inferred from the vendor publications**, not an independently established plan: Tabnine stresses code-context-aware enterprise agent operation, provenance and quality-engineering combination following its public Tricentis transaction statement.
+
+Any `preview` and `announced_only` record stays distinct from vendor-described general availability. A direction statement or claimed open-source license requires checking the exact artifact. Future intent has no guaranteed release date unless the cited official source explicitly guarantees it; the event table is not a promise calendar.
+
+## 6. Analyst 2027–2031 conditional interpretation
+
+| Hypothesis (not company commitment) | Rival explanation | Observable disconfirmation |
+|---|---|---|
+| Tightly scoped context sharing and change-review may allow teams to reuse reliable existing project logic without leaking private code. | Aggregating context across repositories can add privacy, governance and vendor-integration burdens without better correctness. | Isolated locally documented workflow has at least equal accepted-task performance with less data exposure. |
+
+**Confidence:** low/exploratory until independent outcome tests and representative recruitment. Research design must not treat this editorial ten-company screen as a random sample of companies, repositories or model users.
+
+## 7. Study implications (M1–M7)
+
+| Objective | Operational observation and validity safeguard |
+|---|---|
+| M1 workflow evolution | Pinned dated exposure to working agent workflow; release != actual user adoption |
+| M2 quality/review | Preregistered task correctness, human review minutes and failures under independent evaluation |
+| M3 discovery | Prospective cohort and comparisons controlling baseline popularity, language and publicity |
+| M4 meaningful third-party reuse | External real working downstream integration, not stars, impressions, downloads or trial signups |
+| M5 reuse-first vs rebuild | License/provenance/security checked candidate pool, matched task and no-solution cases |
+| M6 lifecycle sustainability | Complete human + inference + CI + upkeep + upstream costs, environmental meter/model boundaries and uncertainty; no carbon/token coefficient invented |
+| M7 ethical maintainer growth | Fixed low-risk intervention for organic onboarding, downstream verified use, prospective controls |
+
+None of these effects were measured in this source review. External ecosystem product announcements are **hypothesis generators only**.
+
+## 8. Concrete experiment for the maintainer's own repository
+
+**Repository:** [the existing GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study), using offline synthetic [parser fixture](../../../tests/fixtures/trending.html) and existing CLI. Avoid unauthorized GitHub Trending collection.
+
+**Candidate intervention:** In this study repository, compare two consented external users attempting to reuse an existing CLI output format: with and without a read-only context navigation guide.
+
+**Control/treatment with frozen task:** A: pinned README and CLI; B: the same CLI plus a scoped architecture map and explicit privacy boundaries; independent evaluators freeze expected tasks.
+
+**Independent acceptance and actual reuse signal:** Both arms must build a working outsider import from known synthetic JSONL and pass existing unit tests; record completion, help, reviewer minutes, 30-day reports.
+
+**Pre-register** all assigned tasks (including failures/no-solution), acceptance hash/schema and evaluator before any agent runs. Record exact repo commit, agent/model/versions, candidate license/security provenance, human review, token/billing if available, build/CI, attempts, 30-day support and downstream external adoption. Consent for any human participant logs and minimize personal telemetry.
+
+**Stop rule:** Reject context enrichment if any data boundary leak, more hallucinated interfaces or greater maintainer burden without task benefit.
+
+**Applicability:** a small offline CLI task, not evidence of representative OSS growth or positive environmental impact. The purpose is to *verify reuse of existing work*, not to maximize generated code, repo count or GitHub stars.
+
+## 9. Review status, discrepancies and limits
+
+- **Documentary output:** 3 attributed source records. Scope is source discovery, not independent validation of announced product quality or commercial uptake.
+- **Special conflicting/qualified statement:** Tabnine's Tricentis acquisition was reported by the company July 30, 2026; closing/legal details still need independent buyer confirmation. June design commentary is not a shipped multiagent memory product.
+- **Not established:** systematic full recall, company-wide corporate ownership auditing, third-party task acceptance, API reproducibility, real external users, long-run cost, maintenance load or kWh/CO2e.
+- **Independence:** no external researcher fact-checked this file; no E3/E4 assignment, no original observations, no actual task trial.
+- **Acceptance work outstanding:** rerun all seven monthly searches with screen logs; independent link/date/article-version check; verify artifact rights and product access/version; look for negative independent coverage, regulatory/security history and corrections; inspect exact legal parent after any merger; run tests/CSV validation in repo checkout; approve human review.
+- **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
+
+**Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
