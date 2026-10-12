@@ -280,10 +280,10 @@
       "id": "F5",
       "qualitative_confidence": "medium-high",
       "evidence_ids": [
-        "E09",
-        "E06"
+        "E07",
+        "E09"
       ],
-      "leading_indicator": "Different model runtimes available, cost and independent task success under fixed specs",
+      "leading_indicator": "Observed successful on-device versus cloud task runs; independent accepted quality, latency, cost, portability and provider/model versions",
       "disconfirming_signal": "Model-specific vertically integrated deployments consistently dominate",
       "claim_status": "forecast_not_observed",
       "last_reviewed_on": "2026-10-12"
