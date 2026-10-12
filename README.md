@@ -37,17 +37,14 @@ python -m trending_study summarize --input /tmp/trending.jsonl
 
 To capture a *live*, public Trending page (explicit opt-in, no automatic scraping):
 
-```bash
-python -m trending_study capture --date 2026-10-11 --window daily --output data/raw/2026-10-11-daily.html
-python -m trending_study parse-trending --input data/raw/2026-10-11-daily.html --date 2026-10-11 --window daily --output data/processed/2026-10-11-daily.jsonl
-```
+For an explicitly permitted **current-day** single-page pilot, use the UTC-date and checksum-manifest workflow in the [pilot instructions](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture safety contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md). Do not reuse a raw, manifest, JSONL or audit filename; accidental overwrites now fail closed. Historical pages cannot be recreated from today's endpoint.
 
 `capture` makes **one** HTTPS request. It does not bypass access controls or retry aggressively. Collection date must reflect the date on which the page is actually observed; backdated Trending rankings cannot be recovered from today's page. Consider manual snapshots if automated access is disallowed.
 
 Enrich observed repositories with current public metadata (optional `GITHUB_TOKEN`; do not commit tokens):
 
 ```bash
-GITHUB_TOKEN=... python -m trending_study enrich --input data/processed/2026-10-11-daily.jsonl --output /tmp/enriched.jsonl
+GITHUB_TOKEN=... python -m trending_study enrich --input <actual-pilot-jsonl> --output <new-output-path>.jsonl
 ```
 
 See the protocol before interpreting any collected counts. A Trending appearance is not a random sample of all GitHub projects, and GitHub's Trending ranking methodology is opaque.
@@ -190,3 +187,8 @@ The main target is **how AI-assisted, vibe/prompt-led and agent-delegated develo
 - [Dated mission-clarification decision log](research-notes/mission-clarification-2026-10-12.md)
 
 **Status:** proposed methods and engineering checklist, not analyzed scientific results or a guarantee of stars, users or lower carbon. Changes to primary outcomes/sampling still require a consolidated preregistration and human approval.
+
+
+### Preservation safeguard — issue #4 (2026-10-12)
+
+The `capture`, `parse-trending`, `pilot-parse` and `enrich` commands now reject existing destination files and input/output aliases before overwriting any source. Outputs are fully staged before exclusive publication. The raw+manifest pair is **not** one atomic transaction: if only one exists after an interrupted run, preserve it, record an incident, and never call it validated or enrolled. See [technical contract and operator SOP](docs/CAPTURE_IMMUTABILITY_2026_10_12.md).
