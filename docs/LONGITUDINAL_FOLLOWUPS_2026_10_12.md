@@ -58,6 +58,27 @@ The collector never fetches anything from `plan` or `status`, needs an explicit 
 - `not_found_or_private_or_renamed`, `rate_limited`, `network_error`, `access_denied`, `identity_mismatch`, `invalid_response` and `not_public` are explicit outcomes. **Unknown is not zero.**
 - Rerunning `collect` skips completed/missed tasks. A failed task is not retried again the same UTC day; an operator may retry on another day within the frozen window. Stop on rate limit, authorization or invalid identity/response. The collector leaves a local `.followup.lock` during a run; if a process crashes, inspect before manually removing a stale lock. Never run two collectors against the same ledger.
 
+## Resuming from an event ledger: fail-closed acceptance (2026-10-12 correction)
+
+Previously, an `ok` label in a syntactically valid event file could be counted as a completed 30/90/180-day observation even if that file omitted response counters/identity or placed the observation outside its permitted time window. An immutable filename and a matching plan digest alone cannot establish that a snapshot is usable.
+
+The offline `status` and opt-in `collect` reader now **reject the entire inconsistent event ledger** before treating any event as a valid observation:
+
+- Every event must match the frozen plan's study ID, due timestamp, expiry timestamp, repository ID and horizon; status names and UTC timestamps are checked.
+- A completed `ok` requires observation **between due and expiry**, HTTP 200, exact expected numeric repository ID, safe repository name and nonnegative integer stars/forks/open-issues-including-PRs. GitHub's public/private field must be an explicit JSON boolean in the API response; missing or malformed visibility becomes `invalid_response`, not an accepted public snapshot.
+- A late HTTP 200 with verified counters is labeled `late_observation` **only after expiry** and is never counted as completed. `missed_window` must be recorded only after expiry without fabricated HTTP status or counters. Error states cannot carry apparent successful counters.
+- API URLs must have the official `https://api.github.com/repos/owner/repo` shape; `lag_seconds` must agree with recorded UTC times. Any malformed event requires **inspection and documented incident handling**; do not delete or edit source evidence merely to make the validator pass.
+
+Example: after writing an authorized event, inspect the local ledger without network requests:
+
+```bash
+python -m trending_study.longitudinal status \
+  --plan /path/to/frozen-plan.jsonl \
+  --events-dir /path/to/immutable-events
+```
+
+This is **consistency validation, not authenticated GitHub response proof**. Someone could still construct a plausible matching ledger manually. Independently verify capture and API provenance, permissions and approval before using any record in confirmatory analysis. Existing historical/nonconforming events must be preserved and reviewed rather than silently rewritten or automatically upgraded.
+
 **Provenance limitation:** file hashes and self-declared approval references cannot prove GitHub served the payload, that the cohort was registered, or that a public repo ID remained available after transfer. API availability and client timestamps have clock/network error. Latency, censoring, missingness, inaccessible transitions, and interrupted runs must be analyzed; do not drop failed repos from denominators.
 
 ## Offline tests and study status
