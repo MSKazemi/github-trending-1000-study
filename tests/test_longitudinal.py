@@ -337,5 +337,147 @@ class FollowupCollectionTests(unittest.TestCase):
             self.assertEqual(json.loads(cp.stdout)["counts"]["completed"], 0)
 
 
+class EventLedgerIntegrityTests(unittest.TestCase):
+    """Synthetic incident cases; never manipulate or delete a real event."""
+
+    def setup_record(self, directory):
+        now = utc_now()
+        plan_path, records = prepared(directory, [baseline(410, now - timedelta(days=30))])
+        plan, by_id, digest = load_plan(plan_path)
+        task = next(r for r in plan if r["followup_days"] == 30)
+        event = _event(
+            task, digest, now, status="ok",
+            api_url="https://api.github.com/repos/fictional-owner/repo-410",
+            http_status=200, full_name_at_followup="fictional-owner/repo-410",
+            stars=29, forks=3, open_issues_including_prs=1,
+            observed_repository_id=410, response_date_header=None,
+            rate_limit_remaining=20, rate_limit_reset_epoch=None,
+            lag_seconds=round((now - utc(task["scheduled_at_utc"], "due")).total_seconds(), 3),
+        )
+        events_dir = Path(directory) / "events"
+        events_dir.mkdir()
+        return plan_path, task, by_id, digest, event, events_dir, now
+
+    def assert_bad_event(self, modify, message):
+        with tempfile.TemporaryDirectory() as directory:
+            plan_path, task, lookup, digest, event, events_dir, now = self.setup_record(directory)
+            modify(event, task)
+            (events_dir / "synthetic-event.json").write_text(json.dumps(event), encoding="utf-8")
+            opener = Mock(side_effect=AssertionError("network must not run on invalid ledger"))
+            with self.assertRaisesRegex(FollowupError, message):
+                collect(plan_path, events_dir, allow_network=True,
+                        opener=opener, clock=lambda: now)
+            opener.assert_not_called()
+
+    def test_well_formed_success_is_still_completed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _, task, lookup, digest, event, events_dir, now = self.setup_record(directory)
+            _record(events_dir, event)
+            loaded = load_events(events_dir, lookup, digest)
+            self.assertEqual(classification(task, loaded[task["task_id"]], now), "completed")
+            self.assertEqual(loaded[task["task_id"]][0]["stars"], 29)
+
+    def test_never_accept_fictitious_success_counters(self):
+        for key, value in (("stars", None), ("stars", -7), ("forks", True),
+                           ("open_issues_including_prs", "2")):
+            with self.subTest(key=key, value=value):
+                self.assert_bad_event(
+                    lambda event, task: event.__setitem__(key, value),
+                    "success has missing/invalid",
+                )
+
+    def test_success_requires_real_response_fields(self):
+        self.assert_bad_event(lambda event, task: event.update(http_status=None),
+                              "HTTP 200")
+        self.assert_bad_event(lambda event, task: event.update(observed_repository_id=999),
+                              "stable repository ID")
+        self.assert_bad_event(lambda event, task: event.update(api_url="https://evil.invalid/repos/x/y"),
+                              "official repository path")
+
+    def test_success_timestamp_cannot_precede_due_or_exceed_expiry(self):
+        self.assert_bad_event(
+            lambda event, task: event.update(observed_at_utc=(
+                utc(task["scheduled_at_utc"], "due") - timedelta(seconds=1)).isoformat()),
+            "observation precedes",
+        )
+        self.assert_bad_event(
+            lambda event, task: event.update(observed_at_utc=(
+                utc(task["expires_at_utc"], "end") + timedelta(seconds=1)).isoformat()),
+            "outside its prespecified observation window",
+        )
+
+    def test_missed_and_late_statuses_require_correct_window(self):
+        self.assert_bad_event(
+            lambda event, task: event.update(status="late_observation"),
+            "missed/late status contradicts",
+        )
+        self.assert_bad_event(
+            lambda event, task: event.update(
+                status="missed_window", http_status=None, stars=None,
+                reason="synthetic no observation"),
+            "event fields mismatch",
+        )
+        # Use a genuine missed-event schema but put it *before* expiration.
+        def early_missed(event, task):
+            event.clear()
+            event.update(_event(
+                task, "a" * 64, utc(task["scheduled_at_utc"], "due"),
+                status="missed_window", http_status=None, stars=None,
+                reason="synthetic premature missingness"))
+        self.assert_bad_event(early_missed, "event does not belong")
+
+    def test_failing_fetch_cannot_report_success_counters(self):
+        def forged(event, task):
+            event.update(status="network_error", http_status=None,
+                         observed_repository_id=None)
+        self.assert_bad_event(forged, "failed or uncertain event")
+
+    def test_frozen_plan_fields_cannot_be_changed_in_event(self):
+        self.assert_bad_event(
+            lambda event, task: event.update(study_id="another-study"),
+            "study ID conflicts",
+        )
+        self.assert_bad_event(
+            lambda event, task: event.update(
+                scheduled_at_utc=(utc(task["scheduled_at_utc"], "due")
+                                  + timedelta(hours=1)).isoformat()),
+            "scheduled_at_utc conflicts",
+        )
+        self.assert_bad_event(
+            lambda event, task: event.update(
+                expires_at_utc=(utc(task["expires_at_utc"], "end")
+                                + timedelta(days=1)).isoformat()),
+            "expires_at_utc conflicts",
+        )
+
+    def test_reject_unexpected_fields_lag_or_invalid_header(self):
+        self.assert_bad_event(lambda event, task: event.update(access_token="SECRET"),
+                              "event fields mismatch")
+        self.assert_bad_event(lambda event, task: event.update(lag_seconds=999),
+                              "lag does not match")
+        self.assert_bad_event(lambda event, task: event.update(rate_limit_remaining=-1),
+                              "rate_limit_remaining")
+
+    def test_symlink_event_cannot_count_as_immutable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _, task, lookup, digest, event, events_dir, _ = self.setup_record(directory)
+            target = Path(directory) / "external-event.json"
+            target.write_text(json.dumps(event), encoding="utf-8")
+            (events_dir / "linked.json").symlink_to(target)
+            with self.assertRaisesRegex(FollowupError, "symlinked event"):
+                load_events(events_dir, lookup, digest)
+
+    def test_noncanonical_repo_segments_are_rejected(self):
+        raw = as_jsonl([baseline(11, utc_now() - timedelta(days=1), name="../repo")])
+        with self.assertRaisesRegex(FollowupError, "invalid repository full name"):
+            make_plan(raw, (3, 7, 14))
+        with tempfile.TemporaryDirectory() as directory:
+            plan_path, rows = prepared(directory, [baseline(11, utc_now() - timedelta(days=1))])
+            rows[0]["full_name_at_baseline"] = "../repo"
+            Path(plan_path).write_bytes(as_jsonl(rows))  # temporary synthetic file
+            with self.assertRaisesRegex(FollowupError, "plan repository name"):
+                load_plan(plan_path)
+
+
 if __name__ == "__main__":
     unittest.main()
