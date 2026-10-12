@@ -166,6 +166,55 @@ class TrialTests(unittest.TestCase):
             self.assertEqual(report.returncode, 0, report.stderr)
             self.assertEqual(json.loads(report.stdout)["dataset_kind"], "synthetic")
 
+    def test_pilot_outcomes_must_bind_exact_frozen_frame(self):
+        frame = source()
+        frame["dataset_kind"] = "pilot"
+        frame["ethics_review_ref"] = "SYNTHETIC-ONLY/example-human-document-reference"
+        for task in frame["tasks"]:
+            task["source_kind"] = "opt_in"
+            task["consent_ref"] = "SYNTHETIC-ONLY/not-real-consent"
+        assignment = assign(frame)
+        outcomes = results()
+        outcomes["dataset_kind"] = "pilot"
+        with self.assertRaisesRegex(TrialError, "require frame_sha256"):
+            audit(frame, assignment, outcomes)
+        outcomes["frame_sha256"] = assignment["frame_sha256"]
+        self.assertEqual(audit(frame, assignment, outcomes)["all_assigned_tasks"], 8)
+        changed = copy.deepcopy(outcomes)
+        changed["frame_sha256"] = "c" * 64
+        with self.assertRaisesRegex(TrialError, "does not match"):
+            audit(frame, assignment, changed)
+        # Even if the task IDs and assignment stay the same, a newly revised
+        # acceptance suite invalidates the previously bound outcome ledger.
+        modified = copy.deepcopy(frame)
+        modified["tasks"][0]["acceptance_sha256"] = "d" * 64
+        with self.assertRaisesRegex(TrialError, "disagree"):
+            audit(modified, assignment, outcomes)
+
+    def test_pilot_frame_cannot_claim_future_lock(self):
+        frame = source()
+        frame["dataset_kind"] = "pilot"
+        frame["ethics_review_ref"] = "SYNTHETIC-ONLY/permission"
+        frame["frame_locked_at_utc"] = "2030-01-01T00:00:00Z"
+        for task in frame["tasks"]:
+            task["source_kind"] = "opt_in"
+            task["consent_ref"] = "SYNTHETIC-ONLY"
+        with self.assertRaisesRegex(TrialError, "cannot be in the future"):
+            assign(frame)
+
+    def test_assignment_output_same_as_frame_preserves_frame_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            frame = Path(directory) / "input.json"
+            frame.write_text(json.dumps(source()), encoding="utf-8")
+            original = frame.read_bytes()
+            proc = subprocess.run([
+                sys.executable, "-m", "trending_study.trial", "assign",
+                "--frame", str(frame), "--output", str(frame),
+            ], capture_output=True, text=True)
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertEqual(frame.read_bytes(), original)
+
+
 
 if __name__ == "__main__":
     unittest.main()
