@@ -97,3 +97,19 @@ Actual captures, stable IDs, task logs and signed protocols are **not present** 
 ## Write-once storage and explicit failure states (implementation note 2026-10-12)
 
 Source captures and parsed/enriched outputs are immutable file artifacts. The write-once publisher rejects existing paths and aliases, stages bytes before publication and never replaces stored observations. A partial raw+manifest pair is a **failed publication**, not a valid captured observation; a future error/attempt ledger must record the missing artifact and correction, not silently hide it. See [capture immutability contract](CAPTURE_IMMUTABILITY_2026_10_12.md). The research data schema and prospective cohort requirements remain unchanged.
+
+## Proposed longitudinal follow-up plan and event schemas (2026-10-12, NOT data)
+
+The standalone, [documented follow-up instrument](LONGITUDINAL_FOLLOWUPS_2026_10_12.md) uses a write-once JSONL plan (`schema_version=followup-plan-1.0`) and individual immutable JSON events (`schema_version=followup-event-1.0`).
+
+| Record | Fields | Meaning and guard |
+|---|---|---|
+| Baseline input | `repository_id`, `full_name_at_enrichment`, `enriched_at_utc`, `stars`, `source_sha256` | Verified point-in-time metadata baseline, immutable ID and provenance; rejects pilot-ineligible inputs |
+| Cohort intent | `study_id`, `protocol_commit`, `cohort_approval_ref`, `eligible_for_confirmatory_cohort` | Self-reported references only; software cannot authenticate actual external approval |
+| Schedule | `task_id`, `followup_days`, `grace_days`, `scheduled_at_utc`, `expires_at_utc`, `cohort_input_sha256` | Deterministically derived baseline+horizon and declared window; plan SHA links all event files |
+| Event identity | `event_id`, `plan_sha256`, `task_id`, `repository_id`, `observed_at_utc`, `status` | Immutable, strictly scoped event. No matching ID/plan => not accepted |
+| API outcome | `http_status`, `api_url`, `full_name_at_followup`, `stars`, `forks`, `open_issues_including_prs`, `observed_repository_id` | Only successful on-time HTTP 200, public and stable-ID match counts as accepted snapshot |
+| Rate/quality | `rate_limit_remaining`, `rate_limit_reset_epoch`, `response_date_header`, `lag_seconds` | Header values may be null; timestamp lag must be reported |
+| Failure/attrition | `missed_window`, `late_observation`, `not_found_or_private_or_renamed`, `rate_limited`, `identity_mismatch` | Missing is **not** zero, and 404 does not prove deletion |
+
+Counter deltas can be negative. No follow-up in this schema currently constitutes an empirical result.

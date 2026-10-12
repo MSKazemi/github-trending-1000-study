@@ -113,3 +113,9 @@ See [visual plan](FIGURE_TABLE_PLAN_2027_2031.md), [register](../references/figu
 - [ ] Submit/record authentic independent signoff and appropriate prospective registration **before enrollment**
 - [ ] Start prospective capture only under permitted scope; record real N and actual missingness
 See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_12.md. The proposed November 2026 cohort start **must change** if blockers remain.
+
+### 2026-10-12 #4 progress (instrumentation, not cohort data)
+
+- Write-once capture/manifest and parsed outputs are implemented in PR #46 (merged); the multi-file pair is not a database transaction.
+- A separate prospective 30/90/180-day follow-up module, immutable event ledger and mocked API tests are proposed in a follow-up PR. It requires explicit human-approved cohort references and an opt-in network flag.
+- Still missing: verified real parser recall (#2), external collection/access authorization, stable-ID reconciliation across actual observed captures, qualified control sampling/power (#3), signed preregistration and real follow-up data. Keep issue #4 open until actual safe pilot/resume and integration readiness are audited.

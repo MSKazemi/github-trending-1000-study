@@ -65,3 +65,10 @@
 - The original raw HTML, SHA manifest, pilot audit, parsed JSONL and enrichment are write-once records. Use new attempt filenames; never replace, truncate, or silently backdate an artifact.
 - If publishing an artifact bundle is interrupted, preserve partial evidence with explicit error and do not count it toward a valid cohort. The pair is not an atomic database transaction.
 - Read [capture safety and operator instructions](docs/CAPTURE_IMMUTABILITY_2026_10_12.md) and update regression tests whenever collector semantics change.
+
+## Longitudinal follow-up data-integrity gate (issue #4)
+
+- Read [longitudinal follow-up instrumentation](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md) before editing any follow-up code, schedule or event schema.
+- Never set `eligible_for_confirmatory_cohort=true` or a protocol/approval reference without independently verified human signoff. Fake fixture approval is a synthetic test flag, not research authorization.
+- Baseline t0 is the **actual UTC metadata measurement timestamp**; scheduled observations must preserve matched repository ID, true observed timestamp, plan checksum, missingness, response/rate-limit metadata and scope. No historical backfill from a later API count.
+- Opt-in network calls only, bounded and permission-safe. Test with mocked HTTP; do not claim completed pilot or validated outcome data from offline tests.
