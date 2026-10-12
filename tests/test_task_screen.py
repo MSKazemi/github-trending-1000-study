@@ -148,7 +148,7 @@ class ScreenTests(unittest.TestCase):
             a, b = self.make_review("A"), self.make_review("B")
             result = audit(self.frame, data, a, b)
             self.assertEqual(result["status_counts"]["deferred_source_status"], 1)
-            self.assertEqual(result["records"][0]["accepted_task"], False)
+            self.assertFalse(next(x for x in result["records"] if x["task_id"] == data["records"][0]["task_id"])["accepted_task"])
             self.assertEqual(sum(x["provisional_label"] == "screenable_for_spec_drafting"
                                  for x in result["records"]), 15)
         finally:
@@ -159,7 +159,7 @@ class ScreenTests(unittest.TestCase):
         b["decisions"][0]["issue_status_check"] = "closed"
         result = audit(self.frame, self.recheck, a, b)
         self.assertEqual(result["status_counts"]["deferred_source_status"], 1)
-        self.assertEqual(result["records"][0]["provisional_label"], "defer_unknown")
+        self.assertEqual(next(x for x in result["records"] if x["task_id"] == a["decisions"][0]["task_id"])["provisional_label"], "defer_unknown")
 
     def test_disagreement_requires_distinct_third_and_after_time(self):
         a, b = self.make_review("A"), self.make_review("B")
