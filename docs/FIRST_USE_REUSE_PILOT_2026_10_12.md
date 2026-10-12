@@ -60,6 +60,8 @@ The date here is a **fictional fixture metadata label**; the command performs pa
 
 The [machine-readable evidence card](../examples/first_use_reuse_pilot.example.json) intentionally leaves every candidate gate `unknown` and the existing `reuse_gate` must recommend `verify_existing_candidates`. This guards against converting an internal fixture test into a self-certified external success.
 
+**Human-independent evaluation handoff:** [first-use reviewer packet with five no-go gates, hidden-test custody and a blank observation worksheet](FIRST_USE_INDEPENDENT_EVALUATION_HANDOFF_2026_10_12.md). It does not create independence, consent, authorized human research or outcomes; reviewers must genuinely carry out the listed work.
+
 ## How to convert U01 into actual 2027 science (after approvals)
 
 1. **Independently sample tasks before searching** (include no-viable-reuse/abandoned tasks in the all-task denominator). U01 is a deliberately selected *reuse-positive demonstration*, so it must **never** be used to estimate average reuse-first treatment benefit.
