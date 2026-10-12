@@ -227,6 +227,7 @@ def audit(raw, manifest_bytes, review_a, review_b, adjudication=None):
                 x.casefold() for x in reference
             ],
         }
+    exact = metric is not None and metric["full_page_exact_match"]
     return {
         "schema_version": REPORT_VERSION,
         "dataset_kind": kind,
@@ -245,9 +246,12 @@ def audit(raw, manifest_bytes, review_a, review_b, adjudication=None):
         "reference_resolution": status,
         "metrics": metric,
         "structural_selector_rows": structural["selector_box_row_count"],
-        "qa_status": ("synthetic_only" if kind == "synthetic" else
-                      ("requires_external_human_signoff" if metric is not None
-                       else "blocked_independent_review")),
+        "qa_status": (
+            "synthetic_only" if kind == "synthetic" else
+            "blocked_independent_review" if metric is None else
+            "parser_mismatch_needs_revision" if not exact else
+            "requires_external_human_signoff"
+        ),
         "cohort_enrollment_status": "not_enrolled",
         "warning": (
             "Reviewer independence, source access permission and exact human page "
@@ -283,14 +287,22 @@ def aggregate(reports):
         _sha(report["manifest_sha256"], "manifest SHA")
         if report["window"] not in WINDOWS:
             raise PageQAError("unsupported audit window")
-        if report["source_sha256"] in seen:
-            raise PageQAError("same captured HTML cannot count as multiple audited pages")
-        seen.add(report["source_sha256"])
+        if report["manifest_sha256"] in seen:
+            raise PageQAError("same immutable capture cannot count as multiple audited pages")
+        seen.add(report["manifest_sha256"])
         if report["cohort_enrollment_status"] != "not_enrolled":
             raise PageQAError("audit report cannot claim enrolled observations")
         kinds.add(report["dataset_kind"])
         windows.add(report["window"])
         metric = report["metrics"]
+        expected_status = (
+            "synthetic_only" if report["dataset_kind"] == "synthetic" else
+            "blocked_independent_review" if metric is None else
+            "requires_external_human_signoff" if metric.get("full_page_exact_match") is True else
+            "parser_mismatch_needs_revision"
+        )
+        if report["qa_status"] != expected_status:
+            raise PageQAError("audit dataset kind and result status disagree")
         if metric is None:
             unresolved += 1
         else:
@@ -317,6 +329,13 @@ def aggregate(reports):
         raise PageQAError("synthetic and pilot reports must never share an aggregate")
     kind = next(iter(kinds))
     has_coverage = not unresolved and total_rows >= 30 and windows == WINDOWS
+    outcome_status = (
+        "synthetic_only" if kind == "synthetic" else
+        "blocked_independent_review" if unresolved else
+        "parser_mismatch_needs_revision" if fp or fn else
+        "insufficient_documentary_coverage" if not has_coverage else
+        "external_scientific_signoff_required"
+    )
     return {
         "schema_version": SUMMARY_VERSION, "dataset_kind": kind,
         "pages": pages, "page_count": len(pages),
@@ -332,7 +351,7 @@ def aggregate(reports):
             ("met_on_self_reported_inputs" if has_coverage else "not_met")
         ),
         "cohort_enrollment_status": "not_enrolled",
-        "status": "external_scientific_signoff_required",
+        "status": outcome_status,
         "warning": (
             "Aggregate recomputes metrics from input reports but does not authenticate "
             "their original HTML, actual review independence, open-access/permission "
