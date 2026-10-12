@@ -68,3 +68,11 @@ Each task has exactly: `task_id`, `family_id`, `cluster_id`, `baseline_utc`, `sp
 - Preserve positive, neutral, **negative** and unresolved results. Synthetic example outcomes favor one arm by construction and have **zero** external validity.
 
 See [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), [scientific governance](SCIENTIFIC_GOVERNANCE_2027.md), [independent gold set](REUSE_GOLD_STANDARD_2027.md), [ethics](ETHICS.md), [metrics](REUSE_SUSTAINABILITY_METRICS.md) and [inception gates](INCEPTION_CHECKLIST_2026_2027.md).
+
+## Integration checks added after the 2026-10-12 branch review
+
+**Separate assignment truth from outcome file truth.** Real pilot outcome files now **require** a `frame_sha256` equal to the canonical frozen frame SHA-256 in the assignment artifact. Historical synthetic demonstration input remains accepted without this new field for backwards-compatible examples; when a synthetic file includes the field, it must match. A task with the same ID but a silently changed acceptance suite cannot silently inherit the previous pilot outcomes. A checksum links user-provided records; it **does not authenticate** actual participants, tests, or real prospective registration.
+
+**Write-once allocation.** The CLI now uses the existing shared `safe_io` exclusive staged publisher, rejects source/output path collisions and prior files, and will not overwrite a task frame even under an ordinary existing-target race. A pilot frame lock timestamp in the future is rejected. All changes are demonstrated via offline synthetic tests and do not constitute verified human data.
+
+**Concealment warning:** deterministic assignment with a visible seed/algorithm is *reproducible* but not a randomization-concealment protocol. An investigator who knows the seed could attempt to select tasks or reassign cluster IDs to steer treatment. Before any actual trial, freeze the task frame with independent time-stamped review, use an allocation custodian or otherwise control allocation visibility, document deviations and preserve all screening failures. Never use these scripts as proof of concealed unbiased randomization.
