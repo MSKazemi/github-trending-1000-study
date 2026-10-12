@@ -75,5 +75,12 @@ class PackageReviewTests(unittest.TestCase):
             evaluate(p)
 
 
+    def test_malformed_gate_type_is_rejected(self):
+        p = candidate()
+        p["checks"]["known_advisories"]["status"] = []
+        with self.assertRaises(PackageReviewError):
+            evaluate(p)
+
+
 if __name__ == "__main__":
     unittest.main()
