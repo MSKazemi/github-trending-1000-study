@@ -19,7 +19,8 @@ class EnergyBoundaryTests(unittest.TestCase):
         x = compare(example())
         self.assertTrue(x["comparable"])
         self.assertEqual(x["net_kwh_reuse_minus_build"], -7)
-        self.assertEqual(x["net_gco2e_reuse_minus_build"], -700)
+        self.assertIsNone(x["net_gco2e_reuse_minus_build"])
+        self.assertEqual(x["grid_only_scenario_gco2e_delta"], -400)
         self.assertIn("model_inference", x["modeled_reuse"])
 
     def test_missing_inference_yields_unknown_net(self):
@@ -56,6 +57,7 @@ class EnergyBoundaryTests(unittest.TestCase):
         p = example()
         p["grid_intensity_gco2e_per_kwh"] = None
         self.assertIsNone(compare(p)["net_gco2e_reuse_minus_build"])
+        self.assertIsNone(compare(p)["grid_only_scenario_gco2e_delta"])
 
 
     def test_malformed_evidence_type_is_rejected(self):
