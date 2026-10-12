@@ -229,6 +229,17 @@ def audit_bundle_file(path, *, extract_repos, min_rows=30):
     bundle = json.loads(path.read_text(encoding="utf-8"))
     root = path.parent.resolve()
     def read(name):
-        # Only access local, user-selected files; never fetch arbitrary URLs.
-        return (root / name).read_bytes()
+        # Bundle paths are local descendants of the audit directory. Prevent
+        # untrusted input from reading arbitrary files through '..' or links.
+        if not isinstance(name, str) or not name.strip():
+            raise PageAuditError("bundle file path must be nonempty text")
+        candidate = Path(name)
+        if candidate.is_absolute():
+            raise PageAuditError("absolute capture paths are not allowed in audit bundle")
+        resolved = (root / candidate).resolve(strict=True)
+        if not resolved.is_relative_to(root):
+            raise PageAuditError("audit bundle path escapes the audit directory")
+        if resolved.stat().st_size > 4_000_000:
+            raise PageAuditError("audit input exceeds 4MB maximum")
+        return resolved.read_bytes()
     return assess_bundle(bundle, loader=read, extract_repos=extract_repos, min_rows=min_rows)

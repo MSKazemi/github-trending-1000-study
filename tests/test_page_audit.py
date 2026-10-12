@@ -232,6 +232,39 @@ class IndependentPageAuditTests(unittest.TestCase):
             self.assertNotEqual(second.returncode, 0)
             self.assertEqual(oldhash, hashlib.sha256(report_path.read_bytes()).hexdigest())
 
+    def test_bundle_cannot_read_absolute_or_escaping_paths(self):
+        b, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name, body in files.items():
+                (root / name).write_bytes(body)
+            p = root / "bundle.json"
+            b["pages"][0]["raw_path"] = "../outside.html"
+            p.write_text(json.dumps(b), encoding="utf-8")
+            with self.assertRaises((PageAuditError, FileNotFoundError)):
+                audit_bundle_file(p, extract_repos=extract_repos)
+            b["pages"][0]["raw_path"] = str(root / "daily.html")
+            p.write_text(json.dumps(b), encoding="utf-8")
+            with self.assertRaisesRegex(PageAuditError, "absolute"):
+                audit_bundle_file(p, extract_repos=extract_repos)
+
+    def test_bundle_symlink_escape_is_rejected(self):
+        b, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            audit_dir = root / "audit"
+            audit_dir.mkdir()
+            for name, body in files.items():
+                (audit_dir / name).write_bytes(body)
+            target = root / "outside.html"
+            target.write_bytes(files["daily.html"])
+            (audit_dir / "escape.html").symlink_to(target)
+            b["pages"][0]["raw_path"] = "escape.html"
+            p = audit_dir / "bundle.json"
+            p.write_text(json.dumps(b), encoding="utf-8")
+            with self.assertRaisesRegex(PageAuditError, "escapes"):
+                audit_bundle_file(p, extract_repos=extract_repos)
+
     def test_require_consistent_fails_but_persists_mismatch_report(self):
         b, files = bundle_for()
         b["pages"][0]["reviewers"][0]["rows"][0]["repository"] = "different/label"
