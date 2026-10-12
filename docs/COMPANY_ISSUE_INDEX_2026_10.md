@@ -4,6 +4,8 @@
 
 **Snapshot:** 2026-10-12. **Status:** **100 research issues created and individually reconciled** against the curated register by stable watchlist ID (001–100); **zero six-month company reviews verified as complete from this task**. These are work assignments, not research findings or a financial/technological ranking. The dated index status is a *creation snapshot*, not live tracking of subsequent work. GitHub issue numbers need not be consecutive.
 
+[Initial dated primary-source research leads](../research-notes/company-intelligence-initial-leads-2026-10-12.md) covers a limited source-checked example set (OpenAI, Anthropic, GitHub, Cursor); **not** full 100-company reviews.
+
 **Evidence window:** 2026-04-12…2026-10-12 inclusive. Search all covered months, verify current/old corporate entities, read vendor website/newsroom/release notes/docs/public roadmap and credible independent news, build dated feature inventory and direction hypotheses, connect to study M1–M7, and propose one falsifiable maintainer-repository reuse intervention with a control and cost boundaries.
 
 **Instructions for contributors:** select an issue below, follow its acceptance checklist, save a report at its declared file path and cross-link the PR when independent factual review is complete. Do not close tickets for plausible predictions, provider marketing summaries, no-source write-ups or unverified code-generation benefits.
