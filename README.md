@@ -278,3 +278,7 @@ Populate the bundle **only after permitted captures and independent human labeli
 - [Initial dated source-checked company news leads](research-notes/company-intelligence-initial-leads-2026-10-12.md) — examples only; all full company reviews pending
 
 The index and watchlist are **editorial, non-ranked snapshots**, not empirical firm-performance/market-share datasets; future plans and vendor assertions are not verified outcomes.
+
+## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
+
+- [**2027–2031 technology outlook: programming, applications, operating systems, LLMs and agents**](docs/STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md) — source-checked 2026 forecast vintage, *uncertain falsifiable* scenarios, practical 2027 implementation and measurement gates; [**18-source, nine-forecast, seven-metric register**](references/industry_technology_outlook_2026_10_12.json); [issue #58](https://github.com/MSKazemi/github-trending-1000-study/issues/58). **Not personal views of any real executive, a completed empirical study, or a protocol amendment.**
