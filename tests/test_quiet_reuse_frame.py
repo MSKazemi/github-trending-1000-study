@@ -57,5 +57,12 @@ class FrameSelectionTests(unittest.TestCase):
         self.assertEqual(select(p)["strata_with_insufficient_members"], ["young"])
 
 
+    def test_malformed_stratum_type_is_rejected(self):
+        p = fake()
+        p["repositories"][0]["stratum"] = []
+        with self.assertRaises(FrameError):
+            select(p)
+
+
 if __name__ == "__main__":
     unittest.main()
