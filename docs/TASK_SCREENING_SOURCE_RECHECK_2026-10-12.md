@@ -74,7 +74,7 @@ Each reviewer JSON must have exactly:
 
 **This JSON snippet is a schema illustration, not a submitted assessment.** Slot B uses `"B"` with a genuinely separate person. Labels: `screenable_for_spec_drafting` (reason `none` with evidence reference), `exclude_candidate` (specific reason plus evidence reference), or `defer_unknown` (unknown/other reason). Reason codes: `none`, `unsafe`, `rights`, `scope`, `underspecified`, `nonreproducible`, `leakage`, `duplicate`, `unknown`, `other`. Report possible public solution hints with `leakage_signal=suspected`; `not_observed` is **not proof** that no leakage exists. `evidence_ref` is a bounded reference, **not** an issue-body copy or personal data field.
 
-An independent adjudicator C may file decisions **only for actual A/B label disagreements** and only after A and B finish. Unknown and unresolved evidence remain unknown. Partial submissions are allowed but produce `missing_independent_review`, never silent negative decisions.
+An independent adjudicator C may file decisions **only for actual A/B label disagreements** and only after A and B finish. The C timestamp must be **strictly later** than both submitted review timestamps; reviewer pseudonyms must be distinct **case-insensitively**, and the placeholder `unknown` is rejected. These checks prevent obvious duplicate-role claims but **do not authenticate real human independence**. Unknown and unresolved evidence remain unknown. Partial submissions are allowed but produce `missing_independent_review`, never silent negative decisions.
 
 When genuine human reviews are available (not yet):
 
