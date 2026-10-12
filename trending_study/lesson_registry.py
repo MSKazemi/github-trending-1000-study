@@ -69,7 +69,8 @@ def audit(data):
                   "risks", "stop_rule", "validity_threats"):
             _nonempty(row, k)
         status, grade = row.get("status"), row.get("evidence_grade")
-        if status not in STATUSES or grade not in GRADES:
+        if (not isinstance(status, str) or status not in STATUSES or
+                not isinstance(grade, str) or grade not in GRADES):
             raise LessonError("unsupported evidence grade or status")
         _sources(row)
         if status == "superseded":
