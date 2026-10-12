@@ -425,7 +425,11 @@ def _request_snapshot(task, name, opener, token, clock):
             if actual_id != task["repository_id"] or type(actual_id) is not int:
                 result["status"] = "identity_mismatch"
                 stop = True
-            elif info.get("private") is True:
+            elif type(info.get("private")) is not bool:
+                # Missing/non-boolean public status is unknown, not public.
+                result["status"] = "invalid_response"
+                stop = True
+            elif info["private"] is True:
                 result["status"] = "not_public"
                 stop = True
             else:
