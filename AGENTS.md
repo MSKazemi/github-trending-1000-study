@@ -72,3 +72,9 @@
 - Never set `eligible_for_confirmatory_cohort=true` or a protocol/approval reference without independently verified human signoff. Fake fixture approval is a synthetic test flag, not research authorization.
 - Baseline t0 is the **actual UTC metadata measurement timestamp**; scheduled observations must preserve matched repository ID, true observed timestamp, plan checksum, missingness, response/rate-limit metadata and scope. No historical backfill from a later API count.
 - Opt-in network calls only, bounded and permission-safe. Test with mocked HTTP; do not claim completed pilot or validated outcome data from offline tests.
+
+## Structural parser validity is NOT real-page recall (#2)
+
+- Treat each supported Trending Box-row as one immutable displayed rank. Never drop malformed/duplicate rows and then call the remaining ranks complete.
+- A structural selector-row count cannot detect off-selector rows or changed GitHub markup. Check [real human QA criteria](docs/PARSER_STRUCTURE_QA_2026_10_12.md); real capture dates, supported surfaces and at least 30 independently adjudicated rows are outstanding.
+- Do not mark `parser_audit` verified or close #2 based only on synthetic unit tests.
