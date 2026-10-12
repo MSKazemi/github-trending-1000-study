@@ -25,6 +25,7 @@
 - [**Execution plan after the audit**](docs/NEXT_STEPS_EXECUTION_2026-10-12.md) — evidence-gated development tasks, human approvals, PR dependencies, go/no-go milestones and a bounded feasibility pilot.
 - [Observed sampling visualization CLI](docs/SAMPLING_VISUALIZATION_CLI.md) — offline F01 SVG and T02 Markdown/JSON audit; **not empirical findings**.
 - [Publication figures and tables](docs/FIGURE_TABLE_PLAN_2027_2031.md) — proposed **18 figures and 14 tables** across 2027 observational research and conditional 2028–2031 trials; **no empirical results yet**. [Machine-readable register](references/figure_table_register_2027.json).
+- [**One-repository, reuse-first first-use pilot (offline synthetic)**](docs/FIRST_USE_REUSE_PILOT_2026_10_12.md) — reproducible existing-CLI task, testable fail-closed output, source/uncertainty and build-vs-reuse decision card; **not a recruited user study or measured cost/energy benefit**. [Evidence card](examples/first_use_reuse_pilot.example.json).
 
 ## Install & run
 
