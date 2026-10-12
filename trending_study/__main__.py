@@ -21,6 +21,12 @@ GITHUB_HOST = "https://github.com"
 REPO = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
 
+def valid_repo(name):
+    """Reject noncanonical path segments even if they match the character regex."""
+    return (isinstance(name, str) and bool(REPO.fullmatch(name))
+            and all(part not in (".", "..") for part in name.split("/")))
+
+
 def utc_now():
     return datetime.now(timezone.utc).isoformat()
 
@@ -93,7 +99,7 @@ class TrendingParser(HTMLParser):
             return
         href = self.header_links[0].strip()
         name = href.strip("/") if href.startswith("/") else ""
-        if not href.startswith("/") or not REPO.fullmatch(name):
+        if not href.startswith("/") or not valid_repo(name):
             self.errors.append(f"Box-row #{row} has unsupported or malformed repository link")
             return
         key = name.casefold()
@@ -262,7 +268,7 @@ def enrich(args):
     result = []
     for row in read_jsonl(args.input):
         name = row.get("repository", "")
-        if not REPO.fullmatch(name):
+        if not valid_repo(name):
             raise ValueError(f"Unsafe repository identifier: {name!r}")
         headers = {"Accept": "application/vnd.github+json", "User-Agent": "github-trending-1000-study-research/0.1"}
         if token:
