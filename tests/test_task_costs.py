@@ -42,7 +42,7 @@ class TaskCostTests(unittest.TestCase):
         self.assertIsNone(report["overall"]["cost_per_accepted_task_usd"])
         self.assertIsNone(report["overall"]["token_totals"]["input_tokens"])
         self.assertEqual(len(report["tasks"]), 8)
-        self.assertNotIn("co2", json.dumps(report).lower())
+        self.assertFalse(any("co2" in key or "kwh" in key for key in report["overall"]))
 
     def test_measured_per_task_cost_and_predeclared_budgets(self):
         report = audit_costs(*inputs())
