@@ -74,5 +74,12 @@ class LessonRegistryTests(unittest.TestCase):
             audit(p)
 
 
+    def test_malformed_status_type_is_rejected(self):
+        p = hypothesis()
+        p["lessons"][0]["status"] = {}
+        with self.assertRaises(LessonError):
+            audit(p)
+
+
 if __name__ == "__main__":
     unittest.main()
