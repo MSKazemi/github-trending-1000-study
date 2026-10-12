@@ -64,7 +64,8 @@ def evaluate(data):
     failed, unknown = [], []
     for key in FIELDS:
         cell = checks[key]
-        if not isinstance(cell, dict) or cell.get("status") not in STATES:
+        if (not isinstance(cell, dict) or not isinstance(cell.get("status"), str)
+                or cell["status"] not in STATES):
             raise PackageReviewError(f"{key} must declare pass/fail/unknown")
         if cell["status"] == "pass":
             source = cell.get("evidence_url")
