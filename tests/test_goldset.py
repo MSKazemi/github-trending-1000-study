@@ -91,6 +91,39 @@ class GoldSetTests(unittest.TestCase):
         with self.assertRaises(GoldsetError):
             evaluate(DATA, k=0)
 
+    def test_temporal_availability_alone_can_make_candidate_not_viable(self):
+        # Synthetic historical task: code shipped later, other gates pass.
+        d = copy.deepcopy(DATA)
+        candidate = d["tasks"][0]["candidates"][2]
+        candidate["available_since_utc"] = "2026-10-12T01:00:00Z"
+        candidate["gates"] = {
+            "functional": "pass", "license": "pass",
+            "security": "pass", "maintenance": "pass",
+            "availability": "fail",
+        }
+        self.assertEqual(evaluate(d)["results"][0]["pool_verified_not_viable"], 1)
+
+    def test_future_release_cannot_claim_available_even_when_label_negative(self):
+        d = copy.deepcopy(DATA)
+        candidate = d["tasks"][0]["candidates"][2]
+        candidate["available_since_utc"] = "2026-10-12T01:00:00Z"
+        candidate["gates"]["availability"] = "pass"
+        with self.assertRaisesRegex(GoldsetError, "released after task baseline"):
+            evaluate(d)
+
+    def test_unknown_availability_must_not_pass_positive_label(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["candidates"][0]["gates"]["availability"] = "unknown"
+        with self.assertRaisesRegex(GoldsetError, "viable without full passing gates"):
+            evaluate(d)
+
+    def test_invalid_availability_gate_rejected(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["candidates"][0]["gates"]["availability"] = "guessed"
+        with self.assertRaisesRegex(GoldsetError, "availability must be"):
+            evaluate(d)
+
+
 
 if __name__ == "__main__":
     unittest.main()

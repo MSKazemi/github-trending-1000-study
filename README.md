@@ -211,3 +211,14 @@ python -m trending_study.longitudinal status \
 ## Structural Trending parser QA — pending real-page audit (2026-10-12)
 
 The [strict Box-row parser and audit protocol](docs/PARSER_STRUCTURE_QA_2026_10_12.md) now rejects **partially positive parses** (one correct row plus malformed other rows), duplicate identities, missing/multiple header links and truncated supported articles rather than silently re-numbering results. The pilot JSON audit exposes supported-selector row counts but still explicitly requires **independent human verification** of at least 30 actual rows and of rows outside that selector. **No real page QA has been performed**. Language pages and confirmatory collection remain blocked pending permissions and scientific review.
+
+### 2027 blinded task-to-existing-code review instrument (synthetic pilot)
+
+The [blinded review workflow](docs/BLINDED_REUSE_REVIEW_WORKFLOW.md) prepares rank-redacted candidate packets and audits separate reviewer-A/B submissions with optional C adjudication. It preserves unreviewed candidates as **unknown**, attaches a frozen pool SHA-256, checks version/availability and declared functional/license/security/maintenance gates, and can export into the existing `goldset.py` validator. It **cannot** verify real reviewer independence, functional tests, evidence truth or complete recall. All examples are synthetic; the earlier [public issue intake PR #38](https://github.com/MSKazemi/github-trending-1000-study/pull/38) is not a reviewed or accepted task benchmark.
+
+```bash
+python -m trending_study.blind_review prepare --pool examples/review_pool.synthetic.json --output /tmp/blind-review-packet.json
+python -m trending_study.blind_review audit --pool examples/review_pool.synthetic.json --review-a examples/review_rater_a.synthetic.json --review-b examples/review_rater_b.synthetic.json --adjudication examples/review_adjudication.synthetic.json --output /tmp/blind-review-audit.json
+```
+
+See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for the evidence status and open scientific gates. No real AI/reuse productivity or sustainability findings are claimed.
