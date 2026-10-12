@@ -30,7 +30,8 @@ def _arm(row, name):
     known, missing, modeled = 0.0, [], []
     for key in COMPONENTS:
         cell = row[key]
-        if not isinstance(cell, dict) or cell.get("evidence") not in EVIDENCE:
+        if (not isinstance(cell, dict) or not isinstance(cell.get("evidence"), str)
+                or cell["evidence"] not in EVIDENCE):
             raise EnergyError(f"{name}.{key}: evidence must be measured/modeled/unavailable")
         source = cell.get("source_ref")
         if cell["evidence"] == "unavailable":
