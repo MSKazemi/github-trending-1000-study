@@ -78,3 +78,7 @@ python -m trending_study --help
 CI tests synthetic manifest creation, tamper/date/source filtering, legacy timestamp labeling, simulated one-call HTTP capture, pilot CLI output, pending/verified documentary gates and nonzero strict gating. **Passing these tests is not the same as real-page parser or scientific-data validation.**
 
 See [Issue #27](https://github.com/MSKazemi/github-trending-1000-study/issues/27), prerequisites [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2), [#3](https://github.com/MSKazemi/github-trending-1000-study/issues/3), [#21](https://github.com/MSKazemi/github-trending-1000-study/issues/21) and [#25](https://github.com/MSKazemi/github-trending-1000-study/issues/25).
+
+## Additional parser drift gate — 2026-10-12
+
+The current parser now **fails closed** if any recognized `article.Box-row` is truncated, has zero/multiple repository headers/links, invalid canonical link, or a duplicate identity. The pilot audit JSON now records a *structural-only* selector count; it cannot identify rows rendered outside that CSS selector. Read [the row-completeness rationale and independent >=30-real-row audit plan](PARSER_STRUCTURE_QA_2026_10_12.md) before any research decision. Passing synthetic tests is not permission or proof of a correct live page.

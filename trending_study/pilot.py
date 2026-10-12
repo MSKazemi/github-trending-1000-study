@@ -95,7 +95,7 @@ def build_capture_manifest(*, raw, output, window, captured_at_utc,
     }
 
 
-def validate_capture(raw, manifest, *, extract_repos):
+def validate_capture(raw, manifest, *, extract_repos, inspect_structure=None):
     """Validate a local capture and return rows with capture and parse time separated.
 
     Does not independently authenticate the remote origin or sample eligibility.
@@ -139,6 +139,11 @@ def validate_capture(raw, manifest, *, extract_repos):
     repos = extract_repos(html)
     if not repos:
         raise PilotValidationError("No Trending rows")
+    # A selector-consistency check is not independent live-page coverage evidence.
+    layout = inspect_structure(html) if inspect_structure else None
+    if layout and (layout["selector_box_row_count"] != len(repos)
+                   or layout["extracted_repository_count"] != len(repos)):
+        raise PilotValidationError("supported selector and parsed row counts disagree")
     parse_time = datetime.now(timezone.utc).isoformat()
     rows = []
     for rank, name in enumerate(repos, 1):
@@ -169,6 +174,14 @@ def validate_capture(raw, manifest, *, extract_repos):
         "page_rows": len(rows),
         "unique_displayed_names": len(set(repos)),
         "parser_qa_status": "requires_independent_manual_audit",
+        "selector_box_row_count": (layout["selector_box_row_count"] if layout else None),
+        "structural_parser_status": (
+            layout["structural_parser_status"] if layout else "not_separately_instrumented"
+        ),
+        "structural_scope_warning": (
+            "Supported article.Box-row structure only; off-selector rows "
+            "and live GitHub layout require independent audit."
+        ),
         "stable_repository_id_status": "unresolved",
         "cohort_enrollment_status": "not_enrolled",
         "note": "SHA integrity verified locally; upstream origin and identity not independently authenticated.",

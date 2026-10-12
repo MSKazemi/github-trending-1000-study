@@ -11,7 +11,7 @@ FIXTURE = Path(__file__).parent / "fixtures" / "trending.html"
 
 
 class TrendingTests(unittest.TestCase):
-    def test_extract_and_deduplicate(self):
+    def test_extract_two_unique_rows(self):
         self.assertEqual(extract_repos(FIXTURE.read_text()), ["alpha-org/first-project", "example-user/another.repo"])
 
     def test_no_rows_fails_closed(self):

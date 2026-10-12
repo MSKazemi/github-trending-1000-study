@@ -207,3 +207,7 @@ python -m trending_study.longitudinal status \
 ```
 
 **The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
+
+## Structural Trending parser QA — pending real-page audit (2026-10-12)
+
+The [strict Box-row parser and audit protocol](docs/PARSER_STRUCTURE_QA_2026_10_12.md) now rejects **partially positive parses** (one correct row plus malformed other rows), duplicate identities, missing/multiple header links and truncated supported articles rather than silently re-numbering results. The pilot JSON audit exposes supported-selector row counts but still explicitly requires **independent human verification** of at least 30 actual rows and of rows outside that selector. **No real page QA has been performed**. Language pages and confirmatory collection remain blocked pending permissions and scientific review.
