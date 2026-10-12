@@ -1,6 +1,6 @@
 # AI-era engineering news evidence corpus (2024–2031)
 
-**Started:** 2026-10-12. **Stage:** provisional editorial/source review, NOT systematic literature review, not preregistered and not independently fact-checked. **Target:** up to 1,000 individually cited distinct entries; **currently committed:** 14 (NEWS-2026-0001 through 0014). **Important:** 14/1,000 = 1.4%; this does not imply coverage or representativeness.
+**Started:** 2026-10-12. **Stage:** provisional editorial/source review, NOT systematic literature review, not preregistered and not independently fact-checked. **Target:** up to 1,000 individually cited distinct entries; **currently committed:** 20 (NEWS-2026-0001 through 0020). **Important:** 20/1,000 = 2.0%; this does not imply coverage or representativeness.
 
 **Scope:** major research updates, official vendor launches, standards/governance announcements, independently sourced technology journalism and contradictory investigations relevant to agentic software engineering, coding methods, quality, reuse, OSS adoption, interoperability, supply-chain security, human/energy cost, and bounded 2027–2031 futures. Source publication may precede 2026; future events must never be represented as observed.
 
@@ -45,6 +45,21 @@ Screen across 2024 historical baseline; 2025–26 agent launches and actual stud
 3. **Attention is not reuse:** GitHub Octoverse (0009) reports sizable platform activity and language trends, but platform descriptives do not prove independent utility, safety, or AI-caused growth.
 4. **Productivity remains context-dependent:** METR's 2025 RCT (0012) found slower completion under one early-2025 condition. Its 2026 methodological update (0011) describes later selection and time-tracking problems. Neither supports a universal current speed multiplier.
 5. **Bottleneck hypothesis:** as agents create more changes, human review, secure acceptance tests, task routing and dependency reuse may become stronger constraints. Treat this as a **forecast hypothesis** (see GitHub vision 0007), not an established 2031 prediction.
+
+## New source-by-source tranche #0015–#0020 (provisional; no independent fact-check)
+
+Each of the following original pages was inspected on 2026-10-12 and saved as **one separate JSON commit** with its own attributed claim, limitation, existing-register cross-link and low-risk testable maintainer experiment. This is neither new repository-level data nor independent corroboration of the publisher's reporting.
+
+| Record | Primary dated source | What it changes for 2027 planning | Critical limit |
+|---|---|---|---|
+| [0015](../references/ai-era-news/items/NEWS-2026-0015.json) | [Stack Overflow survey release](https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/), 2026-10-06 | Separate *workplace question* n=17,464 from overall 30,903 survey responses when reporting agent-use categories | Voluntary, multi-select opt-in respondents are not all developers or verified GitHub agent activity |
+| [0016](../references/ai-era-news/items/NEWS-2026-0016.json) | [DORA](https://dora.dev/insights/balancing-ai-tensions/), 2026-03-10 | Include moved review/rework burden in total task economics | Observational association and qualitative interpretation, not task-level causality |
+| [0017](../references/ai-era-news/items/NEWS-2026-0017.json) | [IEA energy analysis](https://www.iea.org/reports/key-questions-on-energy-and-ai), 2026-04-16 | Declare physical energy boundary; record missing provider-inference costs explicitly | Grid/datacentre scenarios cannot be converted to grams CO2 per coding token |
+| [0018](../references/ai-era-news/items/NEWS-2026-0018.json) | [NIST agent-security RFI response summary](https://www.nist.gov/publications/summary-analysis-responses-request-information-regarding-security-considerations-ai), 2026-05-18 | Design reproducible least-privilege and denied-action negative tests | Stakeholder comments are not prevalence estimates or security certification |
+| [0019](../references/ai-era-news/items/NEWS-2026-0019.json) | [Microsoft Windows agent isolation](https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/), 2026-06-02 | Compare process/session containment and explicit agent identities in scoped trials | Preview/vendor claim, not proof of deployed isolation or universal effectiveness |
+| [0020](../references/ai-era-news/items/NEWS-2026-0020.json) | [OWASP agentic security Top 10](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/), 2025-12-09 | Convert known tool, identity and supply-chain risk categories into adversarial offline acceptance cases | A risk taxonomy is not a measured rate or evidence that checklists alone prevent incidents |
+
+**Screening limitations:** the selection remains purposive and primary-source weighted. No second independent reviewer checked every number/version/headline; publication-date and URL spot-checks do not establish full reliability. The six records are separately attributable sources, not six replicated experiments. Missing/excluded source candidates, duplicate *events* across different URLs, funding and corrections still require a formal screening genealogy before scientific synthesis. No 2027–2031 future events are treated as observed.
 
 ## Immediate practical maintainer lessons (proposed validation)
 - Codex/Claude contributions: requirement → search existing implementations → version/license/security check → bounded agent work → independent acceptance tests → human-approved PR → 30/90-day recheck.
