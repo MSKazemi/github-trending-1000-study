@@ -496,6 +496,43 @@ class EventLedgerIntegrityTests(unittest.TestCase):
             loaded = load_events(events_dir, lookup, digest)
             self.assertEqual(summary(plan, loaded, now)["counts"]["missed"], 3)
 
+    def test_api_public_visibility_must_be_explicit_boolean(self):
+        # Mocked payloads only; a missing key is not proof of a public repo.
+        now = utc_now()
+        for variant in ("missing", "null", "string", "integer", "object", "private"):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as directory:
+                plan_path, _ = prepared(
+                    directory, [baseline(410, now - timedelta(days=30))])
+                response = Response(410, "fictional-owner/repo-410")
+                payload = json.loads(response.data)
+                if variant == "missing":
+                    del payload["private"]
+                elif variant == "null":
+                    payload["private"] = None
+                elif variant == "string":
+                    payload["private"] = "false"
+                elif variant == "integer":
+                    payload["private"] = 0
+                elif variant == "object":
+                    payload["private"] = {}
+                else:
+                    payload["private"] = True
+                response.data = json.dumps(payload).encode("utf-8")
+                opener = Mock(return_value=response)
+                result = collect(
+                    plan_path, Path(directory) / "events",
+                    allow_network=True, opener=opener, clock=lambda: now)
+                self.assertEqual(result["requests"], 1)
+                self.assertTrue(result["stopped_early"])
+                recorded = json.loads(
+                    next((Path(directory) / "events").glob("*.json")).read_text())
+                expected_status = ("not_public" if variant == "private"
+                                   else "invalid_response")
+                self.assertEqual(recorded["status"], expected_status)
+                self.assertIsNone(recorded["stars"])
+                self.assertEqual(result["summary"]["counts"]["completed"], 0)
+                opener.assert_called_once()
+
     def test_noncanonical_repo_segments_are_rejected(self):
         raw = as_jsonl([baseline(11, utc_now() - timedelta(days=1), name="../repo")])
         with self.assertRaisesRegex(FollowupError, "invalid repository full name"):
