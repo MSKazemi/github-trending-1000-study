@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "NEWS-2026-0010",
+  "title": "TypeScript, Python, and the AI feedback loop changing software development",
+  "publisher": "GitHub",
+  "author": null,
+  "original_publication_date": "2025-11-13",
+  "accessed_date_utc": "2026-10-12",
+  "canonical_url": "https://github.blog/news-insights/octoverse/typescript-python-and-the-ai-feedback-loop-changing-software-development/",
+  "source_type": "vendor_vision",
+  "topics": [
+    "futures"
+  ],
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "attributed_claim_summary": "GitHub Next leadership argued that AI can influence technology selection before code is written, not merely coding speed.",
+  "evidence_or_event": "Source-authored report or launch; no original measurements collected in this repository.",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "limitations": "Interpretive interview and platform-linked hypothesis; language mix has multiple confounders.",
+  "research_relevance": "AI-era coding workflow -> secure functionality -> independent reuse -> lifetime cost; distinguish release availability from observed adoption.",
+  "practical_experiment": "Measure technology-selection decisions and whether reuse/search was evaluated before generating new code.",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "related_existing_sources": [],
+  "correction_status": "not_checked",
+  "fulltext_stored": false
+}
