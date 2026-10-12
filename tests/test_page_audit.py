@@ -292,5 +292,119 @@ class IndependentPageAuditTests(unittest.TestCase):
             self.assertFalse(result["eligible_for_confirmatory_cohort"])
 
 
+    def _c_for(self, reviewers, disputed=(1,), use_second=True):
+        c = copy.deepcopy(reviewers[1 if use_second else 0])
+        c.update({
+            "reviewer_id": "synthetic-third-reviewer",
+            "reviewed_at_utc": "2026-10-12T14:35:00+00:00",
+            "disagreement_ranks": list(disputed),
+            "adjudication_reason": "Synthetic full-page reinspection of disputed rank.",
+        })
+        return c
+
+    def test_optional_distinct_c_resolves_only_disputed_rank(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        report = assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                             adjudicator=c)
+        self.assertFalse(report["reviewer_agreement"])
+        self.assertTrue(report["labels_resolved"])
+        self.assertEqual(report["reference_resolution"], "c_adjudicated")
+        self.assertEqual(report["adjudicator_id"], "synthetic-third-reviewer")
+        self.assertEqual(report["annotation_disagreement_ranks"], [1])
+        self.assertEqual(report["adjudicated_disagreement_ranks"], [1])
+        self.assertEqual(report["page_status"], "exact_rank_identity_agreement")
+        self.assertEqual(report["correct_identity_at_rank"], 4)
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+    def test_adjudicated_pages_count_in_resolved_but_not_a_b_agreement(self):
+        bundle, files = bundle_for()
+        reviewers = bundle["pages"][0]["reviewers"]
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(reviewers)
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        self.assertEqual(report["pages_with_agreed_annotations"], 2)
+        self.assertEqual(report["pages_with_adjudicated_annotations"], 1)
+        self.assertEqual(report["pages_with_resolved_annotations"], 3)
+        self.assertEqual(report["pages_with_unresolved_annotation_disagreements"], 0)
+        self.assertEqual(report["windows_with_agreed_labels"], ["monthly", "weekly"])
+        self.assertEqual(report["windows_with_resolved_labels"],
+                         ["daily", "monthly", "weekly"])
+        self.assertEqual(report["audited_gold_rows"], 36)
+        self.assertEqual(report["automated_documentary_check"], "pass")
+        self.assertEqual(report["scientific_status"], "synthetic_only_not_empirical_evidence")
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+    def test_adjudication_rejects_same_identity_or_preceding_time(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewer_id"] = reviewers[0]["reviewer_id"].upper()
+        with self.assertRaisesRegex(PageAuditError, "adjudicator ID"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+        c = self._c_for(reviewers)
+        c["reviewed_at_utc"] = REVIEWED
+        with self.assertRaisesRegex(PageAuditError, "after both"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_adjudication_rejects_modified_agreed_rank_or_unclaimed_extra(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["rows"][1]["repository"] = "different/second-entry"
+        with self.assertRaisesRegex(PageAuditError, "agreed A/B rank"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+        c = self._c_for(reviewers)
+        c["rows"].append({"rank": 5, "repository": "different/extra"})
+        with self.assertRaisesRegex(PageAuditError, "agreed A/B rank"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_adjudication_requires_exact_disagreement_list_reason_and_source(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        for bad in (([True], "Synthetic review."),
+                    ([2], "Synthetic review."),
+                    ([1], ""),
+                    ([1], "x" * 501)):
+            with self.subTest(bad=bad[0], size=len(bad[1])):
+                c = self._c_for(reviewers)
+                c["disagreement_ranks"], c["adjudication_reason"] = bad
+                with self.assertRaises(PageAuditError):
+                    assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                                adjudicator=c)
+        c = self._c_for(reviewers)
+        c["source_sha256"] = "0" * 64
+        with self.assertRaisesRegex(PageAuditError, "source_sha256"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_cannot_add_adjudicator_to_unanimous_a_b_page(self):
+        raw, manifest, reviewers = make_page(n=4)
+        c = self._c_for(reviewers, disputed=())
+        with self.assertRaisesRegex(PageAuditError, "only allowed"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_unresolved_disagreement_remains_unscored_with_partial_adjudication(self):
+        bundle, files = bundle_for()
+        bundle["pages"][0]["reviewers"][0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][1]["reviewers"][0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(bundle["pages"][0]["reviewers"])
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        self.assertEqual(report["pages_with_unresolved_annotation_disagreements"], 1)
+        self.assertEqual(report["pages_with_resolved_annotations"], 2)
+        self.assertEqual(report["audited_gold_rows"], 24)
+        self.assertEqual(report["automated_documentary_check"], "blocked")
+        self.assertIsNone(report["pages"][1]["correct_identity_at_rank"])
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+
 if __name__ == "__main__":
     unittest.main()
