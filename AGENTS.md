@@ -59,3 +59,9 @@
 - The purpose is to understand *changes in coding methods* (traditional, AI-assisted, vibe/prompt-led, delegated-agent), functional quality, independently verified downstream reuse, organic discoverability, contribution, and whole-lifecycle sustainability. Trending ranks are not the mission's success criterion.
 - Give maintainers specific task-tested, project-type-appropriate actions and use [the blank action/evidence card](templates/repository_action_evidence_card.md); do not invent adoption, effect sizes or energy outcomes. Preserve negative/null findings and confounders.
 - Keep old reusable projects eligible as alternatives and controls. Do not optimize for having few repositories rather than high-value interoperable components.
+
+
+## Never overwrite original observation evidence (issue #4)
+- The original raw HTML, SHA manifest, pilot audit, parsed JSONL and enrichment are write-once records. Use new attempt filenames; never replace, truncate, or silently backdate an artifact.
+- If publishing an artifact bundle is interrupted, preserve partial evidence with explicit error and do not count it toward a valid cohort. The pair is not an atomic database transaction.
+- Read [capture safety and operator instructions](docs/CAPTURE_IMMUTABILITY_2026_10_12.md) and update regression tests whenever collector semantics change.
