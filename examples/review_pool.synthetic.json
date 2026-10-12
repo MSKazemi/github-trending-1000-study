@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "pool_id": "SYNTHETIC-POOL-V1",
+  "tasks": [
+    {
+      "task_id": "SYNTH-TASK-1",
+      "task_ref": "https://example.invalid/synthetic-task-1",
+      "baseline_utc": "2026-10-11T12:00:00Z",
+      "spec_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "acceptance_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "candidates": [
+        {
+          "candidate_id": "C-A",
+          "artifact_ref": "https://example.invalid/component-a",
+          "version_ref": "sha256:synthetic-a",
+          "available_since_utc": "2026-09-01T00:00:00Z"
+        },
+        {
+          "candidate_id": "C-B",
+          "artifact_ref": "https://example.invalid/component-b",
+          "version_ref": null,
+          "available_since_utc": null
+        },
+        {
+          "candidate_id": "C-C",
+          "artifact_ref": "https://example.invalid/component-c",
+          "version_ref": "sha256:synthetic-c",
+          "available_since_utc": "2026-09-11T00:00:00Z"
+        },
+        {
+          "candidate_id": "C-D",
+          "artifact_ref": "https://example.invalid/component-d",
+          "version_ref": "sha256:synthetic-d",
+          "available_since_utc": "2026-08-12T00:00:00Z"
+        }
+      ],
+      "retrieval_runs": [
+        {
+          "name": "registry-example",
+          "channel": "registry",
+          "searched_at_utc": "2026-10-11T12:05:00Z",
+          "ranked_candidate_ids": [
+            "C-A",
+            "C-B"
+          ]
+        },
+        {
+          "name": "lexical-example",
+          "channel": "lexical",
+          "searched_at_utc": "2026-10-11T12:06:00Z",
+          "ranked_candidate_ids": [
+            "C-C",
+            "C-A"
+          ]
+        },
+        {
+          "name": "deep-audit-example",
+          "channel": "deep_audit",
+          "searched_at_utc": "2026-10-11T12:07:00Z",
+          "ranked_candidate_ids": [
+            "C-D"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "SYNTH-TASK-2",
+      "task_ref": "https://example.invalid/synthetic-task-2",
+      "baseline_utc": "2026-10-11T12:00:00Z",
+      "spec_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "acceptance_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "candidates": [],
+      "retrieval_runs": [
+        {
+          "name": "registry-second",
+          "channel": "registry",
+          "searched_at_utc": "2026-10-11T12:10:00Z",
+          "ranked_candidate_ids": []
+        },
+        {
+          "name": "lexical-second",
+          "channel": "lexical",
+          "searched_at_utc": "2026-10-11T12:11:00Z",
+          "ranked_candidate_ids": []
+        }
+      ]
+    }
+  ]
+}

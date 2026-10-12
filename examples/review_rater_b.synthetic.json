@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "pool_sha256": "6bcd7fd41188933a053ae149b4bec9986bc2c39844584c9bc631f181a5eed319",
+  "reviewer_slot": "B",
+  "reviewed_at_utc": "2026-10-11T13:05:00Z",
+  "judgments": [
+    {
+      "task_id": "SYNTH-TASK-1",
+      "candidate_id": "C-A",
+      "label": "viable",
+      "gates": {
+        "functional": "pass",
+        "license": "pass",
+        "security": "pass",
+        "maintenance": "pass",
+        "availability": "pass"
+      },
+      "evidence_refs": {
+        "functional": "SYNTHETIC-NOT-REAL:C-A:functional",
+        "license": "SYNTHETIC-NOT-REAL:C-A:license",
+        "security": "SYNTHETIC-NOT-REAL:C-A:security",
+        "maintenance": "SYNTHETIC-NOT-REAL:C-A:maintenance",
+        "availability": "SYNTHETIC-NOT-REAL:C-A:availability"
+      },
+      "decision_ref": "SYNTHETIC-NOT-REAL-DECISION:C-A:viable"
+    },
+    {
+      "task_id": "SYNTH-TASK-1",
+      "candidate_id": "C-C",
+      "label": "viable",
+      "gates": {
+        "functional": "pass",
+        "license": "pass",
+        "security": "pass",
+        "maintenance": "pass",
+        "availability": "pass"
+      },
+      "evidence_refs": {
+        "functional": "SYNTHETIC-NOT-REAL:C-C:functional",
+        "license": "SYNTHETIC-NOT-REAL:C-C:license",
+        "security": "SYNTHETIC-NOT-REAL:C-C:security",
+        "maintenance": "SYNTHETIC-NOT-REAL:C-C:maintenance",
+        "availability": "SYNTHETIC-NOT-REAL:C-C:availability"
+      },
+      "decision_ref": "SYNTHETIC-NOT-REAL-DECISION:C-C:viable"
+    },
+    {
+      "task_id": "SYNTH-TASK-1",
+      "candidate_id": "C-D",
+      "label": "unknown",
+      "gates": {
+        "functional": "unknown",
+        "license": "unknown",
+        "security": "unknown",
+        "maintenance": "unknown",
+        "availability": "unknown"
+      },
+      "evidence_refs": {
+        "functional": null,
+        "license": null,
+        "security": null,
+        "maintenance": null,
+        "availability": null
+      },
+      "decision_ref": null
+    }
+  ]
+}

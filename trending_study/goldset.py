@@ -58,21 +58,31 @@ def _candidate(c, taskid, baseline):
     if evidence is not None and not isinstance(evidence, str):
         raise GoldsetError(f"{taskid}/{cid}: evidence_ref must be string or null")
     gates = _record(c.get("gates"), "gates")
-    for k in ("functional", "license", "security", "maintenance"):
+    required = ("functional", "license", "security", "maintenance")
+    permitted = set(required) | {"availability"}
+    if set(gates) - permitted:
+        raise GoldsetError(f"{taskid}/{cid}: unsupported gate names")
+    for k in required:
         if gates.get(k) not in GATE_ALLOWED:
             raise GoldsetError(f"{taskid}/{cid}: gate {k} must be pass/fail/unknown")
+    if "availability" in gates and gates["availability"] not in GATE_ALLOWED:
+        raise GoldsetError(f"{taskid}/{cid}: availability must be pass/fail/unknown")
     release_time = c.get("available_since_utc")
-    if release_time is not None and _date(release_time, "available_since_utc") > baseline and label == "viable":
-        raise GoldsetError(f"{taskid}/{cid}: candidate was released after task baseline")
+    if release_time is not None and _date(release_time, "available_since_utc") > baseline:
+        if label == "viable" or gates.get("availability") == "pass":
+            raise GoldsetError(f"{taskid}/{cid}: candidate released after task baseline cannot be available")
     reviewers = _list(c.get("reviewer_labels"), "reviewer_labels")
     if len(reviewers) != 2 or any(r not in LABELS for r in reviewers):
         raise GoldsetError(f"{taskid}/{cid}: exactly two reviewer labels required")
     if label == "viable":
-        if any(gates[k] != "pass" for k in ("functional", "license", "security", "maintenance")):
+        if (any(gates[k] != "pass" for k in required)
+                or ("availability" in gates and gates["availability"] != "pass")):
             raise GoldsetError(f"{taskid}/{cid}: viable without full passing gates")
         if release_time is None or not evidence or not evidence.strip():
             raise GoldsetError(f"{taskid}/{cid}: viable without dated availability and evidence")
     elif label == "not_viable":
+        # A version first available after task baseline is not a viable historical
+        # alternative, even if its functional/security/license gates pass now.
         if "fail" not in gates.values() or not evidence or not evidence.strip():
             raise GoldsetError(f"{taskid}/{cid}: not viable requires failure evidence")
     if reviewers[0] != reviewers[1] and label != "unknown":

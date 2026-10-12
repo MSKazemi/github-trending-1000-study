@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "pool_sha256": "6bcd7fd41188933a053ae149b4bec9986bc2c39844584c9bc631f181a5eed319",
+  "adjudicator_slot": "C",
+  "adjudicated_at_utc": "2026-10-11T13:10:00Z",
+  "decisions": [
+    {
+      "task_id": "SYNTH-TASK-1",
+      "candidate_id": "C-C",
+      "label": "not_viable",
+      "gates": {
+        "functional": "fail",
+        "license": "pass",
+        "security": "unknown",
+        "maintenance": "unknown",
+        "availability": "unknown"
+      },
+      "evidence_refs": {
+        "functional": "SYNTHETIC-NOT-REAL:C-C:functional",
+        "license": "SYNTHETIC-NOT-REAL:C-C:license",
+        "security": null,
+        "maintenance": null,
+        "availability": null
+      },
+      "decision_ref": "SYNTHETIC-NOT-REAL-DECISION:C-C:not_viable"
+    }
+  ]
+}
