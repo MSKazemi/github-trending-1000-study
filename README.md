@@ -21,6 +21,7 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [Observed sampling visualization CLI](docs/SAMPLING_VISUALIZATION_CLI.md) — offline F01 SVG and T02 Markdown/JSON audit; **not empirical findings**.
 - [Publication figures and tables](docs/FIGURE_TABLE_PLAN_2027_2031.md) — proposed **18 figures and 14 tables** across 2027 observational research and conditional 2028–2031 trials; **no empirical results yet**. [Machine-readable register](references/figure_table_register_2027.json).
 
 ## Install & run
