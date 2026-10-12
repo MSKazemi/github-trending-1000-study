@@ -468,6 +468,34 @@ class EventLedgerIntegrityTests(unittest.TestCase):
             with self.assertRaisesRegex(FollowupError, "symlinked event"):
                 load_events(events_dir, lookup, digest)
 
+    def test_double_terminal_outcomes_do_not_silently_choose_a_success(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _, task, lookup, digest, event, events_dir, now = self.setup_record(directory)
+            _record(events_dir, event)
+            other = dict(event)
+            other["event_id"] = "f" * 32
+            other["observed_at_utc"] = (now + timedelta(seconds=1)).isoformat()
+            other["lag_seconds"] = round(
+                (now + timedelta(seconds=1)
+                 - utc(task["scheduled_at_utc"], "due")).total_seconds(), 3)
+            _record(events_dir, other)
+            with self.assertRaisesRegex(FollowupError, "multiple or non-terminal final"):
+                load_events(events_dir, lookup, digest)
+
+    def test_legitimate_expired_tasks_can_be_replayed_as_missed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            now = utc_now()
+            plan_path, _ = prepared(
+                directory, [baseline(411, now - timedelta(days=210))])
+            events_dir = Path(directory) / "events"
+            opener = Mock(side_effect=AssertionError("missed tasks require no network"))
+            collect(plan_path, events_dir, allow_network=True,
+                    opener=opener, clock=lambda: now)
+            opener.assert_not_called()
+            plan, lookup, digest = load_plan(plan_path)
+            loaded = load_events(events_dir, lookup, digest)
+            self.assertEqual(summary(plan, loaded, now)["counts"]["missed"], 3)
+
     def test_noncanonical_repo_segments_are_rejected(self):
         raw = as_jsonl([baseline(11, utc_now() - timedelta(days=1), name="../repo")])
         with self.assertRaisesRegex(FollowupError, "invalid repository full name"):
