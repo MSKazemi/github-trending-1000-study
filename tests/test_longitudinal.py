@@ -144,7 +144,7 @@ class PlanValidityTests(unittest.TestCase):
                 load_plan(path)
             rows = make_plan(as_jsonl([baseline(1, utc_now() - timedelta(days=30))]), (3, 7, 14))
             path.write_bytes(as_jsonl([rows[0], rows[0]]))
-            with self.assertRaisesRegex(FollowupError, "duplicate"):
+            with self.assertRaisesRegex(FollowupError, "repeats a repository/horizon"):
                 load_plan(path)
 
     def test_plan_command_never_overwrites_existing_output(self):
@@ -289,7 +289,7 @@ class FollowupCollectionTests(unittest.TestCase):
         base = utc_now() - timedelta(days=30)
         due = base + timedelta(days=30)
         # First check says due; response finished after an allowed zero-day window.
-        ticks = [due, due + timedelta(minutes=1), due + timedelta(minutes=1)]
+        ticks = [due] + [due + timedelta(minutes=1)] * 4  # three tasks, one response, final summary
         with tempfile.TemporaryDirectory() as d:
             path, _ = prepared(d, [baseline(10, base)], grace=(0, 0, 0))
             result = collect(path, Path(d) / "events", allow_network=True,
