@@ -181,6 +181,12 @@ class IndependentPageAuditTests(unittest.TestCase):
         self.assertEqual(report["audited_gold_rows"], 6)
         self.assertFalse(report["coverage_minimum_met"])
 
+    def test_30_row_minimum_cannot_be_overridden_downward(self):
+        b, files = bundle_for()
+        with self.assertRaisesRegex(PageAuditError, "30-row"):
+            assess_bundle(b, loader=files.__getitem__,
+                          extract_repos=extract_repos, min_rows=1)
+
     def test_duplicate_capture_cannot_inflate_audited_row_denominator(self):
         b, files = bundle_for()
         b["pages"].append(copy.deepcopy(b["pages"][0]))

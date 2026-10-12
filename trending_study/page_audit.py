@@ -154,8 +154,8 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
     kind = bundle.get("evidence_kind")
     if kind not in ("synthetic_fixture", "field_self_reported"):
         raise PageAuditError("evidence_kind must be synthetic_fixture or field_self_reported")
-    if isinstance(min_rows, bool) or not isinstance(min_rows, int) or min_rows < 1:
-        raise PageAuditError("min_rows must be a positive integer")
+    if isinstance(min_rows, bool) or not isinstance(min_rows, int) or min_rows < 30:
+        raise PageAuditError("min_rows cannot be below the 30-row pilot QA minimum")
     entries = bundle.get("pages")
     if not isinstance(entries, list) or not entries:
         raise PageAuditError("pages must be a nonempty list")
