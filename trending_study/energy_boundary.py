@@ -10,6 +10,8 @@ import math
 COMPONENTS = ("local_development", "ci", "model_inference", "runtime",
               "maintenance", "embodied", "upstream_support")
 EVIDENCE = {"measured", "modeled", "unavailable"}
+# A uniform grid scenario cannot cover embodied energy, upstream labor or cloud inference.
+GRID_ONLY_COMPONENTS = {"local_development", "ci", "runtime", "maintenance"}
 
 
 class EnergyError(ValueError):
@@ -27,7 +29,7 @@ def _arm(row, name):
         raise EnergyError(f"{name} must be object")
     if set(row) != set(COMPONENTS):
         raise EnergyError(f"{name} must declare all seven energy components, including unknowns")
-    known, missing, modeled = 0.0, [], []
+    known, missing, modeled, grid_only = 0.0, [], [], 0.0
     for key in COMPONENTS:
         cell = row[key]
         if (not isinstance(cell, dict) or not isinstance(cell.get("evidence"), str)
@@ -41,10 +43,13 @@ def _arm(row, name):
             continue
         if not isinstance(source, str) or not source.strip():
             raise EnergyError("reported kWh requires a source_ref/measurement configuration")
-        known += _nonnegative(cell.get("kwh"), key)
+        value = _nonnegative(cell.get("kwh"), key)
+        known += value
+        if key in GRID_ONLY_COMPONENTS:
+            grid_only += value
         if cell["evidence"] == "modeled":
             modeled.append(key)
-    return known, missing, modeled
+    return known, missing, modeled, grid_only
 
 
 def compare(data):
@@ -69,13 +74,14 @@ def compare(data):
     arms = data.get("arms")
     if not isinstance(arms, dict) or set(arms) != {"reuse", "build"}:
         raise EnergyError("arms must contain exactly reuse and build")
-    r, rm, rmodel = _arm(arms["reuse"], "reuse")
-    b, bm, bmodel = _arm(arms["build"], "build")
+    r, rm, rmodel, r_grid = _arm(arms["reuse"], "reuse")
+    b, bm, bmodel, b_grid = _arm(arms["build"], "build")
     out = {"comparable": not (rm or bm), "functional_unit_id": task["task_id"],
            "horizon_days": horizon, "known_kwh_reuse": r, "known_kwh_build": b,
            "missing_reuse": rm, "missing_build": bm,
            "modeled_reuse": rmodel, "modeled_build": bmodel,
            "net_kwh_reuse_minus_build": None, "net_gco2e_reuse_minus_build": None,
+           "grid_only_scenario_gco2e_delta": None,
            "boundary_is_self_declared": True}
     intensity = data.get("grid_intensity_gco2e_per_kwh")
     if intensity is not None:
@@ -83,7 +89,7 @@ def compare(data):
     if out["comparable"]:
         out["net_kwh_reuse_minus_build"] = r - b
         if intensity is not None:
-            out["net_gco2e_reuse_minus_build"] = (r - b) * intensity
+            out["grid_only_scenario_gco2e_delta"] = (r_grid - b_grid) * intensity
         out["reason"] = "complete declared boundary; external validation and uncertainty still required"
     else:
         out["reason"] = "at least one unknown component; partial totals cannot establish net benefit"
