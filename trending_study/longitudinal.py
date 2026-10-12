@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -199,6 +200,51 @@ def load_plan(path):
     return plan, by_id, sha256(raw).hexdigest()
 
 
+def _validate_event(record, expected, item):
+    """Fail closed on inconsistent ledger events; this is not API attestation."""
+    for field in ("study_id", "scheduled_at_utc", "expires_at_utc"):
+        if record.get(field) != expected[field]:
+            raise FollowupError(f"event plan field {field} mismatch: {item}")
+    observed = utc(record.get("observed_at_utc"), "event.observed_at_utc")
+    due = utc(expected["scheduled_at_utc"], "plan.scheduled_at_utc")
+    expiry = utc(expected["expires_at_utc"], "plan.expires_at_utc")
+    status = record["status"]
+    counters = ("stars", "forks", "open_issues_including_prs")
+    if status == "missed_window":
+        if (observed <= expiry or record.get("http_status") is not None
+                or any(record.get(key) is not None for key in counters)):
+            raise FollowupError(f"missed_window event has impossible timing or measurements: {item}")
+        return
+    if observed < due:
+        raise FollowupError(f"event observation precedes scheduled follow-up: {item}")
+    prefix = "https://api.github.com/repos/"
+    api_url = record.get("api_url")
+    if (not isinstance(api_url, str) or not api_url.startswith(prefix)
+            or not REPO_NAME.fullmatch(api_url[len(prefix):])):
+        raise FollowupError(f"event lacks a valid official repository API URL: {item}")
+    lag = record.get("lag_seconds")
+    measured_lag = (observed - due).total_seconds()
+    if (type(lag) not in (int, float) or not math.isfinite(lag)
+            or abs(lag - measured_lag) > 0.002):
+        raise FollowupError(f"event lag_seconds disagrees with observed UTC time: {item}")
+    if status in ("ok", "late_observation"):
+        if ((status == "ok" and observed > expiry)
+                or (status == "late_observation" and observed <= expiry)):
+            raise FollowupError(f"successful event status conflicts with its observation window: {item}")
+        if type(record.get("http_status")) is not int or record["http_status"] != 200:
+            raise FollowupError(f"successful event requires HTTP 200: {item}")
+        if (type(record.get("observed_repository_id")) is not int
+                or record["observed_repository_id"] != expected["repository_id"]):
+            raise FollowupError(f"successful event repository identity mismatch: {item}")
+        name = record.get("full_name_at_followup")
+        if not isinstance(name, str) or not REPO_NAME.fullmatch(name):
+            raise FollowupError(f"successful event lacks a valid repository name: {item}")
+        if any(not is_natural(record.get(key)) for key in counters):
+            raise FollowupError(f"successful event lacks nonnegative integer counters: {item}")
+    elif any(record.get(key) is not None for key in counters):
+        raise FollowupError(f"failed event must not report successful repository counters: {item}")
+
+
 def load_events(events_dir, plan_by_id, plan_digest):
     path = Path(events_dir)
     events = {key: [] for key in plan_by_id}
@@ -227,7 +273,7 @@ def load_events(events_dir, plan_by_id, plan_digest):
         ids.add(event_id)
         if record.get("status") not in EVENT_STATES:
             raise FollowupError(f"unrecognized event status in {item}")
-        utc(record.get("observed_at_utc"), "event.observed_at_utc")
+        _validate_event(record, expected, item)
         events[key].append(record)
     return events
 
@@ -317,7 +363,10 @@ def _request_snapshot(task, name, opener, token, clock):
             if actual_id != task["repository_id"] or type(actual_id) is not int:
                 result["status"] = "identity_mismatch"
                 stop = True
-            elif info.get("private") is True:
+            elif type(info.get("private")) is not bool:
+                result["status"] = "invalid_response"
+                stop = True
+            elif info["private"] is True:
                 result["status"] = "not_public"
                 stop = True
             else:
