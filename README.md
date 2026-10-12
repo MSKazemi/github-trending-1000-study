@@ -282,3 +282,23 @@ The index and watchlist are **editorial, non-ranked snapshots**, not empirical f
 ## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
 
 - [**2027–2031 technology outlook: programming, applications, operating systems, LLMs and agents**](docs/STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md) — source-checked 2026 forecast vintage, *uncertain falsifiable* scenarios, practical 2027 implementation and measurement gates; [**18-source, nine-forecast, seven-metric register**](references/industry_technology_outlook_2026_10_12.json); [issue #58](https://github.com/MSKazemi/github-trending-1000-study/issues/58). **Not personal views of any real executive, a completed empirical study, or a protocol amendment.**
+
+
+
+## October 2026: bounded human/agent cost ledger (offline, synthetic only)
+
+The [task-cost ledger audit](docs/TASK_COST_LEDGER_2026-10-12.md) extends the existing **all-assigned-task** randomized-trial instrument with privacy-minimized human work intervals, model/tool/retry/CI event counts, provider token quantities, provenance-tagged USD event amounts, missingness-aware summaries, and predeclared budget alerts. **It does not collect live agent telemetry, authenticate consent, observe real participants, calculate carbon, or prove productivity effects.**
+
+```bash
+python -m trending_study.trial assign \
+  --frame examples/trial_frame.synthetic.json \
+  --output /tmp/assigned-costs.synthetic.json
+python -m trending_study.task_costs \
+  --frame examples/trial_frame.synthetic.json \
+  --assignments /tmp/assigned-costs.synthetic.json \
+  --outcomes examples/trial_outcomes.synthetic.json \
+  --input examples/task_costs.synthetic.json \
+  --output /tmp/task-costs-report.synthetic.json
+```
+
+All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.

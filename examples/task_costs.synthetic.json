@@ -1,0 +1,272 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "protocol_id": "DRAFT-pilot-2026-10-12",
+  "task_costs": [
+    {
+      "task_id": "synthetic-T01",
+      "coverage": {
+        "human": "complete",
+        "events": "complete",
+        "monetary": "complete"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-01",
+          "category": "plan",
+          "started_at_utc": "2026-10-11T12:01:00Z",
+          "ended_at_utc": "2026-10-11T12:11:00Z"
+        },
+        {
+          "actor_slot": "slot-01",
+          "category": "review",
+          "started_at_utc": "2026-10-11T12:11:00Z",
+          "ended_at_utc": "2026-10-11T12:31:00Z"
+        }
+      ],
+      "agent_events": [
+        {
+          "event_id": "synthetic-E01",
+          "session_id": "synthetic-S01",
+          "kind": "model_call",
+          "started_at_utc": "2026-10-11T12:03:00Z",
+          "ended_at_utc": "2026-10-11T12:06:00Z",
+          "model_id": "synthetic-model-v0",
+          "tool_id": null,
+          "input_tokens": 120,
+          "output_tokens": 24,
+          "cached_input_tokens": 10,
+          "amount_usd": "0.004",
+          "cost_basis": "synthetic"
+        },
+        {
+          "event_id": "synthetic-E02",
+          "session_id": "synthetic-S01",
+          "kind": "tool_call",
+          "started_at_utc": "2026-10-11T12:06:00Z",
+          "ended_at_utc": "2026-10-11T12:07:00Z",
+          "model_id": null,
+          "tool_id": "test-runner",
+          "input_tokens": null,
+          "output_tokens": null,
+          "cached_input_tokens": null,
+          "amount_usd": "0",
+          "cost_basis": "synthetic"
+        },
+        {
+          "event_id": "synthetic-E03",
+          "session_id": "synthetic-S01",
+          "kind": "retry",
+          "started_at_utc": "2026-10-11T12:08:00Z",
+          "ended_at_utc": "2026-10-11T12:09:00Z",
+          "model_id": null,
+          "tool_id": null,
+          "input_tokens": null,
+          "output_tokens": null,
+          "cached_input_tokens": null,
+          "amount_usd": null,
+          "cost_basis": null
+        },
+        {
+          "event_id": "synthetic-E04",
+          "session_id": "synthetic-S01",
+          "kind": "model_call",
+          "started_at_utc": "2026-10-11T12:09:00Z",
+          "ended_at_utc": "2026-10-11T12:12:00Z",
+          "model_id": "synthetic-model-v0",
+          "tool_id": null,
+          "input_tokens": 55,
+          "output_tokens": 10,
+          "cached_input_tokens": 0,
+          "amount_usd": "0.002",
+          "cost_basis": "synthetic"
+        }
+      ],
+      "budget": {
+        "locked_at_utc": "2026-10-11T11:55:00Z",
+        "max_human_minutes": 35,
+        "max_tool_calls": 1,
+        "max_retries": 0,
+        "max_event_cost_usd": "0.005"
+      }
+    },
+    {
+      "task_id": "synthetic-T02",
+      "coverage": {
+        "human": "complete",
+        "events": "complete",
+        "monetary": "complete"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-02",
+          "category": "plan",
+          "started_at_utc": "2026-10-11T12:05:00Z",
+          "ended_at_utc": "2026-10-11T12:20:00Z"
+        },
+        {
+          "actor_slot": "slot-02",
+          "category": "ship",
+          "started_at_utc": "2026-10-11T12:20:00Z",
+          "ended_at_utc": "2026-10-11T12:50:00Z"
+        }
+      ],
+      "agent_events": [],
+      "budget": {
+        "locked_at_utc": "2026-10-11T11:55:00Z",
+        "max_human_minutes": 45,
+        "max_tool_calls": 0,
+        "max_retries": 0,
+        "max_event_cost_usd": "0"
+      }
+    },
+    {
+      "task_id": "synthetic-T03",
+      "coverage": {
+        "human": "missing",
+        "events": "missing",
+        "monetary": "missing"
+      },
+      "human_intervals": [],
+      "agent_events": [],
+      "budget": {
+        "locked_at_utc": "2026-10-11T11:55:00Z",
+        "max_human_minutes": 30,
+        "max_tool_calls": 3,
+        "max_retries": 1,
+        "max_event_cost_usd": "0.05"
+      }
+    },
+    {
+      "task_id": "synthetic-T04",
+      "coverage": {
+        "human": "complete",
+        "events": "complete",
+        "monetary": "complete"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-04",
+          "category": "other",
+          "started_at_utc": "2026-10-11T12:10:00Z",
+          "ended_at_utc": "2026-10-11T12:13:00Z"
+        }
+      ],
+      "agent_events": [],
+      "budget": null
+    },
+    {
+      "task_id": "synthetic-T05",
+      "coverage": {
+        "human": "complete",
+        "events": "partial",
+        "monetary": "partial"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-05",
+          "category": "prompt",
+          "started_at_utc": "2026-10-11T12:20:00Z",
+          "ended_at_utc": "2026-10-11T12:26:00Z"
+        }
+      ],
+      "agent_events": [
+        {
+          "event_id": "synthetic-E05",
+          "session_id": "synthetic-S05",
+          "kind": "tool_call",
+          "started_at_utc": "2026-10-11T12:21:00Z",
+          "ended_at_utc": "2026-10-11T12:22:00Z",
+          "model_id": null,
+          "tool_id": "candidate-search",
+          "input_tokens": null,
+          "output_tokens": null,
+          "cached_input_tokens": null,
+          "amount_usd": null,
+          "cost_basis": null
+        }
+      ],
+      "budget": {
+        "locked_at_utc": "2026-10-11T11:55:00Z",
+        "max_human_minutes": 10,
+        "max_tool_calls": 2,
+        "max_retries": 0,
+        "max_event_cost_usd": "0.01"
+      }
+    },
+    {
+      "task_id": "synthetic-T06",
+      "coverage": {
+        "human": "complete",
+        "events": "complete",
+        "monetary": "complete"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-06",
+          "category": "plan",
+          "started_at_utc": "2026-10-11T12:00:00Z",
+          "ended_at_utc": "2026-10-11T12:30:00Z"
+        },
+        {
+          "actor_slot": "slot-06",
+          "category": "review",
+          "started_at_utc": "2026-10-11T12:30:00Z",
+          "ended_at_utc": "2026-10-11T13:00:00Z"
+        }
+      ],
+      "agent_events": [
+        {
+          "event_id": "synthetic-E06",
+          "session_id": "synthetic-S06",
+          "kind": "model_call",
+          "started_at_utc": "2026-10-11T12:10:00Z",
+          "ended_at_utc": "2026-10-11T12:12:00Z",
+          "model_id": "synthetic-model-v0",
+          "tool_id": null,
+          "input_tokens": 200,
+          "output_tokens": 45,
+          "cached_input_tokens": 50,
+          "amount_usd": "0.010",
+          "cost_basis": "synthetic"
+        }
+      ],
+      "budget": {
+        "locked_at_utc": "2026-10-11T11:55:00Z",
+        "max_human_minutes": 50,
+        "max_tool_calls": 2,
+        "max_retries": 1,
+        "max_event_cost_usd": "0.020"
+      }
+    },
+    {
+      "task_id": "synthetic-T07",
+      "coverage": {
+        "human": "missing",
+        "events": "missing",
+        "monetary": "missing"
+      },
+      "human_intervals": [],
+      "agent_events": [],
+      "budget": null
+    },
+    {
+      "task_id": "synthetic-T08",
+      "coverage": {
+        "human": "complete",
+        "events": "complete",
+        "monetary": "complete"
+      },
+      "human_intervals": [
+        {
+          "actor_slot": "slot-08",
+          "category": "review",
+          "started_at_utc": "2026-10-11T12:30:00Z",
+          "ended_at_utc": "2026-10-11T12:50:00Z"
+        }
+      ],
+      "agent_events": [],
+      "budget": null
+    }
+  ]
+}
