@@ -15,8 +15,9 @@ from urllib.request import Request, urlopen
 from .pilot import (build_capture_manifest, evaluate_preflight, validate_capture)
 from .safe_io import (disjoint, refuse_existing, publish_once, publish_json,
                       publish_jsonl, jsonl_bytes)
+from .page_audit import audit_bundle_file
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 GITHUB_HOST = "https://github.com"
 REPO = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
@@ -251,6 +252,30 @@ def pilot_parse(args):
     publish_once(artifacts)
     print(json.dumps(audit, sort_keys=True))
 
+def audit_pages(args):
+    """Compare two independently annotated visible row lists with raw captures.
+
+    This reports documentary consistency, not proof of human independence,
+    GitHub origin, permissible scraping or approval for cohort enrollment.
+    """
+    disjoint(args.bundle, args.output)
+    refuse_existing(args.output)
+    report = audit_bundle_file(args.bundle, extract_repos=extract_repos,
+                               min_rows=args.min_rows)
+    publish_json(args.output, report)
+    print(json.dumps({
+        "audit_output": args.output,
+        "evidence_kind": report["evidence_kind"],
+        "pages": report["pages_supplied"],
+        "agreed_gold_rows": report["audited_gold_rows"],
+        "automated_documentary_check": report["automated_documentary_check"],
+        "scientific_status": report["scientific_status"],
+        "eligible_for_confirmatory_cohort": False,
+    }, sort_keys=True))
+    if args.require_consistent and report["automated_documentary_check"] != "pass":
+        raise ValueError("Independent page QA is incomplete or inconsistent; "
+                         "report retained, cohort enrollment remains blocked.")
+
 
 def pilot_preflight(args):
     """Document gate completeness; never call it a signed or approved study."""
@@ -319,6 +344,12 @@ def main(argv=None):
     vp.add_argument("--output", required=True)
     vp.add_argument("--audit-output", help="Optional structured audit summary JSON")
     vp.set_defaults(func=pilot_parse)
+    qa = sub.add_parser("audit-pages", help="Compare raw captures to two complete, blinded independent row annotations")
+    qa.add_argument("--bundle", required=True, help="Local audit bundle index with capture/manifest paths and both reviewer labels")
+    qa.add_argument("--output", required=True, help="Write-once JSON audit report")
+    qa.add_argument("--min-rows", type=int, default=30, help="Documentary full-page row threshold (default: 30 across windows)")
+    qa.add_argument("--require-consistent", action="store_true", help="Return nonzero for incomplete/mismatched annotations or parser outputs")
+    qa.set_defaults(func=audit_pages)
     pf = sub.add_parser("pilot-preflight", help="Check documented scientific readiness without claiming authorization")
     pf.add_argument("--input", required=True)
     pf.add_argument("--stage", choices=("pilot", "confirmatory"), default="confirmatory")
