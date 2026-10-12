@@ -37,6 +37,25 @@ class PackageReviewTests(unittest.TestCase):
         self.assertEqual(r["decision"], "review_ready")
         self.assertFalse(r["automatic_install_approved"])
 
+    def test_unknown_license_can_be_deferred(self):
+        p = candidate()
+        p["candidate"]["spdx_expression"] = None
+        self.assertEqual(evaluate(p)["decision"], "defer")
+
+    def test_license_pass_requires_spdx(self):
+        p = candidate()
+        p["candidate"]["spdx_expression"] = None
+        p["checks"]["license_compatibility"] = {
+            "status": "pass", "evidence_url": "https://example.org/evidence"}
+        with self.assertRaises(PackageReviewError):
+            evaluate(p)
+
+    def test_bad_evidence_url_rejected(self):
+        p = candidate()
+        p["checks"]["known_advisories"] = {"status": "pass", "evidence_url": "https://"}
+        with self.assertRaises(PackageReviewError):
+            evaluate(p)
+
     def test_invalid_digest_rejected(self):
         p = candidate()
         p["candidate"]["artifact_sha256"] = "not-a-digest"
