@@ -1,0 +1,24 @@
+{
+  "schema_version": "page-qa-review-1.0",
+  "dataset_kind": "synthetic",
+  "reviewer_slot": "A",
+  "reviewer_ref": "SYNTHETIC-rater-A",
+  "reviewed_at_utc": "2026-10-12T12:10:00+00:00",
+  "source_sha256": "d4a8818bce0d141ae7e603a090c2a2039de776a356d1cda08be30766a0923fe4",
+  "manifest_sha256": "4e75b255b6942c733527ba99779e23083f62ad4c9cfcdc881a350eabd0cdea0a",
+  "coverage": "all_displayed_rows",
+  "inspection_mode": "synthetic_fixture",
+  "rows": [
+    {
+      "rank": 1,
+      "repository": "alpha-org/first-project",
+      "note": null
+    },
+    {
+      "rank": 2,
+      "repository": "example-user/another.repo",
+      "note": null
+    }
+  ],
+  "decision_note": null
+}
