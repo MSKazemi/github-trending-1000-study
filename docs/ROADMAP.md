@@ -119,3 +119,10 @@ See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_
 - Write-once capture/manifest and parsed outputs are implemented in PR #46 (merged); the multi-file pair is not a database transaction.
 - A separate prospective 30/90/180-day follow-up module, immutable event ledger and mocked API tests are proposed in a follow-up PR. It requires explicit human-approved cohort references and an opt-in network flag.
 - Still missing: verified real parser recall (#2), external collection/access authorization, stable-ID reconciliation across actual observed captures, qualified control sampling/power (#3), signed preregistration and real follow-up data. Keep issue #4 open until actual safe pilot/resume and integration readiness are audited.
+
+## Incremental capture QA under issue #2 — 2026-10-12
+
+- [x] Add independent, offline two-reviewer whole-page row comparison with exact rank/identity TP/FP/FN, off-selector omission detection, clear uncertainty and immutable source linkage ([documentation](PAGE_QA_COMPARISON.md)).
+- [ ] Human reviewers independently audit at least 30 **actual** visible rows across permitted daily/weekly/monthly captures; adjudicate conflicts, demonstrate actual source integrity, and review parser drift.
+- [ ] Validate each planned language-specific page separately (unsupported in current strict global-page collector); do not infer nine-panel coverage.
+- [ ] Record independent signed scientific/source approval before updating pilot/confirmatory readiness. Never reinterpret synthetic fixture metrics as observed results.
