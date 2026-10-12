@@ -27,6 +27,7 @@
 - [Faculty-style methodological review](docs/FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) — evidence-grounded advice, **not actual professorial endorsement**; [first expanded task intake](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md).
 - [Observed sampling visualization CLI](docs/SAMPLING_VISUALIZATION_CLI.md) — offline F01 SVG and T02 Markdown/JSON audit; **not empirical findings**.
 - [Publication figures and tables](docs/FIGURE_TABLE_PLAN_2027_2031.md) — proposed **18 figures and 14 tables** across 2027 observational research and conditional 2028–2031 trials; **no empirical results yet**. [Machine-readable register](references/figure_table_register_2027.json).
+- [**One-repository, reuse-first first-use pilot (offline synthetic)**](docs/FIRST_USE_REUSE_PILOT_2026_10_12.md) — reproducible existing-CLI task, testable fail-closed output, source/uncertainty and build-vs-reuse decision card; **not a recruited user study or measured cost/energy benefit**. [Evidence card](examples/first_use_reuse_pilot.example.json).
 - **[News, scientific journal and conference evidence watch (2026–2027)](docs/SOURCE_MONITORING_AND_JOURNALS_2027.md)** — research windows, journals and verified 2027 submission dates; [49-source curated watch register](references/source_watch_2026.json). The weekly briefing configuration is currently **disabled**.
 
 ## Install & run
