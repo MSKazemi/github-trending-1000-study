@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "public_issue_intake_unreviewed",
+  "source_panel": "exploratory-first-five-open-issue-api-rows-three-python-repos-2026-10-12",
+  "captured_at_utc": "2026-10-12T08:28:55.900Z",
+  "selection_seed": "oss-task-pilot-2026-10-12-v1",
+  "per_repo_target": 2,
+  "sources": [
+    {
+      "repository": "pallets/click",
+      "api_url": "https://api.github.com/repos/pallets/click/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5570412223,
+          "number": 3880,
+          "html_url": "https://github.com/pallets/click/pull/3880",
+          "state": "open",
+          "created_at_utc": "2026-09-24T15:09:01Z",
+          "updated_at_utc": "2026-10-08T11:12:16Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5564322398,
+          "number": 3878,
+          "html_url": "https://github.com/pallets/click/pull/3878",
+          "state": "open",
+          "created_at_utc": "2026-09-24T06:46:22Z",
+          "updated_at_utc": "2026-10-05T11:51:16Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5387953669,
+          "number": 3859,
+          "html_url": "https://github.com/pallets/click/pull/3859",
+          "state": "open",
+          "created_at_utc": "2026-09-08T14:24:45Z",
+          "updated_at_utc": "2026-09-22T06:29:25Z",
+          "is_pull_request": true
+        },
+        {
+          "id": 5361921880,
+          "number": 3847,
+          "html_url": "https://github.com/pallets/click/issues/3847",
+          "state": "open",
+          "created_at_utc": "2026-09-06T00:43:13Z",
+          "updated_at_utc": "2026-09-20T13:39:02Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5358377381,
+          "number": 3840,
+          "html_url": "https://github.com/pallets/click/issues/3840",
+          "state": "open",
+          "created_at_utc": "2026-09-05T13:49:09Z",
+          "updated_at_utc": "2026-09-14T12:06:35Z",
+          "is_pull_request": false
+        }
+      ]
+    },
+    {
+      "repository": "Textualize/rich",
+      "api_url": "https://api.github.com/repos/Textualize/rich/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5753377703,
+          "number": 4235,
+          "html_url": "https://github.com/Textualize/rich/issues/4235",
+          "state": "open",
+          "created_at_utc": "2026-10-07T23:31:37Z",
+          "updated_at_utc": "2026-10-10T21:13:35Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5740538692,
+          "number": 4234,
+          "html_url": "https://github.com/Textualize/rich/issues/4234",
+          "state": "open",
+          "created_at_utc": "2026-10-07T06:34:37Z",
+          "updated_at_utc": "2026-10-08T10:12:14Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5717426560,
+          "number": 4233,
+          "html_url": "https://github.com/Textualize/rich/issues/4233",
+          "state": "open",
+          "created_at_utc": "2026-10-05T18:55:57Z",
+          "updated_at_utc": "2026-10-05T18:56:57Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5570377346,
+          "number": 4229,
+          "html_url": "https://github.com/Textualize/rich/issues/4229",
+          "state": "open",
+          "created_at_utc": "2026-09-24T15:06:21Z",
+          "updated_at_utc": "2026-10-07T15:06:39Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5533971674,
+          "number": 4225,
+          "html_url": "https://github.com/Textualize/rich/issues/4225",
+          "state": "open",
+          "created_at_utc": "2026-09-22T00:35:11Z",
+          "updated_at_utc": "2026-09-27T14:17:02Z",
+          "is_pull_request": false
+        }
+      ]
+    },
+    {
+      "repository": "psf/requests",
+      "api_url": "https://api.github.com/repos/psf/requests/issues?state=open&sort=created&direction=desc&per_page=15&page=1",
+      "per_page": 15,
+      "page": 1,
+      "issues": [
+        {
+          "id": 5806823841,
+          "number": 7634,
+          "html_url": "https://github.com/psf/requests/issues/7634",
+          "state": "open",
+          "created_at_utc": "2026-10-12T00:55:23Z",
+          "updated_at_utc": "2026-10-12T03:15:53Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5727743197,
+          "number": 7632,
+          "html_url": "https://github.com/psf/requests/issues/7632",
+          "state": "open",
+          "created_at_utc": "2026-10-06T11:40:32Z",
+          "updated_at_utc": "2026-10-11T16:20:21Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5647586466,
+          "number": 7631,
+          "html_url": "https://github.com/psf/requests/issues/7631",
+          "state": "open",
+          "created_at_utc": "2026-09-30T13:54:45Z",
+          "updated_at_utc": "2026-10-03T14:31:31Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5571965961,
+          "number": 7630,
+          "html_url": "https://github.com/psf/requests/issues/7630",
+          "state": "open",
+          "created_at_utc": "2026-09-24T17:18:05Z",
+          "updated_at_utc": "2026-10-07T11:49:04Z",
+          "is_pull_request": false
+        },
+        {
+          "id": 5552751394,
+          "number": 7629,
+          "html_url": "https://github.com/psf/requests/issues/7629",
+          "state": "open",
+          "created_at_utc": "2026-09-23T11:31:17Z",
+          "updated_at_utc": "2026-10-09T16:11:54Z",
+          "is_pull_request": false
+        }
+      ]
+    }
+  ]
+}

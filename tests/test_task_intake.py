@@ -1,0 +1,96 @@
+import copy
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+from trending_study.task_intake import sample, IntakeError
+
+FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.public_2026-10-12.json"
+
+class IntakeTests(unittest.TestCase):
+    def frame(self):
+        return json.loads(FRAME.read_text(encoding="utf-8"))
+
+    def test_ledger_keeps_all_rows_and_pull_requests(self):
+        r = sample(self.frame())
+        self.assertEqual(r["total_rows"], 15)
+        self.assertEqual(r["selected_issue_candidates"], 6)
+        self.assertEqual(len(r["per_repo"]), 3)
+        self.assertEqual(sum(x["selection_status"]=="excluded_pr_not_issue" for x in r["ledger"]), 3)
+        self.assertTrue(all(x["reuse_opportunity"]=="unknown" for x in r["ledger"]))
+        self.assertTrue(all(x["experiment_enrollment_status"]=="not_eligible_unreviewed" for x in r["ledger"]))
+
+    def test_determinism(self):
+        self.assertEqual(sample(self.frame()), sample(self.frame()))
+
+    def test_reject_personal_data(self):
+        x=self.frame()
+        x["sources"][0]["issues"][0]["user"]={"login":"name"}
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_reject_future_update(self):
+        x=self.frame()
+        x["sources"][0]["issues"][0]["updated_at_utc"]="2027-01-01T00:00:00Z"
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_reject_wrong_url(self):
+        x=self.frame()
+        x["sources"][1]["issues"][0]["html_url"]="https://github.com/not/the-repo/issues/2"
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_reject_duplicate_ids(self):
+        x=self.frame()
+        x["sources"][1]["issues"][0]["id"]=x["sources"][0]["issues"][0]["id"]
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_reject_unsorted_frame(self):
+        x=self.frame()
+        x["sources"][1]["issues"][0],x["sources"][1]["issues"][1]=x["sources"][1]["issues"][1],x["sources"][1]["issues"][0]
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_reject_non_utc(self):
+        x=self.frame()
+        x["captured_at_utc"]="2026-10-12T10:28:55+02:00"
+        with self.assertRaises(IntakeError): sample(x)
+
+    def test_cli_does_not_overwrite(self):
+        with tempfile.TemporaryDirectory() as d:
+            out=Path(d)/"out.json"
+            cmd=[sys.executable,"-m","trending_study.task_intake","--input",str(FRAME),"--output",str(out)]
+            a=subprocess.run(cmd,capture_output=True,text=True)
+            self.assertEqual(a.returncode,0,a.stderr)
+            self.assertEqual(json.loads(out.read_text())["selected_issue_candidates"],6)
+            b=subprocess.run(cmd,capture_output=True,text=True)
+            self.assertEqual(b.returncode,2)
+            self.assertIn("File exists",b.stderr)
+
+    def test_reject_future_labeled_capture(self):
+        x = self.frame()
+        x["captured_at_utc"] = "2030-01-01T00:00:00Z"
+        with self.assertRaisesRegex(IntakeError, "future capture"):
+            sample(x)
+
+    def test_reject_noncanonical_repo_path_components(self):
+        x = self.frame()
+        for name in ("../click", "owner/..", "./repo", "owner/."):
+            candidate = copy.deepcopy(x)
+            candidate["sources"][0]["repository"] = name
+            with self.subTest(repository=name):
+                with self.assertRaisesRegex(IntakeError, "unsafe repository"):
+                    sample(candidate)
+
+    def test_reject_missing_source_frame_and_blank_seed(self):
+        x = self.frame()
+        x["source_panel"] = ""
+        with self.assertRaisesRegex(IntakeError, "source_panel"):
+            sample(x)
+        x = self.frame()
+        x["selection_seed"] = " "
+        with self.assertRaisesRegex(IntakeError, "seed"):
+            sample(x)
+
+
+if __name__=="__main__":
+    unittest.main()

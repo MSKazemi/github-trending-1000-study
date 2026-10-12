@@ -222,3 +222,7 @@ python -m trending_study.blind_review audit --pool examples/review_pool.syntheti
 ```
 
 See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for the evidence status and open scientific gates. No real AI/reuse productivity or sustainability findings are claimed.
+
+## October 2026: prospective task-candidate intake pilot
+
+An [offline task-intake validator and documented exploratory public-issue frame](docs/PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md) now demonstrate **pre-reuse** deterministic candidate sampling with provenance, preserved pull-request exclusions, and explicit unknown/unreviewed states. The selected open GitHub issues are task leads, **not** verified reusable-software opportunities or randomized study assignments. Human screening, frozen acceptance tests, consent, independent adjudication, and a preregistration decision remain pending. Run `python -m trending_study.task_intake --input examples/task_intake.public_2026-10-12.json --output /tmp/task-intake-audit.json` and inspect the complete ledger.
