@@ -113,3 +113,7 @@ The standalone, [documented follow-up instrument](LONGITUDINAL_FOLLOWUPS_2026_10
 | Failure/attrition | `missed_window`, `late_observation`, `not_found_or_private_or_renamed`, `rate_limited`, `identity_mismatch` | Missing is **not** zero, and 404 does not prove deletion |
 
 Counter deltas can be negative. No follow-up in this schema currently constitutes an empirical result.
+
+## Supported-selector completeness diagnostic (2026-10-12, NOT live QA)
+
+Strict pilot audit includes `selector_box_row_count` (number of matched `article.Box-row` elements in the **saved** HTML), `structural_parser_status` (`matched_selector_rows_consistent` or `not_separately_instrumented` when no inspector supplied), and `structural_scope_warning`. Every supported article must contribute exactly one validated, nonduplicate repository and preserve its rank. The original `parser_qa_status` stays `requires_independent_manual_audit`. **Selector coverage is not total visible-page recall.** See [verification plan](PARSER_STRUCTURE_QA_2026_10_12.md).
