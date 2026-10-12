@@ -65,3 +65,12 @@ Keep negative/null results, update links when new versions supersede old ones, a
 | C038 | GitHub Trending shows actual software usefulness or green impact | **unsupported** — observable inclusion, rank and labels only; [Trending](https://github.com/trending) |
 | C039 | AI productivity benefits are uniform in mature and greenfield OSS | **unsupported** — tool/task/developer selection and time accounting threaten inference; [METR update](https://metr.org/blog/2026-02-24-uplift-update/) |
 | C040 | The proposed 2027–2031 roadmap is already executed or validated | **false at 2026-10-11** — methodology and synthetic tools exist, field research and funded board do not |
+
+
+## Additional audit-verification caution — 2026-10-12
+| ID | Claim | Status and boundary |
+|---|---|---|
+| C041 | A consistent `article.Box-row` parser proves no visible Trending rows were omitted | **Not validated:** page changes outside the selector may yield a positive subset; [QA protocol](INDEPENDENT_PAGE_AUDIT_2026_10_12.md) requires a blind full-page reference |
+| C042 | Two matching submitted reviewer lists alone prove human independence | **Unsupported:** documentary self-attestation can be fabricated; external reviewer/source authentication necessary |
+| C043 | 36 simulated rows from three windows constitute a 30-real-entry GitHub audit | **False:** 36 is only synthetic regression data, no real empirical sample |
+| C044 | SHA-256 matching capture manifests prove GitHub-origin authenticity or ranking algorithm validity | **Unsupported:** local byte integrity is not server attestation or algorithm disclosure |

@@ -50,7 +50,6 @@ GitHub Trending exposes attention, not independent software quality. Coding agen
 
 **This text is deliberately not a completed or frozen preregistration**. Amend with version, date, reviewers, rationale and exact code/data source once pilot evidence exists.
 
-
 ## Decision reconciliation (2026-10-12)
 
 Before approving or registering this v0.3 draft, resolve all dated cross-document choices in [the protocol reconciliation register](PROTOCOL_RECONCILIATION_DECISIONS_2026_10_12.md). That register is **review guidance only**, not approval or registration, and explicitly preserves Study A (visibility) and Study B (independent user-task/reuse) endpoints, the inability to treat 2024 as AI-free, actual implemented capture surfaces, and the unresolved ethical/statistical gates.

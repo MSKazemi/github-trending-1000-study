@@ -41,3 +41,8 @@
 6. If it cannot be done before November 1, revise the schedule in a dated amendment, not a post-hoc backfill.
 
 See [pilot commands](PILOT_CAPTURE_AND_PREFLIGHT.md), [draft protocol](PREREGISTRATION_DRAFT_2027.md), [project issue #27](https://github.com/MSKazemi/github-trending-1000-study/issues/27).
+
+
+## 2026-10-12 addendum — independent QA tool exists, genuine parser-audit gate still pending
+
+The repository now has `trending_study/page_audit.py` and a `audit-pages` CLI for checking two blind, complete-page lists against a saved GitHub Trending manifest and computing TP/FP/FN (including parser rejection). **No real source capture or independent human 30-row audit occurred** in the current implementation session. Existing sample, access and consent gates stay pending; a passing synthetic 36-row test is not empirical source verification. [Detailed QA procedure](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).

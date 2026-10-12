@@ -41,3 +41,10 @@ The fixture `tests/fixtures/trending.html` now has two unique valid rows. Malfor
 Submit a reviewable **real** pilot page-QA record: capture SHA, code commit, UTC page date/window, audit reviewers, selection frame, counts and denominators, TP/FP/FN, rank disagreements and exact unsupported layouts. Version the record and attach raw audit file only where distribution is permitted. The tool must not claim `verified` until this actually happens.
 
 Related: [pilot SOP](PILOT_CAPTURE_AND_PREFLIGHT.md), [capture immutability](CAPTURE_IMMUTABILITY_2026_10_12.md), [selection](SELECTION_PROTOCOL_2027.md), [source ethics](ETHICS.md), [readiness gates](PROTOCOL_FREEZE_STATUS_2026_10_12.md).
+
+
+## Follow-up implementation: offline two-reviewer independent page audit (2026-10-12)
+
+The earlier structural integrity checks are retained, but they can still miss **off-selector** repository rows. A new [documented `audit-pages` command](INDEPENDENT_PAGE_AUDIT_2026_10_12.md) checks locally stored capture SHA and source metadata against *two separately attested, complete-page row lists*. It reports exact rank identity matches, omissions, false outputs, rater disagreements, and parser rejection instead of treating the presence of some Box-row results as proof of completeness.
+
+A 36-row **synthetic** cross-window regression test verifies the calculations and catches a deliberately changed row class. **The external human audit of 30 actual rows is still not performed.** Neither self-reported reviewer metadata nor a two-reviewer match alone grants source permission or independent certification. Preserve this issue as an enrollment blocker until true live-page evidence exists.

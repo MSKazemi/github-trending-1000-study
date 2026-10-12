@@ -95,11 +95,12 @@ def build_capture_manifest(*, raw, output, window, captured_at_utc,
     }
 
 
-def validate_capture(raw, manifest, *, extract_repos, inspect_structure=None):
-    """Validate a local capture and return rows with capture and parse time separated.
+def validate_manifest_integrity(raw, manifest):
+    """Check capture byte integrity and canonical source metadata only.
 
-    Does not independently authenticate the remote origin or sample eligibility.
-    Only unfiltered /trending?since=... pages are supported in this first pilot.
+    Does not authenticate GitHub, prove a timestamp, or validate page layout.
+    Kept independent of the parser so human auditing can also inspect rejected
+    pages without misclassifying them as successful captures.
     """
     _obj(manifest, "capture manifest")
     if manifest.get("schema_version") != MANIFEST_SCHEMA:
@@ -136,6 +137,16 @@ def validate_capture(raw, manifest, *, extract_repos, inspect_structure=None):
         html = raw.decode("utf-8", errors="strict")
     except UnicodeDecodeError as exc:
         raise PilotValidationError("non-UTF-8 HTML cannot be parsed safely") from exc
+    return window, url, moment, digest, html
+
+
+def validate_capture(raw, manifest, *, extract_repos, inspect_structure=None):
+    """Validate a local capture and return rows with capture and parse time separated.
+
+    Does not independently authenticate the remote origin or sample eligibility.
+    Only unfiltered /trending?since=... pages are supported in this first pilot.
+    """
+    window, url, moment, digest, html = validate_manifest_integrity(raw, manifest)
     repos = extract_repos(html)
     if not repos:
         raise PilotValidationError("No Trending rows")

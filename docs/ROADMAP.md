@@ -119,3 +119,18 @@ See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_
 - Write-once capture/manifest and parsed outputs are implemented in PR #46 (merged); the multi-file pair is not a database transaction.
 - A separate prospective 30/90/180-day follow-up module, immutable event ledger and mocked API tests are proposed in a follow-up PR. It requires explicit human-approved cohort references and an opt-in network flag.
 - Still missing: verified real parser recall (#2), external collection/access authorization, stable-ID reconciliation across actual observed captures, qualified control sampling/power (#3), signed preregistration and real follow-up data. Keep issue #4 open until actual safe pilot/resume and integration readiness are audited.
+
+
+## M11 — Issue #2 independent page QA (2026-10-12)
+- [x] Refactor raw manifest validation so a parser-rejected page can still be audited against intact source bytes
+- [x] Implement independent two-reviewer full-page rank/identity comparisons across specified windows
+- [x] Report exact ranked TP/FP/FN, parser abstentions, unresolved reviewer discrepancies, source checksums and coverage
+- [x] Require 30 agreed rows across daily/weekly/monthly for **documentary** coverage check, never automated cohort approval
+- [x] Add write-once CLI report and synthetic 36-row cross-window / off-selector / malicious path fixture tests
+- [x] Publish human audit runbook, bundle template and truthful current-access limitation
+- [ ] Approve platform access scope and capture actual raw daily/weekly/monthly sources without bypass
+- [ ] Recruit 2 truly independent human reviewers and adjudicate >=30 real visible rows across windows
+- [ ] Measure real row/rank precision/recall, including off-selector omissions and source layout drift
+- [ ] Obtain human scientific review/signoff and leave pilot/pre-registration pending until evidence exists
+
+No actual live 30-row QA can be credited from this PR. Issue [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) remains open for field validation. Details: [independent audit runbook](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
