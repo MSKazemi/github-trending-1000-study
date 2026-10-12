@@ -23,6 +23,7 @@ SUMMARY_VERSION = "page-qa-summary-1.0"
 SOURCE_KINDS = frozenset(("synthetic", "pilot"))
 WINDOWS = frozenset(("daily", "weekly", "monthly"))
 REPO = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
+REVIEWER_REF = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,79}\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 REVIEW_FIELDS = frozenset((
     "schema_version", "dataset_kind", "reviewer_slot", "reviewer_ref",
@@ -99,8 +100,8 @@ def validate_review(review, slot, *, raw_sha, manifest_sha, capture_time):
     if review["reviewer_slot"] != slot:
         raise PageQAError(f"expected reviewer slot {slot}")
     reviewer = _string(review["reviewer_ref"], f"review {slot} pseudonymous reference", 128)
-    if reviewer == "unknown":
-        raise PageQAError("review must have a distinct pseudonymous source reference")
+    if reviewer.casefold() == "unknown" or REVIEWER_REF.fullmatch(reviewer) is None:
+        raise PageQAError("reviewer_ref must be pseudonymous ASCII ID, not personal contact information")
     _sha(review["source_sha256"], "review source digest")
     _sha(review["manifest_sha256"], "review manifest digest")
     if review["source_sha256"] != raw_sha or review["manifest_sha256"] != manifest_sha:
@@ -295,6 +296,11 @@ def aggregate(reports):
         kinds.add(report["dataset_kind"])
         windows.add(report["window"])
         metric = report["metrics"]
+        if metric is not None:
+            _exact(metric, {"manual_visible_rows", "parsed_rows", "rank_and_identity",
+                            "identity_only", "full_page_exact_match"}, "reported metrics")
+            if type(metric["full_page_exact_match"]) is not bool:
+                raise PageQAError("reported full_page_exact_match must be boolean")
         expected_status = (
             "synthetic_only" if report["dataset_kind"] == "synthetic" else
             "blocked_independent_review" if metric is None else
@@ -318,6 +324,17 @@ def aggregate(reports):
             if (totals["tp"] + totals["fp"] != metric["parsed_rows"]
                 or totals["tp"] + totals["fn"] != metric["manual_visible_rows"]):
                 raise PageQAError("inconsistent report confusion denominators")
+            if metric["full_page_exact_match"] != (totals["fp"] == 0 and totals["fn"] == 0):
+                raise PageQAError("reported exact match disagrees with rank-and-identity counts")
+            if metric["parsed_rows"] != report["structural_selector_rows"]:
+                raise PageQAError("reported parsed count disagrees with structural selector count")
+            identity = metric["identity_only"]
+            if not isinstance(identity, dict) or any(type(identity.get(k)) is not int or identity[k] < 0
+                                                      for k in ("tp", "fp", "fn")):
+                raise PageQAError("invalid identity-only confusion counts")
+            if (identity["tp"] + identity["fp"] != metric["parsed_rows"]
+                or identity["tp"] + identity["fn"] != metric["manual_visible_rows"]):
+                raise PageQAError("inconsistent identity-only denominators")
             total_rows += metric["manual_visible_rows"]
             tp += totals["tp"]
             fp += totals["fp"]
