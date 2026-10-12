@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "created_utc_date": "2026-10-12",
+  "status": "DESIGN_ONLY_NO_EMPIRICAL_FINDINGS",
+  "study": "GitHub Trending 1000 and verified green reuse",
+  "reference_document": "docs/FIGURE_TABLE_PLAN_2027_2031.md",
+  "total_figures": 18,
+  "total_tables": 14,
+  "warning": "Years indicate earliest planning waves, not guaranteed validated output. Never present these planned visuals as findings.",
+  "items": [
+    {
+      "id": "F01",
+      "kind": "figure",
+      "title": "Sampling and attrition flow",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "capture QA, stable IDs and complete inclusion log",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F02",
+      "kind": "figure",
+      "title": "Popularity versus verified user usefulness",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "independent task or integration audits",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F03",
+      "kind": "figure",
+      "title": "Human-agent by reuse-first factorial effects",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "preregistered powered randomized study",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F04",
+      "kind": "figure",
+      "title": "Whole-lifecycle energy and carbon break-even",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "matched calibrated resource boundaries",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F05",
+      "kind": "figure",
+      "title": "Utility-cost-risk Pareto frontier",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "validated comparable safety and cost evaluations",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F06",
+      "kind": "figure",
+      "title": "Verified agent chronology and adoption denominators",
+      "tier": "design",
+      "earliest_year": 2026,
+      "required_evidence": "dated source verification",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F07",
+      "kind": "figure",
+      "title": "First detected agent trace by evidence tier",
+      "tier": "supplement",
+      "earliest_year": 2027,
+      "required_evidence": "time-stamped independent trace audit",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F08",
+      "kind": "figure",
+      "title": "Trending capture completeness and recurrence",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "permission-compliant validated snapshots",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F09",
+      "kind": "figure",
+      "title": "Observed cohort balance",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "independent comparisons and baseline confounder audit",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F10",
+      "kind": "figure",
+      "title": "Prospective popularity and activity trajectories",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "mature 30-90-180 day follow-ups",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F11",
+      "kind": "figure",
+      "title": "Top-K retrieval precision bounds and judgement coverage",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "independent qualified candidate judgements",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F12",
+      "kind": "figure",
+      "title": "Quiet useful software and reuse-opportunity coverage",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "independent task and quiet-source frame",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F13",
+      "kind": "figure",
+      "title": "Retriever precision-cost-quality benchmark",
+      "tier": "future",
+      "earliest_year": 2029,
+      "required_evidence": "held-out gold tasks and full retrieval costs",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F14",
+      "kind": "figure",
+      "title": "All-task implementation strategy and outcomes",
+      "tier": "supplement",
+      "earliest_year": 2027,
+      "required_evidence": "frozen prospective task/acceptance frame",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F15",
+      "kind": "figure",
+      "title": "Whole-workflow human and maintainer burden",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "consented timing and upstream logs",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F16",
+      "kind": "figure",
+      "title": "Environmental boundary sensitivity",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "calibrated or declared modeled uncertainty",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F17",
+      "kind": "figure",
+      "title": "Candidate screening and security failure modes",
+      "tier": "supplement",
+      "earliest_year": 2027,
+      "required_evidence": "independent exact-version security and legal reviews",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "F18",
+      "kind": "figure",
+      "title": "Robustness and external replication effects",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "comparable independent multi-wave replications",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T01",
+      "kind": "table",
+      "title": "Research question and estimand definitions",
+      "tier": "core",
+      "earliest_year": 2026,
+      "required_evidence": "research protocol and human signoff",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T02",
+      "kind": "table",
+      "title": "Cohort composition and collection completeness",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "actual capture and attrition frame",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T03",
+      "kind": "table",
+      "title": "Comparative baseline balance",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "matched independently sampled cohorts",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T04",
+      "kind": "table",
+      "title": "Factorial trial outcome summary",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "preregistered trial with raw all-task denominators",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T05",
+      "kind": "table",
+      "title": "Adjusted observational association estimates",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "longitudinal observed outcomes and diagnostics",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T06",
+      "kind": "table",
+      "title": "Agent evidence tiers and source comparability",
+      "tier": "supplement",
+      "earliest_year": 2026,
+      "required_evidence": "source dates, questions and denominators verified",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T07",
+      "kind": "table",
+      "title": "Data provenance and completeness contract",
+      "tier": "supplement",
+      "earliest_year": 2026,
+      "required_evidence": "schema and source ledger audited",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T08",
+      "kind": "table",
+      "title": "Independent gold candidate adjudication",
+      "tier": "core",
+      "earliest_year": 2027,
+      "required_evidence": "dual rater and reproducible function/security review",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T09",
+      "kind": "table",
+      "title": "Held-out retrieval algorithm evaluation",
+      "tier": "future",
+      "earliest_year": 2029,
+      "required_evidence": "pool-relative recall and top-K bounds",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T10",
+      "kind": "table",
+      "title": "Workflow decisions and verified outcomes",
+      "tier": "supplement",
+      "earliest_year": 2027,
+      "required_evidence": "prospective task outcome assignment fidelity",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T11",
+      "kind": "table",
+      "title": "Whole-life resource and environmental boundary ledger",
+      "tier": "future",
+      "earliest_year": 2028,
+      "required_evidence": "bounded calibrated or modeled energy and workload",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T12",
+      "kind": "table",
+      "title": "Sensitivity and contradictory/null outcomes",
+      "tier": "supplement",
+      "earliest_year": 2027,
+      "required_evidence": "complete prespecified diagnostic checks",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T13",
+      "kind": "table",
+      "title": "Bias, ethics, security and deviations",
+      "tier": "supplement",
+      "earliest_year": 2026,
+      "required_evidence": "approved methods/consent and deviation log",
+      "status": "planned_unmeasured"
+    },
+    {
+      "id": "T14",
+      "kind": "table",
+      "title": "Five-year research gates and quarterly readiness",
+      "tier": "future",
+      "earliest_year": 2026,
+      "required_evidence": "dated conditional stage gates",
+      "status": "planned_unmeasured"
+    }
+  ]
+}
