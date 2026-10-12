@@ -75,6 +75,16 @@ Do not mark sample goals complete without public methodology and verified counts
 - [ ] Report null findings, uncertainty and context-limited 2027 lessons; no training data leakage
 
 
+## M9 — Publication figures and tables (planned; not empirical)
+- [x] Register 18 figures and 14 tables with manuscript/supplement/future tiers, estimands, denominators, evidence gates and source contracts
+- [x] Record dated user visualization request and discussion summary
+- [ ] Freeze main-paper visual/estimand mapping during preregistration and independent review
+- [ ] Validate each chart's provenance, missingness, sample size, model, CI and quality checks on *observed* data
+- [ ] Produce accessible SVG/PDF/PNG plus machine-readable chart manifests with observed-vs-modeled status
+- [ ] Publish negative/null analyses, boundary uncertainties and full reproducible exports
+
+See [visual plan](FIGURE_TABLE_PLAN_2027_2031.md), [register](../references/figure_table_register_2027.json), [issue #33](https://github.com/MSKazemi/github-trending-1000-study/issues/33).
+
 ## M8 — Adaptive 2027–2031 strategy and stakeholder governance (proposed)
 - [x] Define hypothetical professor/statistician/climate/CEO/CTO/OSS/ethics advisory questions and dissent/veto criteria
 - [x] Specify research waves for 2027, 2028, 2029, 2030, 2031 with stop/pivot conditions, and *no assumption of funding or partners*
