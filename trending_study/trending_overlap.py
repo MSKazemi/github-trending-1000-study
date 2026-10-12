@@ -1,0 +1,135 @@
+"""Descriptive, offline stability of two *audited* Trending page lists.
+
+No claim of recovering GitHub's algorithm, complete eligible universe, or
+independently verified page contents. Only the supplied lists are compared.
+"""
+import argparse
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+import re
+
+_SHA = re.compile(r"^[0-9a-f]{64}$")
+_WINDOWS = {"daily", "weekly", "monthly"}
+
+
+class OverlapError(ValueError):
+    pass
+
+
+def _utc(value, name):
+    if not isinstance(value, str):
+        raise OverlapError(f"{name}: expected UTC timestamp")
+    try:
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise OverlapError(f"{name}: invalid timestamp") from exc
+    if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(dt):
+        raise OverlapError(f"{name}: timestamp must have UTC offset")
+    return dt
+
+
+def _capture(obj):
+    if not isinstance(obj, dict):
+        raise OverlapError("each capture must be an object")
+    for field in ("capture_id", "page_url"):
+        if not isinstance(obj.get(field), str) or not obj[field].strip():
+            raise OverlapError(f"capture.{field} is required")
+    if not obj["page_url"].startswith("https://github.com/trending"):
+        raise OverlapError("page_url must be a GitHub Trending surface")
+    if obj.get("window") not in _WINDOWS:
+        raise OverlapError("capture.window must be daily/weekly/monthly")
+    if obj.get("language_filter") is not None and (
+        not isinstance(obj["language_filter"], str) or not obj["language_filter"].strip()
+    ):
+        raise OverlapError("language_filter must be null or a nonempty string")
+    if not isinstance(obj.get("source_sha256"), str) or not _SHA.fullmatch(obj["source_sha256"]):
+        raise OverlapError("capture.source_sha256 must be 64 hex characters")
+    timestamp = _utc(obj.get("captured_at_utc"), "captured_at_utc")
+    ranks = obj.get("repository_ids")
+    if not isinstance(ranks, list) or not ranks:
+        raise OverlapError("repository_ids must contain all displayed ranks, not an empty subset")
+    if any(isinstance(x, bool) or not isinstance(x, int) or x <= 0 for x in ranks):
+        raise OverlapError("repository_ids must be positive stable numeric GitHub IDs")
+    if len(ranks) != len(set(ranks)):
+        raise OverlapError("duplicate stable IDs within a page; investigate capture")
+    return timestamp, ranks
+
+
+def evaluate(data, persistence=0.9):
+    """Report within-filter overlap; all proportions refer to the two page lists."""
+    if not isinstance(data, dict) or data.get("schema_version") != "1.0":
+        raise OverlapError("schema_version must be 1.0")
+    if data.get("dataset_kind") not in {"synthetic", "self_reported_audit"}:
+        raise OverlapError("dataset_kind must be synthetic or self_reported_audit")
+    if isinstance(persistence, bool) or not isinstance(persistence, (int, float)) or not 0 < persistence < 1:
+        raise OverlapError("persistence must be strictly between zero and one")
+    pair = data.get("captures")
+    if not isinstance(pair, list) or len(pair) != 2:
+        raise OverlapError("exactly two captures are required")
+    (t0, a), (t1, b) = [_capture(x) for x in pair]
+    if t0 >= t1:
+        raise OverlapError("captures must be chronologically ordered")
+    if pair[0]["capture_id"] == pair[1]["capture_id"]:
+        raise OverlapError("capture IDs must differ")
+    comparable = ("window", "language_filter", "page_url")
+    if any(pair[0][key] != pair[1][key] for key in comparable):
+        raise OverlapError("different filter/window/page URL; compare only matched surfaces")
+    set_a, set_b = set(a), set(b)
+    common = set_a & set_b
+    union = set_a | set_b
+    a_pos = {repo: index for index, repo in enumerate(a)}
+    b_pos = {repo: index for index, repo in enumerate(b)}
+    ordered = sorted(common, key=a_pos.__getitem__)
+    concordant = discordant = 0
+    for i, one in enumerate(ordered):
+        for two in ordered[i + 1:]:
+            if b_pos[one] < b_pos[two]:
+                concordant += 1
+            else:
+                discordant += 1
+    total_pairs = concordant + discordant
+    depth = max(len(a), len(b))
+    discounted = 0.0
+    for d in range(1, depth + 1):
+        overlap_at_d = len(set(a[:d]) & set(b[:d])) / d
+        discounted += (1 - persistence) * (persistence ** (d - 1)) * overlap_at_d
+    return {
+        "schema_version": "1.0",
+        "dataset_kind": data["dataset_kind"],
+        "capture_ids": [x["capture_id"] for x in pair],
+        "window": pair[0]["window"],
+        "language_filter": pair[0]["language_filter"],
+        "captured_at_utc": [x["captured_at_utc"] for x in pair],
+        "page_sizes": [len(a), len(b)],
+        "common_unique_ids": len(common),
+        "union_unique_ids": len(union),
+        "jaccard": len(common) / len(union),
+        "kendall_tau_on_common": ((concordant - discordant) / total_pairs if total_pairs else None),
+        "kendall_comparable_pairs": total_pairs,
+        "discounted_prefix_overlap_lower_bound": discounted,
+        "prefix_persistence": persistence,
+        "comparison_depth": depth,
+        "eligible_for_confirmatory_cohort": False,
+        "interpretation": (
+            "Descriptive page-list comparison only. No independently authenticated "
+            "page audit, candidate-frame denominator, algorithm recovery, user value, "
+            "or causal inference. Discounted prefix value omits unknown tail mass."
+        ),
+    }
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", required=True)
+    parser.add_argument("--persistence", type=float, default=0.9)
+    args = parser.parse_args(argv)
+    try:
+        report = evaluate(json.loads(Path(args.input).read_text(encoding="utf-8")), args.persistence)
+    except (OverlapError, OSError, ValueError) as exc:
+        parser.exit(2, f"error: {exc}\n")
+    print(json.dumps(report, sort_keys=True, indent=2))
+
+
+if __name__ == "__main__":
+    main()
