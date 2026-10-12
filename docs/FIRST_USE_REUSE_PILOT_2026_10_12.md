@@ -6,7 +6,7 @@
 
 A future researcher should be able to take a saved HTML file and identify listed GitHub Trending repositories, original displayed ranks and exact source bytes without online access. The public project **already has** an offline parser and write-once output behavior; an additional standalone parser duplicates functionality without evidence of better user outcomes.
 
-This narrow task operationalizes [reuse before generation](REUSE_FIRST_PLAYBOOK.md) and the conditional [2027–2031 software strategy, pending separate review in PR #60](https://github.com/MSKazemi/github-trending-1000-study/pull/60). It does not modify the original [study protocol](PROTOCOL.md), [all-task trial](REUSE_FIRST_EXPERIMENT.md), or [independent gold standard](REUSE_GOLD_STANDARD_2027.md).
+This narrow task operationalizes [reuse before generation](REUSE_FIRST_PLAYBOOK.md) and the conditional [2027–2031 software strategy](STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md). It does not modify the original [study protocol](PROTOCOL.md), [all-task trial](REUSE_FIRST_EXPERIMENT.md), or [independent gold standard](REUSE_GOLD_STANDARD_2027.md).
 
 ## U01 — frozen proposed first-use task
 
