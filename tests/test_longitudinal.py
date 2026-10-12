@@ -300,6 +300,103 @@ class FollowupCollectionTests(unittest.TestCase):
             self.assertEqual(record["status"], "late_observation")
             self.assertEqual(record["stars"], 22)
 
+    def test_event_ledger_refuses_inconsistent_success_or_false_missingness(self):
+        # These write-once files are deliberately fabricated synthetic test data.
+        # A passing filename/hash is not evidence of a valid HTTP observation.
+        now = utc_now()
+        corrections = [
+            ("before_due", {"observed_at_utc": (now - timedelta(minutes=1)).isoformat()},
+             "precedes scheduled"),
+            ("after_expiry", {"observed_at_utc": (now + timedelta(days=4)).isoformat(),
+                              "lag_seconds": 4 * 86400.0}, "observation window"),
+            ("incorrect_late", {"status": "late_observation"}, "observation window"),
+            ("wrong_stable_id", {"observed_repository_id": 999}, "identity mismatch"),
+            ("missing_counter", {"forks": None}, "nonnegative integer counters"),
+            ("boolean_counter", {"stars": True}, "nonnegative integer counters"),
+            ("wrong_http_status", {"http_status": 503}, "HTTP 200"),
+            ("wrong_study", {"study_id": "other"}, "plan field study_id"),
+            ("wrong_due", {"scheduled_at_utc": "2027-01-01T00:00:00+00:00"},
+             "plan field scheduled_at_utc"),
+            ("unsafe_api_source", {"api_url": "https://example.org/repos/owner/repo"},
+             "official repository API URL"),
+            ("invalid_lag", {"lag_seconds": float("nan")}, "lag_seconds"),
+            ("failed_with_stars", {"status": "network_error"},
+             "failed event must not report"),
+            ("early_missed", {"status": "missed_window", "http_status": None,
+                              "stars": None, "forks": None,
+                              "open_issues_including_prs": None},
+             "missed_window event"),
+        ]
+        for label, edits, error in corrections:
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as d:
+                path, plan = prepared(d, [baseline(10, now - timedelta(days=30))])
+                _, by_id, digest = load_plan(path)
+                task = plan[0]
+                event = _event(
+                    task, digest, now, status="ok", http_status=200,
+                    observed_repository_id=10, stars=22, forks=4,
+                    open_issues_including_prs=2,
+                    full_name_at_followup="fictional-owner/repo-10",
+                    api_url="https://api.github.com/repos/fictional-owner/repo-10",
+                    lag_seconds=0.0,
+                )
+                event.update(edits)
+                _record(Path(d) / "events", event)
+                with self.assertRaisesRegex(FollowupError, error):
+                    load_events(Path(d) / "events", by_id, digest)
+
+    def test_reader_accepts_valid_late_and_missed_events_without_counting_success(self):
+        now = utc_now()
+        with tempfile.TemporaryDirectory() as d:
+            path, plan = prepared(d, [baseline(10, now - timedelta(days=31))],
+                                  grace=(0, 0, 0))
+            _, by_id, digest = load_plan(path)
+            task = plan[0]  # +30d expired one day ago.
+            late = _event(
+                task, digest, now, status="late_observation", http_status=200,
+                observed_repository_id=10, stars=99, forks=4,
+                open_issues_including_prs=2,
+                full_name_at_followup="fictional-owner/repo-10",
+                api_url="https://api.github.com/repos/fictional-owner/repo-10",
+                lag_seconds=round((now - utc(task["scheduled_at_utc"], "due")).total_seconds(), 3),
+            )
+            _record(Path(d) / "events", late)
+            events = load_events(Path(d) / "events", by_id, digest)
+            self.assertEqual(classification(task, events[task["task_id"]], now), "missed")
+            self.assertEqual(events[task["task_id"]][0]["stars"], 99)
+        with tempfile.TemporaryDirectory() as d:
+            path, plan = prepared(d, [baseline(10, now - timedelta(days=31))],
+                                  grace=(0, 0, 0))
+            _, by_id, digest = load_plan(path)
+            task = plan[0]
+            missed = _event(task, digest, now, status="missed_window",
+                            http_status=None, stars=None,
+                            reason="No measurement inside the preregistered window")
+            _record(Path(d) / "events", missed)
+            events = load_events(Path(d) / "events", by_id, digest)
+            self.assertEqual(classification(task, events[task["task_id"]], now), "missed")
+
+    def test_missing_or_malformed_public_visibility_is_not_counted_as_ok(self):
+        now = utc_now()
+        for private_value in ("missing", "false"):
+            with self.subTest(private_field=private_value), tempfile.TemporaryDirectory() as d:
+                path, _ = prepared(d, [baseline(10, now - timedelta(days=30))])
+                response = Response(10, "fictional-owner/repo-10")
+                body = json.loads(response.data)
+                if private_value == "missing":
+                    del body["private"]
+                else:
+                    body["private"] = private_value
+                response.data = json.dumps(body).encode("utf-8")
+                result = collect(path, Path(d) / "events", allow_network=True,
+                                 opener=lambda request, timeout: response,
+                                 clock=lambda: now)
+                self.assertTrue(result["stopped_early"])
+                record = json.loads(next((Path(d) / "events").glob("*.json")).read_text())
+                self.assertEqual(record["status"], "invalid_response")
+                self.assertIsNone(record["stars"])
+                self.assertEqual(result["summary"]["counts"]["completed"], 0)
+
     def test_corrupt_or_unlinked_event_blocks_resume(self):
         now = utc_now()
         with tempfile.TemporaryDirectory() as d:
