@@ -252,6 +252,10 @@ python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
 
 Populate the bundle **only after permitted captures and independent human labeling**. The committed test suite simulates 36 rows across daily/weekly/monthly, but these are synthetic: **no current raw Trending captures or >=30 real row human audit were obtained**. Direct source access was unavailable in this runtime, and independent access/legal review remains outstanding. [Issue #2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) must remain open.
 
+## 2026 AI software and coding-agent company watchlist (exploratory)
+
+- [100 named companies across 10 ecosystem layers](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md) — dated, non-ranked company/brand landscape, ownership corrections, research questions and practical reuse-first lessons.
+- [Machine-readable 100-company register](references/ai_software_companies_100_2026-10-12.csv) — official-source URLs and editorial study lenses; **not** a verified success ranking, complete company population or sampled GitHub repository cohort.
 
 ## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
 
