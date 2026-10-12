@@ -105,3 +105,18 @@ These are study design decisions and testable hypotheses, **not** observed resul
 
 ## Summary of corresponding assistant recommendation
 The study should evolve toward **trusted, efficient and maintainable OSS reuse** with a role-based **hypothetical** multidisciplinary advisory model (not endorsements from real people or companies). Focus on registered all-task questions, proper retrieval/functional ground truth, rights and safety gates, independent user outcomes, whole-lifecycle environmental and social externalities, source/version drift, real funding and ethical partnerships. Maintain annual 2027–2031 research waves with explicit feasibility and stop/pivot criteria, quarterly evidence and scenario revisions, and no assumed future outcomes. Canonical files: [advisory strategy](../docs/ADVISORY_BOARD_STRATEGY_2027_2031.md), [five-year roadmap](../docs/FIVE_YEAR_ROADMAP_2027_2031.md), [futures](../docs/FUTURE_SCENARIOS_2027_2031.md), [leadership scorecard](../docs/LEADERSHIP_SCORECARD_2027_2031.md), [governance](../docs/RESEARCH_PROGRAM_GOVERNANCE_2027_2031.md), [inception checklist](../docs/INCEPTION_CHECKLIST_2026_2027.md).
+
+## U9 — Figure and table decisions (2026-10-12; user wording from current project conversation)
+
+> which plots and tables you think you need to creates ...
+
+### Result: publication-ready visualization and table register
+
+The assistant inspected the study's actual README, AGENTS rules, methods, metric register, green reuse experimental design and five-year roadmap before specifying an evidence-gated **18-figure and 14-table** register. The visual priorities are: (1) sampling/attrition; (2) Trending attention versus independently verified usefulness; (3) future human-versus-agent × normal-versus-reuse-first experimental contrasts; (4) whole-life resource break-even; (5) useful/safe outcomes versus total cost. Further outputs cover dated agent-adoption evidence, completeness/balance and trajectories, retrieval coverage/unknowns, candidate security/licensing, upstream maintainer externalities and 2027–2031 replication. Each is tied to a valid denominator, required provenance, evidence gate and earliest feasible wave.
+
+- [Main display and paper plan](../docs/FIGURE_TABLE_PLAN_2027_2031.md)
+- [Machine-readable register](../references/figure_table_register_2027.json)
+- [Tracking issue #33](https://github.com/MSKazemi/github-trending-1000-study/issues/33)
+
+**Research integrity:** Nothing in this discussion documents a collected 1,000-project cohort, measured 2×2 effect, verified reduction in kWh/CO2 or actual 2031 projection. Any conceptual visualization in the discussion is illustrative. The register is a design output, not findings. Existing consent, sample, license, cybersecurity and environmental-bounds rules remain controlling.
+
