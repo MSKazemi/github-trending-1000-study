@@ -53,3 +53,9 @@
 - Maintain human access-policy review, manual page QA, immutable numeric repo IDs, task-based independent acceptance, statistical power, consent and preregistration checks. These gates cannot be fulfilled by checking in a JSON file.
 - Run `python -m trending_study pilot-preflight --input examples/pilot-preflight.example.json --stage confirmatory` and `python -m unittest discover -s tests -v` after a protocol/CLI change. The documented example should remain not_ready.
 - See docs/PILOT_CAPTURE_AND_PREFLIGHT.md, docs/PREREGISTRATION_DRAFT_2027.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_12.md. Update versions and date decisions without rewriting original hypotheses after results.
+
+## Central research objective and practical lesson delivery (2026-10-12)
+- Before describing the research's goals or delivering generic GitHub-growth advice, read [AI-era coding and reuse research mission](docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) and [practical maintainer handbook](docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md).
+- The purpose is to understand *changes in coding methods* (traditional, AI-assisted, vibe/prompt-led, delegated-agent), functional quality, independently verified downstream reuse, organic discoverability, contribution, and whole-lifecycle sustainability. Trending ranks are not the mission's success criterion.
+- Give maintainers specific task-tested, project-type-appropriate actions and use [the blank action/evidence card](templates/repository_action_evidence_card.md); do not invent adoption, effect sizes or energy outcomes. Preserve negative/null findings and confounders.
+- Keep old reusable projects eligible as alternatives and controls. Do not optimize for having few repositories rather than high-value interoperable components.

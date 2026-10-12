@@ -179,3 +179,14 @@ python -m trending_study pilot-preflight \
 ```
 
 **The example must report `not_ready`.** Actual approvals, pilot sample QA, stable repository IDs, permission-safe language panels, sample/power analysis, independent task-frame and consent review remain **pending**. Output is *not* cohort eligible until those steps are documented. Existing `parse-trending` remains supported for legacy fixtures but explicitly marks its capture timestamp unverified.
+
+## Central mission clarification — modern coding to verified reuse and practical 2027 lessons (2026-10-12)
+
+The main target is **how AI-assisted, vibe/prompt-led and agent-delegated development change open-source practice**, which repository practices lead to **genuine, independently verifiable reuse, useful adoption and responsible contributions**, and when reuse rather than needless reinvention delivers better outcomes for people and the environment. GitHub Trending is one **visibility observation surface**, not the ultimate success criterion. Older projects remain valid historical/reference or reuse candidates; new agent-era workflows remain the focal comparison.
+
+- [Integrated research mission, constructs and falsifiable questions](docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md)
+- [Practical repository quality, reuse, contribution and visibility handbook](docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md)
+- [Per-repository action and evidence card](templates/repository_action_evidence_card.md)
+- [Dated mission-clarification decision log](research-notes/mission-clarification-2026-10-12.md)
+
+**Status:** proposed methods and engineering checklist, not analyzed scientific results or a guarantee of stars, users or lower carbon. Changes to primary outcomes/sampling still require a consolidated preregistration and human approval.
