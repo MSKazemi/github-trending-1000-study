@@ -1,0 +1,530 @@
+{
+  "schema_version": "1.0",
+  "compiled_on": "2026-10-12",
+  "status": "curated candidate monitoring register; NOT systematic search, NOT study evidence",
+  "purpose": "2027 Github Trending/useful software/agentic reuse and green lifecycle study",
+  "core_literature_period": "2021-2027 with backward citation snowballing",
+  "news_retrospective_period": "2024-01 onward with 2021-2023 official historical milestone references",
+  "monitoring_status": "Weekly evidence briefing enabled 2026-10-12; first expected 2026-10-19 Monday morning around 08:00 Europe/Rome (flexible schedule). Distinct from repo data collection; updates via human-review PR if connector permits. No runs/findings yet.",
+  "basis": "docs/SOURCE_MONITORING_AND_JOURNALS_2027.md",
+  "source_count": 49,
+  "sources": [
+    {
+      "id": "NEWS01",
+      "type": "independent-news",
+      "priority": "P1",
+      "name": "Ars Technica",
+      "url": "https://arstechnica.com/",
+      "scope": "AI coding quality, agent workflow issues and review of empirical reports",
+      "limitation": "Technology journalism; follow cited studies; anecdotes and reported statistics need primary verification"
+    },
+    {
+      "id": "NEWS02",
+      "type": "independent-news",
+      "priority": "P1",
+      "name": "The Register",
+      "url": "https://www.theregister.com/",
+      "scope": "AI-generated PR overload, OSS maintainer burden, failure cases",
+      "limitation": "Stories do not establish prevalence"
+    },
+    {
+      "id": "NEWS03",
+      "type": "independent-news",
+      "priority": "P1",
+      "name": "Reuters Technology",
+      "url": "https://www.reuters.com/technology/",
+      "scope": "Launch and enterprise market events, announcements and regulatory context",
+      "limitation": "Product availability does not imply repository use"
+    },
+    {
+      "id": "NEWS04",
+      "type": "independent-news",
+      "priority": "P1",
+      "name": "IEEE Spectrum",
+      "url": "https://spectrum.ieee.org/",
+      "scope": "Independent engineering/energy/hardware analysis",
+      "limitation": "Differentiate modeled and measured results"
+    },
+    {
+      "id": "NEWS05",
+      "type": "independent-news",
+      "priority": "P1",
+      "name": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/",
+      "scope": "Technical AI limitations and broader impacts",
+      "limitation": "Analysis and reporting are not independent experiments"
+    },
+    {
+      "id": "NEWS06",
+      "type": "practitioner-media",
+      "priority": "P1",
+      "name": "InfoQ",
+      "url": "https://www.infoq.com/",
+      "scope": "Deployment reports, SDLC practices and architecture",
+      "limitation": "Case-study selection and unreported denominators"
+    },
+    {
+      "id": "NEWS07",
+      "type": "independent-news",
+      "priority": "P2",
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/",
+      "scope": "Agent launches, companies, investments and new tools",
+      "limitation": "Product marketing and non-representative growth metrics"
+    },
+    {
+      "id": "NEWS08",
+      "type": "independent-news",
+      "priority": "P2",
+      "name": "Axios Technology",
+      "url": "https://www.axios.com/technology",
+      "scope": "Vendor adoption interviews and market movement",
+      "limitation": "Vendor-supplied counts often drive stories"
+    },
+    {
+      "id": "NEWS09",
+      "type": "community",
+      "priority": "Discovery",
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com/",
+      "scope": "Developer reports for hypothesis discovery",
+      "limitation": "Neither verified nor population-representative"
+    },
+    {
+      "id": "OFF01",
+      "type": "vendor-platform",
+      "priority": "P1",
+      "name": "GitHub Blog",
+      "url": "https://github.blog/",
+      "scope": "GitHub platform and developer tooling chronology",
+      "limitation": "GitHub is source of first-party claims"
+    },
+    {
+      "id": "OFF02",
+      "type": "vendor-platform",
+      "priority": "P1",
+      "name": "GitHub Changelog",
+      "url": "https://github.blog/changelog/",
+      "scope": "Feature and API/policy launch dates",
+      "limitation": "Availability and gated rollout not usage"
+    },
+    {
+      "id": "OFF03",
+      "type": "vendor-platform",
+      "priority": "P1",
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/",
+      "scope": "Codex release capability and vendor adoption",
+      "limitation": "Self-reported definitions and user denominators"
+    },
+    {
+      "id": "OFF04",
+      "type": "vendor-platform",
+      "priority": "P1",
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news",
+      "scope": "Claude Code launches and provider usage",
+      "limitation": "No assumption of public repo uptake"
+    },
+    {
+      "id": "OFF05",
+      "type": "vendor-platform",
+      "priority": "P1",
+      "name": "Google Developers Blog",
+      "url": "https://developers.googleblog.com/",
+      "scope": "Gemini and coding-agent developer tooling",
+      "limitation": "Release date not independently observed use"
+    },
+    {
+      "id": "OFF06",
+      "type": "standards-security",
+      "priority": "P1",
+      "name": "OpenSSF Blog",
+      "url": "https://openssf.org/blog/",
+      "scope": "OSS supply chain, AI security, SBOM and sustainable registries",
+      "limitation": "Guidance not proof of package security"
+    },
+    {
+      "id": "OFF07",
+      "type": "standards-environment",
+      "priority": "P1",
+      "name": "Green Software Foundation",
+      "url": "https://greensoftware.foundation/",
+      "scope": "Software Carbon Intensity and AI lifecycle scope",
+      "limitation": "Specification alone does not establish measured energy savings"
+    },
+    {
+      "id": "OFF08",
+      "type": "standard",
+      "priority": "P1",
+      "name": "SCI for AI",
+      "url": "https://greensoftware.foundation/standards/sci-ai/",
+      "scope": "Boundaries and accounting for AI software emissions",
+      "limitation": "Provider inference energy and embodied resources may be unmeasured"
+    },
+    {
+      "id": "OFF09",
+      "type": "security-advisories",
+      "priority": "P2",
+      "name": "OSV",
+      "url": "https://osv.dev/",
+      "scope": "Version-specific known vulnerabilities",
+      "limitation": "No advisory does not guarantee safety"
+    },
+    {
+      "id": "OFF10",
+      "type": "supply-chain-standard",
+      "priority": "P2",
+      "name": "SLSA",
+      "url": "https://slsa.dev/",
+      "scope": "Build provenance and attestations",
+      "limitation": "Attestation not functional fit"
+    },
+    {
+      "id": "OFF11",
+      "type": "historical-data",
+      "priority": "P2",
+      "name": "GH Archive",
+      "url": "https://www.gharchive.org/",
+      "scope": "Historic public GitHub events",
+      "limitation": "Not an archive of old Trending pages"
+    },
+    {
+      "id": "OFF12",
+      "type": "survey",
+      "priority": "P2",
+      "name": "Stack Overflow Developer Survey",
+      "url": "https://survey.stackoverflow.co/",
+      "scope": "Opt-in self-reported coding assistant and agent use",
+      "limitation": "Question-specific denominators and selection"
+    },
+    {
+      "id": "OFF13",
+      "type": "research-lab",
+      "priority": "P2",
+      "name": "METR",
+      "url": "https://metr.org/",
+      "scope": "AI developer productivity experiments and measurement revisions",
+      "limitation": "Match study tool/version/task populations"
+    },
+    {
+      "id": "INDEX01",
+      "type": "research-index",
+      "priority": "P1",
+      "name": "arXiv cs.SE",
+      "url": "https://arxiv.org/list/cs.SE/recent",
+      "scope": "Fast discovery of preprint software engineering research",
+      "limitation": "Not necessarily peer reviewed"
+    },
+    {
+      "id": "INDEX02",
+      "type": "research-index",
+      "priority": "P1",
+      "name": "OpenAlex",
+      "url": "https://openalex.org/",
+      "scope": "Scholarly metadata search, source and citations",
+      "limitation": "Indexer coverage/pricing change; verify version of record"
+    },
+    {
+      "id": "INDEX03",
+      "type": "publisher-library",
+      "priority": "P1",
+      "name": "ACM Digital Library",
+      "url": "https://dl.acm.org/",
+      "scope": "Peer reviewed software engineering journals and conferences",
+      "limitation": "DOI/version plus venue must be checked"
+    },
+    {
+      "id": "INDEX04",
+      "type": "publisher-library",
+      "priority": "P1",
+      "name": "IEEE Xplore",
+      "url": "https://ieeexplore.ieee.org/",
+      "scope": "Peer reviewed software engineering/sustainable computing",
+      "limitation": "Metadata access and search completeness"
+    },
+    {
+      "id": "J01",
+      "type": "journal",
+      "priority": "P1",
+      "name": "ACM Transactions on Software Engineering and Methodology (TOSEM)",
+      "url": "https://dl.acm.org/journal/tosem",
+      "scope": "GitHub observability, code reuse, agent research methodology",
+      "limitation": "Longitudinal/causal claims demand reproducible validity analysis"
+    },
+    {
+      "id": "J02",
+      "type": "journal",
+      "priority": "P1",
+      "name": "Empirical Software Engineering (EMSE)",
+      "url": "https://link.springer.com/journal/10664",
+      "scope": "Registered or conventional empirical studies on reuse, tools and developers",
+      "limitation": "Sample frame, effect sizes, limitations, original contribution"
+    },
+    {
+      "id": "J03",
+      "type": "journal",
+      "priority": "P1",
+      "name": "IEEE Transactions on Software Engineering (TSE)",
+      "url": "https://www.computer.org/csdl/journal/ts",
+      "scope": "Independent agent software engineering evaluations",
+      "limitation": "Substantial rigorous software engineering contribution"
+    },
+    {
+      "id": "J04",
+      "type": "journal",
+      "priority": "P1",
+      "name": "Journal of Systems and Software (JSS)",
+      "url": "https://www.sciencedirect.com/journal/journal-of-systems-and-software",
+      "scope": "Quality, maintenance and software lifecycle reuse",
+      "limitation": "Functional/task equivalence needed"
+    },
+    {
+      "id": "J05",
+      "type": "journal",
+      "priority": "P1",
+      "name": "Information and Software Technology (IST)",
+      "url": "https://www.sciencedirect.com/journal/information-and-software-technology",
+      "scope": "Developer practices, evidence synthesis and repository studies",
+      "limitation": "Avoid thin empirical claims and unsystematic-review labeling"
+    },
+    {
+      "id": "J06",
+      "type": "software-artifact-journal",
+      "priority": "P2",
+      "name": "SoftwareX",
+      "url": "https://www.sciencedirect.com/journal/softwarex",
+      "scope": "Reusable open-source tool and reproducible research infrastructure",
+      "limitation": "Validated working artifact, not protocol only"
+    },
+    {
+      "id": "J07",
+      "type": "practitioner-magazine",
+      "priority": "P2",
+      "name": "IEEE Software",
+      "url": "https://www.computer.org/csdl/magazine/so",
+      "scope": "Evidence-based practitioner lessons",
+      "limitation": "Practitioner outlet not interchangeable with IEEE TSE"
+    },
+    {
+      "id": "J08",
+      "type": "journal",
+      "priority": "P2",
+      "name": "Sustainable Computing: Informatics and Systems",
+      "url": "https://www.sciencedirect.com/journal/sustainable-computing-informatics-and-systems",
+      "scope": "Measured/calibrated energy and environmental software lifecycle",
+      "limitation": "Carbon/token extrapolations are insufficient"
+    },
+    {
+      "id": "J09",
+      "type": "journal",
+      "priority": "P2",
+      "name": "IEEE Transactions on Sustainable Computing",
+      "url": "https://www.computer.org/csdl/journal/su",
+      "scope": "Resource efficient software systems and lifecycle impact",
+      "limitation": "Hardware/service boundaries and uncertainty"
+    },
+    {
+      "id": "J10",
+      "type": "journal",
+      "priority": "Conditional",
+      "name": "Joule",
+      "url": "https://www.sciencedirect.com/journal/joule",
+      "scope": "Material experimentally grounded energy contribution",
+      "limitation": "Broader energy significance necessary; speculative target"
+    },
+    {
+      "id": "C01",
+      "type": "conference",
+      "priority": "P1",
+      "name": "ICSE",
+      "url": "https://conf.researchr.org/home/icse-2027",
+      "scope": "Software engineering systems and methods",
+      "limitation": "2027 research paper deadline passed 2026-06-30"
+    },
+    {
+      "id": "C02",
+      "type": "conference",
+      "priority": "P1",
+      "name": "MSR",
+      "url": "https://2027.msrconf.org/",
+      "scope": "Mining software repositories, GitHub studies",
+      "limitation": "2027 technical paper deadline 2026-10-23"
+    },
+    {
+      "id": "C03",
+      "type": "conference",
+      "priority": "P1",
+      "name": "FSE",
+      "url": "https://conf.researchr.org/home/fse-2027",
+      "scope": "Software engineering systems, empirical agents and reuse",
+      "limitation": "2027 full research deadline passed 2026-10-02"
+    },
+    {
+      "id": "C04",
+      "type": "conference",
+      "priority": "P1",
+      "name": "ASE",
+      "url": "https://conf.researchr.org/",
+      "scope": "Automated software development/code agents",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C05",
+      "type": "conference",
+      "priority": "P1",
+      "name": "ESEM",
+      "url": "https://conf.researchr.org/",
+      "scope": "Empirical evaluation and measurement",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C06",
+      "type": "conference",
+      "priority": "P1",
+      "name": "SANER",
+      "url": "https://conf.researchr.org/",
+      "scope": "Source analysis, clones, reuse, evolution",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C07",
+      "type": "conference",
+      "priority": "P1",
+      "name": "ICSME",
+      "url": "https://conf.researchr.org/",
+      "scope": "Maintenance, review and technical debt",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C08",
+      "type": "conference",
+      "priority": "P1",
+      "name": "ICPC",
+      "url": "https://conf.researchr.org/home/icse-2027",
+      "scope": "Program comprehension and existing-code adaptation",
+      "limitation": "Find ICPC 2027 track CFP"
+    },
+    {
+      "id": "C09",
+      "type": "conference",
+      "priority": "P1",
+      "name": "FORGE",
+      "url": "https://conf.researchr.org/home/icse-2027",
+      "scope": "Foundation-model software engineering",
+      "limitation": "Find FORGE 2027 track CFP"
+    },
+    {
+      "id": "C10",
+      "type": "conference",
+      "priority": "P2",
+      "name": "CAIN",
+      "url": "https://conf.researchr.org/home/icse-2027",
+      "scope": "SE for AI-enabled systems",
+      "limitation": "Find CAIN 2027 track CFP"
+    },
+    {
+      "id": "C11",
+      "type": "conference",
+      "priority": "P2",
+      "name": "EASE",
+      "url": "https://conf.researchr.org/",
+      "scope": "Evidence in empirical software engineering",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C12",
+      "type": "conference",
+      "priority": "P2",
+      "name": "ICST",
+      "url": "https://conf.researchr.org/",
+      "scope": "Testing and verification of candidate reuse",
+      "limitation": "Find relevant edition and CFP"
+    },
+    {
+      "id": "C13",
+      "type": "registered-reports",
+      "priority": "P1",
+      "name": "MSR 2027 Registered Reports / EMSE",
+      "url": "https://2027.msrconf.org/track/msr-2027-registered-reports",
+      "scope": "Stage 1 prospective empirical study design; Stage 2 EMSE full paper",
+      "limitation": "2026-11-13 abstract; 2026-11-20 initial report; Stage 1 approval not final journal acceptance"
+    }
+  ],
+  "publication_schedule_snapshot": [
+    {
+      "venue_id": "C01",
+      "track": "ICSE 2027 Research",
+      "deadline_date": "2026-06-30",
+      "status_as_of_2026_10_12": "passed",
+      "official_url": "https://conf.researchr.org/track/icse-2027/icse-2027-research-track"
+    },
+    {
+      "venue_id": "C03",
+      "track": "FSE 2027 Research",
+      "deadline_date": "2026-10-02",
+      "status_as_of_2026_10_12": "passed",
+      "official_url": "https://conf.researchr.org/track/fse-2027/fse-2027-papers"
+    },
+    {
+      "venue_id": "C02",
+      "track": "MSR 2027 Technical Papers abstract",
+      "deadline_date": "2026-10-20",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://conf.researchr.org/dates/msr-2027"
+    },
+    {
+      "venue_id": "C02",
+      "track": "MSR 2027 Technical Papers full paper",
+      "deadline_date": "2026-10-23",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://conf.researchr.org/dates/msr-2027"
+    },
+    {
+      "venue_id": "C02",
+      "track": "MSR 2027 Data and Tool Showcase abstract",
+      "deadline_date": "2026-11-05",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://conf.researchr.org/dates/msr-2027"
+    },
+    {
+      "venue_id": "C02",
+      "track": "MSR 2027 Data and Tool Showcase paper",
+      "deadline_date": "2026-11-10",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://conf.researchr.org/dates/msr-2027"
+    },
+    {
+      "venue_id": "C13",
+      "track": "MSR 2027 Registered Reports abstract",
+      "deadline_date": "2026-11-13",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://2027.msrconf.org/track/msr-2027-registered-reports"
+    },
+    {
+      "venue_id": "C13",
+      "track": "MSR 2027 Registered Reports initial report",
+      "deadline_date": "2026-11-20",
+      "status_as_of_2026_10_12": "upcoming",
+      "official_url": "https://2027.msrconf.org/track/msr-2027-registered-reports"
+    },
+    {
+      "venue_id": "C13",
+      "track": "MSR/EMSE 2027 Registered Reports full Stage 2 paper",
+      "deadline_date": "2027-09-30",
+      "status_as_of_2026_10_12": "upcoming, conditional on Stage 1 outcome",
+      "official_url": "https://2027.msrconf.org/track/msr-2027-registered-reports"
+    }
+  ],
+  "monitoring_schedule": {
+    "status": "scheduled",
+    "configured_date": "2026-10-12",
+    "first_expected_local_date": "2026-10-19",
+    "local_weekday": "Monday",
+    "approximate_local_time": "08:00",
+    "timezone": "Europe/Rome",
+    "delivery_mode": "flexible_schedule",
+    "scope": "weekly evidence briefing only; no automated GitHub scraping or automatic merge",
+    "repository_record_policy": "dated source-supported research note via pull request when available; otherwise repository-ready report"
+  }
+}

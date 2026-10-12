@@ -237,3 +237,5 @@ python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json
 ```
 
 **Important:** both fixtures are **synthetic only**; no task trial, recruited participants, study preregistration, independent human review, verified reuse outcome or energy saving has occurred. [Start-of-study checkpoint (2026-10-12)](docs/TASK_TRIAL_START_2026-10-12.md) records the decisions, engineering scope and next approval gates. This is a bounded partial contribution to [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), which remains open pending independent protocol/ethics review, power simulation and a real pilot.
+
+- **[News, scientific journal and conference evidence watch (2026–2027)](docs/SOURCE_MONITORING_AND_JOURNALS_2027.md)** — historical source windows, publication fit, weekly/monthly screening and 2027 official submission dates; [49-source machine-readable watch register](references/source_watch_2026.json) (curated only, not a systematic review)
