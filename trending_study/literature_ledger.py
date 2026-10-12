@@ -72,10 +72,10 @@ def audit(data):
         year = row.get("publication_year")
         if not isinstance(title, str) or not title.strip() or type(year) is not int or year < 1900 or year > 2100:
             raise LiteratureError("record requires title and plausible publication_year")
-        if row.get("source_type") not in SOURCE_TYPES:
+        if not isinstance(row.get("source_type"), str) or row["source_type"] not in SOURCE_TYPES:
             raise LiteratureError("invalid source_type")
         decision = row.get("decision")
-        if decision not in DECISIONS:
+        if not isinstance(decision, str) or decision not in DECISIONS:
             raise LiteratureError("invalid screening decision")
         if decision == "exclude" and (not isinstance(row.get("reason"), str) or not row["reason"].strip()):
             raise LiteratureError("excluded items require reason")
