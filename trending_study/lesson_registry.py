@@ -5,6 +5,7 @@ A passing document is not independently authenticated, peer reviewed or causal.
 import argparse
 from datetime import datetime
 import json
+import math
 from pathlib import Path
 import re
 from urllib.parse import urlparse
@@ -92,10 +93,10 @@ def audit(data):
                 raise LessonError("sample_n must be positive integer")
             estimate = row.get("effect_size")
             bounds = row.get("interval")
-            if not isinstance(estimate, (int, float)) or isinstance(estimate, bool):
+            if not isinstance(estimate, (int, float)) or isinstance(estimate, bool) or not math.isfinite(estimate):
                 raise LessonError("numeric effect size required")
             if not isinstance(bounds, list) or len(bounds) != 2 or any(
-                not isinstance(v, (int, float)) or isinstance(v, bool) for v in bounds
+                not isinstance(v, (int, float)) or isinstance(v, bool) or not math.isfinite(v) for v in bounds
             ) or not (bounds[0] <= bounds[1]):
                 raise LessonError("numeric ordered interval required")
             needs_review.append(ident)
