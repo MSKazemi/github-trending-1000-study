@@ -136,6 +136,31 @@ class ScreenTests(unittest.TestCase):
         self.assertEqual(result["status_counts"].get("missing_independent_review"), 1)
         self.assertEqual(result["accepted_tasks"], 0)
 
+    def test_screenable_reports_defer_when_source_unavailable(self):
+        data = copy.deepcopy(self.recheck)
+        data["records"][0].update({"fetch_status": "unavailable", "state": "unknown",
+                                   "updated_at_utc": None, "closed_at_utc": None,
+                                   "source_error": "rate_limited"})
+        # Review packet hashes are bound to the modified observation.
+        original = self.recheck
+        self.recheck = data
+        try:
+            a, b = self.make_review("A"), self.make_review("B")
+            result = audit(self.frame, data, a, b)
+            self.assertEqual(result["status_counts"]["deferred_source_status"], 1)
+            self.assertEqual(result["records"][0]["accepted_task"], False)
+            self.assertEqual(sum(x["provisional_label"] == "screenable_for_spec_drafting"
+                                 for x in result["records"]), 15)
+        finally:
+            self.recheck = original
+
+    def test_screenable_reports_defer_on_conflicting_status(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        b["decisions"][0]["issue_status_check"] = "closed"
+        result = audit(self.frame, self.recheck, a, b)
+        self.assertEqual(result["status_counts"]["deferred_source_status"], 1)
+        self.assertEqual(result["records"][0]["provisional_label"], "defer_unknown")
+
     def test_disagreement_requires_distinct_third_and_after_time(self):
         a, b = self.make_review("A"), self.make_review("B")
         b["decisions"][0]["label"] = "exclude_candidate"
