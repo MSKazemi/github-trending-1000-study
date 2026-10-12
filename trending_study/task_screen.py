@@ -259,6 +259,16 @@ def audit(frame, recheck, review_a, review_b, adjudication=None):
         leakage = ("suspected" if "suspected" in reported_leakage else
                    "not_observed" if reported_leakage and all(x == "not_observed" for x in reported_leakage)
                    else "unknown")
+        # Conflicting or unavailable public source status cannot produce a
+        # screenable label, even if two unverified reviewer reports agree.
+        # Defer rather than exclude: preserve the original sampling denominator.
+        candidate = next(item for item in packet["candidates"] if item["task_id"] == tid)
+        if label == "screenable_for_spec_drafting" and (
+                candidate["recheck_fetch_status"] != "observed"
+                or candidate["recheck_issue_state"] != "open"
+                or any(report["issue_status_check"] != "open"
+                       for report in (first, second, third) if report)):
+            status, label = "deferred_source_status", "defer_unknown"
         counts[status] += 1
         rows.append({"task_id": tid, "review_a": first["label"] if first else None,
                      "review_b": second["label"] if second else None,
