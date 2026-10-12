@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "lessons": [
+    {
+      "id": "SYN-LESSON-1",
+      "status": "hypothesis",
+      "grade": "E0",
+      "rq": "GRQ2",
+      "claim": "HYPOTHETICAL: searching candidate packages first could reduce reimplementation",
+      "population": "synthetic library developers",
+      "outcome": "accepted test passed",
+      "measurement_window": "not measured",
+      "sample_n": null,
+      "effect": null,
+      "interval": null,
+      "analysis_commit": null,
+      "data_sha256": null,
+      "sources": [],
+      "reviewer_ref": null,
+      "reviewed_at_utc": null,
+      "validity_risks": "Unobserved, no independent testing",
+      "applicability": "library development",
+      "practical_cost": "search and validation time unknown",
+      "supersedes": null
+    }
+  ]
+}
