@@ -194,3 +194,16 @@ The main target is **how AI-assisted, vibe/prompt-led and agent-delegated develo
 ### Preservation safeguard — issue #4 (2026-10-12)
 
 The `capture`, `parse-trending`, `pilot-parse` and `enrich` commands now reject existing destination files and input/output aliases before overwriting any source. Outputs are fully staged before exclusive publication. The raw+manifest pair is **not** one atomic transaction: if only one exists after an interrupted run, preserve it, record an incident, and never call it validated or enrolled. See [technical contract and operator SOP](docs/CAPTURE_IMMUTABILITY_2026_10_12.md).
+
+## Immutable 30/90/180-day follow-up instrumentation (2026-10-12)
+
+To prepare **future** cohort measurement, the [longitudinal follow-up CLI](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md) creates a deterministic write-once schedule from self-declared human-approved baseline rows, and maintains per-attempt immutable event records with exact UTC and GitHub stable numeric ID checks. It refuses pilot-only/unverified baseline rows, never silently backfills missing follow-ups with current stars, and distinguishes rate limits, unavailable repos and missed windows from zero adoption. `status` works **offline**; `collect` requires explicit `--confirm-network` and a bounded request budget.
+
+```bash
+python -m trending_study.longitudinal plan --input examples/followup_baseline.synthetic.jsonl \
+  --output /tmp/followup-plan.synthetic.jsonl --grace-days 3 7 14
+python -m trending_study.longitudinal status \
+  --plan /tmp/followup-plan.synthetic.jsonl --events-dir /tmp/followup-events.synthetic
+```
+
+**The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
