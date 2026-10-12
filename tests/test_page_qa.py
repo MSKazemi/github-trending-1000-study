@@ -208,12 +208,34 @@ class PageQATests(unittest.TestCase):
         self.assertEqual(summary["documentary_minimum"], "synthetic_not_applicable")
         self.assertEqual(summary["cohort_enrollment_status"], "not_enrolled")
         self.assertEqual(summary["windows_observed"], ["daily", "monthly", "weekly"])
-        # A forged "pilot" label does not constitute external review.
+        # Relabeling a synthetic result to "pilot" cannot bypass status guards.
         for report in reports:
             report["dataset_kind"] = "pilot"
-        pilot_claims = aggregate(reports)
+        with self.assertRaisesRegex(PageQAError, "dataset kind and result status"):
+            aggregate(reports)
+        # These pilot-shaped files are STILL fictional in this test and do not
+        # establish real reviewer independence or source permission.
+        pilot_reports = []
+        for window, n in (("daily", 11), ("weekly", 10), ("monthly", 10)):
+            raw, names = synthetic_many("simulated-pilot-" + window, n)
+            raw, manifest, a, b = page(raw, window=window, names=names, kind="pilot")
+            pilot_reports.append(audit(raw, manifest, a, b))
+        pilot_claims = aggregate(pilot_reports)
         self.assertEqual(pilot_claims["documentary_minimum"], "met_on_self_reported_inputs")
         self.assertEqual(pilot_claims["status"], "external_scientific_signoff_required")
+
+    def test_pilot_mismatch_blocks_parser_approval_even_with_reviewed_rows(self):
+        raw = FIXTURE.read_bytes().replace(
+            b"</body>",
+            b'<div class="new-layout"><a href="/other-org/hidden-row">third</a></div></body>',
+        )
+        names = list(NAMES) + ["other-org/hidden-row"]
+        raw, manifest, a, b = page(raw, kind="pilot", names=names)
+        report = audit(raw, manifest, a, b)
+        self.assertEqual(report["qa_status"], "parser_mismatch_needs_revision")
+        grouped = aggregate([report])
+        self.assertEqual(grouped["status"], "parser_mismatch_needs_revision")
+        self.assertEqual(grouped["cohort_enrollment_status"], "not_enrolled")
 
     def test_aggregate_rejects_same_capture_double_counting(self):
         raw, manifest, a, b = page()
