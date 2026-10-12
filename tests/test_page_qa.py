@@ -148,6 +148,12 @@ class PageQATests(unittest.TestCase):
         with self.assertRaisesRegex(PageQAError, "distinct reviewer"):
             audit(raw, manifest, a, b)
 
+    def test_reviewer_ref_must_not_be_email_or_personal_contact(self):
+        raw, manifest, a, b = page()
+        a["reviewer_ref"] = "real.person@example.com"
+        with self.assertRaisesRegex(PageQAError, "pseudonymous ASCII ID"):
+            audit(raw, manifest, a, b)
+
     def test_reviews_are_bound_to_raw_and_manifest_bytes(self):
         raw, manifest, a, b = page()
         b["source_sha256"] = "a" * 64
