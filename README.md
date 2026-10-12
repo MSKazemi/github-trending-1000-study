@@ -251,3 +251,8 @@ python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
 ```
 
 Populate the bundle **only after permitted captures and independent human labeling**. The committed test suite simulates 36 rows across daily/weekly/monthly, but these are synthetic: **no current raw Trending captures or >=30 real row human audit were obtained**. Direct source access was unavailable in this runtime, and independent access/legal review remains outstanding. [Issue #2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) must remain open.
+
+
+## Strategic industry foresight: AI-native software, agents and OS (2026-10-12)
+
+- [**2027–2031 technology outlook: programming, applications, operating systems, LLMs and agents**](docs/STRATEGIC_TECH_OUTLOOK_2027_2031_2026_10_12.md) — evidence-graded observations and *uncertain, falsifiable* executive/CTO-style forecasts, source links, practical repository actions, and quarterly indicators; related [issue #58](https://github.com/MSKazemi/github-trending-1000-study/issues/58). **Not personal views of any real executive, data from a completed research study, or a protocol amendment.**
