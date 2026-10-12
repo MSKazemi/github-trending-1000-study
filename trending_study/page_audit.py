@@ -289,6 +289,73 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
     }
 
 
+def markdown_report(report):
+    """Render only derived, safe aggregate figures; never human-review attestations.
+
+    The Markdown is a derivative view of the canonical versioned JSON report.
+    Do not include free-form source URLs, paths or reviewer notes in a report
+    intended for easy copying/sharing.
+    """
+    def cell(value):
+        if value is None:
+            return "unresolved"
+        if isinstance(value, bool):
+            return "yes" if value else "no"
+        if isinstance(value, float):
+            return f"{value:.4f}"
+        return str(value)
+
+    totals = [
+        ("Evidence kind", report["evidence_kind"]),
+        ("Scientific status", report["scientific_status"]),
+        ("Pages submitted", report["pages_supplied"]),
+        ("Pages with A/B agreement", report["pages_with_agreed_annotations"]),
+        ("Pages resolved by C", report["pages_with_adjudicated_annotations"]),
+        ("Unresolved pages", report["pages_with_unresolved_annotation_disagreements"]),
+        ("Gold rows on resolved pages", report["audited_gold_rows"]),
+        ("Exact rank and identity matches", report["correct_identity_at_rank"]),
+        ("False positives incl. rank errors", report["false_positives_including_rank_errors"]),
+        ("False negatives incl. rank errors", report["false_negatives_including_rank_errors"]),
+        ("Precision of emitted rows", report["precision_on_emitted_rows"]),
+        ("Effective rank recall incl. rejections", report["effective_rank_recall_including_parser_abstentions"]),
+        ("30-row/three-window coverage", report["coverage_minimum_met"]),
+        ("Automated documentary check", report["automated_documentary_check"]),
+        ("Confirmatory cohort eligible", False),
+    ]
+    lines = [
+        "# Offline Trending page-QA review summary",
+        "",
+        "**Evidence is self-reported or synthetic, not authenticated by this tool.** "
+        "A documentary pass is neither permission to collect GitHub pages nor "
+        "independent human review, preregistration or cohort eligibility.",
+        "",
+        "| Field | Derived result |", "|---|---|",
+    ]
+    lines.extend(f"| {label} | {cell(value)} |" for label, value in totals)
+    lines.extend([
+        "",
+        "## Page-level disposition",
+        "",
+        "| Page | Window | A/B agree | Reference | Gold rows | Emitted | Matched ranks | Status |",
+        "|---:|---|---|---|---:|---:|---:|---|",
+    ])
+    for page in report["pages"]:
+        lines.append(
+            f"| {cell(page['page_number'])} | {cell(page['window'])} | "
+            f"{cell(page['reviewer_agreement'])} | {cell(page['reference_resolution'])} | "
+            f"{cell(page['gold_rows'])} | {cell(page['emitted_rows'])} | "
+            f"{cell(page['correct_identity_at_rank'])} | {cell(page['page_status'])} |"
+        )
+    lines.extend([
+        "",
+        "Unresolved A/B disagreement remains unscored; a valid C decision is "
+        "only a *documentary* resolution of disputed ranks. This Markdown "
+        "is not a second report schema; preserve the write-once JSON source of truth.",
+        "",
+    ])
+    return "\n".join(lines)
+
+
 def audit_bundle_file(path, *, extract_repos, min_rows=30):
     path = Path(path)
     bundle = json.loads(path.read_text(encoding="utf-8"))
