@@ -85,7 +85,46 @@ def _score(gold, predicted):
     }
 
 
-def assess_page(raw, manifest, annotations, *, extract_repos):
+def _adjudicated_reference(annotations, manifest, moment, left_id, right_id,
+                          left, right, disputed, adjudicator):
+    """Validate optional C review without changing already agreed A/B ranks.
+
+    This checks a self-reported record, not whether three humans are independent.
+    Existing A/B labels are never rewritten, and an extra C label is not permitted
+    to manufacture rows that neither A nor B disputed.
+    """
+    if not disputed:
+        raise PageAuditError("adjudication is only allowed when A/B disagree")
+    _object(adjudicator, "adjudicator annotation")
+    declared = adjudicator.get("disagreement_ranks")
+    if (not isinstance(declared, list) or
+            any(type(rank) is not int for rank in declared) or
+            declared != disputed):
+        raise PageAuditError("adjudicator must list the exact disputed A/B ranks")
+    reason = adjudicator.get("adjudication_reason")
+    if not isinstance(reason, str) or not reason.strip() or len(reason) > 500:
+        raise PageAuditError("adjudication_reason must be 1..500 characters")
+    c_id, c_rows = _labels(adjudicator, manifest, moment)
+    if c_id.casefold() in (left_id.casefold(), right_id.casefold()):
+        raise PageAuditError("adjudicator ID must differ from both A/B reviewer IDs")
+    c_time = _utc_timestamp(adjudicator.get("reviewed_at_utc"),
+                            "adjudicator reviewed_at_utc")
+    a_time = _utc_timestamp(annotations[0].get("reviewed_at_utc"),
+                            "reviewer A reviewed_at_utc")
+    b_time = _utc_timestamp(annotations[1].get("reviewed_at_utc"),
+                            "reviewer B reviewed_at_utc")
+    if c_time <= max(a_time, b_time):
+        raise PageAuditError("adjudication must be recorded after both A/B reviews")
+    for i in range(max(len(left), len(right), len(c_rows))):
+        a = left[i] if i < len(left) else None
+        b = right[i] if i < len(right) else None
+        c = c_rows[i] if i < len(c_rows) else None
+        if a == b and c != a:
+            raise PageAuditError("adjudicator cannot change an agreed A/B rank")
+    return c_id, c_rows
+
+
+def assess_page(raw, manifest, annotations, *, extract_repos, adjudicator=None):
     """Return comparison, never a scientific signoff."""
     window, url, moment, digest, html = validate_manifest_integrity(raw, manifest)
     if not isinstance(annotations, list) or len(annotations) != 2:
@@ -94,6 +133,11 @@ def assess_page(raw, manifest, annotations, *, extract_repos):
     right_id, right = _labels(annotations[1], manifest, moment)
     if left_id.casefold() == right_id.casefold():
         raise PageAuditError("two distinct reviewer IDs are required")
+    disagreement_ranks = [
+        i for i in range(1, max(len(left), len(right)) + 1)
+        if (left[i - 1] if i <= len(left) else None)
+        != (right[i - 1] if i <= len(right) else None)
+    ]
     result = {
         "window": window,
         "source_url": url,
@@ -103,14 +147,26 @@ def assess_page(raw, manifest, annotations, *, extract_repos):
         "reviewer_a_count": len(left),
         "reviewer_b_count": len(right),
         "reviewer_agreement": left == right,
-        "annotation_disagreement_ranks": [
-            i for i in range(1, max(len(left), len(right)) + 1)
-            if (left[i - 1] if i <= len(left) else None)
-            != (right[i - 1] if i <= len(right) else None)
-        ],
+        "annotation_disagreement_ranks": disagreement_ranks,
+        "reference_resolution": ("a_b_agreement" if left == right else "unresolved"),
+        "adjudicator_id": None,
+        "adjudicated_disagreement_ranks": [],
+        "labels_resolved": left == right,
         "eligible_for_confirmatory_cohort": False,
     }
-    if left != right:
+    gold = left
+    if adjudicator is not None:
+        c_id, gold = _adjudicated_reference(
+            annotations, manifest, moment, left_id, right_id,
+            left, right, disagreement_ranks, adjudicator,
+        )
+        result.update({
+            "reference_resolution": "c_adjudicated",
+            "adjudicator_id": c_id,
+            "adjudicated_disagreement_ranks": disagreement_ranks,
+            "labels_resolved": True,
+        })
+    if not result["labels_resolved"]:
         result.update({
             "page_status": "unresolved_reviewer_disagreement",
             "parser_status": "not_scored_awaiting_independent_adjudication",
@@ -130,12 +186,12 @@ def assess_page(raw, manifest, annotations, *, extract_repos):
             "page_status": "parser_rejected_capture",
             "parser_status": "rejected",
             "parser_error": str(exc)[:800],
-            **_score(left, []),
+            **_score(gold, []),
         })
         return result
-    result.update(_score(left, predicted))
+    result.update(_score(gold, predicted))
     result.update({
-        "page_status": ("exact_rank_identity_agreement" if predicted == left
+        "page_status": ("exact_rank_identity_agreement" if predicted == gold
                         else "detected_missing_or_wrong_rows"),
         "parser_status": "emitted",
     })
@@ -169,7 +225,8 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
         manifest = json.loads(loader(manifest_path).decode("utf-8"))
         if not isinstance(raw, bytes):
             raise PageAuditError("loader must return raw bytes")
-        page = assess_page(raw, manifest, p.get("reviewers"), extract_repos=extract_repos)
+        page = assess_page(raw, manifest, p.get("reviewers"), extract_repos=extract_repos,
+                           adjudicator=p.get("adjudicator"))
         key = (page["source_sha256"], page["source_url"], page["captured_at_utc"])
         if key in seen_captures:
             raise PageAuditError("duplicate capture included more than once")
@@ -179,16 +236,18 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
         page["manifest_path"] = manifest_path
         pages.append(page)
     agreed = [p for p in pages if p["reviewer_agreement"]]
-    scored = [p for p in agreed if p["gold_rows"] is not None]
+    resolved = [p for p in pages if p["labels_resolved"]]
+    scored = [p for p in resolved if p["gold_rows"] is not None]
     total_gold = sum(p["gold_rows"] for p in scored)
     total_tp = sum(p["correct_identity_at_rank"] for p in scored)
     total_emitted = sum(p["emitted_rows"] for p in scored)
-    has_disagreements = len(agreed) != len(pages)
-    windows = sorted({p["window"] for p in pages if p["reviewer_agreement"]})
-    same_all = (not has_disagreements and all(
+    unresolved = len(pages) - len(resolved)
+    windows = sorted({p["window"] for p in agreed})
+    resolved_windows = sorted({p["window"] for p in resolved})
+    same_all = (unresolved == 0 and all(
         p["page_status"] == "exact_rank_identity_agreement" for p in pages
     ))
-    threshold_met = total_gold >= min_rows and set(WINDOWS).issubset(windows)
+    threshold_met = total_gold >= min_rows and set(WINDOWS).issubset(resolved_windows)
     documentary_ready = same_all and threshold_met
     return {
         "schema_version": AUDIT_VERSION,
@@ -196,9 +255,14 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
         "audit_generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "pages_supplied": len(pages),
         "pages_with_agreed_annotations": len(agreed),
-        "pages_with_unresolved_annotation_disagreements": len(pages) - len(agreed),
-        "pages_parser_rejected": sum(p["parser_status"] == "rejected" for p in agreed),
+        "pages_with_adjudicated_annotations": sum(
+            p["reference_resolution"] == "c_adjudicated" for p in pages
+        ),
+        "pages_with_resolved_annotations": len(resolved),
+        "pages_with_unresolved_annotation_disagreements": unresolved,
+        "pages_parser_rejected": sum(p["parser_status"] == "rejected" for p in resolved),
         "windows_with_agreed_labels": windows,
+        "windows_with_resolved_labels": resolved_windows,
         "audited_gold_rows": total_gold,
         "correct_identity_at_rank": total_tp,
         "emitted_rows": total_emitted,
@@ -217,7 +281,8 @@ def assess_bundle(bundle, *, loader, extract_repos, min_rows=30):
             "All labels and reviewer independence are self-reported and NOT verified by this program; "
             "capture SHA is not GitHub attestation. Page-specific nonrandom QA cannot establish "
             "population recall or validate an unimplemented language filter. Two-reviewer agreement "
-            "does not establish human independence or correctness; a research lead must authenticate "
+            "does not establish human independence or correctness; a proposed C adjudication is " 
+            "also self-reported, never proof of independent review. A research lead must authenticate "
             "original captures, annotation method, platform permission and disagreements."
         ),
         "pages": pages,
