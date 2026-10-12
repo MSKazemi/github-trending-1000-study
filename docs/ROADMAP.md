@@ -86,3 +86,19 @@ Do not mark sample goals complete without public methodology and verified counts
 - [ ] Publish first versioned quarterly review with *actual* missingness, protocol amendments and source updates
 - [ ] Validate one real task cohort, external evidence and verifiable total cost before building a product
 - [ ] Repeat experiment and revisit product decision at 2028/2029 stage gates; no assumed year-2031 outcomes
+
+
+## M9 — Issue #27: operational pilot provenance and conservative enrollment preflight
+- [x] Implement client-recorded SHA-256/UTC manifest from a single explicitly invoked public HTML request
+- [x] Add strict raw SHA/size/URL/date/HTML verification and separate captured-versus-parsed timestamps
+- [x] Ensure parse-only legacy output and verified-integrity pilot rows are **not** silently confirmatory-cohort eligible
+- [x] Add a documentary readiness evaluator for pilot and confirmatory phases, defaulting to **not_ready**
+- [x] Add a synthetic offline test suite and a blank audit/signoff form
+- [x] Consolidate preliminary RQs, observational and randomized estimands into explicitly unfrozen v0.3 draft
+- [ ] Human access/Terms/robots review for recurring collection; no scheduled capture yet
+- [ ] Validate collector against real allowed GitHub Trending HTML and >=30 independently audited rows
+- [ ] Implement six language source surfaces, true immutable-ID dedup and full missing-capture journal
+- [ ] Freeze independent tasks, safety rubric, power/sample simulation, privacy/consent and statistical review
+- [ ] Submit/record authentic independent signoff and appropriate prospective registration **before enrollment**
+- [ ] Start prospective capture only under permitted scope; record real N and actual missingness
+See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_12.md. The proposed November 2026 cohort start **must change** if blockers remain.

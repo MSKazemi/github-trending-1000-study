@@ -46,3 +46,11 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 - Collaborations with universities, companies, communities or new agent providers require documented permissions and conflict disclosures. Invite reviewers as independently credited contributors **only if they actually participate**.
 - Keep cohort and retrospective task panels frozen and add fresh time-stamped holdout panels when agent tools evolve. Report model/tool version and exact conditions for comparative claims.
 - Quarterly evidence and forecast review should use [the template](templates/quarterly_advisory_review.md), not promotional star charts.
+
+
+## Pilot capture and signed scientific gates
+- Run the offline full unit suite and source-manifest fixture checks before a PR. New corpus source surfaces require explicit URL/window/filter schema, actual independent human row audit and data-access permissions.
+- A `capture` output without its contemporaneously written manifest is **not acceptable as a prospective cohort observation**. Legacy `parse-trending` deliberately flags unverified capture time.
+- Do not mark an item `verified` in a preflight checklist without dated independent review, source evidence and authorization; even documentary completion requires qualified human signoff.
+- Store raw captures outside Git through the ignored `data/raw` directory; don't commit provider auth tokens, access keys or private test participants.
+- No full preregistration, sample goal, approved repeat scraping or real user study is claimed by this pilot implementation. Consult docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PREREGISTRATION_DRAFT_2027.md.

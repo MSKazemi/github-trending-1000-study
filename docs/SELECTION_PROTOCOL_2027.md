@@ -54,3 +54,7 @@ Use GH Archive for available historical GitHub **events** (with dataset coverage
 - The final 2027 advice must be conditional on independently validated user value and lifecycle costs, not merely popularity or activity.
 
 **Primary sources:** [launch and evidence timeline](AGENT_RELEASE_ADOPTION_TIMELINE.md), [metric register](METRIC_REGISTER_2027.md), [agent measurement](AGENT_ADOPTION_MEASUREMENT.md), [reading list](READING_LIST_2027.md).
+
+
+## Collector-to-design gap (2026-10-12, NOT YET RESOLVED)
+This proposed 9-surface daily panel is **not** presently implemented. The first strict pilot parser intentionally handles only the three unfiltered global `/trending?since=daily|weekly|monthly` pages and requires a matching capture-time SHA/UTC manifest; it does **not** verify six language-filtered pages or recurring access policies. Until those filters, permissions and human QA exist, no capture may be called part of the full planned frame. Original `parse-trending` has no verified capture time; it cannot satisfy this protocol's prospective first-exposure timestamp. If full-scope data collection or pilot power is not achievable by November 1, revise the actual start and register an amendment. [Detailed SOP](PILOT_CAPTURE_AND_PREFLIGHT.md), [unfrozen design](PREREGISTRATION_DRAFT_2027.md).

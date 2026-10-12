@@ -44,3 +44,12 @@
 - Do not optimize 2027–2031 'success' by increasing project N, stars, merged PRs, token generation or unlabeled reused code. Quantify independently verified user/task value, safety/rights, lifecycle cost and full/partial environmental boundaries.
 - Do not build a commercial ranking marketplace or change gold labels for sponsors; maintain independent open research data, registered hypotheses and null findings.
 - Follow docs/INCEPTION_CHECKLIST_2026_2027.md; if October pilot or permissions are incomplete, amend enrollment dates rather than backdate samples.
+
+
+## 2026–2027 pilot preflight and capture integrity
+- The October 2026 pilot is **proposed and not yet executed**; do not describe a synthetic fixture or self-declared manifest as authenticated GitHub collection.
+- When recording a new capture, use the `capture --manifest-output` and `pilot-parse --manifest` path; never backfill `captured_at_utc` from the time of parsing or a supplied date.
+- The strict parser only implements unfiltered daily/weekly/monthly surfaces, **not** six language views or 9-page daily capture. Expand the source manifest protocol and human audit before changing enrollment eligibility.
+- Maintain human access-policy review, manual page QA, immutable numeric repo IDs, task-based independent acceptance, statistical power, consent and preregistration checks. These gates cannot be fulfilled by checking in a JSON file.
+- Run `python -m trending_study pilot-preflight --input examples/pilot-preflight.example.json --stage confirmatory` and `python -m unittest discover -s tests -v` after a protocol/CLI change. The documented example should remain not_ready.
+- See docs/PILOT_CAPTURE_AND_PREFLIGHT.md, docs/PREREGISTRATION_DRAFT_2027.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_12.md. Update versions and date decisions without rewriting original hypotheses after results.
