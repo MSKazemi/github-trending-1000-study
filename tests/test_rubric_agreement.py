@@ -51,5 +51,12 @@ class RubricAgreementTests(unittest.TestCase):
             evaluate(p)
 
 
+    def test_malformed_rating_type_is_rejected(self):
+        p = sample(("pass", "pass"))
+        p["records"][0]["rating_a"] = {}
+        with self.assertRaises(RubricError):
+            evaluate(p)
+
+
 if __name__ == "__main__":
     unittest.main()
