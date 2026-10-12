@@ -151,8 +151,10 @@ class IndependentPageAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(PageAuditError, "source_sha256"):
             assess_page(raw, manifest, reviewers, extract_repos=extract_repos)
         raw, manifest, reviewers = make_page()
+        tampered = bytearray(raw)
+        tampered[10] ^= 1
         with self.assertRaisesRegex(PilotValidationError, "SHA-256"):
-            assess_page(raw + b"x", manifest, reviewers, extract_repos=extract_repos)
+            assess_page(bytes(tampered), manifest, reviewers, extract_repos=extract_repos)
 
     def test_review_at_time_before_capture_refused(self):
         raw, manifest, reviewers = make_page()
