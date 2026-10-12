@@ -1,0 +1,87 @@
+{
+  "dataset_kind": "synthetic",
+  "outcomes": [
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 30,
+      "independent_review_ref": "SYNTHETIC-ONLY/independent-review-01",
+      "protocol_deviation": null,
+      "rights_gate": "pass",
+      "security_gate": "pass",
+      "status": "accepted",
+      "task_id": "synthetic-T01"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 45,
+      "independent_review_ref": "SYNTHETIC-ONLY/independent-review-02",
+      "protocol_deviation": null,
+      "rights_gate": "pass",
+      "security_gate": "pass",
+      "status": "accepted",
+      "task_id": "synthetic-T02"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": null,
+      "independent_review_ref": null,
+      "protocol_deviation": null,
+      "rights_gate": "unknown",
+      "security_gate": "unknown",
+      "status": "failed",
+      "task_id": "synthetic-T03"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 3,
+      "independent_review_ref": null,
+      "protocol_deviation": null,
+      "rights_gate": "unknown",
+      "security_gate": "unknown",
+      "status": "refused",
+      "task_id": "synthetic-T04"
+    },
+    {
+      "closed_at_utc": null,
+      "human_active_minutes": 6,
+      "independent_review_ref": null,
+      "protocol_deviation": null,
+      "rights_gate": "unknown",
+      "security_gate": "unknown",
+      "status": "pending",
+      "task_id": "synthetic-T05"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 60,
+      "independent_review_ref": "SYNTHETIC-ONLY/independent-review-06",
+      "protocol_deviation": null,
+      "rights_gate": "pass",
+      "security_gate": "pass",
+      "status": "accepted",
+      "task_id": "synthetic-T06"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 120,
+      "independent_review_ref": null,
+      "protocol_deviation": null,
+      "rights_gate": "unknown",
+      "security_gate": "unknown",
+      "status": "abandoned",
+      "task_id": "synthetic-T07"
+    },
+    {
+      "closed_at_utc": "2026-10-11T13:00:00Z",
+      "human_active_minutes": 20,
+      "independent_review_ref": "SYNTHETIC-ONLY/independent-review-08",
+      "protocol_deviation": null,
+      "rights_gate": "pass",
+      "security_gate": "pass",
+      "status": "accepted",
+      "task_id": "synthetic-T08"
+    }
+  ],
+  "protocol_id": "DRAFT-pilot-2026-10-12",
+  "schema_version": "1.0"
+}

@@ -226,3 +226,14 @@ See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for t
 ## October 2026: prospective task-candidate intake pilot
 
 An [offline task-intake validator and documented exploratory public-issue frame](docs/PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md) now demonstrate **pre-reuse** deterministic candidate sampling with provenance, preserved pull-request exclusions, and explicit unknown/unreviewed states. The selected open GitHub issues are task leads, **not** verified reusable-software opportunities or randomized study assignments. Human screening, frozen acceptance tests, consent, independent adjudication, and a preregistration decision remain pending. Run `python -m trending_study.task_intake --input examples/task_intake.public_2026-10-12.json --output /tmp/task-intake-audit.json` and inspect the complete ledger.
+
+## 2026-10-12: reproducible, synthetic 2027 task-trial pilot instrument
+
+For the **separate, opt-in randomized reuse-first experiment** (not the observational Trending cohort), the initial [offline task-frame allocation and outcome audit](docs/TRIAL_PILOT_INSTRUMENT.md) is available. It validates frozen task/acceptance hashes, prespecified screening exclusions, deterministic task-cluster randomization across the proposed 2×2 human/agent × usual/reuse-first arms, and all-assigned-task outcome accounting including failures, refusals, pending work and missing human time.
+
+```bash
+python -m trending_study.trial assign --frame examples/trial_frame.synthetic.json --output /tmp/trial-allocation.synthetic.json
+python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json --assignments /tmp/trial-allocation.synthetic.json --outcomes examples/trial_outcomes.synthetic.json
+```
+
+**Important:** both fixtures are **synthetic only**; no task trial, recruited participants, study preregistration, independent human review, verified reuse outcome or energy saving has occurred. [Start-of-study checkpoint (2026-10-12)](docs/TASK_TRIAL_START_2026-10-12.md) records the decisions, engineering scope and next approval gates. This is a bounded partial contribution to [issue #25](https://github.com/MSKazemi/github-trending-1000-study/issues/25), which remains open pending independent protocol/ethics review, power simulation and a real pilot.

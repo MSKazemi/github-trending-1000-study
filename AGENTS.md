@@ -78,3 +78,8 @@
 - Treat each supported Trending Box-row as one immutable displayed rank. Never drop malformed/duplicate rows and then call the remaining ranks complete.
 - A structural selector-row count cannot detect off-selector rows or changed GitHub markup. Check [real human QA criteria](docs/PARSER_STRUCTURE_QA_2026_10_12.md); real capture dates, supported surfaces and at least 30 independently adjudicated rows are outstanding.
 - Do not mark `parser_audit` verified or close #2 based only on synthetic unit tests.
+
+
+## Planned task-trial instrumentation guard (#25)
+- Use [trial pilot instrument](docs/TRIAL_PILOT_INSTRUMENT.md) only to validate prospective **synthetic or independently authorized opt-in pilot** records. Verify frame SHA binding, write-once assignment, all randomized task outcomes including refused/abandoned/pending and actual consent; no pilot data is authenticated by the script.
+- A public deterministic assignment seed is not allocation concealment or a real preregistration; do not convert public issue intake leads to trial participants automatically. Keep hidden acceptance tests independently authored and out of agent context.
