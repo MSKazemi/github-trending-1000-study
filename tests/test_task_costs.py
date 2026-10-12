@@ -239,6 +239,52 @@ class TaskCostTests(unittest.TestCase):
         with self.assertRaisesRegex(CostAuditError, "cost basis"):
             audit_costs(frame, allocations, outcomes, ledger)
 
+    def test_after_closure_followup_cannot_masquerade_as_in_trial_time(self):
+        frame, allocations, outcomes, ledger = inputs()
+        task = ledger["task_costs"][0]
+        task["human_intervals"].append({
+            "actor_slot": "slot-01",
+            "category": "followup",
+            "started_at_utc": "2026-10-11T13:10:00Z",
+            "ended_at_utc": "2026-10-11T13:20:00Z",
+        })
+        with self.assertRaisesRegex(CostAuditError, "unknown work category"):
+            audit_costs(frame, allocations, outcomes, ledger)
+
+    def test_cli_duplicate_json_fields_and_nan_rejected(self):
+        frame, assignment, outcomes, ledger = inputs()
+        with tempfile.TemporaryDirectory() as temp:
+            tmp = Path(temp)
+            allocations_path = tmp / "allocations.json"
+            allocations_path.write_text(json.dumps(assignment), encoding="utf-8")
+            ledger_path = tmp / "ledger.json"
+            output = tmp / "report.json"
+            command = [
+                sys.executable, "-m", "trending_study.task_costs",
+                "--frame", str(FIXTURES / "trial_frame.synthetic.json"),
+                "--assignments", str(allocations_path),
+                "--outcomes", str(FIXTURES / "trial_outcomes.synthetic.json"),
+                "--input", str(ledger_path), "--output", str(output),
+            ]
+            source_text = json.dumps(ledger)
+            duplicate = source_text.replace(
+                '"schema_version": "1.0"',
+                '"schema_version": "1.0", "schema_version": "1.0"',
+                1,
+            )
+            ledger_path.write_text(duplicate, encoding="utf-8")
+            run = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(run.returncode, 0)
+            self.assertIn("duplicate JSON key", run.stderr)
+            self.assertFalse(output.exists())
+            ledger_path.write_text(source_text.replace(
+                '"max_human_minutes": 35', '"max_human_minutes": NaN', 1,
+            ), encoding="utf-8")
+            run = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(run.returncode, 0)
+            self.assertIn("nonfinite/nonstandard", run.stderr)
+            self.assertFalse(output.exists())
+
     def test_write_once_cli_and_alias_protection(self):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / "cost-report.json"
