@@ -257,3 +257,21 @@ Populate the bundle **only after permitted captures and independent human labeli
 - [100 named companies across 10 ecosystem layers](docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md) — dated, non-ranked company/brand landscape, ownership corrections, research questions and practical reuse-first lessons.
 - [Machine-readable 100-company register](references/ai_software_companies_100_2026-10-12.csv) — official-source URLs and editorial study lenses; **not** a verified success ranking, complete company population or sampled GitHub repository cohort.
 
+
+## October 2026: bounded human/agent cost ledger (offline, synthetic only)
+
+The [task-cost ledger audit](docs/TASK_COST_LEDGER_2026-10-12.md) extends the existing **all-assigned-task** randomized-trial instrument with privacy-minimized human work intervals, model/tool/retry/CI event counts, provider token quantities, provenance-tagged USD event amounts, missingness-aware summaries, and predeclared budget alerts. **It does not collect live agent telemetry, authenticate consent, observe real participants, calculate carbon, or prove productivity effects.**
+
+```bash
+python -m trending_study.trial assign \
+  --frame examples/trial_frame.synthetic.json \
+  --output /tmp/assigned-costs.synthetic.json
+python -m trending_study.task_costs \
+  --frame examples/trial_frame.synthetic.json \
+  --assignments /tmp/assigned-costs.synthetic.json \
+  --outcomes examples/trial_outcomes.synthetic.json \
+  --input examples/task_costs.synthetic.json \
+  --output /tmp/task-costs-report.synthetic.json
+```
+
+All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.
