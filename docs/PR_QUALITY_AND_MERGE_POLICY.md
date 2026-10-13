@@ -28,19 +28,19 @@ These are **process requirements**, not a new research preregistration. Passing 
 
 The repository's read-only GitHub Actions workflow uses SHA-pinned official checkout/setup-python actions, with no repo write token, timeouts and isolated Python environments:
 
-- \`python -m compileall -q trending_study scripts tests\`, then \`python -m unittest discover -s tests -v\` on Python 3.10, 3.12 and 3.13.
-- \`python scripts/check_research_artifacts.py --root .\` independently validates tracked \`examples/\`, \`references/\` and \`research-notes/\` JSON/JSONL/CSV files. Reject malformed JSON, duplicate keys (including nested), NaN/Infinity, invalid UTF-8, missing directories, broken CSV field alignment, symlinks and oversized artifacts. This is **not a schema, source-authenticity, privacy or statistical validator**.
-- The workflow avoids \`pull_request_target\` and injected credentials; untrusted PR tests run without secrets.
+- `python -m compileall -q trending_study scripts tests`, then `python -m unittest discover -s tests -v` on Python 3.10, 3.12 and 3.13.
+- `python scripts/check_research_artifacts.py --root .` independently validates tracked `examples/`, `references/` and `research-notes/` JSON/JSONL/CSV files. Reject malformed JSON, duplicate keys (including nested), NaN/Infinity, invalid UTF-8, missing directories, broken CSV field alignment, symlinks and oversized artifacts. This is **not a schema, source-authenticity, privacy or statistical validator**.
+- The workflow avoids `pull_request_target` and injected credentials; untrusted PR tests run without secrets.
 
 Version upgrades of tools or workflows require specific review and passing checks. The suite has not established fuzz resistance, real-source correctness, secure dependencies, nor enterprise deployment readiness. For security-sensitive changes, apply appropriate threat modeling and independent code review beyond this baseline.
 
 ### Reproduce locally
 
-\`\`\`bash
+```bash
 python -m compileall -q trending_study scripts tests
 python -m unittest discover -s tests -v
 python scripts/check_research_artifacts.py --root .
-\`\`\`
+```
 
 The artifact check is **read-only**, makes no external requests and reports artifact file counts, not source quality. It also does not parse Markdown citations or establish an original study finding.
 
@@ -51,16 +51,16 @@ The artifact check is **read-only**, makes no external requests and reports arti
 3. Assign an appropriate independent reviewer to reconcile disputed factual claims and protocols. Do **not** concatenate contradictory findings and call them verified; preserve both original provenance records and status.
 4. Create a separate clearly attributed synthesis/merge-resolution branch when warranted. Make individual source/event links and resolved/unresolved discrepancies explicit. Do not force push, delete, squash away original provenance, or overwrite immutable raw captures.
 5. Run all updated tests and manual evidence checks on the integrated tree. Merge only after explicit human methods signoff where needed. Closing superseded PRs is allowed **only with a direct link to the merged replacement and verification that their valuable content survives**.
-6. After the final merge, verify saved files in \`main\`, links, issue notes and source access restrictions. The existence of a branch is not proof its contribution reached \`main\`.
+6. After the final merge, verify saved files in `main`, links, issue notes and source access restrictions. The existence of a branch is not proof its contribution reached `main`.
 
 **Example collisions observed** in the snapshot: #191 vs #228 (Meta); #192 vs #229 (Amazon/AWS); #197 vs #231 (Amp Inc.); #212 vs #230 (Replit); #213 vs #232 (Qodo). These update the **same** Markdown path with visibly different report contents. Treat both versions as valuable unresolved evidence until reviewed. Proposed experimental tools for #22 (#186 vs #216), #12 (#185 vs #210) and #5 (#183 vs #187) have related scopes even when files do not collide; compare contracts before consolidating.
 
 ## Protected main branch — administrator steps still needed
 
-**Observed access (2026-10-13):** GitHub's public repository rulesets endpoint returned \`[]\`, but the connected integration could not read the branch protection endpoint (403). Therefore, this audit **cannot verify branch protection is enabled or disabled**. An authorized owner should check repository Settings → Rules → Rulesets / Branch protection and configure:
+**Observed access (2026-10-13):** GitHub's public repository rulesets endpoint returned `[]`, but the connected integration could not read the branch protection endpoint (403). Therefore, this audit **cannot verify branch protection is enabled or disabled**. An authorized owner should check repository Settings → Rules → Rulesets / Branch protection and configure:
 
-- No force pushes or branch deletion on \`main\`.
-- Require an up-to-date, successful PR head/merge queue test matrix **and** \`research-artifacts\` job before merge; review actual rule evaluation and required status names, not just badge appearance.
+- No force pushes or branch deletion on `main`.
+- Require an up-to-date, successful PR head/merge queue test matrix **and** `research-artifacts` job before merge; review actual rule evaluation and required status names, not just badge appearance.
 - Require qualified non-author human approval of source/ethics/scientific or security-sensitive changes; dismiss stale approvals on new commits where the collaboration model permits it.
 - Resolve blocking review comments, require conversation resolution and prevent admin bypass where appropriate; account for solo-maintainer constraints explicitly instead of fabricating approval.
 - Prefer squash/rebase with recorded original PR link and commits; record exception reasons and postmerge test status.
