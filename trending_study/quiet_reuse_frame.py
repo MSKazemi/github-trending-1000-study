@@ -4,7 +4,7 @@ This cannot establish whether the registry frame is complete, unbiased or real.
 """
 import argparse
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -31,6 +31,8 @@ def select(frame):
     if not isinstance(frame, dict):
         raise FrameError("frame must be object")
     cutoff = _utc(frame.get("frozen_at_utc"))
+    if cutoff > datetime.now(timezone.utc) + timedelta(minutes=5):
+        raise FrameError("frozen sampling frame cannot be future-dated")
     seed = frame.get("seed")
     if not isinstance(seed, str) or not seed.strip():
         raise FrameError("frozen nonempty seed required")
@@ -43,11 +45,12 @@ def select(frame):
     ):
         raise FrameError("predeclared positive integer quota per stratum required")
     seen, buckets = set(), {k: [] for k in quotas}
-    forbidden = {"future_reuse", "future_adoption", "future_stars",
-                 "post_treatment_outcome", "verified_followup_uses"}
+    # Whitelist observed-at-freeze identity fields: a blacklist cannot prevent
+    # undisclosed outcome proxies being silently introduced under new key names.
+    allowed = {"repository_id", "package_id", "stratum", "source_url", "snapshot_at_utc"}
     for row in rows:
-        if not isinstance(row, dict) or forbidden.intersection(row):
-            raise FrameError("invalid row or forbidden future outcome in sampling frame")
+        if not isinstance(row, dict) or set(row) != allowed:
+            raise FrameError("sampling row must contain only prespecified pre-outcome fields")
         rid = row.get("repository_id")
         if type(rid) is not int or rid <= 0 or rid in seen:
             raise FrameError("numeric positive unique repository ID required")
@@ -59,8 +62,9 @@ def select(frame):
             if not isinstance(row.get(field), str) or not row[field].strip():
                 raise FrameError("package_id and source_url required")
         url = urlparse(row["source_url"])
-        if url.scheme != "https" or not url.netloc:
-            raise FrameError("source_url must be HTTPS")
+        if (url.scheme != "https" or not url.hostname or url.username is not None
+                or url.password is not None or url.fragment):
+            raise FrameError("source_url must be clean HTTPS without credentials/fragment")
         if _utc(row.get("snapshot_at_utc")) > cutoff:
             raise FrameError("future snapshot cannot be used in frozen selection")
         buckets[stratum].append(row)
@@ -89,7 +93,9 @@ def select(frame):
             "strata_with_insufficient_members": sorted(
                 k for k in quotas if sizes[k] < quotas[k]),
             "selected": selected, "source_frame_independence_unverified": True,
-            "nominal_fraction_is_not_a_population_weight": True}
+            "nominal_fraction_is_not_a_population_weight": True,
+            "random_seed_independence_unverified": True,
+            "eligible_for_population_prevalence_claim": False}
 
 
 def main(argv=None):
