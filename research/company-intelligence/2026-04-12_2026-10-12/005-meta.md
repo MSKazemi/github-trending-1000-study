@@ -89,3 +89,21 @@ The site and source population are not randomized. No effect estimate or recomme
 - [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
 
 **No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This section records 3 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [005-meta.events.csv](005-meta.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
+
+| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+|---|---|---|---|
+| 2026-09-08 | [Introducing Muse: The World's First Personal AI Agent Built for Everyone](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent) | Meta announced a personal agent using a dedicated cloud VM and browser. **Status:** `announced_only`. | Page shows later Sep 30 revision; the Sept 8 snapshot not recovered. |
+| 2026-09-28 | [Launching Meta Enterprise Platform](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) | Meta announced enterprise direction including Muse API, Muse Code and business agents. **Status:** `announced_only`. | No exact GA, permissions or independent enterprise deployment verified. |
+| 2026-10-12 | [Introducing Muse Wonder and Muse Wonder Full: Frontier Models for Agents](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) | Meta said Wonder is available through Meta Model API and Muse Code, and Wonder Full for Muse Code subscribers. **Status:** `shipped`. | No evidence these particular models are open-weight; vendor benchmark scores unreplicated. |
+
+**Important correction and interpretation:** Meta's Muse article first published September 8 also displays a September 30 update. Do not treat updated text as an unchanged contemporaneous record; archived original not obtained. Muse Wonder is offered via API/Code according to the October 12 company page; open-weight licensing of these specific models is NOT established. Independent media corroborates the announcement, not performance or reproducible access.
+
+**Disconfirmation/critical evidence still needed:** Privacy and delegated-agent account access; model/weights terms; no independent acceptance benchmarks or developer-reuse counts.
+
+**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+
+**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #71 and this draft PR open until those acceptance gates are addressed.
