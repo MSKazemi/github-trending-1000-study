@@ -204,10 +204,21 @@ def retire_one(client, repo, item, *, audit_only=False):
             or ancestry.get("status") not in ("ahead", "identical")
             or ancestry.get("behind_by") != 0):
         return "blocked_merge_not_in_main"
-    if audit_only:
-        return "eligible_read_only"
     tag = f"{ARCHIVE_PREFIX}/{name}"
     tag_path = _tag_ref(repo, tag)
+    if audit_only:
+        # A preflight must disclose a conflicting existing recovery tag now,
+        # not report eligibility and defer the conflict to destructive mode.
+        # The absence of a tag is expected before the approved archive step.
+        try:
+            archived = client.get(tag_path)
+        except ApiNotFound:
+            return "eligible_read_only"
+        if (not isinstance(archived, dict)
+                or not isinstance(archived.get("object"), dict)
+                or archived["object"].get("sha") != sha):
+            return "blocked_archive_tag_conflict"
+        return "eligible_read_only"
     try:
         present = client.get(tag_path)
         if present.get("object", {}).get("sha") != sha:
