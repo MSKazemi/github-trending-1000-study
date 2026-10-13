@@ -36,3 +36,7 @@ Before discussion, report raw exact agreement and pairwise Cohen kappa for each 
 For a current maintainer repo, freeze a 10-minute clean-install task, recruit consenting unaffiliated first-time users and record attempts/failures. Fix only independently observed onboarding blockers, rerun under the same task standard, and preserve negative results. A higher star count is not an acceptance criterion.
 
 **Next gates:** implement machine-readable rater entry/validator, collect consent, pilot agreement on heterogeneous projects, calibrate anchors, then evaluate 100+ actual repositories. Human methods signoff is required; no evidence claim is allowed from this template alone.
+
+## Integration boundary: task-success versus nominal agreement
+
+The proposed **ordinal 0/1/2 dimension ratings** require an explicit, separately reviewed agreement method (including any weighted kappa and treatment of true `NA`). The companion [nominal rubric-agreement instrument](RUBRIC_AGREEMENT_INSTRUMENT_2026_10.md) accepts only `pass`, `fail`, `not_applicable`, and `unknown`; its unweighted Cohen kappa **must not** be presented as agreement on this ordinal scale. Use the nominal tool only for a separately prespecified binary task-pass or nominal checklist judgment. Neither instrument provides independent human labels or the issue's requested 100+ repository evaluation. Keep review and registration gates open after documentation integration.
