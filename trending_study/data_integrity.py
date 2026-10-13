@@ -98,6 +98,13 @@ def validate_repository(root):
         if not folder.is_dir():
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
+            # Reject symlinked subdirectories as well as .json/.jsonl files.
+            # rglob may skip traversing a link silently, which otherwise
+            # makes an evidence subtree disappear from the audit denominator.
+            if candidate.is_symlink():
+                raise ResearchJSONError(
+                    f"{candidate.relative_to(root)}: symlinked research content is not allowed"
+                )
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:
