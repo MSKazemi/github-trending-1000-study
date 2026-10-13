@@ -112,6 +112,28 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             self.assertEqual(cp.stdout, "")
 
 
+    def test_csv_header_only_is_not_accepted_as_real_observations(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "empty_sources.csv", b"id,title,source\n")
+            with self.assertRaisesRegex(ResearchJSONError, "no data records"):
+                validate_repository(root)
+
+    def test_total_budget_and_file_limit_include_csv_and_json(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "first.json", b'{"id":1}')
+            self._artifact(root, "second.csv", b'id,n\n1,2\n')
+            with patch.object(data_integrity, "MAX_FILES", 1):
+                with self.assertRaisesRegex(ResearchJSONError, "file count"):
+                    validate_repository(root)
+            with patch.object(data_integrity, "MAX_TOTAL_BYTES", 10):
+                with self.assertRaisesRegex(ResearchJSONError, "cumulative"):
+                    validate_repository(root)
+            report = validate_repository(root)
+            self.assertEqual(report["total_research_records"], 2)
+            self.assertEqual(report["json_documents_or_jsonl_records"], 1)
+            self.assertEqual(report["csv_data_rows"], 1)
+            self.assertGreater(report["checked_bytes"], 10)
+
     def test_csv_multiline_and_commas_are_preserved(self):
         with tempfile.TemporaryDirectory() as root:
             file = self._artifact(

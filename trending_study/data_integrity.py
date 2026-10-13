@@ -16,6 +16,8 @@ import sys
 SOURCE_DIRS = ("examples", "references", "research", "research-notes", "templates")
 EXTENSIONS = frozenset((".json", ".jsonl", ".csv"))
 MAX_FILE_BYTES = 16 * 1024 * 1024
+MAX_TOTAL_BYTES = 128 * 1024 * 1024
+MAX_FILES = 5000
 
 
 class ResearchJSONError(ValueError):
@@ -117,6 +119,8 @@ def _check_file(path, root):
                         f"expected {len(header)}"
                     )
                 rows += 1
+            if rows == 0:
+                raise ResearchJSONError(f"{label}: CSV contains no data records")
             return rows
         except csv.Error as exc:
             raise ResearchJSONError(f"{label}: invalid CSV ({exc})") from exc
@@ -151,12 +155,17 @@ def validate_repository(root):
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
             if candidate.suffix in EXTENSIONS:
+                if len(files) >= MAX_FILES:
+                    raise ResearchJSONError("research artifact file count exceeds safety limit")
                 files.append(candidate)
     if not files:
         raise ResearchJSONError("no .json/.jsonl/.csv research artifacts found")
     records = 0
-    csv_files = csv_records = 0
+    csv_files = csv_records = total_bytes = 0
     for path in sorted(files):
+        total_bytes += path.stat().st_size
+        if total_bytes > MAX_TOTAL_BYTES:
+            raise ResearchJSONError("cumulative research artifact bytes exceed safety limit")
         count = _check_file(path, root)
         if path.suffix == ".csv":
             csv_files += 1
@@ -168,6 +177,8 @@ def validate_repository(root):
         "json_documents_or_jsonl_records": records,
         "validated_csv_files": csv_files,
         "csv_data_rows": csv_records,
+        "total_research_records": records + csv_records,
+        "checked_bytes": total_bytes,
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
