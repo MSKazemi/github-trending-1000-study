@@ -162,6 +162,21 @@ class TrendingOverlapTests(unittest.TestCase):
                 with self.assertRaises(OverlapError):
                     evaluate(data)
 
+    def test_malformed_url_parser_uses_contract_error(self):
+        # urllib.parse.urlsplit may raise ValueError on malformed IPv6
+        # authorities; untrusted fixture input must fail consistently.
+        for url in (
+            "https://[github.com/trending?since=daily",
+            "https://[::1/trending?since=daily",
+            "https://github.com\uff0f.evil/trending?since=daily",
+        ):
+            with self.subTest(url=url):
+                data = fixture()
+                for entry in data["captures"]:
+                    entry["page_url"] = url
+                with self.assertRaises(OverlapError):
+                    evaluate(data)
+
     def test_nested_or_encoded_language_paths_fail_closed(self):
         for language, url in (
             ("Python/other", "https://github.com/trending/python/other?since=daily"),
