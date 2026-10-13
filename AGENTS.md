@@ -9,6 +9,7 @@
 - Keep timestamps in UTC and include provenance; do not substitute today's metadata for historical measurement.
 - Test offline with committed synthetic fixtures; no integration-test dependency on live GitHub.
 - Run `python -m unittest discover -s tests -v`. State what was tested and what remains unvalidated.
+- Before proposing any PR merge, inspect the **entire current diff**, confirm an exact-head Python 3.10/3.12 CI result, review security/provenance/docs, reconcile overlapping branches **without losing unique tests or source references**, and use the expected head SHA for any merge. Do not treat unprotected `main`, draft PRs or green synthetic tests as human methods approval. See [merge gates](docs/PR_MERGE_QUALITY_GATES_2026_10_13.md).
 - Research protocol changes need explicit justification, versioning and human approval.
 
 ## 2027 value research and lessons
@@ -102,3 +103,11 @@
 - Use `trending_study.task_costs` **offline** with frozen trial frame/assignment/outcome inputs, one record per randomized task, explicit missingness, fail-closed field checks and write-once output. A log validator cannot authenticate instrumented data.
 - Treat currency as provenance-tagged **event scope only**; tokens are not kWh, parallel agent duration is not extra human hours, and a missing record is never a zero-cost result.
 - Use `python -m unittest discover -s tests -v`; disclose that all committed task-cost fixtures and performance values are synthetic, without generating or publishing human identities or prompt content.
+
+## Canonical PR integration responsibilities (2026-10-13)
+
+- Use the **single** [scientific PR merge gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md), the current [PR author template](.github/pull_request_template.md), and the [dated review checkpoint](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). Do not introduce a competing normative policy from a superseded PR.
+- Review current changed code, negative tests, source/rights/consent, scientific evidence classes, docs and overlapping PRs. Preserve distinctive tests, references and functionality when consolidating duplicate modules.
+- Check the **exact current PR head**, all Python 3.10/3.12/3.14 test jobs, the current base and mergeability immediately before squash merging with `expected_head_sha`. Verify post-merge main CI separately.
+- GitHub branch protection and mandatory independent human approvals require real repository administration; CI success and this instruction file alone do **not** enforce them.
+- Technical integration may be complete while empirical research gates remain blocked. Never mark independently verified human tasks, source authorization, quantitative environmental benefit or preregistration completed without actual evidence.
