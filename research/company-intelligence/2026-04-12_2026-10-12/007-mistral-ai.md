@@ -25,7 +25,7 @@ Source screening consulted the linked first-party publication/archive pages, pro
 
 Mistral AI is the company; Mistral Studio, Workflows, Vibe and Large 4 are distinct platform/model offerings. A vendor statement that model weights *will* be published is not evidence they have been released.
 
-Public first-party landing/news channels identify product offerings, but this report does not independently verify corporate cap tables or product rights. Mistral Large 4 provider English release states 49B active parameters, some localized/provider product text indicates a different count; omit numerical architecture comparisons until resolved.
+Public first-party landing/news channels identify product offerings, but this report does not independently verify corporate cap tables or product rights. The cited English announcement states 52B active parameters (vendor specification, not independently measured); the API was public preview and weights were promised for end-October 2026, not documented as released within the study window.
 
 ## 3. Month-by-month candidate events
 
@@ -110,9 +110,18 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 
 - **Observed in documentation:** 6 directly linked dated source events, primarily first-party. Only the publication/product claims and their reported availability are supported.
 - **Not demonstrated:** independent feature efficacy, benchmark validity, customer/OSS adoption, earned GitHub attention, per-task cost savings, kWh/CO2e, or causal environmental benefit.
-- **Counterclaim / specific uncertainty:** Mistral Large 4 provider English release states 49B active parameters, some localized/provider product text indicates a different count; omit numerical architecture comparisons until resolved. Hosted inference and license restrictions may erase local portability advantages, and preview APIs may change.
+- **Counterclaim / specific uncertainty:** The cited English announcement states 52B active parameters (vendor specification, not independently measured); the API was public preview and weights were promised for end-October 2026, not documented as released within the study window. Hosted inference and license restrictions may erase local portability advantages, and preview APIs may change.
 - **Required next verification:** (1) independent second-reviewer date/link/identity pass; (2) seven-segment systematic queries with preserved screen counts and exclusion rationale; (3) inspect exact weights/code license, APIs, prices, status and data policies; (4) seek credible independent adverse/critical reporting; (5) duplicate/correction and secondary coverage audit; (6) independent task trial and tests before recommending broad adoption.
 - **Review state:** analyst-drafted with source URLs, independent human factual QA **pending**, no full Python test suite run for this documentation-only proposal. Keep the issue and PR open/draft; **do not merge** or close until criteria satisfied.
 - **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
 
 **Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- **Strong direct example of not reinventing infrastructure:** [Mistral Workflows April 27 technical article](https://mistral.ai/news/workflows/) explicitly reports building on **Temporal's existing durable-execution engine**, adding AI-oriented streaming/payloads, multi-tenancy and observability. Its Python SDK and workspaces are described, but reliability, cost and portability outcomes are vendor reports rather than our measurements.
+- **Important data-plane boundary:** The same article describes a **Mistral-hosted control plane** and **customer-environment Kubernetes workers**. Reuse might transfer operational burden; test auth, credentials, data residency and incident recovery before calling it a net improvement.
+- [Mistral Large 4 October 6 announcement](https://mistral.ai/news/mistral-large-4/) states a **public-preview API**, **52B active parameters** and a plan to publish weights **later in October**. **Do not count those weights as shipped by October 12 or label the preview generally available**. Its own benchmark numbers remain first-party claims.
+- [July 9 Studio prompts/skills versioning](https://mistral.ai/news/manage-prompts-and-skills-in-studio/) reports a system of record. This suggests *testing reusing versioned instructions and connectors*, not claiming it automatically reduces maintenance.
+
+**Revised pilot contrast:** Compare the existing Python CLI + test harness against any new workflow layer only when the task actually requires durable retry/resume/approval. If it does, evaluate an existing Temporal integration before proposing custom orchestration; record incremental deployment and review cost.
