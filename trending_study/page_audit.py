@@ -4,7 +4,7 @@ The *reviewers*, not this program, must inspect each captured page independently
 and annotate all visible repository rows. Input attestations are self-reported:
 automated agreement never constitutes validated GitHub data or study approval.
 """
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -43,6 +43,8 @@ def _labels(annotation, manifest, moment):
     stamp = _utc_timestamp(annotation.get("reviewed_at_utc"), "reviewed_at_utc")
     if stamp < moment:
         raise PageAuditError("reviewed_at_utc predates the original capture")
+    if stamp > datetime.now(timezone.utc) + timedelta(minutes=5):
+        raise PageAuditError("reviewed_at_utc cannot be in the future")
     for field in ("source_sha256", "source_url", "captured_at_utc", "window"):
         if annotation.get(field) != manifest.get(field):
             raise PageAuditError(f"reviewer annotation {field} disagrees with capture manifest")
