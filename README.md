@@ -238,6 +238,21 @@ An [offline task-intake validator and documented exploratory public-issue frame]
 python -m trending_study.task_intake --input examples/task_intake.cross_ecosystem_2026-10-12.json --output /tmp/task-intake-cross-ecosystem-2026-10-12.json
 ```
 
+## 2026-10-12: 16 public issue metadata rechecks and pre-search review instrument
+
+The existing **16 hash-selected, unreviewed** public issue leads were rechecked through individual permitted GitHub REST issue endpoints at a batch completion time of **2026-10-12 20:25:45 UTC**. All 16 stable numeric IDs/links matched and were open at recheck, with no `updated_at` timestamp differences from their original reduced intake metadata. This **does not** establish independently accepted tasks, absence of public solution hints, genuine reviewer independence, agent outcomes, 1,000 Trending observations or environmental savings.
+
+The [limited observed metadata and scientific caveats](docs/TASK_SCREENING_SOURCE_RECHECK_2026-10-12.md) accompany the [reduced recheck JSON](research-notes/issue-recheck-2026-10-12.json), [offline task-screening CLI](trending_study/task_screen.py) and [synthetic reviewer consistency tests](tests/test_task_screen.py). The **human-source screening and independent acceptance criteria remain open** at [issue #65](https://github.com/MSKazemi/github-trending-1000-study/issues/65).
+
+```bash
+python -m trending_study.task_screen prepare \
+  --frame examples/task_intake.cross_ecosystem_2026-10-12.json \
+  --recheck research-notes/issue-recheck-2026-10-12.json \
+  --output /tmp/issue65-screen-packet.json
+```
+
+Avoid interpreting even two matching *synthetic or self-reported* reviewer labels as verified human approval. **Original public issues may already contain specific fixes**; real maintenance and independent blind task-solving require different experimental designs.
+
 ## 2026-10-12: reproducible, synthetic 2027 task-trial pilot instrument
 
 For the **separate, opt-in randomized reuse-first experiment** (not the observational Trending cohort), the initial [offline task-frame allocation and outcome audit](docs/TRIAL_PILOT_INSTRUMENT.md) is available. It validates frozen task/acceptance hashes, prespecified screening exclusions, deterministic task-cluster randomization across the proposed 2×2 human/agent × usual/reuse-first arms, and all-assigned-task outcome accounting including failures, refusals, pending work and missing human time.
