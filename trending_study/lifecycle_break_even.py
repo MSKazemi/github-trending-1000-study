@@ -46,7 +46,7 @@ def _count(value, where, maximum=MAX_USES):
 def _energy(record, name, kind):
     _obj(record, ("kwh", "basis", "evidence_ref"), name)
     basis = record["basis"]
-    if basis not in BASES:
+    if not isinstance(basis, str) or basis not in BASES:
         raise BoundaryError(f"{name}: invalid evidence basis")
     if kind == "synthetic" and basis not in ("synthetic", "unknown"):
         raise BoundaryError(f"{name}: synthetic dataset must not claim meter evidence")
@@ -100,6 +100,8 @@ def evaluate(payload):
         if not isinstance(payload[name], str) or not SHA.fullmatch(payload[name]):
             raise BoundaryError(f"{name}: expected lowercase SHA-256")
     _count(payload["horizon_days"], "horizon_days", MAX_HORIZON_DAYS)
+    if payload["horizon_days"] == 0:
+        raise BoundaryError("horizon_days must be strictly positive")
     excluded = payload["excluded_terms"]
     if not isinstance(excluded, list) or any(not isinstance(x, str) or not x.strip() for x in excluded):
         raise BoundaryError("excluded_terms: expected list of named omissions")
