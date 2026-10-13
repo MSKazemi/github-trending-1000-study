@@ -2,6 +2,10 @@
 import copy
 import json
 from pathlib import Path
+import tempfile
+from unittest.mock import patch
+
+from trending_study import news_corpus
 import unittest
 
 from trending_study.news_corpus import validate_directory, validate_records
@@ -139,6 +143,55 @@ class NewsCorpusTests(unittest.TestCase):
         bad["independent_reviewer"] = "not-a-real-review"
         with self.assertRaisesRegex(ValueError, "pending independent review"):
             validate_records([(bad["id"] + ".json", bad)])
+
+
+    def test_standalone_news_parser_rejects_duplicate_keys_and_nan(self):
+        """The standalone CLI must agree with canonical research JSON gates."""
+        for raw, expected in (
+            ('{"id":1,"id":2}', "duplicate JSON object key"),
+            ('{"energy":NaN}', "nonstandard JSON numeric constant"),
+            ('{"energy":1e-9999}', "underflowing"),
+        ):
+            with self.subTest(expected=expected), tempfile.TemporaryDirectory() as folder:
+                path = Path(folder) / "NEWS-2026-0001.json"
+                path.write_text(raw, encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, expected):
+                    validate_directory(folder)
+
+    def test_symlinked_news_input_and_root_are_rejected(self):
+        with tempfile.TemporaryDirectory() as root:
+            base = Path(root)
+            outside = base / "outside.json"
+            outside.write_text(json.dumps(self.item), encoding="utf-8")
+            items = base / "items"
+            items.mkdir()
+            link = items / "NEWS-2026-0001.json"
+            try:
+                link.symlink_to(outside)
+            except (OSError, NotImplementedError):
+                self.skipTest("symlinks unsupported")
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                validate_directory(items)
+            link.unlink()
+            (items / "NEWS-2026-0001.json").write_text(
+                json.dumps(self.item), encoding="utf-8",
+            )
+            alias = base / "alias"
+            alias.symlink_to(items, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                validate_directory(alias)
+
+    def test_bounded_source_read_does_not_rewrite_input(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "NEWS-2026-0001.json"
+            path.write_text(json.dumps(self.item), encoding="utf-8")
+            original = path.read_bytes()
+            self.assertEqual(validate_directory(folder)["records"], 1)
+            self.assertEqual(original, path.read_bytes())
+            with patch.object(news_corpus, "MAX_FILE_BYTES", 10):
+                with self.assertRaisesRegex(ValueError, "file-size limit"):
+                    validate_directory(folder)
+
 
 
 if __name__ == "__main__":
