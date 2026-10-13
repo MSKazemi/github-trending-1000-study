@@ -15,7 +15,7 @@ from urllib.request import Request, urlopen
 from .pilot import (build_capture_manifest, evaluate_preflight, validate_capture)
 from .safe_io import (disjoint, refuse_existing, publish_once, publish_json,
                       publish_jsonl, jsonl_bytes)
-from .page_audit import audit_bundle_file
+from .page_audit import audit_bundle_file, markdown_report
 
 VERSION = "0.4.0"
 GITHUB_HOST = "https://github.com"
@@ -279,11 +279,20 @@ def audit_pages(args):
     This reports documentary consistency, not proof of human independence,
     GitHub origin, permissible scraping or approval for cohort enrollment.
     """
-    disjoint(args.bundle, args.output)
-    refuse_existing(args.output)
+    disjoint(args.bundle, args.output, args.markdown_output)
+    refuse_existing(args.output, args.markdown_output)
     report = audit_bundle_file(args.bundle, extract_repos=extract_repos,
                                min_rows=args.min_rows)
-    publish_json(args.output, report)
+    if args.markdown_output:
+        # Both payloads are write-once; multi-file publication is not atomic.
+        # Preserve a partial pair on failure for human incident review.
+        json_bytes = (json.dumps(report, ensure_ascii=False, sort_keys=True,
+                                 indent=2) + "\n").encode("utf-8")
+        md_bytes = markdown_report(report).encode("utf-8")
+        publish_once([(args.output, json_bytes),
+                      (args.markdown_output, md_bytes)])
+    else:
+        publish_json(args.output, report)
     print(json.dumps({
         "audit_output": args.output,
         "evidence_kind": report["evidence_kind"],
@@ -367,7 +376,8 @@ def main(argv=None):
     vp.set_defaults(func=pilot_parse)
     qa = sub.add_parser("audit-pages", help="Compare raw captures to two complete, blinded independent row annotations")
     qa.add_argument("--bundle", required=True, help="Local audit bundle index with capture/manifest paths and both reviewer labels")
-    qa.add_argument("--output", required=True, help="Write-once JSON audit report")
+    qa.add_argument("--output", required=True, help="Write-once canonical JSON audit report")
+    qa.add_argument("--markdown-output", help="Optional write-once derived Markdown QA summary")
     qa.add_argument("--min-rows", type=int, default=30, help="Documentary full-page row threshold (default: 30 across windows)")
     qa.add_argument("--require-consistent", action="store_true", help="Return nonzero for incomplete/mismatched annotations or parser outputs")
     qa.set_defaults(func=audit_pages)
