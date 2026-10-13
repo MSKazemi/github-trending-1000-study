@@ -34,6 +34,22 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         self.assertEqual(result["csv"], 1)
         self.assertEqual(result["logical_records"], 4)
 
+    def test_optional_research_and_templates_json_are_validated(self):
+        research = self.root / "research" / "company-intelligence"
+        research.mkdir(parents=True)
+        (research / "lead.json").write_text('{"source": "dated"}', encoding="utf-8")
+        templates = self.root / "templates"
+        templates.mkdir()
+        review = templates / "review.jsonl"
+        review.write_text('{"task": "t01"}\\n', encoding="utf-8")
+        result = audit_repository(self.root)
+        self.assertEqual(result["files"], 5)
+        self.assertEqual(result["json"], 2)
+        self.assertEqual(result["jsonl"], 2)
+        review.write_text('{"task": 1, "task": 2}\\n', encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "duplicate JSON object key"):
+            audit_repository(self.root)
+
     def test_duplicate_nested_json_fields_rejected(self):
         file = self.root / "examples" / "case.json"
         file.write_text('{"record":{"version":1,"version":2}}', encoding="utf-8")
