@@ -45,6 +45,14 @@ class AdoptionBoundsTests(unittest.TestCase):
         with self.assertRaisesRegex(AdoptionError, "double-count"):
             summarize([fake(), fake()])
 
+    def test_absent_signal_cannot_disappear_from_denominator(self):
+        a = fake()
+        b = copy.deepcopy(a)
+        b["repository_id"] = 100000001
+        b["signals"].pop()
+        with self.assertRaisesRegex(AdoptionError, "every predeclared signal"):
+            summarize([a, b])
+
     def test_future_attestation_does_not_qualify(self):
         c = fake()
         c["signals"][0].update(status="observed_verified",
