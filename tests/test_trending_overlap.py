@@ -40,6 +40,40 @@ class TrendingOverlapTests(unittest.TestCase):
         self.assertEqual(out["jaccard"], 1)
         self.assertEqual(out["kendall_tau_on_common"], 1)
 
+    def test_equal_depth_rbo_reuses_competing_implementation(self):
+        data = fixture()
+        for p in (0.1, 0.5, 0.9):
+            with self.subTest(p=p):
+                result = evaluate(data, p)
+                self.assertIsNotNone(result["rbo_extrapolated_equal_depth"])
+                self.assertGreaterEqual(result["rbo_extrapolated_equal_depth"],
+                                        result["discounted_prefix_overlap_lower_bound"])
+                self.assertLessEqual(result["rbo_extrapolated_equal_depth"], 1.0)
+                self.assertIsNone(result["rbo_extrapolation_reason"])
+                self.assertEqual(result["prefix_persistence"], p)
+
+    def test_identical_equal_depth_rbo_is_one(self):
+        data = fixture()
+        data["captures"][1]["repository_ids"] = [10, 20, 30]
+        for p in (0.1, 0.5, 0.9):
+            with self.subTest(p=p):
+                self.assertAlmostEqual(evaluate(data, p)["rbo_extrapolated_equal_depth"], 1.0)
+
+    def test_unequal_depth_does_not_invent_tail(self):
+        data = fixture()
+        data["captures"][1]["repository_ids"] = [20, 10]
+        report = evaluate(data)
+        self.assertIsNone(report["rbo_extrapolated_equal_depth"])
+        self.assertEqual(report["rbo_extrapolation_reason"], "unequal observed page lengths")
+        self.assertIsNotNone(report["discounted_prefix_overlap_lower_bound"])
+
+    def test_equal_depth_disjoint_lists_rbo_is_zero(self):
+        data = fixture()
+        data["captures"][1]["repository_ids"] = [40, 50, 60]
+        report = evaluate(data)
+        self.assertEqual(report["discounted_prefix_overlap_lower_bound"], 0.0)
+        self.assertEqual(report["rbo_extrapolated_equal_depth"], 0.0)
+
     def test_disjoint_rank_tau_not_zero(self):
         data = fixture()
         data["captures"][1]["repository_ids"] = [50, 60]
