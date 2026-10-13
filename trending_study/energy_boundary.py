@@ -19,9 +19,15 @@ class EnergyError(ValueError):
 
 
 def _nonnegative(x, name):
-    if type(x) not in (int, float) or not math.isfinite(x) or x < 0:
+    if type(x) not in (int, float):
         raise EnergyError(f"{name} must be nonnegative finite number")
-    return float(x)
+    try:
+        value = float(x)
+    except (OverflowError, ValueError) as exc:
+        raise EnergyError(f"{name} must be nonnegative finite number") from exc
+    if not math.isfinite(value) or value < 0:
+        raise EnergyError(f"{name} must be nonnegative finite number")
+    return value
 
 
 def _arm(row, name):
@@ -47,6 +53,8 @@ def _arm(row, name):
         known += value
         if key in GRID_ONLY_COMPONENTS:
             grid_only += value
+        if not math.isfinite(known) or not math.isfinite(grid_only):
+            raise EnergyError(f"{name}: summed energy exceeds finite numeric range")
         if cell["evidence"] == "modeled":
             modeled.append(key)
     return known, missing, modeled, grid_only
@@ -98,7 +106,10 @@ def compare(data):
     if out["comparable"]:
         out["net_kwh_reuse_minus_build"] = r - b
         if intensity is not None:
-            out["grid_only_scenario_gco2e_delta"] = (r_grid - b_grid) * intensity
+            scenario = (r_grid - b_grid) * intensity
+            if not math.isfinite(scenario):
+                raise EnergyError("grid scenario carbon delta exceeds finite numeric range")
+            out["grid_only_scenario_gco2e_delta"] = scenario
         out["reason"] = "complete declared boundary; external validation and uncertainty still required"
     else:
         out["reason"] = "at least one unknown component; partial totals cannot establish net benefit"
