@@ -6,12 +6,12 @@
 
 ```bash
 python -m trending_study.literature_ledger --input SCREEN.json
-python -m unittest tests.test_literature_ledger -v
+python -m unittest discover -s tests -p 'test_literature_ledger.py' -v
 ```
 
 The JSON requires `search_runs` with distinct `run_id`, `database`, **verbatim query**, UTC search date; `records` each with `record_id`, the run ID, `title`, publication year, optional DOI, `source_type` and screening `decision` (include, exclude, pending). Exclusions require reasons. Included studies require a plain-language extraction of `design`, `population`, `outcome` and `limitations`. A reviewer must verify DOI resolution and source identity; syntax validation does not prove a DOI exists.
 
-DOIs normalize `doi:` and `https://doi.org/` aliases. Duplicate DOI keys and missing-DOI title+year collisions are flagged for **human adjudication**, not automatically discarded. Multiple publications, conference-to-journal extensions, versioned arXiv records and studies of the same dataset must remain traceable. Source types include peer-reviewed, preprint, standard, news and vendor so opinion/press cannot be silently counted as peer-reviewed evidence.
+DOIs normalize `doi:` (with optional spacing) and `https://doi.org/` / `https://dx.doi.org/` aliases. Duplicate DOI keys and missing-DOI title+year collisions are flagged for **human adjudication**, not automatically discarded. Multiple publications, conference-to-journal extensions, versioned arXiv records and studies of the same dataset must remain traceable. Source types include peer-reviewed, preprint, standard, news and vendor so opinion/press cannot be silently counted as peer-reviewed evidence.
 
 ## Required full review (not yet done)
 
