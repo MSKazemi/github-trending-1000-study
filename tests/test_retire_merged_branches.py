@@ -165,6 +165,22 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertEqual(fake.posts, [])
         self.assertEqual(fake.deleted, [])
 
+    def test_live_audit_blocks_wrong_archived_sha_without_writes(self):
+        fake = FakeClient()
+        fake.tag_sha = "f" * 40
+        results = execute(plan(), fake, audit_only=True)
+        self.assertEqual(results[0]["status"], "blocked_archive_tag_conflict")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_live_audit_accepts_matching_existing_archive(self):
+        fake = FakeClient()
+        fake.tag_sha = SHA
+        results = execute(plan(), fake, audit_only=True)
+        self.assertEqual(results[0]["status"], "eligible_read_only")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
     def test_not_in_current_main_history_blocks_even_merged_pr(self):
         fake = FakeClient()
         fake.ancestor = False
