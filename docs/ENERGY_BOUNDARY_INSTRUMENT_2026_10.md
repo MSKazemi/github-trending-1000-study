@@ -39,3 +39,7 @@ Change: `energy_boundary.compare()` validates **all seven declared components fo
 **Scientific anchor:** [ISO/IEC 21031:2024 Software Carbon Intensity](https://www.iso.org/standard/86612.html) establishes an SCI methodology, not a certified carbon result from this partial scenario. `grid_only_scenario_gco2e_delta` excludes inference/embodied and other terms; `net_gco2e_reuse_minus_build` remains null. State every omitted term and measurement calibration; no universal per-token emissions multiplier.
 
 **Practical repository experiment:** on one reusable CLI integration, compare equivalent accepted outputs, account for CI plus downstream maintenance and upstream review, and report unknown cloud energy explicitly; do not claim a green saving from shorter code.
+
+## 2026-10-13 integration-quality numerical guard
+
+The offline calculator now **fails closed on arithmetic overflow**: a finite value per component is insufficient if summing modeled/measured kWh or multiplying a hypothetical grid scenario intensity would produce infinity. Giant Python integers are rejected with a controlled `EnergyError`; no nonstandard JSON `Infinity` values are emitted as purported energy/carbon results. Added synthetic regression cases for all three paths. This is arithmetic validation only, **not** a calibrated energy or carbon measurement, and issues #18/#23 remain open for independent functional-equivalence, lifecycle boundary and sensor-data evidence.
