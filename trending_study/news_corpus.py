@@ -3,7 +3,7 @@
 Does not validate source claims or authenticate independent review.
 """
 import argparse
-from datetime import date
+from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 import re
@@ -64,12 +64,18 @@ def validate_records(records):
             raise ValueError(f"{name}: invalid reviewer")
         if type(record["fulltext_stored"]) is not bool:
             raise ValueError(f"{name}: invalid fulltext flag")
+        # fromisoformat also accepts compact and week dates; the corpus requires
+        # an unambiguous YYYY-MM-DD calendar date for reproducible review.
+        for field in ("original_publication_date", "accessed_date_utc"):
+            value = record[field]
+            if not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value):
+                raise ValueError(f"{name}: invalid dates ({field} must be YYYY-MM-DD)")
         try:
             publication = date.fromisoformat(record["original_publication_date"])
             accessed = date.fromisoformat(record["accessed_date_utc"])
         except (TypeError, ValueError) as exc:
             raise ValueError(f"{name}: invalid dates") from exc
-        if publication > accessed or accessed > date.today():
+        if publication > accessed or accessed > datetime.now(timezone.utc).date():
             raise ValueError(f"{name}: future publication/access date")
         url = record["canonical_url"]
         if not isinstance(url, str) or len(url) > 2048 or url != url.strip():
@@ -79,7 +85,9 @@ def validate_records(records):
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
         # URL fragments and tracking query parameters should not make two
         # records appear independent; query strings are ignored for detection.
-        canonical = (parsed.hostname.lower(), parsed.path.rstrip("/").lower())
+        # HTTP paths may be case-sensitive; hostnames are case-insensitive.
+        # Keep the path case to avoid collapsing distinct source documents.
+        canonical = (parsed.hostname.lower(), parsed.path.rstrip("/"))
         if canonical in urls:
             raise ValueError(f"{name}: duplicate canonical source URL")
         urls.add(canonical)
