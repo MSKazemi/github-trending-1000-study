@@ -90,6 +90,7 @@
 - Use two actually independent reviewers who inspect the original preserved source **before** looking at parser output. The QA scorer cannot independently establish the people exist or were blind; a matching pair of generated annotations is **not** independent verification.
 - Include *every* displayed row, not only valid `article.Box-row` hits. Compare identity and exact rank, and count parser-rejected pages as missing emissions rather than silently excluding them.
 - Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once canonical JSON QA report, with optional derived `--markdown-output` and no overwrite. Dual outputs are **not atomic**; preserve partial publications for human incident review. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Reviewer A/B/C references must be bounded ASCII pseudonyms rather than email, contact details, path text or the placeholder `unknown`. Matching pseudonyms do **not** authenticate different real people.
 - Optional reviewer-C adjudication is **only** for actually disputed A/B ranks; preserve original A/B labels and reviewer chronology. A third self-declared ID or passing synthetic regression does **not** authenticate human independence, source access or scientific approval. Do not introduce a competing page-QA CLI.
 - Never call the 36-row synthetic regression test a real 30-entry live audit, or infer current robots/Terms permission when source access is unavailable.
 
