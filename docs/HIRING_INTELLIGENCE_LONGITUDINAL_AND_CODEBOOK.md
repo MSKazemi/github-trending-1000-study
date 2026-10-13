@@ -19,10 +19,13 @@ Distinguish `listed_live` (official individual page actually retrieved), `index_
 3. Record transitions as **observed source changes**; infer neither hiring nor recruitment speed. Observe censoring and errors, preserve unsuccessful attempts in exposure denominator.
 4. Never poll a site until its access rules have been reviewed and a bounded cadence approved. No credential bypass, scraping of restricted pages or full copyrighted descriptions in public datasets.
 
-## Coding taxonomy v0.1 (not validated)
-Labels (multilabel allowed): `agent_harness`, `sandbox_security`, `agent_evaluation`, `model_training_rl`, `long_horizon_memory`, `code_search_reuse`, `enterprise_identity_governance`, `integration_developer_tools`, `inference_cost_efficiency`, `agent_observability_operations`, `other`, `insufficient_evidence`.
+## Coding taxonomy — distinguish exploratory tags from prospective labels
 
-For each role, assign categories based on *explicit responsibilities*, not just title or analyst inference; retain short evidence paraphrase and corresponding source section. A title-only lead gets `insufficient_evidence` for responsibility coding. Exclude identity-conflict and inaccessible records from thematic inference until adjudication. It is valid for a job to receive multiple labels or no substantive label.
+The **canonical proposed annotation codebook** is [Hiring signals annotation codebook v0.1](HIRING_CODEBOOK_2026-10-13.md). It specifies `agent_runtime`, `sandbox_security`, `evaluation_quality`, `rl_training`, `context_memory`, `developer_reuse`, `enterprise_integrations`, `inference_efficiency`, `agent_operations` and `other`, plus per-label `present`/`absent`/`uncertain`/`not_reviewable` decisions. This codebook is **not frozen or independently applied**.
+
+The first-screen seed and an earlier outline used the preliminary phrases `agent_harness`, `sandbox_security`, `agent_evaluation`, `model_training_rl`, `long_horizon_memory`, `code_search_reuse`, `enterprise_identity_governance`, `integration_developer_tools`, `inference_cost_efficiency`, `agent_observability_operations`, `other` and `insufficient_evidence`. **These are historical analyst notes, not valid v0.1 coded labels.** Any migration requires an explicit reviewed mapping, adjudication and provenance; do not silently combine tag counts or report inter-rater agreement on these notes.
+
+For substantive coding, use *explicit responsibilities*, not role titles or analyst forecasts. A title-only entry is `not_reviewable` for responsibilities. Quarantine identity-conflict and inaccessible records until adjudicated. A role may receive multiple labels, but unresolved evidence is missing rather than `absent`.
 
 ## Independent coding design
 Freeze both a source list and versioned codebook before coding. Two **actually independent human coders** read permissible source material without seeing each other's labels, then a third reviewer adjudicates disagreements against documented rubrics. For multilabel codes, report per-label confusion tables and agreement (Cohen kappa with prevalence/imbalance disclosed); macro summaries only with eligible denominators. Preserve original non-adjudicated labels, role omissions and disagreement records. Do not fabricate coders or inter-rater agreement from an LLM's outputs. Stratify by firm/source-access to avoid overrepresenting a single company.
@@ -40,3 +43,8 @@ Each is a *hypothesis*, not a result. Freeze tasks, acceptance criteria, sample 
 
 ## Publication gate
 No claims of representativeness or company rankings from raw role counts. Publish exposure log, missingness by company and date, de-duplication review, source-permission decision, independent coding results, genuine longitudinal records and a preregistered inferential analysis separately. Current pilot has *none* of the evidence needed to claim trends in job counts or impact on engineering value.
+
+
+## Offline seed integrity regression (2026-10-13)
+
+`python -m unittest tests.test_hiring_intelligence_seed -v` checks the original and audited seed plus the expansion ledger for CSV structure, employer/ATS domains, record identity, uniqueness, source-evidence classes, explicit unknown posting dates, and preserved identity holds. The tests run without network access; passing them **does not authenticate an employer posting, its live status, a job's first-publication date, reviewer independence, or the asserted paraphrases**. Source and scientific signoff remain separate mandatory gates before company-level claims or confirmatory analysis.
