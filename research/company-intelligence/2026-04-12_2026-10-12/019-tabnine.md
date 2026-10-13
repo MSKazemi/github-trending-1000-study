@@ -112,3 +112,12 @@ None of these effects were measured in this source review. External ecosystem pr
 - **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
 
 **Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
+
+## 10. Provisional source leads preserved from overlapping first-pass PR #199 (not counted)
+
+[PR #199](https://github.com/MSKazemi/github-trending-1000-study/pull/199) proposed four JSON source leads; its April agents recap and Tabnine company acquisition statement overlap with this report's existing three rows. **Do not double-count those.** Two distinct leads need source/version inspection:
+
+- [Context Readiness Is the New AI Coding Benchmark](https://www.tabnine.com/blog/context-readiness-ai-coding-benchmark/) — unverified first-pass `019-E02` from #199, originally labeled 2026-06-26; vendor **perspective/benchmark framing**, not independent evidence of measured quality or a shipped feature.
+- [Tricentis Acquires Tabnine](https://www.tricentis.com/news/tricentis-acquires-tabnine) — unverified `019-E04` from #199, labeled 2026-07-30. The URL belongs to the **prospective/announced buyer Tricentis**, not to Tabnine (the earlier JSON's `source_publisher` field was inconsistent with this domain). Check the actual issuing entity, legal event status/date and any updates; treat buyer and seller's own announcements as **transaction-party sources about one event**, not two independent merger observations.
+
+These are **candidate leads, not additional event counts or independently corroborated findings**. No NEWS corpus IDs or verified ownership conclusions are created; retain the source branch for its original records and require independent review before adding any row to `019-tabnine.events.csv`.
