@@ -46,3 +46,20 @@ Freeze real user-task requirement and hidden independent acceptance tests **befo
 - [ ] Obtain independent human factual/link QA and run real controlled tasks before any effectiveness claim.
 
 No source code changed, no Python tests/CI run in this research-only draft. This does not complete or close #86. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [Mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [Maintainer lessons](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) · [News intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This adds 2 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](019-tabnine.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+
+| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
+|---|---|---|---|
+| 2026-05-06 | [April Recap: Agents you can trust](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | Tabnine reported CLI plan mode, sandbox constraints, command approvals and cost APIs. | `shipped`; No independent safety or real accepted-task evidence; April features described in May article. |
+| 2026-07-30 | [A new chapter for Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | Tabnine announced it had been acquired by Tricentis, with its Enterprise Context Engine to become part of Tricentis quality engineering. | `reported_undetermined`; Vendor announcement says acquired, rather than a future agreement; product continuity requires checking. |
+
+**Correction to first pass / interpretation:** The July 30 company statement explicitly says Tabnine HAS BEEN ACQUIRED by Tricentis and promises continuing product support; this is not merely a transaction proposal. The earlier report only cited the product-news category root, so the exact article permalinks below correct citation precision. Neither parent corporation's announcement independently verifies deployment quality or technical integration.
+
+**Negative/independent evidence needed:** Verify buyer's corresponding primary notice and actual post-acquisition SDK/product terms, customer migration impact, and original-version source history.
+
+**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+
+**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #86 must remain under review until acceptance gates pass.
