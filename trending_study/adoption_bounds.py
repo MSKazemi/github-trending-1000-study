@@ -70,6 +70,9 @@ def summarize(cards):
             if not row["observation_eligible"]:
                 if status != "not_applicable":
                     raise AdoptionError("ineligible signal must be explicitly not_applicable")
+                if any(row.get(field) is not None for field in
+                       ("evidence_source_url", "observed_at_utc", "independent_reviewer")):
+                    raise AdoptionError("not_applicable cannot carry a false observation or reviewer")
                 c["na"] += 1
                 continue
             if status == "not_applicable":
@@ -77,20 +80,21 @@ def summarize(cards):
             c["eligible"] += 1
             if status in ("observed_verified", "observed_negative"):
                 url = row.get("evidence_source_url")
-                if not isinstance(url, str):
-                    raise AdoptionError("observed outcome requires source URL")
+                if not isinstance(url, str) or len(url) > 2048 or not url.strip():
+                    raise AdoptionError("observed outcome requires bounded source URL")
                 parsed = urlsplit(url)
                 if (parsed.scheme != "https" or not parsed.hostname
                         or parsed.username is not None or parsed.password is not None
-                        or parsed.fragment):
+                        or parsed.fragment or parsed.query):
                     raise AdoptionError("observed evidence must have clean HTTPS URL")
                 _time(row.get("observed_at_utc"))
                 if not isinstance(row.get("independent_reviewer"), str) or not row["independent_reviewer"].strip():
                     raise AdoptionError("observed outcome requires declared independent reviewer")
                 c["verified" if status == "observed_verified" else "negative"] += 1
             else:
-                if row.get("evidence_source_url") is not None or row.get("observed_at_utc") is not None:
-                    raise AdoptionError("unknown/withdrawn may not contain false verified observation")
+                if any(row.get(field) is not None for field in
+                       ("evidence_source_url", "observed_at_utc", "independent_reviewer")):
+                    raise AdoptionError("unknown/withdrawn may not contain false verified observation or reviewer")
                 c[status] += 1
         if expected_signal_names is None:
             expected_signal_names = names
@@ -109,6 +113,7 @@ def summarize(cards):
             "repository_units": len(seen), "signals": results,
             "bounds_are_not_population_estimates_or_confidence_intervals": True,
             "independent_review_authenticated": False,
+            "signal_predeclaration_authenticated": False,
             "warning": "Only a logical unweighted bound within the declared finite eligible panel; frame coverage, independent review and missing-not-at-random mechanisms remain unverified."}
 
 def main(argv=None):
