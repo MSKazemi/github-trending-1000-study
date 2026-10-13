@@ -1,0 +1,61 @@
+name: Manual verified merged-branch retirement
+
+# Intentionally NOT triggered by pushes or PR merges. A privileged repository
+# operator must independently review the manifest and select retire.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Audit first; retire only after reviewing the evidence manifest"
+        required: true
+        default: audit
+        type: choice
+        options:
+          - audit
+          - retire
+      confirmation:
+        description: "For retire, type RETIRE_VERIFIED_MERGED_BRANCHES exactly"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-merged-branch-retirement
+  cancel-in-progress: false
+
+jobs:
+  retirement:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write  # Only this explicitly dispatched maintenance job.
+    steps:
+      - name: Checkout reviewed retirement script from main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Test branch retirement safety gates offline
+        run: python -m unittest tests.test_branch_retirement -v
+      - name: Live read-only preflight for all manifest candidates
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/retire_merged_branches.py \
+            --manifest research-notes/branch-retirement-2026-10-13.json --mode audit
+      - name: Publish verified archive tags then retire exact merged heads
+        if: inputs.mode == 'retire'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RETIRE_CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          python scripts/retire_merged_branches.py \
+            --manifest research-notes/branch-retirement-2026-10-13.json \
+            --mode retire --confirmation "$RETIRE_CONFIRM"
