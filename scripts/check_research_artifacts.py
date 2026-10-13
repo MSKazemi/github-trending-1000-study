@@ -14,7 +14,8 @@ from pathlib import Path
 import sys
 
 
-DATA_DIRS = ("examples", "references", "research-notes")
+DATA_DIRS = ("examples", "references", "research-notes", "research", "templates")
+REQUIRED_DATA_DIRS = frozenset(("examples", "references", "research-notes"))
 SUFFIXES = {".json", ".jsonl", ".csv"}
 MAX_BYTES_PER_FILE = 16 * 1024 * 1024
 MAX_FILES = 5000
@@ -121,6 +122,8 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE):
 
     for dirname in DATA_DIRS:
         folder = root / dirname
+        if not folder.exists() and dirname not in REQUIRED_DATA_DIRS:
+            continue  # Optional research or templates directory absent in fixtures.
         if not folder.is_dir() or folder.is_symlink():
             failures.append(f"{dirname}: missing data directory or directory symlink")
             continue
