@@ -11,7 +11,8 @@ permissions:
 # Superseded PR commits should not burn CI or be mistaken for passing HEADs.
 concurrency:
   group: tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  # Never discard post-merge validation on main during rapid concurrent merges.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
