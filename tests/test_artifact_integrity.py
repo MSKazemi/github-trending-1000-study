@@ -19,7 +19,7 @@ class ArtifactIntegrityTests(unittest.TestCase):
             )
             result = audit(root, ["valid.py", "valid.json"])
             self.assertTrue(result["ok"], result["errors"])
-            self.assertEqual(result["checked"], {"python": 1, "json": 1})
+            self.assertEqual(result["checked"], {"python": 1, "json": 1, "jsonl": 0})
 
     def test_duplicate_keys_nested_are_not_silently_overwritten(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -39,6 +39,35 @@ class ArtifactIntegrityTests(unittest.TestCase):
                 root = Path(temp)
                 (root / "bad.json").write_text(raw, encoding="utf-8")
                 self.assertIsNotNone(inspect(root, "bad.json"))
+
+    def test_jsonl_valid_records_and_line_bound_duplicate_key(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "records.jsonl").write_text(
+                '{"id":1}\n\n{"id":2}\n', encoding="utf-8")
+            report = audit(root, ["records.jsonl"])
+            self.assertTrue(report["ok"], report["errors"])
+            self.assertEqual(report["checked"]["jsonl"], 1)
+            (root / "records.jsonl").write_text(
+                '{"id":1}\n\n{"id":2,"id":3}\n', encoding="utf-8")
+            report = audit(root, ["records.jsonl"])
+            self.assertFalse(report["ok"])
+            self.assertIn("JSONL line 3", report["errors"][0])
+            self.assertIn("duplicate JSON object key", report["errors"][0])
+
+    def test_jsonl_nonstandard_numbers_and_empty_file_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root / "events.jsonl"
+            for content in ('{"cost":NaN}\n', '{"cost":1e9999}\n', '\n  \n'):
+                with self.subTest(content=content):
+                    path.write_text(content, encoding="utf-8")
+                    report = audit(root, ["events.jsonl"])
+                    self.assertFalse(report["ok"])
+                    self.assertTrue(any(
+                        phrase in report["errors"][0] for phrase in
+                        ("non-standard", "non-finite", "no records")
+                    ))
 
     def test_syntax_error_in_unimported_python_file_blocks_merge(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -103,7 +132,7 @@ class ArtifactIntegrityTests(unittest.TestCase):
             root = Path(temp)
             result = audit(root, ["missing.md"])
             self.assertTrue(result["ok"])
-            self.assertEqual(result["checked"], {"python": 0, "json": 0})
+            self.assertEqual(result["checked"], {"python": 0, "json": 0, "jsonl": 0})
 
 
 if __name__ == "__main__":
