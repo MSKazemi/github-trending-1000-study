@@ -1,0 +1,28 @@
+{
+  "schema_version": "proposed-usefulness-task-0.1",
+  "synthetic": true,
+  "task_id": "FICTIONAL-CLI-001",
+  "archetype": "cli",
+  "project_version": "synthetic-no-repository",
+  "fixed_requirements_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "frozen_acceptance_ref": "illustration-only-no-hidden-tests",
+  "functional_unit": "run one documented fictional command without secrets",
+  "arms": ["existing_readme", "revised_readme"],
+  "human_review_and_consent": "not performed",
+  "attempts": [
+    {
+      "attempt_id": "FICTIONAL-A1",
+      "participant_id": "fictional-pseudonym",
+      "consent_state": "not_applicable_synthetic",
+      "assigned_arm": "existing_readme",
+      "task_attempted": true,
+      "accepted": "unknown",
+      "reason": "no task was ever executed",
+      "time_to_first_success_minutes": null,
+      "followup_30_day_repeat_use": "unknown",
+      "observed_at_utc": null
+    }
+  ],
+  "not_empirical_data": true,
+  "approval_status": "pending"
+}
