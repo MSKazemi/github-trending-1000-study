@@ -47,3 +47,22 @@ Freeze real user-task requirement and hidden independent acceptance tests **befo
 - [ ] Obtain independent human factual/link QA and run real controlled tasks before any effectiveness claim.
 
 No source code changed, no Python tests/CI run in this research-only draft. This does not complete or close #91. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [Mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [Maintainer lessons](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) · [News intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This adds 4 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](024-zed-industries.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+
+| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
+|---|---|---|---|
+| 2026-04-22 | [Introducing Parallel Agents in Zed](https://zed.dev/blog/parallel-agents) | Zed introduced parallel agent threads and optional worktree isolation. | `shipped`; Parallelism can add conflicting writes or hidden review load. |
+| 2026-05-20 | [Zed Stable Release 1.3.5](https://zed.dev/releases/stable/1.3.5) | Zed's versioned changelog recorded terminal-thread creation from sidebar and agent panel. | `shipped`; No independent multi-agent acceptance test was performed. |
+| 2026-08-12 | [Introducing Delta](https://zed.dev/blog/introducing-delta) | Zed presented Delta as a multiplayer agent-code review environment. | `preview`; Beta invitation does not mean generally available, data rights unknown. |
+| 2026-09-16 | [Replace PRs with Delta – Now in Public Beta](https://zed.dev/blog/delta-public-beta) | Zed announced Delta public beta and its own internal PR-replacement workflow. | `preview`; Company internal case study is not a verified broad developer outcome. |
+
+**Correction to first pass / interpretation:** Zed's April parallel-agent threads were reported available in the current release; May stable version 1.3.5 documents terminal threads. Delta was initially a PRIVATE beta on Aug 12 and PUBLIC beta from Sep 16. Zed's own use of Delta is an internal case study, not external validation that pull requests should be universally replaced.
+
+**Negative/independent evidence needed:** Review threat model for repo/worktree isolation and external ACP agents, DeltaDB replication/privacy/rights, actual time-to-accepted-merge and newcomer interoperability.
+
+**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+
+**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #91 must remain under review until acceptance gates pass.
