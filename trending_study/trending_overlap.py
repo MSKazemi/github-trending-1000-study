@@ -4,10 +4,11 @@ No claim of recovering GitHub's algorithm, complete eligible universe, or
 independently verified page contents. Only the supplied lists are compared.
 """
 import argparse
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
+from urllib.parse import parse_qs, urlsplit
 
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 _WINDOWS = {"daily", "weekly", "monthly"}
@@ -26,6 +27,8 @@ def _utc(value, name):
         raise OverlapError(f"{name}: invalid timestamp") from exc
     if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(dt):
         raise OverlapError(f"{name}: timestamp must have UTC offset")
+    if dt > datetime.now(timezone.utc) + timedelta(minutes=5):
+        raise OverlapError(f"{name}: cannot be in the future")
     return dt
 
 
@@ -35,14 +38,25 @@ def _capture(obj):
     for field in ("capture_id", "page_url"):
         if not isinstance(obj.get(field), str) or not obj[field].strip():
             raise OverlapError(f"capture.{field} is required")
-    if not obj["page_url"].startswith("https://github.com/trending"):
-        raise OverlapError("page_url must be a GitHub Trending surface")
     if obj.get("window") not in _WINDOWS:
         raise OverlapError("capture.window must be daily/weekly/monthly")
-    if obj.get("language_filter") is not None and (
-        not isinstance(obj["language_filter"], str) or not obj["language_filter"].strip()
-    ):
+    lang = obj.get("language_filter")
+    if lang is not None and (not isinstance(lang, str) or not lang.strip()):
         raise OverlapError("language_filter must be null or a nonempty string")
+    # A string prefix alone is not evidence of the requested GitHub surface:
+    # it also accepts /trending-evil, userinfo and inconsistent since= values.
+    parsed = urlsplit(obj["page_url"])
+    if (parsed.scheme != "https" or parsed.hostname != "github.com"
+            or parsed.username is not None or parsed.password is not None
+            or parsed.port not in (None, 443) or parsed.fragment):
+        raise OverlapError("page_url must be a clean HTTPS github.com URL")
+    path = parsed.path.rstrip("/")
+    if (path != "/trending" if lang is None
+            else not (path.startswith("/trending/") and len(path) > len("/trending/"))):
+        raise OverlapError("page_url path and language_filter are inconsistent")
+    query = parse_qs(parsed.query, keep_blank_values=True)
+    if query.get("since") != [obj["window"]]:
+        raise OverlapError("page_url since parameter must match window")
     if not isinstance(obj.get("source_sha256"), str) or not _SHA.fullmatch(obj["source_sha256"]):
         raise OverlapError("capture.source_sha256 must be 64 hex characters")
     timestamp = _utc(obj.get("captured_at_utc"), "captured_at_utc")
