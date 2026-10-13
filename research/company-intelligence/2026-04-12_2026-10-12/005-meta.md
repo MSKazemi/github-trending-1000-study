@@ -115,3 +115,11 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 - **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
 
 **Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [Muse Glimmer August 10 release](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model) is directly dated **2026-08-10**, and the [published Hugging Face model card](https://huggingface.co/meta-models/Muse-Glimmer-30B) displays **Apache-2.0** and downloadable artifacts. This is a **specific-model artifact/license cross-check**, not proof of safe downstream use, training-data rights, or a reproducible runtime result. Record exact model revision SHA before reuse; do **not** infer that other Meta models share its license.
+- [Muse Wonder October 12 release](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) explicitly distinguishes Muse Wonder API/Muse Code access, Wonder Full for subscribers and a *future* Muse rollout. [Axios on October 12](https://www.axios.com/2026/10/12/meta-new-ai-models-anthropic-openai) provides an **independent news account of the announcement**, **not** independent benchmark/agentic-function reproduction; no released Wonder weights are established by these links.
+- [June 15 Facebook tools](https://about.fb.com/news/2026/06/new-ai-tools-to-help-you-make-things-happen-on-facebook/) primarily concerns *consumer social-platform experiences*. Its relationship to third-party OSS code reuse is **indirect**; it must not enter an estimate of coding-agent releases or software-reuse success.
+
+**New practical checkpoint:** In any model-selection comparison, require versioned model card, exact weights/access conditions, license and objective external-task completion; a product-family brand is not a reusable artifact identifier.
