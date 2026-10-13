@@ -47,6 +47,8 @@ class FakeGitHub:
 
     def get(self, path, *, optional=False):
         self.calls.append(("GET", path))
+        if path.startswith("/git/ref/tags/"):
+            return self.tags.get(path)
         if path.startswith("/git/ref/"):
             value = self.refs.get(path)
             if value is None and not optional:
@@ -73,8 +75,6 @@ class FakeGitHub:
             return {"tree": {"sha": TREE}}
         if path == "/git/commits/" + ANCHOR:
             return self.archive_commit
-        if path.startswith("/git/ref/tags/"):
-            return self.tags.get(path)
         raise AssertionError("unexpected GitHub GET " + path)
 
     def post(self, path, payload):
