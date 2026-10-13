@@ -20,6 +20,7 @@ SUFFIXES = {".json", ".jsonl", ".csv"}
 MAX_BYTES_PER_FILE = 16 * 1024 * 1024
 MAX_TOTAL_BYTES = 128 * 1024 * 1024
 MAX_FILES = 5000
+MAX_JSON_DEPTH = 128
 
 
 class IntegrityError(ValueError):
@@ -59,7 +60,38 @@ def _bounded_integer(value):
     return int(value)
 
 
+def _check_json_depth(text):
+    """Count structural brackets outside quoted strings before JSON decoding.
+
+    Python JSON decoders accept different maximum depths across interpreter
+    versions. Bound nesting explicitly to avoid version-dependent corruption,
+    recursion failure, or unexpectedly expensive inputs.
+    """
+    depth = 0
+    in_string = False
+    escaped = False
+    for char in text:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char in "[{":
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise IntegrityError(f"JSON nesting exceeds {MAX_JSON_DEPTH} levels")
+        elif char in "]}":
+            depth -= 1
+            if depth < 0:
+                raise IntegrityError("unbalanced JSON container closing bracket")
+
+
 def _strict_json(text):
+    _check_json_depth(text)
     return json.loads(
         text,
         object_pairs_hook=_unique_fields,
