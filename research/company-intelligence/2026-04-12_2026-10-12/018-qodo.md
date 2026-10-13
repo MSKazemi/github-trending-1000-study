@@ -115,3 +115,11 @@ None of these effects were measured in this source review. External ecosystem pr
 - **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
 
 **Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
+
+## 10. Provisional source lead preserved from overlapping first-pass PR #198 (not counted)
+
+[PR #198](https://github.com/MSKazemi/github-trending-1000-study/pull/198) contains a JSON event-lead draft overlapping this report's agentic toolbox, software map and Qodo 3.0 items. They should **not** become additional event IDs. A distinct lead to inspect separately is:
+
+- [Why Your AI Coding Agent Shouldn't Review Its Own Code](https://www.qodo.ai/blog/why-your-ai-coding-agent-shouldnt-review-its-own-code-the-case-for-an-independent-verification-layer/) — draft lead `018-E01` from #198, source date *reported by that draft* as 2026-06-30, not yet independently checked. This is a vendor-authored **argument** for independent verification, not independent causal evidence that separate AI review improves acceptance or security. Check the actual title/date/version, claims and competing results before any inclusion.
+
+This is **not a seventh validated event**, not an independent review and not a product-adoption finding. The original PR's distinct experiment rationale and full JSON metadata remain preserved in its branch history for reviewer audit.
