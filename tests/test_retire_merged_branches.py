@@ -1,9 +1,10 @@
 """Offline negative tests for fail-closed, non-loss branch retirement."""
 import copy
 import unittest
+from unittest.mock import patch
 
 from scripts.retire_merged_branches import (
-    ARCHIVE_PREFIX, ApiNotFound, CleanupError, execute,
+    ARCHIVE_PREFIX, ApiNotFound, CleanupError, GitHubClient, execute,
     retire_one, validate_plan,
 )
 
@@ -188,6 +189,27 @@ class BranchCleanupTests(unittest.TestCase):
                          "blocked_incomplete_open_pr_check")
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
+
+    @patch("scripts.retire_merged_branches.subprocess.run")
+    def test_git_lease_uses_exact_expected_sha_and_no_token_arguments(self, runner):
+        runner.return_value.returncode = 0
+        client = GitHubClient(REPO, "offline-only-fixture-token")
+        client.delete_with_lease(NAME, SHA)
+        cmd = runner.call_args.args[0]
+        env = runner.call_args.kwargs["env"]
+        self.assertIn("--force-with-lease=refs/heads/" + NAME + ":" + SHA, cmd)
+        self.assertEqual(cmd[-1], ":refs/heads/" + NAME)
+        self.assertNotIn("offline-only-fixture-token", " ".join(cmd))
+        self.assertTrue(env["GIT_CONFIG_VALUE_0"].startswith("AUTHORIZATION: basic "))
+        self.assertEqual(env["GIT_TERMINAL_PROMPT"], "0")
+
+    @patch("scripts.retire_merged_branches.subprocess.run")
+    def test_failed_sha_lease_is_not_retried_or_force_deleted(self, runner):
+        runner.return_value.returncode = 1
+        client = GitHubClient(REPO, "offline-only-fixture-token")
+        with self.assertRaisesRegex(CleanupError, "SHA lease rejected"):
+            client.delete_with_lease(NAME, SHA)
+        self.assertEqual(runner.call_count, 1)
 
     def test_plan_rejects_duplicate_unknown_or_default_branches(self):
         for bad in ("main", "a/../b", "refs/heads/foo", "a//b", "branch..old"):
