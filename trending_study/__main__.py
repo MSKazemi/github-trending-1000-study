@@ -32,6 +32,24 @@ def utc_now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def require_trending_source_access():
+    """Default-deny live Trending HTTP requests until a reviewed access amendment.
+
+    This deliberate hard stop has no CLI/environment bypass. Documentation or a
+    self-authored JSON approval card is NOT proof of platform authorization.
+    Re-enablement requires an explicit reviewed code change and human assessment
+    of platform terms, robots instructions and the permitted sampling protocol.
+    Offline tests may mock this function but must never perform a real request.
+    """
+    raise ValueError(
+        "Live GitHub Trending capture is BLOCKED pending independent source-access "
+        "review: github.com/robots.txt disallows the /*since=* crawl pattern used "
+        "by this CLI. Do not circumvent this gate; obtain documented permission "
+        "and a reviewed source/protocol amendment before enabling live requests. "
+        "Offline parse, pilot checks, and synthetic QA remain available."
+    )
+
+
 class TrendingParser(HTMLParser):
     """Check that EVERY supported article.Box-row has exactly one repo heading.
 
@@ -169,6 +187,9 @@ def capture(args):
     # Reject repeated capture filenames and path aliases *before* network access.
     disjoint(args.output, args.manifest_output)
     refuse_existing(args.output, args.manifest_output)
+    # Permission must be resolved BEFORE constructing/sending an HTTP request.
+    # Mock only in offline synthetic unit tests, never as a user-facing override.
+    require_trending_source_access()
     url = f"{GITHUB_HOST}/trending?since={args.window}"
     request = Request(
         url,
@@ -326,7 +347,7 @@ def summarize(args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="GitHub Trending 1000 Study research CLI")
     sub = parser.add_subparsers(dest="command", required=True)
-    cp = sub.add_parser("capture", help="Fetch one currently observed public Trending HTML page")
+    cp = sub.add_parser("capture", help="DISABLED: live Trending capture awaits a reviewed source-access decision")
     cp.add_argument("--date", required=True, help="UTC observation date (today only)")
     cp.add_argument("--window", required=True, choices=("daily", "weekly", "monthly"))
     cp.add_argument("--output", required=True)
