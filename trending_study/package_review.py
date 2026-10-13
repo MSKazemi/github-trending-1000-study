@@ -32,8 +32,6 @@ def _date(raw, *, allow_future=False):
         raise PackageReviewError("timestamps cannot be future-dated")
     return dt
 
-
-
 def _clean_https_url(url, field):
     """Reject ambiguous origins, malformed ports and hidden URL parameters.
 
@@ -46,7 +44,7 @@ def _clean_https_url(url, field):
     try:
         parsed = urlparse(url)
         # Access .port to force validation of malformed/out-of-range port syntax.
-        port = parsed.port
+        _ = parsed.port
     except ValueError as exc:
         raise PackageReviewError(f"{field} has malformed HTTPS authority") from exc
     if (parsed.scheme != "https" or not parsed.hostname or parsed.netloc.endswith(":")
@@ -56,6 +54,7 @@ def _clean_https_url(url, field):
             f"{field} requires clean HTTPS URL without credentials/parameters/query/fragment"
         )
     return parsed
+
 
 def evaluate(data):
     if not isinstance(data, dict):
