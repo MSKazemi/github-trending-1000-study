@@ -337,6 +337,20 @@ class IndependentPageAuditTests(unittest.TestCase):
         self.assertEqual(report["scientific_status"], "synthetic_only_not_empirical_evidence")
         self.assertFalse(report["eligible_for_confirmatory_cohort"])
 
+    def test_review_timestamps_must_not_be_in_future(self):
+        raw, manifest, reviewers = make_page(n=4)
+        for slot in (0, 1):
+            future = copy.deepcopy(reviewers)
+            future[slot]["reviewed_at_utc"] = "2099-01-01T00:00:00+00:00"
+            with self.subTest(slot=slot), self.assertRaisesRegex(PageAuditError, "future"):
+                assess_page(raw, manifest, future, extract_repos=extract_repos)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewed_at_utc"] = "2099-01-01T00:00:00+00:00"
+        with self.assertRaisesRegex(PageAuditError, "future"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
     def test_adjudication_rejects_same_identity_or_preceding_time(self):
         raw, manifest, reviewers = make_page(n=4)
         reviewers[0]["rows"][0]["repository"] = "different/first-entry"
