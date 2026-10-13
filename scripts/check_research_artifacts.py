@@ -6,8 +6,10 @@ particular, duplicate JSON keys must not silently replace earlier values.
 """
 import argparse
 import csv
+from decimal import Decimal, InvalidOperation
 import io
 import json
+import math
 from pathlib import Path
 import sys
 
@@ -35,16 +37,40 @@ def _invalid_constant(value):
     raise IntegrityError(f"nonstandard JSON constant {value!r}")
 
 
+def _finite_decimal(value):
+    """Retain decimal digits while rejecting floats that would overflow or vanish."""
+    try:
+        exact = Decimal(value)
+        approximate = float(exact)
+    except (InvalidOperation, OverflowError, ValueError) as exc:
+        raise IntegrityError("unrepresentable JSON numeric literal") from exc
+    if not math.isfinite(approximate) or (exact != 0 and approximate == 0):
+        raise IntegrityError("JSON numeric literal overflows or underflows finite float")
+    return exact
+
+
+def _bounded_integer(value):
+    # Avoid Python 3.11+ integer digit conversion limits turning CI into a
+    # version-dependent traceback instead of a fail-closed integrity error.
+    if len(value.lstrip("-")) > 1024:
+        raise IntegrityError("JSON integer has more than 1024 digits")
+    return int(value)
+
+
 def _strict_json(text):
     return json.loads(
         text,
         object_pairs_hook=_unique_fields,
         parse_constant=_invalid_constant,
+        parse_float=_finite_decimal,
+        parse_int=_bounded_integer,
     )
 
 
 def validate_text(path, content):
     """Validate one UTF-8 document; return number of logical data records."""
+    if "\x00" in content:
+        raise IntegrityError("embedded NUL byte is not a valid research artifact")
     if path.suffix == ".json":
         obj = _strict_json(content)
         if not isinstance(obj, (dict, list)):
