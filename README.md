@@ -341,7 +341,3 @@ python scripts/check_research_artifacts.py --root .
 ```
 
 The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
-
-## Safe branch retirement (2026-10-13)
-
-The dated [branch inventory and no-loss retirement procedure](docs/BRANCH_RETIREMENT_2026-10-13.md) identifies 60 exact merged-PR heads eligible for **independently rechecked, manually authorized archival retirement**. See the [immutable snapshot](research-notes/branch-retirement-2026-10-13.json) and [phase-two consolidation issue #273](https://github.com/MSKazemi/github-trending-1000-study/issues/273). Open draft company-research PRs, unmerged contributions and branches changed since merge are explicitly excluded; no research observations or approvals are inferred from branch cleanup. The added workflow is manual-only and does not automatically delete a branch after merging this PR.
