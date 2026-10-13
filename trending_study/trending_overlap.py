@@ -57,7 +57,7 @@ def _capture(obj):
     else:
         if not (path.startswith("/trending/") and len(path) > len("/trending/")):
             raise OverlapError("filtered page_url requires /trending/<language>")
-        declared = re.sub(r"\\s+", "-", lang.strip()).casefold()
+        declared = re.sub(r"\s+", "-", lang.strip()).casefold()
         observed = unquote(path[len("/trending/"):]).casefold()
         if declared != observed:
             raise OverlapError("page_url language path disagrees with language_filter")
