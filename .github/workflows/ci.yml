@@ -7,7 +7,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", "3.12"]
     steps:
@@ -15,7 +17,42 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Compile all source and test modules
+      - name: Compile Python source and tests
         run: python -m compileall -q trending_study tests
-      - name: Run unit tests
+      - name: Check bundled JSON syntax and duplicate keys
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def unique_keys(pairs):
+              result = {}
+              for key, value in pairs:
+                  if key in result:
+                      raise ValueError(f'duplicate JSON key: {key}')
+                  result[key] = value
+              return result
+
+          def reject_constant(value):
+              raise ValueError(f'nonstandard JSON number: {value}')
+
+          paths = sorted(p for root in ('examples', 'references')
+                         for p in Path(root).rglob('*.json'))
+          if not paths:
+              raise RuntimeError('no research JSON files found')
+          for path in paths:
+              try:
+                  json.loads(path.read_text(encoding='utf-8'),
+                             object_pairs_hook=unique_keys,
+                             parse_constant=reject_constant)
+              except (UnicodeDecodeError, ValueError) as exc:
+                  raise ValueError(f'{path}: {exc}') from exc
+          print(f'Validated {len(paths)} JSON files without duplicate keys or nonstandard numbers')
+          PY
+      - name: Offline research regression tests
         run: python -m unittest discover -s tests -v
+      - name: Research CLI entrypoints
+        run: |
+          python -m trending_study --help > /dev/null
+          python -m trending_study.reuse_gate --help > /dev/null
+          python -m trending_study.goldset --help > /dev/null

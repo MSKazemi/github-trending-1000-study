@@ -9,6 +9,7 @@
 - Keep timestamps in UTC and include provenance; do not substitute today's metadata for historical measurement.
 - Test offline with committed synthetic fixtures; no integration-test dependency on live GitHub.
 - Run `python -m unittest discover -s tests -v`. State what was tested and what remains unvalidated.
+- Before proposing any PR merge, inspect the **entire current diff**, confirm an exact-head Python 3.10/3.12 CI result, review security/provenance/docs, reconcile overlapping branches **without losing unique tests or source references**, and use the expected head SHA for any merge. Do not treat unprotected `main`, draft PRs or green synthetic tests as human methods approval. See [merge gates](docs/PR_MERGE_QUALITY_GATES_2026_10_13.md).
 - Research protocol changes need explicit justification, versioning and human approval.
 
 ## 2027 value research and lessons
