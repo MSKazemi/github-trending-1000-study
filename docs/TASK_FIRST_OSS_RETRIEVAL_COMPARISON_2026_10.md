@@ -40,3 +40,13 @@ Expected: the synthetic lexical rank list has one viable and one audited failing
 ## Practical lesson for maintainers
 
 For one real incoming issue, write the externally checkable acceptance test **before** asking an agent to generate code. Time-box a local-code and package search, verify one exact-version candidate against license/security/functionality, and document whether reusing or adapting it met the task. If no source meets the checks, build the smallest compatible implementation. Do not call the repository 'more reusable' until an independent new user actually integrates and succeeds.
+
+## 2026-10-13 technical integrity additions and retrieval protocol
+
+Reuse the existing `trending_study.goldset.evaluate` scorer and its independent project tests; new [negative regression tests](../tests/test_task_first_goldset.py) cover two abstaining reviewers, unfilled rank slots, nonobserved/pilot cutoff and unjudged candidates. For each system, `unfilled_rank_slots_at_k` explicitly reports the shortfall when fewer than K candidates are returned. P@K uses the *fixed K denominator*, penalizing missing rank positions; judged-only precision is different and **must not** be silently compared to this metric.
+
+**Review and preregistration:** unjudged retrieved candidates remain `unknown`, not failed. Double reviewer abstention cannot produce an accepted viable/nonviable verdict. Existing adjudication semantics remain structural and self-declared, not proof of independent humans. Freeze corpus and task baseline, ensure embargo against post-task releases, keep identical candidate rights/access and ranked K budgets across systems, and report whether candidate union pooling omitted valid alternatives. Never call pooled-relative recall population recall. Collect search time/token/API requests, independent functional-test acceptance, license/supply-chain failures and human reviewer minutes for each arm/task.
+
+**Cross-workstream:** [issue #22](SUPPLY_CHAIN_PROVENANCE_2027.md) handles exact package/registry security; [issue #23](FULL_LIFECYCLE_BREAK_EVEN_2027.md) handles bounded environmental impact. A lexical/embedding/hybrid rank advantage does not imply safe utility, adoption, causal effect or less energy.
+
+**Practice to test:** make agent search results actionable by attaching frozen unit tests and an exact-version license/safety checklist; measure actual successful integrations and false positives, not number of returned GitHub repos.
