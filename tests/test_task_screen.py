@@ -32,7 +32,8 @@ class ScreenTests(unittest.TestCase):
                 "task_id": item["task_id"], "label": label,
                 "reason_code": "none" if label == "screenable_for_spec_drafting" else
                                "scope" if label == "exclude_candidate" else "unknown",
-                "leakage_signal": "unknown",
+                # Synthetic not-observed report, never proof of no leakage.
+                "leakage_signal": "not_observed",
                 "issue_status_check": "open",
                 "evidence_ref": item["source_url"] if label != "defer_unknown" else None,
             })
@@ -127,6 +128,47 @@ class ScreenTests(unittest.TestCase):
         self.assertFalse(result["task_specs_frozen"])
         self.assertEqual(result["experimental_enrollment"], "blocked")
         self.assertTrue(all(not row["accepted_task"] for row in result["records"]))
+
+    def test_suspected_solution_leakage_defers_screenable_candidate(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        b["decisions"][0]["leakage_signal"] = "suspected"
+        report = audit(self.frame, self.recheck, a, b)
+        self.assertEqual(report["status_counts"].get("deferred_leakage_suspected"), 1)
+        self.assertEqual(report["reported_leakage_suspected"], 1)
+        row = next(x for x in report["records"]
+                   if x["task_id"] == b["decisions"][0]["task_id"])
+        self.assertEqual(row["reported_leakage"], "suspected")
+        self.assertEqual(row["provisional_label"], "defer_unknown")
+        self.assertFalse(row["accepted_task"])
+        self.assertEqual(sum(x["provisional_label"] == "screenable_for_spec_drafting"
+                             for x in report["records"]), 15)
+
+    def test_unknown_leakage_defers_until_explicit_screening(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        a["decisions"][0]["leakage_signal"] = "unknown"
+        report = audit(self.frame, self.recheck, a, b)
+        self.assertEqual(report["status_counts"].get("deferred_leakage_unknown"), 1)
+        row = next(x for x in report["records"]
+                   if x["task_id"] == a["decisions"][0]["task_id"])
+        self.assertEqual(row["reported_leakage"], "unknown")
+        self.assertEqual(row["provisional_label"], "defer_unknown")
+
+    def test_adjudication_cannot_override_suspected_leakage(self):
+        a, b = self.make_review("A"), self.make_review("B")
+        b["decisions"][0]["label"] = "exclude_candidate"
+        b["decisions"][0]["reason_code"] = "scope"
+        b["decisions"][0]["leakage_signal"] = "suspected"
+        c = self.make_review("C")
+        c["decisions"] = [c["decisions"][0]]
+        c["reviewed_at_utc"] = (datetime.fromisoformat(
+            self.recheck["rechecked_at_utc"].replace("Z", "+00:00")
+        ) + timedelta(seconds=1)).isoformat()
+        report = audit(self.frame, self.recheck, a, b, c)
+        self.assertEqual(report["status_counts"].get("deferred_leakage_suspected"), 1)
+        row = next(x for x in report["records"]
+                   if x["task_id"] == a["decisions"][0]["task_id"])
+        self.assertEqual(row["adjudication"], "screenable_for_spec_drafting")
+        self.assertEqual(row["provisional_label"], "defer_unknown")
 
     def test_partial_review_stays_missing_instead_of_faking_labels(self):
         a, b = self.make_review("A"), self.make_review("B")
