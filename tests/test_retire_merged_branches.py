@@ -34,6 +34,9 @@ class FakeClient:
         self.tag_sha = None
         self.race_on_second_ref = False
         self.ref_checks = 0
+        self.absent = False
+        self.lease_race = False
+        self.ancestor = True
 
     def get(self, path):
         if path == f"/repos/{REPO}":
@@ -43,10 +46,17 @@ class FakeClient:
                 raise ApiNotFound("not found")
             return {"object": {"sha": self.tag_sha}}
         if "/git/ref/heads/" in path:
+            if self.absent:
+                raise ApiNotFound("branch already retired")
             self.ref_checks += 1
             if self.race_on_second_ref and self.ref_checks == 2:
                 return {"object": {"sha": "f" * 40}}
             return {"object": {"sha": self.sha}}
+        if path == f"/repos/{REPO}/branches/main":
+            return {"commit": {"sha": "c" * 40}}
+        if "/compare/" in path:
+            return {"status": "ahead" if self.ancestor else "diverged",
+                    "behind_by": 0 if self.ancestor else 1}
         if "/branches/" in path:
             return {"protected": self.protected, "commit": {"sha": self.sha}}
         if "/pulls/123" in path:
@@ -63,11 +73,15 @@ class FakeClient:
         self.tag_sha = payload["sha"]
         return {"ref": payload["ref"], "object": {"sha": self.tag_sha}}
 
-    def delete(self, path):
-        self.deleted.append(path)
+    def delete_with_lease(self, branch, expected_sha):
         if self.tag_sha != SHA:
             raise AssertionError("deleted without verified recovery tag")
-        return None
+        if self.lease_race:
+            raise CleanupError("git compare-and-delete lease rejected")
+        if self.sha != expected_sha or branch != NAME:
+            raise AssertionError("unexpected SHA-leased delete")
+        self.deleted.append("/git/refs/heads/" + branch)
+        self.absent = True
 
 class BranchCleanupTests(unittest.TestCase):
     def test_approved_single_branch_backed_up_before_deletion(self):
@@ -76,6 +90,7 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertEqual(result[0]["status"], "retired_with_archive_tag")
         self.assertEqual(len(fake.posts), 1)
         self.assertEqual(len(fake.deleted), 1)
+        self.assertTrue(fake.absent)
         self.assertIn("/git/refs/heads/fix/small-reviewed-change", fake.deleted[0])
         self.assertEqual(fake.posts[0][1]["ref"],
                          "refs/tags/" + ARCHIVE_PREFIX + "/" + NAME)
@@ -129,6 +144,49 @@ class BranchCleanupTests(unittest.TestCase):
         fake.race_on_second_ref = True
         self.assertEqual(retire_one(fake, REPO, item()), "blocked_raced_branch_update")
         self.assertEqual(fake.tag_sha, SHA)
+        self.assertFalse(fake.deleted)
+
+    def test_audit_live_cannot_create_archives_or_delete(self):
+        fake = FakeClient()
+        results = execute(plan(), fake, audit_only=True)
+        self.assertEqual(results[0]["status"], "eligible_read_only")
+        self.assertEqual(fake.posts, [])
+        self.assertEqual(fake.deleted, [])
+
+    def test_not_in_current_main_history_blocks_even_merged_pr(self):
+        fake = FakeClient()
+        fake.ancestor = False
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_merge_not_in_main")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_atomic_remote_sha_lease_rejects_update_after_final_read(self):
+        fake = FakeClient()
+        fake.lease_race = True
+        results = execute(plan(), fake)
+        self.assertEqual(results[0]["status"], "error_CleanupError")
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertFalse(fake.deleted)
+        self.assertFalse(fake.absent)
+
+    def test_absent_branch_requires_exact_archived_original_sha(self):
+        fake = FakeClient()
+        fake.absent = True
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_absent_without_archive")
+        fake.tag_sha = "f" * 40
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_absent_without_archive")
+        fake.tag_sha = SHA
+        self.assertEqual(retire_one(fake, REPO, item()), "already_absent")
+
+    def test_incomplete_open_pr_listing_is_not_assumed_empty(self):
+        fake = FakeClient()
+        fake.open = [{"number": n} for n in range(100)]
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_incomplete_open_pr_check")
+        self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
 
     def test_plan_rejects_duplicate_unknown_or_default_branches(self):
