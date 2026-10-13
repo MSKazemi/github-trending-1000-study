@@ -98,6 +98,18 @@ class LifecycleBreakEvenTests(unittest.TestCase):
         self.assertEqual(a["crossing"]["first_integer_n_build_lower"], 1)
         self.assertEqual(a["points"][1]["delta_build_minus_reuse_kwh"], "-999999999.999998")
 
+    def test_zero_horizon_cannot_claim_lifecycle_comparison(self):
+        d = scenario()
+        d["horizon_days"] = 0
+        with self.assertRaisesRegex(BoundaryError, "strictly positive"):
+            evaluate(d)
+
+    def test_unhashable_evidence_basis_fails_closed(self):
+        d = scenario()
+        d["strategies"]["build"]["pre_run"]["discovery"]["basis"] = []
+        with self.assertRaisesRegex(BoundaryError, "invalid evidence"):
+            evaluate(d)
+
     def test_invalid_nonfinite_decimal_rejected(self):
         for val in ("NaN", "Infinity", "-1", "1e99", 3.2, None):
             d = scenario()
