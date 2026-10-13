@@ -19,7 +19,7 @@ The [2026-10-13 inventory](PR_AUDIT_2026-10-13.md) found many unfinished draft P
 | G4. Compatibility and no-loss | Compare to **current** main and all overlapping PRs; check every touched file; retain original evidence and reconcile conflicting additions explicitly; no blind ours/theirs merges | Keep separate, produce merge-resolution PR, or request human adjudication |
 | G5. CI with exact SHA | On the **merge candidate**: test matrix 3.10, 3.12, 3.13, Python compilation and research-artifact integrity; all named checks completed success | Do not merge if pending, skipped unexpectedly, outdated, cancelled or failing |
 | G6. Independent human methods review | Qualified dated human review for new enrollment, statistical analysis, sampling/exclusion, real participant data, gold labels, privacy or changes to preregistered hypotheses; AI feedback does not impersonate that review | Do not call research approval complete |
-| G7. Merge transaction | Reconfirm PR head SHA, base/current main, reviews, branch updates, conflicts and required checks immediately before merge. Use expected-head SHA and prefer focused squash with provenance | Retry only after resolving changed head/base; no force merge |
+| G7. Merge transaction | Reconfirm PR head SHA, base/current main, reviews, branch updates, conflicts and required checks immediately before merge. Use expected-head SHA; preserve source-level commit history with merge commits where it carries distinct evidence, and squash only when an independently reviewed mapping preserves every useful artifact | Retry only after resolving changed head/base; no force merge |
 | G8. Verification after merge | Check main tree and CI, linked docs/source files, issue tracking, completed/deferred gates and rollback documentation | Revert safely or fix promptly; never destroy original captures |
 
 These are **process requirements**, not a new research preregistration. Passing G5 is necessary but never sufficient.
@@ -29,7 +29,7 @@ These are **process requirements**, not a new research preregistration. Passing 
 The repository's read-only GitHub Actions workflow uses SHA-pinned official checkout/setup-python actions, with no repo write token, timeouts and isolated Python environments:
 
 - `python -m compileall -q trending_study scripts tests`, then `python -m unittest discover -s tests -v` on Python 3.10, 3.12 and 3.13.
-- `python scripts/check_research_artifacts.py --root .` independently validates tracked `examples/`, `references/` and `research-notes/` JSON/JSONL/CSV files. Reject malformed JSON, duplicate keys (including nested), NaN/Infinity, invalid UTF-8, missing directories, broken CSV field alignment, symlinks and oversized artifacts. This is **not a schema, source-authenticity, privacy or statistical validator**.
+- `python scripts/check_research_artifacts.py --root .` independently validates tracked `examples/`, `references/` and `research-notes/` JSON/JSONL/CSV files. Reject malformed JSON, duplicate keys (including nested), NaN/Infinity, numeric literals that overflow/underflow representable finite values, gigantic integer fields, embedded NUL bytes, invalid UTF-8, missing directories, broken CSV field alignment, symlinks and oversized artifacts. This is **not a schema, source-authenticity, privacy or statistical validator**.
 - The workflow avoids `pull_request_target` and injected credentials; untrusted PR tests run without secrets.
 
 Version upgrades of tools or workflows require specific review and passing checks. The suite has not established fuzz resistance, real-source correctness, secure dependencies, nor enterprise deployment readiness. For security-sensitive changes, apply appropriate threat modeling and independent code review beyond this baseline.
@@ -57,13 +57,13 @@ The artifact check is **read-only**, makes no external requests and reports arti
 
 ## Protected main branch — administrator steps still needed
 
-**Observed access (2026-10-13):** GitHub's public repository rulesets endpoint returned `[]`, but the connected integration could not read the branch protection endpoint (403). Therefore, this audit **cannot verify branch protection is enabled or disabled**. An authorized owner should check repository Settings → Rules → Rulesets / Branch protection and configure:
+**Observed access (2026-10-13):** GitHub's public repository rulesets endpoint returned `[]`, and `GET /branches/main` reported `protected: false`. The connected integration could not read the detailed branch protection endpoint (403). Thus no enforceable branch-protection gate was verified, and an administrator must confirm/update the configuration in Settings; endpoint restrictions do not imply protections are enabled. An authorized owner should check repository Settings → Rules → Rulesets / Branch protection and configure:
 
 - No force pushes or branch deletion on `main`.
 - Require an up-to-date, successful PR head/merge queue test matrix **and** `research-artifacts` job before merge; review actual rule evaluation and required status names, not just badge appearance.
 - Require qualified non-author human approval of source/ethics/scientific or security-sensitive changes; dismiss stale approvals on new commits where the collaboration model permits it.
 - Resolve blocking review comments, require conversation resolution and prevent admin bypass where appropriate; account for solo-maintainer constraints explicitly instead of fabricating approval.
-- Prefer squash/rebase with recorded original PR link and commits; record exception reasons and postmerge test status.
+- Prefer merge commits for independently sourced research-history preservation; squash/rebase only when review confirms that no unique source artifact, date or provenance chain would be lost. Record original PR and postmerge test status.
 
 Because repository rulesets were not installed by this change and may be restricted by plan/policy, **no claim of technical enforcement by GitHub branch protection is made**.
 
