@@ -102,6 +102,34 @@ class NewsCorpusTests(unittest.TestCase):
                                    (copied["id"] + ".json", copied)])
         self.assertEqual(result["distinct_urls"], 2)
 
+    def test_v1_does_not_self_certify_independent_review(self):
+        for field, value in (
+            ("review_status", "validated"),
+            ("review_status", "independently_verified"),
+            ("screening_status", "approved_by_commit"),
+            ("source_review_status", "independent_review_complete"),
+            ("independent_corrob_status", "corroborated"),
+        ):
+            with self.subTest(field=field, value=value):
+                bad = copy.deepcopy(self.item)
+                bad[field] = value
+                with self.assertRaisesRegex(ValueError, "review"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
+    def test_disallow_copyright_fulltext_or_malformed_source_url(self):
+        fulltext = copy.deepcopy(self.item)
+        fulltext["fulltext_stored"] = True
+        with self.assertRaisesRegex(ValueError, "fulltext"):
+            validate_records([(fulltext["id"] + ".json", fulltext)])
+        for url in ("https://bad host.example/record",
+                    "https://example.org/\\nreport",
+                    "https://example.org/\\treport"):
+            with self.subTest(url=repr(url)):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = url
+                with self.assertRaisesRegex(ValueError, "whitespace or controls"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
     def test_reject_insecure_url_and_false_human_review(self):
         bad = copy.deepcopy(self.item)
         bad["canonical_url"] = "http://example.com"
