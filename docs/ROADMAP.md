@@ -134,3 +134,14 @@ See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_
 - [ ] Obtain human scientific review/signoff and leave pilot/pre-registration pending until evidence exists
 
 No actual live 30-row QA can be credited from this PR. Issue [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) remains open for field validation. Details: [independent audit runbook](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+
+## M12 — CI and PR merge process quality gate (2026-10-13)
+- [x] Reconcile recently merged canonical PRs with open draft and duplicate proposals; preserve unresolved valuable research materials
+- [x] Repair post-merge Trending URL-filter and rank-complexity inputs (#235)
+- [x] Pin official GitHub Actions to immutable release commits, enable bounded cancellation/nonduplicated PR+main CI, add supported Python 3.14 compilation/testing
+- [x] Add review policy and author PR checklist differentiating engineering and scientific approval
+- [ ] Enable branch protection/required status checks and required independent review **by an admin**; docs/CI alone cannot enforce these settings
+- [ ] Revalidate all fresh PRs on current main and disambiguate duplicate package-trust instruments (#216 vs #186)
+- [ ] Complete external source/ethics/consent gates before inferring empirical research value from methodological drafts
+See [release policy](PR_MERGE_QUALITY_POLICY.md) and [dated audit](PR_REVIEW_CHECKPOINT_2026_10_13.md). Mark implementation checked above only once the release-control PR has passed CI and merged.

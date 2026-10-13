@@ -58,3 +58,7 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 
 ## Captured-page QA evidence requirements
 Any PR alleging fixed GitHub Trending parser completeness must include (subject to source redistribution rights) original source manifest SHA/UTC, two **independent** blind full-page reviewer lists, per-window TP/FP/FN with rank disagreements, parser-abstention counts, page-level identity and URLs, unresolved human disagreements/adjudication and actual source-access review. Run the `audit-pages` offline script with a preserved bundle and keep reports write-once. Synthetic cases are necessary regression tests but do **not** fulfill the minimum 30 real-row QA. See [QA method](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+
+## Enterprise PR quality gate — 2026-10-13
+Before any merge, follow [the release-quality and scientific acceptance procedure](docs/PR_MERGE_QUALITY_POLICY.md), including full code review, failure-path tests, current-head CI for the supported Python matrix, data/rights/security checks and documentation updates. The [PR template](.github/pull_request_template.md) records decisions, overlapping work and unresolved review gates. Scientific drafts **must not be promoted solely because the synthetic tests pass**. When superseding code, preserve substantive artifacts via a reviewed canonical implementation or explicit archive/cross-link and report the decision. Avoid duplicate public CLIs (especially competing package-trust tools).

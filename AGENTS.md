@@ -102,3 +102,11 @@
 - Use `trending_study.task_costs` **offline** with frozen trial frame/assignment/outcome inputs, one record per randomized task, explicit missingness, fail-closed field checks and write-once output. A log validator cannot authenticate instrumented data.
 - Treat currency as provenance-tagged **event scope only**; tokens are not kWh, parallel agent duration is not extra human hours, and a missing record is never a zero-cost result.
 - Use `python -m unittest discover -s tests -v`; disclose that all committed task-cost fixtures and performance values are synthetic, without generating or publishing human identities or prompt content.
+
+
+## PR merge responsibility and canonical interfaces
+- Consult `docs/PR_MERGE_QUALITY_POLICY.md` and `docs/PR_REVIEW_CHECKPOINT_2026_10_13.md` before merging. New PRs must disclose duplicate/superseding proposals and tested current-head SHA.
+- Only merge if full current-head CI matrix passed, PR is non-draft, GitHub reports mergeable clean, and changed code/tests/docs/science sources have been genuinely reviewed. Use `expected_head_sha` with squash merging; verify main after merge.
+- Official CI actions are SHA-pinned; maintain the provenance comment and avoid introducing third-party runtime requirements without supply-chain review.
+- Do not merge two competing implementations of the same evidence contract when one canonical library/module can preserve both concepts. Unknown license or source proof remains unknown; no automatic dependency installation.
+- Always separate **code acceptance** from real-world research approval. Keep empirical issues open if their human/sample/ethics requirements remain unfulfilled even after code merges.

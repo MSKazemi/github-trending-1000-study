@@ -320,3 +320,10 @@ python -m trending_study.task_costs \
 ```
 
 All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.
+
+
+## Pull request merge quality and CI assurance
+
+**Enterprise release checklist:** [PR merge quality policy](docs/PR_MERGE_QUALITY_POLICY.md) and [review checkpoint 2026-10-13](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). Code and scientific evidence require **different** signoff gates: a passing synthetic test does not verify a source article, consent, real GitHub capture or sustainability outcomes. Draft PRs stay unmerged until stated review blockers are resolved.
+
+The CI workflow tests a read-only, no-third-party-dependencies Python package on Python 3.10, 3.12 and 3.14 with immutable SHA-pinned official GitHub actions, per-job timeouts, syntax compilation and all unittest tests. PR and main-only triggers plus cancellation of superseded runs avoid redundant infrastructure workload. **A green check is necessary but not sufficient**: reviewers must inspect exact diffs, CI SHA, mergeability, overlaps, privacy, schema compatibility and methods validity.
