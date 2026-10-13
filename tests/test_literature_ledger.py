@@ -88,6 +88,15 @@ class LiteratureLedgerTests(unittest.TestCase):
         with self.assertRaises(LiteratureError):
             audit(p)
 
+    def test_unhashable_run_id_is_controlled_validation_error(self):
+        for invalid in (None, [], {}, 123, " "):
+            with self.subTest(run_id=invalid):
+                p = source()
+                p["records"][0]["run_id"] = invalid
+                with self.assertRaisesRegex(LiteratureError, "existing search run"):
+                    audit(p)
+
+
 
 if __name__ == "__main__":
     unittest.main()
