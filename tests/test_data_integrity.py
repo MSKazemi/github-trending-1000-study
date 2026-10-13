@@ -112,5 +112,74 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             self.assertEqual(cp.stdout, "")
 
 
+    def test_csv_multiline_and_commas_are_preserved(self):
+        with tempfile.TemporaryDirectory() as root:
+            file = self._artifact(
+                root, "vendor.csv",
+                b'\xef\xbb\xbfcompany,notes\r\n"Acme, Inc.","line one\nline two"\r\n"OSS","reused"\r\n',
+            )
+            before = file.read_bytes()
+            result = validate_repository(root)
+            self.assertEqual(result["validated_files"], 1)
+            self.assertEqual(result["validated_csv_files"], 1)
+            self.assertEqual(result["csv_data_rows"], 2)
+            self.assertEqual(result["json_documents_or_jsonl_records"], 0)
+            self.assertEqual(file.read_bytes(), before)
+            self.assertFalse(result["authenticated_research_evidence"])
+
+    def test_csv_rejects_duplicate_and_blank_headers_and_ragged_rows(self):
+        invalid = (
+            (b"name, Name\nalpha,beta\n", "duplicate CSV header"),
+            (b"name,\nalpha,beta\n", "blank names"),
+            (b"name,count\nalpha,1,extra\n", "cells"),
+            (b"name,count\nalpha\n", "cells"),
+            (b"", "no header"),
+            (b'name,notes\n"unterminated,field\n', "invalid CSV"),
+        )
+        for raw, message in invalid:
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "invalid.csv", raw)
+                with self.assertRaisesRegex(ResearchJSONError, message):
+                    validate_repository(root)
+
+    def test_csv_rejects_embedded_nul_and_malformed_utf8(self):
+        for raw, message in (
+            (b"name,note\nalpha,zero\x00byte\n", "embedded NUL"),
+            (b"name,note\nalpha,\xff\n", "invalid UTF-8"),
+        ):
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "unsafe.csv", raw)
+                with self.assertRaisesRegex(ResearchJSONError, message):
+                    validate_repository(root)
+
+    def test_extreme_json_float_underflow_and_overflow_are_not_silent(self):
+        for raw, message in (
+            (b'{"energy":1e-10000}', "underflow"),
+            (b'{"energy":-1e-10000}', "underflow"),
+            (b'{"energy":1e10000}', "overflow"),
+        ):
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "numbers.json", raw)
+                with self.assertRaisesRegex(ResearchJSONError, message):
+                    validate_repository(root)
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "valid.json", b'{"energy":0e-10000,"cost":1.5}')
+            report = validate_repository(root)
+            self.assertEqual(report["json_documents_or_jsonl_records"], 1)
+
+    def test_giant_json_integer_is_rejected_on_all_supported_python_versions(self):
+        with tempfile.TemporaryDirectory() as root:
+            literal = ("9" * 1025).encode("ascii")
+            self._artifact(root, "large_integer.json", b'{"n":' + literal + b'}')
+            with self.assertRaisesRegex(ResearchJSONError, "1024 decimal digits"):
+                validate_repository(root)
+
+    def test_jsonl_numeric_data_loss_is_rejected_with_source_line(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "history.jsonl", b'{"id":1}\n{"energy":1e-9999}\n')
+            with self.assertRaisesRegex(ResearchJSONError, "history.jsonl:line 2.*underflow"):
+                validate_repository(root)
+
+
 if __name__ == "__main__":
     unittest.main()
