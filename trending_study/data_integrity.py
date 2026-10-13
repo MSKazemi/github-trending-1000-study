@@ -146,13 +146,19 @@ def validate_repository(root):
         raise ResearchJSONError("no .json/.jsonl/.csv research artifacts found")
     if len(files) > MAX_FILES:
         raise ResearchJSONError("too many research artifacts for bounded audit")
-    records = 0
+    json_records = 0
+    csv_records = 0
     for path in sorted(files):
-        records += _check_file(path, root)
+        observed = _check_file(path, root)
+        if path.suffix == ".csv":
+            csv_records += observed
+        else:
+            json_records += observed
     return {
         "validated_files": len(files),
-        "json_documents_jsonl_records_or_csv_rows": records,
-        "json_documents_or_jsonl_records": records,  # retained for backwards compatibility
+        "json_documents_or_jsonl_records": json_records,
+        "csv_records": csv_records,
+        "total_logical_records": json_records + csv_records,
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
