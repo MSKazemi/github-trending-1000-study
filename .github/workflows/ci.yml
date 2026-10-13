@@ -1,21 +1,40 @@
 name: Tests
+
 on:
   push:
+    branches: [main]
   pull_request:
+
 permissions:
   contents: read
+
+# Superseded PR commits should not burn CI or be mistaken for passing HEADs.
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # Never discard post-merge validation on main during rapid concurrent merges.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
+    name: test (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.10", "3.12"]
+        python-version: ["3.10", "3.12", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout (immutable verified release SHA)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Compile all source and test modules
+          persist-credentials: false
+      - name: Set up Python (immutable verified release SHA)
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: Syntax and import-bytecode compilation
         run: python -m compileall -q trending_study tests
-      - name: Run unit tests
+      - name: Complete offline unit test suite
         run: python -m unittest discover -s tests -v
+      - name: CLI contract smoke test
+        run: python -m trending_study --help > /dev/null
