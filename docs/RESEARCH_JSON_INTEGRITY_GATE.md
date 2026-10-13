@@ -2,7 +2,7 @@
 
 **Implemented as an offline engineering control, 2026-10-13.** This is **not** a systematic literature review, an authenticated data capture, an ethics approval, a schema registry or empirical research evidence.
 
-The GitHub Actions Python 3.10/3.12 matrix runs three steps before treating a pull request as technically verified:
+The GitHub Actions Python 3.10/3.12/3.14 matrix runs these offline gates on each PR revision:
 
 ```bash
 python -m compileall -q trending_study tests
@@ -10,7 +10,7 @@ python -m trending_study.data_integrity --root .
 python -m unittest discover -s tests -v
 ```
 
-The new standard-library validator inspects committed `.json` and `.jsonl` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing floating-point literals, empty JSONL, symlinked JSON files/directories and files exceeding 16 MiB. JSONL errors include the actual record line number.
+The new standard-library validator inspects committed `.json` and `.jsonl` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing floating-point literals, empty JSONL, symlinks within eligible research artifact directories (including nested symlinked directories) and files exceeding 16 MiB. JSONL errors include the actual record line number.
 
 ## Why this protects the study
 
@@ -25,3 +25,6 @@ When the CI step fails, open the referenced path and (for JSONL) line. Compare a
 This gate is deliberately conservative but limited: it checks only files in the listed directories and only JSON/JSONL lexical integrity, not CSV contents, Markdown links, research-statistical logic or source authentication. If a legitimately large artifact exceeds 16 MiB, document and review a format/sharding amendment instead of silently bypassing the gate.
 
 **Practical reusable lesson for your repositories:** enforce unambiguous machine-readable evidence and traceable failures in CI before optimizing stars or claiming reproducibility; no checksum or passing unit test can replace independent verification of the underlying observation.
+
+
+**Quality-review regression (2026-10-13):** Recursive enumeration must fail if a nested source directory is a symlink; otherwise an externally linked tree can be silently skipped and make an evidence-denominator audit appear complete. A focused offline regression supplies a valid local JSON file alongside a symlinked nested evidence subtree and checks for explicit rejection. This gate is intentionally read-only and does not follow symlinks or attest source origin.
