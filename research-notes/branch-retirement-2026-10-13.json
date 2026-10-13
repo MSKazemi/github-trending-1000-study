@@ -5,7 +5,7 @@
   "snapshot_utc": "2026-10-13T20:15:00Z",
   "snapshot_main_sha": "6339775d73886b24f746139cdf55a34384f88c33",
   "description": "Read-only branch inventory, NOT permission to delete without rechecking live PR, ref, merge ancestry and archive reachability.",
-  "archive_tag_prefix": "archive/branch-retirement-2026-10-13",
+  "archive_tag_prefix": "branch-archive/2026-10-13",
   "batch_size": 20,
   "total_branches": 124,
   "candidate_count": 60,
