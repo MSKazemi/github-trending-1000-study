@@ -162,32 +162,34 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "case.json"):
             audit_repository(self.root)
 
-    def test_csv_rejects_incomplete_quoted_records(self):
+    def test_csv_unterminated_quotes_fail_closed(self):
         file = self.root / "references" / "registry.csv"
-        for content in ('id,note\\n1,"unterminated\\n', 'id,note\\n1,"value"junk\\n'):
-            with self.subTest(content=content):
-                file.write_text(content.replace('\\n', chr(10)), encoding="utf-8")
+        for value in ('id,note\n1,"unfinished\n', 'id,note\n1,"value"junk\n'):
+            with self.subTest(value=value):
+                file.write_text(value.replace("\\n", "\n"), encoding="utf-8")
                 with self.assertRaisesRegex(IntegrityError, "registry.csv"):
                     audit_repository(self.root)
 
     def test_csv_symlink_file_is_rejected(self):
-        file = self.root / "references" / "registry.csv"
+        source = self.root / "references" / "registry.csv"
         alias = self.root / "references" / "alias.csv"
         try:
-            alias.symlink_to(file)
+            alias.symlink_to(source)
         except (OSError, NotImplementedError):
-            self.skipTest("symlinks not supported")
+            self.skipTest("symlink unsupported on test filesystem")
         with self.assertRaisesRegex(IntegrityError, "symlink forbidden"):
             audit_repository(self.root)
 
-    def test_header_only_csv_is_empty_data_not_observed_evidence(self):
+    def test_csv_header_only_fails_consistently_in_both_validators(self):
         file = self.root / "references" / "registry.csv"
-        file.write_text("id,note\\n".replace("\\n", chr(10)), encoding="utf-8")
-        counts = audit_repository(self.root)
-        self.assertEqual(counts["csv"], 1)
-        self.assertEqual(counts["logical_records"], 3)
-        # Structural emptiness cannot establish lack of real study outcomes.
-        self.assertEqual(validate_text(file, file.read_text(encoding="utf-8")), 0)
+        file.write_text("id,note\n", encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "no data records"):
+            audit_repository(self.root)
+        # The independently maintained legacy validator must not disagree on
+        # what counts as a valid baseline research data artifact.
+        from trending_study.data_integrity import ResearchJSONError, validate_repository
+        with self.assertRaisesRegex(ResearchJSONError, "no data records"):
+            validate_repository(self.root)
 
     def test_cli_bounded_clean_and_failure_codes(self):
         path = Path(__file__).resolve().parents[1] / "scripts" / "check_research_artifacts.py"
