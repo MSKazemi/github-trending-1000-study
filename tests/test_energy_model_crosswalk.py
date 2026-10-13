@@ -12,7 +12,8 @@ from trending_study.lifecycle_break_even import evaluate as evaluate_lifecycle
 
 def _boundary_card(build, reuse):
     def arm(components):
-        assert set(components) == set(COMPONENTS)
+        if set(components) != set(COMPONENTS):
+            raise ValueError("synthetic component keys must match the declared boundary")
         return {key: {"evidence": "modeled", "source_ref": "synthetic-parameter",
                       "kwh": float(value)}
                 for key, value in components.items()}
@@ -91,6 +92,34 @@ class EnergyModelCrosswalkTests(unittest.TestCase):
         result = compare_boundary(boundary)
         self.assertFalse(result["comparable"])
         self.assertIsNone(result["net_kwh_reuse_minus_build"])
+
+
+    def test_reuse_higher_energy_has_opposite_signed_deltas(self):
+        """Parity must hold when reuse is worse, not only when it is better."""
+        build = _components(1, 1, 1, 1, 1, 1, 1)
+        reuse = _components(2, 2, 1, 2, 1, 1, 1)
+        a = compare_boundary(_boundary_card(build, reuse))
+        b = evaluate_lifecycle(_lifecycle_card(build, reuse))
+        self.assertTrue(a["comparable"])
+        self.assertEqual(a["net_kwh_reuse_minus_build"], 3)
+        self.assertEqual(
+            Decimal(b["points"][0]["delta_build_minus_reuse_kwh"]),
+            Decimal("-3"),
+        )
+        self.assertIsNone(a["net_gco2e_reuse_minus_build"])
+
+    def test_identical_energy_is_zero_not_an_environmental_saving(self):
+        """Zero delta is not proof of a real-world carbon benefit."""
+        both = _components(1, 2, 3, 4, 5, 6, 7)
+        a = compare_boundary(_boundary_card(both, both))
+        b = evaluate_lifecycle(_lifecycle_card(both, both))
+        self.assertTrue(a["comparable"])
+        self.assertEqual(a["net_kwh_reuse_minus_build"], 0)
+        self.assertEqual(
+            Decimal(b["points"][0]["delta_build_minus_reuse_kwh"]),
+            Decimal("0"),
+        )
+        self.assertIsNone(a["net_gco2e_reuse_minus_build"])
 
 
 if __name__ == "__main__":
