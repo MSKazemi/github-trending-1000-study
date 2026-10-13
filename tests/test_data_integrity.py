@@ -112,5 +112,63 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             self.assertEqual(cp.stdout, "")
 
 
+    def test_csv_quoted_multiline_and_only_csv_repository(self):
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / "references"
+            source.mkdir()
+            csv_path = source / "evidence.csv"
+            csv_path.write_text('source,description\ns1,"line one\nline two"\ns2,ok\n',
+                                encoding="utf-8")
+            before = csv_path.read_bytes()
+            result = validate_repository(root)
+            self.assertEqual(result["validated_files"], 1)
+            self.assertEqual(result["json_documents_or_jsonl_records"], 0)
+            self.assertEqual(result["csv_records"], 2)
+            self.assertEqual(result["total_logical_records"], 2)
+            self.assertEqual(before, csv_path.read_bytes())
+
+    def test_csv_duplicate_header_ragged_and_quoting_fail_closed(self):
+        rows = (
+            (b"name,NAME\na,b\n", "duplicate CSV"),
+            (b"name,value\na,b,c\n", "CSV record"),
+            (b"name,value\na\n", "CSV record"),
+            (b",value\na,b\n", "header"),
+            (b'name,value\n"unclosed,b\n', "CSV quoting"),
+            (b"name,value\n\x00,b\n", "NUL"),
+            (b"name,value\n\xff,b\n", "UTF-8"),
+        )
+        for content, reason in rows:
+            with self.subTest(reason=reason), tempfile.TemporaryDirectory() as root:
+                location = Path(root) / "research"
+                location.mkdir()
+                (location / "bad.csv").write_bytes(content)
+                with self.assertRaisesRegex(ResearchJSONError, reason):
+                    validate_repository(root)
+
+    def test_float_underflow_and_huge_integer_rejected(self):
+        for raw, reason in (
+            (b'{"metric":1e-999}', "underflow"),
+            (b'{"metric":' + b"9" * 1025 + b"}", "1024-digit"),
+        ):
+            with self.subTest(reason=reason), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "data.json", raw)
+                with self.assertRaisesRegex(ResearchJSONError, reason):
+                    validate_repository(root)
+
+    def test_nested_directory_symlink_not_silently_ignored(self):
+        with tempfile.TemporaryDirectory() as root:
+            outer = Path(root) / "external"
+            outer.mkdir()
+            (outer / "external.json").write_text('{"x": 1}', encoding="utf-8")
+            self._artifact(root, "source.json", b'{"x": 2}')
+            link = Path(root) / "examples" / "linked-dir"
+            try:
+                link.symlink_to(outer, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("symlinks unavailable")
+            with self.assertRaisesRegex(ResearchJSONError, "symlinked research entry"):
+                validate_repository(root)
+
+
 if __name__ == "__main__":
     unittest.main()
