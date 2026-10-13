@@ -226,6 +226,15 @@ def retire_one(client, repo, item, *, audit_only=False):
         return "blocked_incomplete_open_pr_check"
     if fresh_open_prs:
         return "blocked_new_open_pr"
+    # Archive verification must be as late as the ref lease: a deleted or
+    # repointed tag must not be silently treated as valid backup evidence.
+    try:
+        late_archive = client.get(tag_path)
+    except ApiNotFound:
+        return "blocked_archive_disappeared_before_delete"
+    if (not isinstance(late_archive, dict)
+            or late_archive.get("object", {}).get("sha") != sha):
+        return "blocked_archive_changed_before_delete"
     client.delete_with_lease(name, sha)
     try:
         client.get(ref_path)
