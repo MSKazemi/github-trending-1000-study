@@ -328,7 +328,7 @@ All eight **synthetic** randomized tasks remain in the denominator, including fa
 
 The 2026-10-13 audit found many **draft PRs**, green head-only test checks, and multiple pairs modifying the **same company-intelligence evidence note**. Draft status, scientific human review, updated merge-tree CI and no-loss comparison are independent merge gates; a green badge alone is **not** sufficient.
 
-The CI suite now tests Python 3.10/3.12/3.13 compilation and regressions plus a separate read-only research artifact integrity check. Locally:
+The CI suite now tests Python 3.10/3.12/3.13/3.14 compilation and regressions plus a separate read-only research artifact integrity check. Locally:
 
 ```bash
 python -m compileall -q trending_study scripts tests
