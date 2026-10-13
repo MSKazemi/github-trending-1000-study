@@ -91,3 +91,22 @@ The site and source population are not randomized. No effect estimate or recomme
 - [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
 
 **No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This section records 4 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [018-qodo.events.csv](018-qodo.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
+
+| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+|---|---|---|---|
+| 2026-06-23 | [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) | Qodo introduced cross-repository contract review for PRs. **Status:** `preview`. | No independent measured defect detection precision/recall. |
+| 2026-07-28 | [The Right Depth for Every PR: Introducing Review Effort Modes](https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/) | Qodo announced configurable multi-level AI PR reviews. **Status:** `preview`. | Do not describe as general availability or validated review cost reduction. |
+| 2026-09-09 | [Built for Agents, Better Outcomes for Humans: Introducing Qodo's Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/) | Qodo announced review/governance/context tools for coding-agent integrations. **Status:** `shipped`. | Review independence and data-processing permissions require review. |
+| 2026-09-23 | [The 2026 State of AI Code Quality Report: Verification Is the New Bottleneck](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) | Qodo published its vendor survey of 500 U.S. developers and 300 U.S. engineering leaders. **Status:** `reported_undetermined`. | Sampling restricted to AI-using organizations; opinions/recall not objective incident logs. |
+
+**Important correction and interpretation:** The July Review Effort Modes post explicitly says RESEARCH PREVIEW, not generally available. June Cross Repo Review was BETA. Qodo's September survey sampled 500 U.S. developers and 300 U.S. engineering leaders at AI-using organizations, not a representative sample of all developers; it is vendor-sponsored and questionnaire-based.
+
+**Disconfirmation/critical evidence still needed:** No blinded precision/recall test on real cross-repo breakages; no external validation of vendor survey, selection bias or deployment reliability.
+
+**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+
+**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #85 and this draft PR open until those acceptance gates are addressed.
