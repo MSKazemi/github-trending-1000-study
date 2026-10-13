@@ -52,3 +52,8 @@ New `python -m trending_study.maintainer_burden --input examples/maintainer_exte
 **Methods reference:** [Runeson & Höst (2009), empirical software engineering case-study guidelines](https://doi.org/10.1007/s10664-008-9102-8) calls for explicit protocols, case selection and chain of evidence. The synthetic audit tool is not proof of consent, participant independence or a causal productivity result.
 
 **Practical maintainer lesson:** cap parallel bot PRs, prefer one independently testable change, and include upstream reviewer/upgrade minutes in the true cost of reuse before claiming green or labor savings.
+
+
+## 2026-10-13 integration safeguard: synthetic sums are not observed human burden
+
+The aggregator now reserves `overall_human_minutes` for a **complete, wholly non-synthetic** submitted set and returns `null` whenever any synthetic scenario is mixed in. For fully synthetic complete cases it may show an illustrative `synthetic_scenario_minutes`, but this cannot be cited as a measured maintainer burden, productivity impact, external deployment or environmental saving. Any mixed or partial set keeps missingness explicit. The repository test suite includes a synthetic complete-case regression. Neither code path authenticates the reported consent, participant identity or independent acceptance of a task.
