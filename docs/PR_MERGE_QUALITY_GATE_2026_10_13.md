@@ -63,3 +63,8 @@ A concurrent PR introduced this useful canonical [template](../.github/pull_requ
 
 ### Preserved newer validation from concurrent main
 The final CI retains the separate stricter JSON syntax/duplicate-key/nonstandard-number guard from another integration PR, and smoke tests the existing `trending_study`, `reuse_gate`, and `goldset` entrypoints. Those checks must **not** be dropped when action versions or Python matrices change. Real research-source integrity still needs independent verification beyond JSON syntax.
+
+
+## Canonical research artifact integrity integration (2026-10-13)
+
+This policy is unchanged by the [read-only JSON/JSONL/CSV evidence gate](RESEARCH_ARTIFACT_INTEGRITY_GATE_2026-10-13.md). CI now replaces the earlier partial inline JSON check with a single strict validator covering the designated research directories and the full regression suite. Existing SHA-pinned GitHub Actions, PR template, 3-version compile/test matrix and post-merge verification responsibilities are preserved. Artifact syntax checks are **not** human scientific source verification, consent, approval of a research protocol or a server-side branch protection rule.
