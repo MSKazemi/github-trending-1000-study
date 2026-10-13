@@ -139,6 +139,17 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "missing data directory"):
             audit_repository(self.root)
 
+    def test_cumulative_bytes_are_bounded_separately_from_per_file(self):
+        with self.assertRaisesRegex(IntegrityError, "cumulative research artifacts"):
+            audit_repository(self.root, max_total_bytes=12)
+
+    def test_deeply_nested_json_fails_as_controlled_integrity_error(self):
+        file = self.root / "examples" / "case.json"
+        file.write_text('{"nested":' + '[' * 1500 + '0' + ']' * 1500 + '}',
+                        encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "case.json"):
+            audit_repository(self.root)
+
     def test_cli_bounded_clean_and_failure_codes(self):
         path = Path(__file__).resolve().parents[1] / "scripts" / "check_research_artifacts.py"
         cmd = [sys.executable, str(path), "--root", str(self.root)]
