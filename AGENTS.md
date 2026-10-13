@@ -48,7 +48,8 @@
 
 ## 2026–2027 pilot preflight and capture integrity
 - The October 2026 pilot is **proposed and not yet executed**; do not describe a synthetic fixture or self-declared manifest as authenticated GitHub collection.
-- When recording a new capture, use the `capture --manifest-output` and `pilot-parse --manifest` path; never backfill `captured_at_utc` from the time of parsing or a supplied date.
+- **Access hard stop (2026-10-13):** `trending_study capture` is intentionally disabled before network I/O because `/trending?since=...` falls under the published robots disallow pattern and access for this project remains unapproved. Never bypass it with a flag, monkeypatch, manual snapshot or alternate HTTP client. Only a reviewed code/protocol amendment following documented human source-access approval can re-enable it. Offline synthetic test mocks are not real capture permission. Read [source-access decision](docs/SOURCE_ACCESS_DECISION_2026-10-13.md).
+- After an approved future re-enablement, any new capture must use `capture --manifest-output` and `pilot-parse --manifest`; never backfill `captured_at_utc` from parsing or a supplied date.
 - The strict parser only implements unfiltered daily/weekly/monthly surfaces, **not** six language views or 9-page daily capture. Expand the source manifest protocol and human audit before changing enrollment eligibility.
 - Maintain human access-policy review, manual page QA, immutable numeric repo IDs, task-based independent acceptance, statistical power, consent and preregistration checks. These gates cannot be fulfilled by checking in a JSON file.
 - Run `python -m trending_study pilot-preflight --input examples/pilot-preflight.example.json --stage confirmatory` and `python -m unittest discover -s tests -v` after a protocol/CLI change. The documented example should remain not_ready.
