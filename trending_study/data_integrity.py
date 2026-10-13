@@ -159,7 +159,7 @@ def validate_repository(root):
             # returning an incomplete completeness/denominator claim.
             if candidate.is_symlink():
                 raise ResearchJSONError(
-                    f"{candidate.relative_to(root)}: symlinked research content is not allowed"
+                    f"{candidate.relative_to(root)}: symlinked research content; symlinks are not allowed"
                 )
             if candidate.suffix in EXTENSIONS:
                 if len(files) >= MAX_FILES:
