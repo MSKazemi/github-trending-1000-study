@@ -33,6 +33,7 @@ def summarize(cards):
         raise AdoptionError("nonempty list of per-repository cards required")
     seen = set()
     frames, kinds = set(), set()
+    expected_signal_names = None
     counts = defaultdict(lambda: {"eligible": 0, "na": 0, "verified": 0,
                                   "negative": 0, "unknown": 0, "withdrawn": 0})
     for card in cards:
@@ -91,6 +92,10 @@ def summarize(cards):
                 if row.get("evidence_source_url") is not None or row.get("observed_at_utc") is not None:
                     raise AdoptionError("unknown/withdrawn may not contain false verified observation")
                 c[status] += 1
+        if expected_signal_names is None:
+            expected_signal_names = names
+        elif names != expected_signal_names:
+            raise AdoptionError("every repository must explicitly report every predeclared signal (including unknown/NA)")
     if len(frames) != 1 or len(kinds) != 1:
         raise AdoptionError("mixed sampling frames or synthetic/real records are not comparable")
     results = {}
