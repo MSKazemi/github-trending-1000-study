@@ -144,3 +144,21 @@ The source-bound stage-1 packet remains **exploratory and unreviewed**. The inta
 | `pre_search_screen_audit` | `packet_sha256`, `total_candidates`, `double_reviewed`, `raw_agreement`, `status_counts`, `reported_leakage_suspected`, `records[]`, `accepted_tasks=0`, `task_specs_frozen=false`, `experimental_enrollment="blocked"` | Agreement/disagreement/adjudication are **provisional structural assertions**, never gold-standard task acceptance, signed consent, actual independent screen evidence or causal results. Unknown/partial/disagreed labels cannot silently become positive or negative. |
 
 The `metadata_updated_since_intake` flag means a later GitHub `updated_at` timestamp; a false value does **not** prove no change in underlying descriptions, source solution leakage, or any actual developer action. The `reported_leakage` status is an **unverified reviewer assertion**, not an automatically validated measure. See [procedures and constraints](TASK_SCREENING_SOURCE_RECHECK_2026-10-12.md).
+
+## Proposed opt-in task cost ledger v1.0 (offline instrument; not Trending metadata)
+
+Separate from public GitHub observations and the task-trial outcomes, `trending_study.task_costs` validates a privacy-minimized per-task cost ledger. See [complete schema and example](TASK_COST_LEDGER_2026-10-12.md).
+
+| Column or object | Type | Meaning / missingness |
+|---|---|---|
+| `schema_version, dataset_kind, protocol_id` | strings | Must match the frozen trial source and its synthetic/pilot scope. |
+| `task_costs[].task_id` | pseudonymous string | Exactly one for every randomized task, including abandoned/refused/pending. |
+| `coverage.human/events/monetary` | complete/partial/missing | Explicit self-reported observation quality; partial/missing values must not be coerced to zero. |
+| `human_intervals[].actor_slot/category/started_at_utc/ended_at_utc` | opaque slot + enum + UTC timestamps | No names; cannot infer identity; overlapping slots rejected. |
+| `agent_events[].event_id/session_id/kind` | opaque IDs + enum | Supports model/tool/CI/retry/idle event markers; no prompt or code content. |
+| `agent_events[].input_tokens/output_tokens/cached_input_tokens` | nonnegative int/null | Provider-dependent; cached input is a subset of input when reported, not additional tokens. |
+| `agent_events[].amount_usd/cost_basis` | decimal string/null + enum/null | Explicit `provider_billed`, `provider_estimate`, or `synthetic`; no conversion to kWh. |
+| `budget` | object/null | Optional self-declared timestamped caps for human time, tools, retries, observed event USD; not enforced automatically. |
+| `report.overall/by_arm/tasks` | derived report | Cohort and per-task missing-aware summaries tied to audited frame, assignment and outcomes canonical SHA digests. |
+
+**Data-handling rule:** no raw prompts, user identities, proprietary source code, agent tool arguments, credentials, or other uncontrolled session traces in the public repository. Consent/ethics approval cannot be proven by a string, and this version performs no automatic data acquisition. A local SHA256 proves input **content consistency only**; it is not attestation of real consent, collection time or scientific validity.
