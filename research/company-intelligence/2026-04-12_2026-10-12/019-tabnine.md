@@ -121,3 +121,12 @@ None of these effects were measured in this source review. External ecosystem pr
 - [Tricentis Acquires Tabnine](https://www.tricentis.com/news/tricentis-acquires-tabnine) — unverified `019-E04` from #199, labeled 2026-07-30. The URL belongs to the **prospective/announced buyer Tricentis**, not to Tabnine (the earlier JSON's `source_publisher` field was inconsistent with this domain). Check the actual issuing entity, legal event status/date and any updates; treat buyer and seller's own announcements as **transaction-party sources about one event**, not two independent merger observations.
 
 These are **candidate leads, not additional event counts or independently corroborated findings**. No NEWS corpus IDs or verified ownership conclusions are created; retain the source branch for its original records and require independent review before adding any row to `019-tabnine.events.csv`.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [May 6 Tabnine recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) explicitly describes CLI plan review, sandbox restrictions and command approvals. These are **provider claims about controls**, not a third-party security evaluation.
+- [June 18 shared-memory essay](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) is **architectural commentary**. It does *not* independently demonstrate the release of a shared-memory feature or quantify cross-agent correctness benefits; retain `reported_undetermined` rather than assigning shipped.
+- [July 30 company announcement](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) states **'Tabnine has been acquired by Tricentis'** and discusses integration of the Enterprise Context Engine. The Tabnine website also displays an acquisition banner. These are consistent first-party statements from **Tabnine**, but an independently dated *buyer announcement/legal filing* was **not found** in this screen; exact closing terms and legal entity change remain **unverified**.
+- Distinguish continuing platform operations from ownership statements and announcements of future integration. Neither acquisition nor new design proposals establish externally accepted software-task outcomes.
+
+**Practical action:** In agentic review/design, align agents to a single **versioned repository API contract**, compare output with frozen independent tests, and use explicit data-access scopes so cross-repo context does not leak private code.
