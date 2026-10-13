@@ -41,6 +41,36 @@ class AdoptionBoundsTests(unittest.TestCase):
         with self.assertRaisesRegex(AdoptionError, "not_applicable"):
             summarize([c])
 
+    def test_ineligible_cannot_smuggle_claimed_evidence(self):
+        for field, value in (
+            ("evidence_source_url", "https://example.org/claimed"),
+            ("observed_at_utc", "2026-10-12T12:00:00Z"),
+            ("independent_reviewer", "synthetic-observer"),
+        ):
+            with self.subTest(field=field):
+                c = fake()
+                c["signals"][1][field] = value
+                with self.assertRaisesRegex(AdoptionError, "not_applicable"):
+                    summarize([c])
+
+    def test_unknown_and_withdrawn_cannot_claim_independent_review(self):
+        for status in ("unknown", "withdrawn"):
+            with self.subTest(status=status):
+                c = fake()
+                c["signals"][0]["status"] = status
+                c["signals"][0]["independent_reviewer"] = "synthetic-observer"
+                with self.assertRaisesRegex(AdoptionError, "false verified"):
+                    summarize([c])
+
+    def test_evidence_url_query_is_rejected_as_potential_sensitive_token(self):
+        c = fake()
+        c["signals"][0].update(status="observed_verified",
+                               evidence_source_url="https://example.org/data?token=secret",
+                               observed_at_utc="2026-10-12T12:00:00Z",
+                               independent_reviewer="synthetic-observer")
+        with self.assertRaisesRegex(AdoptionError, "clean HTTPS"):
+            summarize([c])
+
     def test_duplicate_repo_is_not_two_independent_users(self):
         with self.assertRaisesRegex(AdoptionError, "double-count"):
             summarize([fake(), fake()])
