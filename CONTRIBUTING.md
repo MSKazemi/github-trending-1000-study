@@ -63,3 +63,8 @@ Any PR alleging fixed GitHub Trending parser completeness must include (subject 
 ## Enterprise pull-request review and preservation
 
 The authoritative [PR merge and scientific evidence gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and [PR template](.github/pull_request_template.md) require a small auditable change, reusable-code comparison, negative tests, current-head Python 3.10/3.12/3.14 Actions checks and documentation. Identify overlapping branches before editing; retain useful source citations, tests, schema choices and explicit limitations when superseding an approach. Never force-merge a dirty PR or overwrite write-once research evidence. Passing automated checks is **not** independent methodological, legal/security, human-subjects or scientific approval.
+
+
+## Evidence artifact validation extension (2026-10-13)
+
+Before committing a research `*.json`, `*.jsonl` or `*.csv`, run `python -m trending_study.data_integrity --root .` in addition to the complete unit suite. The [canonical integrity runbook](docs/RESEARCH_JSON_INTEGRITY_GATE.md) describes immutable source protection, explicit unknown values and limitations. Do not add a second competing CSV/JSON validator or silently overwrite prior observations to pass this gate.
