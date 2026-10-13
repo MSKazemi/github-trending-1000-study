@@ -115,3 +115,11 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 - **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
 
 **Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [Cohere North Mini Code June 9 announcement](https://cohere.com/blog/north-mini-code) and the [June 9 product changelog](https://docs.cohere.com/changelog/north-mini-code-1-0) both specify **Apache-2.0** for **north-mini-code-1-0**; the official blog also links model weights. These are two **first-party documentary surfaces**, not two independent validation studies. A direct attempt to retrieve the Hugging Face artifact met **HTTP 429** through the available web reader, so artifact SHA and exact hosted files remain **unchecked**.
+- [North Automations July 27 launch](https://cohere.com/blog/introducing-north-automations-ai-workflows) describes model routing and enterprise governance. Provider quotations from external analyst reports remain **not** product acceptance testing.
+- [North 2 October 5 article](https://cohere.com/blog/introducing-north-2) documents vendor-stated memory, skills and model-agnostic orchestration. Its features are neither proof of general portability nor proof of improved third-party OSS code reuse.
+
+**Practical next source test:** Request an exact model revision and license/weights checksum before comparing local coding agents; evaluate search correctness and security against a deterministic retrieval baseline, including candidate-not-found cases.
