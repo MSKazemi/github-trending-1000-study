@@ -34,7 +34,7 @@ If labels disagree or parsed rows omit/mis-rank a manually verified item, `--req
 
 The bundle has `schema_version: "1.0"`, `evidence_kind: "synthetic_fixture"|"field_self_reported"` and `pages[]`. Each page references `raw_path` and `manifest_path` **relative to the bundle directory**, plus exactly two reviewer entries. Files outside this directory, absolute paths and symlink escapes are refused.
 
-Each reviewer has `schema_version: "1.0"`, `reviewer_id` (pseudonym), `reviewed_at_utc`, `blind_to_parser_output: true`, `source_sha256`, `source_url`, `captured_at_utc`, `window`, and a complete 1-based ordered `rows[]` list of `{"rank":1,"repository":"owner/repo"}`. Reviewed time cannot precede captured time; source fields must match the actual saved manifest; ranks must be contiguous and identities unique. Two copies from one annotator may **pass documentary checks but are not independent human evidence**—human source and review verification remains required.
+Each reviewer has `schema_version: "1.0"`, `reviewer_id` (pseudonym), `reviewed_at_utc`, `blind_to_parser_output: true`, `source_sha256`, `source_url`, `captured_at_utc`, `window`, and a complete 1-based ordered `rows[]` list of `{"rank":1,"repository":"owner/repo"}`. Reviewed time cannot precede captured time or be more than five minutes ahead of the validator's UTC clock (to tolerate minor clock skew); this chronology check is not third-party timestamp authentication. Source fields must match the actual saved manifest; ranks must be contiguous and identities unique. Two copies from one annotator may **pass documentary checks but are not independent human evidence**—human source and review verification remains required.
 
 ### Optional reviewer-C adjudication (issue #169, synthetic instrument)
 
