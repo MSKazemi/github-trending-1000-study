@@ -68,18 +68,25 @@ def compare(data):
     for k in ("reuse_task_accepted", "build_task_accepted"):
         if type(task.get(k)) is not bool:
             raise EnergyError(f"{k} must be boolean (not unknown)")
-    if not (task["reuse_task_accepted"] and task["build_task_accepted"]):
-        return {"comparable": False, "reason": "equivalent independently accepted output not established",
-                "net_kwh_reuse_minus_build": None, "net_gco2e_reuse_minus_build": None}
     arms = data.get("arms")
     if not isinstance(arms, dict) or set(arms) != {"reuse", "build"}:
         raise EnergyError("arms must contain exactly reuse and build")
     r, rm, rmodel, r_grid = _arm(arms["reuse"], "reuse")
     b, bm, bmodel, b_grid = _arm(arms["build"], "build")
+    # Validate all declared arm cells before checking task equivalence; an
+    # invalid/missing ledger must not be silently accepted through early exit.
+    if not (task["reuse_task_accepted"] and task["build_task_accepted"]):
+        return {"comparable": False, "reason": "equivalent independently accepted output not established",
+                "net_kwh_reuse_minus_build": None, "net_gco2e_reuse_minus_build": None,
+                "modeling_or_measurement_status": "not_comparable"}
     out = {"comparable": not (rm or bm), "functional_unit_id": task["task_id"],
            "horizon_days": horizon, "known_kwh_reuse": r, "known_kwh_build": b,
            "missing_reuse": rm, "missing_build": bm,
            "modeled_reuse": rmodel, "modeled_build": bmodel,
+           "modeling_or_measurement_status": (
+               "incomplete_boundary" if rm or bm else
+               "mixed_modeled_scenario_only" if rmodel or bmodel else
+               "all_components_self_reported_measured_not_authenticated"),
            "net_kwh_reuse_minus_build": None, "net_gco2e_reuse_minus_build": None,
            "grid_only_scenario_gco2e_delta": None,
            "boundary_is_self_declared": True}
