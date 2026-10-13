@@ -19,7 +19,7 @@ class PackageReviewError(ValueError):
     pass
 
 
-def _date(raw):
+def _date(raw, *, allow_future=False):
     if not isinstance(raw, str):
         raise PackageReviewError("UTC timestamp required")
     try:
@@ -28,7 +28,7 @@ def _date(raw):
         raise PackageReviewError("invalid timestamp") from exc
     if dt.utcoffset() is None or dt.utcoffset().total_seconds() != 0:
         raise PackageReviewError("timestamps require explicit UTC")
-    if dt > datetime.now(timezone.utc) + timedelta(minutes=5):
+    if not allow_future and dt > datetime.now(timezone.utc) + timedelta(minutes=5):
         raise PackageReviewError("timestamps cannot be future-dated")
     return dt
 
@@ -68,7 +68,7 @@ def evaluate(data):
     if not isinstance(sha, str) or not _SHA.fullmatch(sha):
         raise PackageReviewError("exact artifact SHA-256 digest required")
     frozen = _date(data.get("task_frozen_at_utc"))
-    release = _date(candidate.get("first_available_at_utc"))
+    release = _date(candidate.get("first_available_at_utc"), allow_future=True)
     if release > frozen:
         return {"decision": "reject", "reason": "component released after frozen task",
                 "failed_checks": ["temporal_availability"], "unknown_checks": [],
