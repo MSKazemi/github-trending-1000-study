@@ -45,3 +45,25 @@ The pre-install screen now accepts **explicit `artifact_sha256: null`** as unres
 The offline validator now accepts pinned **release-like** strings with ordinary letters, such as `1.0.post1` and `1.2.0-nightly.1`, while rejecting whitespace, tabs/newlines, range or wildcard characters, paths and moving aliases. Earlier character-class escaping accidentally treated letters `t` and `n` as forbidden; two regression tests detect both the false rejection and invalid selectors. This is **syntactic filtering only**: arbitrary release-like text can still describe a nonexistent or unpublished artifact. No release is trusted or installed without independently checking the exact official registry and artifact bytes. For non-PyPI ecosystems, the parser currently checks HTTPS syntax but **does not verify the official registry host**; these inputs require independent identity review.
 
 **Integration warning:** [PR #186](https://github.com/MSKazemi/github-trending-1000-study/pull/186) implements a separate `package_trust` API for the same issue; do not present the two outputs as independent security confirmations or merge both as unrelated security decisions. Align a single versioned public interface and retain useful test cases/docs before removing either implementation. Changes in this branch remain a proposal subject to actual security and maintainer review.
+
+
+## Consolidation from overlapping PR #186 (2026-10-13)
+
+To preserve useful provenance requirements without shipping two conflicting
+security-decision APIs, this canonical `package_review` CLI now accepts **optional**
+`candidate.purl` and `candidate.source_commit`. For the currently supported
+PyPI ecosystem, a supplied purl must be a single unambiguous
+`pkg:pypi/name@version`, with the same normalized package name and exact
+version as the official `pypi.org/project/name/version/` binding. A supplied
+source commit must be a pinned lowercase 40-hex Git SHA. Malformed, moving,
+contradictory or non-PyPI purl values fail closed; unknown provenance remains
+**unknown** rather than being replaced with fabricated identifiers.
+
+These optional fields are **self-declared structural assertions**. Neither
+their presence nor a well-formed purl/SHA verifies a release, source-artifact
+correspondence, publisher ownership, legal license compatibility or security.
+The independent release verification steps above remain mandatory before reuse.
+PR #186 retains its independent source history and synthetic examples as
+superseded background; a second live `package_trust` CLI is deliberately not
+introduced into the canonical user interface. Regression tests exercise both
+well-formed and contradictory identity inputs.
