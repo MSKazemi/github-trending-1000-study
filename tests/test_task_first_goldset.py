@@ -13,9 +13,9 @@ from tests.test_goldset import DATA
 class TaskFirstGoldsetTests(unittest.TestCase):
     def test_missing_review_cannot_be_promoted_to_viable(self):
         data = copy.deepcopy(DATA)
-        data["tasks"][0]["candidates"][0]["reviewer_labels"] = ["unknown", "viable"]
+        data["tasks"][0]["candidates"][0]["reviewer_labels"] = ["unknown", "unknown"]
         data["tasks"][0]["candidates"][0]["adjudicator_ref"] = "synthetic-third"
-        with self.assertRaisesRegex(GoldsetError, "missing independent reviewer"):
+        with self.assertRaisesRegex(GoldsetError, "two unknown reviewer labels"):
             evaluate(data)
 
     def test_search_rank_shortfall_is_explicit_and_penalized(self):
