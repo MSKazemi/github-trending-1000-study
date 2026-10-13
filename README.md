@@ -320,3 +320,20 @@ python -m trending_study.task_costs \
 ```
 
 All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.
+
+
+## October 2026: enterprise PR merge and research-artifact integrity
+
+**[Enterprise PR policy](docs/PR_QUALITY_AND_MERGE_POLICY.md)** | **[Dated 45-PR audit and collision register](docs/PR_AUDIT_2026-10-13.md)** | [Issue #240](https://github.com/MSKazemi/github-trending-1000-study/issues/240)
+
+The 2026-10-13 audit found many **draft PRs**, green head-only test checks, and multiple pairs modifying the **same company-intelligence evidence note**. Draft status, scientific human review, updated merge-tree CI and no-loss comparison are independent merge gates; a green badge alone is **not** sufficient.
+
+The CI suite now tests Python 3.10/3.12/3.13 compilation and regressions plus a separate read-only research artifact integrity check. Locally:
+
+```bash
+python -m compileall -q trending_study scripts tests
+python -m unittest discover -s tests -v
+python scripts/check_research_artifacts.py --root .
+```
+
+The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
