@@ -42,9 +42,12 @@ def evaluate(data):
     for key in ("ecosystem", "package_name", "version"):
         if not isinstance(candidate.get(key), str) or not candidate[key].strip():
             raise PackageReviewError(f"candidate.{key} required")
-    if candidate["version"].casefold() in {"latest", "head", "main", "master", "stable", "*"} or any(
-            c in candidate["version"] for c in "<>=*^~| \\t\\n"
-    ):
+    version = candidate["version"]
+    # A pinned version must be a single release identifier, not a selector.
+    # Do not put escaped "\\t" / "\\n" in a character set: this would reject
+    # legitimate release names containing the letters t and n.
+    if (version.casefold() in {"latest", "head", "main", "master", "stable", "*"}
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._+!-]{0,127}", version) is None):
         raise PackageReviewError("candidate.version must be a pinned exact release")
     spdx = candidate.get("spdx_expression")
     if spdx is not None and (not isinstance(spdx, str) or not spdx.strip()):
