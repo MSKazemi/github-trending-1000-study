@@ -21,3 +21,13 @@ Outputs contain signed energy delta (build − reuse), crossing direction, calcu
 - Obtain consent and clearance before logging private developer effort; include search, review, failure, maintenance and upstream time where authorized.
 - Calibrate meters and identify missing inference/server/embodied terms; keep uncertainty intervals and time-varying carbon intensity, not one generic conversion factor.
 - Preregister horizon, candidate versions, workload mix, comparison estimand and rebound assumptions. Independently audit observations; never call this CLI a study.
+
+## 2026-10-13 decision and uncertainty guards
+
+The offline Decimal scenario now additionally rejects a **zero-day horizon** and malformed/unhashable evidence-basis values. Concurrent contributor work already added exact **integer workload crossing** cases to avoid a rounded threshold being mistaken for the first strictly lower-energy integer use. These are only *within-declared-boundary scenario calculations*. A synthetic crossing does not show real savings, and a `null` included term must stop point estimates rather than be treated as zero.
+
+**Predeclare the comparison** of task-equivalent accepted outputs and stable functional unit; build-versus-reuse versus no-build, search/validation attempts, downstream runtime at `n_uses`, update/recovery, upstream support allocations and long-run rebound. For a simple additive boundary the signed difference is `ΔE(n) = (E_build_fixed - E_reuse_fixed) + n × (E_build_run - E_reuse_run)`. The numerical crossing follows from this declared *linear assumption*; caching, workload mix, memory/embodied allocations, nonlinearity and rebound require sensitivity/scenario analysis rather than concealed constants. Report cloud inference as unknown when metering unavailable. Human upstream labor is a distinct social cost, not direct electricity.
+
+**Source:** [ISO/IEC 21031:2024 SCI methodology](https://www.iso.org/standard/86612.html). The input/output cannot certify full SCI; grid intensity, marginal effects, embodied allocation, usage displacement and uncertainty need separate justified measurement evidence. Keep physical kWh and gCO2e separate, and report all abandoned/failed tasks in both arms.
+
+**Practical lesson:** only call a reusable component environmentally advantageous when externally accepted functionality and the time/usage/environmental boundary are comparable; otherwise publish the transparent break-even condition and open evidence gaps.
