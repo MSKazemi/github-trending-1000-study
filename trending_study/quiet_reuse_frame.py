@@ -94,7 +94,12 @@ def select(frame):
     plan_hash = hashlib.sha256(json.dumps(
         plan, sort_keys=True, separators=(",", ":"), ensure_ascii=True
     ).encode("utf-8")).hexdigest()
-    return {"frame_records": len(rows),
+    config = {"frozen_at_utc": cutoff.isoformat(), "seed": seed,
+              "quotas": {k: quotas[k] for k in sorted(quotas)}}
+    config_bytes = json.dumps(config, sort_keys=True, separators=(",", ":")).encode()
+    return {"selection_config_sha256": hashlib.sha256(config_bytes).hexdigest(),
+            "selection_policy": "deterministic_sha256_seed_repository_id",
+            "frame_records": len(rows),
             "frame_content_sha256": frame_hash,
             "selection_plan_sha256": plan_hash,
             "frozen_at_utc": cutoff.isoformat(),
