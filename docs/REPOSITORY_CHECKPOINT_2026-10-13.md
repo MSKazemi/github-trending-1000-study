@@ -14,6 +14,7 @@
 | Open PRs (at check) | 46 | Many source/industry-screen and overlapping methodological branches; conflict review remains essential |
 | CI | `.github/workflows/ci.yml` | Python 3.10 and 3.12 `unittest`; no actual platform-source attestation or human review |
 | Python package metadata | No `pyproject.toml`, `setup.py` or `setup.cfg` on main | Clean-room `pip install`/console-script reuse not documented as supported; future P2 packaging task |
+| Exposed version strings | `trending_study.__version__=0.3.0`, main CLI `VERSION=0.4.0`, network User-Agent `/0.2` | P2 metadata drift: converge release identity when adding a clean-install distribution test; not proof of study invalidity |
 | Committed actual Trending observations | No observed cohort in `data/raw` or `data/processed` tracked tree | These directories have `.gitkeep` only. This does **not** prove no separately stored private data exist. |
 
 ## Most important gap and chosen action
