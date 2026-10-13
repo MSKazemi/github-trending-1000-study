@@ -47,3 +47,21 @@ Freeze real user-task requirement and hidden independent acceptance tests **befo
 - [ ] Obtain independent human factual/link QA and run real controlled tasks before any effectiveness claim.
 
 No source code changed, no Python tests/CI run in this research-only draft. This does not complete or close #88. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [Mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [Maintainer lessons](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) · [News intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This adds 3 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](021-factory.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+
+| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
+|---|---|---|---|
+| 2026-04-23 | [Automated QA: Testing Your App the Way a Real User Would](https://factory.ai/news/automated-qa) | Factory described automatic browser/terminal/API QA with visual evidence attached to pull requests. | `shipped`; Visual proof can still miss unsupported paths and wrong oracles. |
+| 2026-06-01 | [Factory Router](https://factory.ai/news/factory-router) | Factory introduced model routing with vendor-reported token reductions. | `preview`; Vendor comparison is not a measured CO2e benefit or neutral task-quality result. |
+| 2026-06-17 | [AutoWiki](https://factory.ai/news/wiki) | Factory announced source-driven incrementally refreshed repository documentation with CI integration. | `shipped`; Automatically regenerated text may hallucinate constraints or overlook undocumented behavior. |
+
+**Correction to first pass / interpretation:** April Automated QA is a vendor-described PR-level end-to-end test workflow. June Router was PRIVATE RESEARCH PREVIEW, despite numeric vendor token-cost claims; it cannot be called generally available. AutoWiki's source-linked, incremental documentation is a proposed falsifiable alternative to manually edited docs, not evidence of correctness.
+
+**Negative/independent evidence needed:** Independently inspect test oracle quality, UI snapshot reliability, privacy of uploaded repo pages, revision consistency and cost of false-positive code reviews.
+
+**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+
+**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #88 must remain under review until acceptance gates pass.
