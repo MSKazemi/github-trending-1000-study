@@ -46,3 +46,21 @@ Freeze real user-task requirement and hidden independent acceptance tests **befo
 - [ ] Obtain independent human factual/link QA and run real controlled tasks before any effectiveness claim.
 
 No source code changed, no Python tests/CI run in this research-only draft. This does not complete or close #87. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [Mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [Maintainer lessons](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) · [News intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This adds 3 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](020-augment-code.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+
+| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
+|---|---|---|---|
+| 2026-08-13 | [The software factory needs a faster review loop: further optimizing the path from PR to merge](https://www.augmentcode.com/blog/optimizing-pr-to-merge-loop) | Augment described its internal PR-to-merge workflow and claimed throughput/review process improvements. | `reported_undetermined`; Cannot compare self-reported case-study throughput directly to a controlled trial. |
+| 2026-09-11 | [Beyond AI Coding Agents: How We Built Augment's Software Factory](https://www.augmentcode.com/blog/beyond-ai-coding-agents-how-we-built-augments-software-factory) | Augment published internal claims of improved size-adjusted output and reduced PR review friction. | `reported_undetermined`; No independently verifiable denominators, matched cohorts or uncertainty given for study's effect estimand. |
+| 2026-10-08 | [Augment Code's next chapter](https://www.augmentcode.com/blog/augment-code-next-chapter) | Augment said it agreed to sell Cosmos, Auggie CLI, Code Context Engine and related assets to Harness. | `announced_only`; Harness announcement uses 'has acquired'; deal closing state and ownership implications need legal verification. |
+
+**Correction to first pass / interpretation:** Two participating parties use different deal language for October 8: Augment says 'agreed to sell select assets', while Harness says it 'has acquired' those assets. Record both descriptions without asserting legal transaction closing or full acquisition of the entire Augment company. Also avoid treating Augment's claimed 4.5x productivity as independently validated or causally attributed.
+
+**Negative/independent evidence needed:** Verify dated deal close and asset/license/product continuity using authoritative records; evaluate counterfactual effects of model, team mix and backlog selection on throughput.
+
+**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+
+**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #87 must remain under review until acceptance gates pass.
