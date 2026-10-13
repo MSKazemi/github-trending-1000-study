@@ -166,7 +166,7 @@ class ResearchDataIntegrityTests(unittest.TestCase):
                 link.symlink_to(outer, target_is_directory=True)
             except (OSError, NotImplementedError):
                 self.skipTest("symlinks unavailable")
-            with self.assertRaisesRegex(ResearchJSONError, "symlinked research entry"):
+            with self.assertRaisesRegex(ResearchJSONError, "symlinks"):
                 validate_repository(root)
 
 
