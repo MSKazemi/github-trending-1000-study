@@ -57,9 +57,39 @@ class BurdenTests(unittest.TestCase):
             with self.subTest(value=str(value)), self.assertRaises(BurdenError):
                 summarize([c])
         c = card()
+        c["consent_state"] = "consented"
         c["observed_at_utc"] = "2099-01-01T00:00:00Z"
         with self.assertRaisesRegex(BurdenError, "future"):
             summarize([c])
+
+    def test_mixed_synthetic_and_real_cases_cannot_be_pooled(self):
+        a = card()
+        b = copy.deepcopy(a)
+        b["case_id"] = "CONSENTED-CASE-2"
+        b["not_empirical_data"] = False
+        b["frame_commit"] = "a" * 40
+        b["consent_state"] = "consented"
+        with self.assertRaisesRegex(BurdenError, "never share one aggregate"):
+            summarize([a, b])
+
+    def test_real_case_requires_frozen_frame_commit(self):
+        p = card()
+        p["not_empirical_data"] = False
+        p["consent_state"] = "consented"
+        with self.assertRaisesRegex(BurdenError, "frame_commit"):
+            summarize([p])
+        p["frame_commit"] = "a" * 40
+        result = summarize([p])
+        self.assertEqual(result["dataset_kind"], "self_reported_pilot")
+        self.assertFalse(result["approved_for_public_release"])
+
+    def test_withdrawn_case_never_keeps_time_observation(self):
+        p = card()
+        p["consent_state"] = "withdrawn"
+        p["observed_at_utc"] = "2026-10-12T12:00:00Z"
+        with self.assertRaisesRegex(BurdenError, "cannot retain"):
+            summarize([p])
+
 
 if __name__ == "__main__":
     unittest.main()
