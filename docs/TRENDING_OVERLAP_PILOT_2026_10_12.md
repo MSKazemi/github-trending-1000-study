@@ -18,7 +18,7 @@ rank order. The URL is parsed and restricted to HTTPS `github.com/trending`
 (or `/trending/<language>` when a non-null filter is declared); the explicit
 `since=daily|weekly|monthly` query value must match `window`, and the
 decoded language slug must agree with the declared filter (case-insensitive,
-with spaces normalized to hyphens). Host spoofing, noncanonical origins or ports, nested/encoded language paths, unexpected query keys,
+with spaces normalized to hyphens). Host spoofing, noncanonical origins, nested or encoded language paths,
 fragments, duplicate `since` values and future UTC capture timestamps
 (more than five minutes ahead of the validator clock) fail closed. The small
 skew allowance is not third-party time authentication.
@@ -51,6 +51,9 @@ one-day star burst as evidence of reusable functionality. Instead instrument
 clean-install, independent adoption and 30/90-day maintenance outcomes.
 See [black-box audit proposal](TRENDING_ALGORITHM_AUDIT.md).
 
-## PR review hardening (2026-10-13)
+## Enterprise quality review correction (2026-10-13)
+The scorer now **rejects unregistered URL query parameters**, not just a `since` mismatch. Previously, a URL containing `&spoken_language_code=...` or another ranking filter could pass as a supported surface, even though no field in the observation schema recorded that filter; it could bias comparisons. Only an exact single `since=daily|weekly|monthly` is allowed until an explicitly versioned filter schema is introduced. A strict 1,000-row input limit prevents unexpectedly large quadratic pairwise rank analysis. This bound is intentionally much larger than ordinary Trending pages, and any real larger page requires explicit review of its capture provenance and algorithmic cost. Additional synthetic regression tests protect both invariants. These are parser/input hardening changes, not original evidence that GitHub Ranking reflects software usefulness.
 
-Security/methods review added strict rejection of unexpected query parameters and noncanonical GitHub origins (including explicit ports) so differently filtered pages cannot be silently compared. Filtered languages must map to exactly one safe slug; nested paths or encoded separators are rejected. Malformed container types now raise the documented `OverlapError`, not an unchecked Python type error. Synthetic regression tests cover all these cases; this still does not authenticate GitHub data or 30/90/180-day follow-up.
+### Additional security and input type validation (2026-10-13)
+
+The same evidence-gated implementation also rejects uncanonical GitHub authorities (including explicit ports), nested/encoded language separators and malformed `window` or `dataset_kind` types. Reviewer-added synthetic regressions exercise those cases. These checks augment—not replace—the already-merged exact query allowlist and 1,000-rank cap. No real GitHub Trending or user-value observations are implied.

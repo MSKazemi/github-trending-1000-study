@@ -45,19 +45,15 @@ def _capture(obj):
         raise OverlapError("language_filter must be null or a nonempty string")
     # A string prefix alone is not evidence of the requested GitHub surface:
     # it also accepts /trending-evil, userinfo and inconsistent since= values.
-    # Require a canonical trusted origin; reject noncanonical ports, userinfo,
-    # malformed authorities and lookalikes rather than comparing mixed surfaces.
     parsed = urlsplit(obj["page_url"])
-    if (parsed.scheme != "https" or parsed.netloc != "github.com"
-            or parsed.fragment):
+    if parsed.scheme != "https" or parsed.netloc != "github.com" or parsed.fragment:
         raise OverlapError("page_url must be a canonical HTTPS github.com URL")
     path = parsed.path.rstrip("/")
     if lang is None:
         if path != "/trending":
             raise OverlapError("unfiltered page_url must use /trending")
     else:
-        # A filtered page is one language slug, never a nested path or arbitrary
-        # user-controlled path segment. Preserve legitimate language punctuation.
+        # Each language-filtered surface must use a single safe URL slug.
         declared = re.sub(r"\s+", "-", lang.strip()).casefold()
         if len(declared) > 80 or not re.fullmatch(r"[a-z0-9][a-z0-9+._#-]*", declared):
             raise OverlapError("language_filter must be a single safe language name")
@@ -69,14 +65,16 @@ def _capture(obj):
         if declared != observed:
             raise OverlapError("page_url language path disagrees with language_filter")
     query = parse_qs(parsed.query, keep_blank_values=True)
-    if set(query) != {"since"} or query["since"] != [obj["window"]]:
-        raise OverlapError("page_url since parameter must match window")
+    if query != {"since": [obj["window"]]}:
+        raise OverlapError("page_url must have exactly one since parameter matching window")
     if not isinstance(obj.get("source_sha256"), str) or not _SHA.fullmatch(obj["source_sha256"]):
         raise OverlapError("capture.source_sha256 must be 64 hex characters")
     timestamp = _utc(obj.get("captured_at_utc"), "captured_at_utc")
     ranks = obj.get("repository_ids")
     if not isinstance(ranks, list) or not ranks:
         raise OverlapError("repository_ids must contain all displayed ranks, not an empty subset")
+    if len(ranks) > 1000:
+        raise OverlapError("supplied Trending page exceeds 1000 ranks; audit unexpected page shape")
     if any(isinstance(x, bool) or not isinstance(x, int) or x <= 0 for x in ranks):
         raise OverlapError("repository_ids must be positive stable numeric GitHub IDs")
     if len(ranks) != len(set(ranks)):
