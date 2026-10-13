@@ -27,7 +27,7 @@ def _agreement(pairs):
     observed = sum(x == y for x, y in pairs) / n
     chance = sum(pa[k] * pb[k] for k in LABELS) / (n * n)
     return {"n": n, "observed_agreement": observed, "chance_agreement": chance,
-            "cohens_kappa": (observed - chance) / (1 - chance) if chance < 1 else None,
+            "cohens_kappa": (observed - chance) / (1 - chance) if n >= 2 and chance < 1 else None,
             "rater_a_counts": {k: pa[k] for k in LABELS},
             "rater_b_counts": {k: pb[k] for k in LABELS}}
 
