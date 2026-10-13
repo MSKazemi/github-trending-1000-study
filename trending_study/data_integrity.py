@@ -1,4 +1,4 @@
-"""Fail-closed, offline syntax/integrity checks for tracked research JSON/JSONL/CSV.
+"""Fail-closed, offline syntax/integrity checks for tracked research JSON.
 
 Reject ambiguous duplicate keys and non-finite numbers before they become
 silently reinterpreted by downstream readers. Does not authenticate sources,
@@ -6,6 +6,7 @@ validate a study schema, or verify that observations actually occurred.
 """
 import argparse
 import csv
+from decimal import Decimal, InvalidOperation
 import io
 import json
 import math
@@ -18,7 +19,7 @@ MAX_FILE_BYTES = 16 * 1024 * 1024
 
 
 class ResearchJSONError(ValueError):
-    """An evidence artifact failed deterministic validation (legacy public name)."""
+    """A JSON research artifact failed a deterministic validation gate."""
 
 
 def _unique_pairs(pairs):
@@ -31,10 +32,27 @@ def _unique_pairs(pairs):
 
 
 def _finite_float(literal):
-    value = float(literal)
-    if not math.isfinite(value):
+    # A tiny nonzero value must not silently become float zero. Preserve a
+    # strict, finite downstream float contract while checking its exact
+    # decimal lexical value first (no conversion to Decimal in outputs).
+    try:
+        exact = Decimal(literal)
+        approximate = float(exact)
+    except (InvalidOperation, OverflowError, ValueError) as exc:
+        raise ResearchJSONError("invalid JSON numeric literal") from exc
+    if not math.isfinite(approximate):
         raise ResearchJSONError("non-finite or overflowing JSON number")
-    return value
+    if exact != 0 and approximate == 0:
+        raise ResearchJSONError("underflowing nonzero JSON number")
+    return approximate
+
+
+def _bounded_int(literal):
+    # Avoid interpreter-dependent 3.10/3.12 digit limits and memory spikes
+    # from an enormous integer in a nominally valid research ledger.
+    if len(literal.lstrip("-")) > 1024:
+        raise ResearchJSONError("JSON integer exceeds 1024 decimal digits")
+    return int(literal)
 
 
 def _invalid_constant(literal):
@@ -47,45 +65,12 @@ def _decode_document(raw, label):
         return json.loads(
             text, object_pairs_hook=_unique_pairs,
             parse_constant=_invalid_constant, parse_float=_finite_float,
+            parse_int=_bounded_int,
         )
     except UnicodeDecodeError as exc:
         raise ResearchJSONError(f"{label}: invalid UTF-8") from exc
     except (json.JSONDecodeError, ResearchJSONError, ValueError) as exc:
         raise ResearchJSONError(f"{label}: {exc}") from exc
-
-
-def _check_csv(raw, label):
-    """Validate UTF-8 CSV records, including multiline quoted fields.
-
-    CSV has no native schema or evidence-authenticity guarantee. Blank cells
-    remain legitimate unknowns; inconsistent row widths and duplicate
-    normalized header names are structural ambiguities and fail closed.
-    """
-    try:
-        text = raw.decode("utf-8")
-    except UnicodeDecodeError as exc:
-        raise ResearchJSONError(f"{label}: invalid UTF-8") from exc
-    if "\x00" in text:
-        raise ResearchJSONError(f"{label}: embedded NUL in CSV artifact")
-    try:
-        reader = csv.reader(io.StringIO(text, newline=""), strict=True)
-        header = next(reader, None)
-        if not header or any(not col.strip() for col in header):
-            raise ResearchJSONError(f"{label}: missing or blank CSV header")
-        canon = [col.strip().casefold() for col in header]
-        if len(canon) != len(set(canon)):
-            raise ResearchJSONError(f"{label}: repeated CSV header names")
-        records = 0
-        for row in reader:
-            if len(row) != len(header):
-                raise ResearchJSONError(
-                    f"{label}: CSV record {records + 2} contains {len(row)} columns, "
-                    f"expected {len(header)}"
-                )
-            records += 1
-    except csv.Error as exc:
-        raise ResearchJSONError(f"{label}: malformed CSV ({exc})") from exc
-    return records
 
 
 def _check_file(path, root):
@@ -101,11 +86,40 @@ def _check_file(path, root):
             "split it into independently named artifacts"
         )
     raw = path.read_bytes()
-    if path.suffix == ".csv":
-        return _check_csv(raw, label)
     if path.suffix == ".json":
         _decode_document(raw, label)
         return 1
+    if path.suffix == ".csv":
+        # Standard CSV parsing preserves quoted multiline values and commas.
+        # Inspect headers/row widths only; never execute spreadsheet formulas.
+        try:
+            decoded = raw.decode("utf-8-sig")
+        except UnicodeDecodeError as exc:
+            raise ResearchJSONError(f"{label}: invalid UTF-8") from exc
+        if "\x00" in decoded:
+            raise ResearchJSONError(f"{label}: embedded NUL byte")
+        try:
+            reader = csv.reader(io.StringIO(decoded, newline=""), strict=True)
+            try:
+                header = next(reader)
+            except StopIteration as exc:
+                raise ResearchJSONError(f"{label}: CSV has no header") from exc
+            if not header or any(not field.strip() for field in header):
+                raise ResearchJSONError(f"{label}: CSV header contains blank names")
+            canonical = [field.strip().casefold() for field in header]
+            if len(set(canonical)) != len(canonical):
+                raise ResearchJSONError(f"{label}: duplicate CSV header names")
+            rows = 0
+            for row in reader:
+                if len(row) != len(header):
+                    raise ResearchJSONError(
+                        f"{label}: CSV record {rows+2} has {len(row)} cells; "
+                        f"expected {len(header)}"
+                    )
+                rows += 1
+            return rows
+        except csv.Error as exc:
+            raise ResearchJSONError(f"{label}: invalid CSV ({exc})") from exc
     # Keep the line number in diagnostics; blank lines are permitted only
     # between real JSONL records, never in place of all evidence.
     lines = raw.splitlines()
@@ -139,20 +153,21 @@ def validate_repository(root):
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:
-        raise ResearchJSONError("no JSON/JSONL/CSV research artifacts found")
-    json_records = 0
-    csv_records = 0
+        raise ResearchJSONError("no .json/.jsonl/.csv research artifacts found")
+    records = 0
+    csv_files = csv_records = 0
     for path in sorted(files):
         count = _check_file(path, root)
         if path.suffix == ".csv":
+            csv_files += 1
             csv_records += count
         else:
-            json_records += count
+            records += count
     return {
         "validated_files": len(files),
-        "json_documents_or_jsonl_records": json_records,
-        "csv_data_records": csv_records,
-        "total_logical_records": json_records + csv_records,
+        "json_documents_or_jsonl_records": records,
+        "validated_csv_files": csv_files,
+        "csv_data_rows": csv_records,
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
