@@ -42,3 +42,13 @@ For a fixed finite eligible audit panel, a *logical* unweighted bound on verifie
 Offer one reproducible minimal integration example and a tiny downstream smoke test rather than optimizing stars. Ask consenting external users to reproduce the same code integration under pinned versions. Measure successful first use, repairs and opt-in repeat use; do not infer real adoption from downloads or README traffic.
 
 **Remaining acceptance:** actual data access audit, denominators, independent user cohort and repeated observations, privacy/ethics review, statistical uncertainty and prospective comparison protocol. See [usefulness](USEFULNESS_FRAMEWORK.md), [metrics](METRIC_REGISTER_2027.md), [data dictionary](DATA_DICTIONARY.md) and [mission](AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+
+## 2026-10-13 bounded finite-frame adoption evaluator
+
+Run `python -m trending_study.adoption_bounds --input examples/adoption_signals.synthetic.json` for a fictional one-repository demonstration; tests: `python -m unittest tests.test_adoption_bounds -v`. The evaluator accepts one card or a `{"cards":[...]}` list from the **same frozen frame**, disallows duplicate repository IDs, requires signal-specific applicability, and rejects observed positives/negatives without a clean evidence URL, UTC timestamp and declared reviewer.
+
+For each signal, it preserves separately `eligible`, `not_applicable`, `verified`, `negative`, `unknown` and `withdrawn`. The finite-panel logical bounds are `verified/eligible` to `(verified+unknown+withdrawn)/eligible` for a binary signal, assuming only that absent outcomes can be positive or negative. They are **not** a sampling confidence interval, missing-at-random assumption, causal comparison, software population estimate or user count. A zero eligible denominator returns null. Snapshot age, incomplete registry coverage, dependency declarations versus executed imports, right-censoring and 30/90/180-day attrition all require real-world sensitivity analyses.
+
+**Methods references:** [Cochrane Handbook, Chapter 10, §10.12.3](https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10) cautions that worst-/best-case missing-outcome bounds can be uninformative without plausible sensitivity assumptions; [Runeson & Höst (2009)](https://doi.org/10.1007/s10664-008-9102-8) supports traceable case-level evidence. Our exact implementation is an explicitly labeled design choice, **not** a Cochrane-certified estimator.
+
+**Practical maintainer lesson:** attach a version-pinned consumer smoke test and observe opt-in repeat success, repair/support time and attrition rather than use package downloads as a proxy for users.
