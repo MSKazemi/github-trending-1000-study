@@ -1,5 +1,7 @@
 """Synthetic only: checks that unverified lessons are not auto-promoted."""
 import copy
+import json
+from pathlib import Path
 import unittest
 from trending_study.lesson_registry import LessonError, audit
 
@@ -82,6 +84,14 @@ class LessonRegistryTests(unittest.TestCase):
             audit(p)
 
 
+    def test_migrated_e0_fixture_from_competing_pr_is_not_empirical(self):
+        sample = Path(__file__).resolve().parents[1] / "examples" / "lesson_registry.synthetic.json"
+        report = audit(json.loads(sample.read_text(encoding="utf-8")))
+        self.assertEqual(report["dataset_kind"], "synthetic")
+        self.assertEqual(report["by_grade"]["E0"], 1)
+        self.assertFalse(report["independent_verification"])
+        self.assertFalse(report["empirical_result_generated"])
+
     def test_requires_explicit_schema_and_evidence_kind(self):
         for key in ("schema_version", "dataset_kind"):
             p = hypothesis()
@@ -92,6 +102,10 @@ class LessonRegistryTests(unittest.TestCase):
         p["dataset_kind"] = "empirically_validated"
         with self.assertRaises(LessonError):
             audit(p)
+        for invalid in ({}, [], None, True):
+            p["dataset_kind"] = invalid
+            with self.subTest(kind=str(invalid)), self.assertRaises(LessonError):
+                audit(p)
 
     def test_e1_needs_frozen_source_and_analysis_provenance(self):
         p = hypothesis()
