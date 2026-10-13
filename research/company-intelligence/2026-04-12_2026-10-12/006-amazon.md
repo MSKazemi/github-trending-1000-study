@@ -115,3 +115,11 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 - **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
 
 **Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [Amazon Q Developer transition, dated April 30](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/): IDE plugins and paid Q Developer subscriptions are scheduled for **end of support April 30, 2027**, not shutdown in the 2026 collection window. New signups were scheduled to stop **May 15, 2026**; existing customers retain relevant access through the transition. **Q Developer in AWS Management Console and specified first-party AWS surfaces is explicitly excluded from this sunset**. Preserve product/channel-specific denominators when counting retirements.
+- [Kiro Web announcement](https://kiro.dev/blog/introducing-kiro-web/) describes **preview** for paid subscribers. The referenced trial/rollout should not be counted as fully available or supported in all environments.
+- [June 19 AWS blog](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/) documents a Kiro Power connecting the IDE to AWS DevOps Agent. A provider how-to supports the integration description, **not** independent improvement in incident resolution, accepted code or energy use.
+
+**Practical reuse gate:** Record provider, product, host surface and announced support-end date in dependency decisions. Run a migration acceptance test using the current pinned project CLI before replacing a working path with an agent platform.
