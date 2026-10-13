@@ -132,6 +132,51 @@ class TrendingOverlapTests(unittest.TestCase):
         with self.assertRaisesRegex(OverlapError, "language"):
             evaluate(data)
 
+    def test_url_query_key_whitelist_and_trusted_origin(self):
+        for url in (
+            "https://github.com/trending?since=daily&foo=bar",
+            "https://github.com/trending?foo=bar&since=daily",
+            "https://github.com:443/trending?since=daily",
+            "https://github.com:garbage/trending?since=daily",
+            "https://github.com%2Eevil.test/trending?since=daily",
+        ):
+            with self.subTest(url=url):
+                data = fixture()
+                for entry in data["captures"]:
+                    entry["page_url"] = url
+                with self.assertRaises(OverlapError):
+                    evaluate(data)
+
+    def test_nested_or_encoded_language_paths_fail_closed(self):
+        for language, url in (
+            ("Python/other", "https://github.com/trending/python/other?since=daily"),
+            ("Python", "https://github.com/trending/python%2Fother?since=daily"),
+            ("Python", "https://github.com/trending/python/other?since=daily"),
+            ("a#b", "https://github.com/trending/a%23b/other?since=daily"),
+        ):
+            with self.subTest(language=language, url=url):
+                data = fixture()
+                for entry in data["captures"]:
+                    entry["language_filter"] = language
+                    entry["page_url"] = url
+                with self.assertRaises(OverlapError):
+                    evaluate(data)
+
+    def test_malformed_container_fields_return_contract_error(self):
+        malformed = (
+            ("window", []), ("window", {}),
+            ("dataset_kind", []), ("dataset_kind", {}),
+        )
+        for field, value in malformed:
+            with self.subTest(field=field, value=value):
+                data = fixture()
+                if field == "dataset_kind":
+                    data[field] = value
+                else:
+                    data["captures"][0][field] = value
+                with self.assertRaises(OverlapError):
+                    evaluate(data)
+
     def test_future_capture_time_is_invalid(self):
         data = fixture()
         data["captures"][1]["captured_at_utc"] = "2099-01-01T00:00:00Z"
