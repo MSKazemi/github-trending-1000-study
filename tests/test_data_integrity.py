@@ -98,6 +98,68 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaises(ResearchJSONError):
                 validate_repository(root)
 
+    def test_csv_quoted_commas_and_exact_width_without_mutation(self):
+        with tempfile.TemporaryDirectory() as root:
+            csvfile = self._artifact(root, "rows.csv",
+                                     b'id,title,source\n1,"quoted, value",test\n2,other,verified\n')
+            data = csvfile.read_bytes()
+            result = validate_repository(root)
+            self.assertEqual(result["validated_files"], 1)
+            self.assertEqual(result["csv_data_rows"], 2)
+            self.assertEqual(result["json_documents_or_jsonl_records"], 0)
+            self.assertEqual(result["total_research_records"], 2)
+            self.assertEqual(csvfile.read_bytes(), data)
+
+    def test_csv_bad_headers_and_width_fail(self):
+        invalid = (
+            (b'id,ID\n1,2\n', "duplicate CSV header"),
+            (b'id, \n1,2\n', "nonempty header"),
+            (b'id,title\n1,a,b\n', "expected 2"),
+            (b'id,title\n1\n', "expected 2"),
+            (b'id,title\n', "no data records"),
+            (b'id,title\n1,"unclosed\n', "malformed CSV"),
+        )
+        for raw, reason in invalid:
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "invalid.csv", raw)
+                with self.assertRaisesRegex(ResearchJSONError, reason):
+                    validate_repository(root)
+
+    def test_csv_invalid_utf8_embedded_nul_and_symlink_blocked(self):
+        for raw, message in ((b'id,value\n1,\xff\n', "invalid UTF-8"),
+                             (b'id,value\n1,\x00\n', "NUL")):
+            with self.subTest(message=message), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "row.csv", raw)
+                with self.assertRaisesRegex(ResearchJSONError, message):
+                    validate_repository(root)
+        with tempfile.TemporaryDirectory() as root:
+            outside = Path(root) / "outside.csv"
+            outside.write_text("id,value\n1,2\n", encoding="utf-8")
+            folder = Path(root) / "examples"
+            folder.mkdir()
+            (folder / "link.csv").symlink_to(outside)
+            with self.assertRaisesRegex(ResearchJSONError, "symlinks"):
+                validate_repository(root)
+
+    def test_numeric_underflow_and_huge_integer_rejected(self):
+        for raw, message in ((b'{"tiny":1e-999}', "underflow"),
+                             (b'{"big":' + b'9' * 1025 + b'}', "1024 digit")):
+            with self.subTest(message=message), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "numeric.json", raw)
+                with self.assertRaisesRegex(ResearchJSONError, message):
+                    validate_repository(root)
+
+    def test_cumulative_file_and_count_limits(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "first.json", b'{"id":1}')
+            self._artifact(root, "second.json", b'{"id":2}')
+            with patch.object(data_integrity, "MAX_FILES", 1):
+                with self.assertRaisesRegex(ResearchJSONError, "file count"):
+                    validate_repository(root)
+            with patch.object(data_integrity, "MAX_TOTAL_BYTES", 10):
+                with self.assertRaisesRegex(ResearchJSONError, "cumulative"):
+                    validate_repository(root)
+
     def test_cli_error_path_has_nonzero_exit_and_no_traceback(self):
         with tempfile.TemporaryDirectory() as root:
             self._artifact(root, "bad.json", b'{"id":1,"id":2}')
