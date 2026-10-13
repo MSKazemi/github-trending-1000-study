@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import math
 from pathlib import Path
+import re
 
 class BurdenError(ValueError):
     pass
@@ -18,6 +19,7 @@ DOWNSTREAM = ("downstream_search", "downstream_implementation",
 FIELDS = UPSTREAM + DOWNSTREAM
 APPROVED_CONSENT = {"not_consented", "consented", "withdrawn"}
 STATUS = {"pass", "fail", "unknown"}
+_SHA = re.compile(r"[0-9a-f]{40,64}\Z")
 
 def _utc(value):
     if not isinstance(value, str):
@@ -41,6 +43,7 @@ def summarize(cards):
     known_partial_minutes = 0.0
     total_complete_minutes = 0.0
     synthetic_count = 0
+    study_kinds = set()
     for card in cards:
         if not isinstance(card, dict) or card.get("schema_version") != "proposed-maintainer-externality-0.1":
             raise BurdenError("invalid maintainer case schema")
@@ -52,6 +55,11 @@ def summarize(cards):
             raise BurdenError("explicit not_empirical_data required")
         synthetic = card["not_empirical_data"]
         synthetic_count += synthetic
+        study_kinds.add(synthetic)
+        if not synthetic and (
+                not isinstance(card.get("frame_commit"), str)
+                or not _SHA.fullmatch(card["frame_commit"])):
+            raise BurdenError("real case requires a frozen 40/64-hex frame_commit")
         consent = card.get("consent_state")
         if consent not in APPROVED_CONSENT:
             raise BurdenError("explicit consent_state required")
@@ -62,6 +70,8 @@ def summarize(cards):
         if card.get("task_accepted_by_independent_reviewer") not in STATUS:
             raise BurdenError("accepted-task status must be pass/fail/unknown")
         if card.get("observed_at_utc") is not None:
+            if consent != "consented":
+                raise BurdenError("unconsented or withdrawn case cannot retain observation timestamp")
             _utc(card["observed_at_utc"])
         times = card.get("human_time_minutes")
         if not isinstance(times, dict) or set(times) != set(FIELDS):
@@ -89,7 +99,10 @@ def summarize(cards):
             total_complete_minutes += sum(known)
             if card["task_accepted_by_independent_reviewer"] == "pass":
                 accepted_complete += 1
-    return {"case_count": len(cards), "synthetic_case_count": synthetic_count,
+    if len(study_kinds) != 1:
+        raise BurdenError("synthetic and real participant cases must never share one aggregate")
+    return {"dataset_kind": "synthetic" if True in study_kinds else "self_reported_pilot",
+            "case_count": len(cards), "synthetic_case_count": synthetic_count,
             "cases_with_complete_time_boundary": complete,
             "cases_with_accepted_outcome_and_complete_time": accepted_complete,
             "missing_component_entries": unknown_total,
@@ -98,6 +111,7 @@ def summarize(cards):
             "overall_human_minutes": total_complete_minutes if complete == len(cards) else None,
             "per_accepted_task_minutes": None,
             "independent_review_authenticated": False,
+            "approved_for_public_release": False,
             "warning": "Partial observations exclude unknown work: no total burden or saved energy claim unless complete consented comparable outcomes and independently authenticated reviewers exist."}
 
 def main(argv=None):
