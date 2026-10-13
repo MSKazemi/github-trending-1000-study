@@ -14,6 +14,7 @@ from .pilot import _utc_timestamp, validate_manifest_integrity
 
 AUDIT_VERSION = "1.0"
 REPO = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+REVIEWER_REF = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,79}\Z")
 WINDOWS = ("daily", "weekly", "monthly")
 
 
@@ -38,6 +39,8 @@ def _labels(annotation, manifest, moment):
     if annotation.get("schema_version") != AUDIT_VERSION:
         raise PageAuditError("reviewer schema must be 1.0")
     reviewer = _name(annotation.get("reviewer_id"), "reviewer_id")
+    if reviewer.casefold() == "unknown" or REVIEWER_REF.fullmatch(reviewer) is None:
+        raise PageAuditError("reviewer_id must be an ASCII pseudonymous reference (not contact information)")
     if annotation.get("blind_to_parser_output") is not True:
         raise PageAuditError("reviewer must attest blind annotation before parser comparison")
     stamp = _utc_timestamp(annotation.get("reviewed_at_utc"), "reviewed_at_utc")
