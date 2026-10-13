@@ -98,6 +98,73 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaises(ResearchJSONError):
                 validate_repository(root)
 
+    def test_csv_quoted_multiline_and_header_only_are_syntax_valid(self):
+        with tempfile.TemporaryDirectory() as root:
+            csv_file = self._artifact(
+                root, "evidence.csv",
+                b'name,notes\r\n"a,b","first line\nsecond line"\r\n'
+                b'other,"with \"\"quoted\"\" words"\r\n',
+            )
+            result = validate_repository(root)
+            self.assertEqual(result["validated_files"], 1)
+            self.assertEqual(result["json_documents_or_jsonl_records"], 0)
+            self.assertEqual(result["csv_data_records"], 2)
+            self.assertEqual(result["total_logical_records"], 2)
+            self.assertIn(b"first line", csv_file.read_bytes())
+            csv_file.write_bytes(b"name,notes\n")
+            empty = validate_repository(root)
+            self.assertEqual(empty["csv_data_records"], 0)
+            self.assertFalse(empty["authenticated_research_evidence"])
+
+    def test_csv_duplicate_casefold_headers_are_rejected(self):
+        with tempfile.TemporaryDirectory() as root:
+            for content in (b"id,ID\n1,2\n", b"id, id \n1,2\n"):
+                with self.subTest(content=content):
+                    self._artifact(root, "evidence.csv", content)
+                    with self.assertRaisesRegex(ResearchJSONError, "repeated CSV header"):
+                        validate_repository(root)
+
+    def test_csv_ragged_row_blank_header_and_unsafe_nul_fail(self):
+        for content, reason in (
+            (b"id,val\n1,2,3\n", "CSV record"),
+            (b"id,val\n1\n", "CSV record"),
+            (b",val\n1,2\n", "blank CSV header"),
+            (b"", "blank CSV header"),
+            (b"id,val\n1,\x00\n", "embedded NUL"),
+        ):
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "data.csv", content)
+                with self.assertRaisesRegex(ResearchJSONError, reason):
+                    validate_repository(root)
+
+    def test_csv_malformed_quoting_invalid_utf8_and_symlink_fail(self):
+        for content, reason in (
+            (b'id,val\n1,"unfinished\n', "malformed CSV"),
+            (b'id,val\n1,\xff\n', "invalid UTF-8"),
+        ):
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as root:
+                self._artifact(root, "data.csv", content)
+                with self.assertRaisesRegex(ResearchJSONError, reason):
+                    validate_repository(root)
+        with tempfile.TemporaryDirectory() as root:
+            csv_file = self._artifact(root, "good.csv", b"id,val\n1,2\n")
+            link = csv_file.parent / "alias.csv"
+            link.symlink_to(csv_file)
+            with self.assertRaisesRegex(ResearchJSONError, "symlinks"):
+                validate_repository(root)
+
+    def test_cli_csv_failure_uses_nonzero_exit_without_modifying_source(self):
+        with tempfile.TemporaryDirectory() as root:
+            source = self._artifact(root, "source.csv", b"id,ID\n1,2\n")
+            before = source.read_bytes()
+            cp = subprocess.run(
+                [sys.executable, "-m", "trending_study.data_integrity", "--root", root],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(cp.returncode, 2)
+            self.assertIn("repeated CSV header", cp.stderr)
+            self.assertEqual(source.read_bytes(), before)
+
     def test_cli_error_path_has_nonzero_exit_and_no_traceback(self):
         with tempfile.TemporaryDirectory() as root:
             self._artifact(root, "bad.json", b'{"id":1,"id":2}')
