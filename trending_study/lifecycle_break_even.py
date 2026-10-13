@@ -13,6 +13,9 @@ import re
 
 TERMS = ("discovery", "development", "verification", "maintenance", "other")
 BASES = {"synthetic", "metered", "calibrated", "modeled", "unknown"}
+# Operational input bounds prevent extreme unreviewable scenarios/decimal overflow.
+MAX_USES = 1_000_000_000
+MAX_HORIZON_DAYS = 3_650
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 NUM = re.compile(r"(?:0|[1-9][0-9]{0,8})(?:\.[0-9]{1,6})?\Z")
 IDENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,99}\Z")
@@ -34,9 +37,9 @@ def _id(value, where):
     return value
 
 
-def _count(value, where):
-    if type(value) is not int or value < 0:
-        raise BoundaryError(f"{where}: expected nonnegative integer")
+def _count(value, where, maximum=MAX_USES):
+    if type(value) is not int or not 0 <= value <= maximum:
+        raise BoundaryError(f"{where}: expected integer from 0 to {maximum}")
     return value
 
 
@@ -96,7 +99,7 @@ def evaluate(payload):
     for name in ("task_spec_sha256", "acceptance_sha256"):
         if not isinstance(payload[name], str) or not SHA.fullmatch(payload[name]):
             raise BoundaryError(f"{name}: expected lowercase SHA-256")
-    _count(payload["horizon_days"], "horizon_days")
+    _count(payload["horizon_days"], "horizon_days", MAX_HORIZON_DAYS)
     excluded = payload["excluded_terms"]
     if not isinstance(excluded, list) or any(not isinstance(x, str) or not x.strip() for x in excluded):
         raise BoundaryError("excluded_terms: expected list of named omissions")
@@ -158,11 +161,31 @@ def evaluate(payload):
     fixed_delta = b_pre - r_pre
     slope = b_run - r_run
     if fixed_delta > 0 and slope < 0:
-        result["crossing"] = {"kind": "reuse_lower_below_threshold",
-                              "n_uses_equal": _decimal(-fixed_delta / slope)}
+        # Both differences have <=6 decimal places. Integer arithmetic gives
+        # exact strict-inequality boundaries even near a whole workload count.
+        top = int(abs(fixed_delta) * 1_000_000)
+        bottom = int(abs(slope) * 1_000_000)
+        floor_n, remainder = divmod(top, bottom)
+        ceil_n = floor_n + (remainder != 0)
+        result["crossing"] = {
+            "kind": "reuse_lower_below_threshold",
+            "n_uses_equal_approx": _decimal(-fixed_delta / slope),
+            "last_integer_n_reuse_lower": ceil_n - 1,
+            "first_integer_n_build_lower": floor_n + 1,
+            "integer_n_equal": floor_n if remainder == 0 else None,
+        }
     elif fixed_delta < 0 and slope > 0:
-        result["crossing"] = {"kind": "reuse_lower_above_threshold",
-                              "n_uses_equal": _decimal(-fixed_delta / slope)}
+        top = int(abs(fixed_delta) * 1_000_000)
+        bottom = int(abs(slope) * 1_000_000)
+        floor_n, remainder = divmod(top, bottom)
+        ceil_n = floor_n + (remainder != 0)
+        result["crossing"] = {
+            "kind": "reuse_lower_above_threshold",
+            "n_uses_equal_approx": _decimal(-fixed_delta / slope),
+            "last_integer_n_build_lower": ceil_n - 1,
+            "first_integer_n_reuse_lower": floor_n + 1,
+            "integer_n_equal": floor_n if remainder == 0 else None,
+        }
     elif fixed_delta >= 0 and slope >= 0:
         result["crossing"] = {"kind": "reuse_never_higher_for_nonnegative_n", "n_uses_equal": None}
     else:
