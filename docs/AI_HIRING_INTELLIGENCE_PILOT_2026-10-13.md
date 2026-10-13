@@ -2,7 +2,13 @@
 
 **Status:** exploratory, purposive **source-screened lead sample**, not a hiring census or a publication-ready result. **Observation date:** 2026-10-13 UTC date; precise source request times, initial posting dates, revisions and vacancy closures **not measured**. **Data:** [18 rows, 5 company groups](../references/ai_hiring_job_leads_2026-10-13.csv). **Tracking issue:** [#220](https://github.com/MSKazemi/github-trending-1000-study/issues/220). This is intentionally **separate** from the GitHub Trending sample and the six-month news event corpus.
 
-## What is verified, and what is not
+## Subsequent individual-source QA (2026-10-13)
+
+**Correction to the first-pass seed:** [18-row row-by-row source audit](../references/ai_hiring_job_leads_source_audit_2026-10-13.csv) supplies individual employer/ATS posting URLs, unique requisition IDs where actually visible, a concise skills/responsibilities paraphrase and independent source-access status. The original [seed CSV](../references/ai_hiring_job_leads_2026-10-13.csv) is retained **unaltered** as the initial lead register; the audit supersedes its first-pass evidence classifications. **17/18** have an individual employer/ATS posting with described responsibilities and a company assignment that does not currently have an identified identity conflict; the remaining **one** (Cursor RL Environments) has an official page whose body names SpaceXAI and is **excluded from company comparisons pending identity adjudication**. This is an audit of a hand-picked sample, not proof that vacancies are active or a statistical hiring distribution.
+
+The 18 individual-source records have **mixed access evidence**: some descriptions were directly opened, while others were retrieved via search-index page text. Search indexing alone cannot authenticate what is live now. Individual posting/publication dates and application/closure status are **unknown** for all records. The sources do not establish exact historical job start dates. Do not count role/location variants as separate requisitions without a stable employer ID.
+
+## Original first-pass source state (historical; superseded by source audit)
 
 - Five groups covered in this **nonrepresentative seed**: OpenAI (4 listings), Anthropic (4), Cursor (4), AWS (3), Cohere (3). Counts are the researchers' **selected job leads**, not total vacancies or an estimate of strategic investment.
 - 10 records point to individual job pages with descriptions, 8 to careers-index **titles only** (Anthropic 4, Cursor 4). Never promote title-only leads to job-description evidence. Rows 1–4 and 13–18 have concise original-word paraphrases; extracted page snippets do not authenticate uninterrupted availability or posting history.
@@ -51,3 +57,9 @@ A manually selected set of adverts contains recurring terms associated with: (1)
 
 ## Links to other work
 [OpenAI #67](https://github.com/MSKazemi/github-trending-1000-study/issues/67), [Anthropic #68](https://github.com/MSKazemi/github-trending-1000-study/issues/68), [100-company methodology](COMPANY_INTELLIGENCE_METHOD_2026_10.md), [News #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56), [source watch #32](https://github.com/MSKazemi/github-trending-1000-study/issues/32), [mission](AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [evidence-to-lesson](EVIDENCE_TO_LESSON_PROTOCOL.md).
+## Verification limits and audit follow-up
+
+- Employer-origin ATS links were followed from official careers boards when possible; Anthropic Greenhouse IDs are explicit in the corrected ledger. Cohere and AWS pages sometimes returned a search-indexed full description while direct open attempts could not be fetched; these are tagged `read_indexed_text`, **not** independently authenticated live HTTP views.
+- The Cursor RL Environments description resolves on a Cursor-branded localized URL but mentions SpaceXAI as the employer/team; until the identity is resolved do not allocate this row to a corporate parent or use it in theme/company comparisons.
+- The first-pass count of 10 individual pages/8 title-only leads describes **the initial collection**, not the reviewed source-audit state. No row is a completed hiring event.
+- **No blinded independent human double coding, rights review, complete 100-company search frame or 30/90/180-day follow-up has yet been completed.** Study forecasts are hypotheses only.
