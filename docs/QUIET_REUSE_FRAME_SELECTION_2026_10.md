@@ -37,3 +37,8 @@ Change: the selection CLI now accepts **only** the predeclared per-row keys `rep
 **Source for protocol quality:** [Runeson & Höst (2009)](https://doi.org/10.1007/s10664-008-9102-8), on case selection and explicit chain of evidence. It does not establish this frame's coverage.
 
 **Practical maintainer lesson:** make your library discoverable by task, package identity and tested integration—not only recent Trending rank. Measure outsider reuse and downstream maintenance with an independent sampling frame.
+
+
+## 2026-10-13 integration hardening: full selection-plan fingerprint
+
+The original `frame_content_sha256` binds the sorted eligible repository records, but **does not** bind the selection seed, stratum quotas or cutoff timestamp. A new `selection_plan_sha256` now fingerprints the normalized UTC freeze time, seed, quotas and that frame hash. Thus changing any sampling-design choice changes the plan identity; only reordering rows in the input file preserves both digests. Synthetic tests explicitly check these invariants. Preserve both hashes with the actual script SHA and selected output when prospectively registering a study; these hashes still **cannot prove** the frame was sourced independently, the random seed was unbiased, or the data existed at the claimed date.
