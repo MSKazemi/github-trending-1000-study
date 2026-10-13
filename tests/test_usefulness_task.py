@@ -42,6 +42,20 @@ class UsefulnessTaskTests(unittest.TestCase):
         with self.assertRaisesRegex(UsefulnessError, "success time"):
             summarize(p)
 
+    def test_inapplicability_requires_predeclared_structural_reason(self):
+        p = card()
+        a = p["attempts"][0]
+        a["accepted"] = "not_applicable"
+        with self.assertRaisesRegex(UsefulnessError, "attempted"):
+            summarize(p)
+        a["task_attempted"] = False
+        with self.assertRaisesRegex(UsefulnessError, "inapplicability_reason"):
+            summarize(p)
+        a["inapplicability_reason"] = "this fictional CLI has no GUI task"
+        result = summarize(p)
+        self.assertEqual(result["counts"]["not_applicable"], 1)
+        self.assertIsNone(result["pass_fraction_logical_lower"])
+
     def test_duplicate_attempt_and_bogus_consent_fail(self):
         p = card()
         p["attempts"].append(copy.deepcopy(p["attempts"][0]))
