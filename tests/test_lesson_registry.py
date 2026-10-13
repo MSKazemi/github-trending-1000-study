@@ -182,13 +182,13 @@ class LessonRegistryTests(unittest.TestCase):
             with self.subTest(url=url):
                 x["sources"] = [{"url":url,
                                   "published_at_utc":"2026-10-11T12:00:00Z"}]
-                if "evil.example" in url:
-                    # A valid hostname need not be on an allowlist; the
-                    # semantic provenance check remains external.
-                    self.assertEqual(audit(p)["by_grade"]["E1"], 1)
-                else:
-                    with self.assertRaisesRegex(LessonError, "clean HTTPS"):
-                        audit(p)
+                with self.assertRaisesRegex(LessonError, "clean HTTPS"):
+                    audit(p)
+        # Only basic URL hygiene is validated; trusted source identity
+        # must still be established by a real independent evidence review.
+        x["sources"] = [{"url":"https://evil.example/report",
+                         "published_at_utc":"2026-10-11T12:00:00Z"}]
+        self.assertEqual(audit(p)["by_grade"]["E1"], 1)
 
     def test_malformed_status_type_is_rejected(self):
         p = hypothesis()
