@@ -1,22 +1,24 @@
-"""Fail-closed, offline syntax/integrity checks for tracked research JSON.
+"""Fail-closed, offline syntax/integrity checks for tracked research JSON/JSONL/CSV.
 
 Reject ambiguous duplicate keys and non-finite numbers before they become
 silently reinterpreted by downstream readers. Does not authenticate sources,
 validate a study schema, or verify that observations actually occurred.
 """
 import argparse
+import csv
+import io
 import json
 import math
 from pathlib import Path
 import sys
 
 SOURCE_DIRS = ("examples", "references", "research", "research-notes", "templates")
-EXTENSIONS = frozenset((".json", ".jsonl"))
+EXTENSIONS = frozenset((".json", ".jsonl", ".csv"))
 MAX_FILE_BYTES = 16 * 1024 * 1024
 
 
 class ResearchJSONError(ValueError):
-    """A JSON research artifact failed a deterministic validation gate."""
+    """An evidence artifact failed deterministic validation (legacy public name)."""
 
 
 def _unique_pairs(pairs):
@@ -52,6 +54,40 @@ def _decode_document(raw, label):
         raise ResearchJSONError(f"{label}: {exc}") from exc
 
 
+def _check_csv(raw, label):
+    """Validate UTF-8 CSV records, including multiline quoted fields.
+
+    CSV has no native schema or evidence-authenticity guarantee. Blank cells
+    remain legitimate unknowns; inconsistent row widths and duplicate
+    normalized header names are structural ambiguities and fail closed.
+    """
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ResearchJSONError(f"{label}: invalid UTF-8") from exc
+    if "\x00" in text:
+        raise ResearchJSONError(f"{label}: embedded NUL in CSV artifact")
+    try:
+        reader = csv.reader(io.StringIO(text, newline=""), strict=True)
+        header = next(reader, None)
+        if not header or any(not col.strip() for col in header):
+            raise ResearchJSONError(f"{label}: missing or blank CSV header")
+        canon = [col.strip().casefold() for col in header]
+        if len(canon) != len(set(canon)):
+            raise ResearchJSONError(f"{label}: repeated CSV header names")
+        records = 0
+        for row in reader:
+            if len(row) != len(header):
+                raise ResearchJSONError(
+                    f"{label}: CSV record {records + 2} contains {len(row)} columns, "
+                    f"expected {len(header)}"
+                )
+            records += 1
+    except csv.Error as exc:
+        raise ResearchJSONError(f"{label}: malformed CSV ({exc})") from exc
+    return records
+
+
 def _check_file(path, root):
     label = str(path.relative_to(root))
     if path.is_symlink():
@@ -65,6 +101,8 @@ def _check_file(path, root):
             "split it into independently named artifacts"
         )
     raw = path.read_bytes()
+    if path.suffix == ".csv":
+        return _check_csv(raw, label)
     if path.suffix == ".json":
         _decode_document(raw, label)
         return 1
@@ -101,13 +139,20 @@ def validate_repository(root):
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:
-        raise ResearchJSONError("no .json/.jsonl research artifacts found")
-    records = 0
+        raise ResearchJSONError("no JSON/JSONL/CSV research artifacts found")
+    json_records = 0
+    csv_records = 0
     for path in sorted(files):
-        records += _check_file(path, root)
+        count = _check_file(path, root)
+        if path.suffix == ".csv":
+            csv_records += count
+        else:
+            json_records += count
     return {
         "validated_files": len(files),
-        "json_documents_or_jsonl_records": records,
+        "json_documents_or_jsonl_records": json_records,
+        "csv_data_records": csv_records,
+        "total_logical_records": json_records + csv_records,
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
