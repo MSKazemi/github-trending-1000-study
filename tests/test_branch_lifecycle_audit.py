@@ -36,6 +36,15 @@ class BranchAuditTest(unittest.TestCase):
         self.assertTrue(report["read_only"])
         self.assertEqual(report["branches"][1]["decision"], "hold-base-moved-rerun")
 
+    def test_malicious_base_ref_rejected_before_any_network(self):
+        def fail_fetch(path):
+            self.fail("network must not be called for invalid base")
+
+        for ref in ("../issues", "refs/heads/main", "a//b", "a..b",
+                    "main?per_page=1", "main#frag", "", "a/./b"):
+            with self.subTest(ref=ref), self.assertRaisesRegex(ValueError, "Invalid base"):
+                audit("o/r", base=ref, get=fail_fetch)
+
     def test_inconsistent_comparison_fails_closed(self):
         a, b = "a" * 40, "b" * 40
         def fetch(path):
