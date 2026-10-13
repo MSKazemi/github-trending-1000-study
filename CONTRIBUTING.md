@@ -58,3 +58,7 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 
 ## Captured-page QA evidence requirements
 Any PR alleging fixed GitHub Trending parser completeness must include (subject to source redistribution rights) original source manifest SHA/UTC, two **independent** blind full-page reviewer lists, per-window TP/FP/FN with rank disagreements, parser-abstention counts, page-level identity and URLs, unresolved human disagreements/adjudication and actual source-access review. Run the `audit-pages` offline script with a preserved bundle and keep reports write-once. Synthetic cases are necessary regression tests but do **not** fulfill the minimum 30 real-row QA. See [QA method](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+## Enterprise pull-request review and preservation
+
+The authoritative [PR merge and scientific evidence gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and [PR template](.github/pull_request_template.md) require a small auditable change, reusable-code comparison, negative tests, current-head Python 3.10/3.12/3.14 Actions checks and documentation. Identify overlapping branches before editing; retain useful source citations, tests, schema choices and explicit limitations when superseding an approach. Never force-merge a dirty PR or overwrite write-once research evidence. Passing automated checks is **not** independent methodological, legal/security, human-subjects or scientific approval.
