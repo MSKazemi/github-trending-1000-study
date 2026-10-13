@@ -47,3 +47,20 @@ Freeze real user-task requirement and hidden independent acceptance tests **befo
 - [ ] Obtain independent human factual/link QA and run real controlled tasks before any effectiveness claim.
 
 No source code changed, no Python tests/CI run in this research-only draft. This does not complete or close #90. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [Mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [Maintainer lessons](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) · [News intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This adds 2 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](023-cline.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+
+| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
+|---|---|---|---|
+| 2026-05-13 | [Introducing Cline SDK: the upgraded agent runtime, and we rebuilt Cline upon it](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) | Cline announced an embeddable agent runtime extracted from its IDE product. | `shipped`; No tested pin/license/provenance for a specific install in this study. |
+| 2026-07-24 | [Recursive Self Improvement for Coding Agents](https://cline.bot/blog/recursive-self-improvement-for-coding-agents) | Cline reported optimizing a coding-agent harness and a Terminal-Bench score. | `reported_undetermined`; Task selection, contamination, model/provider and energy boundaries not independently audited. |
+
+**Correction to first pass / interpretation:** The Cline SDK has a concrete public repository and Apache-2.0 declaration, but the observed GitHub main branch is mutable. Record exact dependency/package versions and commit before any actual integration; do NOT infer that a blog announcement verifies a reproducible package build. Cline's benchmark discussion is a vendor optimization report, not an independent ranking.
+
+**Negative/independent evidence needed:** Cline's historical February 2026 unauthorized npm publish predates this study window; it is a supply-chain risk baseline, not an April–October in-window release. Check version-pinned SDK dependencies and sandbox boundaries.
+
+**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+
+**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #90 must remain under review until acceptance gates pass.
