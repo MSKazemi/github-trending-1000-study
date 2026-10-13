@@ -20,6 +20,14 @@ The five post-merge-moved refs are `ci/research-json-integrity-247`, `ci/restore
 
 The unmapped source ref at capture was `fix/canonical-nested-symlink-audit-20261013`. A subsequent file-level inspection found that the current `trending_study.data_integrity` on main already rejects nested symlinks before suffix filtering and includes two equivalent synthetic regressions. Preserve the old ref and review notes until the documented disposition is accepted; do not infer that all its historical materials are recoverable merely because the implementation looks equivalent.
 
+## Verified execution outcome — 2026-10-13
+
+The separately merged canonical [GitHub Actions run 38463086727](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38463086727) finished with a **non-success exit code** because one head had changed. Its log records **59 `retired_with_archive_tag`**, **zero already absent**, and **one `blocked_changed_ref`**. An independent REST comparison of the full 60-item allowlist with current GitHub refs verified **59 deleted branches each have a matching recovery tag pointing to the original expected exact commit SHA, and zero deleted branches lack an archive tag**. This verifies recoverable Git references; it does not certify any source or scientific outcome.
+
+The held branch is `ci/enterprise-pr-qa-gates-issue-240`: the original merged PR #253 tip was `2ee638a04d335ef895c5fd981c1b039ee8188d60`, but the live branch had advanced to `4c840ae69eb01385b6e1dd014fc481dbb2ba8c4c`, also the head of **open draft [PR #272](https://github.com/MSKazemi/github-trending-1000-study/pull/272)**. GitHub compare found 12 subsequent commits with code, tests, documentation and policy work. The retirement program **correctly left that entire branch and its history intact**. Do not reset, force-delete or classify #272 as merged merely because earlier PR #253 merged.
+
+The live branch inventory contained **68 branches** when checked after the retirement run, including new concurrently created work branches (versus 123 at the original baseline). Hence the accurate claim is **59 verified exact-head branch retirements**, not an unconditional final cap or a 60/60 success. The source inventory was not rewritten to hide blocked candidates.
+
 ## Practical no-loss branch budget
 
 Follow [issue #273](https://github.com/MSKazemi/github-trending-1000-study/issues/273) to collapse overlapping company-screen draft work into **one canonical, explicitly provisional evidence ledger per company** with original source IDs, dated attribution and unresolved dissent. Keep issue history available, use review branches only for a bounded task, and work toward at most 5–10 genuinely active development branches. Do not mistake fewer branches for independent adoption, lower energy, higher research validity, or permission to scrape source pages.
