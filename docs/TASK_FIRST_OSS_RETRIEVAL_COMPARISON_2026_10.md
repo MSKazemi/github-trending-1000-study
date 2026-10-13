@@ -28,6 +28,8 @@ The repo already provides \`trending_study.goldset.evaluate\` and [its documente
 
 Expected: the synthetic lexical rank list has one viable and one audited failing top-2 candidate; the synthetic semantic list has an unjudged item and therefore **no single precision@2 or pooled-recall point estimate**. Its known-good precision lower bound is 0.5 and upper bound is 1.0. This arithmetic does not compare actual retrievers: the rank lists and all labels are invented fixtures.
 
+**Judgment integrity correction (2026-10-13):** The shared gold-set validator now fails closed if both recorded reviewers abstain but a candidate is assigned a definitive viability label. This is a synthetic structural safeguard, not proof that reviewers were independent or that evidence refs were verified.
+
 ## Independent pilot acceptance / not-yet-done
 
 - Obtain signed scientific owner approval and task/label blind reviewer independence before prospective enrollment.
