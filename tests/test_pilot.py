@@ -155,6 +155,37 @@ class CaptureProvenanceTests(unittest.TestCase):
             self.assertEqual(row["capture_time_status"], "unverified_parse_only")
             self.assertFalse(row["eligible_for_confirmatory_cohort"])
 
+    def test_live_capture_refuses_without_permission_before_network_or_outputs(self):
+        with tempfile.TemporaryDirectory() as d:
+            html = Path(d) / "never-created.html"
+            manifest = Path(d) / "never-created.manifest.json"
+            args = type("A", (), {
+                "date": datetime.now(timezone.utc).date().isoformat(),
+                "window": "daily", "output": str(html),
+                "manifest_output": str(manifest),
+            })()
+            with patch("trending_study.__main__.urlopen") as network:
+                with self.assertRaisesRegex(ValueError, "BLOCKED pending independent source-access"):
+                    capture(args)
+                network.assert_not_called()
+            self.assertFalse(html.exists())
+            self.assertFalse(manifest.exists())
+
+    def test_capture_cli_fails_closed_even_with_valid_current_date(self):
+        with tempfile.TemporaryDirectory() as d:
+            html = Path(d) / "capture.html"
+            manifest = Path(d) / "manifest.json"
+            result = subprocess.run([
+                sys.executable, "-m", "trending_study", "capture",
+                "--date", datetime.now(timezone.utc).date().isoformat(),
+                "--window", "daily", "--output", str(html),
+                "--manifest-output", str(manifest),
+            ], text=True, capture_output=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn("Live GitHub Trending capture is BLOCKED", result.stderr)
+            self.assertFalse(html.exists())
+            self.assertFalse(manifest.exists())
+
     def test_capture_cli_writes_real_time_manifest_with_mocked_http(self):
         class FakeResponse:
             status = 200
@@ -179,9 +210,11 @@ class CaptureProvenanceTests(unittest.TestCase):
                 "date": datetime.now(timezone.utc).date().isoformat(),
                 "window": "daily", "output": str(html), "manifest_output": str(mf),
             })()
-            with patch("trending_study.__main__.urlopen", return_value=FakeResponse()) as url_mock:
-                with redirect_stdout(io.StringIO()):
-                    capture(args)
+            # Only this synthetic test may bypass the hard-stop; no real HTTP.
+            with patch("trending_study.__main__.require_trending_source_access"):
+                with patch("trending_study.__main__.urlopen", return_value=FakeResponse()) as url_mock:
+                    with redirect_stdout(io.StringIO()):
+                        capture(args)
             self.assertEqual(url_mock.call_count, 1)
             self.assertEqual(html.read_bytes(), FIXTURE.read_bytes())
             manifest = json.loads(mf.read_text(encoding="utf-8"))
