@@ -45,7 +45,12 @@ def _capture(obj):
         raise OverlapError("language_filter must be null or a nonempty string")
     # A string prefix alone is not evidence of the requested GitHub surface:
     # it also accepts /trending-evil, userinfo and inconsistent since= values.
-    parsed = urlsplit(obj["page_url"])
+    try:
+        parsed = urlsplit(obj["page_url"])
+    except ValueError as exc:
+        # Malformed IPv6, invalid Unicode host delimiters and other URL
+        # parsing errors are untrusted-input failures, not CLI tracebacks.
+        raise OverlapError("page_url is malformed") from exc
     if parsed.scheme != "https" or parsed.netloc != "github.com" or parsed.fragment:
         raise OverlapError("page_url must be a canonical HTTPS github.com URL")
     path = parsed.path.rstrip("/")
