@@ -58,3 +58,8 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 
 ## Captured-page QA evidence requirements
 Any PR alleging fixed GitHub Trending parser completeness must include (subject to source redistribution rights) original source manifest SHA/UTC, two **independent** blind full-page reviewer lists, per-window TP/FP/FN with rank disagreements, parser-abstention counts, page-level identity and URLs, unresolved human disagreements/adjudication and actual source-access review. Run the `audit-pages` offline script with a preserved bundle and keep reports write-once. Synthetic cases are necessary regression tests but do **not** fulfill the minimum 30 real-row QA. See [QA method](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+
+## Research artifact integrity (2026-10-13)
+
+Run `python scripts/check_research_artifacts.py --root .` before committing JSON, JSONL or CSV evidence alongside `python -m compileall -q trending_study scripts tests` and `python -m unittest discover -s tests -v`. The [research artifact integrity procedure](docs/RESEARCH_ARTIFACT_INTEGRITY_GATE_2026-10-13.md) defines fail-closed, read-only checks, limitations and no-loss repair rules. A green pipeline is not independent scientific-source, security or user-outcome verification.
