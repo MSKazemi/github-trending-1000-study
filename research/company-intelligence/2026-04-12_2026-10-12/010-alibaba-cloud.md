@@ -114,3 +114,11 @@ None of these effects were measured in this source review. External ecosystem pr
 - **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
 
 **Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [April 17 Qwen3.6-35B-A3B announcement](https://www.alibabacloud.com/blog/qwen3-6-35b-a3b-thinking-open-weights-uncompromised-agentic-coding_603043) reports **both available API access and open weights**. That is a **provider-specific current artifact claim**; its exact hosted weights, model-card license, revision and service eligibility have not been independently inspected. Avoid treating all Qwen models as sharing one rights regime.
+- [May 28 Alibaba Cloud community post](https://www.alibabacloud.com/blog/603191) is titled **Alibaba Cloud Launches Qwen Cloud for Global Markets**; its story concerns hosted infrastructure, not proof of third-party coding-agent reuse.
+- Attempts to open [Qwen3.7 reference](https://qwen.ai/blog?id=qwen3.7&locale=en), [August Flash Next note](https://www.alibabacloud.com/blog/qwen-3-8-flash-next-a-new-architecture-towards-ultimate-cost-efficiency_603501) and [September Apsara roadmap](https://www.alibabacloud.com/blog/alibaba-clouds-2026-apsara-conference-full-stack-ai-roadmap-along-with-global-market-expansion-plan_603598) returned **reader/internal errors**. These three events remain **not revalidated**, not disproven. A second reviewer must obtain accessible archived/alternate official records and check exact publication dates before E1 claims are relied on.
+
+**Practical action:** Differentiate model family name, checkpoint SHA, provider endpoint, actual code/weights licenses and host geography before comparing a local model with a cloud API.
