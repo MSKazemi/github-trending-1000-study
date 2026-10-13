@@ -5,14 +5,17 @@ silently reinterpreted by downstream readers. Does not authenticate sources,
 validate a study schema, or verify that observations actually occurred.
 """
 import argparse
+import csv
+from decimal import Decimal, InvalidOperation
+import io
 import json
 import math
 from pathlib import Path
-import sys
 
 SOURCE_DIRS = ("examples", "references", "research", "research-notes", "templates")
-EXTENSIONS = frozenset((".json", ".jsonl"))
+EXTENSIONS = frozenset((".json", ".jsonl", ".csv"))
 MAX_FILE_BYTES = 16 * 1024 * 1024
+MAX_FILES = 5000
 
 
 class ResearchJSONError(ValueError):
@@ -29,10 +32,21 @@ def _unique_pairs(pairs):
 
 
 def _finite_float(literal):
-    value = float(literal)
-    if not math.isfinite(value):
-        raise ResearchJSONError("non-finite or overflowing JSON number")
-    return value
+    """Never silently round a very small nonzero measurement to zero."""
+    try:
+        exact = Decimal(literal)
+        approximated = float(exact)
+    except (InvalidOperation, OverflowError, ValueError) as exc:
+        raise ResearchJSONError("unrepresentable JSON decimal literal") from exc
+    if not math.isfinite(approximated) or (exact != 0 and approximated == 0):
+        raise ResearchJSONError("non-finite, overflowing or underflowing JSON number")
+    return exact
+
+
+def _bounded_int(literal):
+    if len(literal.lstrip("-")) > 1024:
+        raise ResearchJSONError("JSON integer exceeds conservative 1024-digit limit")
+    return int(literal)
 
 
 def _invalid_constant(literal):
@@ -45,6 +59,7 @@ def _decode_document(raw, label):
         return json.loads(
             text, object_pairs_hook=_unique_pairs,
             parse_constant=_invalid_constant, parse_float=_finite_float,
+            parse_int=_bounded_int,
         )
     except UnicodeDecodeError as exc:
         raise ResearchJSONError(f"{label}: invalid UTF-8") from exc
@@ -65,6 +80,29 @@ def _check_file(path, root):
             "split it into independently named artifacts"
         )
     raw = path.read_bytes()
+    if b"\x00" in raw:
+        raise ResearchJSONError(f"{label}: embedded NUL byte")
+    if path.suffix == ".csv":
+        try:
+            contents = raw.decode("utf-8")
+            reader = csv.reader(io.StringIO(contents, newline=""), strict=True)
+            header = next(reader, None)
+            if header is None or not header or not all(col.strip() for col in header):
+                raise ResearchJSONError(f"{label}: CSV header missing or contains blank field")
+            canonical = [col.strip().casefold() for col in header]
+            if len(canonical) != len(set(canonical)):
+                raise ResearchJSONError(f"{label}: duplicate CSV column names")
+            count = 0
+            for record_number, row in enumerate(reader, 2):
+                if len(row) != len(header):
+                    raise ResearchJSONError(
+                        f"{label}: CSV record {record_number}: "
+                        f"{len(row)} cells, expected {len(header)}"
+                    )
+                count += 1
+            return count
+        except (UnicodeDecodeError, csv.Error) as exc:
+            raise ResearchJSONError(f"{label}: invalid UTF-8 or CSV quoting: {exc}") from exc
     if path.suffix == ".json":
         _decode_document(raw, label)
         return 1
@@ -98,16 +136,23 @@ def validate_repository(root):
         if not folder.is_dir():
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
+            if candidate.is_symlink():
+                raise ResearchJSONError(
+                    f"{candidate.relative_to(root)}: symlinked research entry is not trusted"
+                )
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:
-        raise ResearchJSONError("no .json/.jsonl research artifacts found")
+        raise ResearchJSONError("no .json/.jsonl/.csv research artifacts found")
+    if len(files) > MAX_FILES:
+        raise ResearchJSONError("too many research artifacts for bounded audit")
     records = 0
     for path in sorted(files):
         records += _check_file(path, root)
     return {
         "validated_files": len(files),
-        "json_documents_or_jsonl_records": records,
+        "json_documents_jsonl_records_or_csv_rows": records,
+        "json_documents_or_jsonl_records": records,  # retained for backwards compatibility
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
