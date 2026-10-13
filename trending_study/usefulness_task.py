@@ -81,6 +81,14 @@ def summarize(card):
             withdrawn += 1
             if status != "unknown" or a.get("time_to_first_success_minutes") is not None:
                 raise UsefulnessError("withdrawn record may not publish outcome/time")
+        if status == "not_applicable":
+            # A structural inapplicability decision must be recorded rather
+            # than silently removing a failed assigned attempt from the rate.
+            if a["task_attempted"]:
+                raise UsefulnessError("attempted task cannot become not_applicable")
+            why = a.get("inapplicability_reason")
+            if not isinstance(why, str) or not why.strip():
+                raise UsefulnessError("not_applicable requires documented inapplicability_reason")
         if not a["task_attempted"] and status in {"pass", "fail"}:
             raise UsefulnessError("unattempted task cannot have pass/fail")
         minutes = a.get("time_to_first_success_minutes")
