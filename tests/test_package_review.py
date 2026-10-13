@@ -56,6 +56,41 @@ class PackageReviewTests(unittest.TestCase):
         with self.assertRaises(PackageReviewError):
             evaluate(p)
 
+    def test_registry_url_rejects_hidden_parameters_and_malformed_authorities(self):
+        # urllib.parse silently removes newlines and separates ;params from
+        # path. Both behaviors can make a malformed URL appear to be official.
+        for url in (
+            "https://pypi.org/project/fictionalpkg/1.0/;unreviewed",
+            "https://pypi.org:invalid/project/fictionalpkg/1.0/",
+            "https://pypi.org:65536/project/fictionalpkg/1.0/",
+            "https://[malformed/project/fictionalpkg/1.0/",
+            "https://pypi.org/project/fictionalpkg/1.0/" + chr(10),
+            " https://pypi.org/project/fictionalpkg/1.0/",
+            "https://pypi.org:/project/fictionalpkg/1.0/",
+        ):
+            p = candidate()
+            p["candidate"]["registry_url"] = url
+            with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+    def test_passing_evidence_url_cannot_hide_tokens_or_invalid_port(self):
+        p = candidate()
+        p["checks"]["known_advisories"] = {
+            "status": "pass", "evidence_url": "https://security.example.org/advisory"
+        }
+        self.assertEqual(evaluate(p)["decision"], "defer")
+        for url in (
+            "https://security.example.org/advisory?token=private",
+            "https://security.example.org/advisory;hidden",
+            "https://security.example.org:invalid/advisory",
+            "https://security.example.org:65536/advisory",
+            "https://[broken/issue",
+            "https://security.example.org/one" + chr(10) + "two",
+        ):
+            p["checks"]["known_advisories"]["evidence_url"] = url
+            with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
     def test_invalid_digest_rejected(self):
         p = candidate()
         p["candidate"]["artifact_sha256"] = "not-a-digest"

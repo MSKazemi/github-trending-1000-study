@@ -67,3 +67,9 @@ PR #186 retains its independent source history and synthetic examples as
 superseded background; a second live `package_trust` CLI is deliberately not
 introduced into the canonical user interface. Regression tests exercise both
 well-formed and contradictory identity inputs.
+
+## 2026-10-13 URL integrity hardening (post-merge review)
+
+The canonical pre-install evidence gate now validates the entire **structural** HTTPS URL for both declared registry locations and self-reported pass evidence, rather than trusting a parsed hostname while ignoring semicolon parameters, hidden queries, malformed ports, bracket errors or whitespace. In particular, Python's URL parser may discard embedded newlines and separate trailing `;` parameters from the path: these are rejected before identity comparison. Malformed hosts/ports must raise the documented `PackageReviewError` rather than escaping as raw parser exceptions. Genuine clean evidence links continue to pass. The new negative regression tests exercise these bypass cases.
+
+**Validity boundary:** a structurally clean HTTPS link is not authenticated evidence of a working release, correct bytes, provenance, license compatibility, advisory completeness or trusted publisher. The tool continues to **never approve automatic installation**. Any unknown or unsupported registry origin is deferred until independent checks occur. Existing report inputs are not overwritten.
