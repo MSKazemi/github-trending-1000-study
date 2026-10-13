@@ -42,3 +42,13 @@ Use [the synthetic JSON card](../examples/maintainer_externality.synthetic.json)
 **Practical maintainer lesson for 2027:** before enabling many agents to open PRs, cap scope, require reproducible failing tests and a self-reviewed candidate patch. Count the recipient maintainers' time as a real cost. Prefer small upstream fixes with tested user value over bulk low-quality contribution volume.
 
 **Related existing instruments:** [task cost ledger](TASK_COST_LEDGER_2026-10-12.md), [upstream externalities](MAINTAINER_EXTERNALITIES_2027.md), [reuse and green metrics](REUSE_SUSTAINABILITY_METRICS.md). Reuse those tools rather than creating an overlapping time logger.
+
+## 2026-10-13 bounded cost aggregation and privacy rules
+
+New `python -m trending_study.maintainer_burden --input examples/maintainer_externality.synthetic.json` validates six separately reported **human active-minute** categories, consent state, reported UTC and accepted-task status. It rejects minutes for unconsented/withdrawn cases, impossible times, negative/nonfinite values, duplicate cases and partially populated time records being presented as a complete total. `known_partial_minutes_not_a_total` is explicitly diagnostic; `overall_human_minutes` is null unless every case has all six categories observed. `per_accepted_task_minutes` stays null pending a real independently authenticated equal-output study, even when a synthetic card claims pass.
+
+**Ethical study design:** independent opt-in recruitment with institutional privacy/ethics review as required; prospectively freeze eligible case/task frame, active-time definition and consent/withdrawal handling; preserve failed, abandoned, duplicate and rejected PRs in the assigned denominator. Collect task complexity, previous familiarity, support burden and 30/90-day follow-up without raw personal emails, unpublished patches, private logs or contributor rankings. Use self-identified active time without inferring human labor from commits, comment volume or an agent's token count. Observational comparisons require confounder disclosure; randomization is only feasible under voluntary, acceptable protocols.
+
+**Methods reference:** [Runeson & Höst (2009), empirical software engineering case-study guidelines](https://doi.org/10.1007/s10664-008-9102-8) calls for explicit protocols, case selection and chain of evidence. The synthetic audit tool is not proof of consent, participant independence or a causal productivity result.
+
+**Practical maintainer lesson:** cap parallel bot PRs, prefer one independently testable change, and include upstream reviewer/upgrade minutes in the true cost of reuse before claiming green or labor savings.
