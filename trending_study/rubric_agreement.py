@@ -83,6 +83,7 @@ def evaluate(data):
             "rater_a_counts": overall["rater_a_counts"], "rater_b_counts": overall["rater_b_counts"],
             "by_project_type": strata,
             "reason": ("no jointly rated items" if not pairs else
+                       "fewer than two jointly rated items" if len(pairs) < 2 else
                        "chance agreement is one" if overall["cohens_kappa"] is None else None),
             "warning": "Complete-case kappa is descriptive; missing/NA composition, prevalence and genuine reviewer independence require separate review."}
 
