@@ -67,6 +67,16 @@ class EnergyBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(EnergyError, "all seven"):
             compare(p)
 
+    def test_unaccepted_task_cannot_hide_invalid_grid_intensity(self):
+        p = example()
+        p["functional_unit"]["build_task_accepted"] = False
+        for invalid in ("garbage", -1, float("nan"), True):
+            with self.subTest(invalid=invalid):
+                p["grid_intensity_gco2e_per_kwh"] = invalid
+                with self.assertRaisesRegex(EnergyError, "grid_intensity"):
+                    compare(p)
+
+
     def test_modeled_components_never_masquerade_as_measured(self):
         r = compare(example())
         self.assertEqual(r["modeling_or_measurement_status"], "mixed_modeled_scenario_only")
