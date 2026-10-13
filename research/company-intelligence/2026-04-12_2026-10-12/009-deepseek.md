@@ -113,3 +113,11 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 - **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
 
 **Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [DeepSeek-V4 Preview article dated April 24](https://deepseek.com/en/news/v4-preview/) uses **Preview** as a release name but explicitly says the model/API were **available that day** and links weights. Distinguish *live access to a preview model* from a product that is merely an unfulfilled announcement. Exact weight license and immutable model hash still require artifact inspection.
+- [DeepSeek API docs August 13](https://api-docs.deepseek.com/news/news260813/) explicitly label **V4-Pro GA** and report a **future API price change effective August 16 at 16:00 UTC**. Announcement date and effective date must be distinct; neither establishes real user cost without usage records.
+- [September 10 V4.1-Flash notice](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) says the new API model was live, while **V4-Pro alias redirection was scheduled** for September 14 at 04:00 UTC. The source's plan for `deepseek-v4-pro` routing is **not** independently verified runtime behavior. This creates an important backwards-compatibility risk, not guaranteed feature equivalence.
+
+**Practical migration test:** Record resolved model identity, HTTP endpoint, response schema, server timestamp and actual billed rates before and after an alias change; run the same independently frozen parser task. Do not use a shared alias as a stable model-treatment label.
