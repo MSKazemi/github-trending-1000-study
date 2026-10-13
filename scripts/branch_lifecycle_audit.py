@@ -42,6 +42,13 @@ def classify(base, name, protected, open_prs, ahead):
 def audit(repo, base="main", get=fetch):
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
         raise ValueError("Expected owner/repo")
+    # The base comes from a CLI argument and must never alter API URL routes.
+    if (not isinstance(base, str) or not re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}", base)
+            or base.startswith("refs/") or ".." in base
+            or any(part in ("", ".", "..") for part in base.split("/"))
+            or base.endswith((".", "/"))):
+        raise ValueError("Invalid base ref")
     prefix = "/repos/" + repo
     branches = pages(prefix + "/branches", get)
     prs = pages(prefix + "/pulls?state=open", get)
