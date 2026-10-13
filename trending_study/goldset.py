@@ -85,6 +85,10 @@ def _candidate(c, taskid, baseline):
         # alternative, even if its functional/security/license gates pass now.
         if "fail" not in gates.values() or not evidence or not evidence.strip():
             raise GoldsetError(f"{taskid}/{cid}: not viable requires failure evidence")
+    # Two abstentions cannot substantiate a definitive pooled-gold label.
+    # This is a structural check, not proof of actual independent human review.
+    if label != "unknown" and reviewers[0] == reviewers[1] == "unknown":
+        raise GoldsetError(f"{taskid}/{cid}: two unknown reviewer labels cannot establish a definitive judgment")
     if reviewers[0] != reviewers[1] and label != "unknown":
         if not isinstance(c.get("adjudicator_ref"), str) or not c["adjudicator_ref"].strip():
             raise GoldsetError(f"{taskid}/{cid}: disagreement needs adjudicator_ref")
