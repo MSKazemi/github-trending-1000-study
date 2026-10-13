@@ -48,3 +48,18 @@ As of the dated baseline, `.github/workflows/ci.yml` ran standard-library unit t
 3. Document reviewer and source provenance as rigorously as code provenance; labels written by an AI agent are not independent assessment.
 4. Prefer measured cost per verified reused task to stars, PR volume or speculative token-to-carbon conversions.
 5. Protect long-lived datasets with immutable raw artifacts, timestamped changes, full null/missingness accounting and explicit superseding links.
+
+## CI implementation integration — 2026-10-13
+
+The concurrent PR quality-policy drafts were reconciled into **this canonical gate**, not duplicated as a second normative policy. The dated [PR review checkpoint](PR_REVIEW_CHECKPOINT_2026_10_13.md) is an operational audit, not a competing policy.
+
+- The official release Git tags `actions/checkout@v7.0.1` and `actions/setup-python@v7.0.0` were verified through the GitHub release/tag-ref APIs; CI executes their **immutable commit SHAs** `3d3c42e5aac5ba805825da76410c181273ba90b1` and `5fda3b95a4ea91299a34e894583c3862153e4b97`.
+- Read-only `contents: read` permissions, no persisted checkout credentials, no dependency installs, a 15-minute timeout, and Python **3.10/3.12/3.14** source compilation/full standard-library tests/CLI smoke constitute the documented technical baseline.
+- CI runs for **pull requests and pushes to main**; cancel only superseded PR revisions, never fast-following post-merge main pushes. The main integration run is a separate gate; an earlier successful PR run cannot substitute for it.
+- The GitHub workflows/policy alone do **not** configure server-enforced branch protection or required independent human reviewers. Repo administrators should set required status checks and approval rules in GitHub repository settings.
+
+### Preservation decision for competing quality PRs
+A concurrent PR introduced this useful canonical [template](../.github/pull_request_template.md), which is retained and updated to the three-version matrix. The other PR's more stringent immutable-action configuration and an independently dated integration-risk report were carried forward here. We deliberately avoid two PR templates or two normative merge policy files; unique, useful text is retained in this addendum and the [audit checkpoint](PR_REVIEW_CHECKPOINT_2026_10_13.md).
+
+### Preserved newer validation from concurrent main
+The final CI retains the separate stricter JSON syntax/duplicate-key/nonstandard-number guard from another integration PR, and smoke tests the existing `trending_study`, `reuse_gate`, and `goldset` entrypoints. Those checks must **not** be dropped when action versions or Python matrices change. Real research-source integrity still needs independent verification beyond JSON syntax.
