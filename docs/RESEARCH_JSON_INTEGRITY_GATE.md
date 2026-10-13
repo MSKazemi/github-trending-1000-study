@@ -22,6 +22,20 @@ The validator's output counts parsed documents and JSONL records, not confirmed 
 
 When the CI step fails, open the referenced path and (for JSONL) line. Compare against the original source and the intended canonical schema. Repair only on a new branch, preserve original evidence when required by the research provenance policy, add a regression test, and rerun the full matrix. Never resolve a duplicate by blindly keeping the last value or replacing unknown with zero.
 
-This gate is deliberately conservative but limited: it checks only files in the listed directories and only JSON/JSONL lexical integrity, not CSV contents, Markdown links, research-statistical logic or source authentication. If a legitimately large artifact exceeds 16 MiB, document and review a format/sharding amendment instead of silently bypassing the gate.
+This initial JSON/JSONL phase checked only lexical integrity. The 2026-10-13 additive extension below also validates CSV structure; none of these gates verifies Markdown links, research-statistical logic or source authenticity. If a legitimately large artifact exceeds 16 MiB, document and review a format/sharding amendment instead of silently bypassing the gate.
 
 **Practical reusable lesson for your repositories:** enforce unambiguous machine-readable evidence and traceable failures in CI before optimizing stars or claiming reproducibility; no checksum or passing unit test can replace independent verification of the underlying observation.
+
+
+## 2026-10-13 additive CSV integrity extension (issue #247)
+
+The canonical `trending_study.data_integrity` CLI now checks `.csv` files **as well as JSON and JSONL** in the same five research directories; the original JSON/JSONL schema and counters remain compatible. Added read-only, standard-library checks reject CSV blank or case-insensitively duplicate headers, inconsistent row widths, invalid UTF-8, NUL bytes, symlinks and malformed quoting. Correctly quoted multi-line CSV cells remain supported. The output distinguishes `validated_csv_files` and `validated_csv_rows` from `json_documents_or_jsonl_records`, avoiding changes to older JSON metrics.
+
+This is an integration decision after [PR #250](https://github.com/MSKazemi/github-trending-1000-study/pull/250) and the pinned workflow [#255](https://github.com/MSKazemi/github-trending-1000-study/pull/255) were merged. The distinct CSV and negative-fixture ideas from [#253](https://github.com/MSKazemi/github-trending-1000-study/pull/253) are incorporated **without** shipping a competing JSON validator, copying an older CI configuration or overwriting the canonical PR template. The original branches and historical review records remain available. Execute:
+
+```bash
+python -m trending_study.data_integrity --root .
+python -m unittest discover -s tests -v
+```
+
+Passing proves only basic file consistency, not DOI/link authenticity, licensed reuse, empirical completeness, real reviewers, legal/ethics approval or verified downstream software adoption. CSV user-controlled cells should not be evaluated as spreadsheet formulas or executed as code without a separate export-sanitization policy. Never rewrite stored original observations in order to satisfy the checker.
