@@ -103,7 +103,7 @@ def validate_repository(root):
             # makes an evidence subtree disappear from the audit denominator.
             if candidate.is_symlink():
                 raise ResearchJSONError(
-                    f"{candidate.relative_to(root)}: symlinked research content is not allowed"
+                    f"{candidate.relative_to(root)}: symlinked research content; symlinks are not allowed"
                 )
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
