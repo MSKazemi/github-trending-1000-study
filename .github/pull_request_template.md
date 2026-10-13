@@ -27,6 +27,36 @@ Describe the single bounded change, affected interfaces/schema versions, and why
 
 **Genuine human reviewer and approval link, when required:** pending
 
+## Compatibility, external acceptance, and reversibility
+
+**User-relevant task and expected behavior:**
+
+**Existing compatible implementation or upstream alternative investigated:**
+
+**Why a new change is justified:**
+
+**API/schema/migration and backward-compatibility plan:**
+
+**Affected documentation and reproducible acceptance test:**
+
+**Potential overlapping PRs or preserved source artifacts:**
+
+**Rollback strategy and post-merge observation:**
+
+## Evidence classification and independent verification
+
+**Evidence type:** [ ] synthetic only [ ] public metadata [ ] consented and registered experiment [ ] provisional methodology [ ] documentation-only.
+
+**Source URL, publication date, event date, version/rights and uncertainty (as applicable):**
+
+**Unverified claims, expected negative/null cases, missing denominator or observations:**
+
+**Security, permissions, package identity and dependencies reviewed:**
+
+**External human reviewer / ethics approval record (only if actually obtained):**
+
+**Reviewed PR head SHA, CI run URLs and integration base:**
+
 ## Reproduction
 
 ```bash

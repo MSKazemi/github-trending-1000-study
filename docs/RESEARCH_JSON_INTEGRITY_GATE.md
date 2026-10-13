@@ -2,7 +2,7 @@
 
 **Implemented as an offline engineering control, 2026-10-13.** This is **not** a systematic literature review, an authenticated data capture, an ethics approval, a schema registry or empirical research evidence.
 
-The GitHub Actions Python 3.10/3.12 matrix runs three steps before treating a pull request as technically verified:
+The GitHub Actions Python 3.10/3.12/3.14 matrix runs three steps before treating a pull request as technically verified:
 
 ```bash
 python -m compileall -q trending_study tests
@@ -10,7 +10,7 @@ python -m trending_study.data_integrity --root .
 python -m unittest discover -s tests -v
 ```
 
-The new standard-library validator inspects committed `.json` and `.jsonl` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing floating-point literals, empty JSONL, symlinked JSON files/directories and files exceeding 16 MiB. JSONL errors include the actual record line number.
+The standard-library validator inspects committed `.json`, `.jsonl` and `.csv` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON/CSV or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing or underflowing nonzero floating-point literals, extremely long integer tokens, empty JSONL, malformed/duplicate CSV headers, inconsistent CSV row widths, embedded NUL bytes in CSV, symlinked data files/directories and files exceeding 16 MiB. JSONL errors include the actual record line number.
 
 ## Why this protects the study
 
@@ -22,17 +22,23 @@ The validator's output counts parsed documents and JSONL records, not confirmed 
 
 When the CI step fails, open the referenced path and (for JSONL) line. Compare against the original source and the intended canonical schema. Repair only on a new branch, preserve original evidence when required by the research provenance policy, add a regression test, and rerun the full matrix. Never resolve a duplicate by blindly keeping the last value or replacing unknown with zero.
 
-This gate is deliberately conservative but limited: it checks only files in the listed directories and only JSON/JSONL lexical integrity, not CSV contents, Markdown links, research-statistical logic or source authentication. If a legitimately large artifact exceeds 16 MiB, document and review a format/sharding amendment instead of silently bypassing the gate.
+This gate is deliberately conservative but limited: it checks only files in the listed directories and only JSON/JSONL/CSV lexical and tabular integrity, not Markdown links, research-statistical logic or source authentication. If a legitimately large artifact exceeds 16 MiB, document and review a format/sharding amendment instead of silently bypassing the gate.
 
 **Practical reusable lesson for your repositories:** enforce unambiguous machine-readable evidence and traceable failures in CI before optimizing stars or claiming reproducibility; no checksum or passing unit test can replace independent verification of the underlying observation.
 
-## Extended canonical data-integrity checks (2026-10-13 PR integration)
-This module is the **single** canonical offline research-artifact checker after review of overlapping [PR #251](https://github.com/MSKazemi/github-trending-1000-study/pull/251) and [PR #253](https://github.com/MSKazemi/github-trending-1000-study/pull/253). The useful original ideas—strict CSV column-count/header validation, rejecting numeric float underflow, bounded huge integers, symlink safety and total file/byte budgets—are integrated **without adding a competing script/CLI or replacing any existing CI protections**.
+## CSV and numerical preservation extension (2026-10-13)
 
-- The existing `python -m trending_study.data_integrity --root .` CI step now checks `.csv` under the five research source directories as well as `.json`/`.jsonl`. CSV uses Python's RFC-4180-style reader with strict quoted-field errors; header columns must be nonblank and unique after trimming/casefolding, and all rows must have the header's exact width. A header-only CSV has no auditable data records and fails closed.
-- JSON fractional literals that would overflow to infinity **or silently underflow to zero** are rejected; integer literals exceeding 1,024 digits are rejected, avoiding version-dependent Python conversion behavior.
-- A file is limited to 16 MiB, all scanned data to 128 MiB, and the inspected artifact set to 5,000 files; explicit over-limit input requires a signed dataset-sharding/limit amendment, not silent filtering.
-- Preserve original `json_documents_or_jsonl_records` count for compatibility; new report fields `csv_data_rows`, `total_research_records`, and `checked_bytes` distinguish file classes. Existing main CSV registry files are used as regression/CI inputs, but **do not certify their publication-date or organizational claims**.
-- This is a syntactic and elementary structural input gate—not a full RFC 4180 formal certification, package-vulnerability scanner, complete source-coverage audit, DOI resolver, independent empirical verification, or permission to release private data. Tests remain synthetic except for ordinary pre-existing, source-unverified public repository fixture files scanned by CI.
+**Enterprise integration decision:** carry forward the unique useful **CSV grammar, headers and row-width checks** proposed in [PR #253](https://github.com/MSKazemi/github-trending-1000-study/pull/253) into the already-merged canonical `trending_study.data_integrity` validator from [PR #250](https://github.com/MSKazemi/github-trending-1000-study/pull/250). Keep one public CLI and the existing read-only three-Python-version CI matrix, immutable official actions, current smoke tests and source snapshot rules. Do not merge another competing CI workflow to gain these checks.
 
-**Preservation:** #251's useful tracked-Git versus filesystem selection semantics and #253's stricter size/CSV tests remain reviewable in their GitHub branches; the common validated subset is integrated here. Avoid merging three redundant validators or overwriting the current Python 3.10/3.12/3.14 SHA-pinned Actions workflow.
+The extension performs read-only, strict CSV parsing with correct quoted commas and multiline cells; rejects case-insensitive duplicate/blank header names, malformed quoting, irregular column counts, embedded NUL bytes and malformed UTF-8. It counts CSV files/data rows separately so the original `json_documents_or_jsonl_records` measure remains backward compatible. JSON float parsing now distinguishes true zero from nonzero underflow to zero, and rejects >1024-digit integer tokens to avoid version-dependent interpretation and resource exhaustion. Six new tests exercise correct and failure cases. The checked-out source content is **never modified or discarded**.
+
+**Scope limits:** The checker does not verify semantic column types, third-party source identities, GDPR/ethics permissions, whether numeric quantities have real measurement methods, or whether the source is historically accurate. Duplicate column rejection is a deliberate dataset contract; source providers with repeated names must be preserved and mapped in an independently documented amendment rather than silently renamed by an agent. CSV formula strings are read as literal data and never executed. A header-only CSV yields zero observed data rows, not an inferred negative research result.
+
+[PR #251](https://github.com/MSKazemi/github-trending-1000-study/pull/251) proposes an additional *Git-tracked Python AST* check (including scripts outside `trending_study/`), which remains a separate possible improvement, not a reason to duplicate the integrated JSON/CSV evidence contract. Preserve useful test cases and original PR discussion. Report all claim statuses and unknown/missing denominators faithfully.
+
+**Reusable lesson for your own repositories:** test not just that data parses, but that a parser cannot silently *change its meaning*: two duplicate fields should never discard an earlier status, a tiny positive measurement must not become zero, and a CSV header must not be interpreted ambiguously.
+
+## 2026-10-13 final integration: bounded cardinality and explicit empty CSV
+
+Concurrent changes had already brought the CSV grammar and numeric underflow tests from #253 into this **canonical** validator, so no copy of those implementations was merged again. This follow-up adds only the missing requirements: at most **5,000** research JSON/JSONL/CSV artifacts and **128 MiB** total inspection bytes (besides the existing 16 MiB per file), explicit rejection of a CSV containing headers but no data rows, and backward-compatible counts `total_research_records` / `checked_bytes`. Tests include mixed JSON/CSV data and budget failures. The separate strict tracked-artifact gate from #253 was **not** deleted or overwritten; its own test/CI scope remains visible pending a future deliberate consolidation.
+These are input-integrity bounds, **not** externally validated research or a guarantee against intentionally malicious repositories.
