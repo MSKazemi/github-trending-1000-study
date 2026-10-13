@@ -1,0 +1,88 @@
+{
+  "created_on": "2026-10-12",
+  "research_status": "literature_context_only_not_study_findings",
+  "notes": "Records with needs_exact_source or needs_version_check are explicitly not verified claims; do not cite counts or specific assertions as established.",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "GitHub Octoverse 2025",
+      "url": "https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/",
+      "evidence_type": "platform-reported descriptive data",
+      "publication_or_context": "2025",
+      "boundary": "AI-related repository count and 81.5% of contributions in private repositories; not agent authorship or enterprise representativeness",
+      "review_status": "verified"
+    },
+    {
+      "id": "S02",
+      "title": "Agentic Coding in the Wild: Characterizing GitHub Copilot at Production Scale",
+      "url": "https://www.microsoft.com/en-us/research/publication/agentic-coding-in-the-wild-characterizing-github-copilot-at-production-scale/",
+      "evidence_type": "Microsoft Research arXiv preprint on sampled production traces",
+      "publication_or_context": "2026-07",
+      "boundary": "3.2M sampled users, 13M sessions; workload and caching, not quality or causal impact",
+      "review_status": "verified"
+    },
+    {
+      "id": "S03",
+      "title": "Microsoft internal agentic developer workflow vendor account",
+      "url": "https://www.microsoft.com/en-us/research/",
+      "evidence_type": "vendor engineering account requiring exact article verification",
+      "publication_or_context": "2026",
+      "boundary": "Do not rely on adoption/review-coverage percentages without obtaining the exact source, definitions and date",
+      "review_status": "needs_exact_source"
+    },
+    {
+      "id": "S04",
+      "title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "url": "https://arxiv.org/abs/2507.09089",
+      "evidence_type": "randomized empirical task study / preprint",
+      "publication_or_context": "2025-07",
+      "boundary": "16 developers, 246 mature-repository tasks, early-2025 AI allowed arm 19% slower; limited tasks and models",
+      "review_status": "verified"
+    },
+    {
+      "id": "S05",
+      "title": "We are Changing our Developer Productivity Experiment Design",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "evidence_type": "methods update / selection bias warning",
+      "publication_or_context": "2026-02-24",
+      "boundary": "selection, participation and parallel agent timing make later uplift ambiguous",
+      "review_status": "verified"
+    },
+    {
+      "id": "S06",
+      "title": "2025 State of AI-assisted Software Development",
+      "url": "https://dora.dev/research/2025/dora-report/",
+      "evidence_type": "industry organizational research",
+      "publication_or_context": "2025",
+      "boundary": "AI as amplifier; organizational survey/observational limits; see DORA errata",
+      "review_status": "verified"
+    },
+    {
+      "id": "S07",
+      "title": "NIST SSDF and AI-related guidance",
+      "url": "https://csrc.nist.gov/projects/ssdf",
+      "evidence_type": "government software security guidance",
+      "publication_or_context": "2026",
+      "boundary": "Use final-version metadata only after direct standards verification; do not mistake drafts for final standards",
+      "review_status": "needs_version_check"
+    },
+    {
+      "id": "S08",
+      "title": "Green Software Foundation Software Carbon Intensity for AI",
+      "url": "https://greensoftware.foundation/standards/sci-ai/",
+      "evidence_type": "measurement standard",
+      "publication_or_context": "2026",
+      "boundary": "functional-unit and defined energy/carbon measurement boundaries; not fixed token to CO2 coefficients",
+      "review_status": "verified_from_existing_repository"
+    },
+    {
+      "id": "S09",
+      "title": "GitHub qualitative study on developer agent orchestration",
+      "url": "https://github.blog/",
+      "evidence_type": "qualitative contextual signal requiring bibliographic verification",
+      "publication_or_context": "2026",
+      "boundary": "Do not infer 22-person study prevalence or rely on this count until exact original study is retrieved",
+      "review_status": "needs_exact_source"
+    }
+  ]
+}

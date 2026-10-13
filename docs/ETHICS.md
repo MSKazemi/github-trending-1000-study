@@ -1,6 +1,6 @@
 # Ethics, platform use, and limits
 
-- Respect GitHub Terms, robots/access policies and rate limits; don't bypass access controls, use proxy rotation or evade blocks. A single user-initiated public Trending fetch is provided for pilot use; **do not schedule bulk scraping by default** without reviewing platform permissions.
+- Respect GitHub Terms, robots/access policies and rate limits; don't bypass access controls, use proxy rotation or evade blocks. **As of 2026-10-13, the live Trending `capture` command is disabled before HTTP** because the published robots guidance includes the required `?since=` URL pattern and this research has no documented source-access approval. A manual browser download is not an automatic workaround. Do not re-enable collection or schedule any retrieval without an independent human platform/access review, a documented permission and allowed-frequency decision, and a reviewed protocol/code amendment. See [source-access decision](SOURCE_ACCESS_DECISION_2026-10-13.md).
 - Prefer official GitHub APIs for repository metadata. Use a token via the `GITHUB_TOKEN` environment variable; never commit the token or place it in logs.
 - API snapshots are point-in-time measurements. Never reconstruct historical stars from current values.
 - Repositories and maintainers are not study participants who consented to ranking individual behavior. Avoid sensitive attributes, personal-email collection, identity judgments and publicly listing 'worst' maintainers.

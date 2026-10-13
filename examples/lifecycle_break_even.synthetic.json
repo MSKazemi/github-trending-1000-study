@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "functional_unit_id": "same_accepted_task",
+  "task_spec_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "acceptance_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "horizon_days": 90,
+  "boundary_id": "hypothetical_local_and_runtime",
+  "excluded_terms": [
+    "cloud_inference",
+    "embodied_hardware",
+    "water",
+    "upstream_burden"
+  ],
+  "n_uses": [
+    0,
+    100,
+    266,
+    267,
+    300
+  ],
+  "strategies": {
+    "build": {
+      "pre_run": {
+        "discovery": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "development": {
+          "kwh": "12",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "verification": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "maintenance": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "other": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        }
+      },
+      "runtime_per_use": {
+        "kwh": "0.01",
+        "basis": "synthetic",
+        "evidence_ref": "SYNTHETIC ONLY"
+      }
+    },
+    "reuse": {
+      "pre_run": {
+        "discovery": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "development": {
+          "kwh": "4",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "verification": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "maintenance": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        },
+        "other": {
+          "kwh": "0",
+          "basis": "synthetic",
+          "evidence_ref": "SYNTHETIC ONLY"
+        }
+      },
+      "runtime_per_use": {
+        "kwh": "0.04",
+        "basis": "synthetic",
+        "evidence_ref": "SYNTHETIC ONLY"
+      }
+    }
+  }
+}
