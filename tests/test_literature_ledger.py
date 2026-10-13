@@ -72,7 +72,7 @@ class LiteratureLedgerTests(unittest.TestCase):
             "https:///missing-host", "https://me:secret@doi.org/10.1000/XYZ",
             "https://doi.org/10.1000/XYZ#note",
             "https://doi.org/10.1000/XYZ?token=private",
-            "https://doi.org/10.1000/XYZ\\n",
+            "https://doi.org/10.1000/XYZ" + chr(10),
             "https://[malformed/10.1000/XYZ",
         ):
             payload = source()
