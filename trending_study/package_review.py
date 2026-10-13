@@ -64,9 +64,11 @@ def evaluate(data):
                    candidate["package_name"].casefold().replace("_", "-").replace(".", "-")
                 or parts[2] != candidate["version"]):
             raise PackageReviewError("PyPI registry URL must match official host, exact name and version")
-    sha = candidate.get("artifact_sha256")
-    if not isinstance(sha, str) or not _SHA.fullmatch(sha):
-        raise PackageReviewError("exact artifact SHA-256 digest required")
+    if "artifact_sha256" not in candidate:
+        raise PackageReviewError("artifact_sha256 must be explicitly known or null (unknown)")
+    sha = candidate["artifact_sha256"]
+    if sha is not None and (not isinstance(sha, str) or not _SHA.fullmatch(sha)):
+        raise PackageReviewError("artifact_sha256 must be a lowercase SHA-256 digest or null")
     frozen = _date(data.get("task_frozen_at_utc"))
     release = _date(candidate.get("first_available_at_utc"), allow_future=True)
     if release > frozen:
@@ -76,7 +78,9 @@ def evaluate(data):
     checks = data.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(FIELDS):
         raise PackageReviewError("must declare every evidence check including unknowns")
-    failed, unknown = [], []
+    # An unresolved release artifact is not a failed package and must never
+    # become "review_ready" solely through self-declared six passing checks.
+    failed, unknown = [], (["artifact_sha256"] if sha is None else [])
     for key in FIELDS:
         cell = checks[key]
         if (not isinstance(cell, dict) or not isinstance(cell.get("status"), str)
