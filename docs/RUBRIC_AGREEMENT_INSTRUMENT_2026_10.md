@@ -6,7 +6,7 @@
 
 ```bash
 python -m trending_study.rubric_agreement --input YOUR_ANNOTATIONS.json
-python -m unittest tests.test_rubric_agreement -v
+python -m unittest discover -s tests -p 'test_rubric_agreement.py' -v
 ```
 
 Minimal **synthetic illustration** (not a real dataset):
