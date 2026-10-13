@@ -59,6 +59,29 @@ class LiteratureLedgerTests(unittest.TestCase):
         self.assertEqual(audit(p)["decisions"]["include"], 1)
 
 
+    def test_title_year_cross_doi_collision_is_review_only(self):
+        p = source()
+        q = dict(p["records"][0])
+        q.update(record_id="s2", doi="10.1000/another", decision="pending")
+        p["records"].append(q)
+        report = audit(p)
+        self.assertEqual(report["possible_duplicate_groups"], {})
+        self.assertEqual(list(report["title_year_collision_groups"].values()), [["s1", "s2"]])
+        self.assertEqual(report["screened_records"], 2)
+        self.assertFalse(report["prisma_flow_authenticated"])
+
+    def test_future_search_timestamp_is_not_historical_evidence(self):
+        p = source()
+        p["search_runs"][0]["searched_at_utc"] = "2099-01-01T00:00:00Z"
+        with self.assertRaisesRegex(LiteratureError, "future"):
+            audit(p)
+
+    def test_source_publication_cannot_postdate_search(self):
+        p = source()
+        p["records"][0]["publication_year"] = 2027
+        with self.assertRaisesRegex(LiteratureError, "postdate"):
+            audit(p)
+
     def test_malformed_source_type_is_rejected(self):
         p = source()
         p["records"][0]["source_type"] = {}
