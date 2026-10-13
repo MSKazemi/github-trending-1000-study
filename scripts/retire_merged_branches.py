@@ -26,7 +26,7 @@ class ApiNotFound(CleanupError):
 
 def _safe_name(s):
     if (not isinstance(s, str) or not BRANCH.fullmatch(s)
-            or s in {"main", "master", "HEAD"}
+            or s in {"main", "master", "HEAD"} or s.startswith("refs/")
             or any(p in ("", ".", "..") for p in s.split("/"))
             or s.endswith((".", "/")) or ".." in s or "@{" in s):
         raise CleanupError("invalid or protected branch name")
@@ -170,7 +170,7 @@ def retire_one(client, repo, item):
 def execute(plan, client):
     validate_plan(plan)
     if client.repository != plan["repository"]:
-        raise CleanupError("GitHub repository does not match frozen plan")
+        raise CleanupError("GITHUB_REPOSITORY disagrees with approved cleanup plan")
     repo = plan["repository"]
     if client.get(f"/repos/{repo}").get("default_branch") != "main":
         raise CleanupError("default branch changed; abort cleanup")
