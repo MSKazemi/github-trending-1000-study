@@ -22,6 +22,26 @@ class FrameSelectionTests(unittest.TestCase):
         self.assertEqual(a["selected"], select(p)["selected"])
         self.assertEqual(a["frame_content_sha256"], select(p)["frame_content_sha256"])
 
+    def test_selection_plan_hash_includes_seed_quotas_and_freeze(self):
+        base = fake()
+        original = select(base)
+        shuffled = copy.deepcopy(base)
+        shuffled["repositories"].reverse()
+        self.assertEqual(select(shuffled)["selection_plan_sha256"],
+                         original["selection_plan_sha256"])
+        for field, change in (
+                ("seed", "different-seed"),
+                ("quotas", {"old_low": 2, "young": 1}),
+                ("frozen_at_utc", "2026-10-13T00:00:00Z")):
+            changed = copy.deepcopy(base)
+            changed[field] = change
+            with self.subTest(field=field):
+                got = select(changed)
+                self.assertEqual(got["frame_content_sha256"],
+                                 original["frame_content_sha256"])
+                self.assertNotEqual(got["selection_plan_sha256"],
+                                    original["selection_plan_sha256"])
+
     def test_stratified_nontrivial_sample(self):
         r = select(fake())
         self.assertEqual(len(r["selected"]), 2)
