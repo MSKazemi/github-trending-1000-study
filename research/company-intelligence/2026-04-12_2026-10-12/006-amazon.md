@@ -91,3 +91,22 @@ The site and source population are not randomized. No effect estimate or recomme
 - [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
 
 **No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This section records 4 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [006-amazon.events.csv](006-amazon.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
+
+| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+|---|---|---|---|
+| 2026-04-30 | [Amazon Q Developer end-of-support announcement](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) | AWS announced Apr 30 2027 end of support for specified Q Developer IDE plugins and paid subscriptions; console/chat remain unaffected. **Status:** `announced_only`. | Do not report that all Amazon Q services were discontinued in 2026. |
+| 2026-05-12 | [Specs just got faster (and smarter)](https://kiro.dev/blog/faster-smarter-specs/) | Kiro described spec-driven planning improvements and support for independent subtasks. **Status:** `shipped`. | No independent proof of faster accepted task completion. |
+| 2026-10-09 | [Kiro CLI V3 is rolling out as the default experience](https://kiro.dev/blog/cli-3/) | Kiro announced gradual CLI V3 migration prompt starting Oct 12, with general default planned by late October. **Status:** `preview`. | Do not backdate proposed late-October general rollout into 2026-10-12. |
+| 2026-10-12 | [CLI changelog: version 2.30.0](https://kiro.dev/changelog/cli/) | Kiro logged a 2.30.0 CLI entry announcing gradual V3 switch prompts and fallback notices. **Status:** `shipped`. | Versioned documentary record, not neutral task outcome. |
+
+**Important correction and interpretation:** Q Developer's declared April 30, 2027 sunset applies to IDE plugins and paid subscriptions / code transformation, NOT Amazon Q Developer in AWS console and chat applications. Kiro CLI V3 was in opt-in/gradual migration as of the October 12 pilot; release end of October was a future plan, not a delivered GA.
+
+**Disconfirmation/critical evidence still needed:** Migration-specific license, IDE extensions, enterprise entitlements, regional access and tool compatibility remain untested.
+
+**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+
+**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #72 and this draft PR open until those acceptance gates are addressed.
