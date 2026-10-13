@@ -120,6 +120,21 @@ class TrendingOverlapTests(unittest.TestCase):
                 with self.assertRaises(OverlapError):
                     evaluate(data)
 
+    def test_unregistered_url_parameters_are_not_comparable_surfaces(self):
+        for extra in ("&spoken_language_code=en", "&foo=bar", "&since=", "&q=language"):
+            with self.subTest(extra=extra):
+                data = fixture()
+                for entry in data["captures"]:
+                    entry["page_url"] += extra
+                with self.assertRaisesRegex(OverlapError, "exactly one since"):
+                    evaluate(data)
+
+    def test_page_rank_volume_is_bounded(self):
+        data = fixture()
+        data["captures"][0]["repository_ids"] = list(range(1, 1002))
+        with self.assertRaisesRegex(OverlapError, "1000 ranks"):
+            evaluate(data)
+
     def test_valid_language_slug_and_label_match(self):
         data = fixture()
         for entry in data["captures"]:

@@ -50,3 +50,6 @@ rapidly even on comparable pages, do not interpret a single trending rank or
 one-day star burst as evidence of reusable functionality. Instead instrument
 clean-install, independent adoption and 30/90-day maintenance outcomes.
 See [black-box audit proposal](TRENDING_ALGORITHM_AUDIT.md).
+
+## Enterprise quality review correction (2026-10-13)
+The scorer now **rejects unregistered URL query parameters**, not just a `since` mismatch. Previously, a URL containing `&spoken_language_code=...` or another ranking filter could pass as a supported surface, even though no field in the observation schema recorded that filter; it could bias comparisons. Only an exact single `since=daily|weekly|monthly` is allowed until an explicitly versioned filter schema is introduced. A strict 1,000-row input limit prevents unexpectedly large quadratic pairwise rank analysis. This bound is intentionally much larger than ordinary Trending pages, and any real larger page requires explicit review of its capture provenance and algorithmic cost. Additional synthetic regression tests protect both invariants. These are parser/input hardening changes, not original evidence that GitHub Ranking reflects software usefulness.
