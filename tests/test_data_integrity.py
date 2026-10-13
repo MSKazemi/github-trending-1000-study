@@ -90,6 +90,22 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaisesRegex(ResearchJSONError, "symlink"):
                 validate_repository(root)
 
+    def test_nested_symlink_directory_cannot_be_silently_skipped(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "known.json", b'{"id":1}')
+            outside = Path(root) / "external-evidence"
+            outside.mkdir()
+            (outside / "unreviewed.json").write_text('{"status":"unknown"}', encoding="utf-8")
+            nested = Path(root) / "examples" / "nested"
+            nested.mkdir()
+            alias = nested / "linked-subdirectory"
+            try:
+                alias.symlink_to(outside, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("directory symlinks not supported")
+            with self.assertRaisesRegex(ResearchJSONError, "symlinked research content"):
+                validate_repository(root)
+
     def test_absent_or_invalid_source_fails_explicitly(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaisesRegex(ResearchJSONError, "no .json"):
