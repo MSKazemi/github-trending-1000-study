@@ -14,8 +14,17 @@ Input v1.0 is \`schema_version\`, \`dataset_kind\` = \`synthetic\` or
 \`self_reported_audit\`, and two \`captures\` with unique \`capture_id\`, strict
 UTC \`captured_at_utc\`, exact \`page_url\`, \`window\`, nullable
 \`language_filter\`, \`source_sha256\` and all displayed \`repository_ids\` in
-rank order. Numeric IDs must be independently resolved from original page names;
-this tool does not infer them from HTML or verify that source hashes represent
+rank order. The URL is parsed and restricted to HTTPS `github.com/trending`
+(or `/trending/<language>` when a non-null filter is declared); the explicit
+`since=daily|weekly|monthly` query value must match `window`, and the
+decoded language slug must agree with the declared filter (case-insensitive,
+with spaces normalized to hyphens). Host spoofing, contradictory paths,
+fragments, duplicate `since` values and future UTC capture timestamps
+(more than five minutes ahead of the validator clock) fail closed. The small
+skew allowance is not third-party time authentication.
+
+Numeric IDs must be independently resolved from original page names; this
+tool does not infer them from HTML or verify that source hashes represent
 authentic captures. Invalid/incomplete input fails closed.
 
 Output denominators: \`page_sizes\` (supplied displayed entries per capture),
