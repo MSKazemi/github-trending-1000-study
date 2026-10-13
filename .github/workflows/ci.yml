@@ -1,18 +1,33 @@
-name: Tests
+name: Research integrity and tests
+
 on:
   push:
+    branches: [main]
   pull_request:
+
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      # Resolved from the official actions/checkout v4 Git tag, 2026-10-13.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      # Resolved from the official actions/setup-python v5 Git tag, 2026-10-13.
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m unittest discover -s tests -v
+      - name: Validate tracked Python and JSON artifacts
+        run: python scripts/check_artifact_integrity.py
+      - name: Run offline unit tests
+        run: python -m unittest discover -s tests -v
