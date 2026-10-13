@@ -63,3 +63,10 @@ A manually selected set of adverts contains recurring terms associated with: (1)
 - The Cursor RL Environments description resolves on a Cursor-branded localized URL but mentions SpaceXAI as the employer/team; until the identity is resolved do not allocate this row to a corporate parent or use it in theme/company comparisons.
 - The first-pass count of 10 individual pages/8 title-only leads describes **the initial collection**, not the reviewed source-audit state. No row is a completed hiring event.
 - **No blinded independent human double coding, rights review, complete 100-company search frame or 30/90/180-day follow-up has yet been completed.** Study forecasts are hypotheses only.
+
+
+## Row-level source-audit amendment (2026-10-13)
+
+The first-pass 10-individual/8-index distinction is **superseded for source characterization only** by the [18-row supplemental source audit](../references/ai_hiring_job_leads_source_audit_2026-10-13.csv). The original seed remains immutable. The audit identifies individual employer/ATS URLs and requisition IDs where accessible, separates directly read descriptions from descriptions seen through a search index, and retains **unknown** vacancy status and original posting dates. **Do not report all 18 as independently verified live vacancies.**
+
+One Cursor RL Environments source has an employer-identity inconsistency (page text refers to SpaceXAI); quarantine that lead from company-level inference until adjudicated. No panel census, inter-rater agreement, measured future releases, measured adoption, or energy effects are established by this amendment.
