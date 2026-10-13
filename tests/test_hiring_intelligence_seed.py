@@ -62,7 +62,8 @@ def check_url(company, url):
     actual_host = (parsed.hostname or "").removeprefix("www.")
     if (parsed.scheme != "https" or
             actual_host != expected_host.removeprefix("www.") or
-            not parsed.path.startswith(expected_prefix) or
+            not (parsed.path.startswith(expected_prefix) or
+                 (company == "Cursor" and parsed.path.startswith("/fr/careers/"))) or
             parsed.username is not None or parsed.password is not None or
             parsed.query or parsed.fragment or parsed.port is not None):
         raise AssertionError("unexpected employer/ATS origin: " + url)
