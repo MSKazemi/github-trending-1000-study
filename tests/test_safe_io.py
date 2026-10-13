@@ -165,9 +165,11 @@ class SourceImmutabilityTests(unittest.TestCase):
             manifest = Path(d) / "manifest.json"
             a = args(date=datetime.now(timezone.utc).date().isoformat(),
                      window="daily", output=str(raw), manifest_output=str(manifest))
-            with patch("trending_study.__main__.urlopen", return_value=FakeResponse()) as network:
-                with redirect_stdout(io.StringIO()):
-                    capture(a)
+            # Stub the policy gate only in this offline mock-network regression.
+            with patch("trending_study.__main__.require_trending_source_access"):
+                with patch("trending_study.__main__.urlopen", return_value=FakeResponse()) as network:
+                    with redirect_stdout(io.StringIO()):
+                        capture(a)
                 self.assertEqual(network.call_count, 1)
                 self.assertEqual(raw.read_bytes(), FIXTURE.read_bytes())
                 self.assertEqual(json.loads(manifest.read_text())["source_sha256"],
