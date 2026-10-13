@@ -48,7 +48,8 @@
 
 ## 2026–2027 pilot preflight and capture integrity
 - The October 2026 pilot is **proposed and not yet executed**; do not describe a synthetic fixture or self-declared manifest as authenticated GitHub collection.
-- When recording a new capture, use the `capture --manifest-output` and `pilot-parse --manifest` path; never backfill `captured_at_utc` from the time of parsing or a supplied date.
+- **Access hard stop (2026-10-13):** `trending_study capture` is intentionally disabled before network I/O because `/trending?since=...` falls under the published robots disallow pattern and access for this project remains unapproved. Never bypass it with a flag, monkeypatch, manual snapshot or alternate HTTP client. Only a reviewed code/protocol amendment following documented human source-access approval can re-enable it. Offline synthetic test mocks are not real capture permission. Read [source-access decision](docs/SOURCE_ACCESS_DECISION_2026-10-13.md).
+- After an approved future re-enablement, any new capture must use `capture --manifest-output` and `pilot-parse --manifest`; never backfill `captured_at_utc` from parsing or a supplied date.
 - The strict parser only implements unfiltered daily/weekly/monthly surfaces, **not** six language views or 9-page daily capture. Expand the source manifest protocol and human audit before changing enrollment eligibility.
 - Maintain human access-policy review, manual page QA, immutable numeric repo IDs, task-based independent acceptance, statistical power, consent and preregistration checks. These gates cannot be fulfilled by checking in a JSON file.
 - Run `python -m trending_study pilot-preflight --input examples/pilot-preflight.example.json --stage confirmatory` and `python -m unittest discover -s tests -v` after a protocol/CLI change. The documented example should remain not_ready.
@@ -89,7 +90,9 @@
 - Read docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md before claiming any real GitHub Trending parser validity.
 - Use two actually independent reviewers who inspect the original preserved source **before** looking at parser output. The QA scorer cannot independently establish the people exist or were blind; a matching pair of generated annotations is **not** independent verification.
 - Include *every* displayed row, not only valid `article.Box-row` hits. Compare identity and exact rank, and count parser-rejected pages as missing emissions rather than silently excluding them.
-- Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once QA report. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once canonical JSON QA report, with optional derived `--markdown-output` and no overwrite. Dual outputs are **not atomic**; preserve partial publications for human incident review. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Reviewer A/B/C references must be bounded ASCII pseudonyms rather than email, contact details, path text or the placeholder `unknown`. Matching pseudonyms do **not** authenticate different real people.
+- Optional reviewer-C adjudication is **only** for actually disputed A/B ranks; preserve original A/B labels and reviewer chronology. A third self-declared ID or passing synthetic regression does **not** authenticate human independence, source access or scientific approval. Do not introduce a competing page-QA CLI.
 - Never call the 36-row synthetic regression test a real 30-entry live audit, or infer current robots/Terms permission when source access is unavailable.
 
 

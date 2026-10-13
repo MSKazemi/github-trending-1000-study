@@ -24,6 +24,12 @@
 | preregistration | timestamped signed immutable plan; external record where appropriate | **Pending** |
 | independent_methods_review | named qualified reviewer consent and dated signature | **Pending** |
 
+## 2026-10-13 source-access enforcement update (not approval)
+
+The project's live `capture` CLI now **fails closed before HTTP** for the three unfiltered `/trending?since=...` pages. This change implements the existing *pending* `source_access_review` gate in software; it **does not** make that gate pass or complete any of the eleven prerequisite reviews above. The published robots pattern currently identifies a potential access conflict for the proposed research URLs, while the platform Terms and intended frequency require independent human assessment. See [dated access decision](SOURCE_ACCESS_DECISION_2026-10-13.md).
+
+The offline parser/manifests and synthetic audit remain useful for engineering validation. They do not represent permissioned GitHub captures or the proposed 1,000-repository sample; a switch to official REST/GH Archive data would change the **sampling surface and estimand**, not silently reconstruct GitHub Trending ranks.
+
 ## What cannot be claimed yet
 - The pilot was performed, the 9-surface panel is implemented or recurring capture permitted.
 - 1,000 unique Trending repositories have been observed/verified.
