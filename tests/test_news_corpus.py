@@ -122,8 +122,8 @@ class NewsCorpusTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "fulltext"):
             validate_records([(fulltext["id"] + ".json", fulltext)])
         for url in ("https://bad host.example/record",
-                    "https://example.org/\\nreport",
-                    "https://example.org/\\treport"):
+                    "https://example.org/\nreport",
+                    "https://example.org/\treport"):
             with self.subTest(url=repr(url)):
                 bad = copy.deepcopy(self.item)
                 bad["canonical_url"] = url
