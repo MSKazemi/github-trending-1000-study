@@ -33,6 +33,30 @@ def _date(raw, *, allow_future=False):
     return dt
 
 
+
+def _clean_https_url(url, field):
+    """Reject ambiguous origins, malformed ports and hidden URL parameters.
+
+    This only establishes a structurally clean URL; it does NOT authenticate
+    a publisher, registry, license statement or an evidence artifact.
+    """
+    if (not isinstance(url, str) or not url or url != url.strip()
+            or any(ord(char) <= 32 or ord(char) == 127 for char in url)):
+        raise PackageReviewError(f"{field} requires clean HTTPS URL without whitespace")
+    try:
+        parsed = urlparse(url)
+        # Access .port to force validation of malformed/out-of-range port syntax.
+        port = parsed.port
+    except ValueError as exc:
+        raise PackageReviewError(f"{field} has malformed HTTPS authority") from exc
+    if (parsed.scheme != "https" or not parsed.hostname or parsed.netloc.endswith(":")
+            or parsed.username is not None or parsed.password is not None
+            or parsed.params or parsed.query or parsed.fragment):
+        raise PackageReviewError(
+            f"{field} requires clean HTTPS URL without credentials/parameters/query/fragment"
+        )
+    return parsed
+
 def evaluate(data):
     if not isinstance(data, dict):
         raise PackageReviewError("expected object")
@@ -52,13 +76,7 @@ def evaluate(data):
     spdx = candidate.get("spdx_expression")
     if spdx is not None and (not isinstance(spdx, str) or not spdx.strip()):
         raise PackageReviewError("spdx_expression must be nonempty text or null if unknown")
-    url = candidate.get("registry_url")
-    if not isinstance(url, str):
-        raise PackageReviewError("registry_url required")
-    parsed = urlparse(url)
-    if (parsed.scheme != "https" or not parsed.hostname or parsed.username is not None
-            or parsed.password is not None or parsed.fragment or parsed.query):
-        raise PackageReviewError("registry_url must be clean HTTPS without credentials/query/fragment")
+    parsed = _clean_https_url(candidate.get("registry_url"), "registry_url")
     is_pypi = candidate["ecosystem"].casefold() == "pypi"
     if is_pypi:
         if re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", candidate["package_name"]) is None:
@@ -111,14 +129,7 @@ def evaluate(data):
                 or cell["status"] not in STATES):
             raise PackageReviewError(f"{key} must declare pass/fail/unknown")
         if cell["status"] == "pass":
-            source = cell.get("evidence_url")
-            if not isinstance(source, str):
-                raise PackageReviewError(f"{key} pass requires HTTPS evidence_url")
-            evidence = urlparse(source)
-            if (evidence.scheme != "https" or not evidence.hostname
-                    or evidence.username is not None or evidence.password is not None
-                    or evidence.fragment):
-                raise PackageReviewError(f"{key} pass requires clean HTTPS evidence_url")
+            _clean_https_url(cell.get("evidence_url"), f"{key} pass evidence_url")
             if key == "license_compatibility" and (
                     not spdx or spdx.strip().upper() in {"NONE", "NOASSERTION"}):
                 raise PackageReviewError("license pass requires an actual SPDX license expression, not NONE/NOASSERTION")
