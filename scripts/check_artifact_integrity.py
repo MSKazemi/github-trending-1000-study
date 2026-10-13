@@ -15,7 +15,7 @@ import subprocess
 import sys
 from typing import Iterable
 
-SUFFIXES = frozenset({".py", ".json"})
+SUFFIXES = frozenset({".py", ".json", ".jsonl"})
 MAX_ARTIFACT_BYTES = 8 * 1024 * 1024
 
 
@@ -65,12 +65,26 @@ def inspect(root: Path, relative_path: str) -> str | None:
             # required to validate a newly added but otherwise unimported file.
             ast.parse(source, filename=relative_path)
         else:
-            json.loads(
-                source,
-                object_pairs_hook=_unique_object,
-                parse_constant=_reject_constant,
-                parse_float=_finite_float,
-            )
+            def check_json(document: str) -> None:
+                json.loads(
+                    document, object_pairs_hook=_unique_object,
+                    parse_constant=_reject_constant, parse_float=_finite_float,
+                )
+
+            if rel.suffix == ".json":
+                check_json(source)
+            else:
+                records = 0
+                for line_number, line in enumerate(source.splitlines(), 1):
+                    if not line.strip():
+                        continue
+                    try:
+                        check_json(line)
+                    except ValueError as exc:
+                        raise ValueError(f"JSONL line {line_number}: {exc}") from exc
+                    records += 1
+                if records == 0:
+                    raise ValueError("JSONL file contains no records")
     except (OSError, UnicodeError, SyntaxError, ValueError) as exc:
         return f"{relative_path}: {type(exc).__name__}: {exc}"
     return None
@@ -78,7 +92,7 @@ def inspect(root: Path, relative_path: str) -> str | None:
 
 def audit(root: Path, paths: Iterable[str]) -> dict[str, object]:
     """Check all supplied paths once; preserve explicit diagnostics."""
-    checked = {"python": 0, "json": 0}
+    checked = {"python": 0, "json": 0, "jsonl": 0}
     errors: list[str] = []
     seen: set[str] = set()
     for path in paths:
@@ -89,7 +103,7 @@ def audit(root: Path, paths: Iterable[str]) -> dict[str, object]:
         suffix = Path(path).suffix
         if suffix not in SUFFIXES:
             continue
-        checked["python" if suffix == ".py" else "json"] += 1
+        checked[{".py": "python", ".json": "json", ".jsonl": "jsonl"}[suffix]] += 1
         diagnostic = inspect(root, path)
         if diagnostic is not None:
             errors.append(diagnostic)
@@ -99,7 +113,7 @@ def audit(root: Path, paths: Iterable[str]) -> dict[str, object]:
 def tracked_files(root: Path) -> list[str]:
     """Ask Git for committed artifacts, not generated/untracked build outputs."""
     process = subprocess.run(
-        ["git", "-C", str(root), "ls-files", "-z", "--", "*.py", "*.json"],
+        ["git", "-C", str(root), "ls-files", "-z", "--", "*.py", "*.json", "*.jsonl"],
         capture_output=True,
         check=True,
         timeout=30,
