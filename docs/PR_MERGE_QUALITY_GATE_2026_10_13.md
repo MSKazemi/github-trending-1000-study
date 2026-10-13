@@ -63,3 +63,12 @@ A concurrent PR introduced this useful canonical [template](../.github/pull_requ
 
 ### Preserved newer validation from concurrent main
 The final CI retains the separate stricter JSON syntax/duplicate-key/nonstandard-number guard from another integration PR, and smoke tests the existing `trending_study`, `reuse_gate`, and `goldset` entrypoints. Those checks must **not** be dropped when action versions or Python matrices change. Real research-source integrity still needs independent verification beyond JSON syntax.
+
+## Integrity-check continuity after PRs #253 and #262
+
+The two existing read-only research-artifact checks currently have **distinct** fail-closed contracts, so CI executes **both** rather than silently losing either:
+
+- `python -m trending_study.data_integrity --root .` is the canonical JSON/JSONL/CSV evidence validator, with its existing JSON count semantics, source-directory coverage and per-file malformed-input diagnostics. PR #262 adds CSV handling and numeric guards here.
+- `python scripts/check_research_artifacts.py --root .` is the supplemental bounded artifact-integrity audit from #253, including explicit nesting, cumulative byte/file limits and stronger rejection of certain nonstandard records.
+
+Both run in the same `research-artifacts` GitHub Actions job. They are **not two independent scientific verifications**: overlapping structural rules do not corroborate any source, DOI, reviewer identity, license, or task outcome. Future consolidation should preserve the union of negative tests and stable public output fields, then retire one CLI deliberately in a reviewed compatibility change—not by removing a check silently. Branch protection and human scientific review remain separate requirements.

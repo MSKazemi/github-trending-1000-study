@@ -38,7 +38,15 @@ The extension performs read-only, strict CSV parsing with correct quoted commas 
 
 **Reusable lesson for your own repositories:** test not just that data parses, but that a parser cannot silently *change its meaning*: two duplicate fields should never discard an earlier status, a tiny positive measurement must not become zero, and a CSV header must not be interpreted ambiguously.
 
+## 2026-10-13 final integration: bounded cardinality and explicit empty CSV
 
-## Nested symlink traversal hardening (2026-10-13)
+Concurrent changes had already brought the CSV grammar and numeric underflow tests from #253 into this **canonical** validator, so no copy of those implementations was merged again. This follow-up adds only the missing requirements: at most **5,000** research JSON/JSONL/CSV artifacts and **128 MiB** total inspection bytes (besides the existing 16 MiB per file), explicit rejection of a CSV containing headers but no data rows, and backward-compatible counts `total_research_records` / `checked_bytes`. Tests include mixed JSON/CSV data and budget failures. The separate strict tracked-artifact gate from #253 was **not** deleted or overwritten; its own test/CI scope remains visible pending a future deliberate consolidation.
+These are input-integrity bounds, **not** externally validated research or a guarantee against intentionally malicious repositories.
 
-Recursive research-artifact enumeration rejects symlinked **nested directories**, not only links to .json/.jsonl/.csv files or entire source roots. Otherwise a linked subtree could be silently skipped while a checker appeared to have scanned its entire research evidence frame. The negative regression keeps an ordinary JSON file present (so a skipped subtree would incorrectly pass) and verifies a controlled failure instead. This is read-only filesystem validation, **not** authentication of the employer, vendor, human reviewer or historical source. This targeted fix was reapplied on top of the CSV/numeric evidence improvements from PR #253/#250 rather than overwriting them.
+## 2026-10-13 post-merge consistency review
+
+The original overlapping PR #253 was merged concurrently and already preserved the dated [PR collision audit](PR_AUDIT_2026-10-13.md) plus the separate script validator. Therefore PR #264 no longer adds a duplicate CSV parser or deletes either existing CLI. Its final reviewed change adds regression tests for CSV quoting and aliases, aligns both scanners to fail closed on header-only **empty input data** (not claim zero observations), and limits redundant CI branch-push runs to PR checks plus post-merge main checks. The two validators remain separate until a specifically versioned backward-compatibility review; a green syntax gate never validates the true source, participant consent or sustainable savings.
+
+## Nested symlink completeness hardening (2026-10-13)
+
+A later audit of the canonical JSON/JSONL/CSV tool found that recursive discovery could encounter a **nested symlinked directory** without any eligible file suffix and silently omit its contents. The validator now explicitly rejects every symlink found in an evidence source subtree **before file-extension filtering**, including directory aliases. This prevents a superficially successful run from claiming full eligible input coverage while skipping an unreviewed subtree. Offline synthetic regression coverage is in `tests/test_data_integrity.py`. Symlink rejection does not authenticate the rest of the data, and a checked local SHA never proves GitHub or publisher origin.

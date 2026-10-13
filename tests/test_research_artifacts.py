@@ -162,6 +162,35 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "case.json"):
             audit_repository(self.root)
 
+    def test_csv_unterminated_quotes_fail_closed(self):
+        file = self.root / "references" / "registry.csv"
+        for value in ('id,note\n1,"unfinished\n', 'id,note\n1,"value"junk\n'):
+            with self.subTest(value=value):
+                file.write_text(value.replace("\\n", "\n"), encoding="utf-8")
+                with self.assertRaisesRegex(IntegrityError, "registry.csv"):
+                    audit_repository(self.root)
+
+    def test_csv_symlink_file_is_rejected(self):
+        source = self.root / "references" / "registry.csv"
+        alias = self.root / "references" / "alias.csv"
+        try:
+            alias.symlink_to(source)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlink unsupported on test filesystem")
+        with self.assertRaisesRegex(IntegrityError, "symlink forbidden"):
+            audit_repository(self.root)
+
+    def test_csv_header_only_fails_consistently_in_both_validators(self):
+        file = self.root / "references" / "registry.csv"
+        file.write_text("id,note\n", encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "no data records"):
+            audit_repository(self.root)
+        # The independently maintained legacy validator must not disagree on
+        # what counts as a valid baseline research data artifact.
+        from trending_study.data_integrity import ResearchJSONError, validate_repository
+        with self.assertRaisesRegex(ResearchJSONError, "no data records"):
+            validate_repository(self.root)
+
     def test_cli_bounded_clean_and_failure_codes(self):
         path = Path(__file__).resolve().parents[1] / "scripts" / "check_research_artifacts.py"
         cmd = [sys.executable, str(path), "--root", str(self.root)]

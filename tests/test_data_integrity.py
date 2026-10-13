@@ -90,20 +90,20 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaisesRegex(ResearchJSONError, "symlink"):
                 validate_repository(root)
 
-    def test_nested_symlinked_evidence_directory_is_rejected(self):
-        # A symlinked subdirectory must not be skipped while the checker
-        # reports that it scanned all eligible research evidence.
+    def test_nested_symlink_directory_cannot_be_silently_skipped(self):
         with tempfile.TemporaryDirectory() as root:
-            self._artifact(root, "regular.json", b'{"id":1}')
+            self._artifact(root, "known.json", b'{"id":1}')
             outside = Path(root) / "external-evidence"
             outside.mkdir()
-            (outside / "hidden.json").write_text('{"id":2}', encoding="utf-8")
-            nested = Path(root) / "examples" / "subfolder"
+            (outside / "unreviewed.json").write_text('{"status":"unknown"}', encoding="utf-8")
+            nested = Path(root) / "examples" / "nested"
             nested.mkdir()
-            (nested / "source-link").symlink_to(
-                outside, target_is_directory=True
-            )
-            with self.assertRaisesRegex(ResearchJSONError, "symlinked"):
+            alias = nested / "linked-subdirectory"
+            try:
+                alias.symlink_to(outside, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("directory symlinks not supported")
+            with self.assertRaisesRegex(ResearchJSONError, "symlinked research content"):
                 validate_repository(root)
 
     def test_absent_or_invalid_source_fails_explicitly(self):
@@ -127,6 +127,28 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             self.assertNotIn("Traceback", cp.stderr)
             self.assertEqual(cp.stdout, "")
 
+
+    def test_csv_header_only_is_not_accepted_as_real_observations(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "empty_sources.csv", b"id,title,source\n")
+            with self.assertRaisesRegex(ResearchJSONError, "no data records"):
+                validate_repository(root)
+
+    def test_total_budget_and_file_limit_include_csv_and_json(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "first.json", b'{"id":1}')
+            self._artifact(root, "second.csv", b'id,n\n1,2\n')
+            with patch.object(data_integrity, "MAX_FILES", 1):
+                with self.assertRaisesRegex(ResearchJSONError, "file count"):
+                    validate_repository(root)
+            with patch.object(data_integrity, "MAX_TOTAL_BYTES", 10):
+                with self.assertRaisesRegex(ResearchJSONError, "cumulative"):
+                    validate_repository(root)
+            report = validate_repository(root)
+            self.assertEqual(report["total_research_records"], 2)
+            self.assertEqual(report["json_documents_or_jsonl_records"], 1)
+            self.assertEqual(report["csv_data_rows"], 1)
+            self.assertGreater(report["checked_bytes"], 10)
 
     def test_csv_multiline_and_commas_are_preserved(self):
         with tempfile.TemporaryDirectory() as root:
