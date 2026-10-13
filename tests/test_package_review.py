@@ -153,6 +153,42 @@ class PackageReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(PackageReviewError, "future"):
             evaluate(p)
 
+    def test_temporal_reject_never_bypasses_complete_evidence_validation(self):
+        p = candidate()
+        p["candidate"]["first_available_at_utc"] = "2027-01-01T00:00:00Z"
+        del p["checks"]["functional_fit"]
+        with self.assertRaisesRegex(PackageReviewError, "every evidence check"):
+            evaluate(p)
+        p["checks"]["functional_fit"] = {"status": "pass"}
+        with self.assertRaisesRegex(PackageReviewError, "evidence_url"):
+            evaluate(p)
+        p["checks"]["functional_fit"] = {"status": "unknown"}
+        result = evaluate(p)
+        self.assertEqual(result["decision"], "reject")
+        self.assertIn("temporal_availability", result["failed_checks"])
+        self.assertIn("functional_fit", result["unknown_checks"])
+
+    def test_unbound_registry_never_reports_review_ready(self):
+        p = candidate()
+        p["candidate"]["ecosystem"] = "npm"
+        p["candidate"]["registry_url"] = "https://registry.npmjs.org/fictionalpkg"
+        p["checks"] = {k: {"status": "pass", "evidence_url": "https://example.org/evidence"}
+                       for k in FIELDS}
+        result = evaluate(p)
+        self.assertEqual(result["decision"], "defer")
+        self.assertIn("official_registry_identity_binding", result["unknown_checks"])
+        self.assertFalse(result["automatic_install_approved"])
+        p["checks"]["known_advisories"]["status"] = "fail"
+        self.assertEqual(evaluate(p)["decision"], "reject")
+
+    def test_pypi_name_must_be_canonical_safe_registry_segment(self):
+        for name in ("../fictionalpkg", "fictional/pkg", "fictional%2fpkg", "name?version"):
+            p = candidate()
+            p["candidate"]["package_name"] = name
+            with self.subTest(name=name), self.assertRaisesRegex(
+                    PackageReviewError, "PyPI package_name"):
+                evaluate(p)
+
     def test_malformed_gate_type_is_rejected(self):
         p = candidate()
         p["checks"]["known_advisories"]["status"] = []
