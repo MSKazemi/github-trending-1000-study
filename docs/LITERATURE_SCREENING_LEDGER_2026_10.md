@@ -26,6 +26,11 @@ DOIs normalize `doi:` and `https://doi.org/` aliases. Duplicate DOI keys and mis
 
 **Limit:** the offline validator proves only logical consistency of supplied screening records, not complete retrieval, inclusion validity or peer review.
 
+**Input error contract (2026-10-13):** Each record's `run_id` must be a nonblank string matching a declared search run. Malformed JSON types (including arrays and objects) raise a controlled `LiteratureError`, never an uncaught hashability exception; regression tests cover these cases. This validator does not authenticate the claimed source or reviewer.
+
+**Reusable reading bibliography:** For legal publisher/author-manuscript PDF links and journal-vs-preprint separation, see [the open-access journal evidence register](OPEN_ACCESS_JOURNAL_EVIDENCE_2026_10_12.md). Do not treat this link as a completed systematic search.
+
+
 ## 2026-10-13 scientific hardening: PRISMA-constrained screening
 
 Change: the offline ledger now rejects future-dated search runs and reports **title/year collisions even when candidate DOIs differ**, while retaining independent DOI-identity duplicate groups. No records are deleted, no two reports are assumed to represent two independent studies, and no PRISMA flow is asserted to have been authenticated.
