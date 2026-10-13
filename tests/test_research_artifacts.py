@@ -48,6 +48,35 @@ class ResearchArtifactQualityTests(unittest.TestCase):
                 with self.assertRaisesRegex(IntegrityError, "nonstandard JSON"):
                     audit_repository(self.root)
 
+    def test_reject_float_overflow_and_underflow_without_silent_data_loss(self):
+        file = self.root / "examples" / "case.json"
+        for raw in ("1e10000", "-1e10000", "1e-10000", "-1e-10000"):
+            with self.subTest(value=raw):
+                file.write_text('{"numeric":' + raw + '}', encoding="utf-8")
+                with self.assertRaisesRegex(IntegrityError, "overflows or underflows"):
+                    audit_repository(self.root)
+
+    def test_reject_extreme_integer_before_version_dependent_parser_failure(self):
+        file = self.root / "examples" / "case.json"
+        file.write_text('{"numeric":' + '9' * 1500 + '}', encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "1024 digits"):
+            audit_repository(self.root)
+
+    def test_reject_nul_in_json_and_csv(self):
+        for relative, content in (
+            ("examples/case.json", '{"k":"a\\u0000b"}' + "\\x00"),
+            ("references/registry.csv", "id,note\\n1,bad\\x00value\\n"),
+        ):
+            with self.subTest(path=relative):
+                file = self.root / relative
+                original = file.read_text(encoding="utf-8")
+                try:
+                    file.write_text(content.replace("\\x00", chr(0)).replace("\\n", chr(10)), encoding="utf-8")
+                    with self.assertRaisesRegex(IntegrityError, "embedded NUL"):
+                        audit_repository(self.root)
+                finally:
+                    file.write_text(original, encoding="utf-8")
+
     def test_truncated_json_and_nonobject_root_rejected(self):
         file = self.root / "examples" / "case.json"
         file.write_text('{"a":', encoding="utf-8")
