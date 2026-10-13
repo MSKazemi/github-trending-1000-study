@@ -112,9 +112,18 @@ def evaluate(data, persistence=0.9):
     total_pairs = concordant + discordant
     depth = max(len(a), len(b))
     discounted = 0.0
+    last_prefix_agreement = 0.0
     for d in range(1, depth + 1):
-        overlap_at_d = len(set(a[:d]) & set(b[:d])) / d
-        discounted += (1 - persistence) * (persistence ** (d - 1)) * overlap_at_d
+        last_prefix_agreement = len(set(a[:d]) & set(b[:d])) / d
+        discounted += (1 - persistence) * (persistence ** (d - 1)) * last_prefix_agreement
+    # Reuse the uniquely useful metric from competing PR #188 rather than
+    # creating a second CLI. Tail extrapolation is only defined here when
+    # both observed lists end at the same depth: it ASSUMES last-depth
+    # agreement persists into unobserved ranks, not measured future overlap.
+    rbo_extrapolated = (
+        discounted + (persistence ** depth) * last_prefix_agreement
+        if len(a) == len(b) else None
+    )
     return {
         "schema_version": "1.0",
         "dataset_kind": data["dataset_kind"],
@@ -129,13 +138,19 @@ def evaluate(data, persistence=0.9):
         "kendall_tau_on_common": ((concordant - discordant) / total_pairs if total_pairs else None),
         "kendall_comparable_pairs": total_pairs,
         "discounted_prefix_overlap_lower_bound": discounted,
+        "rbo_extrapolated_equal_depth": rbo_extrapolated,
+        "rbo_extrapolation_reason": (
+            None if rbo_extrapolated is not None else "unequal observed page lengths"
+        ),
         "prefix_persistence": persistence,
         "comparison_depth": depth,
         "eligible_for_confirmatory_cohort": False,
         "interpretation": (
             "Descriptive page-list comparison only. No independently authenticated "
             "page audit, candidate-frame denominator, algorithm recovery, user value, "
-            "or causal inference. Discounted prefix value omits unknown tail mass."
+            "or causal inference. The discounted prefix bound omits unknown "
+            "tail mass; equal-depth RBO extrapolation assumes, but does not "
+            "measure, continued last-depth agreement."
         ),
     }
 
