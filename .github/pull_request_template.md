@@ -1,50 +1,67 @@
-# Pull request — evidence and merge readiness
-
-> [Enterprise merge policy](../docs/PR_QUALITY_AND_MERGE_POLICY.md). Keep **Draft** until the author has met its acceptance criteria. Green CI alone is not approval to merge.
-
-## Why this change is needed
+## Change summary and issue
 
 Related issue: #
-User-relevant task and expected behavior:
-Best existing implementation/configuration/upstream alternative considered:
-Why the proposed change is preferable:
 
-## Scope, compatibility and rollback
+Describe the single bounded change, affected interfaces/schema versions, and why reuse of an existing module is insufficient.
 
-Files/interfaces/schemas affected:
-Migration or backwards-compatibility considerations:
-Potentially overlapping PRs or data artifacts:
-Rollback plan if the change fails after merging:
+## Merge-quality checklist (complete before requesting non-draft review)
 
-## Independent verification
+- [ ] Read `AGENTS.md`, `CONTRIBUTING.md` and relevant evidence/protocol documentation; scope remains bounded
+- [ ] Inspected all changed files, related open PRs and duplicate-implementation risk; retained unique data, citations, docs and regression cases
+- [ ] No secrets, unapproved scraping, private logs, unsafe dependency installation, or overwritten write-once evidence
+- [ ] Added appropriate negative/error/missingness tests and updated docs for every schema/API change
+- [ ] Final-head GitHub Actions (Python 3.10, 3.12 and 3.14 compile, unit and CLI smoke tests) completed successfully: **run URL:** 
+- [ ] No unresolved review objections, license/security concerns, merge conflicts or unreviewed interface compatibility breaks
+- [ ] If a protocol, scientific source, blinded judgment or security recommendation is affected: genuine qualified independent human approval recorded below (or **pending—not merge-ready**)
+- [ ] Commit SHA rechecked immediately before merge; post-merge `main` CI will be verified
 
-- [ ] I read the current `AGENTS.md`, scientific methods, ethics and contributing rules.
-- [ ] I reviewed the actual diff against the **latest** `main`; unrelated useful source material and research observations are preserved.
-- [ ] New behavior has bounded acceptance/failure tests, including malformed/unknown inputs when relevant.
-- [ ] `python -m unittest discover -s tests -v` passes on the exact PR head.
-- [ ] CI Python versions, compilation and research-artifact checks passed on the **current head SHA**, with no pending/failed required checks.
-- [ ] Documentation, instructions, data dictionary and reproducible examples reflect the change.
-- [ ] No unapproved credential access, network capture, third-party code execution, or unsafe dependency installation was introduced.
+## Evidence, risks and non-claims
 
-## Research integrity and data rights
+**Original sources (exact URLs/dates):**
 
-- Evidence type: [ ] synthetic only [ ] observed public metadata [ ] registered/consented experiment [ ] documentation/method hypothesis.
-- Source URLs, publication *and event* dates, attribution, licensing, data rights and uncertainties verified or labeled pending.
-- [ ] Synthetic fixtures are never presented as real participants, adoption, measured savings or model benchmarks.
-- [ ] Unknown/missing observations remain unknown; primary denominator, original data, failures and negative findings are preserved.
-- [ ] Private participant/agent traces, prompts, credentials and identifiable information are excluded from public artifacts.
-- [ ] Any affected data-access, protocol, preregistration, sampling or experimental decisions have qualified **human** methods/ethics approval with a verifiable reference; otherwise the work is expressly provisional and cannot advance the study gate.
-- [ ] Existing GitHub Trending capture **access stop** remains in effect; no bypass or backfill.
-- [ ] Reused dependencies/solutions have exact-version provenance, compatible license, security and independent functional review.
+**What was actually tested vs not independently verified:**
 
-## Merge decision (completed by authorized reviewer, not the PR author)
+**Known invalid/negative/null cases and missingness:**
 
-- [ ] Not a draft; no unresolved blocking reviews or conflicts.
-- [ ] Evidence, tests and CI were checked against the immutable expected head SHA.
-- [ ] All overlapping PRs inspected and useful sources/data reconciled without force-pushing or silent replacement.
-- [ ] Human scientific signoff recorded where applicable; **automation or AI-only review cannot satisfy an independent reviewer requirement**.
-- [ ] Merge is safe, scoped, reversible and does not misstate research readiness.
+**Migration/other PR preservation:**
 
-**What remains unvalidated:**  
-**Exact CI run and head SHA:**  
-**Reviewer and approval evidence (if required):**
+**Genuine human reviewer and approval link, when required:** pending
+
+## Compatibility, external acceptance, and reversibility
+
+**User-relevant task and expected behavior:**
+
+**Existing compatible implementation or upstream alternative investigated:**
+
+**Why a new change is justified:**
+
+**API/schema/migration and backward-compatibility plan:**
+
+**Affected documentation and reproducible acceptance test:**
+
+**Potential overlapping PRs or preserved source artifacts:**
+
+**Rollback strategy and post-merge observation:**
+
+## Evidence classification and independent verification
+
+**Evidence type:** [ ] synthetic only [ ] public metadata [ ] consented and registered experiment [ ] provisional methodology [ ] documentation-only.
+
+**Source URL, publication date, event date, version/rights and uncertainty (as applicable):**
+
+**Unverified claims, expected negative/null cases, missing denominator or observations:**
+
+**Security, permissions, package identity and dependencies reviewed:**
+
+**External human reviewer / ethics approval record (only if actually obtained):**
+
+**Reviewed PR head SHA, CI run URLs and integration base:**
+
+## Reproduction
+
+```bash
+python -m compileall -q trending_study tests
+python -m unittest discover -s tests -v
+```
+
+Checklist ticks, automated reviews and green CI do not certify source authenticity, human independence, deployment safety or the research protocol. See [PR merge gate](../docs/PR_MERGE_QUALITY_GATE_2026_10_13.md).
