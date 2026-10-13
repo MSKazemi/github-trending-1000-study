@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
+from urllib.parse import urlsplit
 
 DECISIONS = {"include", "exclude", "pending"}
 SOURCE_TYPES = {"peer_reviewed", "preprint", "standard", "news", "vendor", "other"}
@@ -89,6 +90,26 @@ def audit(data):
         if decision == "exclude" and (not isinstance(row.get("reason"), str) or not row["reason"].strip()):
             raise LiteratureError("excluded items require reason")
         if decision == "include":
+            # An included finding must be traceable to a specific public source.
+            # A DOI *string* alone is only a self-reported identifier: require
+            # a canonical, source-specific URL even for DOI-bearing studies.
+            source_url = row.get("source_url")
+            if (not isinstance(source_url, str) or not source_url.strip()
+                    or source_url != source_url.strip()
+                    or any(ord(ch) < 33 for ch in source_url)):
+                raise LiteratureError("included record requires clean source_url")
+            try:
+                parsed_source = urlsplit(source_url)
+                clean_source = (parsed_source.scheme == "https"
+                                and bool(parsed_source.hostname)
+                                and parsed_source.username is None
+                                and parsed_source.password is None
+                                and not parsed_source.fragment
+                                and not parsed_source.query)
+            except ValueError as exc:
+                raise LiteratureError("invalid included source_url") from exc
+            if not clean_source:
+                raise LiteratureError("included source_url must be canonical clean HTTPS")
             extract = row.get("study_extract")
             if not isinstance(extract, dict) or any(
                 not isinstance(extract.get(k), str) or not extract[k].strip()

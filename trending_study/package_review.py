@@ -70,6 +70,24 @@ def evaluate(data):
                    candidate["package_name"].casefold().replace("_", "-").replace(".", "-")
                 or parts[2] != candidate["version"]):
             raise PackageReviewError("PyPI registry URL must match official host, exact name and version")
+    # Optional Package URL and source commit (ported from superseded #186).
+    # These are structural identity assertions, never registry authentication.
+    purl = candidate.get("purl")
+    if purl is not None:
+        if not isinstance(purl, str) or not is_pypi:
+            raise PackageReviewError("purl syntax binding is implemented for PyPI only")
+        from_purl = re.fullmatch(r"pkg:pypi/([A-Za-z0-9._-]+)@([A-Za-z0-9][A-Za-z0-9._+!-]{0,127})", purl)
+        if not from_purl:
+            raise PackageReviewError("purl must be exact pkg:pypi/name@version")
+        normalize = lambda name: re.sub(r"[-_.]+", "-", name.casefold())
+        if (normalize(from_purl.group(1)) != normalize(candidate["package_name"])
+                or from_purl.group(2) != candidate["version"]):
+            raise PackageReviewError("purl conflicts with pinned PyPI identity/version")
+    source_commit = candidate.get("source_commit")
+    if source_commit is not None and (
+            not isinstance(source_commit, str)
+            or re.fullmatch(r"[0-9a-f]{40}", source_commit) is None):
+        raise PackageReviewError("source_commit must be a pinned lowercase full Git SHA or null")
     if "artifact_sha256" not in candidate:
         raise PackageReviewError("artifact_sha256 must be explicitly known or null (unknown)")
     sha = candidate["artifact_sha256"]
