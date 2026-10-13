@@ -1,0 +1,670 @@
+{
+  "schema_version": "1.0",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "snapshot_utc": "2026-10-13T20:43:22.052Z",
+  "main_sha": "35928569d1f6c2f8593a41b2d8e6b140ee6edf11",
+  "read_only": true,
+  "deletion_authorized_by_this_snapshot": false,
+  "branch_count": 69,
+  "open_pr_count": 40,
+  "pr_lookup_limit": "Open PR endpoint returned fewer than 100 entries; historical PR mapping uses only latest 100 updated PRs. Missing historical mapping means hold, not no prior PR.",
+  "branches": [
+    {
+      "branch": "audit/pr-merge-gate-log-20261013",
+      "sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "chore/enterprise-pr-merge-guardrails-20261013",
+      "sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "chore/safe-merged-branch-retirement-20261013",
+      "sha": "4f959715913d817d605c0706c95bb3d9e8e90471",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [
+        {
+          "number": 274,
+          "merge_commit_sha": "8783c4f0bf68816e0721685acde7a47208dbd65c"
+        }
+      ],
+      "decision": "revalidate-merged-head-before-archive"
+    },
+    {
+      "branch": "chore/276-branch-lifecycle-audit",
+      "sha": "0a573825c1a100964f2ee653609c48fcd80e5f02",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [
+        {
+          "number": 278,
+          "merge_commit_sha": "6e1ec6f8697afa80d7a9e6d3f218738d9adbfd2a"
+        }
+      ],
+      "decision": "revalidate-merged-head-before-archive"
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "sha": "0add541d0e66b6f54e6370fa31ca686d53cb60bd",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [
+        {
+          "number": 272,
+          "merge_commit_sha": "b3a92d2eb2fd634df9679c5cc5182d901fb76d48"
+        }
+      ],
+      "decision": "revalidate-merged-head-before-archive"
+    },
+    {
+      "branch": "ci/issue-240-canonical-csv-artifact-validation",
+      "sha": "d8916e13fb1b415b3d13b9ce0ff97742dfe0c75e",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "ci/research-json-integrity-247",
+      "sha": "e98d19fcb58c7833900e9f3a2a79941269b72861",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "ci/restore-canonical-integrity-gate-20261013",
+      "sha": "e19087a17263ea1b4aeb9f96d3401c83b2757749",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "fix/canonical-nested-symlink-audit-20261013",
+      "sha": "7301a0207032dee0175ff27d12e965fd6e8b3b48",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "fix/followup-ledger-gate-issue-4",
+      "sha": "489402cd6378b23195d751eca21f3bc717461f6d",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "fix/retirement-snapshot-archive-prefix-20261013",
+      "sha": "4950dd8052ac3395ff5051e85121fcf7140d1cf8",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [
+        {
+          "number": 281,
+          "merge_commit_sha": "35928569d1f6c2f8593a41b2d8e6b140ee6edf11"
+        }
+      ],
+      "decision": "revalidate-merged-head-before-archive"
+    },
+    {
+      "branch": "fix/247-nested-symlink-clean-merge-20261013",
+      "sha": "368083577709a71875a03ef46a71c598fde01757",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "fix/277-branch-retirement-safe-lease",
+      "sha": "83e817cb53608a29faa5c90b0cc4e3dc88166be0",
+      "protected": false,
+      "open_prs": [
+        280
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "main",
+      "sha": "35928569d1f6c2f8593a41b2d8e6b140ee6edf11",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "keep-main"
+    },
+    {
+      "branch": "maintenance/retire-verified-merged-branches-20261013",
+      "sha": "c36e51965a1b0f9a356dd43af0ee92d900b581d0",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [
+        {
+          "number": 275,
+          "merge_commit_sha": "1761204b53f8c75fedfc4c4991f7b53af7b0b2c0"
+        }
+      ],
+      "decision": "revalidate-merged-head-before-archive"
+    },
+    {
+      "branch": "quality/canonical-artifact-ci-20261013",
+      "sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "quality/extend-canonical-data-integrity-csv-20261013",
+      "sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "quality/244-premerge-artifact-gate",
+      "sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/ai-era-news-corpus-2026-10-12",
+      "sha": "9b2b58051c5c0f6b4598efc308ecaf2cba93eb53",
+      "protected": false,
+      "open_prs": [
+        59
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-001-openai",
+      "sha": "4daf83b93014996d81c9fa766ebb3d33eca235cc",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/company-intel-2026-002-anthropic",
+      "sha": "0269e7ac5d9aba4ce9fecfdda832eab75a256b36",
+      "protected": false,
+      "open_prs": [
+        172
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-003-google-deepmind",
+      "sha": "0701ce16c5430c48d8a4220c3aeece4879be1e7f",
+      "protected": false,
+      "open_prs": [
+        173
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-004-microsoft",
+      "sha": "c385ac852daaf2e00fe1148755ae47b7c888dd11",
+      "protected": false,
+      "open_prs": [
+        174
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-005-meta-first-screen",
+      "sha": "8e74a5320689c1ec7a652134718f30f7cc22b200",
+      "protected": false,
+      "open_prs": [
+        228
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-006-amazon-first-screen",
+      "sha": "a392d119341de98c633b641c3ec5604ff9c7d51a",
+      "protected": false,
+      "open_prs": [
+        229
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-012-cursor-anysphere",
+      "sha": "28b621612c22279a4a2ab28809da6db567f1bf05",
+      "protected": false,
+      "open_prs": [
+        176
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-013-cognition",
+      "sha": "3005871bfad9e1819543767b3750e35fcb8b8c3a",
+      "protected": false,
+      "open_prs": [
+        177
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-batch2",
+      "sha": "2365dcf71b93dded6bddad386a6f16bd6cc23908",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-first-screen",
+      "sha": "2794b3696d25bf52def41562baf30aaa263a67a2",
+      "protected": false,
+      "open_prs": [
+        230
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-015-sourcegraph",
+      "sha": "f966392fc50ca2f8d4531fb830ddef958485399b",
+      "protected": false,
+      "open_prs": [
+        178
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-batch2",
+      "sha": "23a08bbc0758223ce6f1f3b9dbda53c809ca9df8",
+      "protected": false,
+      "open_prs": [
+        197
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-first-screen",
+      "sha": "8e90122c9c1427621e9592c784ca4f7a713c98b5",
+      "protected": false,
+      "open_prs": [
+        231
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-017-jetbrains",
+      "sha": "819757303889907bdbe3b29a98a4eb37ec97d49d",
+      "protected": false,
+      "open_prs": [
+        179
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-batch2",
+      "sha": "614bb47f3c5083ae3ec1668935f872985c0623af",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-first-screen",
+      "sha": "754c2953221449ad37272ef5366c6ee7b2024118",
+      "protected": false,
+      "open_prs": [
+        232
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-batch2",
+      "sha": "d684ab7e1029ff747029ada271a985b33489bb02",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-first-screen",
+      "sha": "ff1822cc49d9156be75af929a239f94f438ffc8c",
+      "protected": false,
+      "open_prs": [
+        233
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-batch2",
+      "sha": "0cf2615a68f1f5b23352128d7e323c88fc180228",
+      "protected": false,
+      "open_prs": [
+        200
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-first-screen",
+      "sha": "69bb7d9baccedf5938677e250ddfd16bda90544a",
+      "protected": false,
+      "open_prs": [
+        234
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-batch2",
+      "sha": "f21722ce344304188e67ad6dc6e161dc28968ab5",
+      "protected": false,
+      "open_prs": [
+        201
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-first-screen",
+      "sha": "a14e908af0bc7d594b470f26f66b30181dacaf7e",
+      "protected": false,
+      "open_prs": [
+        236
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-022-openhands-all-hands-ai",
+      "sha": "6782094f08743e8b63ff53cf97f86746ac541e5f",
+      "protected": false,
+      "open_prs": [
+        180
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-batch2",
+      "sha": "b84162369141a1af362268bd5207823c206e7933",
+      "protected": false,
+      "open_prs": [
+        202
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-first-screen",
+      "sha": "7cf5e99cfbaa7456133243ec4b028b01213c5d75",
+      "protected": false,
+      "open_prs": [
+        237
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-batch2",
+      "sha": "f9884c462154ae0f291ab4ee45020f13a03245d3",
+      "protected": false,
+      "open_prs": [
+        203
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-first-screen",
+      "sha": "b2dc0cdca755caa9a1dc847d23f7933a4c11246d",
+      "protected": false,
+      "open_prs": [
+        238
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-025-lovable-batch2",
+      "sha": "5f02cefd2244a9f7f0e6fffddf1997d9e2036a77",
+      "protected": false,
+      "open_prs": [
+        204
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-026-stackblitz-batch2",
+      "sha": "90f57c98cd495fe240161c2545424797f7403d7d",
+      "protected": false,
+      "open_prs": [
+        205
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/company-intel-2026-033-github",
+      "sha": "1e7a612ebccec879a4e7e8ba110f19e0988a8fb2",
+      "protected": false,
+      "open_prs": [
+        181
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/hiring-intelligence-2026-10-13",
+      "sha": "09c9c56798bb4cc4e71fc37ff14148fd47a0c698",
+      "protected": false,
+      "open_prs": [
+        225
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/independent-page-qa-2026-10-12",
+      "sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue6-trending-overlap-audit-20261012",
+      "sha": "cc37e2014dd0cac3610d287574e2c9c56b82a14f",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue11-evidence-registry-20261012",
+      "sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue22-package-trust-gate-20261012",
+      "sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue-6-rank-drift-oct2026",
+      "sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue-7-literature-ledger-oct2026",
+      "sha": "4172d37e77415ca6eff49266e27a2073b750cee4",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue-22-supply-chain-gate-oct2026",
+      "sha": "9e0ea7654defaf196202739a11e95a349bef0fd1",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    },
+    {
+      "branch": "research/issue-67-openai-six-month-intelligence",
+      "sha": "c2cf93d9388dacc6df5b693c6e9b665fd917a64e",
+      "protected": false,
+      "open_prs": [
+        175
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-71-005-meta-screen",
+      "sha": "b0b25a5aeca78a0d4498646674a018dd1d3771f3",
+      "protected": false,
+      "open_prs": [
+        191
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-72-006-amazon-screen",
+      "sha": "8a8cdf217e57d6db13f14f685e5d4984cacd2af6",
+      "protected": false,
+      "open_prs": [
+        192
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-73-007-mistral-ai-screen",
+      "sha": "30b684ee3dadeec5cccbf844e5be2b9dbc1d02e8",
+      "protected": false,
+      "open_prs": [
+        193
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-74-008-cohere-screen",
+      "sha": "2a651ee17982b78c30b2829b2df23d24892b2326",
+      "protected": false,
+      "open_prs": [
+        194
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-75-009-deepseek-screen",
+      "sha": "af77706c67bd473e9413ae121d77bd79baaabc16",
+      "protected": false,
+      "open_prs": [
+        195
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-76-010-alibaba-cloud-screen",
+      "sha": "c4d1c816e1076d6b05c3bee598244f4ee4e1abff",
+      "protected": false,
+      "open_prs": [
+        207
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-77-011-xai-screen",
+      "sha": "7dec2a474da6933f2523b5e174d7459beee3e97c",
+      "protected": false,
+      "open_prs": [
+        209
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-80-014-replit-screen",
+      "sha": "4a6b4581e90a0d648b88a21d6facd3c6bd43df2a",
+      "protected": false,
+      "open_prs": [
+        212
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-85-018-qodo-screen",
+      "sha": "4e9ade4ead17265465560e61ed83d263d001891b",
+      "protected": false,
+      "open_prs": [
+        213
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/issue-86-019-tabnine-screen",
+      "sha": "226d12fa0523f7a0af3620fb58b87398a1b76a26",
+      "protected": false,
+      "open_prs": [
+        215
+      ],
+      "exact_merged_prs": [],
+      "decision": "keep-open-pr"
+    },
+    {
+      "branch": "research/trending-independent-page-qa-issue2",
+      "sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "protected": false,
+      "open_prs": [],
+      "exact_merged_prs": [],
+      "decision": "hold-content-review"
+    }
+  ]
+}
