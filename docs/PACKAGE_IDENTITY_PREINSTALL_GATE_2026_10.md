@@ -7,7 +7,7 @@ python -m trending_study.package_review --input REVIEW.json
 python -m unittest tests.test_package_review -v
 ```
 
-The JSON includes `candidate`: `ecosystem`, `package_name`, exact `version`, `registry_url` (HTTPS without embedded secrets), `artifact_sha256`, `first_available_at_utc`, `spdx_expression` (null means unknown and cannot be a license pass); `task_frozen_at_utc`; and the exact six `checks` keys: `registry_identity`, `license_compatibility`, `known_advisories`, `release_provenance`, `functional_fit`, `maintenance_suitability`. Each check declares `status: pass|fail|unknown` and a pass has an HTTPS `evidence_url`.
+The JSON includes `candidate`: `ecosystem`, `package_name`, exact `version`, `registry_url` (HTTPS without embedded secrets), `artifact_sha256` (64-hex when verified or explicit `null` when not yet known), `first_available_at_utc`, `spdx_expression` (null means unknown and cannot be a license pass); `task_frozen_at_utc`; and the exact six `checks` keys: `registry_identity`, `license_compatibility`, `known_advisories`, `release_provenance`, `functional_fit`, `maintenance_suitability`. Each check declares `status: pass|fail|unknown` and a pass has an HTTPS `evidence_url`.
 
 **Decision rules:** any supplied failed gate ⇒ `reject`; unknown ⇒ `defer`; all pass ⇒ `review_ready` **not install approval**. A first-availability timestamp after the frozen user task is rejected to avoid retrospective leakage. All reported checks are self-declared; HTTPS format does **not** authenticate the registry, digest, reviewer, file content, OSV feed, source or release history.
 
@@ -32,3 +32,8 @@ The candidate check now rejects moving aliases (`latest`, `main`, `HEAD`, ranges
 **Technical references:** [SPDX normative license-expression grammar](https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/); [OSV version-specific query API](https://github.com/google/osv.dev/blob/master/docs/api/post-v1-query.md); [Package URL specification](https://github.com/package-url/purl-spec). These are check sources, not evidence that any candidate in this study passed those checks.
 
 **Practical lesson:** before an agent adds a dependency to your repo, pin official package identity and version, audit license/security/maintenance, test in an isolated environment, and retain the *rejected candidate* as evidence for future reuse searches.
+
+
+## 2026-10-13 unknown-artifact follow-up
+
+The pre-install screen now accepts **explicit `artifact_sha256: null`** as unresolved evidence, not as a zero hash, an automatically excluded package, or a verified artifact. It always includes `artifact_sha256` among `unknown_checks` and returns `defer` unless another declared gate fails (then `reject`). Omitting the field entirely remains a malformed-input error. Even six self-reported passing gates **cannot** produce `review_ready` without an exact declared artifact digest; a declared hex digest is not independently authenticated by this CLI. Two negative regressions cover the missing/unknown states. This preserves viable *candidate discovery* while refusing unverified *installation*.
