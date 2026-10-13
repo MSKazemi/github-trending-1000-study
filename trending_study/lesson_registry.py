@@ -59,7 +59,8 @@ def _sources(row):
 
 def audit(data):
     if (not isinstance(data, dict) or data.get("schema_version") != "1.0"
-            or data.get("dataset_kind") not in {"synthetic", "self_reported"}
+            or not isinstance(data.get("dataset_kind"), str)
+            or data["dataset_kind"] not in {"synthetic", "self_reported"}
             or not isinstance(data.get("lessons"), list)):
         raise LessonError("input must have v1.0, synthetic/self_reported kind and lessons list")
     ids, counts, needs_review, grade_counts = set(), {}, [], {f"E{i}": 0 for i in range(6)}
