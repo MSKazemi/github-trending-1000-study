@@ -103,8 +103,22 @@ def validate_records(records):
         if canonical in urls:
             raise ValueError(f"{name}: duplicate canonical source URL")
         urls.add(canonical)
-        if record["review_status"] == "pending" and record["independent_reviewer"] is not None:
-            raise ValueError(f"{name}: pending independent review cannot name reviewer")
+        # Schema 1.0 stores provisional, single-screened entries only.
+        # An arbitrary string must never self-certify an independent audit.
+        # Signed reviewer evidence and dates require a separately versioned
+        # schema/procedure; this validator cannot authenticate those people.
+        if (record["review_status"] != "pending"
+                or record["independent_reviewer"] is not None):
+            raise ValueError(f"{name}: pending independent review only in schema v1.0")
+        if (record["screening_status"] != "included_provisional_single_reviewer"
+                or record["source_review_status"] !=
+                   "web_primary_page_inspected_not_independently_fact_checked"
+                or record["independent_corrob_status"] != "not_assessed"):
+            raise ValueError(f"{name}: unverified source cannot claim independent review")
+        if record["fulltext_stored"]:
+            raise ValueError(f"{name}: source fulltext storage not permitted in v1.0")
+        if any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in url):
+            raise ValueError(f"{name}: canonical URL cannot contain whitespace or controls")
     return {"records": len(ids), "distinct_urls": len(urls),
             "evidence_status": "provisional_structural_validation_only"}
 
