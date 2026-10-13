@@ -325,3 +325,19 @@ All eight **synthetic** randomized tasks remain in the denominator, including fa
 ## Merge assurance and code/research quality
 
 Follow the [canonical enterprise PR merge gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and the [dated integration audit](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). PRs require real code review, **latest-head PR CI**, conflict checks and preservation of useful parallel work. Synthetic method checks cannot certify GitHub-source authenticity, independent human review, package safety or lifecycle energy findings. The test matrix covers Python 3.10/3.12/3.14 with official immutable SHA-pinned actions; only verified tasks and observations can support scientific conclusions.
+
+## October 2026: enterprise PR merge and research-artifact integrity
+
+**[Enterprise PR policy](docs/PR_QUALITY_AND_MERGE_POLICY.md)** | **[Dated 45-PR audit and collision register](docs/PR_AUDIT_2026-10-13.md)** | [Issue #240](https://github.com/MSKazemi/github-trending-1000-study/issues/240)
+
+The 2026-10-13 audit found many **draft PRs**, green head-only test checks, and multiple pairs modifying the **same company-intelligence evidence note**. Draft status, scientific human review, updated merge-tree CI and no-loss comparison are independent merge gates; a green badge alone is **not** sufficient.
+
+The CI suite now tests Python 3.10/3.12/3.13/3.14 compilation and regressions plus a separate read-only research artifact integrity check. Locally:
+
+```bash
+python -m compileall -q trending_study scripts tests
+python -m unittest discover -s tests -v
+python scripts/check_research_artifacts.py --root .
+```
+
+The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.

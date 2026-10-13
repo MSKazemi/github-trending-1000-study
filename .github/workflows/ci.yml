@@ -1,40 +1,49 @@
+# Offline-only CI. Passing checks confirm engineering syntax/test behavior,
+# not consent, source access, independent review or scientifically valid findings.
 name: Tests
 on:
   push:
-    branches: [main]
   pull_request:
 permissions:
   contents: read
-
 concurrency:
-  group: tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  # Always keep post-merge main CI; cancel only obsolete PR revisions.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.12", "3.14"]
+        python-version: ["3.10", "3.12", "3.13", "3.14"]
     steps:
-      - name: Checkout verified immutable action
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1, verified official tag 2026-10-13
         with:
           persist-credentials: false
-      - name: Set up Python verified immutable action
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0, verified official tag 2026-10-13
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Compile Python source and tests
-        run: python -m compileall -q trending_study tests
-      - name: Validate research JSON and JSONL evidence (syntax and unambiguous numbers)
-        run: python -m trending_study.data_integrity --root .
-      - name: Offline research regression tests
+      - name: Compile Python source
+        run: python -m compileall -q trending_study scripts tests
+      - name: Run offline unit and regression tests
         run: python -m unittest discover -s tests -v
-      - name: Research CLI entrypoints
+      - name: Verify research CLI entrypoints
         run: |
           python -m trending_study --help > /dev/null
           python -m trending_study.reuse_gate --help > /dev/null
           python -m trending_study.goldset --help > /dev/null
+
+  research-artifacts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Reject malformed, duplicate-key and nonstandard research artifacts
+        run: python scripts/check_research_artifacts.py --root .
