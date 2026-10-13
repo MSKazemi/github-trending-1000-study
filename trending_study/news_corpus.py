@@ -7,10 +7,24 @@ from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 import re
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
+TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
+
+
+def _canonical_url_key(parts):
+    """Deduplicate tracking variants without merging distinct query-addressed pages.
+
+    `ref` is deliberately kept: it may encode a branch or document selector,
+    not merely marketing attribution. This is syntactic screening, not a claim
+    that different URLs describe different underlying events.
+    """
+    query = tuple(sorted((key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
+                         if not key.lower().startswith("utm_") and key.lower() not in TRACKING_PARAMS))
+    return (parts.hostname.lower(), parts.port or 443, parts.path.rstrip("/") or "/", query)
+
 REQUIRED = {
     "schema_version", "id", "title", "publisher", "author",
     "original_publication_date", "accessed_date_utc", "canonical_url",
@@ -83,11 +97,9 @@ def validate_records(records):
         parsed = urlsplit(url)
         if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password or parsed.fragment:
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
-        # URL fragments and tracking query parameters should not make two
-        # records appear independent; query strings are ignored for detection.
-        # HTTP paths may be case-sensitive; hostnames are case-insensitive.
-        # Keep the path case to avoid collapsing distinct source documents.
-        canonical = (parsed.hostname.lower(), parsed.path.rstrip("/"))
+        # Strip known marketing trackers, not meaningful ?id=... or ?ref=...
+        # selectors; treating all queries as duplicates can erase real studies.
+        canonical = _canonical_url_key(parsed)
         if canonical in urls:
             raise ValueError(f"{name}: duplicate canonical source URL")
         urls.add(canonical)
