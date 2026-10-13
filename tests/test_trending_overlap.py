@@ -68,6 +68,42 @@ class TrendingOverlapTests(unittest.TestCase):
                 with self.assertRaises(OverlapError):
                     evaluate(data)
 
+    def test_url_is_bound_to_real_trending_surface_and_declared_window(self):
+        invalid_urls = (
+            "https://github.com/trending-evil?since=daily",
+            "https://github.com@evil.test/trending?since=daily",
+            "https://github.com/trending?since=weekly",
+            "https://github.com/trending?since=daily&since=weekly",
+            "https://github.com/trending?since=daily#fragment",
+            "http://github.com/trending?since=daily",
+            "https://github.com/trending/python?since=daily",
+        )
+        for url in invalid_urls:
+            with self.subTest(url=url):
+                data = fixture()
+                for entry in data["captures"]:
+                    entry["page_url"] = url
+                with self.assertRaises(OverlapError):
+                    evaluate(data)
+
+    def test_valid_language_slug_and_label_match(self):
+        data = fixture()
+        for entry in data["captures"]:
+            entry["language_filter"] = "Jupyter Notebook"
+            entry["page_url"] = "https://github.com/trending/jupyter-notebook?since=daily"
+        result = evaluate(data)
+        self.assertEqual(result["language_filter"], "Jupyter Notebook")
+        for entry in data["captures"]:
+            entry["language_filter"] = "Python"
+        with self.assertRaisesRegex(OverlapError, "language"):
+            evaluate(data)
+
+    def test_future_capture_time_is_invalid(self):
+        data = fixture()
+        data["captures"][1]["captured_at_utc"] = "2099-01-01T00:00:00Z"
+        with self.assertRaisesRegex(OverlapError, "future"):
+            evaluate(data)
+
     def test_unverified_or_incomplete_input_fails(self):
         for key, value in (("source_sha256", None), ("repository_ids", []),
                            ("captured_at_utc", "2026-10-11T13:00:00+02:00")):
