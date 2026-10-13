@@ -1,12 +1,11 @@
 name: Manual verified merged-branch retirement
 
-# Intentionally NOT triggered by pushes or PR merges. A privileged repository
-# operator must independently review the manifest and select retire.
+# Manual-only. No branch is retired on push, PR merge or a schedule.
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "Audit first; retire only after reviewing the evidence manifest"
+        description: "Audit first; retire only after reviewing all 60 merged-PR heads"
         required: true
         default: audit
         type: choice
@@ -14,7 +13,7 @@ on:
           - audit
           - retire
       confirmation:
-        description: "For retire, type RETIRE_VERIFIED_MERGED_BRANCHES exactly"
+        description: "For retire only, type RETIRE_VERIFIED_MERGED_BRANCHES exactly"
         required: false
         default: ""
         type: string
@@ -27,31 +26,44 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  retirement:
-    if: github.ref == 'refs/heads/main'
+  audit:
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'audit'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
-      contents: write  # Only this explicitly dispatched maintenance job.
+      contents: read
     steps:
-      - name: Checkout reviewed retirement script from main
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - name: Test branch retirement safety gates offline
+      - name: Check safety tests before read-only audit
         run: python -m unittest tests.test_branch_retirement -v
-      - name: Live read-only preflight for all manifest candidates
+      - name: Live merged-PR/head-SHA/ancestry verification (read-only)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/retire_merged_branches.py \
             --manifest research-notes/branch-retirement-2026-10-13.json --mode audit
-      - name: Publish verified archive tags then retire exact merged heads
-        if: inputs.mode == 'retire'
+
+  retire:
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'retire' && inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Test retirement and archive guards offline
+        run: python -m unittest tests.test_branch_retirement -v
+      - name: Preflight then archive every head and retire verified refs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RETIRE_CONFIRM: ${{ inputs.confirmation }}
