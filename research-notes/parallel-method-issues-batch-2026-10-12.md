@@ -1,6 +1,6 @@
-# Parallel research-method issue batch — 2026-10-12
+# Parallel research-method issue batch — initiated 2026-10-12, reviewed 2026-10-13
 
-**Repository:** [MSKazemi/github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study). **Status:** ten independent draft PRs, all GitHub Actions checks passing as inspected on 2026-10-12 before this cross-reference note was appended. This is **an execution record, not an empirical study, preregistration, completed issue acceptance or approval to merge**. Each issue stays open pending its own original acceptance criteria and human review.
+**Repository:** [MSKazemi/github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study). **Historical batch status:** ten independently scoped PRs were opened; their then-current GitHub Actions checks were inspected on 2026-10-13 (Europe/Rome) before this note was appended. Later PR/head states require rechecking. This is **an execution record, not an empirical study, preregistration, completed issue acceptance or approval to merge**. Each issue stays open pending its own original acceptance criteria and human review.
 
 ## Ten bounded contributions
 
@@ -38,3 +38,7 @@
 These are **candidate practices or measurement safeguards**, not demonstrated effect-size recommendations. Apply them as bounded tests to the maintainer's own repositories and preserve null/negative results.
 
 **Next review:** individually inspect each PR diff/CI, bring in an independent method reviewer where required, prioritize the real observational audit/pilot, and only close tasks against their original acceptance criteria.
+
+## 2026-10-13 integration addendum (status may change)
+
+After the original batch, canonical [#182](https://github.com/MSKazemi/github-trending-1000-study/pull/182) incorporated the useful rank-bias calculation from [#188](https://github.com/MSKazemi/github-trending-1000-study/pull/188), which was closed unmerged; [#208](https://github.com/MSKazemi/github-trending-1000-study/pull/208) merged the consolidated lesson-registry schema, and the independent literature-screening [#189](https://github.com/MSKazemi/github-trending-1000-study/pull/189) and documentation rubric [#183](https://github.com/MSKazemi/github-trending-1000-study/pull/183) were subsequently reported merged. These historical changes do **not** imply any external source/human/energy validation. Consult each PR's authoritative current GitHub state, not the earlier table's draft status, before integrating further branches. Preserve distinct evidence and only merge current-head CI-verified code after a review.
