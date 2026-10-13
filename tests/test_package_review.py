@@ -62,6 +62,25 @@ class PackageReviewTests(unittest.TestCase):
         with self.assertRaises(PackageReviewError):
             evaluate(p)
 
+    def test_unknown_artifact_digest_stays_unknown_and_never_approves(self):
+        p = candidate()
+        p["candidate"]["artifact_sha256"] = None
+        self.assertEqual(evaluate(p)["decision"], "defer")
+        p["checks"] = {
+            k: {"status": "pass", "evidence_url": "https://example.org/evidence"}
+            for k in FIELDS
+        }
+        result = evaluate(p)
+        self.assertEqual(result["decision"], "defer")
+        self.assertIn("artifact_sha256", result["unknown_checks"])
+        self.assertFalse(result["automatic_install_approved"])
+
+    def test_missing_digest_field_requires_explicit_unknown(self):
+        p = candidate()
+        del p["candidate"]["artifact_sha256"]
+        with self.assertRaisesRegex(PackageReviewError, "explicitly known or null"):
+            evaluate(p)
+
     def test_unsubstantiated_pass_rejected(self):
         p = candidate()
         p["checks"]["known_advisories"] = {"status": "pass"}
