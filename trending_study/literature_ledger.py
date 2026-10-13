@@ -37,7 +37,7 @@ def _normalize_doi(raw):
         return None
     if not isinstance(raw, str):
         raise LiteratureError("doi must be string or null")
-    value = re.sub(r"^(?:https?://(?:dx\.)?doi\.org/|doi:)", "", raw.strip(), flags=re.I)
+    value = re.sub(r"^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)", "", raw.strip(), flags=re.I)
     if not DOI.fullmatch(value):
         raise LiteratureError("DOI must be a valid DOI identifier (not arbitrary URL)")
     return value.lower()
