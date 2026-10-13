@@ -39,6 +39,10 @@ class FakeClient:
         self.absent = False
         self.lease_race = False
         self.ancestor = True
+        self.open_on_second_check = False
+        self.open_checks = 0
+        self.archive_moved_after_first_check = False
+        self.archive_checks = 0
 
     def get(self, path):
         if path == f"/repos/{REPO}":
@@ -46,6 +50,9 @@ class FakeClient:
         if "/git/ref/tags/" in path:
             if self.tag_sha is None:
                 raise ApiNotFound("not found")
+            self.archive_checks += 1
+            if self.archive_moved_after_first_check and self.archive_checks > 1:
+                return {"object": {"sha": "f" * 40}}
             return {"object": {"sha": self.tag_sha}}
         if "/git/ref/heads/" in path:
             if self.absent:
@@ -67,6 +74,9 @@ class FakeClient:
                                                    "repo": {"full_name": REPO}},
                     "base": {"ref": "main"}, "merge_commit_sha": MERGE}
         if "/pulls?" in path:
+            self.open_checks += 1
+            if self.open_on_second_check and self.open_checks > 1:
+                return [{"number": 456}]
             return self.open
         raise AssertionError("unexpected GET: " + path)
 
@@ -171,6 +181,24 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertEqual(fake.tag_sha, SHA)
         self.assertFalse(fake.deleted)
         self.assertFalse(fake.absent)
+
+    def test_new_open_pr_between_checks_blocks_sha_leased_delete(self):
+        fake = FakeClient()
+        fake.open_on_second_check = True
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_new_open_pr")
+        self.assertEqual(fake.open_checks, 2)
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertFalse(fake.deleted)
+
+    def test_repointed_archive_tag_after_initial_check_blocks_delete(self):
+        fake = FakeClient()
+        fake.archive_moved_after_first_check = True
+        self.assertEqual(retire_one(fake, REPO, item()),
+                         "blocked_archive_changed_before_delete")
+        self.assertEqual(fake.archive_checks, 2)
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertFalse(fake.deleted)
 
     def test_absent_branch_requires_exact_archived_original_sha(self):
         fake = FakeClient()
