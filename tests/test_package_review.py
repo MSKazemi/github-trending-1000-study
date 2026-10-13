@@ -75,6 +75,42 @@ class PackageReviewTests(unittest.TestCase):
             evaluate(p)
 
 
+    def test_registry_url_must_match_exact_official_pypi_identity(self):
+        for url in (
+            "https://pypi.org.evil.test/project/fictionalpkg/1.0/",
+            "https://pypi.org/project/anotherpkg/1.0/",
+            "https://pypi.org/project/fictionalpkg/latest/",
+            "https://pypi.org/project/fictionalpkg/2.0/",
+            "https://pypi.org/project/fictionalpkg/1.0/#fragment",
+        ):
+            p = candidate()
+            p["candidate"]["registry_url"] = url
+            with self.subTest(url=url), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+    def test_moving_aliases_not_pinned_release(self):
+        for version in ("latest", "main", "HEAD", ">=1.0", "1.*", "*"):
+            p = candidate()
+            p["candidate"]["version"] = version
+            with self.subTest(version=version), self.assertRaisesRegex(PackageReviewError, "pinned"):
+                evaluate(p)
+
+    def test_spdx_sentinel_does_not_equal_approved_license(self):
+        for value in ("NONE", "NOASSERTION"):
+            p = candidate()
+            p["candidate"]["spdx_expression"] = value
+            p["checks"]["license_compatibility"] = {
+                "status": "pass", "evidence_url": "https://spdx.org/licenses/"
+            }
+            with self.subTest(value=value), self.assertRaisesRegex(PackageReviewError, "actual SPDX"):
+                evaluate(p)
+
+    def test_future_freeze_cannot_make_future_package_available(self):
+        p = candidate()
+        p["task_frozen_at_utc"] = "2099-01-01T00:00:00Z"
+        with self.assertRaisesRegex(PackageReviewError, "future"):
+            evaluate(p)
+
     def test_malformed_gate_type_is_rejected(self):
         p = candidate()
         p["checks"]["known_advisories"]["status"] = []
