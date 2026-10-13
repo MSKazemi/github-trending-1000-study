@@ -1,112 +1,161 @@
-# Qodo: preliminary six-month technology-intelligence screen
+# Qodo — company intelligence, preliminary six-month source screen
 
-**Watchlist ID:** 018 · **Issue:** [#85](https://github.com/MSKazemi/github-trending-1000-study/issues/85) · **Retrospective interval:** 2026-04-12 through 2026-10-12 inclusive UTC · **Research session:** 2026-10-12 · **Stage:** collecting / **PARTIAL FIRST PASS** · **Independent human factual reviewer:** pending.
+- **Watchlist entry:** 018
+- **Research issue:** [#85](https://github.com/MSKazemi/github-trending-1000-study/issues/85)
+- **Retrospective publication interval:** 2026-04-12 to 2026-10-12 inclusive.
+- **Prepared/source-reviewed:** 2026-10-12.
+- **Status:** INITIAL screened research DRAFT (not fully systematically collected or independently reviewed).
+- **Coverage:** vendor/official notices for AI-assisted code review, software quality, policy and governance; [official index](https://www.qodo.ai/blog/). Each event has canonical source URL in [CSV evidence ledger](018-qodo.events.csv).
+- **Methods:** [company methodology](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
 
-**Scientific status:** This is a small dated primary-source screen, **not** a complete company study, systematically captured seven-segment search, independent product benchmark, validated adoption observation, or verified 2027–2031 company roadmap. In-window page dates are vendor-supplied and require archival/date review. No NEWS corpus records have been minted. Do not close #85 based on this document.
+## 1. Discovery and inclusion audit (incomplete)
 
-## 1. Search and inclusion audit
+This is a **bounded primary-document evidence shortlist**, not a systematic seven-month search. Source discovery/review occurred on 2026-10-12; **search-engine result counts, complete query clickstream, number screened, excluded URLs and full independent source screening were not preserved**, therefore they are **unknown**, not zero. Reproducibility queries below are **next-pass suggestions, not claims that each exact expression was executed**:
 
-Public search plus selected official company pages was used on 2026-10-12. Representative **queries actually attempted**:
+- `"Qodo" after:2026-04-11 before:2026-10-13 coding agent releases security`
+- `site:qodo.ai 2026 model tool changelog license agent`
+- `"Qodo" 2026 API roadmap change security acquisition`
+- `"Qodo" Reuters OR TechCrunch OR The Register 2026 criticism independent audit`
 
-- `site:qodo.ai/blog 2026 June September GitHub PR review`
-- `Qodo 2026 review effort modes cross repo code changes official`
+For final issue acceptance, search each full/partial month separately in primary/independent outlets, log exact run UTC/timezone, immutable query/results and reason for inclusion/exclusion; inspect releases, product docs, public source licenses and pricing; preserve zero-result screens as **search results missing/not found**, not proof of corporate inactivity. Vendor news can change after initial publication and lacks immutable full-text snapshot here. Don't deduplicate separate feature announcements into mere publicity count or count syndications as independent product confirmations.
 
-Search engine result totals, per-query time, full URL screen/exclusion denominator, preserved page snapshots and search-result ranking **were not retained**. The items below are curated leads, **not** an exhaustive or reproducibly systematic review. Dates should be reconfirmed on immutable/archived original versions during QA; no source download or paywall bypass was attempted.
+## 2. Entity, products, availability and baseline
 
-| Segment | Retained leads | Scope/coverage warning |
+Qodo is a developer-quality vendor. Qodo's platform, Codex quality plugin, and separately governed open-source PR-Agent are not the same owned artifact. The 2026 announced PR-Agent relocation to community-owned The-PR-Agent requires actual repository ownership and LICENSE verification.
+
+**Rights/safety boundary:** April 23 announced PR-Agent handover and Apache-2.0 return require the exact destination repository SHA/license/version check; license on a blog post alone is not reuse permission.
+
+**Specific correction/ambiguity to preserve:** Provider's announced abandonment of code generation and PR-Agent governance relocation are intentions/descriptions; do not assume full execution or universal entitlement.
+
+## 3. Month-by-month dated candidate ledger
+
+| 2026 month segment | Included candidate event/source(s) | Coverage notes |
 |---|---|---|
-| 2026-04-12..30 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-05 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-06 | [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) | Only selected linked releases; not a systematic full-month screen |
-| 2026-07 | [The Right Depth for Every PR: Review Effort Modes](https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/) | Only selected linked releases; not a systematic full-month screen |
-| 2026-08 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-09 | [Introducing Qodo's Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/); [State of AI Code Quality Report 2026](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) | Only selected linked releases; not a systematic full-month screen |
-| 2026-10-01..12 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
+| Apr 12–30 | [Qodo code-generation product direction](https://www.qodo.ai/blog/an-update-on-code-generation-at-qodo/); [PR-Agent community handover](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/) | First-party sources screened |
+| May | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| June | [Qodo 2.4 governance](https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/) | First-party sources screened |
+| July | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| August | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| September | [Qodo Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/); [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/) | First-party sources screened |
+| Oct 1–12 | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/) | First-party sources screened |
 
-## 2. Company/product identity and baseline
+All dates are **as displayed by the source** and rendered as calendar dates; UTC publication timezone has not been independently established. Underlying launch/deployment date is **not assumed identical** to article date. If page describes a different earlier event, document discrepancy separately; follow-up source audit needed.
 
-Qodo's advertised automated PR review is not equivalent to a verified defect detector. Beta products, review policies and inference cost are distinct constructs.
+## 4. Event and capability map with source-level confidence
 
-No final dated corporate ownership ledger, product-term archive, machine-verified API/version matrix or independent software test is claimed. Product and brand URLs in the event ledger are initial identity pointers; pre-window background is **not** counted as 2026-04-12 onward evidence.
-
-## 3. Selected dated event evidence
-
-| ID | Publication vs event date | Attributed claim, NOT reproduced outcome | Reported availability | Canonical source (type) | Working grade |
+| Event ID | Published / underlying event date | Source | Claim or documented change | Reported status and restrictions | Evidence/construct |
 |---|---|---|---|---|---|
-| 018-E01 | 2026-06-23 (publication asserted by page); event date not independently confirmed | Qodo described Cross Repo Review as beta for finding impacts beyond a single repository. | beta; vendor account | [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) — primary, company-controlled | E1 (vendor claim only) |
-| 018-E02 | 2026-07-28 (publication asserted by page); event date not independently confirmed | Qodo announced effort modes intended to tune depth of AI-assisted PR review. | vendor-described capability | [The Right Depth for Every PR: Review Effort Modes](https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/) — primary, company-controlled | E1 (vendor claim only) |
-| 018-E03 | 2026-09-09 (publication asserted by page); event date not independently confirmed | Qodo introduced agent-oriented review/context utilities for integration into coding workflows. | vendor announcement | [Introducing Qodo's Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/) — primary, company-controlled | E1 (vendor claim only) |
-| 018-E04 | 2026-09-23 (publication asserted by page); event date not independently confirmed | Qodo published a vendor survey/report discussing engineer and leader perceptions of AI code quality. | vendor survey, not a controlled benchmark | [State of AI Code Quality Report 2026](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) — primary, company-controlled | E1 (vendor claim only) |
+| CI-018-01 | 2026-04-23; event date not separately verified | [Qodo code-generation product direction](https://www.qodo.ai/blog/an-update-on-code-generation-at-qodo/) | Company states intention to shift away from parts of coding-generation offering toward code quality. | announced_only; Planned deprecation and actual service status must be checked separately. | E1; M1;M2 |
+| CI-018-02 | 2026-04-23; event date not separately verified | [PR-Agent community handover](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/) | Qodo announces PR-Agent relocation to The-PR-Agent and Apache-2.0 licensing plan. | announced_only; Actual repo legal ownership and current license not independently checked. | E1; M4;M5 |
+| CI-018-03 | 2026-06-23; event date not separately verified | [Qodo 2.4 governance](https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/) | Qodo announces new code review/governance features. | shipped; Provider feature and quality claims not externally tested. | E1; M2 |
+| CI-018-04 | 2026-09-09; event date not separately verified | [Qodo Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/) | Qodo announces modular agent-aware quality tooling. | shipped; Product integration limits and real defect rates not verified. | E1; M1;M2 |
+| CI-018-05 | 2026-09-15; event date not separately verified | [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/) | Provider announces cross-repository change-context tool. | preview; Beta access and accuracy unvalidated. | E1; M2;M5 |
+| CI-018-06 | 2026-10-01; event date not separately verified | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/) | Qodo launches quality/governance platform update for agent-centric workflows. | shipped; First-party claims, no controlled independent quality outcome. | E1; M1;M2 |
 
-**Working E1** means a source supports **what the company publicly reported**, not that the stated feature worked for neutral users or yielded saved time, safer code, external reuse or sustainability benefits. Event date, entitlement/region, terms and corrections need follow-up. These records are not treated as E2/E3/E4.
+**Grade E1 for ALL 6 entries:** vendor/publication statements only. 'Shipped' means provider **reports** availability, not a tested implementation or independent adoption. The separate CSV has source type, first-seen review date, status and missingness fields. An independent assessment is needed for E3 validation; page popularity, benchmarks, stars, press coverage, merger announcements and provider security assertions do not qualify.
 
-## 4. Feature mapping and constraints
+### Product impact distinctions
 
-- **The Anatomy of a Breaking Change:** Qodo described Cross Repo Review as beta for finding impacts beyond a single repository. **Availability:** beta; vendor account. **Verification gap:** No independent measured recall/precision for cross-repo API breakages.
-- **The Right Depth for Every PR: Review Effort Modes:** Qodo announced effort modes intended to tune depth of AI-assisted PR review. **Availability:** vendor-described capability. **Verification gap:** Review depth is not a functional correctness outcome; report workload/cost per review.
-- **Introducing Qodo's Agentic Toolbox:** Qodo introduced agent-oriented review/context utilities for integration into coding workflows. **Availability:** vendor announcement. **Verification gap:** Availability, data handling and versioned licenses need a separate terms review.
-- **State of AI Code Quality Report 2026:** Qodo published a vendor survey/report discussing engineer and leader perceptions of AI code quality. **Availability:** vendor survey, not a controlled benchmark. **Verification gap:** Self-reported respondents do not establish causal changes in correctness.
+- **Product direction:** Qodo is shifting from general-purpose generation toward code review governance, cross-repository context and independently reviewable work packages.
+- **Integration:** pin exact dependency, API, model/version, source commit/weight checksum, task context, deployment and subscription restrictions, instead of comparing names or marketing scores.
+- **Security/licensing:** April 23 announced PR-Agent handover and Apache-2.0 return require the exact destination repository SHA/license/version check; license on a blog post alone is not reuse permission.
+- **Economics:** compare matched **independently accepted task** output including human/review minutes, CI/runtime, hosted inference and 30/90-day upkeep. Tokens do not imply kWh or carbon savings.
 
-Independent installations: **not performed**. Verified external downstream integrations: **not measured**. Release/license/security compatibility: **not independently established**. Adoption denominators, developer-active minutes, tokens, kWh and gCO2e: **unknown, not zero**.
+## 5. Attributed roadmap versus realized release
 
-## 5. Stated direction versus our interpretation
+**Direction is inferred from the vendor publications**, not an independently established plan: Qodo is shifting from general-purpose generation toward code review governance, cross-repository context and independently reviewable work packages.
 
-**What a dated primary source establishes:** the company made the linked product statements, with the scope stated above. A future plan or planned rollout is **not** a shipped capability. **Binding public 2027–2031 commitments checked in this pass:** none; do not extrapolate a binding roadmap.
+Any `preview` and `announced_only` record stays distinct from vendor-described general availability. A direction statement or claimed open-source license requires checking the exact artifact. Future intent has no guaranteed release date unless the cited official source explicitly guarantees it; the event table is not a promise calendar.
 
-**Analyst's conditional hypothesis, NOT vendor strategy:** Risk-weighted review may focus reviewer effort on breaking changes, but shallow settings may increase missed defects and create false reassurance.
+## 6. Analyst 2027–2031 conditional interpretation
 
-**Disconfirmation:** fail to improve independently frozen task acceptance or raise total human review/maintenance/dependency cost; audit other models, earlier baseline practices and product access differences. The source screening does not estimate probabilities or causal effect sizes.
-
-## 6. Independent/counter-evidence status
-
-A vendor survey is not independent validation. No blinded test with fixed defective PRs and eligible review denominators was established.
-
-No independent cross-source conflict adjudication, dated product deployment replication, third-party security audit or sample-based effectiveness study has yet been completed. Treat missing critical reports as an **open search task**, not an all-clear.
-
-## 7. Mapping to the GitHub 1000 study (M1–M7)
-
-| Constructs | Prospectively testable question | Minimum independent evidence and negative case |
+| Hypothesis (not company commitment) | Rival explanation | Observable disconfirmation |
 |---|---|---|
-| M1, M2 | Does this product alter allowed/delegated coding behavior and independently accepted task quality? | Consent and dated versioned workflows, independent task tests, all failed and abandoned tasks; access is not adoption |
-| M4, M5 | Does a user find, adapt, and correctly **reuse** existing code rather than generate a duplicate? | Time-bounded local/registry/OSS candidate search with license/security/fit review; prove actual integration and report search misses |
-| M6, M7 | Does workflow improve genuinely useful first-run success and lifecycle cost? | Independent first-use users, review+maintenance minutes, documented baselines and energy system boundaries; no token-to-CO2 conversion |
+| Reusing a maintained code review project with stable governance rules can avoid each repository building an independent agent review system. | Generated code review noise and false negatives may increase human reviewer minutes and reduce accepted bug detection. | Independent seeded-defect tests show no better risk-weighted detection under equal reviewer time. |
 
-The site and source population are not randomized. No effect estimate or recommendations-by-popularity follow.
+**Confidence:** low/exploratory until independent outcome tests and representative recruitment. Research design must not treat this editorial ten-company screen as a random sample of companies, repositories or model users.
 
-## 8. One falsifiable 2027 maintainer experiment — **proposed, not executed**
+## 7. Study implications (M1–M7)
 
-**Fixed task and comparison:** Independently create a small bank of code-review PRs: harmless changes, dependency/license traps and breaking public APIs. Blind reviewers to injected defects, compare ordinary CI+human checklist against AI-review with fixed effort levels, and calculate true-positive/false-positive by issue, human review minutes and missed critical cases; preserve failures.
+| Objective | Operational observation and validity safeguard |
+|---|---|
+| M1 workflow evolution | Pinned dated exposure to working agent workflow; release != actual user adoption |
+| M2 quality/review | Preregistered task correctness, human review minutes and failures under independent evaluation |
+| M3 discovery | Prospective cohort and comparisons controlling baseline popularity, language and publicity |
+| M4 meaningful third-party reuse | External real working downstream integration, not stars, impressions, downloads or trial signups |
+| M5 reuse-first vs rebuild | License/provenance/security checked candidate pool, matched task and no-solution cases |
+| M6 lifecycle sustainability | Complete human + inference + CI + upkeep + upstream costs, environmental meter/model boundaries and uncertainty; no carbon/token coefficient invented |
+| M7 ethical maintainer growth | Fixed low-risk intervention for organic onboarding, downstream verified use, prospective controls |
 
-**Primary measure:** independently accepted tasks over **all pre-allocated tasks**, including refused, failed and abandoned. **Secondary measures:** independent clean installation, verified reuse/provenance, repair and reviewer effort, unresolved licensing/security risk, and future support work. Disclose environment, dates, consent and versions. Provider usage/expenses and lifecycle kWh are unmeasured, not imputed.
+None of these effects were measured in this source review. External ecosystem product announcements are **hypothesis generators only**.
 
-**Stop / reversal rule:** Do not integrate as an autonomous approval gate if critical defects are missed, licensing/telemetry is unresolved or human-review load increases without verified benefit.
+## 8. Concrete experiment for the maintainer's own repository
 
-## 9. Remaining acceptance and human-review gate
+**Repository:** [the existing GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study), using offline synthetic [parser fixture](../../../tests/fixtures/trending.html) and existing CLI. Avoid unauthorized GitHub Trending collection.
 
-- [ ] Recheck entity ownership/product boundaries and every canonical link and date against original/archived source.
-- [ ] Complete seven segment-by-segment search log with found/screened/included/excluded counts, negative and inaccessible results.
-- [ ] Include dated independent and critical coverage, and a deduplicated event ledger with product/license/API/status fields.
-- [ ] Separate actual availability from announcements, previews, cancellations and vendor performance data.
-- [ ] Review task pilot design with independent acceptance tests and eligible-denominator reporting.
-- [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
+**Candidate intervention:** Compare current human PR review plus existing Python unit suite with a strictly nonblocking external/static review report on the same blinded fixture patch set.
 
-**No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
+**Control/treatment with frozen task:** A: baseline independent human reviewer with pinned tests; B: same tester plus a version-pinned reusable open PR review component in isolated read-only mode.
 
-## Incremental source recheck (2026-10-13; first-party documentary audit)
+**Independent acceptance and actual reuse signal:** Before trials freeze seeded defect corpus and adjudicator; measure TP/FP/FN, accepted patch correctness, human review minutes and downstream maintenance at 30 days.
 
-This section records 4 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [018-qodo.events.csv](018-qodo.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
+**Pre-register** all assigned tasks (including failures/no-solution), acceptance hash/schema and evaluator before any agent runs. Record exact repo commit, agent/model/versions, candidate license/security provenance, human review, token/billing if available, build/CI, attempts, 30-day support and downstream external adoption. Consent for any human participant logs and minimize personal telemetry.
 
-| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+**Stop rule:** Never auto-merge on vendor score; stop if malicious/unlicensed component, credential exposure, inflated false positives or no net independently accepted improvements.
+
+**Applicability:** a small offline CLI task, not evidence of representative OSS growth or positive environmental impact. The purpose is to *verify reuse of existing work*, not to maximize generated code, repo count or GitHub stars.
+
+## 9. Review status, discrepancies and limits
+
+- **Documentary output:** 6 attributed source records. Scope is source discovery, not independent validation of announced product quality or commercial uptake.
+- **Special conflicting/qualified statement:** Provider's announced abandonment of code generation and PR-Agent governance relocation are intentions/descriptions; do not assume full execution or universal entitlement.
+- **Not established:** systematic full recall, company-wide corporate ownership auditing, third-party task acceptance, API reproducibility, real external users, long-run cost, maintenance load or kWh/CO2e.
+- **Independence:** no external researcher fact-checked this file; no E3/E4 assignment, no original observations, no actual task trial.
+- **Acceptance work outstanding:** rerun all seven monthly searches with screen logs; independent link/date/article-version check; verify artifact rights and product access/version; look for negative independent coverage, regulatory/security history and corrections; inspect exact legal parent after any merger; run tests/CSV validation in repo checkout; approve human review.
+- **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
+
+**Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
+
+## 10. Provisional source lead preserved from overlapping first-pass PR #198 (not counted)
+
+[PR #198](https://github.com/MSKazemi/github-trending-1000-study/pull/198) contains a JSON event-lead draft overlapping this report's agentic toolbox, software map and Qodo 3.0 items. They should **not** become additional event IDs. A distinct lead to inspect separately is:
+
+- [Why Your AI Coding Agent Shouldn't Review Its Own Code](https://www.qodo.ai/blog/why-your-ai-coding-agent-shouldnt-review-its-own-code-the-case-for-an-independent-verification-layer/) — draft lead `018-E01` from #198, source date *reported by that draft* as 2026-06-30, not yet independently checked. This is a vendor-authored **argument** for independent verification, not independent causal evidence that separate AI review improves acceptance or security. Check the actual title/date/version, claims and competing results before any inclusion.
+
+This is **not a seventh validated event**, not an independent review and not a product-adoption finding. The original PR's distinct experiment rationale and full JSON metadata remain preserved in its branch history for reviewer audit.
+
+### Critical license/ownership contradiction — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [Qodo's April 23 announcement](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/) explicitly states relocation to the **The-PR-Agent** organization and planned return to **Apache-2.0**, plus external/community governance. This is first-party **historical intention/announcement**.
+- [Live GitHub metadata](https://github.com/The-PR-Agent/pr-agent) confirms the actual organization/repository exists and is not archived. **The `main` branch `LICENSE` currently says MIT**, not Apache-2.0: [license file](https://github.com/The-PR-Agent/pr-agent/blob/main/LICENSE), inspected via GitHub file API on **2026-10-13**, blob SHA `43fff0c98b18eba319298a18dae01a57ba0eac97`. This is a **material mismatch** between an April announcement and the current source artifact, **not** proof what the license was on April 23. Avoid describing an Apache-2.0 license as verified fact in the current branch.
+- A PR-Agent reuse decision therefore requires **pinning a specific Git commit**, confirming its actual `LICENSE` and packaged dependencies, checking contributor/governance activity, and documenting whether MIT is compatible with the intended use. Neither GitHub stars nor blog branding are adoption evidence.
+- Several later Qodo post URLs in the initial CSV were not rendered by the web reader on this check. Their publication dates and features need another source/documentary pass; **do not mark the full issue factually complete**.
+
+**Revised practical test:** Compare a pinned, read-only upstream PR-Agent commit *with verified MIT permissions* to existing independent human review + project test suite. Freeze seeded faults, report TP/FP/FN and reviewer burden, and **never auto-merge on an agent recommendation**.
+
+
+## Evidence-preserving reconciliation of competing drafts (2026-10-13)
+
+This source-screened working report retains the full **original PR #213 report** and its factual limitations. Later [draft PR #232](https://github.com/MSKazemi/github-trending-1000-study/pull/232) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/018-qodo.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/018-qodo.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
+
+**Canonical working event index:** [018-qodo.events.csv](018-qodo.events.csv) contains 9 deduplicated *publisher URL leads*: 4 retained from the newer screening plus 5 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+
+| URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
-| 2026-06-23 | [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) | Qodo introduced cross-repository contract review for PRs. **Status:** `preview`. | No independent measured defect detection precision/recall. |
-| 2026-07-28 | [The Right Depth for Every PR: Introducing Review Effort Modes](https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/) | Qodo announced configurable multi-level AI PR reviews. **Status:** `preview`. | Do not describe as general availability or validated review cost reduction. |
-| 2026-09-09 | [Built for Agents, Better Outcomes for Humans: Introducing Qodo's Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/) | Qodo announced review/governance/context tools for coding-agent integrations. **Status:** `shipped`. | Review independence and data-processing permissions require review. |
-| 2026-09-23 | [The 2026 State of AI Code Quality Report: Verification Is the New Bottleneck](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) | Qodo published its vendor survey of 500 U.S. developers and 300 U.S. engineering leaders. **Status:** `reported_undetermined`. | Sampling restricted to AI-using organizations; opinions/recall not objective incident logs. |
+| No differing categorical labels identified | — | — | Source assertions still require human verification |
 
-**Important correction and interpretation:** The July Review Effort Modes post explicitly says RESEARCH PREVIEW, not generally available. June Cross Repo Review was BETA. Qodo's September survey sampled 500 U.S. developers and 300 U.S. engineering leaders at AI-using organizations, not a representative sample of all developers; it is vendor-sponsored and questionnaire-based.
+### Unique source material from each branch
 
-**Disconfirmation/critical evidence still needed:** No blinded precision/recall test on real cross-repo breakages; no external validation of vendor survey, selection bias or deployment reliability.
+**Earlier screen source leads retained in the canonical CSV (archived E0 until checked):**
+- 2026-04-23: [Qodo code-generation product direction](https://www.qodo.ai/blog/an-update-on-code-generation-at-qodo/), prior status `announced_only`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-04-23: [PR-Agent community handover](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/), prior status `announced_only`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-06-23: [Qodo 2.4 governance](https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-09-15: [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/), prior status `preview`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-10-01: [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
 
-**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+**Later screen unique links (publisher working records):**
+- 2026-06-23: [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) — `preview`; source-bound, not an independent effectiveness test
+- 2026-07-28: [The Right Depth for Every PR: Introducing Review Effort Modes](https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/) — `preview`; source-bound, not an independent effectiveness test
+- 2026-09-23: [The 2026 State of AI Code Quality Report: Verification Is the New Bottleneck](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) — `reported_undetermined`; source-bound, not an independent effectiveness test
 
-**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #85 and this draft PR open until those acceptance gates are addressed.
+**Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #85 open until study acceptance is satisfied.
