@@ -1,22 +1,17 @@
 name: Tests
-
 on:
   push:
     branches: [main]
   pull_request:
-
 permissions:
   contents: read
 
-# Superseded PR commits should not burn CI or be mistaken for passing HEADs.
 concurrency:
   group: tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  # Never discard post-merge validation on main during rapid concurrent merges.
+  # Always keep post-merge main CI; cancel only obsolete PR revisions.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
-
 jobs:
   test:
-    name: test (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -24,17 +19,50 @@ jobs:
       matrix:
         python-version: ["3.10", "3.12", "3.14"]
     steps:
-      - name: Checkout (immutable verified release SHA)
+      - name: Checkout verified immutable action
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python (immutable verified release SHA)
+      - name: Set up Python verified immutable action
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "${{ matrix.python-version }}"
-      - name: Syntax and import-bytecode compilation
+          python-version: ${{ matrix.python-version }}
+      - name: Compile Python source and tests
         run: python -m compileall -q trending_study tests
-      - name: Complete offline unit test suite
+      - name: Check bundled JSON syntax and duplicate keys
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def unique_keys(pairs):
+              result = {}
+              for key, value in pairs:
+                  if key in result:
+                      raise ValueError(f'duplicate JSON key: {key}')
+                  result[key] = value
+              return result
+
+          def reject_constant(value):
+              raise ValueError(f'nonstandard JSON number: {value}')
+
+          paths = sorted(p for root in ('examples', 'references')
+                         for p in Path(root).rglob('*.json'))
+          if not paths:
+              raise RuntimeError('no research JSON files found')
+          for path in paths:
+              try:
+                  json.loads(path.read_text(encoding='utf-8'),
+                             object_pairs_hook=unique_keys,
+                             parse_constant=reject_constant)
+              except (UnicodeDecodeError, ValueError) as exc:
+                  raise ValueError(f'{path}: {exc}') from exc
+          print(f'Validated {len(paths)} JSON files without duplicate keys or nonstandard numbers')
+          PY
+      - name: Offline research regression tests
         run: python -m unittest discover -s tests -v
-      - name: CLI contract smoke test
-        run: python -m trending_study --help > /dev/null
+      - name: Research CLI entrypoints
+        run: |
+          python -m trending_study --help > /dev/null
+          python -m trending_study.reuse_gate --help > /dev/null
+          python -m trending_study.goldset --help > /dev/null

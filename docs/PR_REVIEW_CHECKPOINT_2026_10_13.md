@@ -43,3 +43,5 @@ Related: [merge policy](PR_MERGE_QUALITY_GATE_2026_10_13.md), [2027–2031 plan]
 
 ## Conflict-resolution outcome — 2026-10-13
 Two simultaneous PRs had proposed the same merge-policy and PR-template paths. We preserved the pre-existing, more complete canonical `docs/PR_MERGE_QUALITY_GATE_2026_10_13.md` and `.github/pull_request_template.md`, incorporated the missing immutable-actions, main-run persistence, concurrency, Python 3.14 and time-bound CI protections, and retained this independent dated audit log. The original stale PR remains traceable in GitHub and should be explicitly marked superseded after successful integration—not force-merged or used to overwrite newer source material.
+
+**Workflow reconciliation (2026-10-13):** The newly merged main workflow introduced strict duplicate-key/nonstandard JSON validation and extra CLI contract checks. The integration PR **preserved** those features while upgrading to immutable official action references, Python 3.14 and PR-only run cancellation. Future CI edits must preserve the accumulated safeguards instead of replacing a concurrent contributor's work.

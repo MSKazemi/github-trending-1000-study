@@ -60,3 +60,6 @@ The concurrent PR quality-policy drafts were reconciled into **this canonical ga
 
 ### Preservation decision for competing quality PRs
 A concurrent PR introduced this useful canonical [template](../.github/pull_request_template.md), which is retained and updated to the three-version matrix. The other PR's more stringent immutable-action configuration and an independently dated integration-risk report were carried forward here. We deliberately avoid two PR templates or two normative merge policy files; unique, useful text is retained in this addendum and the [audit checkpoint](PR_REVIEW_CHECKPOINT_2026_10_13.md).
+
+### Preserved newer validation from concurrent main
+The final CI retains the separate stricter JSON syntax/duplicate-key/nonstandard-number guard from another integration PR, and smoke tests the existing `trending_study`, `reuse_gate`, and `goldset` entrypoints. Those checks must **not** be dropped when action versions or Python matrices change. Real research-source integrity still needs independent verification beyond JSON syntax.
