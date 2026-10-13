@@ -196,5 +196,30 @@ class PackageReviewTests(unittest.TestCase):
             evaluate(p)
 
 
+    def test_optional_exact_package_url_and_source_commit(self):
+        p = candidate()
+        p["candidate"]["purl"] = "pkg:pypi/fictionalpkg@1.0"
+        p["candidate"]["source_commit"] = "a" * 40
+        out = evaluate(p)
+        self.assertEqual(out["decision"], "defer")
+        self.assertFalse(out["automatic_install_approved"])
+
+    def test_package_url_identity_mismatch_rejected(self):
+        for purl in ("pkg:pypi/different@1.0", "pkg:pypi/fictionalpkg@2.0",
+                     "pkg:npm/fictionalpkg@1.0", "pkg:pypi/fictionalpkg@latest",
+                     "https://pypi.org/project/fictionalpkg/1.0/"):
+            p = candidate()
+            p["candidate"]["purl"] = purl
+            with self.subTest(purl=purl), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+    def test_optional_source_commit_must_be_pinned_sha(self):
+        for commit in ("main", "abc123", "", "A" * 40, 123):
+            p = candidate()
+            p["candidate"]["source_commit"] = commit
+            with self.subTest(commit=commit), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+
 if __name__ == "__main__":
     unittest.main()
