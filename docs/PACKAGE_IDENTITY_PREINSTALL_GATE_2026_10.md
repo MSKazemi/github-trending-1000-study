@@ -22,3 +22,13 @@ The JSON includes `candidate`: `ecosystem`, `package_name`, exact `version`, `re
 **Practical lesson:** for every suggested reusable library in your repositories, insist on exact registry version and verified license/provenance before copying or installing it. Neither GitHub stars nor a 'green' scanner proves safe reuse.
 
 See [supply-chain protocol](SUPPLY_CHAIN_PROVENANCE_2027.md), [reuse-first guide](REUSE_FIRST_PLAYBOOK.md) and [independent gold-set judging](REUSE_GOLD_STANDARD_2027.md).
+
+## 2026-10-13 preinstall fail-closed improvements
+
+The candidate check now rejects moving aliases (`latest`, `main`, `HEAD`, ranges), verifies **PyPI** official `pypi.org` host and exact package name/version in the declared registry URL (other ecosystems still require their own official-identity check), and treats SPDX `NONE`/`NOASSERTION` as **non-granting** for a license pass. It rejects evidence URLs with credentials/fragments, and future frozen task timestamps. A package with first-availability after the historical task cutoff is **rejected**, even if its publication date is future-dated. SHA-256 values and asserted sources remain **unverified strings** until independently fetched/compared.
+
+**Checks still required for any real deployment:** resolve exact package URL (purl) and artifact content hash from an authorized registry; verify registry/maintainer identity, signs of typosquatting, version-specific OSV advisories and update timestamps, full SPDX license expression and obligations, provenance/SLSA if available, dependency graph/SBOM, permissioned sandboxed functionality and support lifecycle. Query OSV with exact package/version and process complete pagination; "no returned advisory" is **not** a security guarantee. Never auto-install on any automatic `review_ready` report.
+
+**Technical references:** [SPDX normative license-expression grammar](https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/); [OSV version-specific query API](https://github.com/google/osv.dev/blob/master/docs/api/post-v1-query.md); [Package URL specification](https://github.com/package-url/purl-spec). These are check sources, not evidence that any candidate in this study passed those checks.
+
+**Practical lesson:** before an agent adds a dependency to your repo, pin official package identity and version, audit license/security/maintenance, test in an isolated environment, and retain the *rejected candidate* as evidence for future reuse searches.
