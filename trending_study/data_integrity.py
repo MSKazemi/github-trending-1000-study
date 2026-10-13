@@ -150,6 +150,12 @@ def validate_repository(root):
         if not folder.is_dir():
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
+            # A nested symlinked subtree must not disappear silently from
+            # the source inspection frame. Never follow source aliases.
+            if candidate.is_symlink():
+                raise ResearchJSONError(
+                    f"{candidate.relative_to(root)}: symlinked research content; symlinks are not allowed"
+                )
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:

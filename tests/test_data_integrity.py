@@ -90,6 +90,22 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaisesRegex(ResearchJSONError, "symlink"):
                 validate_repository(root)
 
+    def test_nested_symlinked_evidence_directory_is_rejected(self):
+        # A symlinked subdirectory must not be skipped while the checker
+        # reports that it scanned all eligible research evidence.
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "regular.json", b'{"id":1}')
+            outside = Path(root) / "external-evidence"
+            outside.mkdir()
+            (outside / "hidden.json").write_text('{"id":2}', encoding="utf-8")
+            nested = Path(root) / "examples" / "subfolder"
+            nested.mkdir()
+            (nested / "source-link").symlink_to(
+                outside, target_is_directory=True
+            )
+            with self.assertRaisesRegex(ResearchJSONError, "symlinked"):
+                validate_repository(root)
+
     def test_absent_or_invalid_source_fails_explicitly(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaisesRegex(ResearchJSONError, "no .json"):

@@ -37,3 +37,8 @@ The extension performs read-only, strict CSV parsing with correct quoted commas 
 [PR #251](https://github.com/MSKazemi/github-trending-1000-study/pull/251) proposes an additional *Git-tracked Python AST* check (including scripts outside `trending_study/`), which remains a separate possible improvement, not a reason to duplicate the integrated JSON/CSV evidence contract. Preserve useful test cases and original PR discussion. Report all claim statuses and unknown/missing denominators faithfully.
 
 **Reusable lesson for your own repositories:** test not just that data parses, but that a parser cannot silently *change its meaning*: two duplicate fields should never discard an earlier status, a tiny positive measurement must not become zero, and a CSV header must not be interpreted ambiguously.
+
+
+## Nested symlink traversal hardening (2026-10-13)
+
+Recursive research-artifact enumeration rejects symlinked **nested directories**, not only links to .json/.jsonl/.csv files or entire source roots. Otherwise a linked subtree could be silently skipped while a checker appeared to have scanned its entire research evidence frame. The negative regression keeps an ordinary JSON file present (so a skipped subtree would incorrectly pass) and verifies a controlled failure instead. This is read-only filesystem validation, **not** authentication of the employer, vendor, human reviewer or historical source. This targeted fix was reapplied on top of the CSV/numeric evidence improvements from PR #253/#250 rather than overwriting them.
