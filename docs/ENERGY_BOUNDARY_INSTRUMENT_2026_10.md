@@ -26,3 +26,13 @@ The tool reports signed `reuse − build` energy only when both task outputs are
 Use one independently reviewed code task with an existing library candidate and a new-code baseline; record *all* time, installation failures and ongoing maintenance. A smaller prompt or fewer generated lines is not the functional unit. If input energy, security or performance cannot be measured, publish those gaps instead of claiming a green win.
 
 This work is an instrument for later independent energy study, not evidence that AI assistance is energetically cheaper.
+
+## 2026-10-13 validation and SCI boundary caveat
+
+Change: `energy_boundary.compare()` validates **all seven declared components for both comparison arms even when one arm's user task was not accepted**. Previously, early return on a rejected task could bypass malformed energy evidence. The report explicitly distinguishes `incomplete_boundary`, `mixed_modeled_scenario_only`, and `all_components_self_reported_measured_not_authenticated`. A complete *declared* boundary with modeled terms is not fully metered energy.
+
+**Functional unit:** independently accepted same task and service level, pinned hardware/model/configuration, usage count and 90-day follow-up horizon (or a justified alternative). Predeclare which measured versus modeled terms are inside the boundary, use idle-power subtraction and calibration uncertainty for local/CI measurements, and separately disclose provider inference unavailable rather than equate tokens with kWh. `upstream_support` is only energy if attributable hardware energy was actually estimated or measured; **human minutes belong to issue #24** and are not automatically kWh. Check source SHA, sampling, caching/region/time intensity, embodied impacts and rebound before total lifecycle claims.
+
+**Scientific anchor:** [ISO/IEC 21031:2024 Software Carbon Intensity](https://www.iso.org/standard/86612.html) establishes an SCI methodology, not a certified carbon result from this partial scenario. `grid_only_scenario_gco2e_delta` excludes inference/embodied and other terms; `net_gco2e_reuse_minus_build` remains null. State every omitted term and measurement calibration; no universal per-token emissions multiplier.
+
+**Practical repository experiment:** on one reusable CLI integration, compare equivalent accepted outputs, account for CI plus downstream maintenance and upstream review, and report unknown cloud energy explicitly; do not claim a green saving from shorter code.
