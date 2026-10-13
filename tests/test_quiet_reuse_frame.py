@@ -42,6 +42,16 @@ class FrameSelectionTests(unittest.TestCase):
                 self.assertNotEqual(got["selection_plan_sha256"],
                                     original["selection_plan_sha256"])
 
+    def test_configuration_digest_changes_when_seed_or_quotas_change(self):
+        original = fake()
+        a = select(original)
+        other = fake()
+        other["seed"] = "different-synthetic-seed"
+        self.assertNotEqual(a["selection_config_sha256"], select(other)["selection_config_sha256"])
+        other = fake()
+        other["quotas"]["old_low"] = 2
+        self.assertNotEqual(a["selection_config_sha256"], select(other)["selection_config_sha256"])
+
     def test_stratified_nontrivial_sample(self):
         r = select(fake())
         self.assertEqual(len(r["selected"]), 2)
