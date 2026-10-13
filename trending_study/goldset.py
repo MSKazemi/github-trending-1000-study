@@ -4,7 +4,7 @@ All input judgments are supplied, not independently verified by this CLI.
 A judged pool is NOT the universe of reusable software.
 """
 import argparse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import json
 from pathlib import Path
 import re
@@ -72,8 +72,10 @@ def _candidate(c, taskid, baseline):
         if label == "viable" or gates.get("availability") == "pass":
             raise GoldsetError(f"{taskid}/{cid}: candidate released after task baseline cannot be available")
     reviewers = _list(c.get("reviewer_labels"), "reviewer_labels")
-    if len(reviewers) != 2 or any(r not in LABELS for r in reviewers):
+    if len(reviewers) != 2 or any(not isinstance(r, str) or r not in LABELS for r in reviewers):
         raise GoldsetError(f"{taskid}/{cid}: exactly two reviewer labels required")
+    if label != "unknown" and "unknown" in reviewers:
+        raise GoldsetError(f"{taskid}/{cid}: no final accepted judgment with missing independent reviewer label")
     if label == "viable":
         if (any(gates[k] != "pass" for k in required)
                 or ("availability" in gates and gates["availability"] != "pass")):
@@ -114,6 +116,9 @@ def evaluate(payload, k=5):
             raise GoldsetError(f"duplicate task_id {taskid}")
         seen_taskids.add(taskid)
         baseline = _date(task.get("baseline_utc"), "baseline_utc")
+        if (payload["dataset_kind"] != "synthetic"
+                and baseline > datetime.now(timezone.utc) + timedelta(minutes=5)):
+            raise GoldsetError("pilot/observational task baseline cannot be future-dated")
         specsha = _nonempty(task.get("spec_sha256"), "spec_sha256")
         accsha = _nonempty(task.get("acceptance_sha256"), "acceptance_sha256")
         if not _SHA.fullmatch(specsha) or not _SHA.fullmatch(accsha):
@@ -159,13 +164,14 @@ def evaluate(payload, k=5):
                 "name": name,
                 "k": k,
                 "returned_at_k": len(top),
+                "unfilled_rank_slots_at_k": k - len(top),
                 "judgment_coverage_of_returned": coverage,
                 "unjudged_at_k": missing,
                 "precision_at_k": good/k if missing == 0 else None,
                 "precision_at_k_lower_bound": good/k,
                 "precision_at_k_upper_bound": (good+missing)/k,
                 "pooled_relative_recall_at_k": (good/total_known_viable if total_known_viable and missing == 0 else None),
-                "warning": "Pooled relative recall is not absolute recall across all available software.",
+                "warning": "P@K divides by K including missing rank slots; pooled relative recall is not absolute recall across all available software.",
             })
         rows.append({
             "task_id": taskid,
