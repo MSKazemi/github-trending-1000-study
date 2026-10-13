@@ -1,10 +1,11 @@
 """Offline negative tests for fail-closed, non-loss branch retirement."""
 import copy
+from pathlib import Path
 import unittest
 from unittest.mock import patch
 
 from scripts.retire_merged_branches import (
-    ARCHIVE_PREFIX, ApiNotFound, CleanupError, GitHubClient, execute,
+    ARCHIVE_PREFIX, ApiNotFound, CleanupError, GitHubClient, execute, main,
     retire_one, validate_plan,
 )
 
@@ -210,6 +211,23 @@ class BranchCleanupTests(unittest.TestCase):
         with self.assertRaisesRegex(CleanupError, "SHA lease rejected"):
             client.delete_with_lease(NAME, SHA)
         self.assertEqual(runner.call_count, 1)
+
+    def test_privileged_retirement_workflow_is_manual_only(self):
+        workflow = Path(".github/workflows/retire-verified-branches.yml").read_text(
+            encoding="utf-8")
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotIn("\n  push:", workflow)
+        self.assertNotIn("\n  pull_request:", workflow)
+        self.assertIn("inputs.mode == 'audit'", workflow)
+        self.assertIn("inputs.mode == 'retire'", workflow)
+        self.assertIn("contents: read", workflow)
+        self.assertIn("contents: write", workflow)
+
+    def test_cli_destructive_mode_requires_exact_confirmation(self):
+        self.assertEqual(main([
+            "--plan", "ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json",
+            "--execute",
+        ]), 2)
 
     def test_plan_rejects_duplicate_unknown_or_default_branches(self):
         for bad in ("main", "a/../b", "refs/heads/foo", "a//b", "branch..old"):
