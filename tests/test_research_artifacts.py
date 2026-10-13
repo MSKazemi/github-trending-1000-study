@@ -143,6 +143,18 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "cumulative research artifacts"):
             audit_repository(self.root, max_total_bytes=12)
 
+    def test_explicit_json_nesting_limit_is_cross_version_deterministic(self):
+        for depth in (1, 127, 128):
+            with self.subTest(accepted_depth=depth):
+                raw = '[' * depth + '0' + ']' * depth
+                self.assertEqual(validate_text(Path("safe.json"), raw), 1)
+        with self.assertRaisesRegex(IntegrityError, "JSON nesting exceeds 128"):
+            validate_text(Path("too-deep.json"), '[' * 129 + '0' + ']' * 129)
+
+    def test_braces_and_escaped_quotes_inside_strings_do_not_count_as_nesting(self):
+        raw = json.dumps({"literal": ('[{}] "' + chr(92) + ' end ') * 300})
+        self.assertEqual(validate_text(Path("literal.json"), raw), 1)
+
     def test_deeply_nested_json_fails_as_controlled_integrity_error(self):
         file = self.root / "examples" / "case.json"
         file.write_text('{"nested":' + '[' * 1500 + '0' + ']' * 1500 + '}',
