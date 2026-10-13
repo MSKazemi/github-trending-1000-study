@@ -57,6 +57,28 @@ class FrameSelectionTests(unittest.TestCase):
         self.assertEqual(select(p)["strata_with_insufficient_members"], ["young"])
 
 
+    def test_unknown_columns_cannot_smuggle_future_outcome_proxies(self):
+        for field in ("downstream_2027_uses", "stars_next_year", "favorite_candidate"):
+            p = fake()
+            p["repositories"][0][field] = 1
+            with self.subTest(field=field), self.assertRaisesRegex(FrameError, "prespecified"):
+                select(p)
+
+    def test_future_frozen_frame_or_spoofed_source_rejected(self):
+        p = fake()
+        p["frozen_at_utc"] = "2099-01-01T00:00:00Z"
+        with self.assertRaisesRegex(FrameError, "future"):
+            select(p)
+        p = fake()
+        p["repositories"][0]["source_url"] = "https://registry.example@evil.example/pkg"
+        with self.assertRaisesRegex(FrameError, "credentials"):
+            select(p)
+
+    def test_nominal_fraction_is_not_population_probability(self):
+        report = select(fake())
+        self.assertTrue(report["random_seed_independence_unverified"])
+        self.assertFalse(report["eligible_for_population_prevalence_claim"])
+
     def test_malformed_stratum_type_is_rejected(self):
         p = fake()
         p["repositories"][0]["stratum"] = []
