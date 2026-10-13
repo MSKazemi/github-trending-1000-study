@@ -29,6 +29,19 @@ class LiteratureLedgerTests(unittest.TestCase):
         r = audit(p)
         self.assertEqual(r["possible_duplicate_groups"]["doi:10.1000/xyz"], ["s1", "s2"])
 
+    def test_common_doi_prefix_variants_normalize_to_same_identity(self):
+        p = source()
+        first = p["records"][0]
+        second = dict(first, record_id="s2", doi="DOI: 10.1000/xyz",
+                      decision="pending")
+        third = dict(first, record_id="s3", doi="https://dx.doi.org/10.1000/XYZ",
+                     decision="pending")
+        p["records"].extend([second, third])
+        report = audit(p)
+        self.assertEqual(report["possible_duplicate_groups"]["doi:10.1000/xyz"],
+                         ["s1", "s2", "s3"])
+        self.assertEqual(report["screened_records"], 3)
+
     def test_exclusion_requires_reason(self):
         p = source()
         p["records"][0]["decision"] = "exclude"
