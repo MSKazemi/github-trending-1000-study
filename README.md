@@ -22,6 +22,8 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [**Ten-issue parallel scientific methods audit (2026-10-13)**](docs/TEN_ISSUE_METHODS_INTEGRATION_2026_10_13.md) — ten reproducible research workstreams, per-PR Python 3.10/3.12 CI evidence, shared task/denominator design, remaining human/permission/metering gates and practical lessons; **not empirical findings or approved enrollment**.
+- [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
 - [**Execution plan after the audit**](docs/NEXT_STEPS_EXECUTION_2026-10-12.md) — evidence-gated development tasks, human approvals, PR dependencies, go/no-go milestones and a bounded feasibility pilot.
 - [Faculty-style methodological review](docs/FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) — evidence-grounded advice, **not actual professorial endorsement**; [first expanded task intake](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md).
@@ -41,13 +43,11 @@ python -m trending_study parse-trending --input tests/fixtures/trending.html --d
 python -m trending_study summarize --input /tmp/trending.jsonl
 ```
 
-**Source-access warning (2026-10-12):** [GitHub's published robots.txt](https://github.com/robots.txt) currently lists `Disallow: /*since=*` under `User-agent: *`, which includes the collector's `/trending?since=daily|weekly|monthly` URLs. **Do not run the live Trending collector until access rules have been independently reviewed and the proposed method is permitted or amended.** Code availability and one-request rate limiting do not constitute permission. This does not restrict the separately documented, bounded public REST API issue-candidate intake.
+**Source-access stop gate (2026-10-13):** GitHub's [published robots.txt](https://github.com/robots.txt) includes `Disallow: /*since=*` under `User-agent: *`, matching the `/trending?since=daily|weekly|monthly` paths this prototype would request. Because appropriate access for the proposed research cadence is **not documented or independently approved**, the `capture` command is now **hard-blocked before any HTTP request**. There is **no CLI flag, token or environment override**. A PR that re-enables live fetching must contain a dated platform/source-access assessment, exact authorized URLs and cadence, independent human review, and any needed signed protocol amendment. A robots rule is an access warning, not by itself a complete legal opinion; neither code nor self-written approval text grants permission.
 
-To capture a *live*, public Trending page (explicit opt-in, no automatic scraping, **subject to the access restriction above**):
+The [source-access decision and lawful alternatives](docs/SOURCE_ACCESS_DECISION_2026-10-13.md), [pilot runbook](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md) document the controls. **Offline** `parse-trending`, `pilot-parse` for already-authorized, locally preserved evidence, synthetic page QA, and approved GitHub REST API metadata workflows remain available. Offline parser success is not independently authenticated live Trending data. Do not use manual snapshots as a workaround without the same source-access and provenance review.
 
-For an explicitly permitted **current-day** single-page pilot, use the UTC-date and checksum-manifest workflow in the [pilot instructions](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture safety contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md). Do not reuse a raw, manifest, JSONL or audit filename; accidental overwrites now fail closed. Historical pages cannot be recreated from today's endpoint.
-
-`capture` makes **one** HTTPS request. It does not bypass access controls or retry aggressively. Collection date must reflect the date on which the page is actually observed; backdated Trending rankings cannot be recovered from today's page. Consider manual snapshots if automated access is disallowed.
+**Current command behavior:** `python -m trending_study capture --date <current-UTC-date> --window daily --output ...` returns a nonzero error before accessing GitHub or creating files. The earlier UTC/manifest capture example is retained as a *future conditional procedure* in the pilot SOP, **not** an instruction to run it now. Observations cannot be backdated or reconstructed from today's Trending page.
 
 Enrich observed repositories with current public metadata (optional `GITHUB_TOKEN`; do not commit tokens):
 
@@ -239,6 +239,21 @@ An [offline task-intake validator and documented exploratory public-issue frame]
 python -m trending_study.task_intake --input examples/task_intake.cross_ecosystem_2026-10-12.json --output /tmp/task-intake-cross-ecosystem-2026-10-12.json
 ```
 
+## 2026-10-12: 16 public issue metadata rechecks and pre-search review instrument
+
+The existing **16 hash-selected, unreviewed** public issue leads were rechecked through individual permitted GitHub REST issue endpoints at a batch completion time of **2026-10-12 20:25:45 UTC**. All 16 stable numeric IDs/links matched and were open at recheck, with no `updated_at` timestamp differences from their original reduced intake metadata. This **does not** establish independently accepted tasks, absence of public solution hints, genuine reviewer independence, agent outcomes, 1,000 Trending observations or environmental savings.
+
+The [limited observed metadata and scientific caveats](docs/TASK_SCREENING_SOURCE_RECHECK_2026-10-12.md) accompany the [reduced recheck JSON](research-notes/issue-recheck-2026-10-12.json), [offline task-screening CLI](trending_study/task_screen.py) and [synthetic reviewer consistency tests](tests/test_task_screen.py). The **human-source screening and independent acceptance criteria remain open** at [issue #65](https://github.com/MSKazemi/github-trending-1000-study/issues/65).
+
+```bash
+python -m trending_study.task_screen prepare \
+  --frame examples/task_intake.cross_ecosystem_2026-10-12.json \
+  --recheck research-notes/issue-recheck-2026-10-12.json \
+  --output /tmp/issue65-screen-packet.json
+```
+
+Avoid interpreting even two matching *synthetic or self-reported* reviewer labels as verified human approval. **Original public issues may already contain specific fixes**; real maintenance and independent blind task-solving require different experimental designs.
+
 ## 2026-10-12: reproducible, synthetic 2027 task-trial pilot instrument
 
 For the **separate, opt-in randomized reuse-first experiment** (not the observational Trending cohort), the initial [offline task-frame allocation and outcome audit](docs/TRIAL_PILOT_INSTRUMENT.md) is available. It validates frozen task/acceptance hashes, prespecified screening exclusions, deterministic task-cluster randomization across the proposed 2×2 human/agent × usual/reuse-first arms, and all-assigned-task outcome accounting including failures, refusals, pending work and missing human time.
@@ -253,9 +268,9 @@ python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json
 
 ## Independent Github Trending page QA (2026-10-12, Issue #2)
 
-The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
+The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. For a genuine A/B disagreement, the same command now also accepts an **optional third reviewer-C adjudication record**; original A/B disagreement and the separate C decision remain visible, never self-certifying reviewer independence. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
 
-[Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
+Use optional `--markdown-output <new-summary.md>` for a write-once **derived** review table; the JSON report remains canonical, and neither output proves human independence. [Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
 
 ```bash
 python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
