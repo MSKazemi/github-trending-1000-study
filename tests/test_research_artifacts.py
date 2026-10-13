@@ -41,12 +41,12 @@ class ResearchArtifactQualityTests(unittest.TestCase):
         templates = self.root / "templates"
         templates.mkdir()
         review = templates / "review.jsonl"
-        review.write_text('{"task": "t01"}\\n', encoding="utf-8")
+        review.write_text('{"task": "t01"}\n', encoding="utf-8")
         result = audit_repository(self.root)
         self.assertEqual(result["files"], 5)
         self.assertEqual(result["json"], 2)
         self.assertEqual(result["jsonl"], 2)
-        review.write_text('{"task": 1, "task": 2}\\n', encoding="utf-8")
+        review.write_text('{"task": 1, "task": 2}\n', encoding="utf-8")
         with self.assertRaisesRegex(IntegrityError, "duplicate JSON object key"):
             audit_repository(self.root)
 
