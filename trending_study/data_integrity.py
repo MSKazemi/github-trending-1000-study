@@ -138,7 +138,7 @@ def validate_repository(root):
         for candidate in folder.rglob("*"):
             if candidate.is_symlink():
                 raise ResearchJSONError(
-                    f"{candidate.relative_to(root)}: symlinked research entry is not trusted"
+                    f"{candidate.relative_to(root)}: symlinks are not trusted research entries"
                 )
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
