@@ -62,14 +62,16 @@ def _capture(obj):
         if declared != observed:
             raise OverlapError("page_url language path disagrees with language_filter")
     query = parse_qs(parsed.query, keep_blank_values=True)
-    if query.get("since") != [obj["window"]]:
-        raise OverlapError("page_url since parameter must match window")
+    if query != {"since": [obj["window"]]}:
+        raise OverlapError("page_url must have exactly one since parameter matching window")
     if not isinstance(obj.get("source_sha256"), str) or not _SHA.fullmatch(obj["source_sha256"]):
         raise OverlapError("capture.source_sha256 must be 64 hex characters")
     timestamp = _utc(obj.get("captured_at_utc"), "captured_at_utc")
     ranks = obj.get("repository_ids")
     if not isinstance(ranks, list) or not ranks:
         raise OverlapError("repository_ids must contain all displayed ranks, not an empty subset")
+    if len(ranks) > 1000:
+        raise OverlapError("supplied Trending page exceeds 1000 ranks; audit unexpected page shape")
     if any(isinstance(x, bool) or not isinstance(x, int) or x <= 0 for x in ranks):
         raise OverlapError("repository_ids must be positive stable numeric GitHub IDs")
     if len(ranks) != len(set(ranks)):
