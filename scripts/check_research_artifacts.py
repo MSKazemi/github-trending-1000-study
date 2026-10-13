@@ -140,6 +140,8 @@ def validate_text(path, content):
                     f"CSV record {number} has {len(row)} cells, expected {len(header)}"
                 )
             count += 1
+        if count == 0:
+            raise IntegrityError("CSV contains no data records")
         return count
     raise IntegrityError(f"unsupported file suffix {path.suffix}")
 
