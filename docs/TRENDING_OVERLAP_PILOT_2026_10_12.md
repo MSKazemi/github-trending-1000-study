@@ -18,7 +18,7 @@ rank order. The URL is parsed and restricted to HTTPS `github.com/trending`
 (or `/trending/<language>` when a non-null filter is declared); the explicit
 `since=daily|weekly|monthly` query value must match `window`, and the
 decoded language slug must agree with the declared filter (case-insensitive,
-with spaces normalized to hyphens). Host spoofing, contradictory paths,
+with spaces normalized to hyphens). Host spoofing, noncanonical origins or ports, nested/encoded language paths, unexpected query keys,
 fragments, duplicate `since` values and future UTC capture timestamps
 (more than five minutes ahead of the validator clock) fail closed. The small
 skew allowance is not third-party time authentication.
@@ -50,3 +50,7 @@ rapidly even on comparable pages, do not interpret a single trending rank or
 one-day star burst as evidence of reusable functionality. Instead instrument
 clean-install, independent adoption and 30/90-day maintenance outcomes.
 See [black-box audit proposal](TRENDING_ALGORITHM_AUDIT.md).
+
+## PR review hardening (2026-10-13)
+
+Security/methods review added strict rejection of unexpected query parameters and noncanonical GitHub origins (including explicit ports) so differently filtered pages cannot be silently compared. Filtered languages must map to exactly one safe slug; nested paths or encoded separators are rejected. Malformed container types now raise the documented `OverlapError`, not an unchecked Python type error. Synthetic regression tests cover all these cases; this still does not authenticate GitHub data or 30/90/180-day follow-up.
