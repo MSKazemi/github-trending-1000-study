@@ -38,6 +38,8 @@ Remaining branches after full success: approximately **63**, including draft and
 
 ## Read-only audit and controlled recovery
 
+A live `audit` run also detects an archive tag that already points at a *different* commit and reports `blocked_archive_tag_conflict` without modifying any refs. A missing tag before first approved retirement is expected; it is created and verified only in the separately authorized `retire` phase. This does not replace independent source/method review or administrator protection of recovery tags.
+
 1. Review the [no-loss branch allowlist](../ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json), current base/head SHAs, and full original PR discussions. Run GitHub Actions **Retire verified merged branches** on `main` in `audit` mode. The audit does no writes; treat any blocked result as a reason to investigate, not authorization to edit expected SHAs.
 2. Before any separately authorized `retire` execution, confirm the 2026-10-13 original cleanup run has fully finished, original archive tags exist and remain reachable, no active author is writing to target branches, and tag-protection/branch-protection requirements have been reviewed. Do not rerun an older unreviewed workflow implementation.
 3. If approved, dispatch `retire` manually with exact confirmation. Check the resulting GitHub Actions log, statuses, original SHA-to-tag mapping, and the complete post-run branch list. A failed lease means **retain and reclassify**, not bypass.
