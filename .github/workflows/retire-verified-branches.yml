@@ -1,40 +1,77 @@
 name: Retire verified merged branches
 
-# One-time main-only, explicit allowlist. Never run from untrusted PRs.
+# Never retire branches on push, a PR event, or a schedule. An operator must
+# first run read-only live audit and separately authorize the write operation.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Read-only live audit by default; retire requires explicit confirmation"
+        required: true
+        default: audit
+        type: choice
+        options:
+          - audit
+          - retire
+      confirmation:
+        description: "For retire, enter RETIRE_VERIFIED_MERGED_BRANCHES"
+        required: false
+        default: ""
+        type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: retire-verified-merged-branches
   cancel-in-progress: false
 
 jobs:
-  retire:
-    if: github.ref == 'refs/heads/main'
+  audit:
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'audit'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
+    permissions:
+      contents: read
     steps:
-      - name: Check out trusted default branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - name: Fail-closed offline retirement tests
+      - name: Run offline safety tests
         run: python -m unittest tests.test_retire_merged_branches -v
-      - name: Validate explicit approved allowlist (offline)
-        run: python scripts/retire_merged_branches.py --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json
-      - name: Archive exact SHA then retire verified merged branch
+      - name: Live read-only SHA, PR and ancestry audit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: python scripts/retire_merged_branches.py --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json --execute
+        run: |
+          python scripts/retire_merged_branches.py \
+            --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json \
+            --audit-live
+
+  retire:
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'retire' && inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Run offline safety tests
+        run: python -m unittest tests.test_retire_merged_branches -v
+      - name: Verify archives and remove only exact SHA-leased refs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RETIRE_CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          python scripts/retire_merged_branches.py \
+            --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json \
+            --execute --confirm "$RETIRE_CONFIRM"
