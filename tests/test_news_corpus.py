@@ -33,10 +33,40 @@ class NewsCorpusTests(unittest.TestCase):
     def test_duplicate_canonical_source_even_with_tracking_query(self):
         copied = copy.deepcopy(self.item)
         copied["id"] = "NEWS-2026-0099"
-        copied["canonical_url"] += "?ref=duplicated"
+        copied["canonical_url"] += "?utm_source=duplicated"
         with self.assertRaisesRegex(ValueError, "duplicate canonical"):
             validate_records([(self.item["id"] + ".json", self.item),
                               (copied["id"] + ".json", copied)])
+
+    def test_query_selected_documents_are_not_false_duplicates(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?item=1"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?item=2"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_tracking_variants_of_same_query_selected_page_are_duplicates(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?id=1&utm_source=email"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://EXAMPLE.org/report?utm_medium=ad&id=1"
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([(first["id"] + ".json", first),
+                              (second["id"] + ".json", second)])
+
+    def test_ref_is_preserved_when_it_may_select_source_version(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/doc?ref=release-a"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/doc?ref=release-b"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
 
     def test_reject_wrong_filename_or_id(self):
         with self.assertRaisesRegex(ValueError, "filename and ID"):
