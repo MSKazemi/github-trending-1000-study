@@ -13,7 +13,7 @@ import re
 class UsefulnessError(ValueError):
     pass
 
-_SHA = re.compile(r"[a-f0-9]{64}\\Z")
+_SHA = re.compile(r"[a-f0-9]{64}\Z")
 _STATUS = {"pass", "fail", "unknown", "not_applicable"}
 _ARCHETYPES = {"cli", "library", "research_artifact", "application"}
 
