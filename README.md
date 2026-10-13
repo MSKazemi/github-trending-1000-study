@@ -322,6 +322,10 @@ python -m trending_study.task_costs \
 All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.
 
 
+## Merge assurance and code/research quality
+
+Follow the [canonical enterprise PR merge gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and the [dated integration audit](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). PRs require real code review, **latest-head PR CI**, conflict checks and preservation of useful parallel work. Synthetic method checks cannot certify GitHub-source authenticity, independent human review, package safety or lifecycle energy findings. The test matrix covers Python 3.10/3.12/3.14 with official immutable SHA-pinned actions; only verified tasks and observations can support scientific conclusions.
+
 ## October 2026: enterprise PR merge and research-artifact integrity
 
 **[Enterprise PR policy](docs/PR_QUALITY_AND_MERGE_POLICY.md)** | **[Dated 45-PR audit and collision register](docs/PR_AUDIT_2026-10-13.md)** | [Issue #240](https://github.com/MSKazemi/github-trending-1000-study/issues/240)
