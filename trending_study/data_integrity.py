@@ -1,17 +1,19 @@
-"""Fail-closed, offline syntax/integrity checks for tracked research JSON.
+"""Fail-closed, offline syntax/integrity checks for research JSON, JSONL and CSV.
 
 Reject ambiguous duplicate keys and non-finite numbers before they become
 silently reinterpreted by downstream readers. Does not authenticate sources,
 validate a study schema, or verify that observations actually occurred.
 """
 import argparse
+import csv
+import io
 import json
 import math
 from pathlib import Path
 import sys
 
 SOURCE_DIRS = ("examples", "references", "research", "research-notes", "templates")
-EXTENSIONS = frozenset((".json", ".jsonl"))
+EXTENSIONS = frozenset((".json", ".jsonl", ".csv"))
 MAX_FILE_BYTES = 16 * 1024 * 1024
 
 
@@ -68,6 +70,28 @@ def _check_file(path, root):
     if path.suffix == ".json":
         _decode_document(raw, label)
         return 1
+    if path.suffix == ".csv":
+        try:
+            text = raw.decode("utf-8")
+            if "\x00" in text:
+                raise ResearchJSONError(f"{label}: CSV contains embedded NUL")
+            reader = csv.reader(io.StringIO(text, newline=""), strict=True)
+            header = next(reader, None)
+            if not header or any(not key.strip() for key in header):
+                raise ResearchJSONError(f"{label}: CSV requires nonempty header names")
+            normal = [key.strip().casefold() for key in header]
+            if len(set(normal)) != len(normal):
+                raise ResearchJSONError(f"{label}: duplicate CSV header names")
+            rows = 0
+            for row in reader:
+                if len(row) != len(header):
+                    raise ResearchJSONError(
+                        f"{label}: CSV row {rows + 2} has {len(row)} cells, expected {len(header)}"
+                    )
+                rows += 1
+            return rows
+        except (UnicodeDecodeError, csv.Error) as exc:
+            raise ResearchJSONError(f"{label}: invalid CSV data: {exc}") from exc
     # Keep the line number in diagnostics; blank lines are permitted only
     # between real JSONL records, never in place of all evidence.
     lines = raw.splitlines()
@@ -101,13 +125,22 @@ def validate_repository(root):
             if candidate.suffix in EXTENSIONS:
                 files.append(candidate)
     if not files:
-        raise ResearchJSONError("no .json/.jsonl research artifacts found")
+        raise ResearchJSONError("no .json/.jsonl/.csv research artifacts found")
     records = 0
+    csv_rows = 0
+    csv_files = 0
     for path in sorted(files):
-        records += _check_file(path, root)
+        checked = _check_file(path, root)
+        if path.suffix == ".csv":
+            csv_rows += checked
+            csv_files += 1
+        else:
+            records += checked
     return {
         "validated_files": len(files),
         "json_documents_or_jsonl_records": records,
+        "validated_csv_files": csv_files,
+        "validated_csv_rows": csv_rows,
         "source_directories": list(SOURCE_DIRS),
         "modifies_artifacts": False,
         "authenticated_research_evidence": False,
@@ -122,7 +155,7 @@ def main(argv=None):
     try:
         result = validate_repository(args.root)
     except (ResearchJSONError, OSError) as exc:
-        parser.exit(2, f"research JSON integrity gate failed: {exc}\n")
+        parser.exit(2, f"research artifact integrity gate failed: {exc}\n")
     print(json.dumps(result, sort_keys=True, indent=2))
 
 
