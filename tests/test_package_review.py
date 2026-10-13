@@ -114,6 +114,29 @@ class PackageReviewTests(unittest.TestCase):
             with self.subTest(version=version), self.assertRaisesRegex(PackageReviewError, "pinned"):
                 evaluate(p)
 
+    def test_versions_containing_letters_t_or_n_are_not_rejected(self):
+        # Regression: an escaped '\\t\\n' character class accidentally
+        # rejected ordinary letters in valid pinned release identifiers.
+        for version in ("1.0.post1", "1.2.0-nightly.1"):
+            with self.subTest(version=version):
+                p = candidate()
+                p["candidate"]["version"] = version
+                p["candidate"]["registry_url"] = (
+                    f"https://pypi.org/project/fictionalpkg/{version}/"
+                )
+                result = evaluate(p)
+                self.assertEqual(result["decision"], "defer")
+                self.assertFalse(result["automatic_install_approved"])
+
+    def test_whitespace_and_selectors_are_not_pinned_versions(self):
+        for version in ("1.0\\t2", "1.0\\n2", "1.0 2", "1.0/2", "1.0,2",
+                        "1.0||2", "^1.0", "1.*", ">=1.0", "latest", "stable"):
+            with self.subTest(version=repr(version)):
+                p = candidate()
+                p["candidate"]["version"] = version
+                with self.assertRaisesRegex(PackageReviewError, "pinned"):
+                    evaluate(p)
+
     def test_spdx_sentinel_does_not_equal_approved_license(self):
         for value in ("NONE", "NOASSERTION"):
             p = candidate()
