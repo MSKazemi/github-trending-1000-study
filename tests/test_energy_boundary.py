@@ -36,6 +36,25 @@ class EnergyBoundaryTests(unittest.TestCase):
         with self.assertRaises(EnergyError):
             compare(p)
 
+    def test_large_finite_inputs_cannot_overflow_totals(self):
+        p = example()
+        for part in COMPONENTS:
+            p["arms"]["reuse"][part]["kwh"] = 1e308
+        with self.assertRaisesRegex(EnergyError, "summed energy"):
+            compare(p)
+
+    def test_huge_integer_is_controlled_validation_failure(self):
+        p = example()
+        p["arms"]["build"]["ci"]["kwh"] = 10 ** 1000
+        with self.assertRaisesRegex(EnergyError, "nonnegative finite"):
+            compare(p)
+
+    def test_grid_scenario_overflow_is_rejected_not_infinity_json(self):
+        p = example()
+        p["grid_intensity_gco2e_per_kwh"] = 1e308
+        with self.assertRaisesRegex(EnergyError, "grid scenario carbon"):
+            compare(p)
+
     def test_rejects_negative_or_nan(self):
         p = example()
         p["arms"]["build"]["ci"]["kwh"] = float("nan")
