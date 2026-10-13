@@ -134,6 +134,22 @@ class NewsCorpusTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "whitespace or controls"):
                     validate_records([(bad["id"] + ".json", bad)])
 
+    def test_reject_malformed_canonical_authority_and_empty_userinfo(self):
+        for source_url in (
+            "https://@example.org/report",
+            "https://:secret@example.org/report",
+            "https://example.org:/report",
+            "https://example.org:0/report",
+            "https://example.org:bad/report",
+            "https://example.org:65536/report",
+            "https://[invalid/report",
+        ):
+            bad = copy.deepcopy(self.item)
+            bad["canonical_url"] = source_url
+            with self.subTest(url=source_url), self.assertRaisesRegex(
+                    ValueError, "canonical|malformed"):
+                validate_records([(bad["id"] + ".json", bad)])
+
     def test_reject_insecure_url_and_false_human_review(self):
         bad = copy.deepcopy(self.item)
         bad["canonical_url"] = "http://example.com"
