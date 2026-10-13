@@ -25,3 +25,15 @@ DOIs normalize `doi:` and `https://doi.org/` aliases. Duplicate DOI keys and mis
 **Practical application:** before deciding a fashionable AI agent makes a repository greener or more reused, distinguish company performance claims, uncontrolled online benchmarks, and independently evaluated longitudinal user tasks. See [evidence grading](EVIDENCE_TO_LESSON_PROTOCOL.md) and [source watch](SOURCE_MONITORING_AND_JOURNALS_2027.md).
 
 **Limit:** the offline validator proves only logical consistency of supplied screening records, not complete retrieval, inclusion validity or peer review.
+
+## 2026-10-13 scientific hardening: PRISMA-constrained screening
+
+Change: the offline ledger now rejects future-dated search runs and reports **title/year collisions even when candidate DOIs differ**, while retaining independent DOI-identity duplicate groups. No records are deleted, no two reports are assumed to represent two independent studies, and no PRISMA flow is asserted to have been authenticated.
+
+**Protocol to freeze before search:** explicit PICOC-style research questions; eligibility (source type, population, outcome, date ranges, language/format, exclusions); exact per-database query and filters; earliest/latest snapshot UTC and access rights; version of automatic deduplication; reviewer identity/blinding protocol; independent full-text decision and extraction fields. Search ACM, IEEE, Scopus/OpenAlex and supplemental citation chaining only where permissions allow, recording records found per actual run. Do not label vendor announcements `peer_reviewed` without original venue verification.
+
+**Unit caveat:** one scientific study may yield several reports/preprints; use DOI, normalized titles, author/year and full-text comparison to *flag* probable overlaps for independent human adjudication. Two different DOIs with matching titles may be distinct corrections, not automatic duplicates. Keep exclusions and conflict reasons; store study design, sample/task frame, effect estimates, uncertainty, ethics, limits, implementation cost, reuse outcomes, and carbon measurement boundaries separately.
+
+**Sources:** [PRISMA 2020 (BMJ, 2021)](https://www.bmj.com/content/372/bmj.n71) and the [PRISMA 2020 reporting checklist](https://www.prisma-statement.org/prisma-2020). PRISMA is a reporting guideline, not evidence that this project performed a systematic review. The current example and tests remain synthetic; real screening has not happened.
+
+**Practical repository lesson to test:** cite the original method and independent evidence for each reusable coding practice; keep negative results and methodological contradictions, not only promotional articles.
