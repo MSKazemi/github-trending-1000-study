@@ -17,7 +17,7 @@ Use [synthetic structured card](../examples/usefulness_task.synthetic.json) for 
 
 ## Prespecify outcomes and denominator rules
 
-- **Primary:** `accepted`: `pass|fail|unknown|not_applicable`; define exact acceptance before exposing variants. Unknown includes lost logs/cannot observe and must remain in the *assigned-attempt* denominator for sensitivity bounds, not silently disappear.
+- **Primary:** `accepted`: `pass|fail|unknown|not_applicable`; define exact acceptance before exposing variants. Unknown includes lost logs/cannot observe and must remain in the *assigned-attempt* denominator for sensitivity bounds, not silently disappear. `not_applicable` is allowed only for an unattempted, structurally inapplicable task with `inapplicability_reason`; it must never be assigned after a task was attempted and failed. Independent review of the stated reason remains necessary.
 - **Secondary:** time-to-first-success (including failed attempts), independent repeat use under consent, support/review minutes, repair cost, adverse behavior and installed downstream integrations. A second attempt by the same person is not another independent user.
 - **Opportunities:** declare `attempted`, `assigned`, `consented`, `observed`, `withdrawn` distinctly; consent withdrawal handling and retention follow policy. A project may have no telemetry; absent data do not mean nobody uses it.
 - **Follow-up:** plan 30/90-day measurement and censor incomplete exposure; do not forward-fill old acceptance or assume retention from a star.
