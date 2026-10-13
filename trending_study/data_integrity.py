@@ -154,6 +154,13 @@ def validate_repository(root):
         if not folder.is_dir():
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
+            # A nested symlink may conceal evidence in a subtree. Check before
+            # extension filtering so directory aliases without a .json suffix
+            # can never be silently excluded from the audit denominator.
+            if candidate.is_symlink():
+                raise ResearchJSONError(
+                    f"{candidate.relative_to(root)}: symlinked research content is not allowed"
+                )
             if candidate.suffix in EXTENSIONS:
                 if len(files) >= MAX_FILES:
                     raise ResearchJSONError("research artifact file count exceeds safety limit")
