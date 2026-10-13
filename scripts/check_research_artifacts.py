@@ -18,6 +18,7 @@ DATA_DIRS = ("examples", "references", "research-notes", "research", "templates"
 REQUIRED_DATA_DIRS = frozenset(("examples", "references", "research-notes"))
 SUFFIXES = {".json", ".jsonl", ".csv"}
 MAX_BYTES_PER_FILE = 16 * 1024 * 1024
+MAX_TOTAL_BYTES = 128 * 1024 * 1024
 MAX_FILES = 5000
 
 
@@ -111,7 +112,7 @@ def validate_text(path, content):
     raise IntegrityError(f"unsupported file suffix {path.suffix}")
 
 
-def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE):
+def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MAX_TOTAL_BYTES):
     """Return deterministic counts; reject symlinks/aliases and malformed data."""
     root = Path(root)
     if not root.is_dir():
@@ -119,6 +120,7 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE):
     counts = {"json": 0, "jsonl": 0, "csv": 0, "logical_records": 0}
     failures = []
     examined = 0
+    total_bytes = 0
 
     for dirname in DATA_DIRS:
         folder = root / dirname
@@ -140,13 +142,17 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE):
                 raise IntegrityError("research artifact count exceeds conservative safety limit")
             relative = str(path.relative_to(root))
             try:
-                if path.stat().st_size > max_file_bytes:
+                size = path.stat().st_size
+                if size > max_file_bytes:
                     raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
+                total_bytes += size
+                if total_bytes > max_total_bytes:
+                    raise IntegrityError(f"cumulative research artifacts exceed {max_total_bytes} bytes")
                 content = path.read_text(encoding="utf-8")
                 count = validate_text(path, content)
                 counts[path.suffix.lstrip(".")] += 1
                 counts["logical_records"] += count
-            except (IntegrityError, csv.Error, UnicodeError, OSError, json.JSONDecodeError) as exc:
+            except (IntegrityError, csv.Error, UnicodeError, OSError, json.JSONDecodeError, RecursionError) as exc:
                 failures.append(f"{relative}: {exc}")
     if examined == 0:
         failures.append("no research JSON/JSONL/CSV artifacts were found")
@@ -156,7 +162,7 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE):
             + "\n".join(failures[:25])
             + ("\n[additional failures omitted]" if len(failures) > 25 else "")
         )
-    return {"files": examined, **counts}
+    return {"files": examined, "checked_bytes": total_bytes, **counts}
 
 
 def main(argv=None):
