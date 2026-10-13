@@ -119,3 +119,7 @@ This adds 2 specifically dated publisher statements; links and content were chec
 
 
 **Outstanding review gate:** complete seven-segment discovery/search denominators, source revisions, identity/terms checks and genuine independent reviewer approval before labeling company analysis complete. No product installed, no experiment executed, no observed adoption or environmental benefit. Issue #90 remains open.
+
+### Preserved later working draft
+
+The complete 2026-10-13 alternate source-screen text, including its initial search description, limitations and separate proposed repository experiment, is preserved **verbatim** in [the alternate report archive](source-archives/023-cline.2026-10-13-first-screen.md). It is documentary draft provenance, not independent validation of publisher claims or a completed study.
