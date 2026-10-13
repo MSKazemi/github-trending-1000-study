@@ -38,27 +38,35 @@ def _capture(obj):
     for field in ("capture_id", "page_url"):
         if not isinstance(obj.get(field), str) or not obj[field].strip():
             raise OverlapError(f"capture.{field} is required")
-    if obj.get("window") not in _WINDOWS:
+    if not isinstance(obj.get("window"), str) or obj["window"] not in _WINDOWS:
         raise OverlapError("capture.window must be daily/weekly/monthly")
     lang = obj.get("language_filter")
     if lang is not None and (not isinstance(lang, str) or not lang.strip()):
         raise OverlapError("language_filter must be null or a nonempty string")
     # A string prefix alone is not evidence of the requested GitHub surface:
     # it also accepts /trending-evil, userinfo and inconsistent since= values.
-    parsed = urlsplit(obj["page_url"])
-    if (parsed.scheme != "https" or parsed.hostname != "github.com"
-            or parsed.username is not None or parsed.password is not None
-            or parsed.port not in (None, 443) or parsed.fragment):
-        raise OverlapError("page_url must be a clean HTTPS github.com URL")
+    try:
+        parsed = urlsplit(obj["page_url"])
+    except ValueError as exc:
+        # Malformed IPv6, invalid Unicode host delimiters and other URL
+        # parsing errors are untrusted-input failures, not CLI tracebacks.
+        raise OverlapError("page_url is malformed") from exc
+    if parsed.scheme != "https" or parsed.netloc != "github.com" or parsed.fragment:
+        raise OverlapError("page_url must be a canonical HTTPS github.com URL")
     path = parsed.path.rstrip("/")
     if lang is None:
         if path != "/trending":
             raise OverlapError("unfiltered page_url must use /trending")
     else:
-        if not (path.startswith("/trending/") and len(path) > len("/trending/")):
-            raise OverlapError("filtered page_url requires /trending/<language>")
+        # Each language-filtered surface must use a single safe URL slug.
         declared = re.sub(r"\s+", "-", lang.strip()).casefold()
+        if len(declared) > 80 or not re.fullmatch(r"[a-z0-9][a-z0-9+._#-]*", declared):
+            raise OverlapError("language_filter must be a single safe language name")
+        if not path.startswith("/trending/"):
+            raise OverlapError("filtered page_url requires /trending/<language>")
         observed = unquote(path[len("/trending/"):]).casefold()
+        if not re.fullmatch(r"[a-z0-9][a-z0-9+._#-]*", observed):
+            raise OverlapError("page_url language slug is invalid")
         if declared != observed:
             raise OverlapError("page_url language path disagrees with language_filter")
     query = parse_qs(parsed.query, keep_blank_values=True)
@@ -83,7 +91,7 @@ def evaluate(data, persistence=0.9):
     """Report within-filter overlap; all proportions refer to the two page lists."""
     if not isinstance(data, dict) or data.get("schema_version") != "1.0":
         raise OverlapError("schema_version must be 1.0")
-    if data.get("dataset_kind") not in {"synthetic", "self_reported_audit"}:
+    if not isinstance(data.get("dataset_kind"), str) or data["dataset_kind"] not in {"synthetic", "self_reported_audit"}:
         raise OverlapError("dataset_kind must be synthetic or self_reported_audit")
     if isinstance(persistence, bool) or not isinstance(persistence, (int, float)) or not 0 < persistence < 1:
         raise OverlapError("persistence must be strictly between zero and one")
