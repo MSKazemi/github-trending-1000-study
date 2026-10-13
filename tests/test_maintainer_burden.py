@@ -44,7 +44,8 @@ class BurdenTests(unittest.TestCase):
         c["task_accepted_by_independent_reviewer"] = "pass"
         c["human_time_minutes"] = {k: 1 for k in FIELDS}
         r = summarize([c])
-        self.assertEqual(r["overall_human_minutes"], 6)
+        self.assertIsNone(r["overall_human_minutes"])
+        self.assertEqual(r["synthetic_scenario_minutes"], 6)
         self.assertEqual(r["cases_with_complete_time_boundary"], 1)
         self.assertIsNone(r["per_accepted_task_minutes"])
         self.assertEqual(r["synthetic_case_count"], 1)
