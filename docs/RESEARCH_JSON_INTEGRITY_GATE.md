@@ -46,3 +46,9 @@ These are input-integrity bounds, **not** externally validated research or a gua
 ## 2026-10-13 post-merge consistency review
 
 The original overlapping PR #253 was merged concurrently and already preserved the dated [PR collision audit](PR_AUDIT_2026-10-13.md) plus the separate script validator. Therefore PR #264 no longer adds a duplicate CSV parser or deletes either existing CLI. Its final reviewed change adds regression tests for CSV quoting and aliases, aligns both scanners to fail closed on header-only **empty input data** (not claim zero observations), and limits redundant CI branch-push runs to PR checks plus post-merge main checks. The two validators remain separate until a specifically versioned backward-compatibility review; a green syntax gate never validates the true source, participant consent or sustainable savings.
+
+## Nested symlink completeness hardening (2026-10-13)
+
+The canonical JSON/JSONL/CSV research integrity checker now rejects **all symlinks encountered within an eligible evidence root before checking suffixes**, including directory aliases named without `.json`, broken nested aliases, and linked subtrees. Previously a linked directory could be silently skipped by recursive discovery and leave the apparent validation denominator incomplete. This is a bounded, fail-closed change without schema, protocol, CI workflow or raw evidence mutations. The dedicated offline regression tests check both an external evidence directory symlink and a broken alias; existing direct-file/root-symlink tests remain intact.
+
+This syntactic completeness check does **not** authenticate cited source URLs, prove all eligible files were collected, defend against adversarial concurrent filesystem mutations, or replace independent scientific review. The separate `scripts/check_research_artifacts.py` validator remains preserved and already rejects symlinks; consolidation needs a separate versioned migration.
