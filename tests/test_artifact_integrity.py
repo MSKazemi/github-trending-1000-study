@@ -1,9 +1,10 @@
 """Offline negative-path tests for CI's tracked-artifact integrity gate."""
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 
-from scripts.check_artifact_integrity import audit, inspect
+from scripts.check_artifact_integrity import audit, inspect, tracked_files
 
 
 class ArtifactIntegrityTests(unittest.TestCase):
@@ -78,6 +79,24 @@ class ArtifactIntegrityTests(unittest.TestCase):
             result = audit(root, ["ok.json", "ok.json"])
             self.assertFalse(result["ok"])
             self.assertTrue(any("duplicate tracked file path" in e for e in result["errors"]))
+
+    def test_tracked_files_uses_index_not_untracked_artifacts(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            subprocess.run(["git", "-C", str(root), "init", "-q"],
+                           check=True, capture_output=True)
+            (root / "subdir").mkdir()
+            (root / "subdir" / "retained.json").write_text(
+                '{"source": "tracked"}', encoding="utf-8")
+            (root / "untracked.json").write_text(
+                '{"source": "not yet committed"}', encoding="utf-8")
+            (root / "retained.py").write_text(
+                "assert True\\n", encoding="utf-8")
+            subprocess.run(["git", "-C", str(root), "add", "--",
+                            "subdir/retained.json", "retained.py"],
+                           check=True, capture_output=True)
+            self.assertEqual(set(tracked_files(root)),
+                             {"subdir/retained.json", "retained.py"})
 
     def test_ignore_unsupported_file_suffix_without_accessing_it(self):
         with tempfile.TemporaryDirectory() as temp:
