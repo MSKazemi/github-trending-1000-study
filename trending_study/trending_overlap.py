@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 _WINDOWS = {"daily", "weekly", "monthly"}
@@ -51,9 +51,16 @@ def _capture(obj):
             or parsed.port not in (None, 443) or parsed.fragment):
         raise OverlapError("page_url must be a clean HTTPS github.com URL")
     path = parsed.path.rstrip("/")
-    if (path != "/trending" if lang is None
-            else not (path.startswith("/trending/") and len(path) > len("/trending/"))):
-        raise OverlapError("page_url path and language_filter are inconsistent")
+    if lang is None:
+        if path != "/trending":
+            raise OverlapError("unfiltered page_url must use /trending")
+    else:
+        if not (path.startswith("/trending/") and len(path) > len("/trending/")):
+            raise OverlapError("filtered page_url requires /trending/<language>")
+        declared = re.sub(r"\\s+", "-", lang.strip()).casefold()
+        observed = unquote(path[len("/trending/"):]).casefold()
+        if declared != observed:
+            raise OverlapError("page_url language path disagrees with language_filter")
     query = parse_qs(parsed.query, keep_blank_values=True)
     if query.get("since") != [obj["window"]]:
         raise OverlapError("page_url since parameter must match window")
