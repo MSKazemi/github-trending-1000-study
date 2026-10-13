@@ -52,6 +52,26 @@ class NewsCorpusTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "future"):
             validate_records([(bad["id"] + ".json", bad)])
 
+    def test_reject_compact_or_week_date_notation(self):
+        for value in ("20261012", "2026-W42-1", "2026-10-12T00:00:00Z"):
+            with self.subTest(date=value):
+                bad = copy.deepcopy(self.item)
+                bad["accessed_date_utc"] = value
+                with self.assertRaisesRegex(ValueError, "YYYY-MM-DD"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
+    def test_case_distinct_url_paths_are_not_duplicate(self):
+        copied = copy.deepcopy(self.item)
+        copied["id"] = "NEWS-2026-0099"
+        copied["canonical_url"] = self.item["canonical_url"].replace(
+            "/news/", "/NEWS/", 1
+        )
+        # Hostname is case insensitive, URL path is not.
+        self.assertNotEqual(copied["canonical_url"], self.item["canonical_url"])
+        result = validate_records([(self.item["id"] + ".json", self.item),
+                                   (copied["id"] + ".json", copied)])
+        self.assertEqual(result["distinct_urls"], 2)
+
     def test_reject_insecure_url_and_false_human_review(self):
         bad = copy.deepcopy(self.item)
         bad["canonical_url"] = "http://example.com"
