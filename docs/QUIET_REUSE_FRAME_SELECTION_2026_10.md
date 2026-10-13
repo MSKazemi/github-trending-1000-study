@@ -7,7 +7,7 @@ python -m trending_study.quiet_reuse_frame --input examples/quiet_reuse_frame.sy
 python -m unittest tests.test_quiet_reuse_frame -v
 ```
 
-The JSON specifies a **preassembled external frame** `repositories` with unique stable numeric repository IDs, `package_id`, independently preserved `source_url`, `stratum`, and `snapshot_at_utc`. `quotas`, a `seed` and `frozen_at_utc` are declared *before outcome inspection*. Per-stratum selection orders IDs by SHA-256(seed : repository ID), not stars, Trending exposure, later reuse or LLM rankings. Output records an order-invariant frame checksum, stratum counts, undersupplied quotas and nominal selected fractions. These fractions are **not unbiased sampling weights** until the independence, registry inclusion mechanism and random seed design are audited.
+The JSON specifies a **preassembled external frame** `repositories` with unique stable numeric repository IDs, `package_id`, independently preserved `source_url`, `stratum`, and `snapshot_at_utc`. `quotas`, a `seed` and `frozen_at_utc` are declared *before outcome inspection*. Per-stratum selection orders IDs by SHA-256(seed : repository ID), not stars, Trending exposure, later reuse or LLM rankings. Output records an order-invariant frame checksum **and a separate selection-configuration SHA-256** over the declared seed, quotas and freeze time, plus stratum counts, undersupplied quotas and nominal selected fractions. A configuration digest makes later comparisons auditable but cannot prove a seed was independently selected or prospectively locked. These fractions are **not unbiased sampling weights** until the independence, registry inclusion mechanism and random seed design are audited.
 
 ## Why this matters scientifically
 
