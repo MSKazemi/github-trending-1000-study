@@ -28,7 +28,7 @@ These are **process requirements**, not a new research preregistration. Passing 
 
 The repository's read-only GitHub Actions workflow uses SHA-pinned official checkout/setup-python actions (v7.0.1 / v7.0.0; the official Git tag SHA was checked on 2026-10-13), with no repo write token, timeouts and isolated Python environments:
 
-- `python -m compileall -q trending_study scripts tests`, then `python -m unittest discover -s tests -v` and CLI `--help` smoke checks on Python 3.10, 3.12 and 3.13, using the Ubuntu 24.04 runner family.
+- `python -m compileall -q trending_study scripts tests`, then `python -m unittest discover -s tests -v` and CLI `--help` smoke checks on Python 3.10, 3.12, 3.13 and 3.14, using the Ubuntu 24.04 runner family.
 - `python scripts/check_research_artifacts.py --root .` independently validates checked-out `examples/`, `references/`, `research-notes/` and, when present, `research/` and `templates/` JSON/JSONL/CSV files. It does not equate the filesystem with an authenticated Git source manifest. Reject malformed JSON, duplicate keys (including nested), NaN/Infinity, numeric literals that overflow/underflow representable finite values, gigantic integer fields, embedded NUL bytes, invalid UTF-8, missing directories, broken CSV field alignment, symlinks and oversized artifacts (16 MiB per file; 128 MiB cumulatively, at most 5,000 examined files), and deeply nested inputs that exceed the parser's safe recursion depth. This is **not a schema, source-authenticity, privacy or statistical validator**.
 - The workflow avoids `pull_request_target` and injected credentials; untrusted PR tests run without secrets.
 
