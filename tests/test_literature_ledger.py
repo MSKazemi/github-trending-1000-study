@@ -9,7 +9,9 @@ def source():
                              "searched_at_utc": "2026-10-12T12:00:00Z"}],
             "records": [{"record_id": "s1", "run_id": "r1",
                          "title": "Synthetic Evidence Example", "publication_year": 2026,
-                         "doi": "https://doi.org/10.1000/XYZ", "source_type": "peer_reviewed",
+                         "doi": "https://doi.org/10.1000/XYZ",
+                         "source_url": "https://doi.org/10.1000/XYZ",
+                         "source_type": "peer_reviewed",
                          "decision": "include", "study_extract": {
                              "design": "illustrative only", "population": "fictional",
                              "outcome": "not measured", "limitations": "synthetic"}}]}
@@ -53,6 +55,37 @@ class LiteratureLedgerTests(unittest.TestCase):
         del p["records"][0]["study_extract"]
         with self.assertRaises(LiteratureError):
             audit(p)
+
+    def test_included_without_source_url_must_not_enter_evidence(self):
+        payload = source()
+        del payload["records"][0]["source_url"]
+        with self.assertRaisesRegex(LiteratureError, "source_url"):
+            audit(payload)
+        # Unverified retrieved leads remain pending rather than being
+        # invented as independently sourced included studies.
+        payload["records"][0]["decision"] = "pending"
+        self.assertEqual(audit(payload)["decisions"]["pending"], 1)
+
+    def test_included_source_url_rejects_credentials_fragments_and_bad_authorities(self):
+        for link in (
+            "", "http://doi.org/10.1000/XYZ",
+            "https:///missing-host", "https://me:secret@doi.org/10.1000/XYZ",
+            "https://doi.org/10.1000/XYZ#note",
+            "https://doi.org/10.1000/XYZ?token=private",
+            "https://doi.org/10.1000/XYZ\\n",
+            "https://[malformed/10.1000/XYZ",
+        ):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(url=link), self.assertRaises(LiteratureError):
+                audit(payload)
+
+    def test_canonical_doi_source_url_is_structural_only(self):
+        self.assertEqual(audit(source())["decisions"]["include"], 1)
+        # An HTTPS string is *not* independent content verification.
+        payload = source()
+        payload["records"][0]["source_url"] = "https://example.org/unchecked"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
     def test_run_identity_required(self):
         p = source()
