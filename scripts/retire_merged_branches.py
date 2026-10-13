@@ -217,8 +217,8 @@ def retire_one(client, repo, item, *, audit_only=False):
                     {"ref": "refs/tags/" + tag, "sha": sha})
     if client.get(tag_path).get("object", {}).get("sha") != sha:
         return "blocked_unverified_archive"
-    # GitHub DELETE has no atomic compare-and-swap. Recheck as near as
-    # possible; a race after this point requires repo-side write controls.
+    # Preflight before the final remote compare-and-delete transaction.
+    # Only the subsequent git receive-pack lease can exclude a late writer.
     if client.get(ref_path).get("object", {}).get("sha") != sha:
         return "blocked_raced_branch_update"
     fresh_open_prs = client.get(_open_prs(repo, owner, name))
@@ -256,6 +256,8 @@ def main(argv=None):
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--audit-live", action="store_true",
                         help="Verify live remote state without any writes")
+    parser.add_argument("--confirm", default="",
+                        help="Exact operator confirmation for destructive mode")
     args = parser.parse_args(argv)
     try:
         if args.plan.stat().st_size > 35000:
@@ -263,6 +265,8 @@ def main(argv=None):
         plan = validate_plan(json.loads(args.plan.read_text(encoding="utf-8")))
         if args.execute and args.audit_live:
             raise CleanupError("choose exactly one mode")
+        if args.execute and args.confirm != "RETIRE_VERIFIED_MERGED_BRANCHES":
+            raise CleanupError("destructive mode requires exact confirmation")
         if not args.execute and not args.audit_live:
             print(f"DRY RUN: {len(plan['branches'])} pinned merged-PR branches; no network or changes")
             return 0
