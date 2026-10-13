@@ -108,7 +108,11 @@ def summarize(cards):
             "missing_component_entries": unknown_total,
             "known_partial_minutes_not_a_total": known_partial_minutes,
             "complete_case_minutes_not_a_population_estimate": total_complete_minutes if complete else None,
-            "overall_human_minutes": total_complete_minutes if complete == len(cards) else None,
+            "overall_human_minutes": (total_complete_minutes
+                                      if complete == len(cards) and synthetic_count == 0 else None),
+            "synthetic_scenario_minutes": (total_complete_minutes
+                                           if complete == len(cards) and synthetic_count == len(cards)
+                                           else None),
             "per_accepted_task_minutes": None,
             "independent_review_authenticated": False,
             "approved_for_public_release": False,
