@@ -21,6 +21,8 @@
 
 **Study B — opt-in prospective evaluation:** recruit volunteer developers/projects using structured consent and minimal data collection. Pilot ~20 bounded tasks, conduct a power simulation and then preregister a realistically sized experiment (do NOT promise 60/100 tasks absent recruitment). Divide tasks by new/established code, bugfix/feature/docs/refactor/security, estimated complexity, developer familiarity, and project risk. Define a task's acceptance suite and definition of done **before** workflow assignment. Randomize permitted assistance where ethical and willing, block by developer/project/task type, analyze participant clustering. Consider crossover with counterbalancing and washout; identify carryover effects. If no-AI assignment would cause selective refusal, use **randomized encouragement** or a transparent observational design with limited causal claims instead.
 
+**October 2026 pilot-planning addition:** [Synthetic cluster-factorial binary-acceptance sensitivity](CLUSTER_TRIAL_POWER_SENSITIVITY_2026_10.md) uses the existing four-arm allocation definitions but models **only secondary accepted-task probability**, not the study's proposed primary per-human-hour throughput. It is *not* a pilot-calibrated sample-size calculation; real pilot measurements and independent statistical approval are needed before confirmatory enrollment.
+
 ## Outcome hierarchy
 **Primary proposed outcome:** independently accepted, correct task completions per *total developer-hour*, with severity-weighted nonconformances and explicit rework (not tasks completed by AI alone). Predefine whether 'incomplete' receives zero accepted task outcomes and preserve time-to-abandonment.
 

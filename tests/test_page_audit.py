@@ -10,7 +10,7 @@ import unittest
 
 from trending_study.__main__ import extract_repos
 from trending_study.page_audit import (
-    PageAuditError, assess_page, assess_bundle, audit_bundle_file,
+    PageAuditError, assess_page, assess_bundle, audit_bundle_file, markdown_report,
 )
 from trending_study.pilot import build_capture_manifest, PilotValidationError
 
@@ -290,6 +290,211 @@ class IndependentPageAuditTests(unittest.TestCase):
             result = json.loads(rp.read_text(encoding="utf-8"))
             self.assertEqual(result["automated_documentary_check"], "blocked")
             self.assertFalse(result["eligible_for_confirmatory_cohort"])
+
+
+    def _c_for(self, reviewers, disputed=(1,), use_second=True):
+        c = copy.deepcopy(reviewers[1 if use_second else 0])
+        c.update({
+            "reviewer_id": "synthetic-third-reviewer",
+            "reviewed_at_utc": "2026-10-12T14:35:00+00:00",
+            "disagreement_ranks": list(disputed),
+            "adjudication_reason": "Synthetic full-page reinspection of disputed rank.",
+        })
+        return c
+
+    def test_optional_distinct_c_resolves_only_disputed_rank(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        report = assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                             adjudicator=c)
+        self.assertFalse(report["reviewer_agreement"])
+        self.assertTrue(report["labels_resolved"])
+        self.assertEqual(report["reference_resolution"], "c_adjudicated")
+        self.assertEqual(report["adjudicator_id"], "synthetic-third-reviewer")
+        self.assertEqual(report["annotation_disagreement_ranks"], [1])
+        self.assertEqual(report["adjudicated_disagreement_ranks"], [1])
+        self.assertEqual(report["page_status"], "exact_rank_identity_agreement")
+        self.assertEqual(report["correct_identity_at_rank"], 4)
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+    def test_adjudicated_pages_count_in_resolved_but_not_a_b_agreement(self):
+        bundle, files = bundle_for()
+        reviewers = bundle["pages"][0]["reviewers"]
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(reviewers)
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        self.assertEqual(report["pages_with_agreed_annotations"], 2)
+        self.assertEqual(report["pages_with_adjudicated_annotations"], 1)
+        self.assertEqual(report["pages_with_resolved_annotations"], 3)
+        self.assertEqual(report["pages_with_unresolved_annotation_disagreements"], 0)
+        self.assertEqual(report["windows_with_agreed_labels"], ["monthly", "weekly"])
+        self.assertEqual(report["windows_with_resolved_labels"],
+                         ["daily", "monthly", "weekly"])
+        self.assertEqual(report["audited_gold_rows"], 36)
+        self.assertEqual(report["automated_documentary_check"], "pass")
+        self.assertEqual(report["scientific_status"], "synthetic_only_not_empirical_evidence")
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+    def test_review_timestamps_must_not_be_in_future(self):
+        raw, manifest, reviewers = make_page(n=4)
+        for slot in (0, 1):
+            future = copy.deepcopy(reviewers)
+            future[slot]["reviewed_at_utc"] = "2099-01-01T00:00:00+00:00"
+            with self.subTest(slot=slot), self.assertRaisesRegex(PageAuditError, "future"):
+                assess_page(raw, manifest, future, extract_repos=extract_repos)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewed_at_utc"] = "2099-01-01T00:00:00+00:00"
+        with self.assertRaisesRegex(PageAuditError, "future"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_pseudonymous_reviewer_reference_refuses_contact_and_placeholder(self):
+        raw, manifest, reviewers = make_page(n=4)
+        for invalid in ("alice@example.com", "unknown", "A Person", "x" * 81,
+                        "A/../../secrets"):
+            with self.subTest(reviewer_id=invalid):
+                bad = copy.deepcopy(reviewers)
+                bad[0]["reviewer_id"] = invalid
+                with self.assertRaisesRegex(PageAuditError, "pseudonymous"):
+                    assess_page(raw, manifest, bad, extract_repos=extract_repos)
+
+    def test_adjudicator_reference_must_also_be_pseudonymous(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewer_id"] = "reviewer@example.com"
+        with self.assertRaisesRegex(PageAuditError, "pseudonymous"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_adjudication_rejects_same_identity_or_preceding_time(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewer_id"] = reviewers[0]["reviewer_id"].upper()
+        with self.assertRaisesRegex(PageAuditError, "adjudicator ID"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+        c = self._c_for(reviewers)
+        c["reviewed_at_utc"] = REVIEWED
+        with self.assertRaisesRegex(PageAuditError, "after both"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_adjudication_rejects_modified_agreed_rank_or_unclaimed_extra(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["rows"][1]["repository"] = "different/second-entry"
+        with self.assertRaisesRegex(PageAuditError, "agreed A/B rank"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+        c = self._c_for(reviewers)
+        c["rows"].append({"rank": 5, "repository": "different/extra"})
+        with self.assertRaisesRegex(PageAuditError, "agreed A/B rank"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_adjudication_requires_exact_disagreement_list_reason_and_source(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        for bad in (([True], "Synthetic review."),
+                    ([2], "Synthetic review."),
+                    ([1], ""),
+                    ([1], "x" * 501)):
+            with self.subTest(bad=bad[0], size=len(bad[1])):
+                c = self._c_for(reviewers)
+                c["disagreement_ranks"], c["adjudication_reason"] = bad
+                with self.assertRaises(PageAuditError):
+                    assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                                adjudicator=c)
+        c = self._c_for(reviewers)
+        c["source_sha256"] = "0" * 64
+        with self.assertRaisesRegex(PageAuditError, "source_sha256"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_cannot_add_adjudicator_to_unanimous_a_b_page(self):
+        raw, manifest, reviewers = make_page(n=4)
+        c = self._c_for(reviewers, disputed=())
+        with self.assertRaisesRegex(PageAuditError, "only allowed"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
+    def test_unresolved_disagreement_remains_unscored_with_partial_adjudication(self):
+        bundle, files = bundle_for()
+        bundle["pages"][0]["reviewers"][0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][1]["reviewers"][0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(bundle["pages"][0]["reviewers"])
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        self.assertEqual(report["pages_with_unresolved_annotation_disagreements"], 1)
+        self.assertEqual(report["pages_with_resolved_annotations"], 2)
+        self.assertEqual(report["audited_gold_rows"], 24)
+        self.assertEqual(report["automated_documentary_check"], "blocked")
+        self.assertIsNone(report["pages"][1]["correct_identity_at_rank"])
+        self.assertFalse(report["eligible_for_confirmatory_cohort"])
+
+
+    def test_derived_markdown_keeps_original_json_as_source_of_truth(self):
+        bundle, files = bundle_for()
+        reviewers = bundle["pages"][0]["reviewers"]
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        bundle["pages"][0]["adjudicator"] = self._c_for(reviewers)
+        report = assess_bundle(bundle, loader=files.__getitem__,
+                               extract_repos=extract_repos)
+        markdown = markdown_report(report)
+        self.assertIn("| Pages resolved by C | 1 |", markdown)
+        self.assertIn("| Unresolved pages | 0 |", markdown)
+        self.assertIn("| Confirmatory cohort eligible | no |", markdown)
+        self.assertIn("synthetic_only_not_empirical_evidence", markdown)
+        self.assertNotIn("synthetic-third-reviewer", markdown)
+        self.assertNotIn("https://github.com/trending?", markdown)
+
+    def test_optional_cli_markdown_is_write_once_and_does_not_overwrite_json(self):
+        bundle, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name, data in files.items():
+                (root / name).write_bytes(data)
+            inp, out, md = root / "bundle.json", root / "result.json", root / "summary.md"
+            inp.write_text(json.dumps(bundle), encoding="utf-8")
+            cmd = [
+                sys.executable, "-m", "trending_study", "audit-pages",
+                "--bundle", str(inp), "--output", str(out),
+                "--markdown-output", str(md), "--require-consistent",
+            ]
+            first = subprocess.run(cmd, text=True, capture_output=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            report = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(report["audited_gold_rows"], 36)
+            self.assertIn("Confirmatory cohort eligible | no", md.read_text())
+            before_json, before_md = out.read_bytes(), md.read_bytes()
+            again = subprocess.run(cmd, text=True, capture_output=True)
+            self.assertNotEqual(again.returncode, 0)
+            self.assertEqual(out.read_bytes(), before_json)
+            self.assertEqual(md.read_bytes(), before_md)
+
+    def test_existing_markdown_path_blocks_partial_json_publication(self):
+        bundle, files = bundle_for()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name, data in files.items():
+                (root / name).write_bytes(data)
+            inp, out, md = root / "bundle.json", root / "result.json", root / "summary.md"
+            inp.write_text(json.dumps(bundle), encoding="utf-8")
+            md.write_bytes(b"preserved prior human notes\n")
+            proc = subprocess.run([
+                sys.executable, "-m", "trending_study", "audit-pages",
+                "--bundle", str(inp), "--output", str(out),
+                "--markdown-output", str(md),
+            ], text=True, capture_output=True)
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertFalse(out.exists())
+            self.assertEqual(md.read_bytes(), b"preserved prior human notes\n")
 
 
 if __name__ == "__main__":

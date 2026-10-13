@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "lessons": [
+    {
+      "id": "SYN-LESSON-1",
+      "title": "Synthetic reuse-first discovery lesson",
+      "status": "hypothesis",
+      "evidence_grade": "E0",
+      "question": "Can searching existing packages before generating code reduce duplicated implementation?",
+      "intervention_or_feature": "Reuse-first dependency discovery guide",
+      "population": "Synthetic library maintainers, not actual participants",
+      "comparison": "Synthetic generate-first workflow",
+      "primary_outcome": "Independently accepted task completion, unmeasured",
+      "measurement_window": "Prospective only, no data collected",
+      "applicability": "Library/CLI repositories with versioned dependencies",
+      "risks": "Security, license incompatibility, search failure and dependency maintenance",
+      "validity_threats": "No observations, randomized assignments, external data or causal evidence",
+      "negative_findings": "Not measured; null findings cannot be inferred from absence of data",
+      "practical_cost": "License auditing, maintainer verification and ongoing dependency cost unknown",
+      "suggested_experiment": "Prospectively freeze maintenance tasks, run an ethically reviewed reuse-first versus generate-first comparison and measure verified outcomes and total cost",
+      "stop_rule": "Stop on security/license violations or worsening independently accepted outcomes",
+      "sources": [],
+      "analysis_commit": null,
+      "data_sha256": null,
+      "sample_n": null,
+      "effect_size": null,
+      "interval": null,
+      "analyst": null,
+      "independent_reviewer": null,
+      "reviewed_at_utc": null,
+      "observed_data_ref": null,
+      "superseded_by": null
+    }
+  ]
+}
