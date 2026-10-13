@@ -59,7 +59,10 @@ def evaluate(data):
     if (parsed.scheme != "https" or not parsed.hostname or parsed.username is not None
             or parsed.password is not None or parsed.fragment or parsed.query):
         raise PackageReviewError("registry_url must be clean HTTPS without credentials/query/fragment")
-    if candidate["ecosystem"].casefold() == "pypi":
+    is_pypi = candidate["ecosystem"].casefold() == "pypi"
+    if is_pypi:
+        if re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", candidate["package_name"]) is None:
+            raise PackageReviewError("PyPI package_name must contain valid registry-name characters")
         parts = [unquote(p) for p in parsed.path.strip("/").split("/")]
         if (parsed.hostname != "pypi.org" or parsed.port not in (None, 443)
                 or len(parts) != 3 or parts[0] != "project"
@@ -74,16 +77,16 @@ def evaluate(data):
         raise PackageReviewError("artifact_sha256 must be a lowercase SHA-256 digest or null")
     frozen = _date(data.get("task_frozen_at_utc"))
     release = _date(candidate.get("first_available_at_utc"), allow_future=True)
-    if release > frozen:
-        return {"decision": "reject", "reason": "component released after frozen task",
-                "failed_checks": ["temporal_availability"], "unknown_checks": [],
-                "automatic_install_approved": False, "source_checks_self_declared": True}
+    # Validate every input gate even for a temporally ineligible component:
+    # do not let an early return mask malformed or omitted review evidence.
+    temporally_ineligible = release > frozen
     checks = data.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(FIELDS):
         raise PackageReviewError("must declare every evidence check including unknowns")
     # An unresolved release artifact is not a failed package and must never
     # become "review_ready" solely through self-declared six passing checks.
-    failed, unknown = [], (["artifact_sha256"] if sha is None else [])
+    failed, unknown = (["temporal_availability"] if temporally_ineligible else []), (
+        ["artifact_sha256"] if sha is None else [])
     for key in FIELDS:
         cell = checks[key]
         if (not isinstance(cell, dict) or not isinstance(cell.get("status"), str)
@@ -105,10 +108,14 @@ def evaluate(data):
             failed.append(key)
         elif cell["status"] == "unknown":
             unknown.append(key)
+    # Official host/name/version matching is only implemented for PyPI;
+    # unbound ecosystems cannot be marked review_ready on asserted claims.
+    if not is_pypi:
+        unknown.append("official_registry_identity_binding")
     if failed:
-        decision, reason = "reject", "one or more declared gates failed"
+        decision, reason = "reject", "temporal unavailability or declared gate failure"
     elif unknown:
-        decision, reason = "defer", "unknown evidence requires independent review"
+        decision, reason = "defer", "unknown or unsupported identity evidence requires review"
     else:
         decision, reason = "review_ready", "self-declared checks need independent verification"
     return {"decision": decision, "reason": reason, "failed_checks": failed,
