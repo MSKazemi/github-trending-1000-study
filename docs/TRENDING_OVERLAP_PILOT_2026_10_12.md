@@ -36,6 +36,8 @@ with \`p=0.9\` by default. It excludes any extrapolated tail and is **not**
 an infinite-list RBO estimate or cross-language coverage statistic. The
 source-pages' contents and reviewer independence are not authenticated.
 
+**Canonical metric consolidation with [PR #188](https://github.com/MSKazemi/github-trending-1000-study/pull/188):** this *same* offline analyzer now also reports `rbo_extrapolated_equal_depth` when both observed page lists have exactly the same positive depth `k`. It equals the finite discounted prefix term above **plus** `p^k × (|A_(1:k) ∩ B_(1:k)| / k)`. It becomes `null` for unequal observed depths, with `rbo_extrapolation_reason="unequal observed page lengths"`. The additional term assumes last-depth agreement persists into the unobserved tail; it is not a measured population ranking effect or proof about future GitHub Trending results. For unequal depths, use the separately reported finite discounted-prefix lower bound only. The two metrics share the same `prefix_persistence`, capture provenance rules, denominators and no-cohort-eligibility restriction; **no second Trending measurement CLI should be created** solely for RBO.
+
 **Remaining issue work:** independently inspect saved live pages and source
 license/access policy; measure multi-timepoint rank drift and filter-level
 coverage *against an explicit eligible frame*; audit timestamp/window
