@@ -25,3 +25,15 @@ Trending disproportionately measures platform attention and could omit long-live
 **Safety:** this sampler makes **zero** network calls and does not run or import packages from results. It validates supplied syntax/timing; independent source/frame verification remains human work. See [reuse gold standard](REUSE_GOLD_STANDARD_2027.md), [selection protocol](SELECTION_PROTOCOL_2027.md), [ethics](ETHICS.md) and [scientific governance](SCIENTIFIC_GOVERNANCE_2027.md).
 
 **2027 maintainer lesson:** when searching for existing solutions, include older, small, well-maintained libraries that never Trending-rank; still validate task, version, license and security rather than trusting stars or novelty.
+
+## 2026-10-13 sampling-frame leakage audit
+
+Change: the selection CLI now accepts **only** the predeclared per-row keys `repository_id`, `package_id`, `stratum`, `source_url`, and `snapshot_at_utc`. A blacklist of obvious labels was insufficient because future reuse outcomes could be renamed as innocuous metadata. The freeze timestamp may not be future-dated; registry/source URLs must use clean HTTPS with no embedded credentials or fragment.
+
+**Prospective sample design:** form the denominator from registry/dependency and archive sources independently of GitHub Trending and *before* collecting downstream reuse outcomes. Freeze and hash the complete candidate frame, stratum definitions (old/low-attention/new; project type, language/ecosystem and license eligibility), quota and publicly audited seed-generation procedure. A deterministic hash sort is reproducible but is **not** itself a true random draw unless its seed was chosen independently of outcomes; `nominal_sampling_fraction` is not a validated inclusion probability or population estimator.
+
+**Validation:** compare the selection pipeline on additional old/low-star components and visible projects only after independent eligibility adjudication and selection-probability review; preserve unavailable, low-visibility, out-of-ecosystem and license/ownership-incompatible records in attrition. Issue #15's requirement for at least **50 real independently validated task/component pairs** is **not yet met**. No claim of global reuse missed by Trending is defensible from this synthetic frame.
+
+**Source for protocol quality:** [Runeson & Höst (2009)](https://doi.org/10.1007/s10664-008-9102-8), on case selection and explicit chain of evidence. It does not establish this frame's coverage.
+
+**Practical maintainer lesson:** make your library discoverable by task, package identity and tested integration—not only recent Trending rank. Measure outsider reuse and downstream maintenance with an independent sampling frame.
