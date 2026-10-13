@@ -36,3 +36,15 @@ Ratings are `pass`, `fail`, `not_applicable` and `unknown`. Unknown labels are e
 **Practical lesson for own repositories:** pilot a task-specific first-run rubric on two README versions; evaluate independently accepted setup before claiming longer docs or AI-generated docs improve usefulness. Neither stars nor raw kappa establishes downstream adoption.
 
 **Validity:** this program verifies supplied label arithmetic only; IDs cannot prove real independent people or unbiased sampling. Any true study result needs ethics/consent, provenance and review specified in [study design](STUDY_DESIGN.md).
+
+## 2026-10-13 scientific hardening: stratification, missingness, and interpretation
+
+Change: `rubric_agreement.evaluate()` now reports marginal counts and complete-case nominal Cohen κ separately by **project archetype**, the number excluded because either reviewer marked `unknown`, and the unmodified overall calculation. A stratum with fewer than two jointly rated items reports `null` κ, never pseudo-precision. Case-only reviewer ID aliases are rejected; this remains a **structural** independence check only.
+
+**Review design:** freeze an archetype-specific rubric, versioned criteria and at least 100 prospectively selected eligible repository/task units before observing agreement; recruit two real independently working and blinded human raters, using identical written instructions. Count failed/not-applicable labels explicitly; adjudicate disagreement separately rather than rewriting original A/B ratings. Randomize presentation and keep an auditable ordered assessment ledger. Do not use selected examples as a sampling prevalence estimate.
+
+**Estimation:** report per-archetype N, complete-pair N, missing-pair fraction, confusion matrix/marginal class frequencies, observed agreement, unweighted κ and its uncertainty once a real prospective design exists. Kappa depends on class prevalence and reviewer bias; never compare κ in isolation or collapse N/A into failure. A code-generated κ does not authenticate reviewers, sampling or validity.
+
+**Sources:** [Cohen (1960), A coefficient of agreement for nominal scales](https://doi.org/10.1177/001316446002000104); [Byrt, Bishop & Carlin (1993), Bias, prevalence and kappa](https://doi.org/10.1016/0895-4356(93)90018-V). These justify the agreement measure and interpreting marginal frequencies, **not** the validity of our uncollected study.
+
+**Practical repository lesson to test:** on CLI and library docs, independently audit first-run and example-task completeness by project type. Improve a rubric criterion only if new users independently complete accepted tasks; do not optimize README length or a synthetic κ value.
