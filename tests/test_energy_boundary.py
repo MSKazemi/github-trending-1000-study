@@ -60,6 +60,21 @@ class EnergyBoundaryTests(unittest.TestCase):
         self.assertIsNone(compare(p)["grid_only_scenario_gco2e_delta"])
 
 
+    def test_unaccepted_task_still_requires_valid_energy_ledger(self):
+        p = example()
+        p["functional_unit"]["build_task_accepted"] = False
+        del p["arms"]["build"]["upstream_support"]
+        with self.assertRaisesRegex(EnergyError, "all seven"):
+            compare(p)
+
+    def test_modeled_components_never_masquerade_as_measured(self):
+        r = compare(example())
+        self.assertEqual(r["modeling_or_measurement_status"], "mixed_modeled_scenario_only")
+        self.assertIsNone(r["net_gco2e_reuse_minus_build"])
+        p = example()
+        p["arms"]["reuse"]["model_inference"] = {"evidence":"unavailable", "kwh":None}
+        self.assertEqual(compare(p)["modeling_or_measurement_status"], "incomplete_boundary")
+
     def test_malformed_evidence_type_is_rejected(self):
         p = example()
         p["arms"]["reuse"]["ci"]["evidence"] = []
