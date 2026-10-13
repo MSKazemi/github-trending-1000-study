@@ -22,6 +22,7 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
 - [**Execution plan after the audit**](docs/NEXT_STEPS_EXECUTION_2026-10-12.md) — evidence-gated development tasks, human approvals, PR dependencies, go/no-go milestones and a bounded feasibility pilot.
 - [Faculty-style methodological review](docs/FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) — evidence-grounded advice, **not actual professorial endorsement**; [first expanded task intake](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md).
