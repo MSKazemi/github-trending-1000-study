@@ -86,8 +86,17 @@ def select(frame):
             raise FrameError("predeclared stratum has no members: " + stratum)
     canonical = json.dumps(sorted(rows, key=lambda x: x["repository_id"]),
                            sort_keys=True, separators=(",", ":")).encode()
+    frame_hash = hashlib.sha256(canonical).hexdigest()
+    # Bind the entire outcome-blind selection *plan*, not just the candidate
+    # rows: changing seed or quotas after inspecting results must change ID.
+    plan = {"frame_content_sha256": frame_hash, "seed": seed,
+            "quotas": quotas, "frozen_at_utc": cutoff.isoformat()}
+    plan_hash = hashlib.sha256(json.dumps(
+        plan, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+    ).encode("utf-8")).hexdigest()
     return {"frame_records": len(rows),
-            "frame_content_sha256": hashlib.sha256(canonical).hexdigest(),
+            "frame_content_sha256": frame_hash,
+            "selection_plan_sha256": plan_hash,
             "frozen_at_utc": cutoff.isoformat(),
             "stratum_sizes": sizes,
             "strata_with_insufficient_members": sorted(
