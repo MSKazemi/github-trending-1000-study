@@ -70,7 +70,10 @@ def audit(data):
         if not isinstance(ident, str) or not ident.strip() or ident in seen:
             raise LiteratureError("unique nonempty record_id required")
         seen.add(ident)
-        if row.get("run_id") not in run_ids:
+        run_id = row.get("run_id")
+        if not isinstance(run_id, str) or not run_id.strip() or run_id not in run_ids:
+            # Keep malformed, unhashable JSON values within the documented
+            # validation error contract instead of raising a raw TypeError.
             raise LiteratureError("record must reference an existing search run")
         title = row.get("title")
         year = row.get("publication_year")
