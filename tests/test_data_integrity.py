@@ -95,7 +95,8 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             self._artifact(root, "known.json", b'{"id":1}')
             outside = Path(root) / "external-evidence"
             outside.mkdir()
-            (outside / "unreviewed.json").write_text('{"status":"unknown"}', encoding="utf-8")
+            (outside / "unreviewed.json").write_text(
+                '{"status":"unknown","status":"verified"}', encoding="utf-8")
             nested = Path(root) / "examples" / "nested"
             nested.mkdir()
             alias = nested / "linked-subdirectory"
@@ -117,6 +118,22 @@ class ResearchDataIntegrityTests(unittest.TestCase):
                 alias.symlink_to(Path(root) / "not-present", target_is_directory=True)
             except (OSError, NotImplementedError):
                 self.skipTest("directory symlinks unavailable")
+            with self.assertRaisesRegex(ResearchJSONError, "symlinked research content"):
+                validate_repository(root)
+
+    def test_nested_extensionless_file_alias_does_not_hide_evidence(self):
+        """A real symlink without .json/.csv suffix cannot evade auditing."""
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "known.json", b'{"id":1}')
+            outside = Path(root) / "unreviewed.txt"
+            outside.write_text("source unavailable", encoding="utf-8")
+            nested = Path(root) / "examples" / "nested"
+            nested.mkdir()
+            alias = nested / "extensionless-shortcut"
+            try:
+                alias.symlink_to(outside)
+            except (OSError, NotImplementedError):
+                self.skipTest("file symlinks unavailable")
             with self.assertRaisesRegex(ResearchJSONError, "symlinked research content"):
                 validate_repository(root)
 
