@@ -91,3 +91,21 @@ The site and source population are not randomized. No effect estimate or recomme
 - [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
 
 **No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
+
+## Incremental source recheck (2026-10-13; first-party documentary audit)
+
+This section records 3 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [014-replit.events.csv](014-replit.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
+
+| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+|---|---|---|---|
+| 2026-04-21 | [Meet Replit Security Agent](https://replit.com/blog/meet-replit-security-agent) | Replit introduced an automated security-review agent relying in part on Semgrep and HoundDog.ai. **Status:** `shipped`. | An automated scan and vendor claim do not certify vulnerability-free production systems. |
+| 2026-05-06 | [Secure more apps with External Access Tokens and Private Publishing](https://replit.com/blog/secure-more-apps) | Replit announced wider private publishing entitlements and external access token support. **Status:** `shipped`. | Private app sharing and tokens require consent and rights/privacy safeguards. |
+| 2026-09-10 | [Replit | Databricks Integration is Now Generally Available with Native Lakebase Support](https://replit.com/blog/databricks2026) | Replit reported generally available enterprise Databricks/Lakebase integration. **Status:** `shipped`. | General availability is not independent proof of a successful external clean-room integration. |
+
+**Important correction and interpretation:** Security Agent references Semgrep and HoundDog.ai as components; this does not establish security accuracy or a complete security audit. A September Databricks GA integration does not establish platform-agnostic app exportability. Privately published apps have explicit account/plan and token scope.
+
+**Disconfirmation/critical evidence still needed:** Independent vulnerability benchmark with known ground truth, app export and reproducible rebuild, consented data access and cloud account restrictions are untested.
+
+**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+
+**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #80 and this draft PR open until those acceptance gates are addressed.
