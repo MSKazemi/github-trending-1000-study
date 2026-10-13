@@ -51,6 +51,24 @@ class RubricAgreementTests(unittest.TestCase):
             evaluate(p)
 
 
+    def test_stratified_kappa_does_not_hide_unknowns(self):
+        p = sample(("pass", "pass"), ("fail", "fail"),
+                   ("unknown", "pass"), ("pass", "fail"))
+        p["records"][3]["project_type"] = "library"
+        result = evaluate(p)
+        self.assertEqual(result["rated_pairs"], 3)
+        self.assertEqual(result["by_project_type"]["cli"]["excluded_unknown"], 1)
+        self.assertEqual(result["by_project_type"]["cli"]["jointly_rated"], 2)
+        self.assertEqual(result["by_project_type"]["library"]["jointly_rated"], 1)
+        self.assertIsNone(result["by_project_type"]["library"]["cohens_kappa"])
+        self.assertEqual(result["rater_a_counts"]["pass"], 2)
+
+    def test_case_only_reviewer_alias_cannot_claim_independence(self):
+        p = sample(("pass", "pass"))
+        p["rater_b"] = " BLINDA "
+        with self.assertRaisesRegex(RubricError, "distinct"):
+            evaluate(p)
+
     def test_malformed_rating_type_is_rejected(self):
         p = sample(("pass", "pass"))
         p["records"][0]["rating_a"] = {}
