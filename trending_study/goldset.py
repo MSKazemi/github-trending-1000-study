@@ -74,8 +74,10 @@ def _candidate(c, taskid, baseline):
     reviewers = _list(c.get("reviewer_labels"), "reviewer_labels")
     if len(reviewers) != 2 or any(not isinstance(r, str) or r not in LABELS for r in reviewers):
         raise GoldsetError(f"{taskid}/{cid}: exactly two reviewer labels required")
-    if label != "unknown" and "unknown" in reviewers:
-        raise GoldsetError(f"{taskid}/{cid}: no final accepted judgment with missing independent reviewer label")
+    if label != "unknown" and all(r == "unknown" for r in reviewers):
+        raise GoldsetError(f"{taskid}/{cid}: two unknown reviewer labels cannot establish viability/nonviability")
+    # A single abstaining reviewer must instead have a declared adjudicator;
+    # keep original third-reviewer structural protocol (not a human attestation).
     if label == "viable":
         if (any(gates[k] != "pass" for k in required)
                 or ("availability" in gates and gates["availability"] != "pass")):
