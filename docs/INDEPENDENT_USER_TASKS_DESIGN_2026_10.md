@@ -38,3 +38,13 @@ Use [synthetic structured card](../examples/usefulness_task.synthetic.json) for 
 ## One practical lesson for your repositories
 
 On one library or CLI README, ask consenting external developers to independently complete the same clean-install task with existing vs revised docs under frozen acceptance criteria. Capture genuine success/repair minutes, rather than trying to maximize README length or README SEO. Stop if the new documentation confuses users or increases unsupported setups. See [value mission](AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+
+## 2026-10-13 bounded offline usefulness audit
+
+New `python -m trending_study.usefulness_task --input examples/usefulness_task.synthetic.json` audits **the provided task card only**; `python -m unittest tests.test_usefulness_task -v` exercises fictional outcomes. It requires fixed task identity/spec SHA and two distinct comparison arms, rejects invented success for an unattempted task, requires a finite observed time for claimed success, prevents consent claims on fictional attempts and rejects future UTC observations.
+
+For each applicable assigned-attempt denominator, it reports logical bounds `passes / (passes + fails + unknown)` through `(passes + unknown) / (passes + fails + unknown)`. Exclude true `not_applicable` only after prospectively defining eligibility; record withdrawals as unknown outcomes where consent permits aggregate counts. Multiple attempts by one person share a cluster: a count of pseudonyms **cannot prove** independent recruitment. These bounds are **not** CIs, causal effects, or a population success rate; real pilots need consent/ethics approval, preregistration, randomization from the existing `trending_study.trial` module and independent acceptance assessments.
+
+**Study source:** [Runeson & Höst (2009), Guidelines for conducting and reporting case study research in software engineering](https://doi.org/10.1007/s10664-008-9102-8), specifically explicit research protocols, participant selection and traceable evidence. This citation informs design quality, not a claim of observed participants.
+
+**Practical lesson for your repositories:** test one pinned clean-install or API example with consenting new users and independent pass/fail criteria before inferring usability from stars, downloads or README traffic.
