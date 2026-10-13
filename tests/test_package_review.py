@@ -64,7 +64,7 @@ class PackageReviewTests(unittest.TestCase):
             "https://pypi.org:invalid/project/fictionalpkg/1.0/",
             "https://pypi.org:65536/project/fictionalpkg/1.0/",
             "https://[malformed/project/fictionalpkg/1.0/",
-            "https://pypi.org/project/fictionalpkg/1.0/\\n",
+            "https://pypi.org/project/fictionalpkg/1.0/" + chr(10),
             " https://pypi.org/project/fictionalpkg/1.0/",
             "https://pypi.org:/project/fictionalpkg/1.0/",
         ):
@@ -85,7 +85,7 @@ class PackageReviewTests(unittest.TestCase):
             "https://security.example.org:invalid/advisory",
             "https://security.example.org:65536/advisory",
             "https://[broken/issue",
-            "https://security.example.org/one\\ntwo",
+            "https://security.example.org/one" + chr(10) + "two",
         ):
             p["checks"]["known_advisories"]["evidence_url"] = url
             with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
