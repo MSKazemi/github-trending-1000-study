@@ -124,9 +124,12 @@ def open_pr_heads(api):
         if not isinstance(items, list):
             raise RetirementError("open PR list could not be validated")
         for pr in items:
-            if pr.get("head", {}).get("repo", {}).get("full_name") == (
-                    "MSKazemi/github-trending-1000-study"):
-                heads.add(pr["head"]["ref"])
+            head = pr.get("head") or {}
+            head_repo = head.get("repo") or {}
+            if head_repo.get("full_name") == "MSKazemi/github-trending-1000-study":
+                if not isinstance(head.get("ref"), str):
+                    raise RetirementError("open PR has malformed head reference")
+                heads.add(head["ref"])
         if len(items) < 100:
             return heads
     raise RetirementError("open PR list exceeds audit pagination bound")
