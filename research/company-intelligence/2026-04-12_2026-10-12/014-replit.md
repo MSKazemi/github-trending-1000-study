@@ -123,3 +123,12 @@ None of these effects were measured in this source review. External ecosystem pr
 - [Intelligent Model Routing on Replit](https://replit.com/blog/intelligent-model-routing) — preliminary lead `014-E03` in PR #196, with a **draft-attributed, not independently verified** publication date of 2026-08-26. The earlier draft reports a vendor-internal relative cost claim, not an independently reproduced result. Independently inspect the original article and revisions, the baseline definition, model/task mix, feature availability and actual cost measurements **before** adding an event row to `014-replit.events.csv`.
 
 This is a **source-discovery handoff, not an accepted source/event, empirical measurement, human-reviewed statement or extra count**. The original JSON draft and reasoning remain accessible in PR #196's preserved branch; any future inclusion needs URL/date verification, event deduplication and a reviewer-linked commit.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [June 9 Package Firewall post](https://replit.com/blog/package-firewall) attributes default-on install-time detection to a **Socket partnership** and reports roughly **8,000 flagged package blocks per day**. That figure is a *vendor counter* with unknown uniqueness, false-positive/negative rates and denominator; it is **not** 8,000 independently proven supply-chain attacks or distinct vulnerable packages.
+- [June 10 Skills and Custom Instructions release](https://replit.com/blog/custom-skills) describes task-specific, versionable `SKILL.md` assets and workspace-level instructions; availability depends on plan/role. The article itself notes that overly broad and conflicting descriptions can make agent outcomes worse. That is an engineering design hypothesis, not a measured local benefit.
+- [Aug 18 Free Mode](https://replit.com/blog/replit-introduces-free-mode) is indexed with publication and updated Aug 19 in the official Replit blog, although the direct reader returned an internal error; record as **partly checked** until a direct full-page audit.
+- [Sept 29 model routing/subagents](https://replit.com/blog?replit_sid=0418e563-1d02-44de-bd5e-740c65db311d) appears in the blog index; the cited full post URL did not load in this reader. Vendor claims about reduced cost must not substitute for a frozen matched-task trial.
+
+**Practical action:** Keep skills narrowly scoped, opt out when inapplicable, and test both false activation and correct task completion. Preserve human review and deny unreviewed package installs.
