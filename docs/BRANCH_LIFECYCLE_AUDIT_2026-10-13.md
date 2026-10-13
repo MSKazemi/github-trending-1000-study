@@ -45,3 +45,7 @@ Also keep distinct code/methodology proposals under review: package-trust #186 v
 ## Practical lessons for other repositories
 
 Branch count is a maintainability signal but not a scientific research outcome. Distinguish **git ancestry**, **semantic inclusion**, and **evidence validity**. All three are needed before claiming no-loss consolidation. Prevent parallel AI agents from independently overwriting shared reports: serialize per-file integrations, require provenance, and use stable reviewed interfaces. Green CI tests engineering behaviors, not external source accuracy or environmental impact.
+
+## 2026-10-13 defensive review update
+
+The read-only audit now validates its CLI-selected base ref **before constructing or sending any GitHub API request**, refusing path traversal (`../`), ambiguous `refs/` namespaces, malformed separators, query or fragment injection. A new negative regression uses an aborting fake API to prove that invalid base inputs cause **zero network requests**. This utility remains a diagnostic instrument; `manual-prune-candidate` is not permission to delete and cannot replace the stronger [SHA-pinned retirement allowlist](BRANCH_RETIREMENT_AND_NO_LOSS_2026_10_13.md) and recovery tags from #275. The real branch count changes concurrently as the approved main-only cleanup job executes. No automatic merge or source-data verification is implied.
