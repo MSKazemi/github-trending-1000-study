@@ -29,7 +29,8 @@ def _canonical_url_key(parts):
     """
     query = tuple(sorted((key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
                          if not key.lower().startswith("utm_") and key.lower() not in TRACKING_PARAMS))
-    return (parts.hostname.lower(), parts.port or 443, parts.path.rstrip("/") or "/", query)
+    return (parts.hostname.lower(), parts.port if parts.port is not None else 443,
+            parts.path.rstrip("/") or "/", query)
 
 REQUIRED = {
     "schema_version", "id", "title", "publisher", "author",
@@ -100,8 +101,16 @@ def validate_records(records):
         url = record["canonical_url"]
         if not isinstance(url, str) or len(url) > 2048 or url != url.strip():
             raise ValueError(f"{name}: invalid canonical URL")
-        parsed = urlsplit(url)
-        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password or parsed.fragment:
+        try:
+            parsed = urlsplit(url)
+            # Force malformed/overflowing ports and broken IPv6 authority to
+            # fail with the same documented input-validation exception.
+            port = parsed.port
+        except ValueError as exc:
+            raise ValueError(f"{name}: malformed canonical HTTPS authority") from exc
+        if (parsed.scheme != "https" or not parsed.hostname
+                or parsed.username is not None or parsed.password is not None
+                or parsed.netloc.endswith(":") or port == 0 or parsed.fragment):
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
         # Strip known marketing trackers, not meaningful ?id=... or ?ref=...
         # selectors; treating all queries as duplicates can erase real studies.
