@@ -154,6 +154,11 @@ def validate_repository(root):
         if not folder.is_dir():
             raise ResearchJSONError(f"{dirname}: source directory must be a directory")
         for candidate in folder.rglob("*"):
+            # Nested links can silently hide evidence from pathlib.rglob.
+            if candidate.is_symlink():
+                raise ResearchJSONError(
+                    f"{candidate.relative_to(root)}: nested symlink cannot be audited"
+                )
             if candidate.suffix in EXTENSIONS:
                 if len(files) >= MAX_FILES:
                     raise ResearchJSONError("research artifact file count exceeds safety limit")

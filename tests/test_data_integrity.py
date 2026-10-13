@@ -90,6 +90,30 @@ class ResearchDataIntegrityTests(unittest.TestCase):
             with self.assertRaisesRegex(ResearchJSONError, "symlink"):
                 validate_repository(root)
 
+    def test_nested_symlink_folder_cannot_hide_ambiguous_evidence(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "visible.json", b'{"ok":true}')
+            outside = Path(root) / "unscanned"
+            outside.mkdir()
+            (outside / "evidence.json").write_text(
+                '{"status":"unknown","status":"verified"}', encoding="utf-8")
+            directory = Path(root) / "examples" / "nested"
+            directory.mkdir()
+            (directory / "alias").symlink_to(outside, target_is_directory=True)
+            with self.assertRaisesRegex(ResearchJSONError, "nested symlink"):
+                validate_repository(root)
+
+    def test_nested_extensionless_symlink_is_rejected(self):
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "visible.json", b'{"ok":true}')
+            outside = Path(root) / "outside.txt"
+            outside.write_text("source unavailable", encoding="utf-8")
+            directory = Path(root) / "examples" / "nested"
+            directory.mkdir()
+            (directory / "shortcut").symlink_to(outside)
+            with self.assertRaisesRegex(ResearchJSONError, "nested symlink"):
+                validate_repository(root)
+
     def test_absent_or_invalid_source_fails_explicitly(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaisesRegex(ResearchJSONError, "no .json"):
