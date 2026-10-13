@@ -11,6 +11,8 @@ For a **single frozen accepted functional unit**, the two strategies share task-
 
 Given build pre-use 12 kWh, reuse 4 kWh, build runtime 0.01 kWh/use and reuse runtime 0.04 kWh/use, the equality point is approximately 266.67 uses; for integer workloads, reuse is lower through 266 and higher from 267. These numbers are **invented solely to test arithmetic**, not calibrated observations. A real claim needs matched functional throughput, included unsuccessful work, uncertainty propagation, compatible grid/time carbon factors, and measurement of inference and hardware impacts. Omitted provider inference, embodied hardware, water and upstream load make the example a **partial declared boundary**, not a full lifecycle inventory.
 
+For continuous break-even thresholds the output reports an **approximation to six decimal places**; it also reports **exact integer workload boundaries** (last workload where one approach is strictly lower, first workload where the other is strictly lower, and integer equality when applicable). Never infer which integer workload wins by rounding the approximate threshold. Operational input limits are 0–1,000,000,000 executions per workload point, 0–3,650 horizon days, and at most 100 workload points; they are software validation limits, not scientific estimates of actual deployment.
+
 Outputs contain signed energy delta (build − reuse), crossing direction, calculation completeness and explicit omissions; carbon is **not** inferred from kWh or token counts. A negative delta is a valid outcome; successful reuse does not guarantee net environmental savings. Reporting multiple workloads is sensitivity illustration only, not confidence intervals or causal inference.
 
 ## Outstanding acceptance gates
