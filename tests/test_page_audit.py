@@ -351,6 +351,25 @@ class IndependentPageAuditTests(unittest.TestCase):
             assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
                         adjudicator=c)
 
+    def test_pseudonymous_reviewer_reference_refuses_contact_and_placeholder(self):
+        raw, manifest, reviewers = make_page(n=4)
+        for invalid in ("alice@example.com", "unknown", "A Person", "x" * 81,
+                        "A/../../secrets"):
+            with self.subTest(reviewer_id=invalid):
+                bad = copy.deepcopy(reviewers)
+                bad[0]["reviewer_id"] = invalid
+                with self.assertRaisesRegex(PageAuditError, "pseudonymous"):
+                    assess_page(raw, manifest, bad, extract_repos=extract_repos)
+
+    def test_adjudicator_reference_must_also_be_pseudonymous(self):
+        raw, manifest, reviewers = make_page(n=4)
+        reviewers[0]["rows"][0]["repository"] = "different/first-entry"
+        c = self._c_for(reviewers)
+        c["reviewer_id"] = "reviewer@example.com"
+        with self.assertRaisesRegex(PageAuditError, "pseudonymous"):
+            assess_page(raw, manifest, reviewers, extract_repos=extract_repos,
+                        adjudicator=c)
+
     def test_adjudication_rejects_same_identity_or_preceding_time(self):
         raw, manifest, reviewers = make_page(n=4)
         reviewers[0]["rows"][0]["repository"] = "different/first-entry"
