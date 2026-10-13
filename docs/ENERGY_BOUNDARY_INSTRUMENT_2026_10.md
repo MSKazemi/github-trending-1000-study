@@ -6,7 +6,7 @@
 
 ```bash
 python -m trending_study.energy_boundary --input MY_BOUNDARY.json
-python -m unittest tests.test_energy_boundary -v
+python -m unittest discover -s tests -p 'test_energy_boundary.py' -v
 ```
 
 Supply one frozen functional unit (`task_id`, `horizon_days`, `boundary_description`, and **independently assessed** `reuse_task_accepted` and `build_task_accepted`) plus `arms.reuse` and `arms.build`. Each must account for `local_development`, `ci`, `model_inference`, `runtime`, `maintenance`, `embodied` and `upstream_support`. Declare every component as **measured**, **modeled** or **unavailable**. Known values need a `source_ref` and finite nonnegative `kwh`. Unknown values require `kwh: null`; arbitrary tokens cannot be used as electricity.
@@ -26,6 +26,9 @@ The tool reports signed `reuse − build` energy only when both task outputs are
 Use one independently reviewed code task with an existing library candidate and a new-code baseline; record *all* time, installation failures and ongoing maintenance. A smaller prompt or fewer generated lines is not the functional unit. If input energy, security or performance cannot be measured, publish those gaps instead of claiming a green win.
 
 This work is an instrument for later independent energy study, not evidence that AI assistance is energetically cheaper.
+
+**Validation contract:** the optional grid-intensity field must be numeric, finite and nonnegative **even when a task was not accepted**. A task failure must not become a bypass for malformed evidence. The model still reports no comparative net kWh or carbon benefit for unaccepted tasks; the regression suite covers this failure path.
+
 
 ## 2026-10-13 validation and SCI boundary caveat
 
