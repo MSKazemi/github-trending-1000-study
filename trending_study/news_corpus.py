@@ -9,6 +9,12 @@ from pathlib import Path
 import re
 from urllib.parse import parse_qsl, urlsplit
 
+# Reuse the canonical offline research decoder instead of interpreting
+# duplicate keys, NaN/Infinity, or extreme numeric literals differently.
+from trending_study.data_integrity import (
+    MAX_FILES, MAX_FILE_BYTES, MAX_TOTAL_BYTES, _decode_document,
+)
+
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
 TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
@@ -124,11 +130,34 @@ def validate_records(records):
 
 
 def validate_directory(directory):
+    """Read only bounded, ordinary files; reject linked/unreviewed evidence."""
     directory = Path(directory)
+    if directory.is_symlink():
+        raise ValueError("news records directory symlink is forbidden")
+    if not directory.is_dir():
+        raise ValueError("news records directory does not exist or is not a directory")
     paths = sorted(directory.glob("NEWS-*.json"))
     if not paths:
         raise ValueError("no news records found")
-    records = [(p.name, json.loads(p.read_text(encoding="utf-8"))) for p in paths]
+    if len(paths) > MAX_FILES:
+        raise ValueError("news records exceed research artifact file-count limit")
+
+    records = []
+    total_bytes = 0
+    for path in paths:
+        # This CLI must be fail-closed even outside a full repository checkout:
+        # the main CI integrity gate alone cannot protect standalone callers.
+        if path.is_symlink():
+            raise ValueError(f"{path.name}: symlinked news input is forbidden")
+        if not path.is_file():
+            raise ValueError(f"{path.name}: expected an ordinary JSON file")
+        size = path.stat().st_size
+        if size > MAX_FILE_BYTES:
+            raise ValueError(f"{path.name}: news input exceeds file-size limit")
+        total_bytes += size
+        if total_bytes > MAX_TOTAL_BYTES:
+            raise ValueError("news inputs exceed total research artifact byte limit")
+        records.append((path.name, _decode_document(path.read_bytes(), path.name)))
     return validate_records(records)
 
 
