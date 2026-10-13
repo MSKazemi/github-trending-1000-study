@@ -13,7 +13,7 @@ The previous [workflow](../.github/workflows/ci.yml) ran only `unittest discover
 - Enforced read-only `GITHUB_TOKEN` with `permissions: contents: read`; no arbitrary external network calls or secret exposure are added by the gate.
 - CI runs for PRs and for pushes to `main`, reducing duplicate push+PR jobs on the same feature branch. PR concurrency cancels superseded runs; two Python matrix versions have `fail-fast: false` so both failures remain visible, with a bounded 15-minute job timeout.
 - `python scripts/check_artifact_integrity.py`: enumerates tracked `.py`, `.json` and `.jsonl` via `git ls-files -z` and **parses**, never executes, content. Python `ast.parse` finds syntax errors in even unimported modules; strict JSON check rejects invalid UTF-8, duplicate object keys at any depth, `NaN`/`Infinity`, non-finite numeric overflow and unreadable/escaped checkout paths; files over 8 MiB are explicitly rejected. JSONL lines are individually parsed, duplicate nested keys and nonfinite values fail closed with their original line numbers, and empty JSONL is rejected.
-- The existing `python -m unittest discover -s tests -v` remains mandatory on **both Python 3.10 and 3.12**; eleven extra unit tests cover positive and negative artifact cases without external dependencies.
+- The existing `python -m unittest discover -s tests -v` remains mandatory on **both Python 3.10 and 3.12**; twelve unit tests cover positive and negative artifact cases without external dependencies.
 - Deterministic JSON errors include relative tracked paths, not personal content. The parser never fetches network URLs, installs third-party packages, validates licence terms, interprets human experiments or changes scientific data.
 
 ## How to reproduce locally
