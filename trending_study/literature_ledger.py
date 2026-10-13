@@ -4,7 +4,7 @@ No database is queried; possible duplicates are flagged, never deleted.
 """
 import argparse
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
@@ -27,6 +27,9 @@ def _utc(s):
         raise LiteratureError("invalid searched_at_utc") from exc
     if d.tzinfo is None or d.utcoffset().total_seconds() != 0:
         raise LiteratureError("search timestamp must be UTC")
+    if d > datetime.now(timezone.utc) + timedelta(minutes=5):
+        raise LiteratureError("search cannot be dated in the future")
+    return d
 
 
 def _normalize_doi(raw):
@@ -47,6 +50,7 @@ def audit(data):
     if not isinstance(runs, list) or not runs or not isinstance(items, list):
         raise LiteratureError("nonempty search_runs and records list required")
     run_ids = set()
+    run_dates = {}
     for run in runs:
         if not isinstance(run, dict):
             raise LiteratureError("run must be object")
@@ -57,8 +61,8 @@ def audit(data):
         for key in ("database", "query"):
             if not isinstance(run.get(key), str) or not run[key].strip():
                 raise LiteratureError("database and exact query required")
-        _utc(run.get("searched_at_utc"))
-    seen, duplicate_keys, counts = set(), defaultdict(list), Counter()
+        run_dates[ident] = _utc(run.get("searched_at_utc"))
+    seen, duplicate_keys, title_keys, counts = set(), defaultdict(list), defaultdict(list), Counter()
     for row in items:
         if not isinstance(row, dict):
             raise LiteratureError("record must be object")
@@ -72,6 +76,8 @@ def audit(data):
         year = row.get("publication_year")
         if not isinstance(title, str) or not title.strip() or type(year) is not int or year < 1900 or year > 2100:
             raise LiteratureError("record requires title and plausible publication_year")
+        if year > run_dates[row["run_id"]].year:
+            raise LiteratureError("publication_year cannot postdate its source search run")
         if not isinstance(row.get("source_type"), str) or row["source_type"] not in SOURCE_TYPES:
             raise LiteratureError("invalid source_type")
         decision = row.get("decision")
@@ -87,12 +93,16 @@ def audit(data):
             ):
                 raise LiteratureError("included records require descriptive study_extract")
         doi = _normalize_doi(row.get("doi"))
-        duplicate_keys["doi:" + doi if doi else "title:" + re.sub(r"\W+", "", title.casefold()) + ":" + str(year)].append(ident)
+        title_key = "title:" + re.sub(r"\W+", "", title.casefold()) + ":" + str(year)
+        title_keys[title_key].append(ident)
+        duplicate_keys["doi:" + doi if doi else title_key].append(ident)
         counts[decision] += 1
     return {"search_runs": len(runs), "screened_records": len(items),
             "decisions": {x: counts[x] for x in sorted(DECISIONS)},
             "possible_duplicate_groups": {k: sorted(v) for k, v in sorted(duplicate_keys.items()) if len(v) > 1},
+            "title_year_collision_groups": {k: sorted(v) for k, v in sorted(title_keys.items()) if len(v) > 1},
             "duplicate_detection_is_not_adjudication": True,
+            "prisma_flow_authenticated": False,
             "screening_is_self_reported": True}
 
 
