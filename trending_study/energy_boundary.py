@@ -73,6 +73,11 @@ def compare(data):
         raise EnergyError("arms must contain exactly reuse and build")
     r, rm, rmodel, r_grid = _arm(arms["reuse"], "reuse")
     b, bm, bmodel, b_grid = _arm(arms["build"], "build")
+    # Validate optional intensity independently of whether the tasks are
+    # accepted. A rejected/unmatched task must not conceal invalid inputs.
+    intensity = data.get("grid_intensity_gco2e_per_kwh")
+    if intensity is not None:
+        intensity = _nonnegative(intensity, "grid_intensity")
     # Validate all declared arm cells before checking task equivalence; an
     # invalid/missing ledger must not be silently accepted through early exit.
     if not (task["reuse_task_accepted"] and task["build_task_accepted"]):
@@ -90,9 +95,6 @@ def compare(data):
            "net_kwh_reuse_minus_build": None, "net_gco2e_reuse_minus_build": None,
            "grid_only_scenario_gco2e_delta": None,
            "boundary_is_self_declared": True}
-    intensity = data.get("grid_intensity_gco2e_per_kwh")
-    if intensity is not None:
-        intensity = _nonnegative(intensity, "grid_intensity")
     if out["comparable"]:
         out["net_kwh_reuse_minus_build"] = r - b
         if intensity is not None:
