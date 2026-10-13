@@ -1,109 +1,148 @@
-# Meta: preliminary six-month technology-intelligence screen
+# Meta — six-month AI/software company intelligence (initial source screen)
+ 
+- **Watchlist ID:** 005
+- **Issue:** [#71](https://github.com/MSKazemi/github-trending-1000-study/issues/71)
+- **Period:** 2026-04-12 to 2026-10-12 inclusive, calendar publication dates.
+- **As-of source review:** 2026-10-12.
+- **Research status:** **INITIAL source-screened draft only**. Not a complete six-month systematic search, independently adjudicated result, formal peer review, real product deployment test, or study finding.
+- **Company sector:** foundation models, enterprise/personal agents, developer APIs.
+- **Official publication entry:** https://about.fb.com/news/
+- **Individual machine-readable events:** [005-meta.events.csv](005-meta.events.csv).
+- **Methods:** [company-source protocol](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md); [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
 
-**Watchlist ID:** 005 · **Issue:** [#71](https://github.com/MSKazemi/github-trending-1000-study/issues/71) · **Retrospective interval:** 2026-04-12 through 2026-10-12 inclusive UTC · **Research session:** 2026-10-12 · **Stage:** collecting / **PARTIAL FIRST PASS** · **Independent human factual reviewer:** pending.
+## 1. Search and coverage audit
 
-**Scientific status:** This is a small dated primary-source screen, **not** a complete company study, systematically captured seven-segment search, independent product benchmark, validated adoption observation, or verified 2027–2031 company roadmap. In-window page dates are vendor-supplied and require archival/date review. No NEWS corpus records have been minted. Do not close #71 based on this document.
+Source screening consulted the linked first-party publication/archive pages, product announcement text and relevant source discovery for this organization as of 2026-10-12. The following are **reproduction search suggestions**, not a log claiming these literal exact queries were all executed. They should be run independently for every month, in official and high-quality secondary sources, before final issue completion:
 
-## 1. Search and inclusion audit
+1. `"Meta" after:2026-04-11 before:2026-10-13 agent coding open weights`
+2. `site:about.fb.com 2026 model launch agents`
+3. `"Meta" 2026 developer API security pricing`
+4. `"Meta" 2026 independent benchmark and criticism`
 
-Public search plus selected official company pages was used on 2026-10-12. Representative **queries actually attempted**:
+**Audit limitations:** Search-hit totals, all screened/excluded URL counts, frozen web snapshots, completeness/recall and an independently audited secondary corpus were **not measured**. The included events below are a bounded purposive screen, not an enumeration of every release. The seven partial/full month segments are displayed even when an event was not found. **An unfilled month is missing evidence, not a zero-activity finding.** Verify link accessibility, page update history, publication timezone, actual release date vs article date and region/plan availability before declaring the report done. No web scraping or private-user data collection.
 
-- `site:about.fb.com/news/2026/ Meta AI open source AI model 2026 September`
-- `Meta 2026 April Llama 4 5 models ai meta research AI developer official news April 2026`
+## 2. Identity and product boundary
 
-Search engine result totals, per-query time, full URL screen/exclusion denominator, preserved page snapshots and search-result ranking **were not retained**. The items below are curated leads, **not** an exhaustive or reproducibly systematic review. Dates should be reconfirmed on immutable/archived original versions during QA; no source download or paywall bypass was attempted.
+Meta Platforms, Inc. is the corporate entity; Meta AI, Muse-family models and Muse Code are product names rather than independent firms. The April 8 Muse Spark announcement predates the observation window even if a later update appears on the page.
 
-| Segment | Retained leads | Scope/coverage warning |
+Public first-party landing/news channels identify product offerings, but this report does not independently verify corporate cap tables or product rights. April 8 announcement is a pre-window baseline, not an April 12+ release; provider-reported model availability does not verify weights licensing.
+
+## 3. Month-by-month candidate events
+
+| Period | Source-linked discovered candidate(s) | Coverage characterization |
 |---|---|---|
-| 2026-04-12..30 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-05 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-06 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-07 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-08 | No dated lead retained | Unscreened/incomplete; does NOT mean zero releases |
-| 2026-09 | [Introducing Muse Personal AI Agent](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/); [Launching Meta Enterprise Platform](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) | Only selected linked releases; not a systematic full-month screen |
-| 2026-10-01..12 | [Introducing Muse Wonder Models](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) | Only selected linked releases; not a systematic full-month screen |
+| 2026-04-12..30 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
+| 2026-05 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
+| 2026-06 | [New AI tools to help make things happen on Facebook](https://about.fb.com/news/2026/06/new-ai-tools-to-help-you-make-things-happen-on-facebook/) | First-party pages; see events |
+| 2026-07 | [Muse Spark acts across tasks](https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/) | First-party pages; see events |
+| 2026-08 | [Muse Glimmer open agentic model](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model) | First-party pages; see events |
+| 2026-09 | [Meta enterprise platform launch](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) | First-party pages; see events |
+| 2026-10-01..12 | [Muse Wonder and Muse Wonder Full](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) | First-party pages; see events |
 
-## 2. Company/product identity and baseline
+## 4. Dated evidence and feature map
 
-Meta's model and agent product announcements; no inference that a model described as available is open-weight, independently useful, or adopted. Corporate and model-license boundaries need separate confirmation.
-
-No final dated corporate ownership ledger, product-term archive, machine-verified API/version matrix or independent software test is claimed. Product and brand URLs in the event ledger are initial identity pointers; pre-window background is **not** counted as 2026-04-12 onward evidence.
-
-## 3. Selected dated event evidence
-
-| ID | Publication vs event date | Attributed claim, NOT reproduced outcome | Reported availability | Canonical source (type) | Working grade |
+| Event | Published / underlying event | Source-linked provider claim or dated documentary event | Availability / constraint | Evidence grade and independent check | Relevant objectives |
 |---|---|---|---|---|---|
-| 005-E01 | 2026-09-08 (publication asserted by page); event date not independently confirmed | Meta introduced Muse as a personal AI agent and described isolated execution; safety/availability claims remain vendor assertions. | announced; independently tested availability unknown | [Introducing Muse Personal AI Agent](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/) — primary, company-controlled | E1 (vendor claim only) |
-| 005-E02 | 2026-09-28 (publication asserted by page); event date not independently confirmed | Meta described an enterprise platform and related Muse API, Muse Code and Business Agent directions. | mixed announcement and availability; exact GA geography/plan unverified | [Launching Meta Enterprise Platform](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) — primary, company-controlled | E1 (vendor claim only) |
-| 005-E03 | 2026-10-12 (publication asserted by page); event date not independently confirmed | Meta announced Muse Wonder/Full models and vendor-described distribution via its model API and Muse Code. | vendor-announced model access; specific license/weights unverified | [Introducing Muse Wonder Models](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) — primary, company-controlled | E1 (vendor claim only) |
+| CI-005-01 | 2026-06-15 / event day not independently timed | [New AI tools to help make things happen on Facebook](https://about.fb.com/news/2026/06/new-ai-tools-to-help-you-make-things-happen-on-facebook/) — Meta describes AI-assisted actions on Facebook; not a coding-tool outcome. | shipped; Product scope and rollout not independently tested. | Provider E1; independent efficacy **not** verified | M1 |
+| CI-005-02 | 2026-07-24 / event day not independently timed | [Muse Spark acts across tasks](https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/) — Meta describes task actions and integrations for Muse Spark 1.1. | shipped; Provider reports scope; third-party task acceptance missing. | Provider E1; independent efficacy **not** verified | M1;M2 |
+| CI-005-03 | 2026-08-10 / event day not independently timed | [Muse Glimmer open agentic model](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model) — Meta introduces a local agentic model with open-weight positioning. | shipped; Check exact model-card license and weights, not merely blog claims. | Provider E1; independent efficacy **not** verified | M1;M5 |
+| CI-005-04 | 2026-09-28 / event day not independently timed | [Meta enterprise platform launch](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) — Meta announces enterprise agent-platform direction. | shipped; Vendor adoption and security claims not externally reproduced. | Provider E1; independent efficacy **not** verified | M1;M4 |
+| CI-005-05 | 2026-10-12 / event day not independently timed | [Muse Wonder and Muse Wonder Full](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) — Meta reports Muse Wonder Model API and Muse Code availability, with broader consumer rollout future. | shipped; No proof weights available; access restricted by product/subscription; benchmark claims first-party. | Provider E1; independent efficacy **not** verified | M1;M2;M5 |
 
-**Working E1** means a source supports **what the company publicly reported**, not that the stated feature worked for neutral users or yielded saved time, safer code, external reuse or sustainability benefits. Event date, entitlement/region, terms and corrections need follow-up. These records are not treated as E2/E3/E4.
+**Grading:** **E1** = provider-described release or policy. It supports attribution and reported availability, **not** reproducible behavior, quality, adoption or effectiveness. API version/docs and actual package licenses remain to be independently inspected; **E3/E4 is not awarded** to vendor metrics. The event CSV separately records class, observed limitations and link provenance. `shipped` means the **provider described availability** on the date, not independently validated access. **No claims about measured carbon impact or representative adoption.**
 
-## 4. Feature mapping and constraints
+### Feature, integration, licensing and security boundaries
 
-- **Introducing Muse Personal AI Agent:** Meta introduced Muse as a personal AI agent and described isolated execution; safety/availability claims remain vendor assertions. **Availability:** announced; independently tested availability unknown. **Verification gap:** The page may have been updated after original publication; preserve revisions in the second pass.
-- **Launching Meta Enterprise Platform:** Meta described an enterprise platform and related Muse API, Muse Code and Business Agent directions. **Availability:** mixed announcement and availability; exact GA geography/plan unverified. **Verification gap:** Do not infer production adoption, API compatibility, or vendor-neutral benchmark outcomes.
-- **Introducing Muse Wonder Models:** Meta announced Muse Wonder/Full models and vendor-described distribution via its model API and Muse Code. **Availability:** vendor-announced model access; specific license/weights unverified. **Verification gap:** Performance claims and availability require independent reproduction; access terms are not validated.
+- **Current/new capabilities reported by provider:** Meta is moving agent capabilities from consumer assistance into developer APIs, local deployment options and enterprise workflows; availability and model-weight access vary by product.
+- **Availability:** check every event's status (including preview and future-only); descriptions of features are not interchangeable with externally accepted user tasks.
+- **Open-source/API/license:** Do not assume all Muse models are open-weight. Treat claims about automated actions, model quality and security as first-party reports.
+- **Security and provenance:** do not execute untrusted build instructions, model install scripts or agent-recommended dependencies; record exact artifact identities, license, origin, signing/release tag, vulnerability results and permissions.
+- **Economic context:** model/API prices, tokens, human review, CI and ongoing support must be measured per functional task. Vendor throughput claims are not metered kWh or emissions.
 
-Independent installations: **not performed**. Verified external downstream integrations: **not measured**. Release/license/security compatibility: **not independently established**. Adoption denominators, developer-active minutes, tokens, kWh and gCO2e: **unknown, not zero**.
+## 5. Public roadmap / intention (not independently guaranteed)
 
-## 5. Stated direction versus our interpretation
+**Direction attributable to the company's publications:** Meta is moving agent capabilities from consumer assistance into developer APIs, local deployment options and enterprise workflows; availability and model-weight access vary by product.
 
-**What a dated primary source establishes:** the company made the linked product statements, with the scope stated above. A future plan or planned rollout is **not** a shipped capability. **Binding public 2027–2031 commitments checked in this pass:** none; do not extrapolate a binding roadmap.
+A roadmap statement, planned support sunset, future model release or planned deployment **must not** be counted as generally available in the window. See specific `announced_only` and `preview` items in the dated table. Commitments are scope- and time-specific, and product marketing is a weaker evidence class than a pinned artifact and repeated independent task result.
 
-**Analyst's conditional hypothesis, NOT vendor strategy:** Model-and-agent platforms may bundle execution, enterprise context and coding assistance; rival possibility is increased dependency lock-in, review work and licensing uncertainty.
+## 6. Analyst interpretation, alternatives and disconfirmation (2027–2031)
 
-**Disconfirmation:** fail to improve independently frozen task acceptance or raise total human review/maintenance/dependency cost; audit other models, earlier baseline practices and product access differences. The source screening does not estimate probabilities or causal effect sizes.
-
-## 6. Independent/counter-evidence status
-
-A contemporary third-party account exists at https://www.axios.com/2026/10/12/meta-new-ai-models-anthropic-openai but does not independently establish task quality or downstream adoption; full critical-source screening pending.
-
-No independent cross-source conflict adjudication, dated product deployment replication, third-party security audit or sample-based effectiveness study has yet been completed. Treat missing critical reports as an **open search task**, not an all-clear.
-
-## 7. Mapping to the GitHub 1000 study (M1–M7)
-
-| Constructs | Prospectively testable question | Minimum independent evidence and negative case |
-|---|---|---|
-| M1, M2 | Does this product alter allowed/delegated coding behavior and independently accepted task quality? | Consent and dated versioned workflows, independent task tests, all failed and abandoned tasks; access is not adoption |
-| M4, M5 | Does a user find, adapt, and correctly **reuse** existing code rather than generate a duplicate? | Time-bounded local/registry/OSS candidate search with license/security/fit review; prove actual integration and report search misses |
-| M6, M7 | Does workflow improve genuinely useful first-run success and lifecycle cost? | Independent first-use users, review+maintenance minutes, documented baselines and energy system boundaries; no token-to-CO2 conversion |
-
-The site and source population are not randomized. No effect estimate or recommendations-by-popularity follow.
-
-## 8. One falsifiable 2027 maintainer experiment — **proposed, not executed**
-
-**Fixed task and comparison:** For one public Python-library bugfix, freeze the failing case, backward compatibility requirements and independently prepared tests. Compare a permitted Meta-assisted workflow against the same baseline task using the existing repository's conventional tools; record exact model/API version, licensed dependencies, human review+repair minutes, all failed attempts and independent pass/fail. Do not initiate provider access without rights/cost approval.
-
-**Primary measure:** independently accepted tasks over **all pre-allocated tasks**, including refused, failed and abandoned. **Secondary measures:** independent clean installation, verified reuse/provenance, repair and reviewer effort, unresolved licensing/security risk, and future support work. Disclose environment, dates, consent and versions. Provider usage/expenses and lifecycle kWh are unmeasured, not imputed.
-
-**Stop / reversal rule:** Reject deployment if provider terms cannot be verified, security/rights are unknown at release time, or accepted-task quality does not justify increased review and dependency cost.
-
-## 9. Remaining acceptance and human-review gate
-
-- [ ] Recheck entity ownership/product boundaries and every canonical link and date against original/archived source.
-- [ ] Complete seven segment-by-segment search log with found/screened/included/excluded counts, negative and inaccessible results.
-- [ ] Include dated independent and critical coverage, and a deduplicated event ledger with product/license/API/status fields.
-- [ ] Separate actual availability from announcements, previews, cancellations and vendor performance data.
-- [ ] Review task pilot design with independent acceptance tests and eligible-denominator reporting.
-- [ ] Obtain genuine human factual/link review. No reviewer signoff or human product test has occurred.
-
-**No source-code files changed; local Python tests and GitHub CI were not executed as part of this source-screen contribution.** Research protocol remains unchanged. Cross-link to [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [research mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [practical maintainer handbook](../../../docs/PRACTICAL_REPOSITORY_GROWTH_AND_REUSE_2027.md) and [news-corpus task #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) without asserting these events are already admitted NEWS records.
-
-## Incremental source recheck (2026-10-13; first-party documentary audit)
-
-This section records 3 **dated publisher statements** verified from public page/search content on 2026-10-13. It does **not** represent a full April–October screen: full search result counts, permanent capture bytes, historical source revisions, complete exclusions and an independent qualified reviewer are still missing. The machine-readable rows are in [005-meta.events.csv](005-meta.events.csv), using the field names from the [company-intelligence method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md). In this CSV, `published_utc` and `accessed_utc` record dates at **day precision only**; `event_date_utc` is empty unless a separate event date has been authenticated. E1 denotes **who said what**, not proven effectiveness. Any independent news links are only reporting corroboration, not independent performance testing.
-
-| Publisher date | Canonical first-party source | Defensible claim and availability | Key limit |
+| Conditional inference — NOT company commitment | Motivation | Rival explanation | Disconfirming observation |
 |---|---|---|---|
-| 2026-09-08 | [Introducing Muse: The World's First Personal AI Agent Built for Everyone](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent) | Meta announced a personal agent using a dedicated cloud VM and browser. **Status:** `announced_only`. | Page shows later Sep 30 revision; the Sept 8 snapshot not recovered. |
-| 2026-09-28 | [Launching Meta Enterprise Platform](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) | Meta announced enterprise direction including Muse API, Muse Code and business agents. **Status:** `announced_only`. | No exact GA, permissions or independent enterprise deployment verified. |
-| 2026-10-12 | [Introducing Muse Wonder and Muse Wonder Full: Frontier Models for Agents](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) | Meta said Wonder is available through Meta Model API and Muse Code, and Wonder Full for Muse Code subscribers. **Status:** `shipped`. | No evidence these particular models are open-weight; vendor benchmark scores unreplicated. |
+| Agent-capable models and local-weight developer offerings could reduce integration friction for narrower software tasks. | Above source-linked product directions (E1) | Hosted proprietary models may remain simpler than local weights, or agent risk/reviewer time may exceed local benefits. | Independently tested local integration fails functional acceptance or costs more in total reviewer time. |
 
-**Important correction and interpretation:** Meta's Muse article first published September 8 also displays a September 30 update. Do not treat updated text as an unchanged contemporaneous record; archived original not obtained. Muse Wonder is offered via API/Code according to the October 12 company page; open-weight licensing of these specific models is NOT established. Independent media corroborates the announcement, not performance or reproducible access.
+**Confidence:** exploratory/low until independent task comparisons and lifecycle measurement. Some genuinely useful reusable components predate this six-month interval; they remain eligible as controls/candidates, not excluded as old technology.
 
-**Disconfirmation/critical evidence still needed:** Privacy and delegated-agent account access; model/weights terms; no independent acceptance benchmarks or developer-reuse counts.
+## 7. Mapping to the study's M1–M7 objectives
 
-**Reproducibility safeguards:** sample tasks independently of solution availability, freeze task requirements and hidden acceptance tests, report all refusals/failed outcomes in the denominator, evaluate exact dependency versions/licenses and cybersecurity approvals, and compare review/maintenance cost over the same workload. None of these product tasks were executed during this literature screen. No independent source count/coverage fraction, ROI, emissions or causal effect is estimated.
+| Question | Needed observation rather than a product popularity proxy |
+|---|---|
+| M1 agent/workflow change | Timestamped, consented and version-pinned task use; feature availability is **not adoption** |
+| M2 accepted quality and review load | Frozen external acceptance suite; failures, review minutes, defects and follow-up counted for **all assigned tasks** |
+| M3 discoverability | Prospective matched repo controls and pre/post visibility measures with exposure/selection confounding |
+| M4 independent reuse | Audited outsider import, deployment or working repeat-use; stars and installs alone insufficient |
+| M5 reuse vs rebuilding | Pre-screened OSS candidates, provenance/license/security, missing/no-solution cases and same objective task |
+| M6 whole lifecycle | Same functional unit; human time, provider costs, CI/hosting, runtime, upgrades and upstream burden; kWh only if metered or transparently modeled |
+| M7 maintainer intervention | Ethics-reviewed opt-in onboarding/API/docs intervention; independent first-use success and no artificial star boosting |
 
-**Method status:** source URLs and public claims checked; URL archive/SHA not preserved, six-window/month exhaustive search NOT done, independent human review NOT done, provider installations NOT done, full unit suite/CI not executed locally. Keep #71 and this draft PR open until those acceptance gates are addressed.
+These are study **measurement targets**, **not observations** of M1–M7 effects in this report.
+
+## 8. Practical, falsifiable pilot for the maintainer's own repository
+
+**Repository:** [GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study) (existing offline CLI and synthetic fixture; do not scrape live Trending).
+
+**Practice to test:** Compare implementing one existing offline study-parser summary using the current Python CLI versus reusing a documented local model-assisted task plan without new parsing code.
+
+**Treatment/comparator:** Arm A: existing CLI instructions without new agent task-plan template; Arm B: the same pinned CLI and synthetic fixture with a reusable agent task-plan and access rules.
+
+**Freeze before treatment:** same repository SHA, dependency/model versions, synthetic inputs, objective expected outputs, task/time cap and evaluator; record failures and no-solution tasks. A second person creates or freezes acceptance tests before any agent-generated change.
+
+**Primary outcome and verifiable reuse:** Independent outsider produces exactly the frozen expected JSONL rows and summary, without network calls or mutations; count all assigned attempts and 30-day downstream reuse of that CLI output.
+
+**Costs / constraints:** record active human time, reviewer minutes, task-level billed/model tokens where known, CI runtime, 30-day defects, code provenance, package-license/security checks and any upstream support work. Tokens/LOC/stars are **not kWh or CO2e**. Prospective experiment **not run**; sample size/power and human consent not secured.
+
+**Stop/reversal:** Reject the template if it adds API/hosting expense, leakage or review overhead without increasing accepted first-use completion.
+
+**Transferable maintainer lesson:** prefer a reusable, versioned interface with an independently testable first-use task over a flashy new repository; test whether verified outside use improves without shifting hidden maintenance/security costs.
+
+## 9. Evidence quality, counterclaims and pending QA
+
+- **Observed in documentation:** 5 directly linked dated source events, primarily first-party. Only the publication/product claims and their reported availability are supported.
+- **Not demonstrated:** independent feature efficacy, benchmark validity, customer/OSS adoption, earned GitHub attention, per-task cost savings, kWh/CO2e, or causal environmental benefit.
+- **Counterclaim / specific uncertainty:** April 8 announcement is a pre-window baseline, not an April 12+ release; provider-reported model availability does not verify weights licensing. Hosted proprietary models may remain simpler than local weights, or agent risk/reviewer time may exceed local benefits.
+- **Required next verification:** (1) independent second-reviewer date/link/identity pass; (2) seven-segment systematic queries with preserved screen counts and exclusion rationale; (3) inspect exact weights/code license, APIs, prices, status and data policies; (4) seek credible independent adverse/critical reporting; (5) duplicate/correction and secondary coverage audit; (6) independent task trial and tests before recommending broad adoption.
+- **Review state:** analyst-drafted with source URLs, independent human factual QA **pending**, no full Python test suite run for this documentation-only proposal. Keep the issue and PR open/draft; **do not merge** or close until criteria satisfied.
+- **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
+
+**Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
+
+### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
+
+- [Muse Glimmer August 10 release](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model) is directly dated **2026-08-10**, and the [published Hugging Face model card](https://huggingface.co/meta-models/Muse-Glimmer-30B) displays **Apache-2.0** and downloadable artifacts. This is a **specific-model artifact/license cross-check**, not proof of safe downstream use, training-data rights, or a reproducible runtime result. Record exact model revision SHA before reuse; do **not** infer that other Meta models share its license.
+- [Muse Wonder October 12 release](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) explicitly distinguishes Muse Wonder API/Muse Code access, Wonder Full for subscribers and a *future* Muse rollout. [Axios on October 12](https://www.axios.com/2026/10/12/meta-new-ai-models-anthropic-openai) provides an **independent news account of the announcement**, **not** independent benchmark/agentic-function reproduction; no released Wonder weights are established by these links.
+- [June 15 Facebook tools](https://about.fb.com/news/2026/06/new-ai-tools-to-help-you-make-things-happen-on-facebook/) primarily concerns *consumer social-platform experiences*. Its relationship to third-party OSS code reuse is **indirect**; it must not enter an estimate of coding-agent releases or software-reuse success.
+
+**New practical checkpoint:** In any model-selection comparison, require versioned model card, exact weights/access conditions, license and objective external-task completion; a product-family brand is not a reusable artifact identifier.
+
+
+## Evidence-preserving reconciliation of competing drafts (2026-10-13)
+
+This source-screened working report retains the full **original PR #191 report** and its factual limitations. Later [draft PR #228](https://github.com/MSKazemi/github-trending-1000-study/pull/228) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/005-meta.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/005-meta.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
+
+**Canonical working event index:** [005-meta.events.csv](005-meta.events.csv) contains 6 deduplicated *publisher URL leads*: 3 retained from the newer screening plus 3 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+
+| URL in both screens | Original status | Newer status | Required disposition |
+|---|---|---|---|
+| [Source](https://about.fb.com/news/2026/09/launching-meta-enterprise-platform/) | `shipped` | `announced_only` | **Unresolved, prefer provisional/newer working label**; review actual release scope before scholarly interpretation |
+
+### Unique source material from each branch
+
+**Earlier screen source leads retained in the canonical CSV (archived E0 until checked):**
+- 2026-06-15: [New AI tools to help make things happen on Facebook](https://about.fb.com/news/2026/06/new-ai-tools-to-help-you-make-things-happen-on-facebook/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-07-24: [Muse Spark acts across tasks](https://about.fb.com/news/2026/07/meta-ai-muse-spark-doesnt-just-think-it-acts/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-08-10: [Muse Glimmer open agentic model](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+
+**Later screen unique links (publisher working records):**
+- 2026-09-08: [Introducing Muse: The World's First Personal AI Agent Built for Everyone](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent) — `announced_only`; source-bound, not an independent effectiveness test
+
+**Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #71 open until study acceptance is satisfied.
