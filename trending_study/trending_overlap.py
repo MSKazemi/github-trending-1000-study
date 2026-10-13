@@ -58,7 +58,7 @@ def _capture(obj):
     else:
         # A filtered page is one language slug, never a nested path or arbitrary
         # user-controlled path segment. Preserve legitimate language punctuation.
-        declared = re.sub(r"\\s+", "-", lang.strip()).casefold()
+        declared = re.sub(r"\s+", "-", lang.strip()).casefold()
         if len(declared) > 80 or not re.fullmatch(r"[a-z0-9][a-z0-9+._#-]*", declared):
             raise OverlapError("language_filter must be a single safe language name")
         if not path.startswith("/trending/"):
