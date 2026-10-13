@@ -23,6 +23,12 @@
 ## Minimum record v1.0
 Required: `schema_version`, `id`, `title`, `publisher`, `original_publication_date`, `accessed_date_utc`, `canonical_url`, `source_type`, `topics`, `screening_status`, `source_review_status`, `attributed_claim_summary`, `limitations`, `practical_experiment`, `independent_corrob_status`, `review_status`. Additional review fields and data fields remain explicit `null` / `not_assessed` until checked. Reject non-HTTP URLs, future publication dates relative to verified access and duplicate canonical URLs. No source is upgraded to E4/E5 from a vendor announcement.
 
+### Canonical URL deduplication is deliberately conservative
+
+The offline validator now strips common marketing attribution parameters (`utm_*`, `gclid`, `fbclid` and similar) and normalizes host case, trailing slash and query ordering for duplicate **page** screening. It **preserves meaningful query selectors** such as `?id=123` or `?ref=release-a`; otherwise two different source documents served at one path could be wrongly discarded as one article. This makes the validator less likely to erase valid evidence while still catching obvious campaign duplicates.
+
+**Scientific limitation:** Different URLs may still report the **same launch, paper, survey or event**. URL deduplication is not event-level deduplication, independent replication, source credibility or systematic-search coverage. A future screened event-family ledger must independently connect these records and preserve follow-up/correction history without counting the same vendor release as multiple confirming studies. The automated tests only establish deterministic URL syntax handling.
+
 ## Priority topic allocation for further *screening*, not quotas on conclusions
 
 | Area | Exploratory target | Primary research question |
