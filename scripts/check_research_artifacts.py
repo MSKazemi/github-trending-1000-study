@@ -233,8 +233,10 @@ def audit_tracked_code_json(
 
     if len(listing) > 8 * 1024 * 1024:
         raise IntegrityError("Git index listing exceeds 8 MiB inspection limit")
+    if not listing:
+        raise IntegrityError("no Git-tracked Python/JSON files were found")
     if not listing.endswith(b"\0"):
-        raise IntegrityError("Git index listing is incomplete or empty")
+        raise IntegrityError("Git index listing is incomplete")
 
     counts = {"python": 0, "json": 0, "files": 0, "checked_bytes": 0}
     failures = []
