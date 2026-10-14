@@ -26,7 +26,10 @@
           11,
           14
         ]
-      }
+      },
+      "frame_page_url": "https://github.com/trending/python?since=daily",
+      "frame_window": "daily",
+      "frame_language_filter": "python"
     },
     {
       "frame_id": "SYN-RUST",
@@ -49,7 +52,10 @@
           21,
           22
         ]
-      }
+      },
+      "frame_page_url": "https://github.com/trending/rust?since=daily",
+      "frame_window": "daily",
+      "frame_language_filter": "rust"
     }
   ]
 }
