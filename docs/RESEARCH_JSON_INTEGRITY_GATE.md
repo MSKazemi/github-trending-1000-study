@@ -2,12 +2,20 @@
 
 **Implemented as an offline engineering control, 2026-10-13.** This is **not** a systematic literature review, an authenticated data capture, an ethics approval, a schema registry or empirical research evidence.
 
-The GitHub Actions Python 3.10/3.12/3.13/3.14 matrix runs three steps before treating a pull request as technically verified:
+The GitHub Actions Python 3.10/3.12/3.13/3.14 **test matrix** compiles source, checks every Git-tracked Python and JSON artifact, runs offline tests, and smoke-tests CLI entrypoints. The separate **research-artifacts** job runs both pre-existing JSON/JSONL/CSV validators. Both jobs run on pull requests and pushes to `main`:
 
 ```bash
-python -m compileall -q trending_study tests
-python -m trending_study.data_integrity --root .
+# Each Python matrix job
+python -m compileall -q trending_study scripts tests
+python scripts/check_research_artifacts.py --root . --tracked-code-json
 python -m unittest discover -s tests -v
+python -m trending_study --help
+python -m trending_study.reuse_gate --help
+python -m trending_study.goldset --help
+
+# Separate research-artifacts job (Python 3.12)
+python -m trending_study.data_integrity --root .
+python scripts/check_research_artifacts.py --root .
 ```
 
 The standard-library validator inspects committed `.json`, `.jsonl` and `.csv` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON/CSV or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing or underflowing nonzero floating-point literals, extremely long integer tokens, empty JSONL, malformed/duplicate CSV headers, inconsistent CSV row widths, embedded NUL bytes in CSV, symlinked data files/directories and files exceeding 16 MiB. JSONL errors include the actual record line number.
