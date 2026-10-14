@@ -367,7 +367,11 @@ def load_offline_json(path):
     try:
         return decode_research_json(raw, path.name)
     except ResearchJSONError as exc:
-        raise TrendingAuditError("malformed strict research JSON: " + str(exc)) from exc
+        # Decoder diagnostics can contain duplicate *key names*, which may be
+        # private input. Do not surface them through argparse or CLI logs.
+        raise TrendingAuditError(
+            "malformed strict research JSON (input details withheld)"
+        ) from exc
 
 
 def main(argv=None):
