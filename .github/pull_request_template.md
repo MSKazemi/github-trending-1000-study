@@ -10,7 +10,7 @@ Describe the single bounded change, affected interfaces/schema versions, and why
 - [ ] Inspected all changed files, related open PRs and duplicate-implementation risk; retained unique data, citations, docs and regression cases
 - [ ] No secrets, unapproved scraping, private logs, unsafe dependency installation, or overwritten write-once evidence
 - [ ] Added appropriate negative/error/missingness tests and updated docs for every schema/API change
-- [ ] Final-head GitHub Actions (Python 3.10, 3.12, 3.13 and 3.14 compile, unit and CLI smoke tests) completed successfully: **run URL:** 
+- [ ] Final-head GitHub Actions **all five jobs** passed: `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)` (compile, unit, CLI smoke), and `research-artifacts` (both JSON/JSONL/CSV integrity validators). **Run URL and head SHA:** 
 - [ ] No unresolved review objections, license/security concerns, merge conflicts or unreviewed interface compatibility breaks
 - [ ] If a protocol, scientific source, blinded judgment or security recommendation is affected: genuine qualified independent human approval recorded below (or **pending—not merge-ready**)
 - [ ] Commit SHA rechecked immediately before merge; post-merge `main` CI will be verified
@@ -60,7 +60,9 @@ Describe the single bounded change, affected interfaces/schema versions, and why
 ## Reproduction
 
 ```bash
-python -m compileall -q trending_study tests
+python -m compileall -q trending_study scripts tests
+python -m trending_study.data_integrity --root .
+python scripts/check_research_artifacts.py --root .
 python -m unittest discover -s tests -v
 ```
 
