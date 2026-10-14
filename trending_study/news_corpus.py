@@ -129,9 +129,16 @@ def validate_records(records):
         if (record["review_status"] != "pending"
                 or record["independent_reviewer"] is not None):
             raise ValueError(f"{name}: pending independent review only in schema v1.0")
-        if (record["screening_status"] != "included_provisional_single_reviewer"
-                or record["source_review_status"] !=
-                   "web_primary_page_inspected_not_independently_fact_checked"
+        allowed_provisional = (
+            record["screening_status"] == "included_provisional_single_reviewer"
+            and record["source_review_status"] ==
+                "web_primary_page_inspected_not_independently_fact_checked"
+        )
+        allowed_synthetic = (
+            record["screening_status"] == "synthetic_test_only"
+            and record["source_review_status"] == "not_inspected_synthetic_fixture"
+        )
+        if (not (allowed_provisional or allowed_synthetic)
                 or record["independent_corrob_status"] != "not_assessed"):
             raise ValueError(f"{name}: unverified source cannot claim independent review")
         if record["fulltext_stored"]:
