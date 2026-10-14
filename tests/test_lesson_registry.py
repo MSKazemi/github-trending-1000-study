@@ -382,7 +382,7 @@ class LessonRegistryV11Tests(unittest.TestCase):
         p = v11_observation()
         x = p["lessons"][0]["sources"][0]
         for url in ("https://[bad-host/example", "https://example.org:bad/path",
-                    "https://example.org/path\\nInjected"):
+                    "https://example.org/path\nInjected"):
             with self.subTest(url=url):
                 x["url"] = url
                 with self.assertRaises(LessonError):
