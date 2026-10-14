@@ -44,3 +44,22 @@ The counts refer **only to distinct source URL leads**, not independent findings
 - Keep assertions time- and artifact-bound (release vs preview, actual license vs advertised license, offer vs effective cost).
 - Couple branch-head CI with independent domain signoff, especially for research, security, licensing and adoption claims.
 - Test new provenance guards on deliberately divergent archived/current inputs before enabling them as required CI.
+
+
+## Updated 2026-10-14 follow-through: 50 candidate leads, no research signoff
+
+This section supersedes the earlier 37/39-record interim count, without erasing that historical snapshot. All five draft branch working CSVs now contain **50 distinct publisher URL candidate leads in aggregate**: #228 Meta **8**, #229 Amazon/AWS **9**, #230 Replit **11**, #231 Amp **9**, #232 Qodo **13**. They are **50 links**, not 50 independently verified functional releases, unique underlying events, external adoption observations, independent companies, validated trials or environmental outcomes.
+
+### Concrete engineering work
+
+- Per-branch seven-period search checkpoints are stored under `research/company-intelligence/2026-04-12_2026-10-12/source-audits/NNN-*.2026-10-14-qa.md` and linked from the relevant working reports. Exact public search strings are logged; the search interface did not provide complete result-hit counts, all screened URLs, excluded URLs or archival bytes. Thus these **do not yet satisfy** the protocol's reproducible full source-search denominators.
+- Added **11 uniquely dated publisher-source leads**, including Meta Muse Code beta and disclosed cyber-evaluation issue; AWS opt-in Kiro workflows; Replit opt-in Auto-Protect; Amp staged-to-broad Neo status, multi-repo, diff ordering and PR-feedback listeners; Qodo Findings Page beta, agent guidance opinion and Codex integration. Each lead retains source attribution, explicit availability classification and limitations.
+- Preserved the earlier #196 Replit and #198 Qodo unmerged JSON ledgers byte-for-byte in source archives. Qodo's older first-party claim of an Apache-2.0 PR-Agent transition and the separately recorded pinned MIT license must remain distinct. Source archival labels E1 and later provisional E0 are not interchangeable scientific judgments.
+- Inspected all five canonical 21-column CSVs: unique source URLs and event IDs, permitted statuses, inclusive research date bounds, and chronological order. No source row was deleted; only new records and stable date sorting were added to working indexes. Previously archived source CSV/JSON remain intact.
+- Original owner-authored and AI-assisted statements are **not independent human approvals**. Each PR still needs actual qualified human factual, source-rights and methods review. No source screen or experimental benefit is certified as complete.
+
+### Scope-specific merge decision
+
+**Result: all five are draft / not yet authorized to merge**, despite GitHub reporting them mergeable and automated CI being available. A green unit test verifies structured file behavior, not full scholarly screen recall, independently corroborated deployment/rights or third-party experiment outcomes. Check exact-head jobs again after the last PR content commit. Do not close issues #71, #72, #80, #82 or #85 or mark any completed company study until all acceptance criteria are satisfied.
+
+**Action for another repository:** separate merge policy into (1) reproducible code/provenance checks and (2) independently reviewed scientific interpretations. Keep a unique URL event ledger plus origin and disagreement notes; avoid counting duplicated AI-generated source lists as corroboration. A reader should always see *what was searched*, *what was found*, and *what remains unknown*.
