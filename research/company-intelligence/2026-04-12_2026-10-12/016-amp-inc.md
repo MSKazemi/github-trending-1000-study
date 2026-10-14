@@ -104,3 +104,14 @@ The consolidated [candidate ledger](016-amp-inc.events.csv) contains 5 distinct 
 - 2026-07-08: [Agents, Anywhere](https://ampcode.com/news/agents-anywhere) — `shipped` company statement only
 
 **Quality limits:** require complete seven-segment screened/excluded URL denominators, first release dates, product/ownership/rights/security checks, independent and critical reporting, and an actual qualified human factual reviewer. Statements about efficiency, profitability, market usage or emissions remain vendor claims or hypotheses; no independent adoption or task evaluation was executed. Issue #82 remains open. This consolidation is a working-source preservation step, not scientific signoff.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Agents, Everywhere](https://ampcode.com/news/agents-everywhere) — 2026-06-04 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** Amp states that web/mobile/CLI thread monitoring and remote control had rolled out to everyone at publication; the post also describes a distributed agent loop and plugin API.
+- **Correction / uncertainty to retain:** That is vendor-reported UI availability, not independent verification of durable execution, team access isolation, functionality under failures or lower maintenance cost. Scope of 'everyone' was not reproduced from an independent account.
+- **Falsifiable maintainer experiment (not performed):** On a fixed multi-file change with existing acceptance tests, compare one local-agent workflow with a remote-thread workflow; audit access permissions, conflicting writes, rollback safety and reviewer active minutes.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
