@@ -40,7 +40,7 @@ class QodoCrosswalkTests(unittest.TestCase):
                       info["meaning"]["archived_evidence_tier_E1"])
         self.assertTrue(info["review_gates"])
 
-    def test_all_legacy_ids_accounted_for_with_same_original_url(self):
+    def test_all_legacy_ids_preserved_with_explicit_url_mapping(self):
         mappings = self.crosswalk["mappings"]
         self.assertEqual(len(mappings), len(self.source))
         self.assertEqual({m["archived_event_id"] for m in mappings},
@@ -53,7 +53,12 @@ class QodoCrosswalkTests(unittest.TestCase):
             with self.subTest(archived=item["archived_event_id"]):
                 original = self.source[item["archived_event_id"]]
                 current = self.working[item["working_event_id"]]
-                self.assertEqual(original["source_url"], current["source_url"])
+                if item["relation"] != "publisher_url_correction_same_event_id":
+                    self.assertEqual(original["source_url"], current["source_url"])
+                else:
+                    self.assertEqual(original["source_url"], item["original_url"])
+                    self.assertEqual(current["source_url"], item["corrected_url"])
+                    self.assertNotEqual(item["original_url"], item["corrected_url"])
                 self.assertEqual(original["published_utc"],
                                  current["published_utc"])
                 self.assertEqual(original["company_id"], current["company_id"])
@@ -71,18 +76,24 @@ class QodoCrosswalkTests(unittest.TestCase):
                                         item["working_event_id"])
                     self.assertEqual(current["confidence"],
                                      "E1_VENDOR_DOCUMENT_ONLY")
+                elif item["relation"] == "publisher_url_correction_same_event_id":
+                    self.assertEqual(item["archived_event_id"], "CI-018-06")
+                    self.assertEqual(item["working_event_id"], "CI-018-06")
+                    self.assertEqual(current["confidence"],
+                                     "E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD")
+                    self.assertTrue(item.get("note"))
                 else:
                     self.fail("unreviewed event identifier mapping type")
 
     def test_archived_agentic_toolbox_identifier_is_not_lost(self):
         aliases = [item for item in self.crosswalk["mappings"]
                    if item["relation"] == "source_url_and_publication_date_alias"]
-        self.assertEqual(aliases, [{
-            "archived_event_id": "CI-018-04",
-            "working_event_id": "CI2026-018-003",
-            "relation": "source_url_and_publication_date_alias",
-            "note": aliases[0]["note"],
-        }])
+        self.assertEqual(
+            [(item["archived_event_id"], item["working_event_id"])
+             for item in aliases],
+            [("CI-018-04", "CI2026-018-003")],
+        )
+        self.assertTrue(aliases[0].get("note"))
         self.assertNotIn("CI-018-04", self.working)
         self.assertIn("CI-018-04", self.source)
         self.assertIn("CI2026-018-003", self.working)
