@@ -1,6 +1,6 @@
 # Branch reconciliation checkpoint — 14 October 2026
 
-**Review-only historical inventory; NO branch deletion authorized.** Captured via GitHub branches and paginated open/closed PRs, main commit `1a9464f030572968d1590c268dc60c3e9b57e6a7`. GitHub can change concurrently. [Machine-readable full snapshot](../ops/branch-retirement/review-only-2026-10-14.json) retains all 70 branch SHAs and PR references and is deliberately **not** in the executable retirement-plan schema.
+**Review-only historical inventory; NO branch deletion authorized.** Captured via GitHub branches and paginated open/closed PRs, main commit `1a9464f030572968d1590c268dc60c3e9b57e6a7`. GitHub can change concurrently. The offline [snapshot consistency regression](../tests/test_branch_reconciliation_snapshot.py) checks schema, duplicate identifiers, exact commit-ID formats, PR-state relationships and classification denominators; **it does not authenticate a live GitHub inventory or authorize deletion**. [Machine-readable full snapshot](../ops/branch-retirement/review-only-2026-10-14.json) retains all 70 branch SHAs and PR references and is deliberately **not** in the executable retirement-plan schema.
 
 | Type | Count | Quality / no-loss decision |
 |---|---:|---|
