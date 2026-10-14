@@ -8,7 +8,7 @@
 - **Population/sample N, observation interval, dataset snapshot/commit:**
 - **Feature/intervention vs comparator/baseline:**
 - **Primary outcome, unit, denominator and missingness:**
-- **Result kind (`not_estimated` / `estimated` / `null_compatible`), effect unit, interval level, method:**
+- **Result kind (`not_estimated` / `estimated` / `null_compatible`), effect unit, prespecified null reference (`null_value`), interval level, method:**
 - **Effect size, uncertainty interval and statistical model:**
 - **Reproducibility: data rights, code SHA, exact execution command:**
 - **Bias/confounders, alternative explanations and negative results:**

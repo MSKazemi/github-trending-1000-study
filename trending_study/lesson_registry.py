@@ -6,8 +6,10 @@ import argparse
 from datetime import datetime, timedelta, timezone
 import json
 import math
+import os
 from pathlib import Path
 import re
+import stat
 from urllib.parse import urlsplit
 
 from .data_integrity import MAX_FILE_BYTES, decode_research_json
@@ -36,7 +38,8 @@ LESSON_FIELDS = set(REQUIRED_TEXT) | {
     "analysis_commit", "data_sha256", "sample_n", "effect_size", "interval",
     "analyst", "independent_reviewer", "reviewed_at_utc", "observed_data_ref",
     "research_question_id", "observed_at_utc", "result_kind",
-    "effect_unit", "interval_level", "analysis_method", "review_record_ref",
+    "effect_unit", "null_value", "interval_level", "analysis_method",
+    "review_record_ref",
 }
 
 
@@ -49,8 +52,14 @@ def _known_fields(row, allowed, context):
 
 
 def _finite_number(value):
-    return (isinstance(value, (int, float)) and not isinstance(value, bool)
-            and math.isfinite(value))
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    try:
+        # math.isfinite(10**400) raises OverflowError: reject it as an
+        # invalid estimate, not as an unhandled CLI exception.
+        return math.isfinite(float(value))
+    except (OverflowError, ValueError):
+        return False
 
 
 
@@ -78,6 +87,7 @@ def _sources(row):
     sources = row.get("sources")
     if not isinstance(sources, list):
         raise LessonError("sources must be a list, possibly empty for E0")
+    seen_urls = set()
     for entry in sources:
         if not isinstance(entry, dict):
             raise LessonError("source must be object")
@@ -93,6 +103,9 @@ def _sources(row):
                 or any(c.isspace() or ord(c) < 32 for c in u)
                 or (port is not None and not 1 <= port <= 65535)):
             raise LessonError("source must be a clean HTTPS URL without credentials or fragment")
+        if u in seen_urls:
+            raise LessonError("duplicate source URL in one lesson")
+        seen_urls.add(u)
         _utc(entry, "published_at_utc")
 
 
@@ -132,7 +145,8 @@ def audit(data):
             if grade in {"E0", "E1"}:
                 if (result_kind != "not_estimated" or row.get("effect_size") is not None
                         or row.get("interval") is not None
-                        or row.get("interval_level") is not None):
+                        or row.get("interval_level") is not None
+                        or row.get("null_value") is not None):
                     raise LessonError("E0/E1 cannot present an estimated effect or CI")
             elif result_kind == "not_estimated":
                 raise LessonError("E2-E5 require an explicitly estimated result")
@@ -140,6 +154,8 @@ def audit(data):
                 raise LessonError("E0 must retain unknown sample_n as null")
         if status == "hypothesis" and grade != "E0":
             raise LessonError("hypothesis status must remain E0")
+        if v11 and status != "superseded" and row.get("superseded_by") is not None:
+            raise LessonError("superseded_by requires status=superseded")
         if status == "superseded":
             target = _nonempty(row, "superseded_by")
             if target == ident:
@@ -174,8 +190,14 @@ def audit(data):
                 level = row.get("interval_level")
                 if not _finite_number(level) or not 0 < level < 1:
                     raise LessonError("E2-E5 require interval_level strictly between 0 and 1")
-                if result_kind == "null_compatible" and not bounds[0] <= 0 <= bounds[1]:
-                    raise LessonError("null_compatible requires an interval containing 0")
+                null_value = row.get("null_value")
+                if not _finite_number(null_value):
+                    raise LessonError("E2-E5 require a finite explicit null_value")
+                contains_null = bounds[0] <= null_value <= bounds[1]
+                if result_kind == "null_compatible" and not contains_null:
+                    raise LessonError("null_compatible requires an interval containing null_value")
+                if result_kind == "estimated" and contains_null:
+                    raise LessonError("estimated interval overlaps null_value; declare null_compatible")
         if grade in {"E4", "E5"}:
             analyst = _nonempty(row, "analyst")
             reviewer = _nonempty(row, "independent_reviewer")
@@ -222,11 +244,25 @@ def audit(data):
 def audit_file(path):
     """Load exactly one bounded, strict JSON artifact and audit its claims."""
     path = Path(path)
-    if path.is_symlink() or not path.is_file():
+    if path.is_symlink():
         raise LessonError("input must be a regular non-symlink file")
-    if path.stat().st_size > MAX_FILE_BYTES:
-        raise LessonError("input exceeds research JSON byte limit")
-    return audit(decode_research_json(path.read_bytes(), path.name))
+    # Open without following a last-component symlink and inspect the opened
+    # descriptor, not a separately stat-ed path that could be replaced.
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as exc:
+        raise LessonError("input must be a readable regular non-symlink file") from exc
+    with os.fdopen(descriptor, "rb") as stream:
+        metadata = os.fstat(stream.fileno())
+        if not stat.S_ISREG(metadata.st_mode):
+            raise LessonError("input must be a regular non-symlink file")
+        if metadata.st_size > MAX_FILE_BYTES:
+            raise LessonError("input exceeds research JSON byte limit")
+        raw = stream.read(MAX_FILE_BYTES + 1)
+        if len(raw) > MAX_FILE_BYTES:
+            raise LessonError("input exceeds research JSON byte limit")
+    return audit(decode_research_json(raw, path.name))
 
 
 def main(argv=None):

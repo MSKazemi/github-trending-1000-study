@@ -42,6 +42,7 @@
       "research_question_id": "GRQ1",
       "result_kind": "null_compatible",
       "effect_unit": "fractional task-success difference",
+      "null_value": 0.0,
       "interval_level": 0.95,
       "analysis_method": "fictional example, no real study",
       "observed_at_utc": "2026-10-12T12:00:00Z"

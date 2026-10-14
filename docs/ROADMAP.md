@@ -37,8 +37,8 @@ Do not mark sample goals complete without public methodology and verified counts
 - [x] Define distinct user value, quality, sustainable growth and cost constructs
 - [x] Publish AI workflow substudy design and study-specific threats
 - [x] Publish evidence-to-lesson grades, templates and claim ledger
-- [x] Harden the offline lesson registry v1.1 with strict JSON, RQ/source/result metadata, supersession integrity and synthetic-only tests ([issue #11 engineering instrument](LESSON_REGISTRY_AUDIT_2026_10.md))
-- [ ] Independently verify the source/data hashes, real reviewer and methodological context before treating any self-reported E4/E5 card as validated evidence
+- [x] Harden the offline lesson registry v1.1 with strict JSON, RQ/source/result metadata, explicit outcome-scale null reference, bounded regular-file CLI input, supersession integrity and synthetic-only tests ([issue #11 engineering instrument](LESSON_REGISTRY_AUDIT_2026_10.md))
+- [ ] Independently verify the source/data hashes, real reviewer, correct null reference/uncertainty interpretation and methodological context before treating any self-reported E4/E5 card as validated evidence
 - [x] Add deterministic, offline project idea validation gate with synthetic tests
 - [ ] Pre-register independent user-task and task-randomization studies
 - [ ] Complete human subject/consent and privacy review as appropriate

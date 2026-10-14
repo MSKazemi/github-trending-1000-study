@@ -2,14 +2,14 @@
 
 **Scope updated 2026-10-13:** a bounded, standard-library-only structural validator. Neither its passing tests nor its synthetic examples authenticate data, researchers, causality, adopted packages or energy savings. The protocol at [EVIDENCE_TO_LESSON_PROTOCOL.md](EVIDENCE_TO_LESSON_PROTOCOL.md) remains authoritative for E0–E5 semantics.
 
-## Canonical v1.0 input and example
+## Legacy v1.0 input (supported) and canonical v1.1 example
 
 ```bash
 python -m trending_study.lesson_registry --input examples/lesson_registry.synthetic.json
 python -m unittest discover -s tests -v
 ```
 
-JSON top level must contain `schema_version: "1.0"`, `dataset_kind: "synthetic"|"self_reported"`, and `lessons[]`. The migrated [synthetic E0 sample](../examples/lesson_registry.synthetic.json) preserves the earlier proposal from [PR #184](https://github.com/MSKazemi/github-trending-1000-study/pull/184) in this single canonical schema rather than maintaining two incompatible `lesson_registry.py` modules. The source contribution remains linked for audit.
+JSON top level must contain `schema_version: "1.0"` (legacy) or `"1.1"` (preferred), `dataset_kind: "synthetic"|"self_reported"`, and `lessons[]`. The migrated [synthetic E0 sample](../examples/lesson_registry.synthetic.json) preserves the earlier proposal from [PR #184](https://github.com/MSKazemi/github-trending-1000-study/pull/184) in this single canonical schema rather than maintaining two incompatible `lesson_registry.py` modules. The source contribution remains linked for audit.
 
 Each lesson requires a unique `id`, `title`, `status`, `evidence_grade` (E0–E5), `question`, `population`, `intervention_or_feature`, `comparison`, `primary_outcome`, `measurement_window`, `applicability`, `negative_findings`, `practical_cost`, `suggested_experiment`, `risks`, `stop_rule`, `validity_threats`, and `sources`. Superseded cards require `superseded_by` different from their own ID. All fields are **self-reported**; URL strings, hashes and reviewer pseudonyms are not verified against third parties.
 
@@ -47,11 +47,13 @@ New v1.1 requirements, in addition to v1.0:
 | Scope | Required fields or behavior | Scientific boundary |
 | --- | --- | --- |
 | All lessons | `research_question_id`, `result_kind` | The RQ link is self-declared; a frozen preregistration is not implied |
-| E0/E1 | `result_kind=not_estimated`; `effect_size`, `interval`, `interval_level` must be absent or null | Missing is not zero; E0 `sample_n` must be null or absent |
+| E0/E1 | `result_kind=not_estimated`; `effect_size`, `interval`, `interval_level`, `null_value` must be absent or null | Missing is not zero; E0 `sample_n` must be null or absent |
 | E1–E5 | `observed_at_utc` (explicit UTC) and `observed_data_ref`, plus HTTPS dated source, analysis commit and frozen-data SHA-256 | Hash, dates and data refs are syntax-checked, not independently authenticated |
-| E2–E5 | `result_kind=estimated|null_compatible`, measured `effect_size`, containing `interval`, `interval_level` in (0, 1), `effect_unit`, `analysis_method`, and positive `sample_n` | `null_compatible` means the reported interval contains zero; **not** evidence of equivalence, no effect or good statistical design |
+| E2–E5 | `result_kind=estimated|null_compatible`, finite `effect_size`, containing `interval`, explicit finite `null_value`, `interval_level` in (0, 1), `effect_unit`, `analysis_method`, positive `sample_n` | `null_compatible` iff the submitted interval includes its **declared null reference**; `estimated` means the interval excludes it. Neither label validates the statistical procedure or proves equivalence |
 | E4/E5 | Distinct analyst/reviewer, `review_record_ref`, and `reviewed_at_utc` no earlier than `observed_at_utc` | A claimed review reference is not authenticated endorsement |
 | Superseded | `superseded_by` must point to another ID **in the same file**, without cycles | Earlier card remains intact and can be recovered; do not discard negative findings |
+
+For v1.1, report the prespecified **null reference for the effect scale**: use `0` for additive differences (e.g. difference in task-success proportions), `1` for multiplicative ratios (e.g. relative risk). The machine check prevents contradictory interval labels but does not authenticate whether the chosen reference, coverage level, study design or interval is defensible. An interval overlapping the null does **not** prove no effect or equivalence.
 
 For **both** schema versions, only documented top-level, lesson and source
 fields are accepted; unknown keys such as `prompt`, `raw_log` and
@@ -65,8 +67,12 @@ For self-reported records meeting E4/E5 structure, any declared
 the `by_status` declaration counts as verified research.
 
 The direct CLI now reuses the shared research JSON strict decoder: no
-duplicate object keys, NaN/Infinity, non-UTF-8 or oversized files; it also
-refuses symlink inputs. This prevents the CLI from quietly bypassing the
+duplicate object keys, NaN/Infinity, non-UTF-8 or oversized files. It rejects
+repeated exact source URLs in one card, contradictory `superseded_by` on a
+non-superseded v1.1 card, and out-of-range numeric input without a traceback.
+It opens the file descriptor without following a final symlink, rejects
+non-regular files and bounds the actual read, including if a file changes size
+between validation steps. This prevents the CLI from quietly bypassing the
 repository-wide artifact-integrity gate. No network access or data collection
 was added. Sample input:
 

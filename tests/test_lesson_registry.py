@@ -242,7 +242,7 @@ def v11_estimate():
     p = v11_observation()
     p["lessons"][0].update(evidence_grade="E2", result_kind="null_compatible",
         sample_n=12, effect_size=0.1, interval=[-0.3, 0.4],
-        interval_level=0.95, effect_unit="task-success difference",
+        null_value=0.0, interval_level=0.95, effect_unit="task-success difference",
         analysis_method="synthetic demonstration only")
     return p
 
@@ -298,7 +298,8 @@ class LessonRegistryV11Tests(unittest.TestCase):
     def test_e2_metadata_and_missingness_are_not_zero(self):
         p = v11_estimate()
         x = p["lessons"][0]
-        for key in ("interval_level", "effect_unit", "analysis_method", "result_kind"):
+        for key in ("interval_level", "effect_unit", "null_value",
+                    "analysis_method", "result_kind"):
             with self.subTest(key=key):
                 value = x.pop(key)
                 with self.assertRaises(LessonError):
@@ -318,9 +319,18 @@ class LessonRegistryV11Tests(unittest.TestCase):
         x = p["lessons"][0]
         x["interval"] = [0.2, 0.5]
         x["effect_size"] = 0.3
-        with self.assertRaisesRegex(LessonError, "containing 0"):
+        with self.assertRaisesRegex(LessonError, "containing null_value"):
             audit(p)
         x["result_kind"] = "estimated"
+        self.assertEqual(audit(p)["by_grade"]["E2"], 1)
+        x["null_value"] = 0.35
+        with self.assertRaisesRegex(LessonError, "overlaps null_value"):
+            audit(p)
+        x["result_kind"] = "null_compatible"
+        self.assertEqual(audit(p)["by_grade"]["E2"], 1)
+        # Ratio effects have a null reference of 1, not 0.
+        x.update(effect_size=1.1, interval=[0.8, 1.2], null_value=1.0,
+                 effect_unit="relative risk")
         self.assertEqual(audit(p)["by_grade"]["E2"], 1)
 
     def test_e0_does_not_turn_absence_into_zero(self):
@@ -377,6 +387,38 @@ class LessonRegistryV11Tests(unittest.TestCase):
         r = audit_file(example)
         self.assertEqual(r["schema_version"], "1.1")
         self.assertEqual(r["independently_verified_lesson_count"], 0)
+
+    def test_non_superseded_lesson_cannot_hide_a_supersession(self):
+        p = v11_hypothesis()
+        p["lessons"][0]["superseded_by"] = "SYN-002"
+        with self.assertRaisesRegex(LessonError, "requires status=superseded"):
+            audit(p)
+
+    def test_duplicate_source_url_rejected(self):
+        p = v11_observation()
+        src = p["lessons"][0]["sources"][0]
+        p["lessons"][0]["sources"].append(dict(src))
+        with self.assertRaisesRegex(LessonError, "duplicate source URL"):
+            audit(p)
+
+    def test_huge_integer_is_a_controlled_validation_error(self):
+        p = v11_estimate()
+        p["lessons"][0]["effect_size"] = 10 ** 400
+        p["lessons"][0]["interval"] = [-1, 10 ** 400]
+        with self.assertRaisesRegex(LessonError, "finite effect_size"):
+            audit(p)
+        with tempfile.TemporaryDirectory() as directory:
+            file = Path(directory) / "huge.json"
+            file.write_text(json.dumps(p), encoding="utf-8")
+            with contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as exit_status:
+                    main(["--input", str(file)])
+            self.assertEqual(exit_status.exception.code, 2)
+
+    def test_input_must_be_regular_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(LessonError, "regular non-symlink"):
+                audit_file(directory)
 
     def test_source_rejects_malformed_authority_and_whitespace(self):
         p = v11_observation()
