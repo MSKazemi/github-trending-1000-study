@@ -6,6 +6,7 @@ Its prediction target is ORDER AMONG ALREADY DISPLAYED REPOSITORIES, never
 membership in an unobserved candidate universe.
 """
 import argparse
+import errno
 import json
 import os
 from pathlib import Path
@@ -52,7 +53,7 @@ def _fields(value, expected, label):
     if missing or unexpected:
         # Never echo field values: unknown keys may carry raw/private content.
         raise TrendingAuditError(
-            f"{label}: missing={sorted(missing)}, unsupported={sorted(unexpected)}"
+            f"{label}: missing={sorted(missing)}, unsupported_field_count={len(unexpected)}"
         )
 
 
@@ -340,11 +341,16 @@ def load_offline_json(path):
     # Nonblocking open also prevents a substituted FIFO from hanging before
     # fstat can reject it. Do not rely on pre-open path.stat() for file type.
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NONBLOCK", 0)
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
-    elif path.is_symlink():
-        raise TrendingAuditError("input must be an existing regular non-symlink file")
-    descriptor = os.open(path, flags)
+    if not hasattr(os, "O_NOFOLLOW"):
+        raise TrendingAuditError("secure non-symlink opening unavailable on this platform")
+    try:
+        descriptor = os.open(path, flags | os.O_NOFOLLOW)
+    except OSError as exc:
+        if exc.errno == errno.ELOOP:
+            raise TrendingAuditError(
+                "input must be an existing regular non-symlink file"
+            ) from exc
+        raise
     try:
         metadata = os.fstat(descriptor)
         if not stat.S_ISREG(metadata.st_mode):
