@@ -60,7 +60,8 @@ class CoverageAuditTests(unittest.TestCase):
 
     def test_frame_frozen_before_capture_and_explicit_provenance(self):
         original = coverage()
-        for value in ("2026-10-12T12:00:00Z", "2099-01-01T00:00:00Z"):
+        for value in ("2026-10-11T12:00:00Z", "2026-10-12T12:00:00Z",
+                      "2099-01-01T00:00:00Z"):
             with self.subTest(value=value):
                 data = copy.deepcopy(original)
                 data["surfaces"][0]["frame_as_of_utc"] = value
@@ -72,6 +73,13 @@ class CoverageAuditTests(unittest.TestCase):
                 data["surfaces"][0].pop(field)
                 with self.assertRaises(TrendingAuditError):
                     evaluate_coverage(data)
+
+    def test_frame_source_cannot_be_the_target_page_artifact(self):
+        data = coverage()
+        surface = data["surfaces"][0]
+        surface["frame_source_sha256"] = surface["capture"]["source_sha256"]
+        with self.assertRaisesRegex(TrendingAuditError, "reuse target page"):
+            evaluate_coverage(data)
 
     def test_duplicate_and_invalid_frame_ids(self):
         for bad in ([10, 10], [10, 0], [10, True], [], ["10"], list(range(10001))):
@@ -265,6 +273,16 @@ class ChronologicalProxyTests(unittest.TestCase):
         data = proxy()
         data["pages"][0]["features"][0]["prior_7d_star_delta"] = -10
         self.assertEqual(evaluate_proxy(data)["train_pages"], 2)
+
+    def test_out_of_bounds_numeric_metadata_is_rejected(self):
+        data = proxy()
+        data["pages"][0]["features"][0]["prior_stars"] = 1 << 64
+        with self.assertRaisesRegex(TrendingAuditError, "valid integer"):
+            evaluate_proxy(data)
+        data = proxy()
+        data["pages"][0]["features"][0]["prior_7d_star_delta"] = -(1 << 64)
+        with self.assertRaisesRegex(TrendingAuditError, "valid integer"):
+            evaluate_proxy(data)
 
     def test_missing_extra_and_duplicate_feature_rows_rejected(self):
         data = proxy()
