@@ -147,3 +147,15 @@ No actual live 30-row QA can be credited from this PR. Issue [#2](https://github
 - [ ] Resolve all remaining conflicting research and company-intelligence draft PRs claim by claim, preserving unique citations and tests before retirement.
 
 Related: [canonical PR gate](PR_MERGE_QUALITY_GATE_2026_10_13.md), [integration checkpoint](PR_REVIEW_CHECKPOINT_2026_10_13.md), [source-access limitations](SOURCE_ACCESS_DECISION_2026-10-13.md). Superseded PR #245 remains in GitHub history for audit rather than being overwritten.
+
+## Issue #6 — Trending validity engineering instruments (2026-10-14)
+
+- [x] Reuse existing within-surface Jaccard, common-item Kendall tau and bounded/extrapolated RBO with documented page denominators (see [temporal-overlap pilot](TRENDING_OVERLAP_PILOT_2026_10_12.md)).
+- [x] Implement offline per-language/per-window observed-in-frame fraction with an **explicit predeclared candidate-frame denominator**, an outside-frame count, and no invented cross-language population measure.
+- [x] Implement a pre-capture-feature-only, strictly chronological train/heldout rank-order proxy for **already displayed** repositories; require distinct repository IDs across splits and fixed training-only predictor selection.
+- [x] Add fully synthetic versions of both contracts, privacy/URL/timestamp/denominator/leakage/tie tests, a CLI and [complete runbook](TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md).
+- [ ] Independently review source rights/robots/permission, verify original real page captures and audit actual ranks across daily/weekly/monthly and language filters (dependent on #2).
+- [ ] Build an independently justified at-risk frame for population-level sampling interpretation; verify historical feature timestamps, true prospective preregistration and heldout temporal replicability.
+- [ ] Produce observational estimates, missingness and uncertainty only when lawful real observations and human methodology review exist. Synthetic scores do **not** close the empirical research question.
+
+**Disposition:** issue #6 engineering deliverables prepared for code review; instrument is not a validated real-world Trending analysis, reverse-engineered ranking algorithm or confirmed fairness result.
