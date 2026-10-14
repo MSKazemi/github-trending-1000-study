@@ -188,14 +188,18 @@ def select_registry(manifest, plan):
     }
 
 
-def prepare_pair_packet(selection, tasks, nominations):
+def prepare_pair_packet(selection, tasks, nominations, manifest, plan):
     """Bind independently frozen tasks to *nominated* selected leads.
 
     Nominations are proposals, not judged pair outcomes. No auto-generated
     'fit' inference or acceptance; no package installation.
     """
-    if selection.get("dataset_kind") != "unreviewed_registry_leads":
-        raise RegistryFrameError("expected unreviewed registry selection")
+    # Re-derive the complete selection, not merely its caller-supplied source
+    # and plan hashes. This detects edited/off-frame leads while leaving actual
+    # source authenticity and prospective plan locking to external reviewers.
+    expected_selection = select_registry(manifest, plan)
+    if _digest(selection) != _digest(expected_selection):
+        raise RegistryFrameError("selection does not match original manifest and plan")
     allowed = {r["package_id"] for r in selection["selected"]}
     if len(allowed) != len(selection["selected"]):
         raise RegistryFrameError("selection contains duplicate packages")
@@ -400,6 +404,8 @@ def main(argv=None):
     s.add_argument("--output", required=True)
     p = sub.add_parser("prepare-pairs")
     p.add_argument("--selection", required=True)
+    p.add_argument("--manifest", required=True)
+    p.add_argument("--plan", required=True)
     p.add_argument("--tasks", required=True)
     p.add_argument("--nominations", required=True)
     p.add_argument("--output", required=True)
@@ -414,7 +420,8 @@ def main(argv=None):
             result = select_registry(_read(args.manifest), _read(args.plan))
         elif args.mode == "prepare-pairs":
             result = prepare_pair_packet(_read(args.selection),
-                                         _read(args.tasks), _read(args.nominations))
+                                         _read(args.tasks), _read(args.nominations),
+                                         _read(args.manifest), _read(args.plan))
         else:
             result = audit_pair_reviews(_read(args.packet),
                                         _read(args.review_a), _read(args.review_b))

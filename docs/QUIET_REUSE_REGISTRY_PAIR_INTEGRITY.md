@@ -31,14 +31,27 @@ Neither a content fingerprint nor a successful structural audit establishes
 scientific acceptance. The output flags for authenticated human reviewers and
 issue #15 scientific acceptance remain false.
 
-An additional unresolved boundary exists in `prepare-pairs`: the submitted
-selection is trusted for its package-membership list. Source and plan hashes
-do not bind the selected package records themselves. Preserve the original
-selection alongside its source manifest/plan and arrange a separately reviewed
-binding check before using nominations as verified in-frame research records.
-The present correction addresses packet counting and JSON ambiguity only;
-it does not change the sampling protocol or authenticate the real registry
-listing.
+The `prepare-pairs` command now requires the original `--manifest` and `--plan`
+alongside `--selection`. It deterministically derives `select_registry(manifest,
+plan)` and compares the complete selection before admitting any nominations.
+Changing selected package IDs, source records, seed, quotas or provenance/count
+fields requires deriving a new selection from those inputs; an edited list
+cannot nominate an off-frame package while retaining the original hashes.
+This checks consistency of submitted artifacts, not source authenticity: an
+invented source manifest/plan cannot become independently verified evidence by
+passing the comparison.
+
+This is a compatibility correction to a new, unmerged pilot interface with no
+existing repository consumers. Python callers must supply the original inputs
+as `prepare_pair_packet(selection, tasks, nominations, manifest, plan)`.
+Existing selection/result output fields are preserved. For example:
+
+```bash
+python -m trending_study.quiet_reuse_registry prepare-pairs \
+  --manifest /path/to/original-manifest.json --plan /path/to/original-plan.json \
+  --selection /path/to/selection.json --tasks /path/to/frozen-tasks.json \
+  --nominations /path/to/nominations.json --output /path/to/new-pair-packet.json
+```
 
 Reuse review: the existing standard-library-only public strict JSON helper and
 write-once publisher satisfy this task without another dependency or JSON

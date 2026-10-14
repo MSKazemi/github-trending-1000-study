@@ -1,5 +1,7 @@
 """Offline regression checks; all names/reviewer evidence are synthetic."""
 import copy
+from contextlib import redirect_stderr, redirect_stdout
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -9,22 +11,60 @@ from trending_study import quiet_reuse_registry as registry
 
 
 class RegistryPairIntegrityTests(unittest.TestCase):
+    def manifest_and_plan(self):
+        commit = "e" * 40
+        segments = []
+        for sid, path, name in (("length2", "2", "ab"), ("length3_a", "3/a", "abc")):
+            segments.append({"segment_id": sid, "index_path": path,
+                             "directory_tree_sha": "f" * 40,
+                             "source_url": f"https://api.github.com/repos/rust-lang/crates.io-index/contents/{path}?ref={commit}",
+                             "declared_count": 1,
+                             "entries": [{"package_name": name, "blob_sha": "1" * 40}]})
+        manifest = {"schema_version": "1.0", "dataset_kind": registry.SOURCE_KIND,
+                    "registry": "crates.io", "index_commit_sha": commit,
+                    "observed_at_utc": "2026-01-01T00:00:00Z", "segments": segments}
+        plan = {"schema_version": "1.0", "dataset_kind": "registry_slice_sampling_plan",
+                "index_commit_sha": commit, "declared_at_utc": "2026-01-01T00:00:00Z",
+                "seed": "synthetic-fixed-seed", "policy": registry.POLICY,
+                "quotas": {"length2": 1, "length3_a": 1}}
+        return manifest, plan
+
     def packet(self):
         # A fictional package selection, independently authored task fixture,
         # and reviewer IDs do not establish any real scientific acceptance.
-        selection = {
-            "dataset_kind": "unreviewed_registry_leads",
-            "selected": [{"package_id": "pkg:cargo/ab"}],
-            "selection_plan_sha256": "a" * 64,
-            "source_manifest_sha256": "b" * 64,
-        }
+        manifest, plan = self.manifest_and_plan()
+        selection = registry.select_registry(manifest, plan)
         tasks = [{"task_id": "T1", "baseline_utc": "2026-01-01T00:00:00Z",
                   "spec_sha256": "c" * 64, "acceptance_sha256": "d" * 64,
                   "source_ref": "synthetic:task"}]
         pairs = [{"pair_id": "P1", "task_id": "T1", "package_id": "pkg:cargo/ab",
                   "version": "1.0.0", "release_evidence_ref": "synthetic:release",
                   "repository_id": 123, "identity_evidence_ref": "synthetic:identity"}]
-        return registry.prepare_pair_packet(selection, tasks, pairs)
+        return registry.prepare_pair_packet(selection, tasks, pairs, manifest, plan)
+
+    def test_edited_off_frame_selection_cannot_nominate_forged_package(self):
+        manifest, plan = self.manifest_and_plan()
+        packet = self.packet()
+        selection = registry.select_registry(manifest, plan)
+        selection["selected"][0]["package_id"] = "pkg:cargo/forged-off-frame"
+        nomination = dict(packet["pairs"][0], package_id="pkg:cargo/forged-off-frame")
+        with self.assertRaisesRegex(registry.RegistryFrameError, "original manifest and plan"):
+            registry.prepare_pair_packet(selection, packet["tasks"], [nomination], manifest, plan)
+
+    def test_source_or_plan_changes_require_new_selection(self):
+        for changed in ("source", "plan", "count"):
+            with self.subTest(changed=changed):
+                manifest, plan = self.manifest_and_plan()
+                selection = registry.select_registry(manifest, plan)
+                packet = self.packet()
+                if changed == "source":
+                    manifest["segments"][0]["entries"][0]["blob_sha"] = "2" * 40
+                elif changed == "plan":
+                    plan["seed"] = "different-synthetic-seed"
+                else:
+                    selection["selected_package_leads"] = True
+                with self.assertRaisesRegex(registry.RegistryFrameError, "original manifest and plan"):
+                    registry.prepare_pair_packet(selection, packet["tasks"], packet["pairs"], manifest, plan)
 
     def reports(self, packet):
         def one(ref):
@@ -138,6 +178,44 @@ class RegistryPairIntegrityTests(unittest.TestCase):
                         registry._read(path)
             path.write_text(json.dumps({"value": None}), encoding="utf-8")
             self.assertEqual(registry._read(path), {"value": None})
+
+    def test_cli_prepare_rederives_selection_from_original_inputs(self):
+        manifest, plan = self.manifest_and_plan()
+        packet = self.packet()
+        selection = registry.select_registry(manifest, plan)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            payloads = {"manifest": manifest, "plan": plan, "selection": selection,
+                        "tasks": packet["tasks"], "nominations": packet["pairs"]}
+            args = ["prepare-pairs"]
+            for name, value in payloads.items():
+                path = root / f"{name}.json"
+                path.write_text(json.dumps(value), encoding="utf-8")
+                args.extend((f"--{name}", str(path)))
+            output = root / "packet.json"
+            args.extend(("--output", str(output)))
+            with redirect_stdout(io.StringIO()):
+                registry.main(args)
+            self.assertEqual(registry._read(output), packet)
+            # Keep the original output intact on the failed second attempt.
+            saved = output.read_bytes()
+            selection["selected"][0]["package_id"] = "pkg:cargo/forged"
+            (root / "selection.json").write_text(json.dumps(selection), encoding="utf-8")
+            with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as exc:
+                registry.main(args)
+            self.assertEqual(exc.exception.code, 2)
+            self.assertEqual(output.read_bytes(), saved)
+
+    def test_cli_ambiguous_json_fails_before_output_publication(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "bad.json"
+            path.write_text('{"schema_version":"wrong","schema_version":"1.0"}', encoding="utf-8")
+            output = Path(tmp) / "result.json"
+            with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as exc:
+                registry.main(["select", "--manifest", str(path), "--plan", str(path),
+                               "--output", str(output)])
+            self.assertEqual(exc.exception.code, 2)
+            self.assertFalse(output.exists())
 
 
 if __name__ == "__main__":
