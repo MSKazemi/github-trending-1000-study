@@ -1,0 +1,97 @@
+name: Retire verified merged branches
+
+# Never retire branches on push, a PR event, or a schedule. An operator must
+# first run read-only live audit and separately authorize the write operation.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Read-only live audit by default; retire requires explicit confirmation"
+        required: true
+        default: audit
+        type: choice
+        options:
+          - audit
+          - retire
+      confirmation:
+        description: "For retire, enter RETIRE_VERIFIED_MERGED_BRANCHES"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: retire-verified-merged-branches
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'audit'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Run offline safety tests
+        run: python -m unittest tests.test_retire_merged_branches -v
+      - name: Live read-only SHA, PR and ancestry audit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python scripts/retire_merged_branches.py \
+            --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json \
+            --audit-live
+
+  retirement-blocked:
+    # Make an attempted destructive run visibly FAIL rather than appear to
+    # succeed when the separately hard-disabled write job is skipped.
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'retire'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    steps:
+      - name: Explicitly reject unapproved branch deletion
+        run: |
+          echo "::error::Branch retirement is disabled. Obtain qualified security review, protect main and recovery tags, and enable only in a separate reviewed PR."
+          exit 1
+
+  retire:
+# Fail closed until a repo administrator explicitly enables this variable
+    # after documenting an independent security review and protected archive tags.
+    # A confirmation string alone cannot lift the approval gate.
+    # HARD STOP: false is unconditional. An independent reviewed future PR
+    # must explicitly remove it after repository and archive-tag protections exist.
+    # Merely setting the repository variable or typing confirmation is insufficient.
+    if: ${{ false && github.ref == 'refs/heads/main' && github.repository == 'MSKazemi/github-trending-1000-study' && vars.BRANCH_RETIREMENT_APPROVED == 'true' && inputs.mode == 'retire' && inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Run offline safety tests
+        run: python -m unittest tests.test_retire_merged_branches -v
+      - name: Verify archives and remove only exact SHA-leased refs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RETIRE_CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          python scripts/retire_merged_branches.py \
+            --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json \
+            --execute --confirm "$RETIRE_CONFIRM"

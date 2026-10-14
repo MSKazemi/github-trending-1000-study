@@ -16,7 +16,7 @@ A pre-existing source and derived output must never be the same path, even via a
 ## What is implemented
 
 - `trending_study.safe_io.publish_once` stages complete file contents in the destination directory, fsyncs them, and creates each final destination using `os.link` (exclusive creation). It never uses overwrite-capable `os.replace` or write-text-on-existing-target semantics.
-- `capture` checks paths before networking, computes the manifest at fetch time and stages raw + manifest together.
+- `capture` checks paths and now **hard-blocks live Trending requests before networking** while source-access review is pending. Its preserved, synthetically mocked internal path would compute a manifest at fetch time and stage raw + manifest together only after a *future independently reviewed permission/code amendment*. See [source-access decision](SOURCE_ACCESS_DECISION_2026-10-13.md).
 - `parse-trending`, `pilot-parse` and `enrich` refuse collisions and preexisting output, preserving raw data on error.
 - Synthetic unit tests exercise byte-for-byte preservation, network-free refusal, source/derived path aliases, interrupted publication and successful source/manifest checksum integrity.
 - `pilot-parse` continues to mark observations **not enrolled**: a valid checksum is not proof the real page has complete/correct rankings.
@@ -30,7 +30,7 @@ The method relies on same-filesystem hard links. On unsupported mount/file syste
 ## Runbook for operators
 
 1. Inspect [ethical access constraints](ETHICS.md) and [pilot prerequisites](PILOT_CAPTURE_AND_PREFLIGHT.md). **Do not start automated recurring scraping** or confirmatory collection by default.
-2. For a single explicitly permitted attempt, generate the **actual UTC day** and use a unique filename, e.g.:
+2. **Currently blocked:** the following command is a **future conditional example, not an action to execute now**. The CLI returns nonzero before any HTTP request, even with a valid UTC date. Only after an independently authorized and reviewed re-enable may an operator use a fresh UTC day and unique filename:
 
 ```bash
 UTC_DAY="$(date -u +%F)"
