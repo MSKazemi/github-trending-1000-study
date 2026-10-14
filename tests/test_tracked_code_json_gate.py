@@ -108,6 +108,40 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "nonregular or unmerged"):
             audit_tracked_code_json(self.root)
 
+    def test_rejects_unmerged_index_stage_even_without_a_worktree_file(self):
+        # An unresolved index stage is not a valid committed checkout. Refuse it
+        # before attempting to parse any file bytes.
+        oid = self.git("hash-object", "-w", "--", ".hidden/good.json").stdout.strip()
+        operation = subprocess.run(
+            ["git", "-C", str(self.root), "update-index", "--index-info"],
+            input=f"100644 {oid} 2\\tconflicted.json\\n".replace("\\t", "\t").replace("\\n", "\n"),
+            capture_output=True, text=True, timeout=20,
+        )
+        self.assertEqual(operation.returncode, 0, operation.stderr)
+        with self.assertRaisesRegex(IntegrityError, "nonregular or unmerged"):
+            audit_tracked_code_json(self.root)
+
+    def test_rejects_symlinked_parent_even_with_regular_index_mode(self):
+        tracked_parent = self.root / "arbitrary" / "nested"
+        real_parent = self.root / "moved_original"
+        tracked_parent.rename(real_parent)
+        try:
+            tracked_parent.symlink_to(real_parent, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("directory symlinks not supported")
+        with self.assertRaisesRegex(IntegrityError, "symlinked parent directory"):
+            audit_tracked_code_json(self.root)
+
+    def test_python_encoding_cookie_is_honored_without_execution(self):
+        # PEP 263 permits a non-UTF-8 Python source only when it declares its
+        # encoding; the gate checks Python language syntax, not JSON rules.
+        path = self.root / "arbitrary" / "nested" / "good.py"
+        path.write_bytes(b"# coding: latin-1\\nvalue = '\\xe9'\\n".replace(b"\\n", b"\n").replace(b"\\xe9", b"\xe9"))
+        self.assertEqual(audit_tracked_code_json(self.root)["python"], 1)
+        path.write_bytes(b"value = '\\xe9'\\n".replace(b"\\n", b"\n").replace(b"\\xe9", b"\xe9"))
+        with self.assertRaisesRegex(IntegrityError, "good.py"):
+            audit_tracked_code_json(self.root)
+
     def test_rejects_git_tracked_file_missing_from_worktree(self):
         (self.root / ".hidden/good.json").unlink()
         with self.assertRaisesRegex(IntegrityError, "good.json"):
