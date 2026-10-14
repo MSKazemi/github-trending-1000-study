@@ -146,3 +146,14 @@ This source-screened working report retains the full **original PR #191 report**
 - 2026-09-08: [Introducing Muse: The World's First Personal AI Agent Built for Everyone](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent) — `announced_only`; source-bound, not an independent effectiveness test
 
 **Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #71 open until study acceptance is satisfied.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Introducing Muse Wonder and Muse Wonder Full: Frontier Models for Agents](https://about.fb.com/news/2026/10/introducing-muse-wonder-models/) — 2026-10-12 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The official announcement says Muse Wonder was made available through the Meta Model API and Muse Code on 12 October; Muse Wonder Full was restricted to Muse Code subscribers. Integration into the consumer Muse experience was described as forthcoming, not already universal.
+- **Correction / uncertainty to retain:** Treat the API/subscriber availability as a vendor-published availability claim only. Do not conflate a model announcement, future Muse integration or proprietary models with measured downstream code reuse, independently reproduced coding benchmarks or open-weight licensing.
+- **Falsifiable maintainer experiment (not performed):** For one independently specified first-use app-building task, compare a preselected baseline workflow with an optional model-assisted workflow using the same frozen acceptance tests and security review. Record successful/failed tasks, human review time and exact model/plan; measure no emissions from token counts.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
