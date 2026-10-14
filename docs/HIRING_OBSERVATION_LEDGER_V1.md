@@ -31,7 +31,7 @@ Python 3.10+; standard library only. Choose a new output path for each attempt. 
 | Observation | `posted_at_utc`, `posting_date_basis` | Null + `unknown`, or explicit UTC date ≤ observed timestamp + `explicit_employer`; never substitute first-observed or today's date |
 | Observation | `relation_kind`, `linkage_status`, `linked_requisition_id`, `link_evidence_ref` | `none`/`none`/null/null; or `reopening`/`reposting` with `known` + evidence or `unconfirmed` + null evidence; target must be an earlier observed requisition of same employer |
 
-Source URLs reject credentials, fragments, insecure schemes, host-case aliases, escaped paths, trailing-slash aliases and traversal. Only bounded opaque `gh_jid`, `jid`, `job_id`, `requisition_id` query values are accepted, in sorted unique-key order. Tracking/authentication query parameters are not allowed. This deliberately narrow representation may require a separately reviewed schema extension for additional ATS URL formats; do not strip meaningful source identity silently.
+Source URLs reject credentials, fragments, insecure schemes, host-case aliases, escaped paths, trailing-slash aliases and traversal. Only bounded opaque `gh_jid`, `jid`, `job_id`, `requisition_id` query values are accepted, in sorted unique-key order. Tracking/authentication query parameters are not allowed. Query-free URLs are accepted without passing an empty string to Python 3.10's strict query parser; nonempty queries retain strict validation, and an empty trailing `?` or malformed separator is still rejected. This deliberately narrow representation may require a separately reviewed schema extension for additional ATS URL formats; do not strip meaningful source identity silently.
 
 ### Source status and missingness
 

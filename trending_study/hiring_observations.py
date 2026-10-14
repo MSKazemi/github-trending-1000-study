@@ -65,7 +65,9 @@ def _url(value):
             raise ValueError
         if "//" in p.path or (p.path != "/" and p.path.endswith("/")):
             raise ValueError
-        query = parse_qsl(p.query, keep_blank_values=True, strict_parsing=True)
+        # Python 3.10 rejects parse_qsl("", strict_parsing=True); no query is
+        # valid. Keep strict parsing for every nonempty query, including '&'.
+        query = parse_qsl(p.query, keep_blank_values=True, strict_parsing=True) if p.query else []
         allowed = {"gh_jid", "jid", "job_id", "requisition_id"}
         if (any(k not in allowed or IDENT.fullmatch(v) is None for k, v in query)
                 or len({k for k, v in query}) != len(query)

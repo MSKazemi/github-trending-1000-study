@@ -180,6 +180,17 @@ class ObservationLedgerTests(unittest.TestCase):
         data = fixture(); data["sources"][0]["access_review_status"] = "approved"
         with self.assertRaises(instrument.HiringObservationError): instrument.audit(data)
 
+    def test_query_free_url_never_parses_empty_query_python310_contract(self):
+        # Emulate the 3.10 strict parser's error on an empty string even when
+        # running on newer interpreters that changed this behavior.
+        with patch.object(instrument, "parse_qsl", side_effect=ValueError("empty query")) as parse:
+            self.assertEqual(instrument._url("https://careers.example.invalid/jobs").query, "")
+            parse.assert_not_called()
+        self.assertEqual(instrument._url("https://careers.example.invalid/jobs?gh_jid=J1").query, "gh_jid=J1")
+        for query in ("?", "?gh_jid=", "?&gh_jid=J1", "?gh_jid=J1&", "?gh_jid=J1&&job_id=J2"):
+            with self.subTest(query=query), self.assertRaises(instrument.HiringObservationError):
+                instrument._url("https://careers.example.invalid/jobs" + query)
+
     def test_clean_urls_deny_credentials_tracking_percent_alias_and_traversal(self):
         for url in ("http://careers.example.invalid/jobs/A", "https://user:token@careers.example.invalid/jobs/A",
                     "https://careers.example.invalid/jobs/%41", "https://careers.example.invalid/jobs/../A",
