@@ -170,7 +170,8 @@ class NewsCorpusTests(unittest.TestCase):
             with self.subTest(expected=expected), tempfile.TemporaryDirectory() as folder:
                 path = Path(folder) / "NEWS-2026-0001.json"
                 path.write_text(raw, encoding="utf-8")
-                with self.assertRaisesRegex(ValueError, expected):
+                # Rejection must not echo user-controlled duplicate key names.
+                with self.assertRaisesRegex(ValueError, "invalid or ambiguous research JSON"):
                     validate_directory(folder)
 
     def test_symlinked_news_input_and_root_are_rejected(self):

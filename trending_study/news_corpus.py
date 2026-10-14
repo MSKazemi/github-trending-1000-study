@@ -7,14 +7,16 @@ source, rights, publication date, claim, actual human review, or research value.
 import argparse
 from datetime import date, datetime, timezone
 import json
+import os
 from pathlib import Path
 import re
+import stat
 from urllib.parse import parse_qsl, urlsplit
 
 # Reuse the canonical offline research decoder instead of interpreting
 # duplicate keys, NaN/Infinity, or extreme numeric literals differently.
 from trending_study.data_integrity import (
-    MAX_FILES, MAX_FILE_BYTES, MAX_TOTAL_BYTES, _decode_document,
+    MAX_FILES, MAX_FILE_BYTES, MAX_TOTAL_BYTES, decode_research_json,
 )
 
 
@@ -149,6 +151,28 @@ def validate_records(records):
             "evidence_status": "provisional_structural_validation_only"}
 
 
+def _read_record(path):
+    """Bound actual bytes from one opened regular file, not an earlier stat."""
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    descriptor = os.open(path, flags)
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ValueError(f"{path.name}: expected an ordinary JSON file")
+        if metadata.st_size > MAX_FILE_BYTES:
+            raise ValueError(f"{path.name}: news input exceeds file-size limit")
+        stream = os.fdopen(descriptor, "rb")
+        descriptor = None
+        with stream:
+            raw = stream.read(MAX_FILE_BYTES + 1)
+        if len(raw) > MAX_FILE_BYTES:
+            raise ValueError(f"{path.name}: news input exceeds file-size limit")
+        return raw
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+
+
 def validate_directory(directory):
     """Read only bounded, ordinary files; reject linked/unreviewed evidence."""
     directory = Path(directory)
@@ -187,13 +211,16 @@ def validate_directory(directory):
             raise ValueError(f"{path.name}: symlinked news input is forbidden")
         if not path.is_file():
             raise ValueError(f"{path.name}: expected an ordinary JSON file")
-        size = path.stat().st_size
-        if size > MAX_FILE_BYTES:
-            raise ValueError(f"{path.name}: news input exceeds file-size limit")
-        total_bytes += size
+        raw = _read_record(path)
+        total_bytes += len(raw)
         if total_bytes > MAX_TOTAL_BYTES:
             raise ValueError("news inputs exceed total research artifact byte limit")
-        records.append((path.name, _decode_document(path.read_bytes(), path.name)))
+        try:
+            record = decode_research_json(raw, path.name)
+        except (ValueError, RecursionError):
+            # Decoder diagnostics can contain untrusted, private object keys.
+            raise ValueError(f"{path.name}: invalid or ambiguous research JSON") from None
+        records.append((path.name, record))
     return validate_records(records)
 
 

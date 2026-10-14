@@ -18,6 +18,14 @@ The bundled `NEWS-2026-0001.json` lives **only** under `tests/fixtures/news_corp
 
 ## Schema v1.0 and failure policy
 
+Standalone reads inspect the opened file descriptor, refuse nonregular inputs,
+and cap bytes actually read. This prevents a leaf symlink or FIFO substituted
+after a preliminary path check from being read on platforms with no-follow
+and nonblocking file flags. Aggregate limits count actual bytes, including file
+growth after stat. This does not make ancestor-directory traversal a hostile
+filesystem sandbox. Strict JSON rejection uses a controlled diagnostic rather
+than echoing untrusted duplicate key names or recursion tracebacks.
+
 The reader requires a stable `NEWS-YYYY-NNNN` ID matching the JSON filename; fixed version `1.0`; bounded title, publisher, topic and attributed-claim text; original publication/access `YYYY-MM-DD` dates not later than execution date; clean HTTPS canonical source URL and nonduplicated canonical URL identity. It only strips common marketing query trackers while retaining meaningful query selectors such as `ref` and `id`. Blank/malformed fields, duplicate IDs/URLs, missing expected data, malformed ports, user-info/fragment URLs, URL whitespace/control characters, malformed percent escapes and backslashes fail. Source folders must be ordinary directories; symlinks, nested folders, unexpected JSON names, unexpected files, oversized artifacts, and ambiguous/overlarge raw JSON fail rather than being silently omitted.
 
 The validator permits only two **non-verifying** states:
