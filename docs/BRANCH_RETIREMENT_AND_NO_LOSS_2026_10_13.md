@@ -30,3 +30,13 @@ Remaining branches after full success: approximately **63**, including draft and
 5. Avoid automatically opening one branch per company or hypothesis without a real reviewer and an acceptance plan. Track future research leads as issues or immutable data entries until implementation is warranted.
 
 **Scientific caution:** This is repository housekeeping. It does not establish GitHub Trending collection permission, the 1,000-project cohort, external human task acceptance, verified adoption or carbon savings.
+
+## Temporary destructive-workflow safety hold — 2026-10-14
+
+**Control change, not a scientific result.** On 2026-10-14 the default branch still exposed the older retirement workflow with a `push` trigger and job-wide `contents: write`. That version deletes GitHub branch refs via REST after a separate read, leaving a time-of-check/time-of-use race. The original [2026-10-13 cleanup run](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38463086727) preserved and retired 59 exact heads and blocked the 60th changed head; those recovery tags are **historical** and are not being changed by this safety hold.
+
+Until the SHA-leased manual-only replacement in [PR #280](https://github.com/MSKazemi/github-trending-1000-study/pull/280) completes **independent qualified security/administrative review**, this workflow is intentionally **manual-only, read-only, and fails with an explicit safety-hold error**. It has no branch-retirement API call, Git credential, ref mutation, `contents: write`, or automatic event trigger. A new small offline regression rejects any future automatic retirement workflow event, and requires explicit confirmation if an execution command is introduced.
+
+**Re-enablement gates:** separately review the exact PR head and full integration diff, verify passing Python 3.10/3.12/3.13/3.14 and research-artifacts CI, require SHA-lease deletion and a confirmed original-SHA archive tag, arrange an independent security review and enforce `main` plus recovery-tag rulesets. Only then replace this hold with a manual, read-only `audit` and separately confirmed `retire` mode. Do not rerun the old 60-item allowlist merely to reach 60/60; its altered branch must remain held pending provenance checks. The recorded October 14 snapshot was 69 refs and 30 open PRs (29 draft), and may change concurrently.
+
+**Practical lesson:** stop a dangerous automatic workflow first, then review and deploy its safe replacement. Passing synthetic CI and fewer branches do not demonstrate human review, valid study sources, software reuse, or environmental savings.
