@@ -52,3 +52,31 @@ Freeze tasks, licenses and hidden independent acceptance criteria in advance, ke
 - [ ] Complete human factual/link review; only then consider closing #84.
 
 **2027 maintainer lesson (E0):** test whether an existing tool adds independently accepted reuse value before adopting it on reputation alone. [Company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [research grading](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
+
+## Source-review addendum — 2026-10-14 (partial, provisional)
+
+This follows the initial 2026-10-12 E0 lead, which is preserved above. Selected **first-party** product pages were inspected. These establish the vendor's published claims (E1), **not** independent tests, external adoption or energy savings. Independent factual reviewer: pending.
+
+### Dated events and seven calendar-month segments
+
+| Segment | Publication/event lead | Scope and limitations |
+|---|---|---|
+| Apr 12–30 | [Junie CLI in JetBrains IDE](https://blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/) | April post, exact day and feature availability require renewed check |
+| May | No dated item selected | Incomplete search, not evidence of zero releases |
+| Jun | [Junie coding agent out of beta, Jun 17](https://blog.jetbrains.com/junie/2026/06/junie-coding-agent-out-of-beta/) | Vendor announced GA; no independent functional assessment |
+| Jul | No dated item selected | Needs complete IDE and Junie search |
+| Aug | [Junie Local launch, Aug 24](https://junie.jetbrains.com/blog/junie-local-launch/) | Vendor's on-device launch; initial hardware requirement (M5 Mac with 64 GB RAM) and model download are access constraints, not efficiency results |
+| Sep | [Demo agent, Sep 17](https://junie.jetbrains.com/blog/demo-agent/) and [Junie Local updates, Sep 18](https://junie.jetbrains.com/blog/junie-local-smarter-faster/) | Test/demo and company-reported performance; benchmarking and rights unverified |
+| Oct 1–12 | [Junie Lite, Oct 2](https://junie.jetbrains.com/blog/junie-lite/) | Vendor free-tier offering; check limits, pricing changes and cloud processing |
+
+**Search footprint:** selected official Junie blog and IDE pages; targeted terms `JetBrains Junie 2026 IDE integration`, `Junie agent out of beta June 2026`, `Junie Local August September`, `Junie Lite October`. Not a reproducible exhaustive engine/URL/hit-count/exclusion log. Publication dates above are from the pages; actual enabled dates may differ, particularly in phased rollouts. Identity/ownership, independent reporting, contradictory evidence, feature/version/security/privacy/licensing boundaries and full seven-segment coverage still need validation.
+
+**Causal and cost cautions:** Junie Local is not equivalent to a cloud-powered Junie Lite account. Hardware needs, model/tool versions, inference costs, data handling and local energy demand could alter net economics; a vendor token-saving benchmark cannot be converted into CO2e or independent quality. Do not conflate GitHub's announcements for Copilot-IDE support with JetBrains' product releases.
+
+### Proposed falsifiable repository pilot (unexecuted)
+
+Use 8–12 prespecified Python bugfix tasks with pinned repositories, hidden functional tests and license/security gates. Compare IDE-context Junie assistance with CLI-only assistance, holding model/budget constant **only if technically possible**. Record every assigned task (including failures and abstentions), accepted repair rate, upstream code actually reused, human review/repair minutes, tool+hardware setup, billed cost and CI outcomes; only quantify energy with actual measurements. Prespecify rejection for any secret/license escape or meaningful deterioration in accepted results or total human cost. Address M1–M7 without claiming empirical findings.
+
+**Open blockers:** direct source-link and date QA, complete each month, validate company/entity/availability, independently screen criticism, confirm product license and actual terms, obtain non-author human factual signoff and fresh merge-candidate CI. **Keep PR #179 Draft and issue #84 open.**
+
+**Practical lesson:** freeze task fixtures and require independent acceptance before adding an IDE-specific agent dependency to other repositories.
