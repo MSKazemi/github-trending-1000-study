@@ -26,6 +26,7 @@ CAPTURE_FIELDS = frozenset((
 SURFACE_FIELDS = frozenset((
     "frame_id", "frame_as_of_utc", "frame_source_sha256", "frame_definition",
     "frame_sampling", "eligible_repository_ids", "capture",
+    "frame_page_url", "frame_window", "frame_language_filter",
 ))
 FEATURE_FIELDS = frozenset((
     "repository_id", "recorded_at_utc", "feature_source_sha256",
@@ -35,6 +36,7 @@ PAGE_FIELDS = frozenset(("capture", "features"))
 MAX_SURFACES = 50
 MAX_FRAME_IDS = 10000
 MAX_PAGES = 64
+MAX_PROXY_PAIR_BUDGET = 250_000
 
 
 class TrendingAuditError(ValueError):
@@ -120,6 +122,10 @@ def evaluate_coverage(data):
         sampling = _text(item["frame_sampling"], "frame_sampling")
         frame_time = _timestamp(item["frame_as_of_utc"], "frame_as_of_utc")
         capture_time, observed_order = _capture_info(item["capture"])
+        if (item["frame_page_url"] != item["capture"]["page_url"]
+                or item["frame_window"] != item["capture"]["window"]
+                or item["frame_language_filter"] != item["capture"]["language_filter"]):
+            raise TrendingAuditError("predeclared frame surface disagrees with capture")
         if frame_time > capture_time:
             raise TrendingAuditError("frame was defined after target capture")
         eligible = _identifiers(
@@ -130,8 +136,8 @@ def evaluate_coverage(data):
         overlap = eligible & observed
         reports.append({
             "frame_id": frame_id,
-            "window": item["capture"]["window"],
-            "language_filter": item["capture"]["language_filter"],
+            "window": item["frame_window"],
+            "language_filter": item["frame_language_filter"],
             "capture_id": item["capture"]["capture_id"],
             "capture_at_utc": item["capture"]["captured_at_utc"],
             "frame_as_of_utc": item["frame_as_of_utc"],
@@ -180,6 +186,8 @@ def _feature_rows(features, capture, capture_time):
         if observed >= capture_time:
             raise TrendingAuditError("feature observation is not earlier than ranking target")
         _sha(row["feature_source_sha256"], "feature_source_sha256")
+        if row["feature_source_sha256"] == capture["source_sha256"]:
+            raise TrendingAuditError("feature and target page must not share source digest")
         for feature in PREDICTORS:
             value = row[feature]
             if type(value) is not int or (feature != "prior_7d_star_delta" and value < 0):
@@ -234,12 +242,16 @@ def evaluate_proxy(data):
     train_repos, heldout_repos = set(), set()
     previous_time = None
     surface_key = None
+    pair_budget = 0
     for page in pages:
         _fields(page, PAGE_FIELDS, "page")
         cap = page["capture"]
         timestamp, ranks = _capture_info(cap)
         if len(ranks) < 2:
             raise TrendingAuditError("rank proxy needs at least 2 IDs per page")
+        pair_budget += len(ranks) * (len(ranks) - 1) // 2
+        if pair_budget > MAX_PROXY_PAIR_BUDGET:
+            raise TrendingAuditError("rank proxy exceeds bounded pairwise budget")
         if previous_time is not None and timestamp <= previous_time:
             raise TrendingAuditError("page captures must be strictly chronological")
         previous_time = timestamp
