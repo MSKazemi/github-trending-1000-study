@@ -20,7 +20,7 @@ Outputs retain the existing write-once publication contract.
 Run the offline regression checks with:
 
 ```bash
-python -m unittest discover -s tests -p test_quiet_reuse_registry.py -v
+python -m unittest discover -s tests -p test_quiet_reuse_registry_integrity.py -v
 python -m unittest discover -s tests -v
 ```
 
