@@ -123,3 +123,14 @@ This adds 2 specifically dated publisher statements; links and content were chec
 ### Preserved later working draft
 
 The complete 2026-10-13 alternate source-screen text, including its initial search description, limitations and separate proposed repository experiment, is preserved **verbatim** in [the alternate report archive](source-archives/023-cline.2026-10-13-first-screen.md). It is documentary draft provenance, not independent validation of publisher claims or a completed study.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Introducing Cline SDK: the upgraded agent runtime, and we rebuilt Cline upon it](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) — 2026-05-13 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** Cline's article describes an agent runtime extracted from its editor extension, named `@cline/sdk`, for reuse across CLI/editor surfaces and third-party embedding. The article includes self-run Terminal-Bench numbers, which are not independent evidence.
+- **Correction / uncertainty to retain:** No exact package digest, Node/runtime compatibility, license, supply-chain security or successful consumer installation was verified. A documentation page or benchmark chart cannot serve as an independent first-use acceptance test.
+- **Falsifiable maintainer experiment (not performed):** Before implementing a duplicate agent loop, evaluate a pinned SDK release in an isolated throwaway environment against fixed tool-call, cancellation, safety and restart tests; log integration effort and package provenance.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
