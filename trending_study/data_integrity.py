@@ -74,6 +74,14 @@ def _decode_document(raw, label):
     except (json.JSONDecodeError, ResearchJSONError, ValueError) as exc:
         raise ResearchJSONError(f"{label}: {exc}") from exc
 
+def decode_research_json(raw, label):
+    """Strictly decode an offline JSON document (duplicates/non-finite rejected).
+
+    This public helper is shared by schema validators so a direct CLI run has
+    the same parse integrity guarantees as the repository-wide artifact gate.
+    """
+    return _decode_document(raw, label)
+
 
 def _check_file(path, root):
     label = str(path.relative_to(root))
