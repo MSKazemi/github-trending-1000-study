@@ -193,6 +193,39 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
             audit_tracked_code_json(self.root)
         self.assertIn("with\\nnewline.json", str(ctx.exception))
 
+    def test_invalid_staged_json_cannot_hide_behind_valid_worktree(self):
+        path = self.root / ".hidden" / "good.json"
+        path.write_text('{"status":"unknown","status":"verified"}', encoding="utf-8")
+        self.git("add", "--", ".hidden/good.json")
+        path.write_text('{"status":"unknown"}', encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "Git index blob"):
+            audit_tracked_code_json(self.root)
+
+    def test_invalid_staged_python_cannot_hide_behind_valid_worktree(self):
+        path = self.root / "arbitrary" / "nested" / "good.py"
+        path.write_text("return 1\n", encoding="utf-8")
+        self.git("add", "--", "arbitrary/nested/good.py")
+        path.write_text("x = 1\n", encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "Git index blob"):
+            audit_tracked_code_json(self.root)
+
+    def test_valid_staged_and_modified_worktree_both_pass(self):
+        path = self.root / ".hidden" / "good.json"
+        path.write_text('{"staged":true}', encoding="utf-8")
+        self.git("add", "--", ".hidden/good.json")
+        path.write_text('{"working":true}', encoding="utf-8")
+        result = audit_tracked_code_json(self.root)
+        self.assertEqual(result["files"], 2)
+        self.assertGreater(result["index_checked_bytes"], 0)
+
+    def test_staged_blob_byte_limit_is_independent_of_worktree(self):
+        path = self.root / ".hidden" / "good.json"
+        path.write_text('{"long":"' + 'x' * 100 + '"}', encoding="utf-8")
+        self.git("add", "--", ".hidden/good.json")
+        path.write_text('{}', encoding="utf-8")
+        with self.assertRaisesRegex(IntegrityError, "Git index blob exceeds"):
+            audit_tracked_code_json(self.root, max_file_bytes=90)
+
     def test_rejects_empty_index_without_false_success(self):
         self.git("rm", "-q", "--cached", ".hidden/good.json", "arbitrary/nested/good.py")
         with self.assertRaisesRegex(IntegrityError, "no Git-tracked"):
