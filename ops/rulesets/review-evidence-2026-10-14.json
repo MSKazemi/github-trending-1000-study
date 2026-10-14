@@ -74,5 +74,26 @@
     "new_dependency_installed": false,
     "server_payload_acceptance": "not_tested",
     "negative_enforcement_tests": "not_executed"
+  },
+  "archive_scope_review": {
+    "observed_at_utc": "2026-10-14T20:39:58.959347+00:00",
+    "api": "GET /repos/MSKazemi/github-trending-1000-study/git/matching-refs/tags/branch-archive/",
+    "archive_ref_count": 59,
+    "pattern": "refs/tags/branch-archive/**/*",
+    "all_current_refs_have_nested_date_category_branch_layout": true,
+    "official_fnmatch_documentation_repository": "github/docs",
+    "official_fnmatch_source_path": "data/reusables/repositories/about-fnmatch.md",
+    "official_fnmatch_git_blob_sha": "bd3f0a7f9158d4942665099bbc8f1ee045557927",
+    "official_fnmatch_blob_hash_verified": true,
+    "matching_interpretation": "Official GitHub documentation specifies recursive qa/**/* under File::FNM_PATHNAME; same recursive suffix applied to archive prefix",
+    "production_matching_and_enforcement_tested": false
+  },
+  "readonly_runbook_execution": {
+    "executed_at_utc": "2026-10-14T20:41:37.798464+00:00",
+    "cli_version": "gh 2.46.0",
+    "repository_main_rulesets_checks_workflow_gets": "all_passed",
+    "read_only_preflight_assertions": "all_passed",
+    "pagination_decoder_adjacent_pages_nonarray_truncation_checks": "passed_for_preflight_and_rollback_decoder",
+    "admin_mutation_performed": false
   }
 }

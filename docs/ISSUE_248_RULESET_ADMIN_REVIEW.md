@@ -27,7 +27,7 @@ settings. Recheck the current workflow and check names before application.
 | Complete JSON payload | Intended server behavior when approved and applied |
 | --- | --- |
 | [main.json](../ops/rulesets/main.json) | Active branch rules for exact `refs/heads/main`; PR required, one approving review, stale-review dismissal, approval of the latest reviewable push by somebody other than its pusher, resolved conversations, all five GitHub Actions checks and strict latest-base checks; force pushes and deletion forbidden; no bypass actors |
-| [branch-archive-tags.json](../ops/rulesets/branch-archive-tags.json) | Active rules for `refs/tags/branch-archive/**`; updates and deletion forbidden with no bypass actors; creation is not prohibited by this ruleset |
+| [branch-archive-tags.json](../ops/rulesets/branch-archive-tags.json) | Active rules for `refs/tags/branch-archive/**/*`; updates and deletion forbidden with no bypass actors; creation is not prohibited by this ruleset |
 
 The main payload retains the repository's observed merge/squash/rebase methods.
 Code-owner approval is false because no qualified CODEOWNERS assignment has
@@ -51,6 +51,28 @@ qualified security review, approved SHA-pinned plan and verified recovery
 requirements remain in force. An `update` rule is deliberately absent from
 main because it would restrict ordinary PR merges to bypass actors; PR-only
 integration is enforced by the `pull_request` rule instead.
+
+## Archive pattern and pagination compatibility
+
+GitHub's official [ruleset targeting documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#using-fnmatch-syntax)
+uses Ruby `File.fnmatch` with `File::FNM_PATHNAME`: a `*` wildcard does not
+match `/`. Its explicit recursive example is `qa/**/*` for names containing
+any number of slashes after `qa`. The official
+[`about-fnmatch` source blob](https://api.github.com/repos/github/docs/git/blobs/bd3f0a7f9158d4942665099bbc8f1ee045557927)
+was read and its Git blob SHA verified. Accordingly the tag payload uses
+**`refs/tags/branch-archive/**/*`**, rather than a bare trailing `**` that can
+miss nested archive paths. Read-only inspection found 59 current archive refs,
+all nested as `refs/tags/branch-archive/<date>/<category>/<branch>`; the
+recursive pattern covers their intended prefix/path layout. This documented
+matching check is not a production server enforcement test. New nested names
+under that prefix receive the same intended protection; creation stays allowed.
+
+The runbook supports the installed `gh 2.46.0`, which has `--paginate` but no
+`--slurp`. Paginated responses are saved as `.json-stream` files; Python's
+`JSONDecoder.raw_decode` consumes each adjacent page array and stores a normal
+JSON array-of-pages for review. Malformed or non-array pages fail. The entire
+read-only preflight, including fresh repository/main/rules/check/workflow GETs
+and all assertions, was executed successfully with that CLI version.
 
 ## Authoritative API schema
 
@@ -91,13 +113,23 @@ gh api --method GET -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo/branches/main" > "$ruleset_audit/main-before.json"
 gh api --method GET -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo/rulesets?includes_parents=true&per_page=100" \
-  --paginate --slurp > "$ruleset_audit/rulesets-before-pages.json"
+  --paginate > "$ruleset_audit/rulesets-before.json-stream"
 python - "$ruleset_audit" <<'PY'
 import json, pathlib, sys
 root = pathlib.Path(sys.argv[1])
 repo = json.loads((root / 'repository-before.json').read_text())
 main = json.loads((root / 'main-before.json').read_text())
-pages = json.loads((root / 'rulesets-before-pages.json').read_text())
+# gh 2.46 --paginate emits adjacent JSON page arrays, not one JSON array.
+raw = (root / 'rulesets-before.json-stream').read_text()
+decoder, pages = json.JSONDecoder(), []
+while raw.strip():
+    raw = raw.lstrip()
+    page, offset = decoder.raw_decode(raw)
+    assert isinstance(page, list), 'Unexpected ruleset pagination shape'
+    pages.append(page)
+    raw = raw[offset:]
+assert pages, 'No pagination response'
+(root / 'rulesets-before-pages.json').write_text(json.dumps(pages, indent=2) + '\n')
 assert repo['permissions']['admin'] is True, 'Administrator access required'
 assert repo['default_branch'] == 'main', 'Review changed default-branch scope'
 assert main['protected'] is False, 'Review existing/composed protection first'
@@ -221,7 +253,7 @@ untested production requirement as pending.
 | Base advanced | Advance the test base through its approved PR flow; stale branch/check success must not suffice until refreshed integration checks pass |
 | Unresolved conversation | An outstanding review thread blocks merge even when CI and approval otherwise pass |
 | Direct push / force / deletion | Under a separately approved disposable-ref plan, observe rejection of a direct update, history rewrite and ref deletion; preserve actual server errors, not only client dry-run output |
-| Archive immutability | Create one explicitly approved sacrificial tag under `branch-archive/**` at a known commit; record allowed creation, then observe rejection of its update and deletion, including admin-without-bypass behavior |
+| Archive immutability | Create one explicitly approved sacrificial tag under `branch-archive/**/*` at a known commit; record allowed creation, then observe rejection of its update and deletion, including admin-without-bypass behavior |
 | Positive path | A genuinely independently reviewed, current-head/current-base passing non-draft throwaway PR succeeds through the permitted merge method; confirm post-merge push CI separately |
 
 Pre-adjudicate what each test may change and restore. Save rejected server
@@ -257,7 +289,21 @@ gh api --method GET "repos/$ruleset_repo/rulesets/$archive_ruleset_id" \
 gh api --method DELETE "repos/$ruleset_repo/rulesets/$main_ruleset_id"
 gh api --method DELETE "repos/$ruleset_repo/rulesets/$archive_ruleset_id"
 gh api --method GET "repos/$ruleset_repo/rulesets?includes_parents=true&per_page=100" \
-  --paginate --slurp > "$ruleset_audit/rulesets-after-rollback-pages.json"
+  --paginate > "$ruleset_audit/rulesets-after-rollback.json-stream"
+python - "$ruleset_audit" <<'PY'
+import json, pathlib, sys
+root = pathlib.Path(sys.argv[1])
+raw = (root / 'rulesets-after-rollback.json-stream').read_text()
+decoder, pages = json.JSONDecoder(), []
+while raw.strip():
+    raw = raw.lstrip()
+    page, offset = decoder.raw_decode(raw)
+    assert isinstance(page, list), 'Unexpected ruleset pagination shape'
+    pages.append(page)
+    raw = raw[offset:]
+assert pages, 'No pagination response'
+(root / 'rulesets-after-rollback-pages.json').write_text(json.dumps(pages, indent=2) + '\n')
+PY
 gh api --method GET "repos/$ruleset_repo/branches/main" \
   > "$ruleset_audit/main-after-rollback.json"
 ```
