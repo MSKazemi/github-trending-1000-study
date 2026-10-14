@@ -65,7 +65,7 @@ Reviewed the date-stamped GitHub Changelog and selected official Copilot-related
 |---|---|---|
 | Apr 12–30 | Apr 23 Python dependency graph update | Full security/SDK/release survey and independent checks |
 | May | May 13 Agent tasks API; May 14 Copilot app technical preview | Other releases, conflicting reports and access testing |
-| Jun | Jun 17 Copilot app GA; Jun 26 GitHub Desktop 3.6 worktrees | Full changelog pagination and independent behavioral tests |
+| Jun | Jun 17 Copilot app GA; GitHub Desktop 3.6.0 released Jun 24 (vendor announcement Jun 26) | Full changelog pagination and independent behavioral tests |
 | Jul | Jul 30 stacked-PR public preview lead in monthly archive | Direct per-event/date and independent verification |
 | Aug | Aug 28 announced upcoming policy/billing changes | Implementation/exact effect and counter-evidence |
 | Sep | Sep 1 code-review approval preview; Sep 18 review improvements; Sep 24 proposed default policy | Verify governance settings and later effective dates |
@@ -79,7 +79,7 @@ Reviewed the date-stamped GitHub Changelog and selected official Copilot-related
 | G033-02 | 2026-05-13 / announced same day | Agent tasks REST API available in **public preview** to Copilot Business/Enterprise; docs identify supported token types, not universal GitHub-App-token access | [Changelog](https://github.blog/changelog/2026-05-13-start-copilot-cloud-agent-tasks-via-the-rest-api/) | E1; preview and plan-specific |
 | G033-03 | 2026-05-14 / announced same day | GitHub Copilot desktop app **technical preview** | [Changelog](https://github.blog/changelog/2026-05-14-github-copilot-app-is-now-available-in-technical-preview/) | E1; preview is not GA |
 | G033-04 | 2026-06-17 / announced same day | GitHub Copilot desktop app reported **generally available** for macOS, Windows and Linux, with parallel worktree sessions; Business/Enterprise use may require admin policy enablement | [Changelog](https://github.blog/changelog/2026-06-17-github-copilot-app-generally-available/) | E1; important preview-to-GA transition, no local install |
-| G033-05 | 2026-06-26 / announced same day | GitHub Desktop 3.6 includes worktree and Copilot integration changes | [Changelog](https://github.blog/changelog/2026-06-26-github-desktop-3-6-worktrees-and-deeper-copilot-integration/) | E1; no independently measured improvement |
+| G033-05 | 2026-06-26 publication / 2026-06-24 version 3.6.0 release | GitHub Desktop 3.6 includes worktree and Copilot integration changes | [Changelog](https://github.blog/changelog/2026-06-26-github-desktop-3-6-worktrees-and-deeper-copilot-integration/) | E1; no independently measured improvement |
 | G033-06 | 2026-08-28 / future timing in announcement | Upcoming Copilot policy/billing changes; an announced future effective date is **not evidence of an effective policy on Aug 28** | [Changelog](https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/) | E1 / announced-only; later rollout not validated |
 | G033-07 | 2026-09-01 / announced same day | Copilot code review can approve PRs in a **public preview, initially disabled**; AI approvals are not independent human sign-off | [Changelog](https://github.blog/changelog/2026-09-01-copilot-code-review-can-now-approve-pull-requests/) | E1; important review-governance boundary |
 | G033-08 | 2026-09-18 / announced same day | Improvements to Copilot code-review experience, with vendor-defined rollout details | [Changelog](https://github.blog/changelog/2026-09-18-copilot-code-review-an-improved-review-experience/) | E1; actual efficacy unknown |
@@ -103,6 +103,12 @@ Reviewed the date-stamped GitHub Changelog and selected official Copilot-related
 - [ ] Verify source links, company ownership and deduplication against Microsoft company entry.
 - [ ] Screen independent contradictory reporting rather than using derivative summaries of one vendor release.
 - [ ] Obtain named non-author factual review, approval for any methodological change and latest-merge-tree CI.
-- [ ] Do not claim this addendum tested a product or closed issue #100. Keep PR #181 Draft until gates are resolved.
+- [ ] Do not claim this addendum tested a product or closed issue #100. Publishing a bounded first-party source screen does **not** complete the larger research issue; its independent factual review remains pending.
 
 **Practical 2027 lesson (provisional):** combine isolation/worktrees and machine-generated changes with enforceable human review and measured downstream acceptance; a GA label or a green PR badge is not evidence of useful, secure reuse.
+
+## Bounded documentary merge gate (2026-10-14)
+
+**Scope of this PR only:** a versioned, first-party, **partial** evidence lead list and unexecuted experiment sketch. It is permitted to publish as preliminary research without claiming that #100 is complete. Spot-checked the [May 14 technical preview](https://github.blog/changelog/2026-05-14-github-copilot-app-is-now-available-in-technical-preview/), [June 17 GA notice](https://github.blog/changelog/2026-06-17-github-copilot-app-generally-available/), [June 24 Desktop 3.6.0 release notes](https://desktop.github.com/release-notes/), [June 26 vendor announcement](https://github.blog/changelog/2026-06-26-github-desktop-3-6-worktrees-and-deeper-copilot-integration/) and [September 24 policy announcement](https://github.blog/changelog/2026-09-24-default-enablement-of-copilot-features-for-copilot-business-and-enterprise/). **October 22 is the stated future effective date** for that announced default-policy change and is outside the research window. This is author-assisted link/date spot checking, **not** a qualified independent reviewer sign-off. Preserve the original first-pass text as historical provenance.
+
+The full seven-segment screened-result denominator, factual audit of every event, product tests and human sign-off for the research **issue** remain open. No performance, adoption, carbon or forecast findings are accepted by merging this documentary draft.
