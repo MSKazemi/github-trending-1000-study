@@ -1,0 +1,78 @@
+{
+  "kind": "read_only_administration_review_snapshot",
+  "observed_at_utc": "2026-10-14T20:24:10.482767+00:00",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "main_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+  "main_protected": false,
+  "repository_rulesets": [],
+  "connected_actor_admin_permission_observed": true,
+  "main_push_run": {
+    "id": 38624570450,
+    "url": "https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38624570450",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb"
+  },
+  "checks": [
+    {
+      "context": "research-artifacts",
+      "integration_id": 15368,
+      "integration_slug": "github-actions",
+      "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "context": "test (3.10)",
+      "integration_id": 15368,
+      "integration_slug": "github-actions",
+      "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "context": "test (3.12)",
+      "integration_id": 15368,
+      "integration_slug": "github-actions",
+      "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "context": "test (3.13)",
+      "integration_id": 15368,
+      "integration_slug": "github-actions",
+      "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "context": "test (3.14)",
+      "integration_id": 15368,
+      "integration_slug": "github-actions",
+      "head_sha": "9dc35ea8784c909dcc397dee1dcfc1278793abcb",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "official_schema": {
+    "repository": "github/rest-api-description",
+    "path": "descriptions/api.github.com/api.github.com.json",
+    "git_blob_sha": "541d9c23ff62c59bc9e2e071346d14210555b56c",
+    "source_url": "https://api.github.com/repos/github/rest-api-description/git/blobs/541d9c23ff62c59bc9e2e071346d14210555b56c",
+    "blob_hash_verified": true,
+    "request": "POST /repos/{owner}/{repo}/rulesets"
+  },
+  "settings_applied": false,
+  "server_enforcement_verified": false,
+  "human_admin_security_review_obtained": false,
+  "offline_payload_validation": {
+    "official_openapi_request_schema": "passed_for_both_payloads",
+    "canonical_workflow_check_names_and_app_ids": "matched_read_only_check_runs",
+    "schema_validator": "existing_preinstalled_python_jsonschema_Draft4Validator",
+    "new_dependency_installed": false,
+    "server_payload_acceptance": "not_tested",
+    "negative_enforcement_tests": "not_executed"
+  }
+}
