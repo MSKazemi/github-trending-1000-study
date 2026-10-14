@@ -42,7 +42,10 @@
     {
       "archived_event_id": "CI-018-06",
       "working_event_id": "CI-018-06",
-      "relation": "identical_id_and_source_url"
+      "relation": "publisher_url_correction_same_event_id",
+      "original_url": "https://www.qodo.ai/blog/introducing-qodo-3.0/",
+      "corrected_url": "https://www.qodo.ai/blog/introducing-qodo-3-0/",
+      "note": "Verified a working Qodo publisher-page URL on 2026-10-14; preserve the exact prior archival URL as written. The publisher's October 1 release description is a vendor statement and its PR Triage component is Research Preview, not general availability. Not independent feature/performance validation."
     }
   ],
   "review_gates": [
