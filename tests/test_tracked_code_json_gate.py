@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 from scripts.check_research_artifacts import IntegrityError, audit_tracked_code_json
 
@@ -141,6 +142,40 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         path.write_bytes(b"value = '\xe9'\n")
         with self.assertRaisesRegex(IntegrityError, "good.py"):
             audit_tracked_code_json(self.root)
+
+    def test_ancestor_symlink_swap_after_precheck_cannot_escape_checkout(self):
+        # Deliberately replace an indexed parent *after* is_symlink reports
+        # False. An ordinary path-based os.open follows the new ancestor link
+        # and silently validates unrelated outside bytes instead of the file.
+        import os
+        if (not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY")
+                or os.open not in os.supports_dir_fd):
+            self.skipTest("POSIX descriptor-relative no-follow opening unavailable")
+        tracked_parent = self.root / "arbitrary" / "nested"
+        relocated_parent = self.root / "original_nested"
+        outside = self.root / "outside_not_indexed"
+        outside.mkdir()
+        (outside / "good.py").write_text("different = True\n", encoding="utf-8")
+        original_is_symlink = Path.is_symlink
+        swapped = False
+
+        def switch_after_check(path):
+            nonlocal swapped
+            observed = original_is_symlink(path)
+            if path == tracked_parent and not swapped:
+                tracked_parent.rename(relocated_parent)
+                try:
+                    tracked_parent.symlink_to(outside, target_is_directory=True)
+                except (OSError, NotImplementedError):
+                    relocated_parent.rename(tracked_parent)
+                    self.skipTest("directory symlinks unavailable")
+                swapped = True
+            return observed
+
+        with mock.patch.object(Path, "is_symlink", switch_after_check):
+            with self.assertRaisesRegex(IntegrityError, "good.py"):
+                audit_tracked_code_json(self.root)
+        self.assertTrue(swapped)
 
     def test_rejects_fifo_replacing_tracked_regular_file_without_blocking(self):
         import os

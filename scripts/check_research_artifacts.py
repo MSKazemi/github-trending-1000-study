@@ -233,6 +233,30 @@ def _read_git_index_blob(root, oid, max_file_bytes):
     return payload
 
 
+
+def _open_tracked_file(root, parts, flags):
+    """Open indexed path without following ancestor symlinks on POSIX.
+
+    Resolving each directory relative to an already-open directory descriptor
+    closes the check-then-open ancestor swap window. Platforms without
+    O_NOFOLLOW/O_DIRECTORY/dir_fd use the existing best-effort path checks.
+    This is not a comprehensive hostile-filesystem sandbox.
+    """
+    if (hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_DIRECTORY")
+            and os.open in os.supports_dir_fd):
+        directory_flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_DIRECTORY
+        parent_fd = os.open(root, directory_flags)
+        try:
+            for part in parts[:-1]:
+                next_fd = os.open(part, directory_flags, dir_fd=parent_fd)
+                os.close(parent_fd)
+                parent_fd = next_fd
+            return os.open(parts[-1], flags, dir_fd=parent_fd)
+        finally:
+            os.close(parent_fd)
+    return os.open(root.joinpath(*parts), flags)
+
+
 def audit_tracked_code_json(
     root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MAX_TOTAL_BYTES
 ):
@@ -317,7 +341,7 @@ def audit_tracked_code_json(
             # rejects a swapped-in leaf symlink where the OS supports it.
             flags = os.O_RDONLY | getattr(os, "O_NONBLOCK", 0)
             flags |= getattr(os, "O_NOFOLLOW", 0)
-            with os.fdopen(os.open(path, flags), "rb") as handle:
+            with os.fdopen(_open_tracked_file(root, parts, flags), "rb") as handle:
                 file_stat = os.fstat(handle.fileno())
                 if not stat.S_ISREG(file_stat.st_mode):
                     raise IntegrityError("tracked path is missing or not a regular file")
