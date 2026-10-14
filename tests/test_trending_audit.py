@@ -107,6 +107,23 @@ class CoverageAuditTests(unittest.TestCase):
                 with self.assertRaises(TrendingAuditError):
                     evaluate_coverage(data)
 
+    def test_frame_must_bind_intended_language_window_and_url(self):
+        data = coverage()
+        surface = data["surfaces"][0]
+        surface["capture"]["language_filter"] = "rust"
+        surface["capture"]["page_url"] = "https://github.com/trending/rust?since=daily"
+        # The target is internally valid, but it is not the predeclared frame.
+        with self.assertRaisesRegex(TrendingAuditError, "predeclared frame surface"):
+            evaluate_coverage(data)
+        data = coverage()
+        data["surfaces"][0]["frame_window"] = "weekly"
+        with self.assertRaisesRegex(TrendingAuditError, "predeclared frame surface"):
+            evaluate_coverage(data)
+        data = coverage()
+        data["surfaces"][0]["frame_page_url"] = "https://github.com/trending/rust?since=daily"
+        with self.assertRaisesRegex(TrendingAuditError, "predeclared frame surface"):
+            evaluate_coverage(data)
+
     def test_extra_fields_cannot_bypass_privacy_and_schema_checks(self):
         data = coverage()
         for obj, key in ((data, "raw_html"), (data["surfaces"][0], "private_email"),
@@ -215,6 +232,27 @@ class ChronologicalProxyTests(unittest.TestCase):
                 data["pages"][0]["features"][0].pop(field)
                 with self.assertRaises(TrendingAuditError):
                     evaluate_proxy(data)
+
+    def test_feature_provenance_cannot_reuse_target_page_digest(self):
+        data = proxy()
+        capture = data["pages"][0]["capture"]
+        data["pages"][0]["features"][0]["feature_source_sha256"] = capture["source_sha256"]
+        with self.assertRaisesRegex(TrendingAuditError, "share source digest"):
+            evaluate_proxy(data)
+
+    def test_bounded_pairwise_work_rejects_large_input(self):
+        data = proxy()
+        for index, page in enumerate(data["pages"]):
+            first = index * 1000 + 1
+            ids = list(range(first, first + 400))
+            row = page["features"][0]
+            page["capture"]["repository_ids"] = ids
+            page["features"] = [
+                {**row, "repository_id": repository_id}
+                for repository_id in ids
+            ]
+        with self.assertRaisesRegex(TrendingAuditError, "pairwise budget"):
+            evaluate_proxy(data)
 
     def test_unknown_is_not_treated_as_zero_and_bool_is_invalid(self):
         for key, value in (("prior_stars", None), ("prior_stars", True),
