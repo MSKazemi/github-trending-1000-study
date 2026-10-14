@@ -38,12 +38,9 @@ source-pages' contents and reviewer independence are not authenticated.
 
 **Canonical metric consolidation with [PR #188](https://github.com/MSKazemi/github-trending-1000-study/pull/188):** this *same* offline analyzer now also reports `rbo_extrapolated_equal_depth` when both observed page lists have exactly the same positive depth `k`. It equals the finite discounted prefix term above **plus** `p^k × (|A_(1:k) ∩ B_(1:k)| / k)`. It becomes `null` for unequal observed depths, with `rbo_extrapolation_reason="unequal observed page lengths"`. The additional term assumes last-depth agreement persists into the unobserved tail; it is not a measured population ranking effect or proof about future GitHub Trending results. For unequal depths, use the separately reported finite discounted-prefix lower bound only. The two metrics share the same `prefix_persistence`, capture provenance rules, denominators and no-cohort-eligibility restriction; **no second Trending measurement CLI should be created** solely for RBO.
 
-**Remaining issue work:** independently inspect saved live pages and source
-license/access policy; measure multi-timepoint rank drift and filter-level
-coverage *against an explicit eligible frame*; audit timestamp/window
-alignment; preregister prospective rank-proxy features, train/holdout
-chronological split and leakage safeguards. Never infer the opaque Github
-selection algorithm, true user adoption, or causal effect of Trending.
+**2026-10-14 companion engineering implementation:** The missing **offline** explicit-frame language coverage and chronological heldout rank-proxy methods, with no future-feature or cross-split identity leakage, are now specified and tested in [the issue #6 coverage/rank-proxy runbook](TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md). Existing Jaccard/Kendall/RBO calculations remain unchanged; do not create a competing RBO CLI.
+
+**Still unresolved scientific field work:** independently inspect authorized real saved pages, actual source license/access policy and filter completeness; build a justified at-risk denominator; independently verify pre-capture feature times and preregister the temporal cut before viewing any real heldout scores. Never infer the opaque GitHub selection algorithm, true user adoption or a causal effect of Trending. Without human approval and real evidence this issue is engineering-ready, **not empirically answered**.
 
 **Practical repository lesson to test:** If project visibility fluctuates
 rapidly even on comparable pages, do not interpret a single trending rank or
