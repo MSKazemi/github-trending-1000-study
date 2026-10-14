@@ -276,6 +276,22 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertIn("contents: read", workflow)
         self.assertIn("contents: write", workflow)
 
+    def test_disabled_retirement_fails_visibly_without_write_permission(self):
+        workflow = Path(".github/workflows/retire-verified-branches.yml").read_text(
+            encoding="utf-8")
+        # A deliberate retire dispatch must not show a benign all-jobs-skipped
+        # result. The only runnable retire-mode job must fail explicitly.
+        guard = workflow.split("  retirement-blocked:", 1)[1].split(
+            "\n  retire:", 1)[0]
+        self.assertIn("inputs.mode == 'retire'", guard)
+        self.assertIn("contents: read", guard)
+        self.assertNotIn("contents: write", guard)
+        self.assertIn("exit 1", guard)
+        self.assertIn("::error::Branch retirement is disabled", guard)
+        privileged = workflow.split("\n  retire:", 1)[1]
+        self.assertIn("if: ${{ false &&", privileged)
+        self.assertNotIn("\n  push:", workflow)
+
     def test_cli_destructive_mode_requires_exact_confirmation(self):
         self.assertEqual(main([
             "--plan", "ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json",

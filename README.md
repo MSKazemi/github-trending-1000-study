@@ -74,7 +74,7 @@ Open an issue for reproducibility defects, language coverage, validity threats, 
 - [Discussion synthesis / decision history](docs/CONVERSATION_SYNTHESIS.md)
 - [Usefulness constructs and metrics](docs/USEFULNESS_FRAMEWORK.md)
 - [AI-assisted and vibe-coding sub-study](docs/AI_CODING_STUDY_2027.md)
-- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md)
+- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md) and [versioned offline lesson registry v1.1](docs/LESSON_REGISTRY_AUDIT_2026_10.md) — strict synthetic examples, source/result metadata, unknown-versus-null handling, no certified findings
 - [Developer build/reuse/pivot playbook](docs/DEVELOPER_DECISION_PLAYBOOK.md)
 - [Total token, human and maintenance economics](docs/TOKEN_TIME_ECONOMICS.md)
 - [2027 conditional scenarios and monitoring](docs/FUTURES_2027.md)
@@ -106,6 +106,7 @@ We now explicitly study **reuse before generation**, not only repository popular
 - **[Agent development reuse guide](docs/REUSE_FIRST_PLAYBOOK.md)** — practical search, license, security, validation, stop rules
 - **[Reusable evidence gate](docs/REUSE_GATE_TOOL.md)** — offline deterministic heuristic; unknown is not pass
 - **[Scientific source list](docs/READING_LIST_2027.md)**; [35 AI/GitHub/tech news sources](references/study_sources_2026.json); [16 green/reuse/energy sources](references/green_reuse_sources_2026.json)
+- [Offline provisional news-record validator](docs/NEWS_SOURCE_RECORD_VALIDATOR.md) — reusable, synthetic-tested source-structure gate extracted from draft #59; **no real records or scientific findings merged**
 - **[Conversation checkpoint](research-notes/conversation-checkpoint-2026-10-11.md)** — all study-related user prompts in this chat, dated assistant findings and decision history
 
 To use the **offline reuse-first evidence check**:
