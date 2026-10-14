@@ -43,7 +43,7 @@ def packet():
                   "package_id": selection["selected"][0]["package_id"],
                   "version": None, "release_evidence_ref": None,
                   "repository_id": None, "identity_evidence_ref": None}
-    return prepare_pair_packet(selection, [task], [nomination])
+    return prepare_pair_packet(selection, [task], [nomination], m, p)
 
 
 def report(pkt, ref):
@@ -106,7 +106,7 @@ class RegistrySliceTests(unittest.TestCase):
             prepare_pair_packet(selection, [task], [{
                 "pair_id": "pair1", "task_id": "task1", "package_id": "pkg:cargo/outside",
                 "version": None, "release_evidence_ref": None,
-                "repository_id": None, "identity_evidence_ref": None}])
+                "repository_id": None, "identity_evidence_ref": None}], m, p)
 
     def test_two_placeholder_reviews_never_satisfy_scientific_gate(self):
         pkt = packet()
