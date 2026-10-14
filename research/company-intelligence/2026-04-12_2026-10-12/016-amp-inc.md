@@ -115,3 +115,12 @@ The consolidated [candidate ledger](016-amp-inc.events.csv) contains 5 distinct 
 - **Correction / uncertainty to retain:** That is vendor-reported UI availability, not independent verification of durable execution, team access isolation, functionality under failures or lower maintenance cost. Scope of 'everyone' was not reproduced from an independent account.
 - **Falsifiable maintainer experiment (not performed):** On a fixed multi-file change with existing acceptance tests, compare one local-agent workflow with a remote-thread workflow; audit access permissions, conflicting writes, rollback safety and reviewer active minutes.
 - **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+
+
+## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+
+[Source search log and scientific cautions](source-audits/016-amp-inc.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 9 distinct publisher URL leads, not 9 independently confirmed product outcomes.**
+
+The canonical working CSV now has 9 vendor URL leads: original 5 plus May 27 staged-to-broad Neo rollout clarification, Aug 27 multi-repository support, Sep 1 diff importance sorting, and Oct 12 PR/CI webhook listener announcement. Do not backdate broad availability to May 6 or infer verified security or reliability.
+
+**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
