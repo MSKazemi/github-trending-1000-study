@@ -160,3 +160,14 @@ This source-screened working report retains the full **original PR #212 report**
 - 2026-09-10: [Replit | Databricks Integration is Now Generally Available with Native Lakebase Support](https://replit.com/blog/databricks2026) — `shipped`; source-bound, not an independent effectiveness test
 
 **Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #80 open until study acceptance is satisfied.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Replit | Databricks Integration is Now Generally Available with Native Lakebase Support](https://replit.com/blog/databricks2026) — 2026-09-10 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The publisher's 10 September post describes GA for an enterprise Replit/Databricks integration with Lakebase, referring back to an earlier June public preview.
+- **Correction / uncertainty to retain:** GA is a vendor availability statement, not independent evidence of enterprise entitlement, secure default permissions, a successful external integration, user adoption or improvements to task outcomes. Preserve plan/region and data-rights unknowns.
+- **Falsifiable maintainer experiment (not performed):** In an authorized synthetic-data test workspace, compare an existing manual integration against a proposed assisted integration; use immutable access-control assertions, independent task acceptance and recorded human setup/review time.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
