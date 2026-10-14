@@ -37,7 +37,7 @@ Qodo is a developer-quality vendor. Qodo's platform, Codex quality plugin, and s
 | July | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
 | August | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
 | September | [Qodo Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/); [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/) | First-party sources screened |
-| Oct 1–12 | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/) | First-party sources screened |
+| Oct 1–12 | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3-0/) | First-party sources screened |
 
 All dates are **as displayed by the source** and rendered as calendar dates; UTC publication timezone has not been independently established. Underlying launch/deployment date is **not assumed identical** to article date. If page describes a different earlier event, document discrepancy separately; follow-up source audit needed.
 
@@ -50,7 +50,7 @@ All dates are **as displayed by the source** and rendered as calendar dates; UTC
 | CI-018-03 | 2026-06-23; event date not separately verified | [Qodo 2.4 governance](https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/) | Qodo announces new code review/governance features. | shipped; Provider feature and quality claims not externally tested. | E1; M2 |
 | CI-018-04 | 2026-09-09; event date not separately verified | [Qodo Agentic Toolbox](https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/) | Qodo announces modular agent-aware quality tooling. | shipped; Product integration limits and real defect rates not verified. | E1; M1;M2 |
 | CI-018-05 | 2026-09-15; event date not separately verified | [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/) | Provider announces cross-repository change-context tool. | preview; Beta access and accuracy unvalidated. | E1; M2;M5 |
-| CI-018-06 | 2026-10-01; event date not separately verified | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/) | Qodo launches quality/governance platform update for agent-centric workflows. | shipped; First-party claims, no controlled independent quality outcome. | E1; M1;M2 |
+| CI-018-06 | 2026-10-01; event date not separately verified | [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3-0/) | Qodo launches quality/governance platform update for agent-centric workflows. | shipped; First-party claims, no controlled independent quality outcome. | E1; M1;M2 |
 
 **Grade E1 for ALL 6 entries:** vendor/publication statements only. 'Shipped' means provider **reports** availability, not a tested implementation or independent adoption. The separate CSV has source type, first-seen review date, status and missingness fields. An independent assessment is needed for E3 validation; page popularity, benchmarks, stars, press coverage, merger announcements and provider security assertions do not qualify.
 
@@ -151,7 +151,7 @@ This source-screened working report retains the full **original PR #213 report**
 - 2026-04-23: [PR-Agent community handover](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/), prior status `announced_only`, prior tier `E1` (author's working label; not independent product proof)
 - 2026-06-23: [Qodo 2.4 governance](https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
 - 2026-09-15: [Qodo Software Map](https://www.qodo.ai/blog/introducing-qodos-software-map/), prior status `preview`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-10-01: [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3.0/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+- 2026-10-01: [Qodo 3.0 release](https://www.qodo.ai/blog/introducing-qodo-3-0/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
 
 **Later screen unique links (publisher working records):**
 - 2026-06-23: [The Anatomy of a Breaking Change](https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/) — `preview`; source-bound, not an independent effectiveness test
@@ -159,3 +159,14 @@ This source-screened working report retains the full **original PR #213 report**
 - 2026-09-23: [The 2026 State of AI Code Quality Report: Verification Is the New Bottleneck](https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/) — `reported_undetermined`; source-bound, not an independent effectiveness test
 
 **Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #85 open until study acceptance is satisfied.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Introducing Qodo 3.0: Quality and Governance for the Agentic Software Factory](https://www.qodo.ai/blog/introducing-qodo-3-0/) — 2026-10-01 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The live publisher page identifies version 3.0 and specifies that PR Triage is available in Research Preview. It separately describes rules/Agentic Toolbox, Software Map, analytics and deployment options; it does not establish that every component is GA.
+- **Correction / uncertainty to retain:** The previously recorded URL ending `introducing-qodo-3.0/` could not be retrieved in the public desk check; the live publisher article is at `introducing-qodo-3-0/`. Correct the working link without rewriting archival evidence. Keep PR Triage preview-specific, and do not claim independently verified quality or deployment security.
+- **Falsifiable maintainer experiment (not performed):** For a pre-frozen cross-repository change, compare existing reviewer triage against the tool's suggested work-package ordering; score independently adjudicated regressions, missed dependencies, false-positive review load and human time.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
