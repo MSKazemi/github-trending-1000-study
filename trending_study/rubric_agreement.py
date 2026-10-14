@@ -16,7 +16,7 @@ class RubricError(ValueError):
     pass
 
 
-def _agreement(pairs):
+def _agreement(pairs, labels=LABELS):
     """Unweighted nominal Cohen kappa; undefined for empty or degenerate margins."""
     if not pairs:
         return {"n": 0, "observed_agreement": None, "chance_agreement": None,
@@ -25,11 +25,11 @@ def _agreement(pairs):
     pa = Counter(x for x, _ in pairs)
     pb = Counter(y for _, y in pairs)
     observed = sum(x == y for x, y in pairs) / n
-    chance = sum(pa[k] * pb[k] for k in LABELS) / (n * n)
+    chance = sum(pa[k] * pb[k] for k in labels) / (n * n)
     return {"n": n, "observed_agreement": observed, "chance_agreement": chance,
             "cohens_kappa": (observed - chance) / (1 - chance) if n >= 2 and chance < 1 else None,
-            "rater_a_counts": {k: pa[k] for k in LABELS},
-            "rater_b_counts": {k: pb[k] for k in LABELS}}
+            "rater_a_counts": {k: pa[k] for k in labels},
+            "rater_b_counts": {k: pb[k] for k in labels}}
 
 
 def evaluate(data):
