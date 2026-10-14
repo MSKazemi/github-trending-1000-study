@@ -51,6 +51,20 @@ jobs:
             --plan ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json \
             --audit-live
 
+  retirement-blocked:
+    # Make an attempted destructive run visibly FAIL rather than appear to
+    # succeed when the separately hard-disabled write job is skipped.
+    if: github.ref == 'refs/heads/main' && inputs.mode == 'retire'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    steps:
+      - name: Explicitly reject unapproved branch deletion
+        run: |
+          echo "::error::Branch retirement is disabled. Obtain qualified security review, protect main and recovery tags, and enable only in a separate reviewed PR."
+          exit 1
+
   retire:
 # Fail closed until a repo administrator explicitly enables this variable
     # after documenting an independent security review and protected archive tags.
