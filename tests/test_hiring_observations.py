@@ -138,6 +138,16 @@ class ObservationLedgerTests(unittest.TestCase):
             with self.subTest(index=index, fields=fields), self.assertRaises(instrument.HiringObservationError):
                 instrument.audit(data)
 
+    def test_past_closure_cannot_support_repeated_reopening_while_already_live(self):
+        data = fixture()
+        repeated = dict(data["observations"][5], observation_id="REPEAT_REOPEN",
+                        observed_at_utc="2026-01-10T12:00:00Z",
+                        accessed_at_utc="2026-01-10T12:00:00Z",
+                        recorded_at_utc="2026-01-10T12:00:00Z")
+        data["observations"].append(repeated)
+        with self.assertRaisesRegex(instrument.HiringObservationError, "reopening"):
+            instrument.audit(data)
+
     def test_unconfirmed_reopening_stays_explicitly_unconfirmed(self):
         data = fixture(); data["observations"][5].update(linkage_status="unconfirmed", link_evidence_ref=None)
         row = instrument.audit(data)["requisitions"][0]["observations"][-1]

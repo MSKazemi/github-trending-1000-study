@@ -114,7 +114,7 @@ def audit(data):
         source_urls.add(source["index_url"])
     seen, attempts, url_owner, histories, source_times = set(), set(), {}, {}, {}
     previous = None
-    last_informative, closures_seen, instant_closures = {}, set(), {}
+    last_informative, instant_closures = {}, {}
     for obs in observations:
         _fields(obs, OBS_FIELDS, "observation")
         oid = _id(obs["observation_id"], "observation_id")
@@ -191,7 +191,7 @@ def audit(data):
                 raise HiringObservationError("linkage must reference a previously observed employer requisition")
             if ((relation == "reposting" and linked == req) or
                     (relation == "reopening" and (linked != req or status != "listed_live" or
-                     key not in closures_seen))):
+                     last_informative.get(key) != "explicitly_closed"))):
                 raise HiringObservationError("reopening/reposting identity or status mismatch")
         else:
             raise HiringObservationError("unsupported relationship")
@@ -206,8 +206,6 @@ def audit(data):
                 raise HiringObservationError("simultaneous location observations contradict requisition closure")
             instant_closures[instant_key] = is_closed
             last_informative[key] = status
-        if is_closed:
-            closures_seen.add(key)
         histories.setdefault(key, []).append(dict(obs))
     requisitions = []
     for (employer, req), rows in sorted(histories.items()):
