@@ -44,3 +44,8 @@ Prototype A: 2 hours generation + 8 hours fixing + 4 hours support, 1 accepted t
 
 ## Practical budget policy (proposed)
 For each candidate user task, set a **user-chosen cap** for wall time, human time, max retries and token spend *before execution*; stop to inspect reasons on budget overrun instead of blindly prompting more. A manual comparison baseline should be evaluated at least periodically. This is a discipline, not a validated universal optimal threshold.
+
+
+## Executable offline pilot: audit against an all-assigned-task trial (2026-10-12)
+
+[Task cost ledger specification and commands](TASK_COST_LEDGER_2026-10-12.md) introduce a strictly scoped human/agent event ledger tied to [the frozen-frame trial instrument](TRIAL_PILOT_INSTRUMENT.md). Only **synthetic** examples have been committed. Each assigned task needs one record; partial human intervals or incomplete model/token/charge events make the relevant totals **unknown**, not zero. Agent event wall time is the union of recorded intervals, not the sum of parallel runtimes or actual person-hours. Billable-event USD is reported separately by explicit billed/estimated/synthetic provenance; it **does not** include unmeasured salaries, subscriptions, full cloud/provider operation, lifetime maintenance or ecological impacts. Actual humans, consent, provider invoices and physical energy have **not** been instrumented. This is an implementation of a methodological proposal, not measured results.

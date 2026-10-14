@@ -1,0 +1,647 @@
+{
+  "schema": "review-only/v1",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "captured_day_utc": "2026-10-14",
+  "source_main_sha": "1a9464f030572968d1590c268dc60c3e9b57e6a7",
+  "do_not_execute": true,
+  "open_prs": 13,
+  "classification_counts": {
+    "closed_unmerged": 27,
+    "merged_unchanged": 23,
+    "open_pr": 13,
+    "merged_changed": 6,
+    "default": 1
+  },
+  "records": [
+    {
+      "branch": "audit/pr-merge-gate-log-20261013",
+      "sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "status": "closed_unmerged",
+      "pr": 256,
+      "pr_head_sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "chore/276-branch-lifecycle-audit",
+      "sha": "0a573825c1a100964f2ee653609c48fcd80e5f02",
+      "status": "merged_unchanged",
+      "pr": 278,
+      "pr_head_sha": "0a573825c1a100964f2ee653609c48fcd80e5f02",
+      "merge_commit_sha": "6e1ec6f8697afa80d7a9e6d3f218738d9adbfd2a",
+      "protected": false
+    },
+    {
+      "branch": "chore/enterprise-pr-merge-guardrails-20261013",
+      "sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "status": "closed_unmerged",
+      "pr": 245,
+      "pr_head_sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "chore/safe-merged-branch-retirement-20261013",
+      "sha": "4f959715913d817d605c0706c95bb3d9e8e90471",
+      "status": "merged_unchanged",
+      "pr": 274,
+      "pr_head_sha": "4f959715913d817d605c0706c95bb3d9e8e90471",
+      "merge_commit_sha": "8783c4f0bf68816e0721685acde7a47208dbd65c",
+      "protected": false
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "sha": "a89dc8c1755cde64c04c90ee6642296a445bb75f",
+      "status": "open_pr",
+      "pr": 286,
+      "pr_head_sha": "a89dc8c1755cde64c04c90ee6642296a445bb75f",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "ci/issue-240-canonical-csv-artifact-validation",
+      "sha": "d8916e13fb1b415b3d13b9ce0ff97742dfe0c75e",
+      "status": "closed_unmerged",
+      "pr": 260,
+      "pr_head_sha": "d8916e13fb1b415b3d13b9ce0ff97742dfe0c75e",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "ci/research-json-integrity-247",
+      "sha": "e98d19fcb58c7833900e9f3a2a79941269b72861",
+      "status": "merged_changed",
+      "pr": 250,
+      "pr_head_sha": "9bfcf534f72201163359ae6bb2c44f94ff7f11f5",
+      "merge_commit_sha": "f07e4c0ec1fe89448f5a1f6982eca1aed4a9555f",
+      "protected": false
+    },
+    {
+      "branch": "ci/restore-canonical-integrity-gate-20261013",
+      "sha": "e19087a17263ea1b4aeb9f96d3401c83b2757749",
+      "status": "merged_changed",
+      "pr": 266,
+      "pr_head_sha": "a933e06dce1062356867de8e8f80e91214d08873",
+      "merge_commit_sha": "bfa7063658effc243f3a01735ee20d6ef4f36598",
+      "protected": false
+    },
+    {
+      "branch": "feat/news-corpus-schema-56",
+      "sha": "003b5c52da27e6e95de06b82dd95d8f67f317c5f",
+      "status": "merged_unchanged",
+      "pr": 285,
+      "pr_head_sha": "003b5c52da27e6e95de06b82dd95d8f67f317c5f",
+      "merge_commit_sha": "0f7f56987f4e55c14e8fbe08440318eac11eadd3",
+      "protected": false
+    },
+    {
+      "branch": "fix/247-nested-symlink-clean-merge-20261013",
+      "sha": "368083577709a71875a03ef46a71c598fde01757",
+      "status": "closed_unmerged",
+      "pr": 267,
+      "pr_head_sha": "368083577709a71875a03ef46a71c598fde01757",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "fix/277-branch-retirement-safe-lease",
+      "sha": "870d6a1016953d8d7b86fd3286b957703c599d44",
+      "status": "open_pr",
+      "pr": 280,
+      "pr_head_sha": "870d6a1016953d8d7b86fd3286b957703c599d44",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "fix/canonical-nested-symlink-audit-20261013",
+      "sha": "2bed9ec8e8172cb47282933c011e3a8c9bd15033",
+      "status": "merged_unchanged",
+      "pr": 283,
+      "pr_head_sha": "2bed9ec8e8172cb47282933c011e3a8c9bd15033",
+      "merge_commit_sha": "fe67f14a8db754b8bdced86791563a662760ddc4",
+      "protected": false
+    },
+    {
+      "branch": "fix/followup-ledger-gate-issue-4",
+      "sha": "489402cd6378b23195d751eca21f3bc717461f6d",
+      "status": "closed_unmerged",
+      "pr": 49,
+      "pr_head_sha": "489402cd6378b23195d751eca21f3bc717461f6d",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "fix/retirement-snapshot-archive-prefix-20261013",
+      "sha": "0c5138a6041a85aea027755e6dc6f6ed3e3f2bbf",
+      "status": "merged_changed",
+      "pr": 281,
+      "pr_head_sha": "4950dd8052ac3395ff5051e85121fcf7140d1cf8",
+      "merge_commit_sha": "35928569d1f6c2f8593a41b2d8e6b140ee6edf11",
+      "protected": false
+    },
+    {
+      "branch": "main",
+      "sha": "1a9464f030572968d1590c268dc60c3e9b57e6a7",
+      "status": "default",
+      "pr": null,
+      "pr_head_sha": null,
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "maintenance/retire-verified-merged-branches-20261013",
+      "sha": "c36e51965a1b0f9a356dd43af0ee92d900b581d0",
+      "status": "merged_unchanged",
+      "pr": 275,
+      "pr_head_sha": "c36e51965a1b0f9a356dd43af0ee92d900b581d0",
+      "merge_commit_sha": "1761204b53f8c75fedfc4c4991f7b53af7b0b2c0",
+      "protected": false
+    },
+    {
+      "branch": "quality/244-premerge-artifact-gate",
+      "sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "status": "closed_unmerged",
+      "pr": 251,
+      "pr_head_sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "quality/canonical-artifact-ci-20261013",
+      "sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "status": "closed_unmerged",
+      "pr": 259,
+      "pr_head_sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "quality/extend-canonical-data-integrity-csv-20261013",
+      "sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "status": "closed_unmerged",
+      "pr": 263,
+      "pr_head_sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/ai-era-news-corpus-2026-10-12",
+      "sha": "7f2b5cb9ddf3f6a266fe8b19411a847489c6fd01",
+      "status": "merged_unchanged",
+      "pr": 59,
+      "pr_head_sha": "7f2b5cb9ddf3f6a266fe8b19411a847489c6fd01",
+      "merge_commit_sha": "6bd1eeda7d319ddb8d814f39d7ede7bb1a5c08fe",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-001-openai",
+      "sha": "4daf83b93014996d81c9fa766ebb3d33eca235cc",
+      "status": "closed_unmerged",
+      "pr": 171,
+      "pr_head_sha": "4daf83b93014996d81c9fa766ebb3d33eca235cc",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-002-anthropic",
+      "sha": "465f60ef9e9189d6dd4081aaa49ff43eae24fc13",
+      "status": "merged_unchanged",
+      "pr": 172,
+      "pr_head_sha": "465f60ef9e9189d6dd4081aaa49ff43eae24fc13",
+      "merge_commit_sha": "fe1d03b856550c6a3b3c8f24496248e24e9f3f40",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-003-google-deepmind",
+      "sha": "60b42d7ffbdb1604c0accc22dc5e0bea398e9697",
+      "status": "merged_unchanged",
+      "pr": 173,
+      "pr_head_sha": "60b42d7ffbdb1604c0accc22dc5e0bea398e9697",
+      "merge_commit_sha": "a63193ed87a1a59c5fab34ac232e5d08b17a0bfe",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-004-microsoft",
+      "sha": "23f1eefabfe12c7b158f364a0140d47d169cec1f",
+      "status": "merged_unchanged",
+      "pr": 174,
+      "pr_head_sha": "23f1eefabfe12c7b158f364a0140d47d169cec1f",
+      "merge_commit_sha": "16c832c09a83e32d51690d65d8c7ad109627853c",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-005-meta-first-screen",
+      "sha": "e8255541c105352ec8302da7c37a59b69cc352ed",
+      "status": "open_pr",
+      "pr": 228,
+      "pr_head_sha": "e8255541c105352ec8302da7c37a59b69cc352ed",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-006-amazon-first-screen",
+      "sha": "3c40283727f402d209fbdf15cbfd86719ded452b",
+      "status": "open_pr",
+      "pr": 229,
+      "pr_head_sha": "3c40283727f402d209fbdf15cbfd86719ded452b",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-012-cursor-anysphere",
+      "sha": "ba797cc73a407c1b33bccbf50ffb4ea5b021611a",
+      "status": "merged_unchanged",
+      "pr": 176,
+      "pr_head_sha": "ba797cc73a407c1b33bccbf50ffb4ea5b021611a",
+      "merge_commit_sha": "f3fc62816abd887387cd36860f296852a48c0efc",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-013-cognition",
+      "sha": "3005871bfad9e1819543767b3750e35fcb8b8c3a",
+      "status": "open_pr",
+      "pr": 177,
+      "pr_head_sha": "3005871bfad9e1819543767b3750e35fcb8b8c3a",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-batch2",
+      "sha": "2365dcf71b93dded6bddad386a6f16bd6cc23908",
+      "status": "closed_unmerged",
+      "pr": 196,
+      "pr_head_sha": "2365dcf71b93dded6bddad386a6f16bd6cc23908",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-first-screen",
+      "sha": "ddeb151ce6c9e0c1051f43a6c850168b7b2aadbb",
+      "status": "open_pr",
+      "pr": 230,
+      "pr_head_sha": "ddeb151ce6c9e0c1051f43a6c850168b7b2aadbb",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-015-sourcegraph",
+      "sha": "f966392fc50ca2f8d4531fb830ddef958485399b",
+      "status": "open_pr",
+      "pr": 178,
+      "pr_head_sha": "f966392fc50ca2f8d4531fb830ddef958485399b",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-batch2",
+      "sha": "23a08bbc0758223ce6f1f3b9dbda53c809ca9df8",
+      "status": "closed_unmerged",
+      "pr": 197,
+      "pr_head_sha": "23a08bbc0758223ce6f1f3b9dbda53c809ca9df8",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-first-screen",
+      "sha": "87b18eba8ca8fb04e990d077dc2b25f5600e7d6f",
+      "status": "open_pr",
+      "pr": 231,
+      "pr_head_sha": "87b18eba8ca8fb04e990d077dc2b25f5600e7d6f",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-017-jetbrains",
+      "sha": "819757303889907bdbe3b29a98a4eb37ec97d49d",
+      "status": "open_pr",
+      "pr": 179,
+      "pr_head_sha": "819757303889907bdbe3b29a98a4eb37ec97d49d",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-batch2",
+      "sha": "614bb47f3c5083ae3ec1668935f872985c0623af",
+      "status": "closed_unmerged",
+      "pr": 198,
+      "pr_head_sha": "614bb47f3c5083ae3ec1668935f872985c0623af",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-first-screen",
+      "sha": "b33a813e7527598f3eccc0440118548121e16f9d",
+      "status": "open_pr",
+      "pr": 232,
+      "pr_head_sha": "b33a813e7527598f3eccc0440118548121e16f9d",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-batch2",
+      "sha": "d684ab7e1029ff747029ada271a985b33489bb02",
+      "status": "closed_unmerged",
+      "pr": 199,
+      "pr_head_sha": "d684ab7e1029ff747029ada271a985b33489bb02",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-first-screen",
+      "sha": "b90ceccad65528279a549d7a82fead5006b516dd",
+      "status": "merged_unchanged",
+      "pr": 233,
+      "pr_head_sha": "b90ceccad65528279a549d7a82fead5006b516dd",
+      "merge_commit_sha": "50777c46410aa9ea8299321dbe50a6040d6b5144",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-batch2",
+      "sha": "0cf2615a68f1f5b23352128d7e323c88fc180228",
+      "status": "closed_unmerged",
+      "pr": 200,
+      "pr_head_sha": "0cf2615a68f1f5b23352128d7e323c88fc180228",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-first-screen",
+      "sha": "f047ac2442f222192c564c03d8e0890bff16a331",
+      "status": "merged_unchanged",
+      "pr": 234,
+      "pr_head_sha": "f047ac2442f222192c564c03d8e0890bff16a331",
+      "merge_commit_sha": "22f65ff5b1e513778e74271dfc19bff217de64c7",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-batch2",
+      "sha": "f21722ce344304188e67ad6dc6e161dc28968ab5",
+      "status": "closed_unmerged",
+      "pr": 201,
+      "pr_head_sha": "f21722ce344304188e67ad6dc6e161dc28968ab5",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-first-screen",
+      "sha": "67443a2afeb064af2057c9ce937962b0e0f77b3a",
+      "status": "merged_unchanged",
+      "pr": 236,
+      "pr_head_sha": "67443a2afeb064af2057c9ce937962b0e0f77b3a",
+      "merge_commit_sha": "b8ceb578f1dc347ac9553095ad7038b18c057d6d",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-022-openhands-all-hands-ai",
+      "sha": "6782094f08743e8b63ff53cf97f86746ac541e5f",
+      "status": "open_pr",
+      "pr": 180,
+      "pr_head_sha": "6782094f08743e8b63ff53cf97f86746ac541e5f",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-batch2",
+      "sha": "b84162369141a1af362268bd5207823c206e7933",
+      "status": "closed_unmerged",
+      "pr": 202,
+      "pr_head_sha": "b84162369141a1af362268bd5207823c206e7933",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-first-screen",
+      "sha": "c94cd95741b2612c7fb4323182f53342fc71bb5c",
+      "status": "merged_unchanged",
+      "pr": 237,
+      "pr_head_sha": "c94cd95741b2612c7fb4323182f53342fc71bb5c",
+      "merge_commit_sha": "a7d7b8d28842553a475c023d61e40c5b3eccfc53",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-batch2",
+      "sha": "f9884c462154ae0f291ab4ee45020f13a03245d3",
+      "status": "closed_unmerged",
+      "pr": 203,
+      "pr_head_sha": "f9884c462154ae0f291ab4ee45020f13a03245d3",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-first-screen",
+      "sha": "85a44ddcc66ee415ed3ce0252745a7a16519d79c",
+      "status": "merged_unchanged",
+      "pr": 238,
+      "pr_head_sha": "85a44ddcc66ee415ed3ce0252745a7a16519d79c",
+      "merge_commit_sha": "0ceeb208767cd3c525cd6e74a8f72f94495387ef",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-025-lovable-batch2",
+      "sha": "8b1b7142b245cb8eb1abaa8e6ab8575876813a3a",
+      "status": "merged_unchanged",
+      "pr": 204,
+      "pr_head_sha": "8b1b7142b245cb8eb1abaa8e6ab8575876813a3a",
+      "merge_commit_sha": "62951fae804182886aeaaa96d3d8314f8f348d51",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-026-stackblitz-batch2",
+      "sha": "ce968190327e180d1a7067159ec2d04a427bb862",
+      "status": "merged_unchanged",
+      "pr": 205,
+      "pr_head_sha": "ce968190327e180d1a7067159ec2d04a427bb862",
+      "merge_commit_sha": "257f9de44394093a7a03871dcdb986057482a0ea",
+      "protected": false
+    },
+    {
+      "branch": "research/company-intel-2026-033-github",
+      "sha": "1e7a612ebccec879a4e7e8ba110f19e0988a8fb2",
+      "status": "open_pr",
+      "pr": 181,
+      "pr_head_sha": "1e7a612ebccec879a4e7e8ba110f19e0988a8fb2",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/hiring-intelligence-2026-10-13",
+      "sha": "09c9c56798bb4cc4e71fc37ff14148fd47a0c698",
+      "status": "open_pr",
+      "pr": 225,
+      "pr_head_sha": "09c9c56798bb4cc4e71fc37ff14148fd47a0c698",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/independent-page-qa-2026-10-12",
+      "sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "status": "closed_unmerged",
+      "pr": 52,
+      "pr_head_sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-22-supply-chain-gate-oct2026",
+      "sha": "9e0ea7654defaf196202739a11e95a349bef0fd1",
+      "status": "merged_changed",
+      "pr": 216,
+      "pr_head_sha": "52e05f039236ce3d183b29f81fd51e13639b51dc",
+      "merge_commit_sha": "4ca69d03ecca7c1c5e8afd9c5b19d9ee01c7ee6b",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-6-rank-drift-oct2026",
+      "sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "status": "closed_unmerged",
+      "pr": 188,
+      "pr_head_sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-67-openai-six-month-intelligence",
+      "sha": "a16098011b55724073a0634187efca318095b96d",
+      "status": "merged_unchanged",
+      "pr": 175,
+      "pr_head_sha": "a16098011b55724073a0634187efca318095b96d",
+      "merge_commit_sha": "7ff7586a2fa9dd3315f48648ed6da78fc78d41d8",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-7-literature-ledger-oct2026",
+      "sha": "4172d37e77415ca6eff49266e27a2073b750cee4",
+      "status": "merged_changed",
+      "pr": 189,
+      "pr_head_sha": "d80afb2ea0c0ccabb5073f56d113ee20001a63d4",
+      "merge_commit_sha": "8a9e907fec7bcd6f393bf2383d1d5e72dcd4fcde",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-71-005-meta-screen",
+      "sha": "b0b25a5aeca78a0d4498646674a018dd1d3771f3",
+      "status": "closed_unmerged",
+      "pr": 191,
+      "pr_head_sha": "b0b25a5aeca78a0d4498646674a018dd1d3771f3",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-72-006-amazon-screen",
+      "sha": "8a8cdf217e57d6db13f14f685e5d4984cacd2af6",
+      "status": "closed_unmerged",
+      "pr": 192,
+      "pr_head_sha": "8a8cdf217e57d6db13f14f685e5d4984cacd2af6",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-73-007-mistral-ai-screen",
+      "sha": "5be40e0060d34c26e01617b2395cca23434bd373",
+      "status": "merged_unchanged",
+      "pr": 193,
+      "pr_head_sha": "5be40e0060d34c26e01617b2395cca23434bd373",
+      "merge_commit_sha": "5b445ace6703c96167f4770720e016887cb8c8fd",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-74-008-cohere-screen",
+      "sha": "63109a2416417d43d0ed10fbd295f9379d623369",
+      "status": "merged_unchanged",
+      "pr": 194,
+      "pr_head_sha": "63109a2416417d43d0ed10fbd295f9379d623369",
+      "merge_commit_sha": "9e0621d80b119439792158c05cdec48b46bf2052",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-75-009-deepseek-screen",
+      "sha": "46b498a2a7ba6123a2ae459633047c37501a1685",
+      "status": "merged_unchanged",
+      "pr": 195,
+      "pr_head_sha": "46b498a2a7ba6123a2ae459633047c37501a1685",
+      "merge_commit_sha": "a3f7bf0a7047c7e0ec272e27e644762846543416",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-76-010-alibaba-cloud-screen",
+      "sha": "f443d7d3394ccec8fdb5f8e77ac774db48af2644",
+      "status": "merged_unchanged",
+      "pr": 207,
+      "pr_head_sha": "f443d7d3394ccec8fdb5f8e77ac774db48af2644",
+      "merge_commit_sha": "1a9464f030572968d1590c268dc60c3e9b57e6a7",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-77-011-xai-screen",
+      "sha": "d1f890ce2ae9a9289d56fcc5260e223a2dc3cf2a",
+      "status": "merged_unchanged",
+      "pr": 209,
+      "pr_head_sha": "d1f890ce2ae9a9289d56fcc5260e223a2dc3cf2a",
+      "merge_commit_sha": "643f2b9d5acc8173d654bdbab41ea335ab58d7e4",
+      "protected": false
+    },
+    {
+      "branch": "research/issue-80-014-replit-screen",
+      "sha": "4a6b4581e90a0d648b88a21d6facd3c6bd43df2a",
+      "status": "closed_unmerged",
+      "pr": 212,
+      "pr_head_sha": "4a6b4581e90a0d648b88a21d6facd3c6bd43df2a",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-85-018-qodo-screen",
+      "sha": "4e9ade4ead17265465560e61ed83d263d001891b",
+      "status": "closed_unmerged",
+      "pr": 213,
+      "pr_head_sha": "4e9ade4ead17265465560e61ed83d263d001891b",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue-86-019-tabnine-screen",
+      "sha": "226d12fa0523f7a0af3620fb58b87398a1b76a26",
+      "status": "closed_unmerged",
+      "pr": 215,
+      "pr_head_sha": "226d12fa0523f7a0af3620fb58b87398a1b76a26",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue11-evidence-registry-20261012",
+      "sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "status": "closed_unmerged",
+      "pr": 184,
+      "pr_head_sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue22-package-trust-gate-20261012",
+      "sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "status": "closed_unmerged",
+      "pr": 186,
+      "pr_head_sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "merge_commit_sha": null,
+      "protected": false
+    },
+    {
+      "branch": "research/issue6-trending-overlap-audit-20261012",
+      "sha": "cc37e2014dd0cac3610d287574e2c9c56b82a14f",
+      "status": "merged_changed",
+      "pr": 182,
+      "pr_head_sha": "ac4cf1679741434a4268cd117dd438c96be1c875",
+      "merge_commit_sha": "006049932f9318dccf1bb711d37633269cbf9662",
+      "protected": false
+    },
+    {
+      "branch": "research/trending-independent-page-qa-issue2",
+      "sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "status": "closed_unmerged",
+      "pr": 54,
+      "pr_head_sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "merge_commit_sha": null,
+      "protected": false
+    }
+  ]
+}
