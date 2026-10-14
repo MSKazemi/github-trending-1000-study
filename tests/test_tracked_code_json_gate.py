@@ -114,7 +114,7 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         oid = self.git("hash-object", "-w", "--", ".hidden/good.json").stdout.strip()
         operation = subprocess.run(
             ["git", "-C", str(self.root), "update-index", "--index-info"],
-            input=f"100644 {oid} 2\\tconflicted.json\\n".replace("\\t", "\t").replace("\\n", "\n"),
+            input=f"100644 {oid} 2\tconflicted.json\n",
             capture_output=True, text=True, timeout=20,
         )
         self.assertEqual(operation.returncode, 0, operation.stderr)
@@ -136,9 +136,9 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         # PEP 263 permits a non-UTF-8 Python source only when it declares its
         # encoding; the gate checks Python language syntax, not JSON rules.
         path = self.root / "arbitrary" / "nested" / "good.py"
-        path.write_bytes(b"# coding: latin-1\\nvalue = '\\xe9'\\n".replace(b"\\n", b"\n").replace(b"\\xe9", b"\xe9"))
+        path.write_bytes(b"# coding: latin-1\nvalue = '\xe9'\n")
         self.assertEqual(audit_tracked_code_json(self.root)["python"], 1)
-        path.write_bytes(b"value = '\\xe9'\\n".replace(b"\\n", b"\n").replace(b"\\xe9", b"\xe9"))
+        path.write_bytes(b"value = '\xe9'\n")
         with self.assertRaisesRegex(IntegrityError, "good.py"):
             audit_tracked_code_json(self.root)
 
