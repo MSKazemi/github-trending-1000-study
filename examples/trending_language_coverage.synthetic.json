@@ -1,0 +1,55 @@
+{
+  "schema_version": "trending-coverage-1.0",
+  "dataset_kind": "synthetic",
+  "surfaces": [
+    {
+      "frame_id": "SYN-PYTHON",
+      "frame_as_of_utc": "2026-10-10T12:00:00Z",
+      "frame_source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "frame_definition": "Fictional, non-probability frame; not a complete GitHub language population",
+      "frame_sampling": "synthetic nonprobability example",
+      "eligible_repository_ids": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "capture": {
+        "capture_id": "synthetic-python-capture",
+        "captured_at_utc": "2026-10-11T12:00:00Z",
+        "page_url": "https://github.com/trending/python?since=daily",
+        "window": "daily",
+        "language_filter": "python",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "repository_ids": [
+          10,
+          11,
+          14
+        ]
+      }
+    },
+    {
+      "frame_id": "SYN-RUST",
+      "frame_as_of_utc": "2026-10-10T12:00:00Z",
+      "frame_source_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "frame_definition": "Separate fictional language-specific frame; IDs and denominators cannot be summed",
+      "frame_sampling": "synthetic nonprobability example",
+      "eligible_repository_ids": [
+        21,
+        24
+      ],
+      "capture": {
+        "capture_id": "synthetic-rust-capture",
+        "captured_at_utc": "2026-10-11T12:00:00Z",
+        "page_url": "https://github.com/trending/rust?since=daily",
+        "window": "daily",
+        "language_filter": "rust",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "repository_ids": [
+          21,
+          22
+        ]
+      }
+    }
+  ]
+}
