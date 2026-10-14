@@ -1,0 +1,27 @@
+name: Retire verified merged branches (safety hold)
+
+# SECURITY HOLD #277: Manual invocation is visible but cannot mutate refs.
+# This removes the historic push-triggered write job while PR #280 undergoes
+# independent security review. Do NOT silently enable destructive execution.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: retire-verified-merged-branches
+  cancel-in-progress: false
+
+jobs:
+  retirement-on-hold:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Explain explicit safety stop
+        run: |
+          echo "::error::Retirement is disabled pending qualified independent security review of PR #280, SHA-lease controls, and admin protection of main and recovery tags."
+          exit 1

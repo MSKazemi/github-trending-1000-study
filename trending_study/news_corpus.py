@@ -1,6 +1,8 @@
-"""Offline validation of provisional AI-era news evidence records.
+"""Offline structural screening of *provisional* news source leads.
 
-Does not validate source claims or authenticate independent review.
+Derived from draft PR #59 without importing unreviewed source records.
+Syntax, provenance fields, and duplicate URL detection never authenticate a
+source, rights, publication date, claim, actual human review, or research value.
 """
 import argparse
 from datetime import date, datetime, timezone
@@ -112,6 +114,8 @@ def validate_records(records):
                 or parsed.username is not None or parsed.password is not None
                 or parsed.netloc.endswith(":") or port == 0 or parsed.fragment):
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
+        if "\\" in url or re.search(r"%(?![0-9A-Fa-f]{2})", url):
+            raise ValueError(f"{name}: malformed or ambiguous canonical URL")
         # Strip known marketing trackers, not meaningful ?id=... or ?ref=...
         # selectors; treating all queries as duplicates can erase real studies.
         canonical = _canonical_url_key(parsed)
@@ -125,9 +129,16 @@ def validate_records(records):
         if (record["review_status"] != "pending"
                 or record["independent_reviewer"] is not None):
             raise ValueError(f"{name}: pending independent review only in schema v1.0")
-        if (record["screening_status"] != "included_provisional_single_reviewer"
-                or record["source_review_status"] !=
-                   "web_primary_page_inspected_not_independently_fact_checked"
+        allowed_provisional = (
+            record["screening_status"] == "included_provisional_single_reviewer"
+            and record["source_review_status"] ==
+                "web_primary_page_inspected_not_independently_fact_checked"
+        )
+        allowed_synthetic = (
+            record["screening_status"] == "synthetic_test_only"
+            and record["source_review_status"] == "not_inspected_synthetic_fixture"
+        )
+        if (not (allowed_provisional or allowed_synthetic)
                 or record["independent_corrob_status"] != "not_assessed"):
             raise ValueError(f"{name}: unverified source cannot claim independent review")
         if record["fulltext_stored"]:
@@ -145,11 +156,27 @@ def validate_directory(directory):
         raise ValueError("news records directory symlink is forbidden")
     if not directory.is_dir():
         raise ValueError("news records directory does not exist or is not a directory")
-    paths = sorted(directory.glob("NEWS-*.json"))
+    # Inspect every directory entry, not only matching globs: a misspelled
+    # JSON record or symlink must not silently disappear from the denominator.
+    paths = []
+    count = 0
+    for path in directory.iterdir():
+        count += 1
+        if count > MAX_FILES + 1:
+            raise ValueError("news source directory exceeds file-count limit")
+        if path.is_symlink():
+            raise ValueError(f"{path.name}: symlinked news input is forbidden")
+        if path.is_dir():
+            raise ValueError(f"{path.name}: nested news directories are not inspected")
+        if path.suffix == ".json":
+            if not ID_RE.fullmatch(path.stem):
+                raise ValueError(f"{path.name}: unexpected JSON record filename")
+            paths.append(path)
+        elif path.name != "README.md":
+            raise ValueError(f"{path.name}: unexpected non-record file")
     if not paths:
         raise ValueError("no news records found")
-    if len(paths) > MAX_FILES:
-        raise ValueError("news records exceed research artifact file-count limit")
+    paths.sort()
 
     records = []
     total_bytes = 0

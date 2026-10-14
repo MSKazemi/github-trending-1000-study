@@ -11,7 +11,7 @@ import unittest
 from trending_study.news_corpus import validate_directory, validate_records
 
 ROOT = Path(__file__).resolve().parents[1]
-ITEMS = ROOT / "references" / "ai-era-news" / "items"
+ITEMS = ROOT / "tests" / "fixtures" / "news_corpus"
 
 
 class NewsCorpusTests(unittest.TestCase):
@@ -21,18 +21,17 @@ class NewsCorpusTests(unittest.TestCase):
 
     def test_all_committed_items_pass_structural_validation(self):
         result = validate_directory(ITEMS)
-        self.assertGreaterEqual(result["records"], 20)
+        self.assertEqual(result["records"], 1)
         self.assertEqual(result["distinct_urls"], result["records"])
         self.assertEqual(result["evidence_status"], "provisional_structural_validation_only")
 
-    def test_initial_tranche_has_six_source_organizations_and_multiple_views(self):
-        records = [json.loads(p.read_text(encoding="utf-8"))
-                   for p in sorted(ITEMS.glob("NEWS-*.json"))]
-        self.assertGreaterEqual(len({r["publisher"] for r in records}), 6)
-        self.assertGreaterEqual(len({t for r in records for t in r["topics"]}), 6)
-        self.assertTrue(all(r["review_status"] == "pending" for r in records))
-        self.assertTrue(all(r["independent_reviewer"] is None for r in records))
-        self.assertTrue(all(r["fulltext_stored"] is False for r in records))
+    def test_fixture_is_explicitly_synthetic_and_never_self_reviewed(self):
+        self.assertEqual(self.item["screening_status"], "synthetic_test_only")
+        self.assertEqual(self.item["source_review_status"], "not_inspected_synthetic_fixture")
+        self.assertIn("Synthetic", self.item["publisher"])
+        self.assertEqual(self.item["review_status"], "pending")
+        self.assertIsNone(self.item["independent_reviewer"])
+        self.assertFalse(self.item["fulltext_stored"])
 
     def test_duplicate_canonical_source_even_with_tracking_query(self):
         copied = copy.deepcopy(self.item)
@@ -196,6 +195,47 @@ class NewsCorpusTests(unittest.TestCase):
             alias.symlink_to(items, target_is_directory=True)
             with self.assertRaisesRegex(ValueError, "symlink"):
                 validate_directory(alias)
+
+    def test_unexpected_json_filename_is_not_silently_skipped(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / "missing_id.json"
+            path.write_text(json.dumps(self.item), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unexpected JSON"):
+                validate_directory(root)
+
+    def test_nested_directory_and_non_record_file_are_not_silently_skipped(self):
+        with tempfile.TemporaryDirectory() as root:
+            base = Path(root)
+            (base / "nested").mkdir()
+            with self.assertRaisesRegex(ValueError, "nested news directories"):
+                validate_directory(base)
+        with tempfile.TemporaryDirectory() as root:
+            base = Path(root)
+            (base / "NEWS-2026-0001.json").write_text(
+                json.dumps(self.item), encoding="utf-8",
+            )
+            (base / "NOT_REVIEWED.txt").write_text("unreviewed", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unexpected non-record"):
+                validate_directory(base)
+
+    def test_reject_ambiguous_percent_escape_and_backslash(self):
+        for url in ("https://example.org/news/%xx",
+                    "https://example.org/news/%",
+                    "https://example.org\\\\other/news"):
+            with self.subTest(url=url):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = url
+                with self.assertRaisesRegex(ValueError, "canonical URL"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
+    def test_actual_vendor_citation_is_not_authenticated_by_synthetic_schema(self):
+        copied = copy.deepcopy(self.item)
+        copied["canonical_url"] = "https://example.org/claims/never-visited"
+        copied["screening_status"] = "included_provisional_single_reviewer"
+        copied["source_review_status"] = "web_primary_page_inspected_not_independently_fact_checked"
+        result = validate_records([(copied["id"] + ".json", copied)])
+        self.assertEqual(result["evidence_status"],
+                         "provisional_structural_validation_only")
 
     def test_bounded_source_read_does_not_rewrite_input(self):
         with tempfile.TemporaryDirectory() as folder:

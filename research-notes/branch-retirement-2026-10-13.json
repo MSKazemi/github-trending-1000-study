@@ -1,0 +1,802 @@
+{
+  "schema_version": "1.0",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "default_branch": "main",
+  "snapshot_utc": "2026-10-13T20:15:00Z",
+  "snapshot_main_sha": "6339775d73886b24f746139cdf55a34384f88c33",
+  "description": "Read-only branch inventory, NOT permission to delete without rechecking live PR, ref, merge ancestry and archive reachability.",
+  "archive_tag_prefix": "branch-archive/2026-10-13",
+  "batch_size": 20,
+  "total_branches": 124,
+  "candidate_count": 60,
+  "held_count": 64,
+  "candidates": [
+    {
+      "branch": "audit/pr-enterprise-decisions-20261013",
+      "sha": "e3c793ee3288b02849593871b2d66a4718fe1a35",
+      "merged_pr": 269,
+      "merge_commit_sha": "74a9d6b446c8df3516319ff84fd21bc580b72c62"
+    },
+    {
+      "branch": "audit/repository-wide-2026-10-12",
+      "sha": "f3fe51c38cf4d2ca3cea14c86285486a7924c60e",
+      "merged_pr": 45,
+      "merge_commit_sha": "981edf2e94881db873c54046620e86096a1dbb4b"
+    },
+    {
+      "branch": "ci/consolidate-research-csv-integrity-20261013",
+      "sha": "8e7fde2c95a48a6b059a421c396abc9a72697914",
+      "merged_pr": 264,
+      "merge_commit_sha": "01f21cd6d88b259811e48d324dc93f1fa0bdee6d"
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "sha": "2ee638a04d335ef895c5fd981c1b039ee8188d60",
+      "merged_pr": 253,
+      "merge_commit_sha": "151e6095dd6950039eefaf2a66fc0969a1ab10b3"
+    },
+    {
+      "branch": "ci/integrate-csv-and-json-number-integrity-20261013",
+      "sha": "42195e746e2d424a4ea705e4e61c19613f78140f",
+      "merged_pr": 262,
+      "merge_commit_sha": "b165b8406c6b9bce8cfd64a38896ae1d7e1cd504"
+    },
+    {
+      "branch": "ci/integrate-pr-merge-gate-20261013",
+      "sha": "f8eeb10ed3986fe961294480b0147db9de6ba220",
+      "merged_pr": 255,
+      "merge_commit_sha": "e84ae2ee66f052f59641ffc7af77b1ad6fcd53b6"
+    },
+    {
+      "branch": "ci/merge-quality-gates-20261013",
+      "sha": "20f88be555a170d6f52e6c5f568c905764fc33ce",
+      "merged_pr": 252,
+      "merge_commit_sha": "15b54646c8d110bdaae08832931f0d7308b5ffe4"
+    },
+    {
+      "branch": "docs/2026-10-12-industry-tech-outlook",
+      "sha": "2cd4b73464e37c5cb9929ce1e6b0f8c791955709",
+      "merged_pr": 60,
+      "merge_commit_sha": "008b48d23688e4436b532749ec5a1db0cee38110"
+    },
+    {
+      "branch": "docs/2026-source-monitoring-journals-32",
+      "sha": "a369669ef1911bd3a8c2fbb0ed4095bc42ce839d",
+      "merged_pr": 35,
+      "merge_commit_sha": "ee4970445d8df3cd470c6dcc4ed80e2e87a8c684"
+    },
+    {
+      "branch": "docs/microsoft-cto-research-lens-2026-10-12",
+      "sha": "0b32afb41ec4ecc87962113e32024bf1d3d2147e",
+      "merged_pr": 62,
+      "merge_commit_sha": "12313a6eb7c988727d1da28c5e05fd29be50577f"
+    },
+    {
+      "branch": "docs/preserve-enterprise-pr-guidance-245",
+      "sha": "a84ef0e76a2384d93a71f7afe7072467383aee12",
+      "merged_pr": 258,
+      "merge_commit_sha": "c25a9e415ec1407b387d396640ff228492e9aec5"
+    },
+    {
+      "branch": "feat/169-canonical-page-audit-adjudication",
+      "sha": "d4030bbb407a50327d259cce180f9f667c6cf8e1",
+      "merged_pr": 190,
+      "merge_commit_sha": "193c6a4aefd77b413f8e373822f6dd87fe56d5d0"
+    },
+    {
+      "branch": "feat/2-independent-page-audit",
+      "sha": "7944c8b38b088f7c0b39bae8e7200f6d2886b37d",
+      "merged_pr": 53,
+      "merge_commit_sha": "72d9e9b6df51352f95b9b3fe377fc5f0259e3220"
+    },
+    {
+      "branch": "feat/27-pilot-provenance-preflight",
+      "sha": "c0ab66938cfab4fec1b3f9db95785d3cc4fa025a",
+      "merged_pr": 40,
+      "merge_commit_sha": "d17b5e91b12407e4910ca180088c0b8372dd566c"
+    },
+    {
+      "branch": "feat/83-first-use-reuse-pilot",
+      "sha": "2b1263399681279f43dcf43f961eb3ed033caa47",
+      "merged_pr": 124,
+      "merge_commit_sha": "887d0770be776f5ac130ccfb14562c058913bdbb"
+    },
+    {
+      "branch": "feat/immutable-longitudinal-followup-4",
+      "sha": "64f0c5ee8400e47a00c7d3e6314ce6028a3149e7",
+      "merged_pr": 47,
+      "merge_commit_sha": "858e08a00598ca5509928dae2218933cf7aa2766"
+    },
+    {
+      "branch": "feat/issue-10-audited-task-cost-ledger",
+      "sha": "1d8763d23046293d02e2fb51c263f8faf45af2fe",
+      "merged_pr": 66,
+      "merge_commit_sha": "85472f83ad400a1bfb141d4a3a50064f6f80e572"
+    },
+    {
+      "branch": "feat/observed-sampling-flow-f01-t02",
+      "sha": "8c562594e6a3d272fc6ff366a3fc645906bb0636",
+      "merged_pr": 39,
+      "merge_commit_sha": "682967614e10b72bb94f73c9ce439ad73f65c031"
+    },
+    {
+      "branch": "feat/research-foundation",
+      "sha": "05512d0609133f5629727a513e1a02132034a8e5",
+      "merged_pr": 1,
+      "merge_commit_sha": "f05e8d56d77de8cda63ef910e170af246b25d81d"
+    },
+    {
+      "branch": "fix/2-trending-source-access-fail-closed",
+      "sha": "c04b21a083a447c620eaf364307d6127d59df97d",
+      "merged_pr": 226,
+      "merge_commit_sha": "901bf1d5b6ca189c3d8b0ac8c51c2bacf6a70d09"
+    },
+    {
+      "branch": "fix/canonical-artifact-integrity-csv-20261013",
+      "sha": "68919c4926f16278441a69c991284c5d9b4e8390",
+      "merged_pr": 265,
+      "merge_commit_sha": "f779643adf1b90a0972ced6b132f2a49b24f594e"
+    },
+    {
+      "branch": "fix/followup-ledger-invariants-issue4",
+      "sha": "a1b7e3e58cb8b1094a53127250b6bec363d1beef",
+      "merged_pr": 50,
+      "merge_commit_sha": "d23cc7aedf02eae191009ea8950dfd703487e656"
+    },
+    {
+      "branch": "fix/json-integrity-nested-symlink-20261013",
+      "sha": "186a77b9a93a9f677fe825eebe2a5ae2c9175692",
+      "merged_pr": 261,
+      "merge_commit_sha": "d6f6cff50bee30450e746084c490d25764c4c715"
+    },
+    {
+      "branch": "fix/literature-source-provenance-20261013",
+      "sha": "02efe755ec7b5b53e8a0e84534b87264212fca92",
+      "merged_pr": 241,
+      "merge_commit_sha": "af898e626c2ff0a51ee07ff0d687522e17544a93"
+    },
+    {
+      "branch": "fix/no-clobber-capture-safety-4",
+      "sha": "5e86221118dbd2fd9968404ec99743cd768dcb42",
+      "merged_pr": 46,
+      "merge_commit_sha": "9cd387d1eff9fb4ad707a7c35283095f077f29a9"
+    },
+    {
+      "branch": "fix/package-review-url-integrity-20261013",
+      "sha": "3d4b2abaaa2b46096780eb50cb2ddc3fdc925af2",
+      "merged_pr": 270,
+      "merge_commit_sha": "7b866b6aace859957fdb8c1d80c348f20e51df7e"
+    },
+    {
+      "branch": "fix/review-trending-overlap-filters-20261013",
+      "sha": "d6abdb671a508a0685995b43b898d71bf7121da4",
+      "merged_pr": 235,
+      "merge_commit_sha": "70187d73d78f09fec1cecf612385d0cddefba03a"
+    },
+    {
+      "branch": "fix/trending-structural-completeness-2",
+      "sha": "08f6b1340d2172c1dcaffd26c766bc11916889cd",
+      "merged_pr": 48,
+      "merge_commit_sha": "92f8985690313937ce4dd985f786c414a86a386d"
+    },
+    {
+      "branch": "quality/energy-model-crosswalk-20261013",
+      "sha": "91f716c1ad38bc37abd5b1740fb7461e147155a3",
+      "merged_pr": 257,
+      "merge_commit_sha": "8dd51d82c98810a4e3190829b2b030c095c08931"
+    },
+    {
+      "branch": "quality/issue22-preserve-purl-source-provenance-20261013",
+      "sha": "08c1f10751a107c7fb86f0e250bf2590c1380e27",
+      "merged_pr": 243,
+      "merge_commit_sha": "fd46e20e92f99499a9814a7b57c97cf849e6fc82"
+    },
+    {
+      "branch": "quality/merge-review-gate-2026-10-13",
+      "sha": "82d9c7a5802842797061379d097f2d4d5d04b3c3",
+      "merged_pr": 246,
+      "merge_commit_sha": "00f2b051ded6d72e7fbb74c2209baea6bbcc5588"
+    },
+    {
+      "branch": "research/2026-10-12-cross-ecosystem-task-intake",
+      "sha": "a01fea33530d1bc503f80b66121587fe717f458c",
+      "merged_pr": 63,
+      "merge_commit_sha": "4d524c460e6992f08fbc57118cdbd9962feb2098"
+    },
+    {
+      "branch": "research/2027-agent-adoption-selection",
+      "sha": "81c1d6f99206daaddc91416f033e207b18de9cf7",
+      "merged_pr": 14,
+      "merge_commit_sha": "a2b45d51ee76abe27344fb19c1c93ffdea858950"
+    },
+    {
+      "branch": "research/2027-blinded-candidate-review-audit",
+      "sha": "82f5d71e19fb121ec5b5b367637d566a18715d8a",
+      "merged_pr": 43,
+      "merge_commit_sha": "572022334bd8b3aee5bf54d1d03ef09e294e806e"
+    },
+    {
+      "branch": "research/2027-task-frame-itt-pilot",
+      "sha": "b22fc234af45a46855a61cba5b47c504609f2b46",
+      "merged_pr": 34,
+      "merge_commit_sha": "6e543875a0b42e9431052e7f078c52eefdd273cf"
+    },
+    {
+      "branch": "research/ai-era-reuse-practical-mission-41",
+      "sha": "17e9a0441732c0640ed5f38642c542f5a006702c",
+      "merged_pr": 42,
+      "merge_commit_sha": "7f27390e72981e7e56ce364739e40f656a333580"
+    },
+    {
+      "branch": "research/critical-gaps-ground-truth-2027",
+      "sha": "6cb57b6d21464b313b689b1b153ba0ab6bb499b2",
+      "merged_pr": 20,
+      "merge_commit_sha": "988ec6ae17bf55c4f2ca32141d3ccb2c7fb75ce3"
+    },
+    {
+      "branch": "research/faculty-methods-review-2026-10-12",
+      "sha": "ac6a1fe4947ba085408b6296ecf529520dd0772b",
+      "merged_pr": 61,
+      "merge_commit_sha": "df01edde8f306144d0206d0333517ba307ea5cda"
+    },
+    {
+      "branch": "research/figure-table-register-2027",
+      "sha": "b1cc4fc4ca9568227c6af019bfa380b188aac360",
+      "merged_pr": 36,
+      "merge_commit_sha": "6dc4c46157bc56320993910b341fae67af56a41f"
+    },
+    {
+      "branch": "research/independent-task-intake-pilot",
+      "sha": "54bf3fe04a4495f1a67d1e9b5a168f0a5630f03d",
+      "merged_pr": 38,
+      "merge_commit_sha": "06cdd7d02837a63bf9a04e93c283dd8bbf816e4d"
+    },
+    {
+      "branch": "research/issue-11-lesson-registry-oct2026",
+      "sha": "5a20be9999d93a7fb11667513e41a1829eb99f1b",
+      "merged_pr": 208,
+      "merge_commit_sha": "326137c98943a249f344c2bda1b0b1b3cbc9b600"
+    },
+    {
+      "branch": "research/issue-12-adoption-metrics-oct2026",
+      "sha": "b8f5349c51ecca3a48d924e59cea06a68105be97",
+      "merged_pr": 210,
+      "merge_commit_sha": "0b1b39e5188cf3d2242fd623eca4e4f6ea8c4c81"
+    },
+    {
+      "branch": "research/issue-15-quiet-reuse-frame-oct2026",
+      "sha": "d25ec750d209237275197ef7855045ef472f9c2f",
+      "merged_pr": 211,
+      "merge_commit_sha": "20fe899d5b685c709850ec633d982d94837b7fec"
+    },
+    {
+      "branch": "research/issue-18-energy-boundary-oct2026",
+      "sha": "b04f694bf517f520d3d6a920bcfe58b20bdbf7f6",
+      "merged_pr": 214,
+      "merge_commit_sha": "fa6982e3321a0d27a59503b193d08714010740c4"
+    },
+    {
+      "branch": "research/issue-19-judged-search-comparison-20261013",
+      "sha": "6d82dab3af9516fedf2eb2f617fd07ea99d4a85c",
+      "merged_pr": 219,
+      "merge_commit_sha": "1e6dca661e0285f9f5027ddff37c74d6ddf1f7e8"
+    },
+    {
+      "branch": "research/issue-23-lifecycle-break-even-20261013",
+      "sha": "4db0c782ef4dfb90ce52eb5faa909b8ff10d4964",
+      "merged_pr": 218,
+      "merge_commit_sha": "9b7abfbd6abba290605f4f95e7f2eecac0fc40c5"
+    },
+    {
+      "branch": "research/issue-24-maintainer-externalities-oct2026",
+      "sha": "bd4f5416ad5b1e73d4e7d5034edd8c07112b3f5c",
+      "merged_pr": 217,
+      "merge_commit_sha": "75abbd2294829c01b941dd306eb24680fa078b6d"
+    },
+    {
+      "branch": "research/issue-5-rubric-agreement-oct2026",
+      "sha": "12bcc6d4861dd03b65425f73136b9d2a066b5d8b",
+      "merged_pr": 187,
+      "merge_commit_sha": "c4627b74feac901496a343ea96eca3533b8537d0"
+    },
+    {
+      "branch": "research/issue-8-task-usefulness-oct2026",
+      "sha": "aca6ef0089ca9df452c6a920a6fc32d9f3012f40",
+      "merged_pr": 206,
+      "merge_commit_sha": "ed67b54f7b1ac9f7e5a2ab2b992a7cc002c226b8"
+    },
+    {
+      "branch": "research/issue-9-cluster-power-sensitivity-20261013",
+      "sha": "e058829fca1406a1c1a8fdc351aa04b6792b5446",
+      "merged_pr": 227,
+      "merge_commit_sha": "6300451a6fee8fe6bcaede2b7ff37050bf9cf09e"
+    },
+    {
+      "branch": "research/issue12-adoption-indicators-20261012",
+      "sha": "069eed0a833b3ca8a80a1cfac9394e66337f26e9",
+      "merged_pr": 185,
+      "merge_commit_sha": "58e3d20a7f72824937386d94077a4fb718611ea6"
+    },
+    {
+      "branch": "research/issue5-documentation-rubric-20261012",
+      "sha": "7a7eb9e92ced3f1ee9fbe93856c0f8c4b97324d9",
+      "merged_pr": 183,
+      "merge_commit_sha": "2111a5927c91975b81e6c05fcd1791beaabd60e7"
+    },
+    {
+      "branch": "research/open-access-journal-evidence-2026-10-12",
+      "sha": "bc8c053bf00f09198b7f107343e18caae3aa371e",
+      "merged_pr": 57,
+      "merge_commit_sha": "e736f835c9b261647047e478c614e143d124d02b"
+    },
+    {
+      "branch": "research/protocol-reconciliation-gates-2026-10-12",
+      "sha": "34103bfae09742fce38aca75963f727efea464b6",
+      "merged_pr": 51,
+      "merge_commit_sha": "61596cf52d8f8a6b47df83f9538d04c519b5d726"
+    },
+    {
+      "branch": "research/task-screen-stage1-issue65-20261012",
+      "sha": "d15c1e93815fdb9786951ba9192c79ab574b908f",
+      "merged_pr": 170,
+      "merge_commit_sha": "62734301ae803517d8b56f4f32ad479e0c8ca94c"
+    },
+    {
+      "branch": "review/harden-trending-overlap-20261013",
+      "sha": "b11ef3753c8f7889e287e450206263f7eb93d52f",
+      "merged_pr": 239,
+      "merge_commit_sha": "7efb2a8fdc042999745263228c0f8631c9f613ed"
+    },
+    {
+      "branch": "review/pr-merge-audit-2026-10-13",
+      "sha": "94ccdb66a6c4de6edbc78e7d96503cd6ba6de483",
+      "merged_pr": 249,
+      "merge_commit_sha": "8070dc8ce76ca05411e28258e6ee970f7f38624e"
+    },
+    {
+      "branch": "review/qodo-pr-evidence-crosswalk-20261013",
+      "sha": "7db7658f376fedf2dc885a1286b462e6c36085c8",
+      "merged_pr": 271,
+      "merge_commit_sha": "6339775d73886b24f746139cdf55a34384f88c33"
+    },
+    {
+      "branch": "strategy/five-year-2027-2031",
+      "sha": "5a5968fcba9c8c8353a43997237a7db4b005e003",
+      "merged_pr": 26,
+      "merge_commit_sha": "4d7ae7f37e52ddb5ab0be77072305bf04468a9bc"
+    },
+    {
+      "branch": "test/247-broken-evidence-alias-20261013",
+      "sha": "9772ca8402a706632fb06185be2f4e794fa6ed68",
+      "merged_pr": 268,
+      "merge_commit_sha": "c565cdaabd31ea765ac0de0168d6fc5a50d04921"
+    }
+  ],
+  "held": [
+    {
+      "branch": "audit/pr-merge-gate-log-20261013",
+      "sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "reason": "closed_unmerged_pr",
+      "pr": 256
+    },
+    {
+      "branch": "chore/enterprise-pr-merge-guardrails-20261013",
+      "sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "reason": "closed_unmerged_pr",
+      "pr": 245
+    },
+    {
+      "branch": "chore/safe-merged-branch-retirement-20261013",
+      "sha": "6339775d73886b24f746139cdf55a34384f88c33",
+      "reason": "retirement_tool_work_in_progress"
+    },
+    {
+      "branch": "ci/issue-240-canonical-csv-artifact-validation",
+      "sha": "d8916e13fb1b415b3d13b9ce0ff97742dfe0c75e",
+      "reason": "closed_unmerged_pr",
+      "pr": 260
+    },
+    {
+      "branch": "ci/research-json-integrity-247",
+      "sha": "e98d19fcb58c7833900e9f3a2a79941269b72861",
+      "reason": "branch_moved_after_merge",
+      "pr": 250,
+      "merged_head_sha": "9bfcf534f72201163359ae6bb2c44f94ff7f11f5"
+    },
+    {
+      "branch": "ci/restore-canonical-integrity-gate-20261013",
+      "sha": "e19087a17263ea1b4aeb9f96d3401c83b2757749",
+      "reason": "branch_moved_after_merge",
+      "pr": 266,
+      "merged_head_sha": "a933e06dce1062356867de8e8f80e91214d08873"
+    },
+    {
+      "branch": "fix/247-nested-symlink-clean-merge-20261013",
+      "sha": "368083577709a71875a03ef46a71c598fde01757",
+      "reason": "closed_unmerged_pr",
+      "pr": 267
+    },
+    {
+      "branch": "fix/canonical-nested-symlink-audit-20261013",
+      "sha": "7301a0207032dee0175ff27d12e965fd6e8b3b48",
+      "reason": "no_pr_mapping"
+    },
+    {
+      "branch": "fix/followup-ledger-gate-issue-4",
+      "sha": "489402cd6378b23195d751eca21f3bc717461f6d",
+      "reason": "closed_unmerged_pr",
+      "pr": 49
+    },
+    {
+      "branch": "main",
+      "sha": "6339775d73886b24f746139cdf55a34384f88c33",
+      "reason": "default_branch"
+    },
+    {
+      "branch": "quality/244-premerge-artifact-gate",
+      "sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "reason": "closed_unmerged_pr",
+      "pr": 251
+    },
+    {
+      "branch": "quality/canonical-artifact-ci-20261013",
+      "sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "reason": "closed_unmerged_pr",
+      "pr": 259
+    },
+    {
+      "branch": "quality/extend-canonical-data-integrity-csv-20261013",
+      "sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "reason": "closed_unmerged_pr",
+      "pr": 263
+    },
+    {
+      "branch": "research/ai-era-news-corpus-2026-10-12",
+      "sha": "9b2b58051c5c0f6b4598efc308ecaf2cba93eb53",
+      "reason": "open_pr",
+      "pr": 59,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-001-openai",
+      "sha": "4daf83b93014996d81c9fa766ebb3d33eca235cc",
+      "reason": "closed_unmerged_pr",
+      "pr": 171
+    },
+    {
+      "branch": "research/company-intel-2026-002-anthropic",
+      "sha": "0269e7ac5d9aba4ce9fecfdda832eab75a256b36",
+      "reason": "open_pr",
+      "pr": 172,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-003-google-deepmind",
+      "sha": "0701ce16c5430c48d8a4220c3aeece4879be1e7f",
+      "reason": "open_pr",
+      "pr": 173,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-004-microsoft",
+      "sha": "c385ac852daaf2e00fe1148755ae47b7c888dd11",
+      "reason": "open_pr",
+      "pr": 174,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-005-meta-first-screen",
+      "sha": "01a9930c30db792057417df1b05c6a630f220ecf",
+      "reason": "open_pr",
+      "pr": 228,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-006-amazon-first-screen",
+      "sha": "c96b65aed938fad8b1485d88c8662421061a5dc1",
+      "reason": "open_pr",
+      "pr": 229,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-012-cursor-anysphere",
+      "sha": "28b621612c22279a4a2ab28809da6db567f1bf05",
+      "reason": "open_pr",
+      "pr": 176,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-013-cognition",
+      "sha": "3005871bfad9e1819543767b3750e35fcb8b8c3a",
+      "reason": "open_pr",
+      "pr": 177,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-batch2",
+      "sha": "2365dcf71b93dded6bddad386a6f16bd6cc23908",
+      "reason": "closed_unmerged_pr",
+      "pr": 196
+    },
+    {
+      "branch": "research/company-intel-2026-014-replit-first-screen",
+      "sha": "e1ba1ba11d9222ce1a0ef21adc5f9606ef196d81",
+      "reason": "open_pr",
+      "pr": 230,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-015-sourcegraph",
+      "sha": "f966392fc50ca2f8d4531fb830ddef958485399b",
+      "reason": "open_pr",
+      "pr": 178,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-batch2",
+      "sha": "23a08bbc0758223ce6f1f3b9dbda53c809ca9df8",
+      "reason": "open_pr",
+      "pr": 197,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-016-amp-inc-first-screen",
+      "sha": "3f189a26f9fadddc048b08a87a11fe395ff4e0df",
+      "reason": "open_pr",
+      "pr": 231,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-017-jetbrains",
+      "sha": "819757303889907bdbe3b29a98a4eb37ec97d49d",
+      "reason": "open_pr",
+      "pr": 179,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-batch2",
+      "sha": "614bb47f3c5083ae3ec1668935f872985c0623af",
+      "reason": "closed_unmerged_pr",
+      "pr": 198
+    },
+    {
+      "branch": "research/company-intel-2026-018-qodo-first-screen",
+      "sha": "80e8358155f5d401d30123918cd648dc868ff51f",
+      "reason": "open_pr",
+      "pr": 232,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-batch2",
+      "sha": "d684ab7e1029ff747029ada271a985b33489bb02",
+      "reason": "closed_unmerged_pr",
+      "pr": 199
+    },
+    {
+      "branch": "research/company-intel-2026-019-tabnine-first-screen",
+      "sha": "b54a4523b182cf17b7fb78c9012f165b9259248c",
+      "reason": "open_pr",
+      "pr": 233,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-batch2",
+      "sha": "0cf2615a68f1f5b23352128d7e323c88fc180228",
+      "reason": "open_pr",
+      "pr": 200,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-020-augment-code-first-screen",
+      "sha": "80986e2d97629d2d2b21195ac81980ca1499b064",
+      "reason": "open_pr",
+      "pr": 234,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-batch2",
+      "sha": "f21722ce344304188e67ad6dc6e161dc28968ab5",
+      "reason": "open_pr",
+      "pr": 201,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-021-factory-first-screen",
+      "sha": "c178e0e7415613d99b36b948520f4941bb0b0072",
+      "reason": "open_pr",
+      "pr": 236,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-022-openhands-all-hands-ai",
+      "sha": "6782094f08743e8b63ff53cf97f86746ac541e5f",
+      "reason": "open_pr",
+      "pr": 180,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-batch2",
+      "sha": "b84162369141a1af362268bd5207823c206e7933",
+      "reason": "open_pr",
+      "pr": 202,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-023-cline-first-screen",
+      "sha": "c61da279cfe0170d2bd3d4ca5b31fdf504a4725a",
+      "reason": "open_pr",
+      "pr": 237,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-batch2",
+      "sha": "f9884c462154ae0f291ab4ee45020f13a03245d3",
+      "reason": "open_pr",
+      "pr": 203,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-024-zed-industries-first-screen",
+      "sha": "f19481c7cc6de979bcd2e5dd0dabd2081004ba98",
+      "reason": "open_pr",
+      "pr": 238,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-025-lovable-batch2",
+      "sha": "5f02cefd2244a9f7f0e6fffddf1997d9e2036a77",
+      "reason": "open_pr",
+      "pr": 204,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-026-stackblitz-batch2",
+      "sha": "90f57c98cd495fe240161c2545424797f7403d7d",
+      "reason": "open_pr",
+      "pr": 205,
+      "draft": true
+    },
+    {
+      "branch": "research/company-intel-2026-033-github",
+      "sha": "1e7a612ebccec879a4e7e8ba110f19e0988a8fb2",
+      "reason": "open_pr",
+      "pr": 181,
+      "draft": true
+    },
+    {
+      "branch": "research/hiring-intelligence-2026-10-13",
+      "sha": "09c9c56798bb4cc4e71fc37ff14148fd47a0c698",
+      "reason": "open_pr",
+      "pr": 225,
+      "draft": true
+    },
+    {
+      "branch": "research/independent-page-qa-2026-10-12",
+      "sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "reason": "closed_unmerged_pr",
+      "pr": 52
+    },
+    {
+      "branch": "research/issue-22-supply-chain-gate-oct2026",
+      "sha": "9e0ea7654defaf196202739a11e95a349bef0fd1",
+      "reason": "branch_moved_after_merge",
+      "pr": 216,
+      "merged_head_sha": "52e05f039236ce3d183b29f81fd51e13639b51dc"
+    },
+    {
+      "branch": "research/issue-6-rank-drift-oct2026",
+      "sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "reason": "closed_unmerged_pr",
+      "pr": 188
+    },
+    {
+      "branch": "research/issue-67-openai-six-month-intelligence",
+      "sha": "c2cf93d9388dacc6df5b693c6e9b665fd917a64e",
+      "reason": "open_pr",
+      "pr": 175,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-7-literature-ledger-oct2026",
+      "sha": "4172d37e77415ca6eff49266e27a2073b750cee4",
+      "reason": "branch_moved_after_merge",
+      "pr": 189,
+      "merged_head_sha": "d80afb2ea0c0ccabb5073f56d113ee20001a63d4"
+    },
+    {
+      "branch": "research/issue-71-005-meta-screen",
+      "sha": "b0b25a5aeca78a0d4498646674a018dd1d3771f3",
+      "reason": "open_pr",
+      "pr": 191,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-72-006-amazon-screen",
+      "sha": "8a8cdf217e57d6db13f14f685e5d4984cacd2af6",
+      "reason": "open_pr",
+      "pr": 192,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-73-007-mistral-ai-screen",
+      "sha": "30b684ee3dadeec5cccbf844e5be2b9dbc1d02e8",
+      "reason": "open_pr",
+      "pr": 193,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-74-008-cohere-screen",
+      "sha": "2a651ee17982b78c30b2829b2df23d24892b2326",
+      "reason": "open_pr",
+      "pr": 194,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-75-009-deepseek-screen",
+      "sha": "af77706c67bd473e9413ae121d77bd79baaabc16",
+      "reason": "open_pr",
+      "pr": 195,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-76-010-alibaba-cloud-screen",
+      "sha": "c4d1c816e1076d6b05c3bee598244f4ee4e1abff",
+      "reason": "open_pr",
+      "pr": 207,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-77-011-xai-screen",
+      "sha": "7dec2a474da6933f2523b5e174d7459beee3e97c",
+      "reason": "open_pr",
+      "pr": 209,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-80-014-replit-screen",
+      "sha": "4a6b4581e90a0d648b88a21d6facd3c6bd43df2a",
+      "reason": "open_pr",
+      "pr": 212,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-85-018-qodo-screen",
+      "sha": "4e9ade4ead17265465560e61ed83d263d001891b",
+      "reason": "open_pr",
+      "pr": 213,
+      "draft": true
+    },
+    {
+      "branch": "research/issue-86-019-tabnine-screen",
+      "sha": "226d12fa0523f7a0af3620fb58b87398a1b76a26",
+      "reason": "open_pr",
+      "pr": 215,
+      "draft": true
+    },
+    {
+      "branch": "research/issue11-evidence-registry-20261012",
+      "sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "reason": "closed_unmerged_pr",
+      "pr": 184
+    },
+    {
+      "branch": "research/issue22-package-trust-gate-20261012",
+      "sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "reason": "closed_unmerged_pr",
+      "pr": 186
+    },
+    {
+      "branch": "research/issue6-trending-overlap-audit-20261012",
+      "sha": "cc37e2014dd0cac3610d287574e2c9c56b82a14f",
+      "reason": "branch_moved_after_merge",
+      "pr": 182,
+      "merged_head_sha": "ac4cf1679741434a4268cd117dd438c96be1c875"
+    },
+    {
+      "branch": "research/trending-independent-page-qa-issue2",
+      "sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "reason": "closed_unmerged_pr",
+      "pr": 54
+    }
+  ]
+}
