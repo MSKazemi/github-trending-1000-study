@@ -117,6 +117,33 @@ class GoldSetTests(unittest.TestCase):
         with self.assertRaisesRegex(GoldsetError, "viable without full passing gates"):
             evaluate(d)
 
+    def test_two_abstaining_reviewers_cannot_establish_viability(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["candidates"][0]["reviewer_labels"] = ["unknown", "unknown"]
+        with self.assertRaisesRegex(GoldsetError, "two unknown reviewer labels"):
+            evaluate(d)
+
+    def test_two_abstaining_reviewers_cannot_establish_nonviability(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["candidates"][2]["reviewer_labels"] = ["unknown", "unknown"]
+        with self.assertRaisesRegex(GoldsetError, "two unknown reviewer labels"):
+            evaluate(d)
+
+    def test_unresolved_reviewers_remain_unknown(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["candidates"][1]["reviewer_labels"] = ["unknown", "unknown"]
+        d["tasks"][0]["candidates"][1]["final_label"] = "unknown"
+        self.assertEqual(evaluate(d)["results"][0]["pool_unknown"], 1)
+
+    def test_partial_review_needs_adjudicator_for_definitive_label(self):
+        d = copy.deepcopy(DATA)
+        c = d["tasks"][0]["candidates"][0]
+        c["reviewer_labels"] = ["viable", "unknown"]
+        with self.assertRaisesRegex(GoldsetError, "disagreement needs adjudicator_ref"):
+            evaluate(d)
+        c["adjudicator_ref"] = "SYNTHETIC ADJUDICATION ONLY"
+        self.assertEqual(evaluate(d)["results"][0]["pool_verified_viable"], 1)
+
     def test_invalid_availability_gate_rejected(self):
         d = copy.deepcopy(DATA)
         d["tasks"][0]["candidates"][0]["gates"]["availability"] = "guessed"

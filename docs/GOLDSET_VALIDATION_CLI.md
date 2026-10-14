@@ -15,6 +15,7 @@ The synthetic example has exactly one reviewed viable pair, one unknown pair and
 - Candidate has exact ID, recorded earliest availability, required gate statuses (functional, license, security, maintenance), two reviewer labels, final label and evidence reference.
 - A candidate cannot be labeled viable if any mandatory gate is unknown or failed or if its first available version postdates the task.
 - Reviewer disagreement needs a documented adjudicator.
+- Two `unknown` reviewer labels cannot establish either a `viable` or `not_viable` final decision, even if gate fields and evidence references are filled in. Keep the pair `unknown` until independent adjudication evidence exists. A single decisive reviewer plus an abstention requires a recorded adjudicator reference; the CLI cannot authenticate any human reviewer or adjudicator.
 - Ranked system results must correspond to candidates in the declared pool; do **not** silently treat an unknown search result as irrelevant.
 - Study/pilot dataset kinds are declared and never made genuine by the software: empirical provenance requires actual auditors, dated tests and publication review.
 
@@ -26,3 +27,6 @@ The synthetic example has exactly one reviewed viable pair, one unknown pair and
 - No real collection or human study is performed by this module.
 
 See [gold-standard protocol](REUSE_GOLD_STANDARD_2027.md), [critical gap register](CRITICAL_RESEARCH_GAPS_2027.md), and [science governance](SCIENTIFIC_GOVERNANCE_2027.md).
+
+
+**Related method design:** [task-first lexical, semantic and hybrid search comparison](TASK_FIRST_OSS_RETRIEVAL_COMPARISON_2026_10.md) (prospective, not yet trialed).

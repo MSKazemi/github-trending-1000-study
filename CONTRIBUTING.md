@@ -5,6 +5,7 @@ Contributions to methods, reproducibility, tests, docs and scientific critique a
 1. Open or claim a **bounded issue**. Explain scientific validity effects, not only code changes.
 2. Branch from `main`; keep PRs focused. Update docs alongside any changed schema, interface or sampling rule.
 3. Run `python -m unittest discover -s tests -v`; attach fixture coverage for parser changes.
+   Before JSON/JSONL evidence changes also run `python -m compileall -q trending_study tests` and `python -m trending_study.data_integrity --root .`. This checks syntax/integrity, **not source authenticity**. See [integrity gate](docs/RESEARCH_JSON_INTEGRITY_GATE.md).
 4. Include an exact reproducible example, assumptions, source URL, date, limitations and whether any data was actually collected.
 5. Do not upload credentials, private personal information, undocumented scrapes, inflated growth claims or generated findings presented as observations.
 6. Require human review before merging methodological changes or changing sampling/exclusion policy.
@@ -58,3 +59,13 @@ All AI-assisted changes require maintainer review. Disclose substantial AI assis
 
 ## Captured-page QA evidence requirements
 Any PR alleging fixed GitHub Trending parser completeness must include (subject to source redistribution rights) original source manifest SHA/UTC, two **independent** blind full-page reviewer lists, per-window TP/FP/FN with rank disagreements, parser-abstention counts, page-level identity and URLs, unresolved human disagreements/adjudication and actual source-access review. Run the `audit-pages` offline script with a preserved bundle and keep reports write-once. Synthetic cases are necessary regression tests but do **not** fulfill the minimum 30 real-row QA. See [QA method](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+## Enterprise pull-request review and preservation
+
+The authoritative [PR merge and scientific evidence gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and [PR template](.github/pull_request_template.md) require a small auditable change, reusable-code comparison, negative tests, current-head Python 3.10/3.12/3.14 Actions checks and documentation. Identify overlapping branches before editing; retain useful source citations, tests, schema choices and explicit limitations when superseding an approach. Never force-merge a dirty PR or overwrite write-once research evidence. Passing automated checks is **not** independent methodological, legal/security, human-subjects or scientific approval.
+
+## Enterprise code review and no-loss merge gate (2026-10-13)
+
+Use [the pull request template](.github/pull_request_template.md) and the [merge policy](docs/PR_QUALITY_AND_MERGE_POLICY.md). Every PR must have bounded scope, evidence and limitations, independent acceptance/failure checks, appropriate security/license/privacy review and documentation. GitHub Actions now includes Python 3.10/3.12/3.13/3.14 offline tests and [research-artifact integrity](scripts/check_research_artifacts.py); run both locally before review. Verify the complete checks against the exact current PR head **after** integration with the latest `main`.
+
+Do not merge a **Draft**, an unresolved conflict, outdated/failed checks, a changed research protocol without required qualified human approval, or two competing versions of the same research file without explicitly preserving their nonduplicated sources and corrections. Separate engineering validation from research validity. Source access remains disabled unless documented approvals and amended protocols permit it. See the [2026-10-13 PR collision audit](docs/PR_AUDIT_2026-10-13.md). Branch-protection enforcement requires a repository administrator; a template alone does not provide it.

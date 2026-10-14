@@ -27,8 +27,9 @@ EXPECTED_EXPANSION = {
     "collection_date_utc", "job_first_published_utc",
     "live_status_verified", "restriction",
 }
-# These employer-validated source families apply to this limited historical
-# pilot only. They are NOT a general allowlist for future company sampling.
+# These are expected URL host/path shapes for this historical pilot, NOT
+# verification of employer identity, posting content, or a live vacancy.
+# They are NOT a general allowlist for future company sampling.
 ORIGINS = {
     "OpenAI": ("openai.com", "/careers/"),
     "Anthropic": ("job-boards.greenhouse.io", "/anthropic/jobs/"),
@@ -150,6 +151,55 @@ class HiringDataIntegrityTests(unittest.TestCase):
                 self.assertTrue(row["restriction"].strip())
         self.assertEqual(set(row["company"] for row in rows),
                          {"Google", "NVIDIA"})
+
+    def test_access_mode_and_identity_quarantine_are_preserved(self):
+        _, rows = read_csv(AUDIT)
+        held = [r for r in rows if r["content_verification"] == "identity_hold"]
+        self.assertEqual(len(held), 1, "exactly one source has a known identity hold")
+        self.assertEqual(held[0]["company"], "Cursor")
+        for row in rows:
+            with self.subTest(seed_row=row["seed_row"]):
+                if row["content_verification"] == "read":
+                    self.assertEqual(row["source_granularity"], "direct_individual")
+                else:
+                    self.assertEqual(row["source_granularity"],
+                                     "direct_individual_indexed")
+                if row["content_verification"] == "identity_hold":
+                    note = (row["short_description_paraphrase"] + " " +
+                            row["analyst_notes"]).casefold()
+                    self.assertIn("spacexai", note)
+
+    def test_seed_title_only_rows_and_unknown_dates_are_not_promoted(self):
+        _, rows = read_csv(SEED)
+        self.assertEqual(sum(r["source_granularity"] == "index_only"
+                             for r in rows), 8)
+        for row in rows:
+            with self.subTest(title=row["job_title"]):
+                self.assertEqual(row["publication_date_utc"], "")
+                self.assertEqual(row["job_posting_date_utc"], "")
+                if row["source_granularity"] == "index_only":
+                    self.assertEqual(row["source_evidence_class"],
+                                     "official_careers_index")
+                    self.assertIn("title-only",
+                                  row["paraphrased_evidence"].casefold())
+                else:
+                    self.assertEqual(row["source_granularity"], "individual")
+                    self.assertEqual(row["source_evidence_class"],
+                                     "official_individual_page")
+
+    def test_original_and_expansion_have_no_overlapping_verified_ids(self):
+        _, audited = read_csv(AUDIT)
+        _, expansion = read_csv(EXPANSION)
+        urls = {r["individual_official_url"].rstrip("/").casefold()
+                for r in audited}
+        ids = {(r["company"], r["requisition_id"].casefold())
+               for r in audited if r["requisition_id"]}
+        for row in expansion:
+            with self.subTest(requisition=row["requisition_id"]):
+                self.assertNotIn(row["official_url"].rstrip("/").casefold(),
+                                 urls)
+                self.assertNotIn((row["company"],
+                                  row["requisition_id"].casefold()), ids)
 
     def test_observation_dates_are_calendar_dates_not_job_publication(self):
         for path, date_col in ((AUDIT, "source_observation_date_utc"),

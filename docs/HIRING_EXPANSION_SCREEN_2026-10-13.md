@@ -4,10 +4,10 @@
 
 ## Actual source coverage (2026-10-13)
 
-| Company frame | Evidence found | Coverage statement |
+| Company frame | Candidate source leads | Coverage statement |
 |---|---|---|
-| NVIDIA | Five first-party Workday requisition pages, including JR2017340 (reusable agent harness libraries) and JR2025164 (agent runtime, evaluation, training and CUDA) | *Deliberately selected*, no complete careers census |
-| Google | One careers result on agentic commerce serving and agent/business interaction schemas | Adjacent enterprise-agent area, not directly proof of coding-agent investment |
+| NVIDIA | Five Workday-format requisition URLs (one classified as directly accessed, four indexed-text only), including JR2017340 (reusable agent harness libraries) and JR2025164 (agent runtime, evaluation, training and CUDA) | *Deliberately selected*, no complete careers census |
+| Google | One Google careers URL from search-indexed text on agentic commerce serving and agent/business interaction schemas | Adjacent enterprise-agent area, not directly proof of coding-agent investment |
 | Microsoft | No sufficiently verified individual job record captured in this bounded pass | **Unknown**; NOT evidence of zero hiring |
 | Meta | No sufficiently verified individual job record captured in this bounded pass | **Unknown**; NOT evidence of zero hiring |
 | Mistral | No sufficiently verified individual job record captured in this bounded pass | **Unknown**; NOT evidence of zero hiring |

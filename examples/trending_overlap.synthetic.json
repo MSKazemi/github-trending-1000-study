@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "captures": [
+    {
+      "capture_id": "synthetic-a",
+      "captured_at_utc": "2026-10-10T12:00:00Z",
+      "page_url": "https://github.com/trending?since=daily",
+      "window": "daily",
+      "language_filter": null,
+      "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "repository_ids": [
+        10,
+        20,
+        30
+      ]
+    },
+    {
+      "capture_id": "synthetic-b",
+      "captured_at_utc": "2026-10-11T12:00:00Z",
+      "page_url": "https://github.com/trending?since=daily",
+      "window": "daily",
+      "language_filter": null,
+      "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "repository_ids": [
+        20,
+        10,
+        40
+      ]
+    }
+  ]
+}

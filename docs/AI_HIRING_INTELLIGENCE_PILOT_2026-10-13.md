@@ -4,7 +4,7 @@
 
 ## Subsequent individual-source QA (2026-10-13)
 
-**Correction to the first-pass seed:** [18-row row-by-row source audit](../references/ai_hiring_job_leads_source_audit_2026-10-13.csv) supplies individual employer/ATS posting URLs, unique requisition IDs where actually visible, a concise skills/responsibilities paraphrase and independent source-access status. The original [seed CSV](../references/ai_hiring_job_leads_2026-10-13.csv) is retained **unaltered** as the initial lead register; the audit supersedes its first-pass evidence classifications. **17/18** have an individual employer/ATS posting with described responsibilities and a company assignment that does not currently have an identified identity conflict; the remaining **one** (Cursor RL Environments) has an official page whose body names SpaceXAI and is **excluded from company comparisons pending identity adjudication**. This is an audit of a hand-picked sample, not proof that vacancies are active or a statistical hiring distribution.
+**Correction to the first-pass seed:** [18-row row-by-row source audit](../references/ai_hiring_job_leads_source_audit_2026-10-13.csv) supplies individual employer/ATS posting URLs, unique requisition IDs where actually visible, a concise skills/responsibilities paraphrase and source-access classifications (not independent third-party authentication). The original [seed CSV](../references/ai_hiring_job_leads_2026-10-13.csv) is retained **unaltered** as the initial lead register; the audit supersedes its first-pass evidence classifications. **17/18** audit rows identify an individual employer/ATS URL and a paraphrase of responsibilities, sometimes obtained from search-indexed text only, with no *recorded* company-identity conflict; this does not independently authenticate the employer or live posting; the remaining **one** (Cursor RL Environments) has an official page whose body names SpaceXAI and is **excluded from company comparisons pending identity adjudication**. This is an audit of a hand-picked sample, not proof that vacancies are active or a statistical hiring distribution.
 
 The 18 individual-source records have **mixed access evidence**: some descriptions were directly opened, while others were retrieved via search-index page text. Search indexing alone cannot authenticate what is live now. Individual posting/publication dates and application/closure status are **unknown** for all records. The sources do not establish exact historical job start dates. Do not count role/location variants as separate requisitions without a stable employer ID.
 
@@ -17,7 +17,7 @@ The 18 individual-source records have **mixed access evidence**: some descriptio
 
 ## Source evidence and examples
 
-| Company | Verified direct-description example | Narrow observable priority | Limits |
+| Company | Illustrative individual-source lead (access varies) | Narrow observable priority | Limits |
 |---|---|---|---|
 | OpenAI | [AI Systems Engineer, Codex Agents](https://openai.com/careers/ai-systems-engineer-codex-agents-san-francisco/) | Agent execution harness, sandboxing, orchestration, evals, production latency/cost and diagnostics | Hiring text is intent to staff work; no proof of particular future release |
 | OpenAI | [Agent Enablement Engineer](https://openai.com/careers/full-stack-software-engineer-agent-enablement-san-francisco/) | Agent identity and cross-platform user controls | Described direction, not measured successful deployment |
