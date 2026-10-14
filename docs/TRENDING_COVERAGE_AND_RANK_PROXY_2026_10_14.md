@@ -18,7 +18,7 @@ The new CLI reads a bounded, regular, non-symlink JSON file with the repository'
 
 ## 1. Coverage with an explicit denominator
 
-Input version: \`trending-coverage-1.0\`.
+Input version: `trending-coverage-1.0`.
 
 ~~~text
 {
@@ -31,6 +31,9 @@ Input version: \`trending-coverage-1.0\`.
       "frame_source_sha256": "64-hex content checksum",
       "frame_definition": "what the at-risk candidate frame contains/excludes",
       "frame_sampling": "how these frame IDs were assembled",
+      "frame_page_url": "exact intended page URL, frozen before capture",
+      "frame_window": "daily | weekly | monthly",
+      "frame_language_filter": "matching language label or null",
       "eligible_repository_ids": [positive unique numeric GitHub repository IDs],
       "capture": {existing Trending overlap capture schema}
     }
@@ -38,28 +41,28 @@ Input version: \`trending-coverage-1.0\`.
 }
 ~~~
 
-Each capture **reuses** the strict existing page contract: \`capture_id\`, canonical HTTPS \`page_url\`, \`window=daily|weekly|monthly\`, explicit nullable \`language_filter\`, strict \`captured_at_utc\`, 64-hex \`source_sha256\` and all \`repository_ids\` in displayed rank order. The frame must be defined no later than its capture and have at least one stable ID. Source hashes and declarations are checked for **structure only**. A page's language filter cannot be silently changed to compare different denominators. One output row is produced per supplied frame/capture pair.
+Each capture **reuses** the strict existing page contract: `capture_id`, canonical HTTPS `page_url`, `window=daily|weekly|monthly`, explicit nullable `language_filter`, strict `captured_at_utc`, 64-hex `source_sha256` and all `repository_ids` in displayed rank order. The frame must be defined no later than its capture and have at least one stable ID. Its declared URL/window/language must **exactly match** the later capture, preventing substitution of a different valid language page after selecting the frame. Source hashes and declarations are checked for **structure only**. A page's language filter cannot be silently changed to compare different denominators. One output row is produced per supplied frame/capture pair.
 
-For frame \`F\` (an explicitly **listed, predeclared set**) and its contemporaneous observed page set \`T\`, report:
+For frame `F` (an explicitly **listed, predeclared set**) and its contemporaneous observed page set `T`, report:
 
 | Output | Exact definition |
 | --- | --- |
-| \`denominator_predeclared_frame_ids\` | \`|F|\` |
-| \`numerator_observed_frame_ids\` | \`|F intersect T|\` |
-| \`frame_observed_fraction\` | \`|F intersect T| / |F|\` |
-| \`frame_ids_not_on_page\` | \`|F minus T|\` |
-| \`page_ids_outside_frame\` | \`|T minus F|\` |
-| \`observed_page_ids\` | \`|T|\` |
+| `denominator_predeclared_frame_ids` | `|F|` |
+| `numerator_observed_frame_ids` | `|F intersect T|` |
+| `frame_observed_fraction` | `|F intersect T| / |F|` |
+| `frame_ids_not_on_page` | `|F minus T|` |
+| `page_ids_outside_frame` | `|T minus F|` |
+| `observed_page_ids` | `|T|` |
 
-**Correct scope:** this fraction is defined only for the supplied at-risk frame. A convenience or incomplete frame is **not a random sample**; even a field labeled "probability" cannot establish probability sampling without verified design/inclusion probabilities. Each language surface and the unfiltered surface has its own denominator. Do not sum, average, or interpret cross-language frames as disjoint repository populations (repos can span languages); the output deliberately sets \`cross_language_population_coverage=null\`.
+**Correct scope:** this fraction is defined only for the supplied at-risk frame. A convenience or incomplete frame is **not a random sample**; even a field labeled "probability" cannot establish probability sampling without verified design/inclusion probabilities. Each language surface and the unfiltered surface has its own denominator. Do not sum, average, or interpret cross-language frames as disjoint repository populations (repos can span languages); the output deliberately sets `cross_language_population_coverage=null`.
 
 ### Synthetic sanity check
 
-The Python fixture has four fictional eligible IDs, of which two appear on the supplied Python page: \`2/4 = 0.5\`. One additional page entry falls outside that frame. The Rust fixture has two eligible IDs, one of which appears: \`1/2 = 0.5\`. Those values show **math and error handling only**. Neither result says Python and Rust have equal Trending opportunity, coverage or selection fairness.
+The Python fixture has four fictional eligible IDs, of which two appear on the supplied Python page: `2/4 = 0.5`. One additional page entry falls outside that frame. The Rust fixture has two eligible IDs, one of which appears: `1/2 = 0.5`. Those values show **math and error handling only**. Neither result says Python and Rust have equal Trending opportunity, coverage or selection fairness.
 
 ## 2. Chronological heldout proxy for **within-page displayed rank**
 
-Input version: \`trending-rank-proxy-1.0\`.
+Input version: `trending-rank-proxy-1.0`.
 
 ~~~text
 {
@@ -90,12 +93,14 @@ Input version: \`trending-rank-proxy-1.0\`.
 **Frozen and bounded evaluation procedure:**
 
 1. Require at least four strictly chronological captures of the **same exact page URL, daily/weekly/monthly window and language filter**, with a minimum of two IDs each. Each displayed ID must have exactly one feature record and a feature timestamp **strictly earlier** than its target capture. Unknown values are rejected, never imputed to zero.
-2. Divide pages at \`protocol_locked_at_utc\`: at least two training pages strictly before it and two heldout pages strictly after it. Reject captures exactly at lock time, unsorted captures, overlapping stable repository IDs across the split, unrecognized fields and duplicate records. The distinct-ID constraint deliberately prioritizes strong leakage control over retaining repeated-popularity observations.
-3. Freeze three simple, interpretable candidate predictors **before holdout**: descending \`prior_7d_star_delta\`, \`prior_stars\`, and \`prior_forks\`. These represent three independent **single-feature baselines**, **not** a fitted machine-learning model or estimated causal ranking weights.
-4. On each **training** page, score each predictor over all pairs \`(i,j)\` where displayed rank \`i\` precedes \`j\`: 1 for the expected higher feature value, 0 for inverted and **0.5** for a feature tie. Compute \`n(n-1)/2\` pair comparisons per page; macro-average accuracy across training pages. Choose the highest training macro score; exact ties use the fixed predictor order above.
-5. Evaluate that **unchanged selected predictor** on later heldout pages and publish per-page \`pairs\`, \`feature_ties\`, \`pairwise_accuracy\`, and equally weighted \`heldout_macro_pairwise_accuracy\`. Never select or tune a model using those heldout scores.
+2. Divide pages at `protocol_locked_at_utc`: at least two training pages strictly before it and two heldout pages strictly after it. Reject captures exactly at lock time, unsorted captures, overlapping stable repository IDs across the split, unrecognized fields and duplicate records. The distinct-ID constraint deliberately prioritizes strong leakage control over retaining repeated-popularity observations.
+3. Freeze three simple, interpretable candidate predictors **before holdout**: descending `prior_7d_star_delta`, `prior_stars`, and `prior_forks`. These represent three independent **single-feature baselines**, **not** a fitted machine-learning model or estimated causal ranking weights.
+4. On each **training** page, score each predictor over all pairs `(i,j)` where displayed rank `i` precedes `j`: 1 for the expected higher feature value, 0 for inverted and **0.5** for a feature tie. Compute `n(n-1)/2` pair comparisons per page; macro-average accuracy across training pages. Choose the highest training macro score; exact ties use the fixed predictor order above.
+5. Evaluate that **unchanged selected predictor** on later heldout pages and publish per-page `pairs`, `feature_ties`, `pairwise_accuracy`, and equally weighted `heldout_macro_pairwise_accuracy`. Never select or tune a model using those heldout scores.
 
-The fabricated fixture chooses \`prior_7d_star_delta\` on the training pages (accuracy \`1.0\`); its heldout page-pair scores are \`2/3\` and \`3/3\`, macro average \`5/6\`. This is **not a measured Trending association**. The implementation leaves \`holdout_frozen_by_external_review=false\`, \`selection_universe_known=false\`, \`independent_verification=false\` and \`eligible_for_confirmatory_cohort=false\`.
+For bounded runtime, the evaluator rejects inputs exceeding **250,000 total within-page pair comparisons** across all pages, before trying the three predictors; this is an engineering resource limit, not a sampling rule. Larger studies must explicitly version/review the cap rather than silently truncate pages. A feature SHA-256 must also differ from its target page's SHA-256, preventing reuse of the same artifact as a purported independent earlier feature source. Neither condition authenticates the actual data.
+
+The fabricated fixture chooses `prior_7d_star_delta` on the training pages (accuracy `1.0`); its heldout page-pair scores are `2/3` and `3/3`, macro average `5/6`. This is **not a measured Trending association**. The implementation leaves `holdout_frozen_by_external_review=false`, `selection_universe_known=false`, `independent_verification=false` and `eligible_for_confirmatory_cohort=false`.
 
 ### Limitations and validity threats
 
@@ -104,7 +109,7 @@ The fabricated fixture chooses \`prior_7d_star_delta\` on the training pages (ac
 - Within-page pair comparisons share repositories and are **dependent**, so the reported macro pairwise accuracy is descriptive. No p-values, standard errors, confidence intervals or significance claims are produced.
 - Repeated repositories *within* one split can correlate page scores. Cross-split repository IDs are forbidden, but unmeasured time-varying confounding, data freshness and incomplete frame construction remain.
 - Observing two chronological groups does not prove preregistration: the lock timestamp is self-reported and might be retrospective. Before a real prospective evaluation, precommit the protocol, candidate feature meanings, UTC cut, source snapshot schedule, sample size and analysis plan under independent review.
-- \`prior_7d_star_delta\` is defined using earlier measurements; it is **not** the Trending page's displayed period-star label and is not reconstructed from current API star counts.
+- `prior_7d_star_delta` is defined using earlier measurements; it is **not** the Trending page's displayed period-star label and is not reconstructed from current API star counts.
 - Historical page ranking may change with GitHub UI, filters or undisclosed scoring; the instrument never claims to reverse-engineer or reproduce that scoring.
 
 ## 3. Verification and future promotion gates
