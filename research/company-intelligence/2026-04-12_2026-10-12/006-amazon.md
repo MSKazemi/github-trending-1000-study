@@ -129,7 +129,7 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 
 This source-screened working report retains the full **original PR #192 report** and its factual limitations. Later [draft PR #229](https://github.com/MSKazemi/github-trending-1000-study/pull/229) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/006-amazon.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/006-amazon.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
 
-**Canonical working event index:** [006-amazon.events.csv](006-amazon.events.csv) contains 8 deduplicated *publisher URL leads*: 4 retained from the newer screening plus 4 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+**Canonical working event index:** [006-amazon.events.csv](006-amazon.events.csv) contains **9** deduplicated *publisher URL leads*: 4 retained from the later original screening, 4 unique archived older sources, and one newly located dated Kiro workflow changelog permalink on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
 
 | URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
@@ -160,3 +160,12 @@ This source-screened working report retains the full **original PR #192 report**
 - **Correction / uncertainty to retain:** Do not label CLI V3 universally default or the late-October change completed as of 12 October. Page text is a first-party rollout claim, not an install-verified release population or independent performance outcome.
 - **Falsifiable maintainer experiment (not performed):** Freeze a small spec-driven code-change task and compare documented spec/review-first flow with a baseline. Require clean-room acceptance and source/security checks; record task refusals and actual reviewer effort rather than promotional speed.
 - **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+
+
+## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+
+[Source search log and scientific cautions](source-audits/006-amazon.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 9 distinct publisher URL leads, not 9 independently confirmed product outcomes.**
+
+Added Sep 30 opt-in Kiro Web workflows. Apr 30 2027 Q Developer IDE support sunset is not a 2026 termination of all Q Developer services, and Oct 2026 CLI general-default claims must respect their dates.
+
+**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
