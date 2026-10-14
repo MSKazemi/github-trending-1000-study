@@ -32,6 +32,8 @@ Question + target outcome + target project type
 
 Statuses: `hypothesis`, `exploratory`, `validated_for_context`, `inconclusive`, `contradicted`, `superseded`. Every public card must state the scope and any uncertain fields.
 
+**Implementation crosswalk (2026-10-14):** The optional [v1.1 machine-readable offline ledger](LESSON_REGISTRY_AUDIT_2026_10.md) implements this prospective protocol; `reviewed_at_utc` is the explicit UTC equivalent of the older template's `reviewed_date`. It also requires an RQ ID and source observation time for E1+, the effect unit/interval level and analysis method for E2+, and a review record for E4/E5. These fields are declarations, not new human methods approval. `null_compatible` means an interval includes zero, **not** evidence of equivalence or no effect. This is a validation-interface clarification, not a retrospective preregistration amendment.
+
 ## Implementation recommendation categories
 - **Do now:** low-regret, safe practice with demonstrable task or adoption value in a similar project type; specify boundary.
 - **Test locally:** evidence suggestive or effect size small/heterogeneous; define a small, measured trial.
