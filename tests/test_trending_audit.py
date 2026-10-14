@@ -356,6 +356,23 @@ class OfflineCLITests(unittest.TestCase):
                             main(["coverage", "--input", str(source)])
                     self.assertEqual(caught.exception.code, 2)
 
+    def test_duplicate_json_key_names_do_not_leak_through_cli(self):
+        private_name = "private.person@example.invalid"
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "malformed.json"
+            source.write_text(
+                json.dumps({private_name: 1})[:-1]
+                + "," + json.dumps(private_name) + ":2}",
+                encoding="utf-8",
+            )
+            errors = io.StringIO()
+            with contextlib.redirect_stderr(errors):
+                with self.assertRaises(SystemExit) as caught:
+                    main(["coverage", "--input", str(source)])
+            self.assertEqual(caught.exception.code, 2)
+            self.assertIn("input details withheld", errors.getvalue())
+            self.assertNotIn(private_name, errors.getvalue())
+
     def test_reject_private_field_name_without_echoing_it(self):
         data = coverage()
         private_key = "private.person@example.invalid"
