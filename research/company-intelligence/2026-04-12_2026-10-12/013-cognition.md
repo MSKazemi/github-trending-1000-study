@@ -52,3 +52,31 @@ Freeze tasks, licenses and hidden independent acceptance criteria in advance, ke
 - [ ] Complete human factual/link review; only then consider closing #79.
 
 **2027 maintainer lesson (E0):** test whether an existing tool adds independently accepted reuse value before adopting it on reputation alone. [Company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [research grading](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
+
+## Dated source follow-up — 2026-10-14 (partial first-party check)
+
+This dated supplement preserves the previous 2026-10-12 E0 lead and reports what the [Devin 2026 official release notes](https://docs.devin.ai/release-notes/2026) say. The source is vendor-authored E1 release documentation; there is **no independent product testing, adoption proof, agent comparison or energy measurement**. Human factual reviewer remains pending.
+
+### Selected dated release-note event ledger
+
+| Segment | First-party changelog date | Selected claim or product scope | Verification limitation |
+|---|---|---|---|
+| Apr 12–30 | 2026-04-15 | Devin Review / pull-request management improvements | AI review not independent qualified human sign-off |
+| May | 2026-05-29 | Automation builder file-change triggers from GitHub push events | Actual token scope and permissions untested |
+| Jun | 2026-06-10 | Pending review state can be cancelled/invalidated when PR head changes | Fresh-head merge CI still needed |
+| Jul | 2026-07-22 | Devin Outposts for own-environment workloads | Vendor states disabled by default; rollout/eligibility uncertain |
+| Aug | 2026-08-07 | Security profiles for configured network access | Vendor-described GA; no independently performed bypass test |
+| Sep | 2026-09-02 | Code-scanning and automation-related changes | Detection quality and false positives unknown |
+| Oct 1–12 | 2026-10-09 | Repository setup including root-level AGENTS.md guidance | Actual permissions, confidentiality and instruction adherence untested |
+
+**Canonical source for each dated entry:** [2026 Devin release notes](https://docs.devin.ai/release-notes/2026). The date above is the **vendor's listed changelog entry date**; effective rollout can differ. Source count is **one official release-note index**, not seven independent corroborations. Entries were found with date-specific retrieval terms and `Devin release notes 2026 automation review Outposts security AGENTS.md`. Search engine results counts, excluded/inaccessible URL logs, all other entries, independent negative reports and corrections are **not systematically documented**. The underlying source page is mutable; archival/version timestamps remain needed.
+
+**Identity/corporate boundary:** Cognition's [2025 Windsurf transaction announcement](https://cognition.com/blog/windsurf) is a **pre-window company/product baseline**, not a 2026 event. Maintain company-level deduplication and verify contemporary ownership using separate evidence. [May 29 TechCrunch report](https://techcrunch.com/2026/05/29/cognitions-scott-wu-says-ai-coding-agents-shouldnt-replace-humans/) is journalism reporting leadership's point of view; it does **not** establish independent patch acceptance or safety.
+
+### 2027 falsifiable test card (proposed, not executed)
+
+Freeze 8–12 small maintainer-repo maintenance issues, SHA-pinned source and allowed dependencies, a fixed allocation schedule and hidden acceptance/license/security tests. Compare bounded delegated Devin work (if legitimately accessible on known terms) with human-guided reuse-first development. Track **every assigned task including failure**, independent reviewer accepted patches, human review and repair minutes, support follow-up, external reused-component evidence, CI iterations, agent permissions, USD costs if actually billed and reproducibility. Stop for an unreviewed merge, security or license incident, worse accepted-task quality or unacceptable increased human burden. Mapping to M1–M7: agent workflow, discovery, accepted task quality, real reuse, maintenance, rights/security, lifecycle cost. Do not infer CO2e from tokens.
+
+**Still required for acceptance:** full seven-segment vendor + independent source log with dates, counts, exclusions and contradictory evidence; verify each release/plan/rights and effective event date; verify ownership; non-author factual/link and scientific human review; latest integrated tree checks. **PR #177 must remain Draft and issue #79 open.** Green automated CI is not substantive scientific acceptance.
+
+**Practical lesson:** root-level AGENTS.md plus least-privilege agent tokens and independent review are useful *candidate controls*; verify they actually improve accepted maintenance tasks before relying on autonomous coding.
