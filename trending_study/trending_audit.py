@@ -37,6 +37,7 @@ MAX_SURFACES = 50
 MAX_FRAME_IDS = 10000
 MAX_PAGES = 64
 MAX_PROXY_PAIR_BUDGET = 250_000
+MAX_COUNTER = (1 << 63) - 1
 
 
 class TrendingAuditError(ValueError):
@@ -126,8 +127,10 @@ def evaluate_coverage(data):
                 or item["frame_window"] != item["capture"]["window"]
                 or item["frame_language_filter"] != item["capture"]["language_filter"]):
             raise TrendingAuditError("predeclared frame surface disagrees with capture")
-        if frame_time > capture_time:
-            raise TrendingAuditError("frame was defined after target capture")
+        if frame_time >= capture_time:
+            raise TrendingAuditError("frame must be defined strictly before target capture")
+        if item["frame_source_sha256"] == item["capture"]["source_sha256"]:
+            raise TrendingAuditError("frame must not reuse target page source digest")
         eligible = _identifiers(
             item["eligible_repository_ids"], "eligible_repository_ids",
             MAX_FRAME_IDS,
@@ -139,7 +142,7 @@ def evaluate_coverage(data):
             "window": item["frame_window"],
             "language_filter": item["frame_language_filter"],
             "capture_id": item["capture"]["capture_id"],
-            "capture_at_utc": item["capture"]["captured_at_utc"],
+            "captured_at_utc": item["capture"]["captured_at_utc"],
             "frame_as_of_utc": item["frame_as_of_utc"],
             "frame_source_sha256": item["frame_source_sha256"],
             "capture_source_sha256": item["capture"]["source_sha256"],
@@ -190,7 +193,8 @@ def _feature_rows(features, capture, capture_time):
             raise TrendingAuditError("feature and target page must not share source digest")
         for feature in PREDICTORS:
             value = row[feature]
-            if type(value) is not int or (feature != "prior_7d_star_delta" and value < 0):
+            if (type(value) is not int or abs(value) > MAX_COUNTER
+                    or (feature != "prior_7d_star_delta" and value < 0)):
                 raise TrendingAuditError(f"{feature}: require valid integer; unknown is not zero")
         by_id[repo_id] = row
     if set(by_id) != set(ranked):
