@@ -149,3 +149,14 @@ This source-screened working report retains the full **original PR #192 report**
 - 2026-10-12: [CLI changelog: version 2.30.0](https://kiro.dev/changelog/cli/) — `shipped`; source-bound, not an independent effectiveness test
 
 **Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #72 open until study acceptance is satisfied.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Kiro CLI V3 is rolling out as the default experience](https://kiro.dev/blog/cli-3/) — 2026-10-09 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The Kiro publisher distinguishes June opt-in V3 from startup prompts gradually beginning 12 October and a planned general default by the end of October. The latter is future intent relative to the study's 12 October cutoff.
+- **Correction / uncertainty to retain:** Do not label CLI V3 universally default or the late-October change completed as of 12 October. Page text is a first-party rollout claim, not an install-verified release population or independent performance outcome.
+- **Falsifiable maintainer experiment (not performed):** Freeze a small spec-driven code-change task and compare documented spec/review-first flow with a baseline. Require clean-room acceptance and source/security checks; record task refusals and actual reviewer effort rather than promotional speed.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
