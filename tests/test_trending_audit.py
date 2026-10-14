@@ -3,8 +3,10 @@ import contextlib
 import copy
 import io
 import json
+import os
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -353,6 +355,60 @@ class OfflineCLITests(unittest.TestCase):
                         with self.assertRaises(SystemExit) as caught:
                             main(["coverage", "--input", str(source)])
                     self.assertEqual(caught.exception.code, 2)
+
+    def test_reject_private_field_name_without_echoing_it(self):
+        data = coverage()
+        private_key = "private.person@example.invalid"
+        data["surfaces"][0][private_key] = "sensitive"
+        with self.assertRaises(TrendingAuditError) as error:
+            evaluate_coverage(data)
+        self.assertIn("unsupported_field_count=1", str(error.exception))
+        self.assertNotIn(private_key, str(error.exception))
+
+    def test_symlink_swap_between_lookup_and_open_is_rejected(self):
+        if not hasattr(os, "O_NOFOLLOW"):
+            self.skipTest("platform does not implement O_NOFOLLOW")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / "target.json"
+            target.write_text(json.dumps(coverage()), encoding="utf-8")
+            candidate = root / "candidate.json"
+            candidate.write_text(json.dumps(coverage()), encoding="utf-8")
+            true_open = os.open
+
+            def swap_before_open(path, flags):
+                candidate.unlink()
+                try:
+                    candidate.symlink_to(target)
+                except (OSError, NotImplementedError) as exc:
+                    self.skipTest(f"symlinks unavailable: {exc}")
+                return true_open(path, flags)
+
+            with patch.object(trending_audit.os, "open", side_effect=swap_before_open):
+                with self.assertRaisesRegex(TrendingAuditError, "non-symlink"):
+                    load_offline_json(candidate)
+
+    def test_actual_bytes_bound_even_if_file_grows_after_fstat(self):
+        with tempfile.TemporaryDirectory() as directory:
+            file = Path(directory) / "growing.json"
+            file.write_text(json.dumps(coverage()), encoding="utf-8")
+            original = file.stat()
+            # Simulate a file that grew after its size was checked.
+            observed_before_growth = SimpleNamespace(st_mode=original.st_mode, st_size=1)
+            with patch.object(trending_audit, "MAX_FILE_BYTES", 32):
+                with patch.object(trending_audit.os, "fstat",
+                                  return_value=observed_before_growth):
+                    with self.assertRaisesRegex(TrendingAuditError, "byte limit"):
+                        load_offline_json(file)
+
+    def test_nonregular_fifo_is_refused_without_blocking(self):
+        if not hasattr(os, "mkfifo"):
+            self.skipTest("FIFO unsupported on this platform")
+        with tempfile.TemporaryDirectory() as directory:
+            pipe = Path(directory) / "pipe.json"
+            os.mkfifo(pipe)
+            with self.assertRaisesRegex(TrendingAuditError, "regular non-symlink"):
+                load_offline_json(pipe)
 
     def test_reject_symlink_and_oversized_input(self):
         with tempfile.TemporaryDirectory() as directory:
