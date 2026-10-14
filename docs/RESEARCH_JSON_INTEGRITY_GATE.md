@@ -81,3 +81,10 @@ The new check is run before unit tests on **each** CI Python interpreter (3.10, 
 **Evidence boundary:** Git-tracked coverage and green CI are engineering claims about the particular checkout and interpreter. They do not authenticate source URLs, historical observations, ethics/legal permission, code safety, reviewer independence, approved preregistration or any environmental impact. Repository branch-rule enforcement and independent human merge review remain separate open gates tracked in [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248).
 
 **Practical lesson:** put a negative regression in a surprising location (for example `ops/broken.json` or `.hidden/broken.py`) and prove your CI rejects it. A scanner that only knows familiar directories cannot promise full tracked-file coverage.
+
+
+## 2026-10-14 follow-up: staged Git blob divergence
+
+The tracked-code/JSON gate also validates each eligible regular **Git index blob** using `git cat-file`, independently of the checked-out working-tree bytes. This catches an important local pre-commit failure mode: a contributor stages invalid Python/JSON and subsequently repairs only the working copy. Both representations must be parseable; differing but valid contents are allowed. The output `tracked_code_json.index_checked_bytes` counts inspected staged bytes, separately from `checked_bytes`. Blobs and working files each have independent 16 MiB/file and 128 MiB/aggregate bounds; blob type and declared size are checked before reading bytes. No clean/smudge filters or staged source code are executed.
+
+Four offline Git-index tests cover hidden staged duplicate JSON keys, staged module-level Python errors, valid divergent content and oversized staged blobs. CI checks the checkout and index actually supplied by GitHub Actions; this does **not** prove the local staging area, Git host provenance, file signatures, package safety, or trustworthiness of scientific observations. An authorized reviewer must still approve the PR and separately enable repository branch rules (#248).
