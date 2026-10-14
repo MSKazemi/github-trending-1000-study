@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 
+from .data_integrity import decode_research_json
 from .safe_io import publish_json
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
@@ -287,6 +288,51 @@ def _review(packet, report, slot):
 
 def audit_pair_reviews(packet, review_a, review_b):
     """Summarize *submitted* reviews, NEVER authenticate real humans."""
+    _keys(packet, {"schema_version", "dataset_kind", "selection_plan_sha256",
+                   "selection_source_sha256", "independent_task_claims_unverified",
+                   "nominated_pair_count", "tasks", "pairs", "packet_sha256"}, "packet")
+    if (packet["schema_version"] != "1.0" or
+            packet["independent_task_claims_unverified"] is not True or
+            not isinstance(packet["tasks"], list) or not packet["tasks"] or
+            not isinstance(packet["pairs"], list) or
+            type(packet["nominated_pair_count"]) is not int or
+            packet["nominated_pair_count"] != len(packet["pairs"])):
+        raise RegistryFrameError("invalid packet schema or pair denominator")
+    for field in ("selection_plan_sha256", "selection_source_sha256", "packet_sha256"):
+        _sha(packet[field], HEX64, field)
+    task_ids = set()
+    for task in packet["tasks"]:
+        _keys(task, {"task_id", "baseline_utc", "spec_sha256",
+                     "acceptance_sha256", "source_ref"}, "packet task")
+        tid = _string(task["task_id"], "task_id")
+        if IDENT.fullmatch(tid) is None or tid in task_ids:
+            raise RegistryFrameError("duplicate or invalid packet task ID")
+        task_ids.add(tid)
+        if _utc(task["baseline_utc"], "baseline_utc") > datetime.now(timezone.utc) + timedelta(minutes=5):
+            raise RegistryFrameError("future task baseline")
+        for field in ("spec_sha256", "acceptance_sha256"):
+            _sha(task[field], HEX64, field)
+        _string(task["source_ref"], "source_ref")
+    pair_ids, combinations = set(), set()
+    for pair in packet["pairs"]:
+        _keys(pair, {"pair_id", "task_id", "package_id", "version",
+                    "release_evidence_ref", "repository_id", "identity_evidence_ref"}, "packet pair")
+        pid = _string(pair["pair_id"], "pair_id")
+        tid = _string(pair["task_id"], "task_id")
+        pkg = _string(pair["package_id"], "package_id")
+        if (IDENT.fullmatch(pid) is None or pid in pair_ids or tid not in task_ids or
+                (tid, pkg) in combinations):
+            raise RegistryFrameError("duplicate or out-of-task-frame packet pair")
+        pair_ids.add(pid)
+        combinations.add((tid, pkg))
+        if not pkg.startswith("pkg:cargo/") or NAME.fullmatch(pkg[len("pkg:cargo/"):]) is None:
+            raise RegistryFrameError("invalid cargo package identifier")
+        rid = pair["repository_id"]
+        if rid is not None and (type(rid) is not int or rid <= 0):
+            raise RegistryFrameError("repository_id must be stable positive GitHub ID or null")
+        for field in ("version", "release_evidence_ref", "identity_evidence_ref"):
+            if pair[field] is not None:
+                _string(pair[field], field)
     if (packet.get("dataset_kind") != "unreviewed_task_component_pairs" or
             packet.get("packet_sha256") != _digest({
                 k: v for k, v in packet.items() if k != "packet_sha256"})):
@@ -342,7 +388,7 @@ def audit_pair_reviews(packet, review_a, review_b):
 
 
 def _read(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    return decode_research_json(Path(path).read_bytes(), str(path))
 
 
 def main(argv=None):
