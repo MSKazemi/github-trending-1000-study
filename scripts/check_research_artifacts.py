@@ -5,7 +5,6 @@ third-party licensing, evidence provenance, or participant consent). In
 particular, duplicate JSON keys must not silently replace earlier values.
 """
 import argparse
-import ast
 import stat
 import subprocess
 import csv
@@ -298,12 +297,10 @@ def audit_tracked_code_json(
                 _strict_json(raw.decode("utf-8"))
                 counts["json"] += 1
             else:
-                # Produces an AST only; never import or execute untrusted code.
-                # Bytes let Python honor a source file's PEP 263 encoding cookie.
-                compile(
-                    raw, relative, "exec", flags=ast.PyCF_ONLY_AST,
-                    dont_inherit=True,
-                )
+                # Compiling creates a code object but does not execute it;
+                # unlike AST-only parsing this checks contextual syntax too,
+                # e.g. 'return' outside a function. Respect PEP 263 cookies.
+                compile(raw, relative, "exec", dont_inherit=True)
                 counts["python"] += 1
         except (IntegrityError, OSError, UnicodeError, SyntaxError,
                 ValueError, OverflowError, RecursionError) as exc:

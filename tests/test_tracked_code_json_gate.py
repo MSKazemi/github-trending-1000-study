@@ -63,6 +63,14 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "good.py"):
             audit_tracked_code_json(self.root)
 
+    def test_compiler_rejects_contextual_syntax_errors_ast_would_miss(self):
+        path = self.root / "arbitrary/nested/good.py"
+        for source in ("return 1\n", "break\n", "nonlocal x\n"):
+            with self.subTest(source=source):
+                path.write_text(source, encoding="utf-8")
+                with self.assertRaisesRegex(IntegrityError, "good.py"):
+                    audit_tracked_code_json(self.root)
+
     def test_rejects_duplicate_nested_json_keys_outside_data_directories(self):
         path = self.root / ".hidden/good.json"
         path.write_text('{"study":{"status":"unknown","status":"verified"}}', encoding="utf-8")
