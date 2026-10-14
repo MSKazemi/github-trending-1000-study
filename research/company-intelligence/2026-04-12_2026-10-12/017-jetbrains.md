@@ -61,7 +61,7 @@ This follows the initial 2026-10-12 E0 lead, which is preserved above. Selected 
 
 | Segment | Publication/event lead | Scope and limitations |
 |---|---|---|
-| Apr 12–30 | [Junie CLI in JetBrains IDE](https://blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/) | April post, exact day and feature availability require renewed check |
+| Apr 12–30 | No eligible launch confirmed in this targeted pass; [Apr 8 IDE beta integration](https://blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/) is **pre-window baseline**, not an Apr 12–30 event | Publication date Apr 8; Beta status confirmed; complete segment search still pending |
 | May | No dated item selected | Incomplete search, not evidence of zero releases |
 | Jun | [Junie coding agent out of beta, Jun 17](https://blog.jetbrains.com/junie/2026/06/junie-coding-agent-out-of-beta/) | Vendor announced GA; no independent functional assessment |
 | Jul | No dated item selected | Needs complete IDE and Junie search |
@@ -77,6 +77,14 @@ This follows the initial 2026-10-12 E0 lead, which is preserved above. Selected 
 
 Use 8–12 prespecified Python bugfix tasks with pinned repositories, hidden functional tests and license/security gates. Compare IDE-context Junie assistance with CLI-only assistance, holding model/budget constant **only if technically possible**. Record every assigned task (including failures and abstentions), accepted repair rate, upstream code actually reused, human review/repair minutes, tool+hardware setup, billed cost and CI outcomes; only quantify energy with actual measurements. Prespecify rejection for any secret/license escape or meaningful deterioration in accepted results or total human cost. Address M1–M7 without claiming empirical findings.
 
-**Open blockers:** direct source-link and date QA, complete each month, validate company/entity/availability, independently screen criticism, confirm product license and actual terms, obtain non-author human factual signoff and fresh merge-candidate CI. **Keep PR #179 Draft and issue #84 open.**
+**Open blockers:** direct source-link and date QA, complete each month, validate company/entity/availability, independently screen criticism, confirm product license and actual terms, obtain non-author human factual signoff and fresh merge-candidate CI. **Issue #84 remains open; this versioned partial evidence screen may be published without treating the research as completed.**
 
 **Practical lesson:** freeze task fixtures and require independent acceptance before adding an IDE-specific agent dependency to other repositories.
+
+## Boundary and contradictory-term spot check — 2026-10-14
+
+**Important correction to the initial addendum:** the [Junie CLI IDE-integration post](https://blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/) appeared **April 8, 2026**, **four days before** the preregistered April 12 start; it is therefore excluded from the in-window event count and retained solely as **historical product baseline**. The post describes the integration as **Beta**. The earlier first-pass chronology could otherwise falsely include an out-of-window event. The [June 17 Junie exits beta post](https://blog.jetbrains.com/junie/2026/06/junie-coding-agent-out-of-beta/) refers to the coding agent; it does not automatically establish that every separate IDE integration was GA on that date.
+
+Spot checks: [Aug 24 Junie Local announcement](https://junie.jetbrains.com/blog/junie-local-launch/), [official Local hardware constraints](https://junie.jetbrains.com/local), [Sep 18 vendor internal-model evaluation](https://junie.jetbrains.com/blog/junie-local-smarter-faster/), and [Oct 2 Junie Lite announcement](https://junie.jetbrains.com/blog/junie-lite/). **Caution:** the Junie Lite marketing post calls the tier free, but its footer states the offer is valid only through **Dec 31, 2026**; do not extrapolate indefinite future free access from promotional descriptions or documentation. Vendor evaluations are not independent task acceptance or energy measurements.
+
+**Merge scope:** these selected links and unexecuted experiment sketch are preliminary first-party intelligence, not issue #84 completion. Independent review, exact search census across every month, corporate identity/availability/licensing verification and task testing remain outstanding.
