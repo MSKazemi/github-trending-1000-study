@@ -4,10 +4,12 @@ Create and verify a permanent recovery tag before deletion. No branch
 enumeration is used for deletion and no review/field-study claim is made.
 """
 import argparse
+import base64
 import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
@@ -105,8 +107,40 @@ class GitHubClient:
     def post(self, path, payload):
         return self.request("POST", path, payload)
 
-    def delete(self, path):
-        return self.request("DELETE", path)
+
+    def delete_with_lease(self, branch, expected_sha):
+        """Atomically delete only the exact expected remote ref (Git receive-pack)."""
+        branch = _safe_name(branch)
+        expected_sha = _sha(expected_sha)
+        # Use ephemeral, narrowly scoped Git configuration. Never put the token
+        # in the URL, command arguments, output or a persistent credentials file.
+        basic = base64.b64encode(
+            ("x-access-token:" + self.token).encode("utf-8")
+        ).decode("ascii")
+        env = os.environ.copy()
+        env.update({
+            "GIT_TERMINAL_PROMPT": "0",
+            "GIT_CONFIG_COUNT": "1",
+            "GIT_CONFIG_KEY_0": "http.https://github.com/.extraheader",
+            "GIT_CONFIG_VALUE_0": "AUTHORIZATION: basic " + basic,
+        })
+        command = [
+            "git", "-c", "credential.helper=", "push", "--porcelain",
+            "--force-with-lease=refs/heads/" + branch + ":" + expected_sha,
+            "https://github.com/" + self.repository + ".git",
+            ":refs/heads/" + branch,
+        ]
+        try:
+            result = subprocess.run(
+                command, env=env, input="", text=True,
+                capture_output=True, timeout=45, check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise CleanupError("SHA-leased git push could not complete") from exc
+        if result.returncode != 0:
+            # Never print remote output, which may contain untrusted or
+            # sensitive text. A stale lease must leave the branch intact.
+            raise CleanupError("SHA lease rejected, or deletion denied by GitHub")
 
 def _git_ref(repo, branch):
     return f"/repos/{repo}/git/ref/heads/{quote(branch, safe='/')}"
@@ -122,14 +156,22 @@ def _open_prs(repo, owner, branch):
                        "per_page": 100})
     return f"/repos/{repo}/pulls?{query}"
 
-def retire_one(client, repo, item):
+def retire_one(client, repo, item, *, audit_only=False):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
     name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
     ref_path = _git_ref(repo, name)
     try:
         ref = client.get(ref_path)
     except ApiNotFound:
-        return "already_absent"
+        # An absent branch is not evidence of preserved history. Even on a
+        # retry, require its exact original commit to remain archived.
+        archive = _tag_ref(repo, f"{ARCHIVE_PREFIX}/{name}")
+        try:
+            saved = client.get(archive)
+        except ApiNotFound:
+            return "blocked_absent_without_archive"
+        return ("already_absent" if saved.get("object", {}).get("sha") == sha
+                else "blocked_absent_without_archive")
     if ref.get("object", {}).get("sha") != sha:
         return "blocked_changed_ref"
     branch = client.get(_protected_branch(repo, name))
@@ -145,10 +187,38 @@ def retire_one(client, repo, item):
             or pr.get("merge_commit_sha") != item["merge_commit_sha"]):
         return "blocked_pr_not_identical_and_merged"
     owner = repo.split("/", 1)[0]
-    if client.get(_open_prs(repo, owner, name)):
+    open_prs = client.get(_open_prs(repo, owner, name))
+    if not isinstance(open_prs, list) or len(open_prs) >= 100:
+        return "blocked_incomplete_open_pr_check"
+    if open_prs:
         return "blocked_open_pr"
+
+    main = client.get(f"/repos/{repo}/branches/main")
+    main_sha = (main or {}).get("commit", {}).get("sha")
+    if not isinstance(main_sha, str) or not SHA.fullmatch(main_sha):
+        return "blocked_unverifiable_main"
+    ancestry = client.get(
+        f"/repos/{repo}/compare/{item['merge_commit_sha']}...{main_sha}"
+    )
+    if (not isinstance(ancestry, dict)
+            or ancestry.get("status") not in ("ahead", "identical")
+            or ancestry.get("behind_by") != 0):
+        return "blocked_merge_not_in_main"
     tag = f"{ARCHIVE_PREFIX}/{name}"
     tag_path = _tag_ref(repo, tag)
+    if audit_only:
+        # A preflight must disclose a conflicting existing recovery tag now,
+        # not report eligibility and defer the conflict to destructive mode.
+        # The absence of a tag is expected before the approved archive step.
+        try:
+            archived = client.get(tag_path)
+        except ApiNotFound:
+            return "eligible_read_only"
+        if (not isinstance(archived, dict)
+                or not isinstance(archived.get("object"), dict)
+                or archived["object"].get("sha") != sha):
+            return "blocked_archive_tag_conflict"
+        return "eligible_read_only"
     try:
         present = client.get(tag_path)
         if present.get("object", {}).get("sha") != sha:
@@ -158,16 +228,32 @@ def retire_one(client, repo, item):
                     {"ref": "refs/tags/" + tag, "sha": sha})
     if client.get(tag_path).get("object", {}).get("sha") != sha:
         return "blocked_unverified_archive"
-    # GitHub DELETE has no atomic compare-and-swap. Recheck as near as
-    # possible; a race after this point requires repo-side write controls.
+    # Preflight before the final remote compare-and-delete transaction.
+    # Only the subsequent git receive-pack lease can exclude a late writer.
     if client.get(ref_path).get("object", {}).get("sha") != sha:
         return "blocked_raced_branch_update"
-    if client.get(_open_prs(repo, owner, name)):
+    fresh_open_prs = client.get(_open_prs(repo, owner, name))
+    if not isinstance(fresh_open_prs, list) or len(fresh_open_prs) >= 100:
+        return "blocked_incomplete_open_pr_check"
+    if fresh_open_prs:
         return "blocked_new_open_pr"
-    client.delete(ref_path.replace("/git/ref/", "/git/refs/"))
-    return "retired_with_archive_tag"
+    # Archive verification must be as late as the ref lease: a deleted or
+    # repointed tag must not be silently treated as valid backup evidence.
+    try:
+        late_archive = client.get(tag_path)
+    except ApiNotFound:
+        return "blocked_archive_disappeared_before_delete"
+    if (not isinstance(late_archive, dict)
+            or late_archive.get("object", {}).get("sha") != sha):
+        return "blocked_archive_changed_before_delete"
+    client.delete_with_lease(name, sha)
+    try:
+        client.get(ref_path)
+    except ApiNotFound:
+        return "retired_with_archive_tag"
+    return "blocked_branch_still_present"
 
-def execute(plan, client):
+def execute(plan, client, *, audit_only=False):
     validate_plan(plan)
     if client.repository != plan["repository"]:
         raise CleanupError("GITHUB_REPOSITORY disagrees with approved cleanup plan")
@@ -177,7 +263,7 @@ def execute(plan, client):
     results = []
     for item in plan["branches"]:
         try:
-            status = retire_one(client, repo, item)
+            status = retire_one(client, repo, item, audit_only=audit_only)
         except CleanupError as exc:
             status = "error_" + type(exc).__name__
         print(f"#{item['merged_pr']} {item['branch']}: {status}", flush=True)
@@ -188,20 +274,31 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Archive and retire verified merged branches only")
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--audit-live", action="store_true",
+                        help="Verify live remote state without any writes")
+    parser.add_argument("--confirm", default="",
+                        help="Exact operator confirmation for destructive mode")
     args = parser.parse_args(argv)
     try:
         if args.plan.stat().st_size > 35000:
             raise CleanupError("cleanup plan exceeds 35 KB")
         plan = validate_plan(json.loads(args.plan.read_text(encoding="utf-8")))
-        if not args.execute:
+        if args.execute and args.audit_live:
+            raise CleanupError("choose exactly one mode")
+        if args.execute and args.confirm != "RETIRE_VERIFIED_MERGED_BRANCHES":
+            raise CleanupError("destructive mode requires exact confirmation")
+        if not args.execute and not args.audit_live:
             print(f"DRY RUN: {len(plan['branches'])} pinned merged-PR branches; no network or changes")
             return 0
         client = GitHubClient(os.getenv("GITHUB_REPOSITORY", ""),
                               os.getenv("GITHUB_TOKEN", ""))
-        records = execute(plan, client)
-        blocked = [r for r in records if r["status"] not in
-                   ("retired_with_archive_tag", "already_absent")]
-        print(json.dumps({"retired": sum(r["status"] == "retired_with_archive_tag"
+        records = execute(plan, client, audit_only=args.audit_live)
+        accepted = ({"eligible_read_only", "already_absent"} if args.audit_live
+                    else {"retired_with_archive_tag", "already_absent"})
+        blocked = [r for r in records if r["status"] not in accepted]
+        print(json.dumps({"eligible_read_only": sum(r["status"] == "eligible_read_only"
+                                                    for r in records),
+                          "retired": sum(r["status"] == "retired_with_archive_tag"
                                          for r in records),
                           "already_absent": sum(r["status"] == "already_absent"
                                                 for r in records),
