@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "status": "provisional_offline_provenance_crosswalk",
+  "company_id": "018",
+  "as_of_utc": "2026-10-14",
+  "independent_source_review": "pending",
+  "not_empirical_validation": true,
+  "source_ledger": "018-qodo.2026-10-12-source-ledger.csv",
+  "canonical_events": "../018-qodo.events.csv",
+  "meaning": {
+    "archived_evidence_tier_E1": "The archived ledger classified a publisher-controlled statement. This does not authenticate deployment, accuracy, license, source date or independent outcomes.",
+    "canonical_confidence_E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD": "A historical publisher lead has not received independent factual/date review on promotion into the working ledger.",
+    "canonical_confidence_E1_VENDOR_DOCUMENT_ONLY": "A working publisher-document entry supports only what the vendor stated, not neutral task effectiveness."
+  },
+  "mappings": [
+    {
+      "archived_event_id": "CI-018-01",
+      "working_event_id": "CI-018-01",
+      "relation": "identical_id_and_source_url"
+    },
+    {
+      "archived_event_id": "CI-018-02",
+      "working_event_id": "CI-018-02",
+      "relation": "identical_id_and_source_url"
+    },
+    {
+      "archived_event_id": "CI-018-03",
+      "working_event_id": "CI-018-03",
+      "relation": "identical_id_and_source_url"
+    },
+    {
+      "archived_event_id": "CI-018-04",
+      "working_event_id": "CI2026-018-003",
+      "relation": "source_url_and_publication_date_alias",
+      "note": "Original vendor Agentic Toolbox row retained in source ledger; working event deduplicates the same vendor URL under a new event ID. This is an identifier/provenance map, not independent verification."
+    },
+    {
+      "archived_event_id": "CI-018-05",
+      "working_event_id": "CI-018-05",
+      "relation": "identical_id_and_source_url"
+    },
+    {
+      "archived_event_id": "CI-018-06",
+      "working_event_id": "CI-018-06",
+      "relation": "identical_id_and_source_url"
+    }
+  ],
+  "review_gates": [
+    "independent primary-source URL and date verification",
+    "historically pinned license artifact for CI-018-02",
+    "separate shipping date and access permissions verification",
+    "independent research/methods signoff before promoted factual findings"
+  ]
+}
