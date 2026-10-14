@@ -419,6 +419,10 @@ class LessonRegistryV11Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(LessonError, "regular non-symlink"):
                 audit_file(directory)
+            with contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as exit_status:
+                    main(["--input", directory])
+            self.assertEqual(exit_status.exception.code, 2)
 
     def test_source_rejects_malformed_authority_and_whitespace(self):
         p = v11_observation()

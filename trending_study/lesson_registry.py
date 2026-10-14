@@ -253,15 +253,23 @@ def audit_file(path):
         descriptor = os.open(path, flags)
     except OSError as exc:
         raise LessonError("input must be a readable regular non-symlink file") from exc
-    with os.fdopen(descriptor, "rb") as stream:
-        metadata = os.fstat(stream.fileno())
+    try:
+        # A directory can be opened with os.open on Linux but cannot be
+        # wrapped by os.fdopen as a binary stream. Inspect fstat first.
+        metadata = os.fstat(descriptor)
         if not stat.S_ISREG(metadata.st_mode):
             raise LessonError("input must be a regular non-symlink file")
         if metadata.st_size > MAX_FILE_BYTES:
             raise LessonError("input exceeds research JSON byte limit")
-        raw = stream.read(MAX_FILE_BYTES + 1)
+        stream = os.fdopen(descriptor, "rb")
+        descriptor = None  # ownership transferred to the stream
+        with stream:
+            raw = stream.read(MAX_FILE_BYTES + 1)
         if len(raw) > MAX_FILE_BYTES:
             raise LessonError("input exceeds research JSON byte limit")
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
     return audit(decode_research_json(raw, path.name))
 
 

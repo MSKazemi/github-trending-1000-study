@@ -13,6 +13,8 @@ Integrate the **offline engineering instrument**, tests, versioned synthetic fix
 3. **Ambiguous source/provenance trail.** Reject repeated exact source URLs within a lesson and v1.1 `superseded_by` declarations on lessons that are not marked `superseded`. Preserve all original IDs and noncyclic replacement history.
 4. **Path substitution between checking and reading.** Use a bounded read from a verified regular open file descriptor, with a no-follow final symlink flag when available, rather than separate path stat/read operations. The CLI remains offline and read-only.
 
+**CI correction loop:** the first integrated-head [run 38575729309](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38575729309) detected one directory-descriptor error while the other 549 unit tests passed; the non-regular-file check now precedes `fdopen`, and the test also exercises the direct CLI's controlled exit code. Require a new green final-head run before merge. This failure is retained as a real regression-test result, not concealed.
+
 ## Scoped change audit
 
 - Changes are limited to `trending_study/lesson_registry.py`, `tests/test_lesson_registry.py`, the existing `data_integrity` shared decoder exported by the PR, the two **synthetic** example inputs, plus linked README, protocol, data dictionary, lesson template, roadmap and issue audit documentation.
