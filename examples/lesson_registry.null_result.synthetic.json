@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.1",
+  "dataset_kind": "synthetic",
+  "lessons": [
+    {
+      "id": "SYN-NULL-1",
+      "title": "Synthetic interval compatible with the null",
+      "status": "inconclusive",
+      "evidence_grade": "E2",
+      "question": "Does a fictional documentation change alter accepted task completion?",
+      "intervention_or_feature": "Reuse-first dependency discovery guide",
+      "population": "Synthetic library maintainers, not actual participants",
+      "comparison": "Synthetic generate-first workflow",
+      "primary_outcome": "Independently accepted task completion, unmeasured",
+      "measurement_window": "Prospective only, no data collected",
+      "applicability": "Library/CLI repositories with versioned dependencies",
+      "risks": "Security, license incompatibility, search failure and dependency maintenance",
+      "validity_threats": "No observations, randomized assignments, external data or causal evidence",
+      "negative_findings": "Synthetic interval includes zero; this is not proof of no effect",
+      "practical_cost": "License auditing, maintainer verification and ongoing dependency cost unknown",
+      "suggested_experiment": "Prospectively freeze maintenance tasks, run an ethically reviewed reuse-first versus generate-first comparison and measure verified outcomes and total cost",
+      "stop_rule": "Stop on security/license violations or worsening independently accepted outcomes",
+      "sources": [
+        {
+          "url": "https://example.org/fictional-study",
+          "published_at_utc": "2026-10-11T12:00:00Z"
+        }
+      ],
+      "analysis_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "data_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "sample_n": 12,
+      "effect_size": 0.1,
+      "interval": [
+        -0.3,
+        0.4
+      ],
+      "analyst": null,
+      "independent_reviewer": null,
+      "reviewed_at_utc": null,
+      "observed_data_ref": "synthetic:do-not-cite",
+      "superseded_by": null,
+      "research_question_id": "GRQ1",
+      "result_kind": "null_compatible",
+      "effect_unit": "fractional task-success difference",
+      "null_value": 0.0,
+      "interval_level": 0.95,
+      "analysis_method": "fictional example, no real study",
+      "observed_at_utc": "2026-10-12T12:00:00Z"
+    }
+  ]
+}

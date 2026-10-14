@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "dataset_kind": "synthetic",
   "lessons": [
     {
@@ -30,7 +30,9 @@
       "independent_reviewer": null,
       "reviewed_at_utc": null,
       "observed_data_ref": null,
-      "superseded_by": null
+      "superseded_by": null,
+      "research_question_id": "GRQ1",
+      "result_kind": "not_estimated"
     }
   ]
 }

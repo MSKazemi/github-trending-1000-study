@@ -162,3 +162,22 @@ Separate from public GitHub observations and the task-trial outcomes, `trending_
 | `report.overall/by_arm/tasks` | derived report | Cohort and per-task missing-aware summaries tied to audited frame, assignment and outcomes canonical SHA digests. |
 
 **Data-handling rule:** no raw prompts, user identities, proprietary source code, agent tool arguments, credentials, or other uncontrolled session traces in the public repository. Consent/ethics approval cannot be proven by a string, and this version performs no automatic data acquisition. A local SHA256 proves input **content consistency only**; it is not attestation of real consent, collection time or scientific validity.
+
+## Evidence-to-lesson registry v1.1 (offline, not empirically validated)
+
+Input: `schema_version=1.1`, `dataset_kind=synthetic|self_reported`, `lessons[]`. Each lesson retains claim/status/grade, practical costs, negative findings, applicability, source references and provenance.
+
+| Field | Type | Interpretation |
+| --- | --- | --- |
+| `research_question_id` | nonempty string | Declared research-question reference; not proof of preregistration |
+| `observed_at_utc` | explicit UTC timestamp (E1+) | Claimed time of a snapshot, not a collection approval |
+| `observed_data_ref` | nonempty string (E1+) | Link to an immutable study artifact; do not commit private data |
+| `result_kind` | `not_estimated`, `estimated`, `null_compatible` | v1.1: not estimated, interval excluding explicit null, or interval containing explicit null; no equivalence inference |
+| `effect_unit` | nonempty string (E2+) | Meaning and unit of effect estimate |
+| `null_value` | finite numeric reference (E2+) | Prespecified null on that scale: typically zero for differences, one for ratios; consistency checked against interval, validity not verified |
+| `interval_level` | finite number between zero and one (E2+) | Declared statistical coverage, not independently assessed |
+| `analysis_method` | nonempty string (E2+) | Declared analysis model |
+| `review_record_ref` | nonempty string (E4/E5) | Claimed human review record, not authenticated approval |
+| `superseded_by` | another same-file lesson ID | Noncyclic replacement trail |
+
+`effect_size=null` means unmeasured, not zero. A numeric effect too large for a finite floating-point representation is rejected rather than crashing the command-line validator. `null_compatible` does not prove no effect. Synthetic validated claims fail closed; self-reported validated entries still need independent review. See [issue #11 audit](LESSON_REGISTRY_AUDIT_2026_10.md).
