@@ -5,9 +5,13 @@ All provenance, licence and security statuses are *supplied* and unverified.
 import argparse
 from datetime import datetime, timedelta, timezone
 import json
+import os
 from pathlib import Path
 import re
+import stat
 from urllib.parse import urlparse, unquote
+
+from .data_integrity import MAX_FILE_BYTES, decode_research_json
 
 FIELDS = ("registry_identity", "license_compatibility", "known_advisories",
           "release_provenance", "functional_fit", "maintenance_suitability")
@@ -17,6 +21,10 @@ _SHA = re.compile(r"^[0-9a-f]{64}$")
 
 class PackageReviewError(ValueError):
     pass
+
+
+def _normalize_pypi_name(name):
+    return re.sub(r"[-_.]+", "-", name.casefold())
 
 
 def _date(raw, *, allow_future=False):
@@ -83,8 +91,8 @@ def evaluate(data):
         parts = [unquote(p) for p in parsed.path.strip("/").split("/")]
         if (parsed.hostname != "pypi.org" or parsed.port not in (None, 443)
                 or len(parts) != 3 or parts[0] != "project"
-                or parts[1].casefold().replace("_", "-").replace(".", "-") !=
-                   candidate["package_name"].casefold().replace("_", "-").replace(".", "-")
+                or _normalize_pypi_name(parts[1]) !=
+                   _normalize_pypi_name(candidate["package_name"])
                 or parts[2] != candidate["version"]):
             raise PackageReviewError("PyPI registry URL must match official host, exact name and version")
     # Optional Package URL and source commit (ported from superseded #186).
@@ -96,8 +104,8 @@ def evaluate(data):
         from_purl = re.fullmatch(r"pkg:pypi/([A-Za-z0-9._-]+)@([A-Za-z0-9][A-Za-z0-9._+!-]{0,127})", purl)
         if not from_purl:
             raise PackageReviewError("purl must be exact pkg:pypi/name@version")
-        normalize = lambda name: re.sub(r"[-_.]+", "-", name.casefold())
-        if (normalize(from_purl.group(1)) != normalize(candidate["package_name"])
+        if (_normalize_pypi_name(from_purl.group(1)) !=
+                _normalize_pypi_name(candidate["package_name"])
                 or from_purl.group(2) != candidate["version"]):
             raise PackageReviewError("purl conflicts with pinned PyPI identity/version")
     source_commit = candidate.get("source_commit")
@@ -151,13 +159,41 @@ def evaluate(data):
             "source_checks_self_declared": True}
 
 
+def evaluate_file(path):
+    """Read one bounded regular artifact using the shared strict JSON decoder."""
+    path = Path(path)
+    if path.is_symlink():
+        raise PackageReviewError("input must be a regular non-symlink file")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as exc:
+        raise PackageReviewError("input must be a readable regular non-symlink file") from exc
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise PackageReviewError("input must be a regular non-symlink file")
+        if metadata.st_size > MAX_FILE_BYTES:
+            raise PackageReviewError("input exceeds research JSON byte limit")
+        stream = os.fdopen(descriptor, "rb")
+        descriptor = None  # ownership transferred to the stream
+        with stream:
+            raw = stream.read(MAX_FILE_BYTES + 1)
+        if len(raw) > MAX_FILE_BYTES:
+            raise PackageReviewError("input exceeds research JSON byte limit")
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+    return evaluate(decode_research_json(raw, path.name))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
     try:
-        out = evaluate(json.loads(args.input.read_text(encoding="utf-8")))
-    except (OSError, ValueError) as exc:
+        out = evaluate_file(args.input)
+    except (OSError, ValueError, RecursionError) as exc:
         ap.error(str(exc))
     print(json.dumps(out, indent=2, sort_keys=True))
 

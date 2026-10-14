@@ -73,3 +73,26 @@ well-formed and contradictory identity inputs.
 The canonical pre-install evidence gate now validates the entire **structural** HTTPS URL for both declared registry locations and self-reported pass evidence, rather than trusting a parsed hostname while ignoring semicolon parameters, hidden queries, malformed ports, bracket errors or whitespace. In particular, Python's URL parser may discard embedded newlines and separate trailing `;` parameters from the path: these are rejected before identity comparison. Malformed hosts/ports must raise the documented `PackageReviewError` rather than escaping as raw parser exceptions. Genuine clean evidence links continue to pass. The new negative regression tests exercise these bypass cases.
 
 **Validity boundary:** a structurally clean HTTPS link is not authenticated evidence of a working release, correct bytes, provenance, license compatibility, advisory completeness or trusted publisher. The tool continues to **never approve automatic installation**. Any unknown or unsupported registry origin is deferred until independent checks occur. Existing report inputs are not overwritten.
+
+## 2026-10-14 package input integrity
+
+The CLI and `evaluate_file(path)` now use the existing research JSON decoder,
+rejecting duplicate object keys (including contradictory fail/pass gate labels),
+nonstandard numbers, numeric overflow/underflow and invalid UTF-8. Inputs must be
+regular non-symlink files of at most the shared 16 MiB byte limit; devices, FIFOs,
+directories and oversized files are rejected. The opened descriptor is inspected
+and reads are bounded, including when a file grows after the size check. Deep
+JSON decoder errors produce a nonzero CLI error without a traceback or a report.
+
+PyPI URL and optional purl bindings now apply the same
+[PyPA name normalization](https://packaging.python.org/en/latest/specifications/name-normalization/):
+case-folding and replacing each run of hyphens, underscores or periods with one
+hyphen. Thus `Fictional__Pkg` can bind to `fictional-pkg`; a different normalized
+name or an inexact version still fails. This resolves a false rejection of
+equivalent registry names, without authenticating any registry or artifact.
+
+These are offline structural checks only. Existing output fields and decisions
+retain their limits: source checks remain self-declared and
+`automatic_install_approved` remains false. Independent package, license,
+provenance, advisory, functional and human security review are still outstanding
+for any real reuse candidate.

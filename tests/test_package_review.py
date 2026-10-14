@@ -1,6 +1,13 @@
 """Strict synthetic self-declared supply-chain tests, no package execution."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
 import unittest
-from trending_study.package_review import FIELDS, PackageReviewError, evaluate
+from unittest.mock import patch
+from trending_study.package_review import FIELDS, PackageReviewError, evaluate, main
 
 
 def candidate():
@@ -254,6 +261,96 @@ class PackageReviewTests(unittest.TestCase):
             p["candidate"]["source_commit"] = commit
             with self.subTest(commit=commit), self.assertRaises(PackageReviewError):
                 evaluate(p)
+
+    def test_equivalent_pypi_name_normalization_binds_url_and_purl(self):
+        for name in ("Fictional__Pkg", "fictional..pkg", "fictional-_.pkg"):
+            p = candidate()
+            p["candidate"]["package_name"] = name
+            p["candidate"]["registry_url"] = "https://pypi.org/project/fictional-pkg/1.0/"
+            p["candidate"]["purl"] = "pkg:pypi/fictional-pkg@1.0"
+            with self.subTest(name=name):
+                result = evaluate(p)
+                self.assertEqual(result["decision"], "defer")
+                self.assertFalse(result["automatic_install_approved"])
+
+
+class PackageReviewInputTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.path = Path(self.temp.name) / "review.json"
+
+    def run_cli(self):
+        return subprocess.run(
+            [sys.executable, "-m", "trending_study.package_review",
+             "--input", str(self.path)], capture_output=True, text=True, timeout=5)
+
+    def test_duplicate_gate_cannot_silently_replace_failure_with_pass(self):
+        p = candidate()
+        p["checks"] = {k: {"status": "pass", "evidence_url": "https://example.org/evidence"}
+                       for k in FIELDS}
+        self.path.write_text(json.dumps(p).replace(
+            '"status": "pass"', '"status": "fail", "status": "pass"', 1))
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("duplicate JSON object key", result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_cli_rejects_nonstandard_and_nonfinite_numbers(self):
+        for number in ("NaN", "Infinity", "-Infinity", "1e999", "1e-999"):
+            self.path.write_text(json.dumps(candidate())[:-1] + ', "extra": ' + number + '}')
+            with self.subTest(number=number):
+                result = self.run_cli()
+                self.assertEqual(result.returncode, 2)
+                self.assertEqual(result.stdout, "")
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_valid_file_retains_explicit_review_limits(self):
+        self.path.write_text(json.dumps(candidate()))
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        output = json.loads(result.stdout)
+        self.assertEqual(output["decision"], "defer")
+        self.assertTrue(output["source_checks_self_declared"])
+        self.assertFalse(output["automatic_install_approved"])
+
+    def test_cli_rejects_deep_json_without_traceback(self):
+        self.path.write_text("[" * 20000 + "0" + "]" * 20000)
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.stdout, "")
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_symlink_input_is_rejected(self):
+        target = Path(self.temp.name) / "target.json"
+        target.write_text(json.dumps(candidate()))
+        self.path.symlink_to(target)
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("regular non-symlink file", result.stderr)
+
+    def test_directory_input_is_rejected_without_traceback(self):
+        self.path.mkdir()
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertNotIn("Traceback", result.stderr)
+
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "FIFO input requires POSIX")
+    def test_fifo_input_is_rejected_without_waiting_for_a_writer(self):
+        os.mkfifo(self.path)
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("regular non-symlink file", result.stderr)
+
+    def test_file_byte_limit_rejects_before_evaluation(self):
+        self.path.write_text(json.dumps(candidate()))
+        with patch("trending_study.package_review.MAX_FILE_BYTES", 16), \
+             patch("trending_study.package_review.evaluate") as evaluator:
+            with self.assertRaises(SystemExit) as raised:
+                main(["--input", str(self.path)])
+            self.assertEqual(raised.exception.code, 2)
+            evaluator.assert_not_called()
 
 
 if __name__ == "__main__":
