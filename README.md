@@ -22,6 +22,7 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [**Trending stability, explicit language frames and chronological rank-proxy audit**](docs/TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md) — reproducible offline issue #6 instruments with declared denominators, synthetic fixtures, strict temporal leakage gates and **no real algorithm or adoption claims**.
 - [**Ten-issue parallel scientific methods audit (2026-10-13)**](docs/TEN_ISSUE_METHODS_INTEGRATION_2026_10_13.md) — ten reproducible research workstreams, per-PR Python 3.10/3.12 CI evidence, shared task/denominator design, remaining human/permission/metering gates and practical lessons; **not empirical findings or approved enrollment**.
 - [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
