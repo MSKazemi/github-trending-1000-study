@@ -264,6 +264,11 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertNotIn("\n  pull_request:", workflow)
         self.assertIn("inputs.mode == 'audit'", workflow)
         self.assertIn("inputs.mode == 'retire'", workflow)
+        # The write-capable job must be disabled unless a repository admin
+        # deliberately sets a separate variable after independent review.
+        self.assertIn("vars.BRANCH_RETIREMENT_APPROVED == 'true'", workflow)
+        self.assertIn("github.repository == 'MSKazemi/github-trending-1000-study'", workflow)
+        self.assertIn("inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'", workflow)
         self.assertIn("contents: read", workflow)
         self.assertIn("contents: write", workflow)
 
