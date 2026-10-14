@@ -9,6 +9,9 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
+
+from scripts.retire_merged_branches import GitHubClient
 
 
 @unittest.skipUnless(shutil.which("git"), "git executable required")
@@ -78,6 +81,36 @@ class RetirementLeaseIntegrationTests(unittest.TestCase):
         result = self.leased_delete(self.first)
         self.assertNotEqual(result.returncode, 0, "stale lease removed a moved ref")
         self.assertEqual(self.remote_tip().stdout.strip(), newest)
+
+    def test_authenticated_transport_cannot_write_inherited_trace_files(self):
+        # Exercise Git's real Trace2 behavior without making any network call.
+        # The fixture header is intentionally not a usable credential.
+        base = Path(self.temp.name)
+        configured_trace = base / "configured-trace.json"
+        inherited_trace = base / "inherited-trace.json"
+        config = base / "gitconfig"
+        config.write_text(
+            "[trace2]\n\teventTarget = " + str(configured_trace)
+            + "\n\tenvVars = GIT_CONFIG_VALUE_0\n", encoding="utf-8")
+        real_run = subprocess.run
+
+        def inspect_transport(command, **kwargs):
+            env = kwargs["env"]
+            self.assertFalse("GIT_TRACE2_ENV_VARS" in env)
+            self.assertFalse("GIT_CURL_VERBOSE" in env)
+            return real_run(["git", "version"], **kwargs)
+
+        with patch.dict(os.environ, {
+            "GIT_CONFIG_GLOBAL": str(config),
+            "GIT_TRACE2_EVENT": str(inherited_trace),
+            "GIT_TRACE2_ENV_VARS": "GIT_CONFIG_VALUE_0",
+            "GIT_CURL_VERBOSE": "1",
+        }), patch("scripts.retire_merged_branches.subprocess.run",
+                  side_effect=inspect_transport):
+            GitHubClient("owner/repository", "offline-only-fixture-token").delete_with_lease(
+                "audited", self.first)
+        self.assertFalse(inherited_trace.exists())
+        self.assertFalse(configured_trace.exists())
 
 
 if __name__ == "__main__":
