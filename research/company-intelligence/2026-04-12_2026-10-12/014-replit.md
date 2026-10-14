@@ -116,13 +116,13 @@ None of these effects were measured in this source review. External ecosystem pr
 
 **Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
 
-## 10. Provisional source lead preserved from overlapping first-pass PR #196 (not counted)
+## 10. Provisional source lead from older PR #196 (not a validated finding)
 
 [PR #196](https://github.com/MSKazemi/github-trending-1000-study/pull/196) supplied a differently structured JSON event-lead inventory. Its overlapping Replit evaluation and free-mode links are already represented in this report; **do not count them again as independent events**. One distinct candidate remains:
 
-- [Intelligent Model Routing on Replit](https://replit.com/blog/intelligent-model-routing) — preliminary lead `014-E03` in PR #196, with a **draft-attributed, not independently verified** publication date of 2026-08-26. The earlier draft reports a vendor-internal relative cost claim, not an independently reproduced result. Independently inspect the original article and revisions, the baseline definition, model/task mix, feature availability and actual cost measurements **before** adding an event row to `014-replit.events.csv`.
+- [Intelligent Model Routing on Replit](https://replit.com/blog/intelligent-model-routing) — preliminary lead `014-E03` in PR #196, with a **draft-attributed, not independently verified** publication date of 2026-08-26. The earlier draft reports a vendor-internal relative cost claim, not an independently reproduced result. Independently inspect the original article and revisions, the baseline definition, model/task mix, feature availability and actual cost measurements **before** treating its already-preserved E0 source row in `014-replit.events.csv` as validated.
 
-This is a **source-discovery handoff, not an accepted source/event, empirical measurement, human-reviewed statement or extra count**. The original JSON draft and reasoning remain accessible in PR #196's preserved branch; any future inclusion needs URL/date verification, event deduplication and a reviewer-linked commit.
+This is a **source-discovery handoff counted only as one provisional vendor URL lead, not an accepted finding, empirical measurement, or human-reviewed statement**. The original JSON draft and reasoning remain accessible in PR #196's preserved branch; any future inclusion needs URL/date verification, event deduplication and a reviewer-linked commit.
 
 ### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
 
@@ -138,7 +138,7 @@ This is a **source-discovery handoff, not an accepted source/event, empirical me
 
 This source-screened working report retains the full **original PR #212 report** and its factual limitations. Later [draft PR #230](https://github.com/MSKazemi/github-trending-1000-study/pull/230) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/014-replit.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/014-replit.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
 
-**Canonical working event index:** [014-replit.events.csv](014-replit.events.csv) contains 10 deduplicated *publisher URL leads*: 3 retained from the newer screening plus 6 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+**Canonical working event index:** [014-replit.events.csv](014-replit.events.csv) contains **11** deduplicated *publisher URL leads*: 3 from the original later screening, 6 unique archived earlier sources, one preserved from historical PR #196, and one additional dated first-party source on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
 
 | URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
@@ -178,3 +178,12 @@ This source-screened working report retains the full **original PR #212 report**
 The original machine-readable `events.json` from earlier closed-unmerged PR [#196](https://github.com/MSKazemi/github-trending-1000-study/pull/196) is preserved byte-for-byte at [the first-pass JSON archive](source-archives/014-replit.2026-10-12-first-pass.events.json). Its one distinct, previously uncatalogued source URL is now carried forward in the canonical working CSV as an **E0 unreviewed lead** under its original ID (014-E03). The index now holds **10 unique vendor URL leads**, not 10 independently verified events. A published article establishes only what the publisher said; no independently audited performance, legal rights, or systematic search completeness is implied.
 
 The archive is separate source provenance, not another independent observation. Publication/event dates, plan availability, contrary sources, factual and methods assessment still require genuine independent review. This preservation change does **not** satisfy the pending scientific acceptance gate, and the PR remains draft until review and final-head CI succeed.
+
+
+## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+
+[Source search log and scientific cautions](source-audits/014-replit.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 11 distinct publisher URL leads, not 11 independently confirmed product outcomes.**
+
+Preserved #196 model-routing URL as a provisional E0 lead (the vendor's relative cost claim remains unreplicated); added Apr 22 Auto-Protect opt-in dependency-repair announcement without asserting objective security or adoption effects.
+
+**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
