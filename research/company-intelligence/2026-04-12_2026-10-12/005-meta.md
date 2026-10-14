@@ -129,7 +129,7 @@ These are study **measurement targets**, **not observations** of M1–M7 effects
 
 This source-screened working report retains the full **original PR #191 report** and its factual limitations. Later [draft PR #228](https://github.com/MSKazemi/github-trending-1000-study/pull/228) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/005-meta.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/005-meta.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
 
-**Canonical working event index:** [005-meta.events.csv](005-meta.events.csv) contains 6 deduplicated *publisher URL leads*: 3 retained from the newer screening plus 3 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+**Canonical working event index:** [005-meta.events.csv](005-meta.events.csv) contains **8** deduplicated *publisher URL leads*: 3 retained from the later original screening, 3 unique archived older sources, and 2 additional limited public-source checks on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
 
 | URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
@@ -157,3 +157,12 @@ This source-screened working report retains the full **original PR #191 report**
 - **Correction / uncertainty to retain:** Treat the API/subscriber availability as a vendor-published availability claim only. Do not conflate a model announcement, future Muse integration or proprietary models with measured downstream code reuse, independently reproduced coding benchmarks or open-weight licensing.
 - **Falsifiable maintainer experiment (not performed):** For one independently specified first-use app-building task, compare a preselected baseline workflow with an optional model-assisted workflow using the same frozen acceptance tests and security review. Record successful/failed tasks, human review time and exact model/plan; measure no emissions from token counts.
 - **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+
+
+## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+
+[Source search log and scientific cautions](source-audits/005-meta.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 8 distinct publisher URL leads, not 8 independently confirmed product outcomes.**
+
+Added Aug 5 Muse Code beta and Aug 14 vendor cybersecurity evaluation response as separately dated publisher leads. These do not establish independent deployment, source security or model performance.
+
+**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
