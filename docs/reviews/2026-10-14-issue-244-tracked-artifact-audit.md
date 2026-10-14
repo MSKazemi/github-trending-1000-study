@@ -26,3 +26,10 @@ The checker inspects **working-tree bytes for paths in the index**, not independ
 ## Practical maintainer lesson
 
 A green unit suite can miss an unimported broken Python or JSON file in an unexpected directory. Couple NUL-safe, index-based artifact enumeration to real failure-case tests and current-head CI, but never convert syntax checks into scientific claims or substitute automated checks for qualified review.
+
+
+## Follow-up staged-blob safety correction (2026-10-14)
+
+Code inspection found a bounded correctness gap relevant to local pre-commit reuse: `git ls-files` enumerated staged names but validated only working-copy contents. A bad staged `*.py`/`*.json` could thus escape the local checker if the working copy was repaired without restaging. The same canonical validator now reads each indexed regular Git blob with a validated hash, bounded blob type/size check, and validates both staged and checked-out contents. Added four synthetic negative/positive regression scenarios. This is complementary to CI checkout validation, not a new scanner.
+
+**Review gates pending at time of editing:** final exact-head five-job CI, no unresolved human review, current-base merge safety and post-merge `main` CI. No independent qualified review or new field data is claimed by this written audit. Do not close the issue on the basis of this note alone.
