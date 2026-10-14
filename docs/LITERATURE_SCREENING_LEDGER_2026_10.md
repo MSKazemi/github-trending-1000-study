@@ -48,3 +48,38 @@ Change: the offline ledger now rejects future-dated search runs and reports **ti
 An audit found that a record could previously be marked `include` while its `source_url` was absent. For a research evidence register, this makes even first-pass verification irreproducible. The offline instrument now requires every **included** record to supply a canonical HTTPS `source_url`, without embedded credentials, query strings, fragments, whitespace or an absent host. A valid DOI can use its `https://doi.org/10...` resolver page as this link; this is a **claimed reference**, not proof that the DOI resolves or that publisher/venue and findings are correct. Unverified search leads may remain `pending` without a URL and are never implicitly counted as included. Synthetic tests cover malformed/missing links and continued conservative treatment of pending leads.
 
 **Scientific safeguard:** a syntactically valid HTTPS URL is not proof of content authenticity, peer-review status, human double-screening, right to access, or unbiased retrieval. Real systematic reviews must preserve the exact retrieved title/abstract, query, source export identifier and permission-appropriate source record, then obtain independent link/date/venue review before publication. Existing PR #189 was merged separately; this follow-up records the specific integration correction without rewriting historical claims.
+
+## 2026-10-14 offline input integrity correction
+
+The direct CLI now shares the repository's strict
+`data_integrity.decode_research_json` decoder. Duplicate object keys,
+nonstandard/non-finite numbers, floating-point overflow/underflow, integers
+exceeding 1,024 decimal digits and invalid UTF-8 fail before screening. Decoder
+errors use a fixed diagnostic so arbitrary private keys and source filenames
+are not echoed to the terminal.
+
+Input must be a regular file of at most the existing research-JSON limit
+(**16 MiB**). The descriptor-based bounded reader follows the existing lesson
+registry pattern: the final input component cannot be a symlink on supported
+platforms; directories and special files are rejected using `fstat`, and a
+nonblocking open prevents FIFO inputs without writers from hanging. The read
+itself also enforces the byte limit if the opened file grows after inspection.
+No shared helper or real source records changed. On platforms lacking
+`O_NOFOLLOW`, the preliminary symlink check remains best effort; the cloud
+Linux environment supplies the descriptor-level protection.
+
+Included source URLs now force `urlsplit`'s deferred port validation, rejecting
+nonnumeric, negative and out-of-range ports. Valid HTTPS source links (including
+valid explicit ports), DOI normalization, exact search-query strings, existing
+query/fragment restrictions and the report output fields retain their current
+contracts. This is an input-integrity correction, not a scientific protocol
+amendment or human literature review.
+
+Reuse review: the MIT-licensed repository's strict decoder and lesson registry
+reader were inspected before patching. They cover this bounded offline task
+without another JSON implementation or external dependency. Python's official
+[JSON documentation](https://docs.python.org/3/library/json.html) explains its
+permissive duplicate/nonstandard defaults; its
+[URL parsing documentation](https://docs.python.org/3/library/urllib.parse.html)
+explains deferred port errors. New tests use synthetic files only and verify
+CLI privacy, bounded inputs, no-follow behavior and FIFO rejection.
