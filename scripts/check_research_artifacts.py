@@ -5,6 +5,7 @@ third-party licensing, evidence provenance, or participant consent). In
 particular, duplicate JSON keys must not silently replace earlier values.
 """
 import argparse
+import os
 import stat
 import subprocess
 import csv
@@ -280,19 +281,33 @@ def audit_tracked_code_json(
             path = root.joinpath(*parts)
             if path.is_symlink():
                 raise IntegrityError("tracked file is a symlink")
-            file_stat = path.lstat()
-            if not stat.S_ISREG(file_stat.st_mode):
-                raise IntegrityError("tracked path is missing or not a regular file")
-            if file_stat.st_size > max_file_bytes:
+            # Open the checked path once and inspect the *opened descriptor*.
+            # O_NONBLOCK avoids hanging on a swapped-in FIFO; O_NOFOLLOW
+            # rejects a swapped-in leaf symlink where the OS supports it.
+            flags = os.O_RDONLY | getattr(os, "O_NONBLOCK", 0)
+            flags |= getattr(os, "O_NOFOLLOW", 0)
+            with os.fdopen(os.open(path, flags), "rb") as handle:
+                file_stat = os.fstat(handle.fileno())
+                if not stat.S_ISREG(file_stat.st_mode):
+                    raise IntegrityError("tracked path is missing or not a regular file")
+                if file_stat.st_size > max_file_bytes:
+                    raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
+                if counts["checked_bytes"] + file_stat.st_size > max_total_bytes:
+                    raise IntegrityError(
+                        f"tracked artifact total exceeds {max_total_bytes} byte limit"
+                    )
+                # A size precheck alone is not a memory limit if the file
+                # grows between fstat and read. Bound the actual read too.
+                raw = handle.read(max_file_bytes + 1)
+            if len(raw) > max_file_bytes:
                 raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
-            counts["checked_bytes"] += file_stat.st_size
-            if counts["checked_bytes"] > max_total_bytes:
+            if len(raw) != file_stat.st_size:
+                raise IntegrityError("file changed size during inspection")
+            if counts["checked_bytes"] + len(raw) > max_total_bytes:
                 raise IntegrityError(
                     f"tracked artifact total exceeds {max_total_bytes} byte limit"
                 )
-            raw = path.read_bytes()
-            if len(raw) != file_stat.st_size:
-                raise IntegrityError("file changed size during inspection")
+            counts["checked_bytes"] += len(raw)
             if suffix == ".json":
                 _strict_json(raw.decode("utf-8"))
                 counts["json"] += 1
