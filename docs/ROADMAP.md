@@ -145,6 +145,7 @@ No actual live 30-row QA can be credited from this PR. Issue [#2](https://github
 - [x] Reconcile the existing PR author template and canonical scientific merge gate instead of force-merging a competing template/policy (PR #255).
 - [x] Record responsible exact-head, non-destructive merge procedures in AGENTS.md and CONTRIBUTING.md (documentation follow-up to #245).
 - [x] Extend the existing offline integrity gate to scan every Git-tracked Python and JSON file on each CI matrix interpreter, including hidden/unimported paths, with negative tests and bounded read-only Git index enumeration ([#244](https://github.com/MSKazemi/github-trending-1000-study/issues/244); [operator guide](RESEARCH_JSON_INTEGRITY_GATE.md)).
+- [x] Check **both** checkout bytes and staged Git blob bytes for all Git-tracked Python/JSON source, with negative drift/budget tests; retain the original research validators and explicit scientific limitations (issue #244, PR #291).
 - [ ] Configure enforceable GitHub branch protections, required status checks and genuinely independent reviews in repository settings; documentation is not an access-control mechanism.
 - [ ] Complete actual source-access permission, real-sample QA, protocol preregistration, and independent task/energy validation before presenting synthetic tools as empirical findings.
 - [ ] Resolve all remaining conflicting research and company-intelligence draft PRs claim by claim, preserving unique citations and tests before retirement.
