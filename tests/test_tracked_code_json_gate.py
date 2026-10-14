@@ -142,6 +142,29 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "good.py"):
             audit_tracked_code_json(self.root)
 
+    def test_rejects_fifo_replacing_tracked_regular_file_without_blocking(self):
+        import os
+        if not hasattr(os, "mkfifo"):
+            self.skipTest("FIFO unavailable")
+        path = self.root / "arbitrary/nested/good.py"
+        path.unlink()
+        try:
+            os.mkfifo(path)
+        except OSError:
+            self.skipTest("FIFO creation unavailable")
+        with self.assertRaisesRegex(IntegrityError, "not a regular file"):
+            audit_tracked_code_json(self.root)
+
+    def test_rejects_over_limit_file_even_when_size_grows(self):
+        path = self.root / "arbitrary/nested/good.py"
+        path.write_bytes(b"x" * 33)
+        with self.assertRaisesRegex(IntegrityError, "file exceeds"):
+            audit_tracked_code_json(self.root, max_file_bytes=32)
+
+    def test_rejects_total_byte_limit_without_scanning_unbounded_input(self):
+        with self.assertRaisesRegex(IntegrityError, "tracked artifact total"):
+            audit_tracked_code_json(self.root, max_total_bytes=2)
+
     def test_rejects_git_tracked_file_missing_from_worktree(self):
         (self.root / ".hidden/good.json").unlink()
         with self.assertRaisesRegex(IntegrityError, "good.json"):
