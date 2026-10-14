@@ -138,7 +138,7 @@ This is a **source-discovery handoff, not an accepted source/event, empirical me
 
 This source-screened working report retains the full **original PR #212 report** and its factual limitations. Later [draft PR #230](https://github.com/MSKazemi/github-trending-1000-study/pull/230) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/014-replit.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/014-replit.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
 
-**Canonical working event index:** [014-replit.events.csv](014-replit.events.csv) contains 9 deduplicated *publisher URL leads*: 3 retained from the newer screening plus 6 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+**Canonical working event index:** [014-replit.events.csv](014-replit.events.csv) contains 10 deduplicated *publisher URL leads*: 3 retained from the newer screening plus 6 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
 
 | URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
@@ -171,3 +171,10 @@ This source-screened working report retains the full **original PR #212 report**
 - **Correction / uncertainty to retain:** GA is a vendor availability statement, not independent evidence of enterprise entitlement, secure default permissions, a successful external integration, user adoption or improvements to task outcomes. Preserve plan/region and data-rights unknowns.
 - **Falsifiable maintainer experiment (not performed):** In an authorized synthetic-data test workspace, compare an existing manual integration against a proposed assisted integration; use immutable access-control assertions, independent task acceptance and recorded human setup/review time.
 - **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+
+
+### 2026-10-14 archival reconciliation supplement (provisional)
+
+The original machine-readable `events.json` from earlier closed-unmerged PR [#196](https://github.com/MSKazemi/github-trending-1000-study/pull/196) is preserved byte-for-byte at [the first-pass JSON archive](source-archives/014-replit.2026-10-12-first-pass.events.json). Its one distinct, previously uncatalogued source URL is now carried forward in the canonical working CSV as an **E0 unreviewed lead** under its original ID (014-E03). The index now holds **10 unique vendor URL leads**, not 10 independently verified events. A published article establishes only what the publisher said; no independently audited performance, legal rights, or systematic search completeness is implied.
+
+The archive is separate source provenance, not another independent observation. Publication/event dates, plan availability, contrary sources, factual and methods assessment still require genuine independent review. This preservation change does **not** satisfy the pending scientific acceptance gate, and the PR remains draft until review and final-head CI succeed.
