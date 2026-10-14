@@ -142,3 +142,14 @@ The [canonical working vendor-lead index](019-tabnine.events.csv) has 3 distinct
 **Differing duplicate-source statuses:** 0 (retain both original ledgers; choose only after source-level review).
 
 **Remaining gates:** dated ownership and product continuity, full seven-segment screen, independent critical reporting, exact package/license and enterprise deployment scope, human factual reviewer, and independent user tasks before claiming measurable benefit. Keep issue #86 open.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Tabnine Product News archive](https://www.tabnine.com/blog/category/product-news/) — 2026-07-30 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The Tabnine publisher's product-news index lists 'A new chapter for Tabnine' on 30 July and states the company was acquired by Tricentis. Opening the original article URL currently redirects to Tricentis's learning site, so the original article could not be re-read in this check.
+- **Correction / uncertainty to retain:** Archive-index discovery plus a redirect are not an independently verified corporate filing or evidence of preserved product behavior after acquisition. Retain the original event URL for provenance and explicitly mark direct full-article access unresolved.
+- **Falsifiable maintainer experiment (not performed):** Test a stable, permission-approved IDE assistance workflow under pinned versions before/after any ownership-linked product change; separately verify service availability, licenses, code-upload policy and actual human review burden.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
