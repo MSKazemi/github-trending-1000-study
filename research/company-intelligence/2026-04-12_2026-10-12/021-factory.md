@@ -104,3 +104,14 @@ The [working company ledger](021-factory.events.csv) combines 6 deduplicated fir
 - 2026-06-17: [AutoWiki](https://factory.ai/news/wiki) — `shipped` (vendor statement only)
 
 **Remaining:** all seven month-segment logs, dated source snapshots, verified licenses/product access and independent/critical reviews. Validate endpoints/version compatibility and task-first accepted results before recommendations. Keep issue #88 open and do not claim an executed product experiment or measured energy benefit.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Factory Router](https://factory.com/news/factory-router) — 2026-06-01 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** Factory's dated post labels Factory Router a private research preview and advertises vendor-run cost/performance comparisons, including 20–25% lower token spend in the described benchmarks. The prior `factory.ai` source path resolves to `factory.com`.
+- **Correction / uncertainty to retain:** The percentages are unreplicated provider-selected benchmark claims, not task-level independent savings, physical energy measurement or universal customer availability. Preserve original-link provenance and label preview correctly.
+- **Falsifiable maintainer experiment (not performed):** Use paired, frozen tasks to compare explicit-model selection and routed-model selection under a fixed acceptance suite; record actual billed cost, missing task outcomes, token usage, human retries and reproducible vendor/model versions.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
