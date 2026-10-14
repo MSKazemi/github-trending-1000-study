@@ -2,7 +2,7 @@
 
 **Implemented as an offline engineering control, 2026-10-13.** This is **not** a systematic literature review, an authenticated data capture, an ethics approval, a schema registry or empirical research evidence.
 
-The GitHub Actions Python 3.10/3.12/3.14 matrix runs three steps before treating a pull request as technically verified:
+The GitHub Actions Python 3.10/3.12/3.13/3.14 matrix runs three steps before treating a pull request as technically verified:
 
 ```bash
 python -m compileall -q trending_study tests
@@ -54,3 +54,22 @@ A later audit of the canonical JSON/JSONL/CSV tool found that recursive discover
 ## Preserved test evidence from legacy nested-symlink branch (2026-10-13)
 
 The older `fix/canonical-nested-symlink-audit-20261013` branch adds useful negative witnesses even though the current validator and its existing tests already reject nested symlinked directories. The integration retains the stronger synthetic duplicate-key JSON witness **outside** a symlinked subtree and tests a symlink to an existing **extensionless file**; both must fail closed without following the link. The older branch commit `7301a0207032dee0175ff27d12e965fd6e8b3b48` is retained as a merge parent, not overwritten. The canonical implementation and its newer CSV/JSON numeric checks remain unchanged. This is offline integrity coverage, not evidence-source authentication or permission to collect data.
+
+
+## 2026-10-14 — Git-tracked Python and JSON coverage (issue #244)
+
+The existing, dependency-free `scripts/check_research_artifacts.py` now has an **additive** option, `--tracked-code-json`. This avoids shipping the competing standalone checker previously proposed by [closed PR #251](https://github.com/MSKazemi/github-trending-1000-study/pull/251). Its useful negative-test cases informed this integration.
+
+```bash
+python scripts/check_research_artifacts.py --root . --tracked-code-json
+python -m unittest discover -s tests -p 'test_tracked_code_json_gate.py' -v
+python -m unittest discover -s tests -v
+```
+
+The checker obtains a NUL-delimited, staged-mode-aware inventory from **`git ls-files --stage --cached --full-name -z`**, requires the supplied root to be the Git top-level, then checks every indexed `.py` or `.json` regardless of location (including hidden and unimported paths). It rejects symlink Git modes, missing checkout files, symlinked ancestor directories, oversized files, invalid Python syntax, malformed/non-UTF-8 JSON, duplicate object keys and nonstandard/overflowing/underflowing JSON numerics. Python code is parsed to an AST **without imports or execution**. JSON is checked for syntax and ambiguity, not arbitrary research-schema fields; valid scalar JSON remains valid. Untracked build output is not represented as committed source, and Git submodule internals are not traversed.
+
+The new check is run before unit tests on **each** CI Python interpreter (3.10, 3.12, 3.13, 3.14). The existing research-directory JSON/JSONL/CSV validations remain intact. Per-file and total-size limits (16 MiB, 128 MiB), a 5,000-file limit and an 8 MiB index-listing cap prevent silently skipping unusually large tracked input. A Git index is required for the opt-in mode; if it is missing or unreadable, the command fails rather than claiming coverage. This remains a bounded read-only checkout inspection, not a race-hardened filesystem sandbox or verifier of the index blob bytes against external trusted origins.
+
+**Evidence boundary:** Git-tracked coverage and green CI are engineering claims about the particular checkout and interpreter. They do not authenticate source URLs, historical observations, ethics/legal permission, code safety, reviewer independence, approved preregistration or any environmental impact. Repository branch-rule enforcement and independent human merge review remain separate open gates tracked in [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248).
+
+**Practical lesson:** put a negative regression in a surprising location (for example `ops/broken.json` or `.hidden/broken.py`) and prove your CI rejects it. A scanner that only knows familiar directories cannot promise full tracked-file coverage.

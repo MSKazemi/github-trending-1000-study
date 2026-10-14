@@ -5,6 +5,9 @@ third-party licensing, evidence provenance, or participant consent). In
 particular, duplicate JSON keys must not silently replace earlier values.
 """
 import argparse
+import ast
+import stat
+import subprocess
 import csv
 from decimal import Decimal, InvalidOperation
 import io
@@ -199,12 +202,134 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MA
     return {"files": examined, "checked_bytes": total_bytes, **counts}
 
 
+
+def audit_tracked_code_json(
+    root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MAX_TOTAL_BYTES
+):
+    """Validate every Git-indexed .py/.json file in a checkout, without imports.
+
+    Unlike the research-directory scan, Git index enumeration reaches files in
+    any directory, including hidden paths. It checks checked-out bytes; it does
+    not authenticate sources or inspect Git submodule internals.
+    """
+    root = Path(root)
+    if root.is_symlink() or not root.is_dir():
+        raise IntegrityError("tracked-file root must be a real directory")
+    root = root.resolve()
+    try:
+        origin = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=True, capture_output=True, timeout=20,
+        ).stdout.decode("utf-8").rstrip("\n")
+        if Path(origin).resolve() != root:
+            raise IntegrityError("tracked-file root must be the Git top-level directory")
+        listing = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--stage", "--cached",
+             "--full-name", "-z"],
+            check=True, capture_output=True, timeout=20,
+        ).stdout
+    except (OSError, UnicodeError, subprocess.SubprocessError) as exc:
+        raise IntegrityError("cannot inspect local Git index") from exc
+
+    if len(listing) > 8 * 1024 * 1024:
+        raise IntegrityError("Git index listing exceeds 8 MiB inspection limit")
+    if not listing.endswith(b"\0"):
+        raise IntegrityError("Git index listing is incomplete or empty")
+
+    counts = {"python": 0, "json": 0, "files": 0, "checked_bytes": 0}
+    failures = []
+    seen = set()
+
+    for entry in listing[:-1].split(b"\0"):
+        metadata, separator, filename = entry.partition(b"\t")
+        fields = metadata.split()
+        if not separator or len(fields) != 3:
+            raise IntegrityError("malformed Git index entry")
+        try:
+            relative = filename.decode("utf-8")
+        except UnicodeError as exc:
+            raise IntegrityError("Git index has a non-UTF-8 filename") from exc
+        suffix = Path(relative).suffix.lower()
+        if suffix not in (".py", ".json"):
+            continue
+        counts["files"] += 1
+        if counts["files"] > MAX_FILES:
+            raise IntegrityError("tracked Python/JSON count exceeds inspection limit")
+
+        label = repr(relative)  # Escape newlines/control chars in CI diagnostics.
+        if relative in seen:
+            failures.append(f"{label}: duplicate Git index path")
+            continue
+        seen.add(relative)
+        parts = relative.split("/")
+        if relative.startswith("/") or any(part in ("", ".", "..") for part in parts):
+            failures.append(f"{label}: unsafe Git index path")
+            continue
+        mode, _sha, stage = fields
+        if stage != b"0" or mode not in (b"100644", b"100755"):
+            failures.append(f"{label}: nonregular or unmerged Git index entry")
+            continue
+
+        try:
+            parent = root
+            for part in parts[:-1]:
+                parent /= part
+                if parent.is_symlink():
+                    raise IntegrityError("symlinked parent directory")
+            path = root.joinpath(*parts)
+            if path.is_symlink():
+                raise IntegrityError("tracked file is a symlink")
+            file_stat = path.lstat()
+            if not stat.S_ISREG(file_stat.st_mode):
+                raise IntegrityError("tracked path is missing or not a regular file")
+            if file_stat.st_size > max_file_bytes:
+                raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
+            counts["checked_bytes"] += file_stat.st_size
+            if counts["checked_bytes"] > max_total_bytes:
+                raise IntegrityError(
+                    f"tracked artifact total exceeds {max_total_bytes} byte limit"
+                )
+            raw = path.read_bytes()
+            if len(raw) != file_stat.st_size:
+                raise IntegrityError("file changed size during inspection")
+            if suffix == ".json":
+                _strict_json(raw.decode("utf-8"))
+                counts["json"] += 1
+            else:
+                # Produces an AST only; never import or execute untrusted code.
+                # Bytes let Python honor a source file's PEP 263 encoding cookie.
+                compile(
+                    raw, relative, "exec", flags=ast.PyCF_ONLY_AST,
+                    dont_inherit=True,
+                )
+                counts["python"] += 1
+        except (IntegrityError, OSError, UnicodeError, SyntaxError,
+                ValueError, OverflowError, RecursionError) as exc:
+            failures.append(f"{label}: {exc}")
+
+    if counts["files"] == 0:
+        failures.append("no Git-tracked Python/JSON files were found")
+    if failures:
+        raise IntegrityError(
+            f"{len(failures)} tracked Python/JSON problem(s):\n"
+            + "\n".join(failures[:25])
+            + ("\n[additional failures omitted]" if len(failures) > 25 else "")
+        )
+    return counts
+
+
 def main(argv=None):
     cli = argparse.ArgumentParser(description="Offline research artifact syntax and integrity gate")
     cli.add_argument("--root", type=Path, default=Path("."))
+    cli.add_argument(
+        "--tracked-code-json", action="store_true",
+        help="also validate every Git-tracked Python and JSON file, in any directory",
+    )
     args = cli.parse_args(argv)
     try:
         result = audit_repository(args.root)
+        if args.tracked_code_json:
+            result["tracked_code_json"] = audit_tracked_code_json(args.root)
     except IntegrityError as exc:
         cli.exit(2, f"artifact integrity gate failed: {exc}\n")
     print(json.dumps({
