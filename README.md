@@ -74,7 +74,7 @@ Open an issue for reproducibility defects, language coverage, validity threats, 
 - [Discussion synthesis / decision history](docs/CONVERSATION_SYNTHESIS.md)
 - [Usefulness constructs and metrics](docs/USEFULNESS_FRAMEWORK.md)
 - [AI-assisted and vibe-coding sub-study](docs/AI_CODING_STUDY_2027.md)
-- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md)
+- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md) and [versioned offline lesson registry v1.1](docs/LESSON_REGISTRY_AUDIT_2026_10.md) — strict synthetic examples, source/result metadata, unknown-versus-null handling, no certified findings
 - [Developer build/reuse/pivot playbook](docs/DEVELOPER_DECISION_PLAYBOOK.md)
 - [Total token, human and maintenance economics](docs/TOKEN_TIME_ECONOMICS.md)
 - [2027 conditional scenarios and monitoring](docs/FUTURES_2027.md)
