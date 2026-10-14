@@ -1,0 +1,172 @@
+{
+  "schema_version": "trending-rank-proxy-1.0",
+  "dataset_kind": "synthetic",
+  "protocol_locked_at_utc": "2026-10-10T12:00:00Z",
+  "protocol_reference": "synthetic exercise only; no prospective human preregistration",
+  "pages": [
+    {
+      "capture": {
+        "capture_id": "synthetic-proxy-1",
+        "captured_at_utc": "2026-10-08T12:00:00Z",
+        "page_url": "https://github.com/trending?since=daily",
+        "window": "daily",
+        "language_filter": null,
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "repository_ids": [
+          101,
+          102,
+          103
+        ]
+      },
+      "features": [
+        {
+          "repository_id": 101,
+          "recorded_at_utc": "2026-10-07T12:00:00Z",
+          "feature_source_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "prior_7d_star_delta": 9,
+          "prior_stars": 100,
+          "prior_forks": 10
+        },
+        {
+          "repository_id": 102,
+          "recorded_at_utc": "2026-10-07T12:00:00Z",
+          "feature_source_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "prior_7d_star_delta": 6,
+          "prior_stars": 200,
+          "prior_forks": 20
+        },
+        {
+          "repository_id": 103,
+          "recorded_at_utc": "2026-10-07T12:00:00Z",
+          "feature_source_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "prior_7d_star_delta": 1,
+          "prior_stars": 300,
+          "prior_forks": 30
+        }
+      ]
+    },
+    {
+      "capture": {
+        "capture_id": "synthetic-proxy-2",
+        "captured_at_utc": "2026-10-09T12:00:00Z",
+        "page_url": "https://github.com/trending?since=daily",
+        "window": "daily",
+        "language_filter": null,
+        "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "repository_ids": [
+          104,
+          105,
+          106
+        ]
+      },
+      "features": [
+        {
+          "repository_id": 104,
+          "recorded_at_utc": "2026-10-08T12:00:00Z",
+          "feature_source_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "prior_7d_star_delta": 9,
+          "prior_stars": 100,
+          "prior_forks": 10
+        },
+        {
+          "repository_id": 105,
+          "recorded_at_utc": "2026-10-08T12:00:00Z",
+          "feature_source_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "prior_7d_star_delta": 6,
+          "prior_stars": 200,
+          "prior_forks": 20
+        },
+        {
+          "repository_id": 106,
+          "recorded_at_utc": "2026-10-08T12:00:00Z",
+          "feature_source_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "prior_7d_star_delta": 1,
+          "prior_stars": 300,
+          "prior_forks": 30
+        }
+      ]
+    },
+    {
+      "capture": {
+        "capture_id": "synthetic-proxy-3",
+        "captured_at_utc": "2026-10-13T12:00:00Z",
+        "page_url": "https://github.com/trending?since=daily",
+        "window": "daily",
+        "language_filter": null,
+        "source_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "repository_ids": [
+          201,
+          202,
+          203
+        ]
+      },
+      "features": [
+        {
+          "repository_id": 201,
+          "recorded_at_utc": "2026-10-12T12:00:00Z",
+          "feature_source_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+          "prior_7d_star_delta": 4,
+          "prior_stars": 100,
+          "prior_forks": 10
+        },
+        {
+          "repository_id": 202,
+          "recorded_at_utc": "2026-10-12T12:00:00Z",
+          "feature_source_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+          "prior_7d_star_delta": 1,
+          "prior_stars": 200,
+          "prior_forks": 20
+        },
+        {
+          "repository_id": 203,
+          "recorded_at_utc": "2026-10-12T12:00:00Z",
+          "feature_source_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+          "prior_7d_star_delta": 2,
+          "prior_stars": 300,
+          "prior_forks": 30
+        }
+      ]
+    },
+    {
+      "capture": {
+        "capture_id": "synthetic-proxy-4",
+        "captured_at_utc": "2026-10-14T12:00:00Z",
+        "page_url": "https://github.com/trending?since=daily",
+        "window": "daily",
+        "language_filter": null,
+        "source_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "repository_ids": [
+          204,
+          205,
+          206
+        ]
+      },
+      "features": [
+        {
+          "repository_id": 204,
+          "recorded_at_utc": "2026-10-13T12:00:00Z",
+          "feature_source_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+          "prior_7d_star_delta": 9,
+          "prior_stars": 100,
+          "prior_forks": 10
+        },
+        {
+          "repository_id": 205,
+          "recorded_at_utc": "2026-10-13T12:00:00Z",
+          "feature_source_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+          "prior_7d_star_delta": 6,
+          "prior_stars": 200,
+          "prior_forks": 20
+        },
+        {
+          "repository_id": 206,
+          "recorded_at_utc": "2026-10-13T12:00:00Z",
+          "feature_source_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+          "prior_7d_star_delta": 1,
+          "prior_stars": 300,
+          "prior_forks": 30
+        }
+      ]
+    }
+  ]
+}
