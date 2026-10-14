@@ -83,6 +83,9 @@ regular non-symlink files of at most the shared 16 MiB byte limit; devices, FIFO
 directories and oversized files are rejected. The opened descriptor is inspected
 and reads are bounded, including when a file grows after the size check. Deep
 JSON decoder errors produce a nonzero CLI error without a traceback or a report.
+Decoder failures use a fixed diagnostic, including nesting-limit errors, so
+arbitrary private duplicate-key names, filenames and decoder context are not
+echoed to the terminal or exposed through a chained exception.
 
 PyPI URL and optional purl bindings now apply the same
 [PyPA name normalization](https://packaging.python.org/en/latest/specifications/name-normalization/):

@@ -184,7 +184,16 @@ def evaluate_file(path):
     finally:
         if descriptor is not None:
             os.close(descriptor)
-    return evaluate(decode_research_json(raw, path.name))
+    try:
+        data = decode_research_json(raw, "package review input")
+    except (ValueError, RecursionError):
+        # Detailed decoder failures may contain arbitrary private object keys
+        # or source filenames. Expose a fixed diagnostic, without a chained
+        # exception, including when Python's nesting limit is exceeded.
+        raise PackageReviewError(
+            "input must be strict UTF-8 JSON without duplicate keys or invalid numbers"
+        ) from None
+    return evaluate(data)
 
 
 def main(argv=None):

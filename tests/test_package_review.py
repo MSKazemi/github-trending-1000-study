@@ -7,7 +7,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-from trending_study.package_review import FIELDS, PackageReviewError, evaluate, main
+from trending_study.package_review import FIELDS, PackageReviewError, evaluate, evaluate_file, main
 
 
 def candidate():
@@ -293,7 +293,7 @@ class PackageReviewInputTests(unittest.TestCase):
             '"status": "pass"', '"status": "fail", "status": "pass"', 1))
         result = self.run_cli()
         self.assertEqual(result.returncode, 2)
-        self.assertIn("duplicate JSON object key", result.stderr)
+        self.assertIn("strict UTF-8 JSON", result.stderr)
         self.assertEqual(result.stdout, "")
         self.assertNotIn("Traceback", result.stderr)
 
@@ -321,6 +321,28 @@ class PackageReviewInputTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertEqual(result.stdout, "")
         self.assertNotIn("Traceback", result.stderr)
+
+    def test_decoder_diagnostics_do_not_expose_private_keys_or_filename(self):
+        self.path = self.path.with_name("PRIVATE-synthetic-personal-filename.json")
+        self.path.write_text(
+            '{"PRIVATE-synthetic-credential-field":1,"PRIVATE-synthetic-credential-field":2}')
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("strict UTF-8 JSON", result.stderr)
+        self.assertNotIn("PRIVATE", result.stderr)
+        self.assertNotIn(str(self.path), result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+        self.assertEqual(result.stdout, "")
+
+    def test_decoder_recursion_failure_has_portable_private_error_contract(self):
+        self.path.write_text(json.dumps(candidate()))
+        with patch("trending_study.package_review.decode_research_json",
+                   side_effect=RecursionError("PRIVATE-synthetic-decoder-context")):
+            with self.assertRaises(PackageReviewError) as raised:
+                evaluate_file(self.path)
+            self.assertIn("strict UTF-8 JSON", str(raised.exception))
+            self.assertNotIn("PRIVATE", str(raised.exception))
+            self.assertTrue(raised.exception.__suppress_context__)
 
     def test_symlink_input_is_rejected(self):
         target = Path(self.temp.name) / "target.json"
