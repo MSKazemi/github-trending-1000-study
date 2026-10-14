@@ -32,3 +32,59 @@ The previous drafts [#184](https://github.com/MSKazemi/github-trending-1000-stud
 Independent field-level source/date checks; direct data-hash verification; cohort consent and missingness; appropriate adjustment or randomization; measured downstream reuse; external analyst/reviewer identity checks; accessible licensing; and preregistered, bounded whole-lifecycle energy assessments are still pending. Do not close issue #11 as empirically accepted from this PR.
 
 **Practical 2027 maintainer lesson to test:** attach a traceable, independently tested task-outcome card to a reuse-first fix. Reuse an existing checked CLI and research registry instead of spawning separate, incompatible schemas. Evaluate user task acceptance, safety, version/license fit, review time and 30/90-day maintenance before recommending or claiming sustainability benefits. Null and adverse results remain publishable.
+
+## 2026-10-14 hardening — v1.1 (issue #11)
+
+The validator accepts historical **v1.0** documents for review, reports
+`v1_0_legacy_input=true`, and provides **v1.1** for new lesson records. It does
+not rewrite historical records. The canonical E0 fixture was migrated to v1.1;
+an additional entirely fabricated E2 / null-compatible example is at
+[lesson_registry.null_result.synthetic.json](../examples/lesson_registry.null_result.synthetic.json).
+Both are **synthetic illustrations, not findings**.
+
+New v1.1 requirements, in addition to v1.0:
+
+| Scope | Required fields or behavior | Scientific boundary |
+| --- | --- | --- |
+| All lessons | `research_question_id`, `result_kind` | The RQ link is self-declared; a frozen preregistration is not implied |
+| E0/E1 | `result_kind=not_estimated`; `effect_size`, `interval`, `interval_level` must be absent or null | Missing is not zero; E0 `sample_n` must be null or absent |
+| E1–E5 | `observed_at_utc` (explicit UTC) and `observed_data_ref`, plus HTTPS dated source, analysis commit and frozen-data SHA-256 | Hash, dates and data refs are syntax-checked, not independently authenticated |
+| E2–E5 | `result_kind=estimated|null_compatible`, measured `effect_size`, containing `interval`, `interval_level` in (0, 1), `effect_unit`, `analysis_method`, and positive `sample_n` | `null_compatible` means the reported interval contains zero; **not** evidence of equivalence, no effect or good statistical design |
+| E4/E5 | Distinct analyst/reviewer, `review_record_ref`, and `reviewed_at_utc` no earlier than `observed_at_utc` | A claimed review reference is not authenticated endorsement |
+| Superseded | `superseded_by` must point to another ID **in the same file**, without cycles | Earlier card remains intact and can be recovered; do not discard negative findings |
+
+For **both** schema versions, only documented top-level, lesson and source
+fields are accepted; unknown keys such as `prompt`, `raw_log` and
+`private_user_email` fail closed (but textual fields still require a human
+privacy check). A synthetic document **cannot** declare
+`validated_for_context` even if it contains forged hashes/reviewer aliases.
+For self-reported records meeting E4/E5 structure, any declared
+`validated_for_context` entry remains in
+`declared_validated_ids_needing_external_review`, and
+`independently_verified_lesson_count` always remains **zero**. Never present
+the `by_status` declaration counts as verified research.
+
+The direct CLI now reuses the shared research JSON strict decoder: no
+duplicate object keys, NaN/Infinity, non-UTF-8 or oversized files; it also
+refuses symlink inputs. This prevents the CLI from quietly bypassing the
+repository-wide artifact-integrity gate. No network access or data collection
+was added. Sample input:
+
+```bash
+python -m trending_study.lesson_registry --input examples/lesson_registry.synthetic.json
+python -m trending_study.lesson_registry --input examples/lesson_registry.null_result.synthetic.json
+python -m unittest tests.test_lesson_registry -v
+python -m unittest discover -s tests -v
+```
+
+**Acceptance boundary:** The engineering deliverable is an offline validator,
+schemas, synthetic fixtures and tests. It does **not** grant publication
+approval, independently verify source authenticity, supply a signed methods
+review or produce E4/E5 study findings. Keep human empirical sign-off and
+real task measurement as separate future study gates.
+
+**Practical repository lesson:** require a specific RQ, immutable data and
+code references, a stated uncertainty interval with units, an independent
+review record, and a reproducible negative-result trail **before** promoting
+a claimed growth/reuse technique. Keep hypothetical examples searchable
+without counting them as evidence.
