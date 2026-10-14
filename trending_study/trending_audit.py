@@ -7,6 +7,7 @@ membership in an unobserved candidate universe.
 """
 import argparse
 import json
+import os
 from pathlib import Path
 import re
 import stat
@@ -333,14 +334,32 @@ def evaluate_proxy(data):
 
 
 def load_offline_json(path):
-    """Read one bounded regular file using the repository's shared JSON gate."""
+    """Read a bounded regular file by descriptor, rejecting symlink races."""
     path = Path(path)
-    if path.is_symlink() or not path.is_file() or not stat.S_ISREG(path.stat().st_mode):
+    # O_NOFOLLOW closes the check/open symlink-swap window on supporting OSes.
+    # Nonblocking open also prevents a substituted FIFO from hanging before
+    # fstat can reject it. Do not rely on pre-open path.stat() for file type.
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NONBLOCK", 0)
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    elif path.is_symlink():
         raise TrendingAuditError("input must be an existing regular non-symlink file")
-    if path.stat().st_size > MAX_FILE_BYTES:
-        raise TrendingAuditError("input exceeds the strict research JSON byte limit")
+    descriptor = os.open(path, flags)
     try:
-        return decode_research_json(path.read_bytes(), path.name)
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise TrendingAuditError("input must be an existing regular non-symlink file")
+        if metadata.st_size > MAX_FILE_BYTES:
+            raise TrendingAuditError("input exceeds the strict research JSON byte limit")
+        # A file may grow after fstat: cap the actual read as well.
+        with os.fdopen(descriptor, "rb", closefd=False) as source:
+            raw = source.read(MAX_FILE_BYTES + 1)
+        if len(raw) > MAX_FILE_BYTES:
+            raise TrendingAuditError("input exceeds the strict research JSON byte limit")
+    finally:
+        os.close(descriptor)
+    try:
+        return decode_research_json(raw, path.name)
     except ResearchJSONError as exc:
         raise TrendingAuditError("malformed strict research JSON: " + str(exc)) from exc
 
