@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0015",
+  "title": "The results of the 2026 Developer Survey are here!",
+  "publisher": "Stack Overflow",
+  "original_publication_date": "2026-10-06",
+  "canonical_url": "https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/",
+  "source_type": "original_opt_in_developer_survey_summary",
+  "topics": [
+    "developer-survey",
+    "agent-adoption",
+    "human-factors"
+  ],
+  "attributed_claim_summary": "Stack Overflow published 2026 survey findings; its separate optional workplace-AI item reports 11,509 of 17,464 respondents selecting coding assistants/agents and 4,582 selecting agents/automated workflows.",
+  "evidence_or_event": "Original 2026 survey overview; exact optional-question counts in https://survey.stackoverflow.co/2026/ai/data/ai-select and 30,903 overall valid survey responses in https://survey.stackoverflow.co/2026/methodology.",
+  "limitations": "Promoted voluntary survey, not a representative probability sample; question-specific denominators vary, multi-select categories overlap, self-report does not verify agent usage in repositories.",
+  "research_relevance": "Define study-era exposure proxies and avoid treating a product launch, AI survey share or tool documentation as measured repository-level agent adoption.",
+  "practical_experiment": "Pilot a consented, versioned agent-usage event log and compare reported use with auditable tool traces for a small task frame; record missing and disagreement rates.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E01",
+    "industry_technology_outlook_2026_10_12.json:E02"
+  ]
+}

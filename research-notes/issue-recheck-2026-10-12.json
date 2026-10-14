@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "public_issue_metadata_recheck",
+  "source_frame_sha256": "0ddc27c1aed05b2d42bbf1337b7574d382594d499e1c8784ea6f19ea68e485f0",
+  "rechecked_at_utc": "2026-10-12T20:25:45.446Z",
+  "source_method": "Sixteen individual GitHub REST issues GET via connected GitHub app; batch completion UTC, no response headers retained",
+  "records": [
+    {
+      "task_id": "GH-4379284998",
+      "issue_id": 4379284998,
+      "source_url": "https://github.com/pallets/click/issues/3406",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-08-08T13:07:59Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-3462494702",
+      "issue_id": 3462494702,
+      "source_url": "https://github.com/pallets/click/issues/3097",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-08-08T13:03:45Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5361921880",
+      "issue_id": 5361921880,
+      "source_url": "https://github.com/pallets/click/issues/3847",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-09-20T13:39:02Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5220258582",
+      "issue_id": 5220258582,
+      "source_url": "https://github.com/Textualize/rich/issues/4211",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-08-27T22:28:53Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5500581700",
+      "issue_id": 5500581700,
+      "source_url": "https://github.com/Textualize/rich/issues/4224",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-09-18T14:12:41Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5478327510",
+      "issue_id": 5478327510,
+      "source_url": "https://github.com/Textualize/rich/issues/4223",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-09-18T06:25:50Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5552751394",
+      "issue_id": 5552751394,
+      "source_url": "https://github.com/psf/requests/issues/7629",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-09T16:11:54Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-4844615862",
+      "issue_id": 4844615862,
+      "source_url": "https://github.com/psf/requests/issues/7574",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-07-09T22:46:59Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5255457456",
+      "issue_id": 5255457456,
+      "source_url": "https://github.com/psf/requests/issues/7610",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-09-06T22:58:03Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5800371529",
+      "issue_id": 5800371529,
+      "source_url": "https://github.com/vitejs/vite/issues/23727",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-11T10:49:53Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5809559337",
+      "issue_id": 5809559337,
+      "source_url": "https://github.com/vitejs/vite/issues/23735",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-12T06:48:24Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5795015445",
+      "issue_id": 5795015445,
+      "source_url": "https://github.com/vitejs/vite/issues/23719",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-10T20:29:52Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5664004385",
+      "issue_id": 5664004385,
+      "source_url": "https://github.com/tokio-rs/axum/issues/3913",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-02T06:32:07Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5667813131",
+      "issue_id": 5667813131,
+      "source_url": "https://github.com/tokio-rs/axum/issues/3914",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-05T10:40:09Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5793567042",
+      "issue_id": 5793567042,
+      "source_url": "https://github.com/prometheus/prometheus/issues/19984",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-10T17:21:33Z",
+      "closed_at_utc": null,
+      "source_error": null
+    },
+    {
+      "task_id": "GH-5814460283",
+      "issue_id": 5814460283,
+      "source_url": "https://github.com/prometheus/prometheus/issues/20000",
+      "fetch_status": "observed",
+      "state": "open",
+      "updated_at_utc": "2026-10-12T13:21:29Z",
+      "closed_at_utc": null,
+      "source_error": null
+    }
+  ]
+}

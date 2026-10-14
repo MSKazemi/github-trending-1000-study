@@ -62,6 +62,10 @@ Source data are read-only; output publication uses a new path and must not overw
 
 **2027 practical lesson to test:** An agent-friendly README and AGENTS.md should teach a *search -> verify -> reuse/upstream or justify new build -> test -> document decision* workflow. Its benefit must be established with independently accepted outcomes and full human/maintenance costs, **not** inferred from 16 open issue leads, PR counts or star growth.
 
+## Source follow-up, not task acceptance
+
+An additional [bounded independent REST-identity and issue-status recheck](TASK_SCREENING_SOURCE_RECHECK_2026-10-12.md) recorded that all 16 selected public issues were open at **2026-10-12 20:25:45.446Z UTC**, with matching GitHub numeric issue IDs, links and original `updated_at` metadata timestamps. The new `trending_study.task_screen` module binds a **pre-search human-review packet** to both the frozen convenience frame and this later metadata snapshot. No external human raters or frozen acceptance tests have yet been provided, and source-status matches alone cannot establish benchmark validity. See [PR #170](https://github.com/MSKazemi/github-trending-1000-study/pull/170).
+
 ## Publication status and issue mapping
 
 - Issue [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2): independently audited **actual Trending** capture remains blocked by source-access review and field human QA; this REST task frame does not satisfy it.
