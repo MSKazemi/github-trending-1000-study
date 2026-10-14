@@ -52,7 +52,10 @@ jobs:
             --audit-live
 
   retire:
-    if: github.ref == 'refs/heads/main' && inputs.mode == 'retire' && inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'
+# Fail closed until a repo administrator explicitly enables this variable
+    # after documenting an independent security review and protected archive tags.
+    # A confirmation string alone cannot lift the approval gate.
+    if: github.ref == 'refs/heads/main' && github.repository == 'MSKazemi/github-trending-1000-study' && vars.BRANCH_RETIREMENT_APPROVED == 'true' && inputs.mode == 'retire' && inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     permissions:
