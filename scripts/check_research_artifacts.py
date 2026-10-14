@@ -203,13 +203,43 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MA
 
 
 
+def _read_git_index_blob(root, oid, max_file_bytes):
+    """Read a bounded Git-index blob without running clean/smudge filters.
+
+    A locally staged blob may differ from the checked-out file. A checkout-only
+    scan must not report success while an invalid blob is staged for commit.
+    """
+    if len(oid) not in (40, 64) or any(b not in b"0123456789abcdef" for b in oid):
+        raise IntegrityError("invalid Git index blob identifier")
+    try:
+        header = subprocess.run(
+            ["git", "-C", str(root), "cat-file",
+             "--batch-check=%(objecttype) %(objectsize)"],
+            input=oid + b"\n", check=True, capture_output=True, timeout=20,
+        ).stdout.strip().split()
+        if len(header) != 2 or header[0] != b"blob" or not header[1].isdigit():
+            raise IntegrityError("Git index entry is missing or not a blob")
+        size = int(header[1])
+        if size > max_file_bytes:
+            raise IntegrityError(f"Git index blob exceeds {max_file_bytes} byte limit")
+        payload = subprocess.run(
+            ["git", "-C", str(root), "cat-file", "blob", oid.decode("ascii")],
+            check=True, capture_output=True, timeout=20,
+        ).stdout
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise IntegrityError("cannot read Git index blob") from exc
+    if len(payload) != size:
+        raise IntegrityError("Git index blob size changed during inspection")
+    return payload
+
+
 def audit_tracked_code_json(
     root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MAX_TOTAL_BYTES
 ):
     """Validate every Git-indexed .py/.json file in a checkout, without imports.
 
     Unlike the research-directory scan, Git index enumeration reaches files in
-    any directory, including hidden paths. It checks checked-out bytes; it does
+    any directory, including hidden paths. It checks checked-out and Git-index blob bytes; it does
     not authenticate sources or inspect Git submodule internals.
     """
     root = Path(root)
@@ -238,7 +268,8 @@ def audit_tracked_code_json(
     if not listing.endswith(b"\0"):
         raise IntegrityError("Git index listing is incomplete")
 
-    counts = {"python": 0, "json": 0, "files": 0, "checked_bytes": 0}
+    counts = {"python": 0, "json": 0, "files": 0, "checked_bytes": 0,
+              "index_checked_bytes": 0}
     failures = []
     seen = set()
 
@@ -308,14 +339,32 @@ def audit_tracked_code_json(
                     f"tracked artifact total exceeds {max_total_bytes} byte limit"
                 )
             counts["checked_bytes"] += len(raw)
+            indexed = _read_git_index_blob(root, _sha, max_file_bytes)
+            if counts["index_checked_bytes"] + len(indexed) > max_total_bytes:
+                raise IntegrityError(
+                    f"Git index blobs exceed {max_total_bytes} byte total limit"
+                )
+            counts["index_checked_bytes"] += len(indexed)
             if suffix == ".json":
                 _strict_json(raw.decode("utf-8"))
+                if indexed != raw:
+                    try:
+                        _strict_json(indexed.decode("utf-8"))
+                    except (IntegrityError, UnicodeError, ValueError,
+                            RecursionError) as exc:
+                        raise IntegrityError(f"Git index blob: {exc}") from exc
                 counts["json"] += 1
             else:
                 # Compiling creates a code object but does not execute it;
                 # unlike AST-only parsing this checks contextual syntax too,
                 # e.g. 'return' outside a function. Respect PEP 263 cookies.
                 compile(raw, relative, "exec", dont_inherit=True)
+                if indexed != raw:
+                    try:
+                        compile(indexed, relative, "exec", dont_inherit=True)
+                    except (SyntaxError, UnicodeError, ValueError,
+                            OverflowError, RecursionError) as exc:
+                        raise IntegrityError(f"Git index blob: {exc}") from exc
                 counts["python"] += 1
         except (IntegrityError, OSError, UnicodeError, SyntaxError,
                 ValueError, OverflowError, RecursionError) as exc:
