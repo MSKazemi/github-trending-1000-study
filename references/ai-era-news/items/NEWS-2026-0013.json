@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "NEWS-2026-0013",
+  "title": "Linux Foundation announces formation of Agentic AI Foundation",
+  "publisher": "Linux Foundation",
+  "author": null,
+  "original_publication_date": "2025-12-09",
+  "accessed_date_utc": "2026-10-12",
+  "canonical_url": "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+  "source_type": "foundation_announcement",
+  "topics": [
+    "interoperability"
+  ],
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "attributed_claim_summary": "Linux Foundation announced an Agentic AI Foundation with MCP, goose and AGENTS.md among initial contributed projects.",
+  "evidence_or_event": "Claims are attributed to the original publisher; no original study results produced here.",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "limitations": "Foundation formation and declared neutrality are governance events, not proof of implementation interoperability or global uptake.",
+  "research_relevance": "AI-era coding methods, independently accepted functionality, OSS reuse and lifecycle cost",
+  "practical_experiment": "Keep instructions and tool interfaces portable; measure cross-agent reproducibility and failure modes.",
+  "policy_conclusion": "testable_hypothesis_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "related_existing_sources": [],
+  "correction_status": "not_checked",
+  "fulltext_stored": false
+}

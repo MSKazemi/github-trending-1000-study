@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "task": "SYNTHETIC engineering dry-run: a developer with a saved local GitHub Trending HTML file needs a ranked, provenance-labeled JSONL list without network access",
+  "acceptance_test": "On tests/fixtures/trending.html, existing CLI produces exactly alpha-org/first-project and example-user/another.repo in ranks 1 and 2 with source SHA-256, capture_time_status unverified_parse_only and eligible_for_confirmatory_cohort false; summarize reports 2 occurrences and 2 displayed names; malformed input or existing output fails without modification. This is an INTERNAL open test, not independently authored hidden acceptance.",
+  "search_log": [
+    "2026-10-12: inspected existing trending_study/__main__.py extract_repos, parse-trending, summarize and existing tests/test_cli.py in the public study repository; task-complete command already available.",
+    "2026-10-12: inspected public Python html.parser as a possible primitive for bounded new code; it is NOT a task-complete alternative and no implementation or benchmark was performed.",
+    "2026-10-12: examined existing offline reuse_gate.py and its published JSON schema; reused instead of introducing a new decision engine."
+  ],
+  "candidates": [
+    {
+      "name": "Existing trending_study parse-trending CLI (public repo, existing source)",
+      "source_url": "https://github.com/MSKazemi/github-trending-1000-study/blob/4d524c460e6992f08fbc57118cdbd9962feb2098/trending_study/__main__.py",
+      "functional_test": "unknown",
+      "license_compatibility": "unknown",
+      "security_review": "unknown",
+      "maintenance_review": "unknown"
+    }
+  ]
+}

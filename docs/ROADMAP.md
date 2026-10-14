@@ -36,7 +36,11 @@ Do not mark sample goals complete without public methodology and verified counts
 ## M5 — Evidence-to-usefulness research (2027 extension, not started)
 - [x] Define distinct user value, quality, sustainable growth and cost constructs
 - [x] Publish AI workflow substudy design and study-specific threats
+- [x] Integrate an explicitly **partial** Sourcegraph #015 documentary pilot with dated first-party candidate leads, seven-segment search-coverage limitations, and offline integrity tests ([issue #81](https://github.com/MSKazemi/github-trending-1000-study/issues/81); [pilot](../research/company-intelligence/2026-04-12_2026-10-12/015-sourcegraph.md))
+- [ ] Complete Sourcegraph #015 independent dated-source/human methods audit, true screening denominators, rights/availability checks and prospective reuse-first task validation **before** calling the company issue complete
 - [x] Publish evidence-to-lesson grades, templates and claim ledger
+- [x] Harden the offline lesson registry v1.1 with strict JSON, RQ/source/result metadata, explicit outcome-scale null reference, bounded regular-file CLI input, supersession integrity and synthetic-only tests ([issue #11 engineering instrument](LESSON_REGISTRY_AUDIT_2026_10.md))
+- [ ] Independently verify the source/data hashes, real reviewer, correct null reference/uncertainty interpretation and methodological context before treating any self-reported E4/E5 card as validated evidence
 - [x] Add deterministic, offline project idea validation gate with synthetic tests
 - [ ] Pre-register independent user-task and task-randomization studies
 - [ ] Complete human subject/consent and privacy review as appropriate
@@ -134,3 +138,14 @@ See docs/PILOT_CAPTURE_AND_PREFLIGHT.md and docs/PROTOCOL_FREEZE_STATUS_2026_10_
 - [ ] Obtain human scientific review/signoff and leave pilot/pre-registration pending until evidence exists
 
 No actual live 30-row QA can be credited from this PR. Issue [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2) remains open for field validation. Details: [independent audit runbook](INDEPENDENT_PAGE_AUDIT_2026_10_12.md).
+
+## M12 — enterprise CI and no-loss PR review (2026-10-13 integration)
+
+- [x] Consolidate SHA-pinned official GitHub Actions into a **single canonical** CI workflow with Python 3.10, 3.12 and 3.14 and read-only checkout; retain JSON integrity, unittest and CLI smoke checks (integration PR #255).
+- [x] Reconcile the existing PR author template and canonical scientific merge gate instead of force-merging a competing template/policy (PR #255).
+- [x] Record responsible exact-head, non-destructive merge procedures in AGENTS.md and CONTRIBUTING.md (documentation follow-up to #245).
+- [ ] Configure enforceable GitHub branch protections, required status checks and genuinely independent reviews in repository settings; documentation is not an access-control mechanism.
+- [ ] Complete actual source-access permission, real-sample QA, protocol preregistration, and independent task/energy validation before presenting synthetic tools as empirical findings.
+- [ ] Resolve all remaining conflicting research and company-intelligence draft PRs claim by claim, preserving unique citations and tests before retirement.
+
+Related: [canonical PR gate](PR_MERGE_QUALITY_GATE_2026_10_13.md), [integration checkpoint](PR_REVIEW_CHECKPOINT_2026_10_13.md), [source-access limitations](SOURCE_ACCESS_DECISION_2026-10-13.md). Superseded PR #245 remains in GitHub history for audit rather than being overwritten.
