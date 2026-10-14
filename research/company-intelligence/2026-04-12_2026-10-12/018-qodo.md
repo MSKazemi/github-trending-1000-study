@@ -118,13 +118,13 @@ None of these effects were measured in this source review. External ecosystem pr
 
 **Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
 
-## 10. Provisional source lead preserved from overlapping first-pass PR #198 (not counted)
+## 10. Provisional source lead from older PR #198 (not a validated finding)
 
 [PR #198](https://github.com/MSKazemi/github-trending-1000-study/pull/198) contains a JSON event-lead draft overlapping this report's agentic toolbox, software map and Qodo 3.0 items. They should **not** become additional event IDs. A distinct lead to inspect separately is:
 
 - [Why Your AI Coding Agent Shouldn't Review Its Own Code](https://www.qodo.ai/blog/why-your-ai-coding-agent-shouldnt-review-its-own-code-the-case-for-an-independent-verification-layer/) — draft lead `018-E01` from #198, source date *reported by that draft* as 2026-06-30, not yet independently checked. This is a vendor-authored **argument** for independent verification, not independent causal evidence that separate AI review improves acceptance or security. Check the actual title/date/version, claims and competing results before any inclusion.
 
-This is **not a seventh validated event**, not an independent review and not a product-adoption finding. The original PR's distinct experiment rationale and full JSON metadata remain preserved in its branch history for reviewer audit.
+This is **one E0 provisional publisher URL lead now preserved in the working CSV**, not a seventh *validated* event, independent review or product-adoption finding. The original PR's distinct experiment rationale and full JSON metadata remain preserved in its branch history for reviewer audit.
 
 ### Critical license/ownership contradiction — 2026-10-13 (analyst pass, not independent reviewer)
 
@@ -140,7 +140,7 @@ This is **not a seventh validated event**, not an independent review and not a p
 
 This source-screened working report retains the full **original PR #213 report** and its factual limitations. Later [draft PR #232](https://github.com/MSKazemi/github-trending-1000-study/pull/232) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/018-qodo.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/018-qodo.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
 
-**Canonical working event index:** [018-qodo.events.csv](018-qodo.events.csv) contains 10 deduplicated *publisher URL leads*: 4 retained from the newer screening plus 5 unique older URLs. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
+**Canonical working event index:** [018-qodo.events.csv](018-qodo.events.csv) contains **13** deduplicated *publisher URL leads*: 4 from the original later screening, 5 unique archived older sources, one preserved from historical PR #198, and three additional dated vendor leads on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
 
 | URL in both screens | Original status | Newer status | Required disposition |
 |---|---|---|---|
@@ -179,3 +179,12 @@ This source-screened working report retains the full **original PR #213 report**
 The original machine-readable `events.json` from earlier closed-unmerged PR [#198](https://github.com/MSKazemi/github-trending-1000-study/pull/198) is preserved byte-for-byte at [the first-pass JSON archive](source-archives/018-qodo.2026-10-12-first-pass.events.json). Its one distinct, previously uncatalogued source URL is now carried forward in the canonical working CSV as an **E0 unreviewed lead** under its original ID (018-E01). The index now holds **10 unique vendor URL leads**, not 10 independently verified events. A published article establishes only what the publisher said; no independently audited performance, legal rights, or systematic search completeness is implied.
 
 The archive is separate source provenance, not another independent observation. Publication/event dates, plan availability, contrary sources, factual and methods assessment still require genuine independent review. This preservation change does **not** satisfy the pending scientific acceptance gate, and the PR remains draft until review and final-head CI succeed.
+
+
+## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+
+[Source search log and scientific cautions](source-audits/018-qodo.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 13 distinct publisher URL leads, not 13 independently confirmed product outcomes.**
+
+Preserved PR #198 editorial article as a provisional E0 source lead, not independent proof. Added May 13 Findings Page beta, Aug 27 guidance editorial, and Sep 9 Qodo-for-Codex plugin company announcement. Qodo 3.0's PR Triage is Research Preview; retain announced Apache-2.0 vs separately time-pinned MIT-license discrepancy.
+
+**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
