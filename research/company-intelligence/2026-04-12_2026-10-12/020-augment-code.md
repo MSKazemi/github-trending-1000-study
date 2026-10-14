@@ -106,3 +106,14 @@ The consolidated [candidate ledger](020-augment-code.events.csv) contains 6 dist
 - 2026-10-08: [Augment Code's next chapter](https://www.augmentcode.com/blog/augment-code-next-chapter) — `announced_only` company statement only
 
 **Quality limits:** require complete seven-segment screened/excluded URL denominators, first release dates, product/ownership/rights/security checks, independent and critical reporting, and an actual qualified human factual reviewer. Statements about efficiency, profitability, market usage or emissions remain vendor claims or hypotheses; no independent adoption or task evaluation was executed. Issue #87 remains open. This consolidation is a working-source preservation step, not scientific signoff.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Augment Code's next chapter](https://www.augmentcode.com/blog/augment-code-next-chapter) — 2026-10-08 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** The seller's 8 October statement says it agreed to sell selected Cosmos, Auggie CLI and Code Context Engine assets to Harness. Harness's same-day first-party post uses the wording 'has acquired select assets' (https://www.harness.io/blog/harness-acquires-augment-code-cosmos).
+- **Correction / uncertainty to retain:** Preserve this cross-party status-language discrepancy instead of inferring independently verified closing date, all-company acquisition or product continuity. Both statements are transaction participants' publications, not an independent legal registry.
+- **Falsifiable maintainer experiment (not performed):** Compare independently accepted code-review tasks on the same pinned tool/version before adopting an acquired workflow; document licensing/account continuity, rollback path and upstream maintenance risk.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
