@@ -266,6 +266,10 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertIn("inputs.mode == 'retire'", workflow)
         # The write-capable job must be disabled unless a repository admin
         # deliberately sets a separate variable after independent review.
+        # The current integration cannot mint a write token through this job,
+        # even if an administrator sets the approval variable. Activation
+        # requires its own reviewed PR that removes the unconditional false.
+        self.assertIn("if: ${{ false &&", workflow)
         self.assertIn("vars.BRANCH_RETIREMENT_APPROVED == 'true'", workflow)
         self.assertIn("github.repository == 'MSKazemi/github-trending-1000-study'", workflow)
         self.assertIn("inputs.confirmation == 'RETIRE_VERIFIED_MERGED_BRANCHES'", workflow)
