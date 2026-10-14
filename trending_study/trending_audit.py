@@ -6,12 +6,10 @@ Its prediction target is ORDER AMONG ALREADY DISPLAYED REPOSITORIES, never
 membership in an unobserved candidate universe.
 """
 import argparse
-from datetime import timezone
 import json
 from pathlib import Path
 import re
 import stat
-import sys
 
 from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, decode_research_json
 from .trending_overlap import OverlapError, _capture, _utc
@@ -94,7 +92,8 @@ def _capture_info(capture):
 
 def _root(data, version, payload_field):
     _fields(data, {"schema_version", "dataset_kind", payload_field}, "root")
-    if data["schema_version"] != version or data["dataset_kind"] not in KINDS:
+    if (data["schema_version"] != version or not isinstance(data["dataset_kind"], str)
+            or data["dataset_kind"] not in KINDS):
         raise TrendingAuditError("unsupported schema_version or dataset_kind")
 
 
@@ -221,7 +220,9 @@ def evaluate_proxy(data):
         data, {"schema_version", "dataset_kind", "protocol_locked_at_utc",
                "protocol_reference", "pages"}, "root",
     )
-    if data["schema_version"] != PROXY_VERSION or data["dataset_kind"] not in KINDS:
+    if (data["schema_version"] != PROXY_VERSION
+            or not isinstance(data["dataset_kind"], str)
+            or data["dataset_kind"] not in KINDS):
         raise TrendingAuditError("unsupported schema_version or dataset_kind")
     locked = _timestamp(data["protocol_locked_at_utc"], "protocol_locked_at_utc")
     _text(data["protocol_reference"], "protocol_reference")
