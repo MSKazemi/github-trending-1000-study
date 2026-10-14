@@ -124,3 +124,14 @@ This adds 4 specifically dated publisher statements; links and content were chec
 ### Preserved later working draft
 
 The complete 2026-10-13 alternate source-screen text, including its initial search description, limitations and separate proposed repository experiment, is preserved **verbatim** in [the alternate report archive](source-archives/024-zed-industries.2026-10-13-first-screen.md). It is documentary draft provenance, not independent validation of publisher claims or a completed study.
+
+
+## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+
+**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+
+- **Publisher page and source publication date:** [Replace PRs with Delta – Now in Public Beta](https://zed.dev/blog/delta-public-beta) — 2026-09-16 (publisher-stated date; access check 2026-10-14).
+- **Source-attributed observation:** Zed's 16 September publisher article explicitly labels Delta a public beta and says the publisher internally disabled pull requests for Delta's own repository. The announcement describes shared agent threads and worktrees.
+- **Correction / uncertainty to retain:** The internal Git workflow is a vendor case study, not evidence that external maintainers should retire PRs, checks, CI, immutable histories or required review. Delta public beta is not broadly proven stable or an independent quality outcome.
+- **Falsifiable maintainer experiment (not performed):** Compare two review UX flows on the same patch and frozen security/tests, retaining GitHub PR-based CI, branch protection and audit provenance as non-negotiable controls. Measure detected defects and reviewer active time.
+- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
