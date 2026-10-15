@@ -7,8 +7,9 @@ All included terms must be explicit; unknown never means zero.
 import argparse
 from decimal import Decimal, InvalidOperation
 import json
-from pathlib import Path
 import re
+
+from .data_integrity import load_research_json_file
 
 
 TERMS = ("discovery", "development", "verification", "maintenance", "other")
@@ -67,19 +68,6 @@ def _energy(record, name, kind):
     except InvalidOperation as exc:
         raise BoundaryError(f"{name}: invalid decimal") from exc
     return value
-
-
-def _duplicate_key(pairs):
-    found = {}
-    for key, value in pairs:
-        if key in found:
-            raise BoundaryError(f"duplicate JSON key: {key}")
-        found[key] = value
-    return found
-
-
-def _reject_constant(value):
-    raise BoundaryError(f"nonstandard JSON constant {value}")
 
 
 def _decimal(value):
@@ -200,11 +188,7 @@ def main(argv=None):
     parser.add_argument("--input", required=True, help="explicit boundary scenario JSON")
     args = parser.parse_args(argv)
     try:
-        path = Path(args.input)
-        if path.stat().st_size > 1_000_000:
-            raise BoundaryError("input exceeds 1 MB")
-        payload = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_duplicate_key,
-                             parse_constant=_reject_constant)
+        payload = load_research_json_file(args.input, max_bytes=1_000_000)
         result = evaluate(payload)
     except (ValueError, TypeError, OSError) as exc:
         parser.exit(2, f"error: {exc}\n")
