@@ -1,6 +1,6 @@
 # Docker (037): provisional source-query and inclusion log, 2026-10-16
 
-> **PROVISIONAL, AI-ASSISTED FIRST-PASS SCREEN. NOT HUMAN-REVIEWED.** This log goes with the [report](037-docker.md) and the [event ledger](037-docker.events.csv). Factual/link review, source-access/rights review and methods review are all **pending**. It does not close [issue #104](https://github.com/MSKazemi/github-trending-1000-study/issues/104).
+> **PROVISIONAL, AI-ASSISTED FIRST-PASS SCREEN. NOT HUMAN-REVIEWED.** This log goes with the [report](037-docker.md) and the [event ledger](037-docker.events.csv). Factual/link review, source-access/rights review and methods review are all **pending**. [Issue #104](https://github.com/MSKazemi/github-trending-1000-study/issues/104) was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open.
 
 **Window:** 2026-04-12 to 2026-10-12 inclusive. **Sources accessed:** 2026-10-16.
 
