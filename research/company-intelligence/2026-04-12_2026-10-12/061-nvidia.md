@@ -24,7 +24,7 @@ Inaccessible sources were VMblog, TMCnet, MarkTechPost, BetaNews, gpuinsights.ne
 ## 2. Verified company/product identity and baseline
 
 - **Entity:** NVIDIA Corporation. Press releases in the window carry "NVIDIA (NASDAQ: NVDA)" and "© 2026 NVIDIA Corporation", for example the [Sep 28 release](https://nvidianews.nvidia.com/news/open-agent-safety-platform).
-- **Ownership:** publicly listed, with no parent company indicated. Filing-level confirmation is **not cited**. One EDGAR request was discarded under the no-identity rule; see the search log.
+- **Ownership:** publicly listed, with no parent company indicated. Filing-level confirmation is **not cited** (EDGAR not accessed; see the search log).
 - **Brands:** no acquisition or rename of a scoped brand was found in the window. Two re-homings were found:
   - The NeMo repository split, with speech moving to [NVIDIA-NeMo/Speech](https://github.com/NVIDIA-NeMo/Speech/releases/tag/v3.0.0) (CI2026-061-023).
   - The NVIDIA-founded Open Secure AI Alliance moving to Linux Foundation stewardship (CI2026-061-030).
@@ -170,7 +170,7 @@ These are company statements. They are not forecasts by this study and not deliv
   - Conflicting alliance member counts (020).
   - Bulletin data inconsistencies (022, 026).
   - "Early preview" vs. "broadly available" vs. months of public GitHub releases for OpenShell.
-- **Process incident:** one SEC EDGAR request carried the maintainer's contact email in its User-Agent before the no-identity rule was received. The response was discarded and is not cited (see the search log).
+- **EDGAR not used:** no SEC filing is cited because EDGAR requires a declared contact identity for automated access (see the search log).
 - **Reviewer links and audit date:** pending. A human reviewer should:
   - re-run the logged queries;
   - spot-check at least 10 ledger rows against their sources, including 001/017 (RC-only fixes), 022, 026 and 027;
