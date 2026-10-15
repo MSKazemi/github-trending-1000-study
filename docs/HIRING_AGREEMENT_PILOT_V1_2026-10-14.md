@@ -116,3 +116,16 @@ Interpretation is deliberately descriptive: the source selection is retrospectiv
 Task ID `ISSUE-223-HIRING-AGREEMENT-OFFLINE-V1`: a researcher must audit supplied, rights-cleared hiring labels offline while retaining candidate/missingness denominators and never inventing human agreement. A bounded local search inspected `rubric_agreement`, `blind_review`, `task_screen`, `safe_io`, and `data_integrity`. All are existing repository code under the root MIT license; no new third-party code or dependency was downloaded or executed. Existing acceptance coverage supports compatibility, not independent source/security certification.
 
 Reuse choices: extend the existing rubric nominal-kappa function with an optional label vocabulary (existing default/output preserved); reuse blind-review exact-field/UTC/fingerprint helpers, the strict research JSON decoder and write-once publication. Task-screen's domain-specific source/label rules were unsuitable as a competing hiring engine. A thin hiring adapter adds only candidate projection, domain labels, confusion/positive/negative metrics and structural guards. This choice avoids a second generic agreement implementation. The predeclared acceptance includes retained denominators, null degenerate kappa, no inaccessible-source negatives, frame/review hash binding, immutable pre-adjudication statistics and fail-closed input/output controls. Independent tests and human scientific authorization remain distinct gates.
+
+
+## 2026-10-15 coder input and error-message safety correction
+
+The offline agreement CLI now reports an unambiguous generic error on invalid
+strict JSON rather than echoing potentially private duplicate object keys.
+Failed reads and output publication also suppress local filenames/OS errors
+at the CLI boundary. New synthetic tests cover private-looking names in
+malformed source documents and missing paths. The canonical/rater raw SHA-256
+reporting and write-once outputs for **successful** runs are unchanged.
+A redacted error is not a guarantee of anonymity or independent human blinding:
+actual coders, access rights, source eligibility and third-party methods review
+are not yet authenticated. Issue #223 remains open until that evidence exists.
