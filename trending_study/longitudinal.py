@@ -364,35 +364,50 @@ def validate_event(record, task):
 
 
 def load_events(events_dir, plan_by_id, plan_digest):
+    """Fail closed on corrupted, ambiguous or concealed immutable events."""
     path = Path(events_dir)
     events = {key: [] for key in plan_by_id}
+    if path.is_symlink():
+        raise FollowupError("events-dir must not be a symlink")
     if not path.exists():
         return events
     if not path.is_dir():
         raise FollowupError("events-dir exists but is not a directory")
     ids = set()
-    for item in sorted(path.glob("*.json")):
+    files = sorted(path.iterdir())
+    if len(files) > MAX_EVENT_FILES + 1:
+        raise FollowupError("event ledger exceeds bounded file count")
+    for item in files:
         if item.is_symlink():
-            raise FollowupError(f"symlinked event is not an immutable record: {item}")
+            raise FollowupError("symlinked event is not an immutable record")
+        # The collector itself owns this one non-evidence file while locked.
+        if item.name == ".followup.lock" and item.is_file():
+            continue
+        if item.suffix != ".json" or not item.is_file():
+            raise FollowupError("event ledger contains unexpected file or directory")
         try:
-            record = json.loads(item.read_text(encoding="utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise FollowupError(f"invalid event file (quarantine; do not delete): {item}") from exc
-        if not isinstance(record, dict) or record.get("schema_version") != EVENT_VERSION:
-            raise FollowupError(f"unrecognized event file: {item}")
+            record = decode_research_json(
+                _read_regular(item, MAX_EVENT_BYTES, "event"), "event"
+            )
+        except (ValueError, RecursionError):
+            raise FollowupError(
+                "invalid or ambiguous event file; preserve for quarantine"
+            ) from None
+        if type(record) is not dict or record.get("schema_version") != EVENT_VERSION:
+            raise FollowupError("unrecognized event file")
         key = record.get("task_id")
-        if key not in events or record.get("plan_sha256") != plan_digest:
-            raise FollowupError(f"event does not belong to the immutable plan: {item}")
+        if not isinstance(key, str) or key not in events or record.get("plan_sha256") != plan_digest:
+            raise FollowupError("event does not belong to the immutable plan")
         expected = plan_by_id[key]
         if (record.get("repository_id") != expected["repository_id"]
                 or record.get("followup_days") != expected["followup_days"]):
-            raise FollowupError(f"event identity or horizon mismatch: {item}")
+            raise FollowupError("event identity or horizon mismatch")
         event_id = text(record.get("event_id"), "event_id")
         if event_id in ids:
             raise FollowupError("duplicate event_id")
         ids.add(event_id)
-        if record.get("status") not in EVENT_STATES:
-            raise FollowupError(f"unrecognized event status in {item}")
+        if not isinstance(record.get("status"), str) or record["status"] not in EVENT_STATES:
+            raise FollowupError("unrecognized event status")
         validate_event(record, expected)
         events[key].append(record)
     for key, history in events.items():
