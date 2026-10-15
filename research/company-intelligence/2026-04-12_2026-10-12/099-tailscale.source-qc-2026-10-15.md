@@ -1,4 +1,6 @@
-# Tailscale #099 — dated primary-source contradiction and deployment gate (2026-10-15)
+# Tailscale #099 — provisional dated primary-source contradiction and deployment gate (2026-10-15)
+
+> **Provisional source-lead screen (2026-10-15):** this report, its [event ledger](099-tailscale.events.csv), [search log](099-tailscale.search-log.md) and [source-QC note](099-tailscale.source-qc-2026-10-15.md) are merged as **provisional, AI-assisted documentary source leads** under the maintainer's 2026-10-15 decision (precedent: PRs #67/#81/#86/#87/#93/#301). They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Merging is not scientific or security sign-off and does not close issue #167.
 
 **Scope:** Assistant-performed read-only spot check for [issue #167](https://github.com/MSKazemi/github-trending-1000-study/issues/167) and [26-event ledger](099-tailscale.events.csv). This is **not** independent human factual/security approval, an incident reproduction, a validated zero-trust deployment or an authorized agent data-collection run.
 
@@ -16,6 +18,6 @@ The links above are provider-authored sources. There is no immutable full-page c
 
 For a predeclared set of 12 synthetic agent network attempts, compare (A) the existing CI identity and least-privilege IAM+network ACL baseline against (B) a pinned Tailscale policy/Aperture gateway. Capture **all** allow/deny outcomes, deliberate credential-reuse and expired-token refusals, user approval events, cold-start/setup time and 30-day maintenance minutes. An independently designed hidden suite must prove **zero unauthorized synthetic reads** in each arm before any production trial. Keep the simpler baseline if equal security is achieved with less lifetime burden. No production credentials, transcripts, user identities or real protected services belong in Git.
 
-**Handoff:** Request separate non-author technical/security and scientific screening of date/version identity, incident interpretation, rights, available policy features and task design before accepting PR #304. **Issue #167 and the draft PR stay open** without that review. This is documentary source checking, not a 1,000-repository study observation.
+**Handoff:** Request separate non-author technical/security and scientific screening of date/version identity, incident interpretation, rights, available policy features and task design before promoting these leads beyond provisional status. PR #304 is merged only as a **provisional source-lead screen** under the maintainer's 2026-10-15 decision; **issue #167 stays open** without that review. This is documentary source checking, not a 1,000-repository study observation.
 
 **Practical lesson:** test *approval, credential lifetime and denials* rather than advertising that a particular VPN or agent gateway is inherently secure.
