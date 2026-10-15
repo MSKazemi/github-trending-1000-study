@@ -1,4 +1,6 @@
-# Pydantic #046 — bounded source-check handoff (2026-10-15)
+# Pydantic #046 — provisional bounded source-check handoff (2026-10-15)
+
+> **Provisional source-lead screen (2026-10-15):** this report, its [event ledger](046-pydantic.events.csv), [search log](046-pydantic.search-log.md) and [source-QC note](046-pydantic.source-qc-2026-10-15.md) are merged as **provisional, AI-assisted documentary source leads** under the maintainer's 2026-10-15 decision (precedent: PRs #67/#81/#86/#87/#93/#301). They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Merging is not scientific sign-off and does not close issue #113.
 
 **Scope:** Assistant-performed primary-source spot checks for [issue #113](https://github.com/MSKazemi/github-trending-1000-study/issues/113) and the existing [26-row event ledger](046-pydantic.events.csv). **Not** an independent qualified human factual review or a reproduction of vendor functionality. Sources were read retrospectively on October 15; historical signed response snapshots, source-search denominators, installed-version tests, legal review and actual user outcomes remain unavailable.
 
@@ -18,6 +20,6 @@ Take 12 **pre-frozen, synthetic-only** typed tool-call tasks in an isolated repo
 
 ## Reviewer request and status
 
-A qualified non-author reviewer still must check primary artifact timestamps, exact release/affected versions, policy/licensing, publisher identity, duplicate groups, negative findings and the M1–M7 construct mapping. The seven-month event search remains **purposive, not exhaustive**. **Keep PR #303 in draft and issue #113 open** until its stated review/promotion gates are met; this assistant's spot check is not independent human approval.
+A qualified non-author reviewer still must check primary artifact timestamps, exact release/affected versions, policy/licensing, publisher identity, duplicate groups, negative findings and the M1–M7 construct mapping. The seven-month event search remains **purposive, not exhaustive**. PR #303 is merged only as a **provisional source-lead screen** under the maintainer's 2026-10-15 decision; **issue #113 stays open** until its stated review/promotion gates are met. This assistant's spot check is not independent human approval.
 
 **Practical lesson:** pair every typed-agent release story with a failing unauthorized-input test and version-pinned upgrade/repair budget. Recording regressions or unknowns is more useful than inferring production reliability from product publicity.
