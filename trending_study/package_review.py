@@ -65,11 +65,14 @@ def _clean_https_url(url, field):
 
 
 def evaluate(data):
-    if not isinstance(data, dict):
-        raise PackageReviewError("expected object")
+    if not isinstance(data, dict) or set(data) != {"candidate", "task_frozen_at_utc", "checks"}:
+        raise PackageReviewError("expected exact package review fields; unknown fields forbidden")
     candidate = data.get("candidate")
-    if not isinstance(candidate, dict):
-        raise PackageReviewError("candidate object required")
+    allowed_candidate = {"ecosystem", "package_name", "version", "registry_url",
+                         "artifact_sha256", "first_available_at_utc", "spdx_expression",
+                         "purl", "source_commit"}
+    if not isinstance(candidate, dict) or set(candidate) - allowed_candidate:
+        raise PackageReviewError("candidate must be an object without unsupported/private fields")
     for key in ("ecosystem", "package_name", "version"):
         if not isinstance(candidate.get(key), str) or not candidate[key].strip():
             raise PackageReviewError(f"candidate.{key} required")
@@ -137,11 +140,17 @@ def evaluate(data):
         ["artifact_sha256"] if sha is None else [])
     for key in FIELDS:
         cell = checks[key]
-        if (not isinstance(cell, dict) or not isinstance(cell.get("status"), str)
+        if (not isinstance(cell, dict) or set(cell) - {"status", "evidence_url"}
+                or not isinstance(cell.get("status"), str)
                 or cell["status"] not in STATES):
-            raise PackageReviewError(f"{key} must declare pass/fail/unknown")
+            raise PackageReviewError(f"{key} must declare pass/fail/unknown without unknown fields")
+        # A failing/unknown gate can carry a corroborating source, but its URL
+        # must not hide a credential or arbitrary URL payload either.
+        if "evidence_url" in cell:
+            _clean_https_url(cell["evidence_url"], f"{key} evidence_url")
+        elif cell["status"] == "pass":
+            raise PackageReviewError(f"{key} pass requires an evidence_url")
         if cell["status"] == "pass":
-            _clean_https_url(cell.get("evidence_url"), f"{key} pass evidence_url")
             if key == "license_compatibility" and (
                     not spdx or spdx.strip().upper() in {"NONE", "NOASSERTION"}):
                 raise PackageReviewError("license pass requires an actual SPDX license expression, not NONE/NOASSERTION")
