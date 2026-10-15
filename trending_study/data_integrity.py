@@ -30,7 +30,7 @@ def _unique_pairs(pairs):
     obj = {}
     for key, value in pairs:
         if key in obj:
-            raise ResearchJSONError(f"duplicate JSON object key {key!r}")
+            raise ResearchJSONError("duplicate JSON object key")
         obj[key] = value
     return obj
 

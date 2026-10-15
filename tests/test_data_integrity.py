@@ -41,6 +41,25 @@ class ResearchDataIntegrityTests(unittest.TestCase):
                 with self.assertRaisesRegex(ResearchJSONError, "duplicate JSON object key"):
                     validate_repository(root)
 
+    def test_duplicate_key_diagnostic_never_prints_untrusted_key_or_contact(self):
+        # CI runs both research validators. Rejected JSON names might contain
+        # private/contact material and must never be echoed in public job logs.
+        key = "private.contact@example.invalid"
+        raw = ('{"' + key + '":1,"' + key + '":2}').encode("utf-8")
+        with tempfile.TemporaryDirectory() as root:
+            self._artifact(root, "ambiguous.json", raw)
+            with self.assertRaisesRegex(ResearchJSONError, "duplicate JSON object key") as ctx:
+                validate_repository(root)
+            self.assertNotIn(key, str(ctx.exception))
+            result = subprocess.run(
+                [sys.executable, "-m", "trending_study.data_integrity",
+                 "--root", str(root)],
+                capture_output=True, text=True, timeout=20,
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn(key, result.stderr)
+            self.assertNotIn(key, result.stdout)
+
     def test_rejects_non_finite_numeric_values(self):
         for raw in (b'{"x":NaN}', b'{"x":Infinity}', b'{"x":-Infinity}',
                     b'{"x":1e999}'):
