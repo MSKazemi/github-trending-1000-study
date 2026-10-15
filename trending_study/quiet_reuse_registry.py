@@ -268,8 +268,14 @@ def _review(packet, report, slot):
     ref = _string(report["reviewer_ref"], "reviewer_ref")
     if IDENT.fullmatch(ref) is None or ref.lower() == "unknown":
         raise RegistryFrameError("reviewer reference must be limited pseudonym")
-    if _utc(report["reviewed_at_utc"], "reviewed_at_utc") > datetime.now(timezone.utc) + timedelta(minutes=5):
+    reviewed = _utc(report["reviewed_at_utc"], "reviewed_at_utc")
+    if reviewed > datetime.now(timezone.utc) + timedelta(minutes=5):
         raise RegistryFrameError("future-dated review")
+    # Even when a report contains only negative or unknown votes, it cannot
+    # have judged a task that was not frozen until after the review date.
+    # This is a structural chronology check, NOT authentication of review.
+    if any(reviewed < _utc(task["baseline_utc"], "task baseline") for task in packet["tasks"]):
+        raise RegistryFrameError("review predates at least one frozen task baseline")
     if not isinstance(report["decisions"], list):
         raise RegistryFrameError("decisions array required")
     expected = {x["pair_id"] for x in packet["pairs"]}
