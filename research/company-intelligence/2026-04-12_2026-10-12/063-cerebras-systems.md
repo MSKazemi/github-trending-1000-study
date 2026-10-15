@@ -171,7 +171,7 @@ If speed does not reduce maintainer minutes per accepted task, keep the simpler 
   - Q2 GAAP revenue was below Q1 GAAP.
   - Date conflicts in the S-1 filing date and the closing release's "2025" effective date, plus the CS-4 Aug 18/19 listing.
   - Gemma 4 31B was removed from the shared tier about two months after launch.
-- **Raw-text confirmation:** every number in the ledger was matched against raw page text (curl/urllib HTML, docs Markdown, GitHub/PyPI/npm JSON, status RSS). The exceptions are the two SEC dates (Jun 23, Aug 12), which were read only via WebFetch summaries, and the Jul 9 RAISE event date, which comes from secondary reports.
+- **Raw-text confirmation:** the first pass reported matching every ledger number against raw page text; the independent spot-check below found that this did not hold for row 022 (no git tag exists) and corrected rows 007, 025 and 045. Numbers were matched against raw page text (curl/urllib HTML, docs Markdown, GitHub/PyPI/npm JSON, status RSS). The exceptions are the two SEC dates (Jun 23, Aug 12), which were read only via WebFetch summaries, and the Jul 9 RAISE event date, which comes from secondary reports.
 - **Candidate #56 items (unminted, pending human verification):** DCD 2026-06-25 (independent contrary reporting); The Next Web 2026-08-14 (independent, non-duplicative of the vendor post); DCD 2026-09-02 (independent construction report).
 - **Reviewer links and audit date:** none yet; first pass dated 2026-10-16. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
 
