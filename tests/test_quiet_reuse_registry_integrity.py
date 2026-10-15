@@ -179,6 +179,52 @@ class RegistryPairIntegrityTests(unittest.TestCase):
             path.write_text(json.dumps({"value": None}), encoding="utf-8")
             self.assertEqual(registry._read(path), {"value": None})
 
+    def test_direct_reader_rejects_large_special_and_linked_inputs(self):
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ordinary = root / "ordinary.json"
+            ordinary.write_text('{"value": 1}', encoding="utf-8")
+            self.assertEqual(registry._read(ordinary), {"value": 1})
+            huge = root / "oversize.json"
+            with huge.open("wb") as stream:
+                stream.truncate(registry.MAX_FILE_BYTES + 1)
+            with self.assertRaisesRegex(registry.RegistryFrameError, "byte limit"):
+                registry._read(huge)
+            with self.assertRaises(registry.RegistryFrameError):
+                registry._read(root)
+            link = root / "linked.json"
+            try:
+                link.symlink_to(ordinary)
+            except (OSError, NotImplementedError):
+                pass  # Symlink creation is not supported on this host.
+            else:
+                with self.assertRaises(registry.RegistryFrameError):
+                    registry._read(link)
+            if hasattr(os, "mkfifo"):
+                pipe = root / "untrusted.json"
+                os.mkfifo(pipe)
+                with self.assertRaises(registry.RegistryFrameError):
+                    registry._read(pipe)
+
+    def test_reader_redacts_private_duplicate_keys_and_keeps_output_absent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "private-file-name.json"
+            path.write_text('{"secret-unique-marker":1,"secret-unique-marker":2}', encoding="utf-8")
+            with self.assertRaises(registry.RegistryFrameError) as caught:
+                registry._read(path)
+            self.assertNotIn("secret-unique-marker", str(caught.exception))
+            self.assertNotIn("private-file-name", str(caught.exception))
+            target = root / "should-not-appear.json"
+            with redirect_stderr(io.StringIO()) as stderr, self.assertRaises(SystemExit) as exited:
+                registry.main(["select", "--manifest", str(path), "--plan", str(path),
+                               "--output", str(target)])
+            self.assertEqual(exited.exception.code, 2)
+            self.assertFalse(target.exists())
+            self.assertNotIn("secret-unique-marker", stderr.getvalue())
+            self.assertNotIn("private-file-name", stderr.getvalue())
+
     def test_cli_prepare_rederives_selection_from_original_inputs(self):
         manifest, plan = self.manifest_and_plan()
         packet = self.packet()
