@@ -317,8 +317,11 @@ def analyze(frame, review_a, review_b, adjudication=None, root="."):
     missing_b = [tid for tid in selected_ids if tid not in b]
     unpaired = [tid for tid in selected_ids if tid not in a or tid not in b]
     pending_disputes = [v for k, v in disputes.items() if k not in resolved]
-    adjudication_status = ("incomplete_reviews" if unpaired else
-                           "partial" if pending_disputes else "complete")
+    # Unresolved actual coder disagreements remain the primary adjudication
+    # state, even if some other selected items have missing coder packets.
+    # The separate submission counters always expose those missing rows.
+    adjudication_status = ("partial" if pending_disputes else
+                           "incomplete_reviews" if unpaired else "complete")
     return {"schema_version": SCHEMA, "dataset_kind": review_a["dataset_kind"], "frame_sha256": fingerprint(frame),
             "review_a_sha256": fingerprint(review_a), "review_b_sha256": fingerprint(review_b),
             "adjudication_sha256": fingerprint(adjudication) if adjudication is not None else None,
