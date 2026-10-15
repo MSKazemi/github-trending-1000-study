@@ -102,6 +102,18 @@ class LiteratureLedgerTests(unittest.TestCase):
         payload["records"][0]["source_url"] = "https://example.org:8443/article"
         self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
+    def test_included_source_url_requires_unambiguous_item_path(self):
+        for link in ("https://doi.org", "https://doi.org/",
+                     "https://example.org/paper%ZZ",
+                     "https://example.org/paper\\\\hidden"):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(link=link), self.assertRaisesRegex(
+                    LiteratureError, "source_url"):
+                audit(payload)
+        # A DOI record still requires actual source screening by a human.
+        self.assertEqual(audit(source())["decisions"]["include"], 1)
+
     def test_canonical_doi_source_url_is_structural_only(self):
         self.assertEqual(audit(source())["decisions"]["include"], 1)
         # An HTTPS string is *not* independent content verification.
