@@ -9,6 +9,7 @@
 - Keep timestamps in UTC and include provenance; do not substitute today's metadata for historical measurement.
 - Test offline with committed synthetic fixtures; no integration-test dependency on live GitHub.
 - Run `python -m unittest discover -s tests -v`. State what was tested and what remains unvalidated.
+- Before proposing any PR merge, inspect the **entire current diff**, confirm an exact-head Python 3.10/3.12 CI result, review security/provenance/docs, reconcile overlapping branches **without losing unique tests or source references**, and use the expected head SHA for any merge. Do not treat unprotected `main`, draft PRs or green synthetic tests as human methods approval. See [merge gates](docs/PR_MERGE_QUALITY_GATES_2026_10_13.md).
 - Research protocol changes need explicit justification, versioning and human approval.
 
 ## 2027 value research and lessons
@@ -48,7 +49,8 @@
 
 ## 2026–2027 pilot preflight and capture integrity
 - The October 2026 pilot is **proposed and not yet executed**; do not describe a synthetic fixture or self-declared manifest as authenticated GitHub collection.
-- When recording a new capture, use the `capture --manifest-output` and `pilot-parse --manifest` path; never backfill `captured_at_utc` from the time of parsing or a supplied date.
+- **Access hard stop (2026-10-13):** `trending_study capture` is intentionally disabled before network I/O because `/trending?since=...` falls under the published robots disallow pattern and access for this project remains unapproved. Never bypass it with a flag, monkeypatch, manual snapshot or alternate HTTP client. Only a reviewed code/protocol amendment following documented human source-access approval can re-enable it. Offline synthetic test mocks are not real capture permission. Read [source-access decision](docs/SOURCE_ACCESS_DECISION_2026-10-13.md).
+- After an approved future re-enablement, any new capture must use `capture --manifest-output` and `pilot-parse --manifest`; never backfill `captured_at_utc` from parsing or a supplied date.
 - The strict parser only implements unfiltered daily/weekly/monthly surfaces, **not** six language views or 9-page daily capture. Expand the source manifest protocol and human audit before changing enrollment eligibility.
 - Maintain human access-policy review, manual page QA, immutable numeric repo IDs, task-based independent acceptance, statistical power, consent and preregistration checks. These gates cannot be fulfilled by checking in a JSON file.
 - Run `python -m trending_study pilot-preflight --input examples/pilot-preflight.example.json --stage confirmatory` and `python -m unittest discover -s tests -v` after a protocol/CLI change. The documented example should remain not_ready.
@@ -89,7 +91,9 @@
 - Read docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md before claiming any real GitHub Trending parser validity.
 - Use two actually independent reviewers who inspect the original preserved source **before** looking at parser output. The QA scorer cannot independently establish the people exist or were blind; a matching pair of generated annotations is **not** independent verification.
 - Include *every* displayed row, not only valid `article.Box-row` hits. Compare identity and exact rank, and count parser-rejected pages as missing emissions rather than silently excluding them.
-- Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once QA report. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Use `audit-pages` over the captured raw SHA/manifest and reviewer labels; retain a write-once canonical JSON QA report, with optional derived `--markdown-output` and no overwrite. Dual outputs are **not atomic**; preserve partial publications for human incident review. A documentary pass never changes `eligible_for_confirmatory_cohort=false` and is not a signed protocol or ethical approval.
+- Reviewer A/B/C references must be bounded ASCII pseudonyms rather than email, contact details, path text or the placeholder `unknown`. Matching pseudonyms do **not** authenticate different real people.
+- Optional reviewer-C adjudication is **only** for actually disputed A/B ranks; preserve original A/B labels and reviewer chronology. A third self-declared ID or passing synthetic regression does **not** authenticate human independence, source access or scientific approval. Do not introduce a competing page-QA CLI.
 - Never call the 36-row synthetic regression test a real 30-entry live audit, or infer current robots/Terms permission when source access is unavailable.
 
 
@@ -99,3 +103,11 @@
 - Use `trending_study.task_costs` **offline** with frozen trial frame/assignment/outcome inputs, one record per randomized task, explicit missingness, fail-closed field checks and write-once output. A log validator cannot authenticate instrumented data.
 - Treat currency as provenance-tagged **event scope only**; tokens are not kWh, parallel agent duration is not extra human hours, and a missing record is never a zero-cost result.
 - Use `python -m unittest discover -s tests -v`; disclose that all committed task-cost fixtures and performance values are synthetic, without generating or publishing human identities or prompt content.
+
+## Canonical PR integration responsibilities (2026-10-13)
+
+- Use the **single** [scientific PR merge gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md), the current [PR author template](.github/pull_request_template.md), and the [dated review checkpoint](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). Do not introduce a competing normative policy from a superseded PR.
+- Review current changed code, negative tests, source/rights/consent, scientific evidence classes, docs and overlapping PRs. Preserve distinctive tests, references and functionality when consolidating duplicate modules.
+- Check the **exact current PR head**, all Python 3.10/3.12/3.14 test jobs, the current base and mergeability immediately before squash merging with `expected_head_sha`. Verify post-merge main CI separately.
+- GitHub branch protection and mandatory independent human approvals require real repository administration; CI success and this instruction file alone do **not** enforce them.
+- Technical integration may be complete while empirical research gates remain blocked. Never mark independently verified human tasks, source authorization, quantitative environmental benefit or preregistration completed without actual evidence.

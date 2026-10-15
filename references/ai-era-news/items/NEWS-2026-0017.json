@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0017",
+  "title": "Key Questions on Energy and AI",
+  "publisher": "International Energy Agency",
+  "original_publication_date": "2026-04-16",
+  "canonical_url": "https://www.iea.org/reports/key-questions-on-energy-and-ai",
+  "source_type": "public_institution_energy_analysis",
+  "topics": [
+    "energy",
+    "sustainability",
+    "infrastructure"
+  ],
+  "attributed_claim_summary": "IEA published updated analysis of electricity demand, data-centre investment, grid constraints and energy security under rapid AI expansion.",
+  "evidence_or_event": "Original IEA report published April 16, 2026 (licensed CC BY 4.0); system-wide scenario and analysis, not a measurement of software reuse in this project.",
+  "limitations": "Macro electricity demand scenarios do not supply provider-specific joules per coding token or net carbon impact of any individual implementation; embodied hardware and workload rebound remain boundary questions.",
+  "research_relevance": "Keep energy and carbon measurement scoped to independently accepted equivalent tasks, observed local/CI consumption and explicit cloud-inference unknowns.",
+  "practical_experiment": "Instrument power draw of two functionally equivalent local/CI task workflows under identical hardware; report uncertainty and explicitly unmeasured provider inference, upkeep and lifetime effects.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E12"
+  ]
+}

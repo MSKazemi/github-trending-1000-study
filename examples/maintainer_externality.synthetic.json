@@ -1,0 +1,30 @@
+{
+  "schema_version": "proposed-maintainer-externality-0.1",
+  "synthetic": true,
+  "case_id": "FICTIONAL-CASE-001",
+  "frame_commit": "not-frozen",
+  "opt_in_project_id": "fictional-opt-in-placeholder",
+  "consent_state": "not_consented",
+  "human_review_state": "pending",
+  "observed_at_utc": null,
+  "task_type": "synthetic-bugfix",
+  "task_accepted_by_independent_reviewer": "unknown",
+  "declared_workflow": "not_assigned",
+  "human_time_minutes": {
+    "upstream_review": null,
+    "upstream_support": null,
+    "downstream_search": null,
+    "downstream_implementation": null,
+    "downstream_review_repair": null,
+    "downstream_followup": null
+  },
+  "outcomes": {
+    "actionability": "unknown",
+    "newcomer_comprehension_pass": "unknown",
+    "followup_30_day": "not_started",
+    "followup_90_day": "not_started",
+    "security_or_privacy_incident": "unknown"
+  },
+  "data_release_approval": "pending",
+  "not_empirical_data": true
+}

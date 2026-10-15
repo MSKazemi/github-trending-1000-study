@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0019",
+  "title": "Windows platform security for AI agents",
+  "publisher": "Microsoft Windows Developer Blog",
+  "original_publication_date": "2026-06-02",
+  "canonical_url": "https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/",
+  "source_type": "primary_platform_or_vendor_report",
+  "topics": [
+    "agent-security",
+    "operating-systems",
+    "isolation"
+  ],
+  "attributed_claim_summary": "Microsoft described proposed Windows process and session isolation for agent execution, including restricted file/network access, separate agent sessions and distinct identities.",
+  "evidence_or_event": "First-party June 2, 2026 Windows Developer Blog article; describes preview plans and claimed platform controls, with exact feature availability varying by release.",
+  "limitations": "Vendor architecture/preview descriptions are not third-party security validation, universal availability or proof that agents are safe; capability and deployment status must be retested against actual platform versions.",
+  "research_relevance": "Explicitly test authorization scope and isolation overhead for agents that read, write and call external tools, separate from code-generation output correctness.",
+  "practical_experiment": "Run benign synthetic file/network-policy violation tests in an isolated disposable environment and record blocked actions, false denials and task-time overhead by OS version.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E07"
+  ]
+}
