@@ -51,3 +51,7 @@ This file is a **source-screen audit trail**, not an endorsement, user study, co
 - **Coverage gap:** A targeted external search did not surface a credible controlled, independent 2026 acceptance or defect-rate trial of Amp remote orbs. This is a limitation of the selected queries and search index, **not** proof no such research exists. Full returned-hit and exclusion denominators remain unrecorded.
 
 **Practical repository consequence:** test remote agents on a non-sensitive fixture repository first; restrict credentials/branch-writing permissions, preserve full review context and stop on untrusted webhook instructions. Count actual human intervention and wrong-branch writes against a baseline.
+
+## 2026-10-15 URL clarification (AI-assisted provisional-merge pass)
+
+Item 1 above cites `sourcegraphdev.com`. On 2026-10-15 that host returned the same article, but its `rel="canonical"` and `og:url` point to [the sourcegraph.com article](https://sourcegraph.com/blog/why-sourcegraph-and-amp-are-becoming-independent-companies) (dated December 2, 2025), and ownership of `sourcegraphdev.com` was not verified. Use the `sourcegraph.com` URL as the citation; the original URL above is kept unchanged for provenance. This does not change any ledger row or evidence tier.
