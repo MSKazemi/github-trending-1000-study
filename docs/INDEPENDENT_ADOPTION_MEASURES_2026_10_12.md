@@ -33,3 +33,23 @@ Selection by willingness to share logs; survival/attrition; automated dependency
 Publish a pinned clean-install task with a versioned example, then recruit consenting unaffiliated users and measure independent pass rate at first contact and repeated task satisfaction at 30/90 days. Compare against the pre-change baseline and record all failures and effort. Treat improvements as a hypothesis until independently replicated.
 
 **Implementation follow-ups:** build source-specific machine-readable evidence adapter, independent review, opt-in repeat-use collection, privacy retention approval and bounds-reporting tests. This document only partially implements #12.
+
+
+## 2026-10-15: bounded offline CLI input gate (#306)
+
+The \`python -m trending_study.adoption_bounds --input examples/adoption_signals.synthetic.json\`
+command reuses the strict research decoder with a descriptor-based bounded
+reader. It refuses duplicate JSON keys, NaN/Infinity, non-UTF-8 input,
+nonregular paths (including FIFOs), leaf symlinks where the OS supports
+no-follow, and files above 16 MiB. The actual read is bounded independent
+of size metadata, and diagnostics omit source paths and duplicate-key text.
+It is not a sandbox against a maliciously replaced ancestor directory.
+
+**Practical lesson:** validating research formulas alone is insufficient
+when the CLI silently overwrites duplicate JSON keys or trusts unbounded file
+reads. Keep missingness explicit, use one strict decoder at public input
+boundaries, and never call this a real adoption result.
+
+## 2026-10-15 design-scope acceptance reconciliation
+
+The [dated issue #12 acceptance audit](reviews/2026-10-15-issue-12-adoption-design-acceptance.md) reconciles the existing archetype matrix, finite-frame missingness/bounds instrument and 30/90/180-day prospective followup rules. **Design acceptance is complete**, while the **separately gated empirical study remains unperformed**. Earlier "partial issue #12" language above records the 2026-10-12 snapshot, not a claim that field participants or genuine adoption measurements have since been collected. Continue real user/consent/capture decisions in issues #8, #27 and #24; no pilot data are invented here.
