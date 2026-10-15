@@ -173,3 +173,30 @@ Report a null or negative result as is. **No trial has been executed; no effect 
   - Sharply reduced activity in official OSS repositories.
   - No in-window first-party newsroom posts were found for April–May, July or September.
 - **Reviewer links and audit date:** none yet. A human factual/link spot-check, a source-access/rights review and a methods review are required before any lesson is drawn. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched every cited URL on 2026-10-16 and compared each date, figure and quote with the raw page text (`curl` with a generic `Mozilla/5.0` User-Agent plus text search). The deprecations, changelog, Compound changelog and model pages were read in their `.md` form. GitHub releases, commit diffs, CODEOWNERS changes and commit counts were read through `gh api`. No access gate was bypassed and no personal identifier was sent.
+
+| Rows checked | Outcome | Note |
+|---|---|---|
+| 001, 008, 012, 015, 021, 025 | confirmed | Deprecations page: Kimi K2 0905 shutdown 04/15/26 (emailed March 23); June 17 email for Qwen3 32B / Llama 4 Scout (07/17/26) and Llama 3.1 8B / 3.3 70B (08/16/26) with the stated replacements and the free/developer-tier scope; Compound announced August 24 for 09/21/26 with replacement "—"; Qwen3.6 27B → Qwen3.8 27B on 09/14/26 with no announcement date. Llama 3.1 8B / 3.3 70B are listed as Enterprise "Contact Sales" on the models page |
+| 002 | confirmed | Changelog top entry "Apr 18": MiniMax M2.5 and Qwen3-VL 32B for Enterprise ("Reach out to your Groq account team"), Orpheus Arabic Saudi voices, SDK notes. `groq/groq-changelog` commit `abaa839` "Q1 2026 changelog entries" is dated 2026-05-06 |
+| 003, 004, 009, 013, 022, 023 | confirmed | `gh api` release timestamps and note dates match (Python v1.2.0 04-18; TS v1.2.0 notes 05-08, released 05-11; Python v1.3.0 notes 05-09; Python v1.4.0 notes 05-12, released 05-28; Python v1.5.0 / TS v1.3.0 06-21; v1.6.0 / v1.4.0 07-24; v1.7.0 / v1.6.0 08-26). Commit `e24f597` (2026-06-17) adds `qwen/qwen3.6-27b`; commit `5d65203` adds `qwen/qwen3.8-27b` with "default is `medium`; `high` selects the model's native `xhigh` mode". CODEOWNERS diffs match (Python +1/−2, TS +1/−1). Commit `8180ac6` is dated 2026-09-03 and TS v1.6.0 is still the latest release |
+| 005 | confirmed | Reuters on Yahoo (May 28): "up to $650 million", "$17 billion licensing deal", payouts, "Groq 2.0", Disruptive and Infinitum backstop, "invest in a new company", one source familiar |
+| 006 | confirmed | TechCrunch (May 29): "interim CEO and CFO, Adam Winter and Matt Eng", citing Axios. TechCrunch spells the investor "Infinitium" |
+| 007, 026 | confirmed | Compound changelog 2026-06-12 (`browser_automation` accepted but "have no effect") and 2026-09-21 (decommissioned) |
+| 010 | confirmed | Release dated June 22: led by Disruptive and Infinitum, 13 data centers, "more than five million developers", "toward 200 MW by the end of 2027", Winter/Eng/Rice, Schuller and Malhotra "Starting in July", chaired by Alex Davis. No valuation is stated |
+| 011 | confirmed | openbench commit `3f190a8` (2026-06-26) changes "Copyright (c) 2025 Groq, Inc." to "Copyright (c) 2026 Groq LLC". Same-titled commits are in groq-desktop-beta and groq-mcp-server on 2026-06-26 |
+| 014 | confirmed | Release dated August 12: "without changing a line of code", "independent confirmation", quote attributed to "Adam Winter, CEO of Groq" |
+| 016 | confirmed | Release dated August 17: "Groq LLC", $350M Series A led by Disruptive with planned NVIDIA participation, $3.5B valuation, $1 billion recent funding, "more than six million developers", "from 54 megawatts to 200+ megawatts in 2027", "customary closing conditions" |
+| 017 | confirmed | TNW (August 17): "$3.5bn valuation, roughly half the $6.9bn", "Co-founder Doug Wightman stepped up as chief executive", "supplier orbiting Nvidia". The CEO conflict with Groq's own releases stands |
+| 018 | confirmed | HF forum post dated August 19, 2026; the reply says Groq lists parallel tool calling for Qwen3.6 but not GPT-OSS 120B and shows Qwen3.6 as Preview |
+| 019, 020 | confirmed | Groq blog (August 24): "among the first", Dell, 3,400 output tokens/s on Gemma 4 31B at 100K context in Artificial Analysis benchmarking, "4x higher interactivity", attributed to "numbers NVIDIA published today". StorageReview: "private pre-release endpoint measured on August 21", Nebius initial partner, "Groq expects to be among the platform's earliest adopters" |
+| 024 | confirmed | The Star / Reuters (Sept 9 dateline): NYT "citing two people familiar", "$17 billion deal", "formal request for information", Nvidia statement, Groq "did not immediately respond" |
+| 027 | confirmed | Status RSS: maintenance Oct 9, "Data center hardware issues" Oct 10, console issue affecting Website and API Oct 12, "hardware connectivity issues" Oct 12 |
+| Section 2 baseline and section 4 table | confirmed | Dec 24, 2025 release (Simon Edwards CEO, "without interruption", Ross and Madra to Nvidia); Feb 16, 2026 blog (>3.5 million developers, Equinix UK). Non-Terraform commit counts reproduce exactly: openbench 76/3, groq-desktop-beta 26/1, groq-api-cookbook 5/0, groq-mcp-server 0/1. Prices $0.15/$0.60 (gpt-oss-120b) and $0.80/$4.00, Preview, ~450+ tps (Qwen 3.8 27B) match the model pages |
+
+**Counts:** 27 of 27 rows checked. 27 confirmed, 0 corrected, 0 unverifiable, 0 wrong. No CSV change was needed. Not checked: the Artificial Analysis 474 tokens/s snapshot (a live page), the Bloomberg Government article, and the Senate letter (still HTTP 403).
+
+*This is an AI-assisted spot-check, not a qualified human review.*
