@@ -114,7 +114,8 @@ class LiteratureLedgerTests(unittest.TestCase):
     def test_included_source_url_requires_unambiguous_item_path(self):
         for link in ("https://doi.org", "https://doi.org/",
                      "https://example.org/paper%ZZ",
-                     "https://example.org/paper\\\\hidden"):
+                     "https://example.org/paper\\\\hidden",
+                     "https://example.org/paper\\hidden"):
             payload = source()
             payload["records"][0]["source_url"] = link
             with self.subTest(link=link), self.assertRaisesRegex(
