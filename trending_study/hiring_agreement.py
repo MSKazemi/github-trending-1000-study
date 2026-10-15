@@ -309,16 +309,31 @@ def analyze(frame, review_a, review_b, adjudication=None, root="."):
         if primary in PRIMARY_THEMES and final(tid, PRIMARY_THEMES[primary]) != "present":
             raise HiringError("adjudicated primary requires a resolved corresponding present theme")
     resolved = {(x["item_id"], x["code"]) for x in decisions if x["decision"] not in ABSTENTIONS}
+    # Missing coder rows are not disagreements: they never enter `disputes`.
+    # A report must not call adjudication complete while a selected item has
+    # no A/B paired submission, even if all *submitted* labels agree.
+    selected_ids = [x["item_id"] for x in frame["items"] if x["selected"]]
+    missing_a = [tid for tid in selected_ids if tid not in a]
+    missing_b = [tid for tid in selected_ids if tid not in b]
+    unpaired = [tid for tid in selected_ids if tid not in a or tid not in b]
+    pending_disputes = [v for k, v in disputes.items() if k not in resolved]
+    adjudication_status = ("incomplete_reviews" if unpaired else
+                           "partial" if pending_disputes else "complete")
     return {"schema_version": SCHEMA, "dataset_kind": review_a["dataset_kind"], "frame_sha256": fingerprint(frame),
             "review_a_sha256": fingerprint(review_a), "review_b_sha256": fingerprint(review_b),
             "adjudication_sha256": fingerprint(adjudication) if adjudication is not None else None,
-            "source_frame_n": len(frame["items"]), "selected_n": sum(x["selected"] for x in frame["items"]),
+            "source_frame_n": len(frame["items"]), "selected_n": len(selected_ids),
+            "review_submission": {"review_a_n": len(a), "review_b_n": len(b),
+                                  "paired_selected_n": len(selected_ids) - len(unpaired),
+                                  "missing_a_item_ids": missing_a, "missing_b_item_ids": missing_b,
+                                  "unpaired_selected_item_ids": unpaired},
             "human_independence_verified": False, "source_rights_verified": False, "research_enrollment": "blocked",
             "per_theme": {k: _statistics(pairs[k], ("present","absent")) for k in THEMES},
             "primary_task": _statistics(pairs["primary_task"], tuple(PRIMARY_THEMES)),
             "records": records, "disagreements": list(disputes.values()),
-            "adjudication": {"decisions": decisions, "status": "complete" if not set(disputes)-resolved else "partial",
-                             "pending": [v for k,v in disputes.items() if k not in resolved]},
+            "adjudication": {"decisions": decisions, "status": adjudication_status,
+                             "pending": pending_disputes,
+                             "missing_rating_item_ids": unpaired},
             "warning": "Structural self-report audit only; synthetic ratings are fictional; no authenticated humans, rights, current ads, or empirical results."}
 
 
