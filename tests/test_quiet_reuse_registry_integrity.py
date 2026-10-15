@@ -94,6 +94,9 @@ class RegistryPairIntegrityTests(unittest.TestCase):
         self.assertEqual(audit["nominated_pairs"], 1)
         self.assertEqual(audit["concordant_provisional_fit"], 1)
         self.assertEqual(audit["two_reports_present"], 1)
+        self.assertEqual(audit["externally_authenticated_human_pairs"], 0)
+        self.assertEqual(audit["still_needed_for_50_authenticated_human_pairs"], 50)
+        self.assertEqual(audit["still_needed_for_50_provisional"], 49)
         self.assertFalse(audit["meets_issue_15_scientific_acceptance"])
         self.assertFalse(audit["reviewers_authenticated_as_real_independent_humans"])
 
