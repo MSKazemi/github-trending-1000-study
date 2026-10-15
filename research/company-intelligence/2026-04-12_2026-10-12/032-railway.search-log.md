@@ -45,4 +45,4 @@
 - **Doubtful details to spot-check:** model names quoted for the ChatGPT-subscription feature (row 026) were deliberately **not** recorded because they could not be cross-checked; numeric details (e.g. 20,000 blackholed links, 13%/40% workload shares, $5,000/mo tier) come from tool summaries of vendor pages.
 - **Access:** public pages only; no login, paywall, private status data, scraping of GitHub Trending, or personal data.
 
-A future reviewer should re-run these queries with recorded result totals and UTC times, open the 8 unopened changelog entries, and attempt the DCD article through an authorised route before issue closure.
+A future reviewer should re-run these queries with recorded result totals and UTC times, open the 8 unopened changelog entries, and attempt the DCD article through an authorised route before any reopened review of the issue (issue closed 2026-10-16 by maintainer decision with provisional status recorded).
