@@ -13,11 +13,13 @@ import math
 import os
 from pathlib import Path
 import re
+import stat
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 import uuid
 
+from .data_integrity import MAX_FILE_BYTES, decode_research_json
 from .safe_io import disjoint, publish_json, publish_jsonl, refuse_existing
 
 PLAN_VERSION = "followup-plan-1.0"
@@ -27,6 +29,17 @@ REPO_NAME = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 EVENT_ID = re.compile(r"^[0-9a-f]{32}$")
+MAX_PLAN_BYTES = MAX_FILE_BYTES
+MAX_EVENT_BYTES = 1024 * 1024
+MAX_PLAN_ROWS = 15000
+MAX_EVENT_FILES = 25000
+PLAN_FIELDS = frozenset((
+    "schema_version", "task_id", "study_id", "repository_id",
+    "full_name_at_baseline", "baseline_stars", "baseline_at_utc",
+    "baseline_capture_sha256", "cohort_input_sha256", "cohort_approval_ref",
+    "protocol_commit", "followup_days", "grace_days", "scheduled_at_utc",
+    "expires_at_utc", "approval_verification",
+))
 EVENT_COMMON = frozenset((
     "schema_version", "event_id", "plan_sha256", "task_id", "study_id",
     "repository_id", "followup_days", "scheduled_at_utc", "expires_at_utc",
@@ -82,14 +95,51 @@ def text(value, field):
     return value.strip()
 
 
-def jsonl_data(raw, kind):
+def _read_regular(path, maximum, label):
+    """Read bounded bytes from an opened regular file, never from a FIFO/link.
+
+    Descriptor checks protect the leaf on O_NOFOLLOW platforms. This is not a
+    sandbox against a maliciously replaced ancestor directory.
+    """
+    path = Path(path)
+    if path.is_symlink():
+        raise FollowupError(f"{label}: regular non-symlink file required")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     try:
-        lines = raw.decode("utf-8").splitlines()
-        rows = [json.loads(line) for line in lines if line.strip()]
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise FollowupError(f"{kind}: malformed UTF-8 JSONL") from exc
-    if not rows or any(not isinstance(x, dict) for x in rows):
-        raise FollowupError(f"{kind}: expected nonempty JSONL objects")
+        fd = os.open(path, flags)
+    except OSError:
+        raise FollowupError(f"{label}: readable regular non-symlink file required") from None
+    try:
+        metadata = os.fstat(fd)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise FollowupError(f"{label}: regular non-symlink file required")
+        if metadata.st_size > maximum:
+            raise FollowupError(f"{label}: byte limit exceeded")
+        with os.fdopen(fd, "rb") as stream:
+            fd = None
+            raw = stream.read(maximum + 1)
+        if len(raw) > maximum:
+            raise FollowupError(f"{label}: byte limit exceeded")
+        return raw
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
+def jsonl_data(raw, kind):
+    """Reject ambiguous JSON, non-finite numbers, blank rows and excess size."""
+    if not isinstance(raw, bytes) or len(raw) > MAX_PLAN_BYTES:
+        raise FollowupError(f"{kind}: byte limit exceeded")
+    lines = raw.splitlines()
+    if not lines or len(lines) > MAX_PLAN_ROWS or any(not line.strip() for line in lines):
+        raise FollowupError(f"{kind}: expected bounded nonblank JSONL rows")
+    try:
+        rows = [decode_research_json(line, kind) for line in lines]
+    except (ValueError, RecursionError):
+        # Strict-decoder messages can reveal user-controlled confidential keys.
+        raise FollowupError(f"{kind}: malformed or ambiguous strict UTF-8 JSONL") from None
+    if any(type(row) is not dict for row in rows):
+        raise FollowupError(f"{kind}: expected JSONL objects")
     return rows
 
 
