@@ -117,15 +117,35 @@ class GitHubClient:
         basic = base64.b64encode(
             ("x-access-token:" + self.token).encode("utf-8")
         ).decode("ascii")
-        env = os.environ.copy()
+        # Git traces may write directly to inherited file targets, bypassing
+        # captured stdout/stderr. Trace2 can explicitly log environment values,
+        # including the ephemeral Authorization configuration below.
+        # Inherited Git config can change transport behavior, enable helpers,
+        # or expose our ephemeral HTTP header. A privileged cleanup job must not
+        # trust the runner's system/global config or GIT_CONFIG_PARAMETERS.
+        env = {key: value for key, value in os.environ.items()
+               if not key.startswith(("GIT_TRACE", "GIT_CONFIG_"))
+               and key != "GIT_CURL_VERBOSE"}
         env.update({
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_CONFIG_SYSTEM": os.devnull,
             "GIT_TERMINAL_PROMPT": "0",
+            "GIT_TRACE": "0",
+            "GIT_TRACE_CURL": "0",
+            "GIT_TRACE2": "0",
+            "GIT_TRACE2_EVENT": "0",
+            "GIT_TRACE2_PERF": "0",
             "GIT_CONFIG_COUNT": "1",
             "GIT_CONFIG_KEY_0": "http.https://github.com/.extraheader",
             "GIT_CONFIG_VALUE_0": "AUTHORIZATION: basic " + basic,
         })
         command = [
-            "git", "-c", "credential.helper=", "push", "--porcelain",
+            "git", "-c", "credential.helper=",
+            # Never run a repository-supplied pre-push hook with the secret
+            # present in the child environment. Git documents /dev/null as
+            # the supported hooksPath disable target.
+            "-c", "core.hooksPath=" + os.devnull, "push", "--porcelain",
             "--force-with-lease=refs/heads/" + branch + ":" + expected_sha,
             "https://github.com/" + self.repository + ".git",
             ":refs/heads/" + branch,
