@@ -5,7 +5,7 @@ Contributions to methods, reproducibility, tests, docs and scientific critique a
 1. Open or claim a **bounded issue**. Explain scientific validity effects, not only code changes.
 2. Branch from `main`; keep PRs focused. Update docs alongside any changed schema, interface or sampling rule.
 3. Run `python -m unittest discover -s tests -v`; attach fixture coverage for parser changes.
-   Before JSON/JSONL evidence changes also run `python -m compileall -q trending_study tests` and `python -m trending_study.data_integrity --root .`. This checks syntax/integrity, **not source authenticity**. See [integrity gate](docs/RESEARCH_JSON_INTEGRITY_GATE.md).
+   Before JSON/JSONL evidence changes also run `python -m compileall -q trending_study scripts tests`, `python -m trending_study.data_integrity --root .`, and `python scripts/check_research_artifacts.py --root . --tracked-code-json` (requires the repository Git checkout). The final command inspects every tracked `.py`/`.json`, including files outside standard source directories; it does not execute them. These checks verify syntax/integrity, **not source authenticity**. See [integrity gate](docs/RESEARCH_JSON_INTEGRITY_GATE.md).
 4. Include an exact reproducible example, assumptions, source URL, date, limitations and whether any data was actually collected.
 5. Do not upload credentials, private personal information, undocumented scrapes, inflated growth claims or generated findings presented as observations.
 6. Require human review before merging methodological changes or changing sampling/exclusion policy.
