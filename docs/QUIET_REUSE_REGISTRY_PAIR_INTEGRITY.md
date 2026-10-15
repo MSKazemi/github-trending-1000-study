@@ -73,3 +73,18 @@ parser. The MIT-licensed repository's existing validators and tests were
 inspected. Python's official JSON documentation describes duplicate-key and
 nonstandard-number defaults: <https://docs.python.org/3/library/json.html>.
 No public-package installation or external code execution was needed.
+
+
+## 2026-10-15 task/reviewer chronology guard
+
+The pair-audit verifier now rejects any submitted reviewer timestamp earlier
+than any task's recorded frozen baseline. Previously an otherwise internally
+consistent fictitious review could be dated **before** its task existed while
+still increasing the provisional-fit numerator. This rule applies even if the
+coder's report has no decisions; an empty but pre-task report is not a valid
+post-baseline review event. Regression tests cover a pre-task report and a
+re-fingerprinted packet with its task date moved after both reviewers' dates.
+At/after-baseline timestamps only establish internal chronology: task-freeze
+independence, release availability, package rights, reviewer identities and
+actual functional tests all still require a qualified external audit. This
+is not evidence that the issue's 50 human-adjudicated pairs have been obtained.
