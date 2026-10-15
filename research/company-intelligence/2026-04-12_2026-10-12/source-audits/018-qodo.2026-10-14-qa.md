@@ -38,3 +38,17 @@ AI-assisted inspection of readable publisher pages may verify what a publisher *
 - [ ] Obtain final-head CI and safe integration verification; retain the underlying company issue open until genuine scientific acceptance.
 
 This file is a **source-screen audit trail**, not an endorsement, user study, company ranking, proof of safer code, causal claim or permission to publish completed research.
+
+
+## 2026-10-15 secondary-source and artifact QA supplement
+
+**Access/read status:** A dated AI-assisted public-source desk check. Selected pages were read or located via public web search on 2026-10-15. URLs and journalistic observations are reproducible *leads*, not signed/archived historical captures, systematic recall, independent human signoff or measured task outcomes. Retrospective study publication cutoff is **2026-10-12**; post-window analysis must remain separate.
+
+### Qodo — immutable repository rights check and quality-study caution
+
+- **Qodo first-party announcement (2026-04-23):** [PR-Agent community handover](https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/) describes an organizational transition and purported return to Apache-2.0. This records **what Qodo announced**, not the license text of an arbitrary earlier or later release.
+- **Independently retrieved, exact source artifact:** the [upstream `The-PR-Agent/pr-agent` LICENSE at commit `330f0813b5fe0d1f54b794077c2d02aa85a1fb63`](https://github.com/The-PR-Agent/pr-agent/blob/330f0813b5fe0d1f54b794077c2d02aa85a1fb63/LICENSE), read again from GitHub on 2026-10-15, begins **MIT License** and includes a 2026 copyright notice. That is a verifiable **commit-scoped file fact** and conflicts with simply repeating the announced Apache-2.0 choice as an eternal state. It does not prove the project's exact April state, licensing of transitive dependencies, governance independence or any particular packaged release.
+- **Qodo first-party article (2026-09-09):** [Qodo for Codex](https://www.qodo.ai/blog/introducing-qodo-for-codex/) says its plugin is available through the Codex marketplace and notes that tool use requires Qodo login and toolbox installation prerequisites. It is a supplier claim, not an independent audit of data egress, plugin safety, support, review accuracy, or third-party adoption. Do **not** execute installation commands from the article as evidence gathering.
+- **Independent commentary lead, 2026-07-17:** [TT Lab analytical article on AI review benchmarks](https://ttlab.hopto.org/blog/2026-07-17-ai-code-review-measured-evidence?lang=en) discusses limitations of Qodo-managed code-review benchmark design, including injected faults and precision/recall scoring. This is a non-peer-reviewed commentary source, *not* a reproduced experiment or independently validated effect size; the public web reader could not fetch the complete page in this session, so **no quantitative statistic is admitted** to the working conclusions.
+
+**Practical repository consequence:** reuse a **commit-pinned** package only after separately auditing its LICENSE, dependencies, data access and actual version. Test seeded faults with independently frozen truth labels, preserve natural-bug ambiguity, measure true/false positives and negatives plus human reviewer time, and never auto-merge based on proprietary review scores.
