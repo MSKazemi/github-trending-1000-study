@@ -88,3 +88,20 @@ At/after-baseline timestamps only establish internal chronology: task-freeze
 independence, release availability, package rights, reviewer identities and
 actual functional tests all still require a qualified external audit. This
 is not evidence that the issue's 50 human-adjudicated pairs have been obtained.
+
+
+## 2026-10-15 distinguish synthetic concordance from the 50-human acceptance target
+
+Earlier reports computed `still_needed_for_50_provisional = 50 -
+concordant_provisional_fit`. That number describes the remaining **candidate
+matching-label** count only: even perfect synthetic A/B concordance supplies
+**zero externally authenticated independent human reviews**. The output now
+also returns `externally_authenticated_human_pairs: 0` and
+`still_needed_for_50_authenticated_human_pairs: 50`, without allowing
+self-supplied rater IDs, invented test links or labels to decrement the true
+scientific review requirement. The original provisional counter is preserved
+for backward-compatible offline feasibility diagnostics, but should never be
+presented as completed scientific progress. To reduce the real remaining
+number, a **separate provenance-verified, qualified human review workflow**
+will need a new audited schema and signed/traceable source records. This tool
+cannot authenticate that external process or certify issue #15's 50-pair gate.
