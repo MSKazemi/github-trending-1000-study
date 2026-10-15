@@ -1,0 +1,60 @@
+# NVIDIA (061): provisional search and inclusion log, 2026-10-16
+
+> **Provisional, AI-assisted, not human-reviewed.** This log accompanies the [NVIDIA report](061-nvidia.md) and its [event ledger](061-nvidia.events.csv). Provisional screen; the issue ([#129](https://github.com/MSKazemi/github-trending-1000-study/issues/129)) may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+**Window:** 2026-04-12 to 2026-10-12 inclusive. **Searches and source reads:** 2026-10-16 (date precision only). Exact UTC run times and full result counts were not recorded; they are unknown, not zero. **Scope:** the issue's angle, meaning the AI software stack, inference and serving, developer tooling, open models and licences, agent security and energy-relevant execution. Consumer graphics, gaming, automotive, robotics-only, quantum, financial results and pure hardware launches were screened out unless they changed the software, licence or energy evidence.
+
+## Method
+
+- **Search engine:** the agent's built-in web search tool (US results). Queries are recorded below exactly as sent.
+- **Reading:** every included row's `source_url` was downloaded with `curl` (or, for GitHub, read through the `gh api` REST endpoints). Each number, version, date and short quoted phrase in the ledger was checked by grepping that raw text. Model-generated page summaries were used only to find leads, never as the evidence for a figure.
+- **GitHub:** `gh api repos/<owner>/<repo>/releases` gave release `published_at` timestamps and prerelease flags. `gh api repos/<owner>/<repo>/license` gave licence files. `gh api repos/NVIDIA/product-security/contents/2026/...` gave the raw Markdown of the PSIRT bulletins. The bulletins' revision-history tables supply initial-release dates. The "Updated" header dates are not used as publication dates.
+- **No account, paywall bypass, scraping schedule or personal data** was used. Pages were fetched once with a generic user agent.
+- **Identity disclosure, recorded as an incident:** before the coordinator's no-identity rule reached this agent, one request to the SEC EDGAR submissions JSON endpoint (`data.sec.gov`) sent a User-Agent that contained the maintainer's contact email. Per the rule, that response was **deleted and is not cited**. Entity identity rests on NVIDIA press-release boilerplate instead. No other request carried a personal identifier.
+
+## Query log
+
+| Segment | Exact query (or API call) | Opened / decision |
+|---|---|---|
+| all | `gh api repos/{NVIDIA/TensorRT-LLM, ai-dynamo/dynamo, NVIDIA/NeMo, NVIDIA/NeMo-Agent-Toolkit, NVIDIA/NeMo-Guardrails, NVIDIA/Megatron-LM, triton-inference-server/server, NVIDIA/nvidia-container-toolkit, NVIDIA/cuda-python, NVIDIA/cutlass, NVIDIA/TensorRT, NVIDIA/gpu-operator, NVIDIA/OpenShell, NVIDIA/cccl, NVIDIA/warp}/releases` filtered to the window | Included as releases: TRT-LLM v1.2.1, cuda-core 1.0.0, NAT 1.7.0, TensorRT 11.0, Dynamo 1.3.0/1.5.0, NeMo Speech 3.0, Container Toolkit 1.20.0, OpenShell 0.1.0. Excluded as routine: CUTLASS 4.5-4.8, CCCL 3.3-3.5, Warp 1.13-1.18, NeMo-Guardrails 0.22-0.24, Megatron Core 0.17-0.19, GPU Operator 26.3.x/26.7.x, Triton 2.68-2.73 (monthly), TensorRT 11.1-11.4, Dynamo patch and model-specific `-dev`/`-post` prereleases. |
+| all | `gh api repos/NVIDIA/product-security/contents/2026` (68 bulletin folders listed); downloaded 51 in-range folders | AI-stack bulletins kept: 5818, 5837, 5805, 5828, 5839, 5850, 5840, 5853, 5842, 5865, 5872, 5868, 5903. Screened and not given separate rows: 5816 (Triton, Apr 7, before window), 5836 (TensorRT, May 19), 5841 (Megatron Bridge, Jun 30, cited as a check on 5868), 5848 (Triton, Jun 30, rev. Jul 1 **removed** a CVE), 5860 (Triton, Aug 4, one medium), 5875 (Triton, initial Sep 8), 5857 (DCGM Exporter), 5885 (NeMo Speech, Sep 22), 5891 (TensorRT, Oct 6). Out of scope: display-driver, networking, DGX Spark, Cumulus, DALI, BioNeMo, Merlin and similar bulletins. Out of window: 5881 Megatron-LM, 5889, 5890, 5900-5902 (initial release 2026-10-13). |
+| Apr 12-30 | `NVIDIA Nemotron 3 Nano Omni release April 2026` | Lead: Nano Omni was reportedly released 2026-04-28. **Excluded.** The NVIDIA blog URL in the result (`blogs.nvidia.com/blog/nemotron`) now resolves to an Oct 15 post, and no dated first-party page was read. |
+| May | `NVIDIA newsroom announcement May 2026 developers software` | Read the [Agent Toolkit release](https://nvidianews.nvidia.com/news/enterprise-software-leaders-build-ai-agents-with-nvidia) and the [DSX release](https://nvidianews.nvidia.com/news/dsx-infrastructure-ai-factory) (both May 31). Excluded: Computex GeForce/DLSS, ACE game SDK. |
+| May/Jun | `NVIDIA Nemotron open model release 2026 license`; `NVIDIA OpenMDW license Nemotron switch Linux Foundation announcement`; `linuxfoundation.org press OpenMDW-1.1 release NVIDIA adopts` | Read the [Ultra blog](https://developer.nvidia.com/blog/nvidia-nemotron-3-ultra-powers-faster-more-efficient-reasoning-for-long-running-agents/), the [Lightning model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4), the [Nemotron LLM-info page](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/llm-info/) and the [DEVOPSdigest syndication](https://www.devopsdigest.com/linux-foundation-releases-openmdw-11). VMblog, TMCnet and MarkTechPost returned **HTTP 403**. The Linux Foundation original was not fetched. |
+| May | `NVIDIA OpenShell NemoClaw security vulnerabilities agent sandbox critical report` | Read [TechTalks](https://bdtechtalks.substack.com/p/how-prompt-injection-broke-nvidias); quotes were confirmed through the Substack post API JSON. XDA (2026-04-04) and the CSA NemoClaw note (2026-03-27) are **before the window**, so excluded. Lower-quality blog mirrors (aicybr, penligent, tekai) were not used. |
+| Jun | `Nemotron 3 Ultra independent evaluation Artificial Analysis review weaker coding June 2026` | Read [Artificial Analysis](https://artificialanalysis.ai/articles/nvidia-nemotron-3-ultra-released) and [CodeRabbit](https://www.coderabbit.ai/blog/nemotron-3-ultra-release). OpenRouter index figures conflict and were not used. |
+| Jun | `NVIDIA GTC Paris June 2026 announcements software inference` | **No June GTC Paris result found.** All hits were the March 16 GTC (Dynamo 1.0, Groq 3 LPX), which is pre-window baseline. |
+| Jul | `NVIDIA announces July 2026 open source CUDA software developers` | No July open-source CUDA announcement found. The [CUDA archive](https://developer.nvidia.com/cuda-toolkit-archive) lists 13.4.0 Developer Preview (July 2026) at month precision only. CUDA-Q Logical (Sep 14, quantum) was excluded as out of scope. |
+| Jul/Sep | `"Open Secure AI Alliance" Linux Foundation NVIDIA launch`; `blogs.nvidia.com OR nvidianews.nvidia.com "Open Secure AI Alliance" July 27 2026` | Read the [NVIDIA blog](https://blogs.nvidia.com/blog/open-secure-ai-alliance/), [Engadget](https://www.engadget.com/2223796/nvidia-launches-open-securte-ai-alliance-initiative-to-improve-cyber-defense/), [CSA note](https://labs.cloudsecurityalliance.org/research/csa-research-note-nvidia-open-secure-ai-alliance-nooa-202607/), [Phoronix Jul 27](https://www.phoronix.com/news/Open-Secure-AI-Alliance) and [Phoronix Sep 2](https://www.phoronix.com/news/Open-Secure-AI-Alliance-LF). BetaNews returned 403. The Virtualization Review page loaded, but its date was not confirmed in the raw text, so it was not cited. |
+| Aug/Sep | `NVIDIA security bulletin Triton Inference Server vulnerability 2026` | Led to the GitHub PSIRT repository (above). The custhelp.com pages and the vulners/ASEC mirrors were **not** used. The vulners mirror states a different fixed version for 5875 than the official Markdown; the official text is used. |
+| Sep | `MLPerf Inference 2026 results NVIDIA power energy MLCommons` | Read the [MLCommons v6.1 chairs' analysis](https://mlcommons.org/2026/09/chairs-mlperf-inference-v6-1/). The NVIDIA v6.0 blog (2026-04-01) is **before the window**. gpuinsights.net returned 403. **Power results were not inspected.** |
+| Sep | `CUDA 13.4 developer preview release July 2026 features` | Read the [CUDA 13.4 blog](https://developer.nvidia.com/blog/cuda-toolkit-13-4-adds-windows-on-arm-support-and-greater-control-over-shared-gpus/) and the [13.4.1 release notes](https://docs.nvidia.com/cuda/archive/13.4.1/cuda-toolkit-release-notes/index.html). The igorslab and guru3d pages were not used. |
+| Sep | `Nvidia September 2026 announcement AI agents software Reuters OR "The Register"` | Read the [Open Agent Safety Platform release](https://nvidianews.nvidia.com/news/open-agent-safety-platform), [TechCrunch](https://techcrunch.com/2026/09/28/nvidia-launches-new-platform-for-reining-in-rogue-ai-agents/) and CNBC (page loaded; body text too sparse to confirm claims, so not cited). **No Reuters or The Register result** was returned. |
+| Oct 1-12 | `NVIDIA announces October 2026 developer AI software open source inference`; newsroom index pages `nvidianews.nvidia.com/news?page=1..3` | Read the [Oct 1 AI-factory ROI blog](https://blogs.nvidia.com/blog/productive-durable-fungible-ai-factories/), the [Oct 12 OCP blog](https://blogs.nvidia.com/blog/ocp-global-summit-vera-rubin-scale-ai-factories/) and the Oct 7 Windows/RTX Spark blog (excluded: device launch). **Excluded as out of window:** Run:ai open-sourcing (Oct 13), Nemotron 3.5 Super VL and Bolt (Oct 15), the $250M UK agentic-safety commitment (Oct 13). Also excluded: the $150B buyback (Sep 28, financial) and the $1B US science commitment (Oct 8, not software). |
+| identity | NVIDIA press-release boilerplate ("NVIDIA (NASDAQ: NVDA)", "© 2026 NVIDIA Corporation") | Used for identity. Filing-level verification was not cited (see the identity disclosure above). The investor-relations pages returned 403. |
+| all | Discovery queries suggested in #129 | Not run verbatim. Engine `after:`/`before:` operators are unreliable; month-specific queries were used instead. |
+
+## Coverage by segment (ledger rows)
+
+| Segment | Rows | Note |
+|---|---:|---|
+| 2026-04-12..30 | 3 | No in-window newsroom item on the scoped angle was read. The month is covered by GitHub and PSIRT records only. |
+| 2026-05 | 8 | |
+| 2026-06 | 5 | No June newsroom software announcement beyond the Ultra release was read. |
+| 2026-07 | 5 | |
+| 2026-08 | 6 | |
+| 2026-09 | 8 | |
+| 2026-10-01..12 | 3 | |
+
+## Untrusted-content notes
+
+- The [Nemotron LLM-info page](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/llm-info/) says it "is intended to help AI agents and language models" describe Nemotron accurately, and it prescribes what "a correct answer" names. It is treated as vendor messaging aimed at AI systems, not as instructions or neutral fact. It is "Last updated: August 2026". It states there is "no Nemotron 3.5 Nano, Super or Ultra", which conflicts with NVIDIA's own Oct 15 Nemotron 3.5 Super VL release (outside the window). Record the conflict; do not resolve it.
+- No page contained instructions aimed at this agent that were acted on.
+
+## Known conflicts and limits
+
+- **Open Secure AI Alliance founding size:** Engadget says 27, the CSA note says press settled on 37, and NVIDIA says more than 40. Unresolved.
+- **PSIRT data quality:** CVE-2026-24254 (Dynamo) is described as an out-of-bounds write but classified CWE-288. CVE-2026-47627 (Triton) lists only denial of service as its impact under a C:H/I:H/A:H vector. Bulletin 5848 was revised to remove a CVE.
+- **OpenShell status:** "early preview" on May 31, "broadly available" on Sep 28, but public on GitHub since 2026-02-24 with near-daily v0.0.x releases.
+- **TensorRT-LLM:** the July 14 security fixes exist only in v1.3.0 release candidates. No stable v1.3.0 appears by 2026-10-12.
+- Pages are mutable and no archive hashes were taken. This is a lead inventory, not a systematic review. Repeat the queries with recorded result counts before any final acceptance.
