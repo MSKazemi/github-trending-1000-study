@@ -43,3 +43,25 @@ Change: `energy_boundary.compare()` validates **all seven declared components fo
 ## 2026-10-13 integration-quality numerical guard
 
 The offline calculator now **fails closed on arithmetic overflow**: a finite value per component is insufficient if summing modeled/measured kWh or multiplying a hypothetical grid scenario intensity would produce infinity. Giant Python integers are rejected with a controlled `EnergyError`; no nonstandard JSON `Infinity` values are emitted as purported energy/carbon results. Added synthetic regression cases for all three paths. This is arithmetic validation only, **not** a calibrated energy or carbon measurement, and issues #18/#23 remain open for independent functional-equivalence, lifecycle boundary and sensor-data evidence.
+
+
+## 2026-10-15 — fail-closed energy input integration (#307)
+
+The offline \`python -m trending_study.energy_boundary --input ...\` CLI
+now uses the canonical strict research JSON decoder and the bounded
+descriptor-based regular-file reader contributed by issue #306.
+It rejects duplicate keys, nonstandard NaN/Infinity, invalid UTF-8,
+unsafe leaf symlinks/nonregular paths and actual file lengths over
+1,000,000 bytes. Public errors do not expose private duplicate-key text
+or user-supplied source paths. Existing arithmetic, signed energy
+and explicit unknown/null semantics are preserved.
+
+**Boundary:** a syntactically valid self-reported, modeled kWh record
+does not authenticate electricity meters, accepted tasks, a grid emissions
+factor or lifecycle carbon savings. The input gate only prevents silent
+reinterpretation and unbounded reads. Ancestor path races require stronger
+system-level sandboxing when dealing with hostile directory trees.
+
+**Practical lesson:** apply the *same* parser and safe input semantics to
+scientific calculators and audits. A single duplicate JSON key could
+otherwise silently replace a declared missing energy term with zero.

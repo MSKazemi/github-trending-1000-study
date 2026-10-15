@@ -48,3 +48,77 @@ Change: the offline ledger now rejects future-dated search runs and reports **ti
 An audit found that a record could previously be marked `include` while its `source_url` was absent. For a research evidence register, this makes even first-pass verification irreproducible. The offline instrument now requires every **included** record to supply a canonical HTTPS `source_url`, without embedded credentials, query strings, fragments, whitespace or an absent host. A valid DOI can use its `https://doi.org/10...` resolver page as this link; this is a **claimed reference**, not proof that the DOI resolves or that publisher/venue and findings are correct. Unverified search leads may remain `pending` without a URL and are never implicitly counted as included. Synthetic tests cover malformed/missing links and continued conservative treatment of pending leads.
 
 **Scientific safeguard:** a syntactically valid HTTPS URL is not proof of content authenticity, peer-review status, human double-screening, right to access, or unbiased retrieval. Real systematic reviews must preserve the exact retrieved title/abstract, query, source export identifier and permission-appropriate source record, then obtain independent link/date/venue review before publication. Existing PR #189 was merged separately; this follow-up records the specific integration correction without rewriting historical claims.
+
+## 2026-10-14 offline input integrity correction
+
+The direct CLI now shares the repository's strict
+`data_integrity.decode_research_json` decoder. Duplicate object keys,
+nonstandard/non-finite numbers, floating-point overflow/underflow, integers
+exceeding 1,024 decimal digits and invalid UTF-8 fail before screening. Decoder
+errors use a fixed diagnostic so arbitrary private keys and source filenames
+are not echoed to the terminal.
+
+Input must be a regular file of at most the existing research-JSON limit
+(**16 MiB**). `audit_file` now reuses the shared
+`data_integrity.load_research_json_file` bounded reader (2026-10-15) instead of
+a local copy: the final input component cannot be a symlink on supported
+platforms; directories and special files are rejected using `fstat`, and a
+nonblocking open prevents FIFO inputs without writers from hanging. The read
+itself also enforces the byte limit if the opened file grows after inspection.
+Errors remain `LiteratureError` with fixed, non-path diagnostics. Included
+`source_url` values also reject the ASCII DEL control character (0x7F) in
+addition to space and C0 controls. No real source records changed. On platforms lacking
+`O_NOFOLLOW`, the preliminary symlink check remains best effort; the cloud
+Linux environment supplies the descriptor-level protection.
+
+Included source URLs now force `urlsplit`'s deferred port validation, rejecting
+nonnumeric, negative and out-of-range ports. Valid HTTPS source links (including
+valid explicit ports), DOI normalization, exact search-query strings, existing
+query/fragment restrictions and the report output fields retain their current
+contracts. This is an input-integrity correction, not a scientific protocol
+amendment or human literature review.
+
+Reuse review: the MIT-licensed repository's strict decoder and lesson registry
+reader were inspected before patching. They cover this bounded offline task
+without another JSON implementation or external dependency. Python's official
+[JSON documentation](https://docs.python.org/3/library/json.html) explains its
+permissive duplicate/nonstandard defaults; its
+[URL parsing documentation](https://docs.python.org/3/library/urllib.parse.html)
+explains deferred port errors. New tests use synthetic files only and verify
+CLI privacy, bounded inputs, no-follow behavior and FIFO rejection.
+
+Additional 2026-10-15 regression: syntactically parseable but unusable
+explicit HTTPS port zero and empty port delimiter are rejected; legitimate
+nondefault HTTPS ports remain structurally acceptable. URL shape alone does
+not certify a reachable or fact-checked source.
+
+
+## 2026-10-15 source-specific URL integrity
+
+An `include` decision now requires a nonempty HTTPS item path (rather than
+accepting only a publisher homepage), and rejects literal backslashes or
+malformed percent escapes in the canonical source URL. The previously enforced
+host, port, credential, fragment and query constraints remain. Synthetic
+negative tests protect this bounded source-link contract; an apparently clean
+DOI/paper URL is **not** proof that the content was accessed, bibliographic
+metadata verified, a systematic search performed or review acceptance met.
+Preserve unresolved leads as pending rather than calling them included.
+
+
+## 2026-10-15 small real-source version screen (NOT systematic)
+
+The [versioned source pilot](../references/literature_version_pilot_2026-10-15.json)
+and [reconciliation memo](LITERATURE_VERSION_RECONCILIATION_2026-10-15.md)
+record public arXiv v1/v2, the subsequent ACM journal edition of
+*Agentic Much?*, and the older ACM Queue SPACE framework. Four source
+**records** represent only **two distinct research works**; the preprint
+versions remain pending duplicate adjudication. Unlike the synthetic unit
+fixtures, these source URLs and their dated abstract metadata were directly
+inspected in a bounded public-web pass. This is not an actual ACM/IEEE/Scopus
+systematic index search, a PDF/full-text audit, or a completed two-rater
+screen. The pilot's `searched_at_utc` uses midnight on 2026-10-15 solely as
+an **UTC date-precision normalization** required by the existing schema;
+no claim is made that the queries ran at midnight or that the historical
+search results have immutable exports. No PRISMA flow is certified. CI
+ensures these linked source versions are never silently treated as four
+independent empirical studies.

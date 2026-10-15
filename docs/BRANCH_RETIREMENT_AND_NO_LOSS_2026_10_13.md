@@ -70,3 +70,20 @@ Enabling the job requires **another focused PR** that removes the literal `false
 ## 2026-10-14 operator feedback: explicit failure, never silent skip
 
 With the privileged `retire` job structurally disabled (`false &&`), a manual workflow dispatch selecting `retire` now runs a separate **read-only rejection job** that emits an explicit GitHub Actions error and exits nonzero. Otherwise GitHub could show an all-jobs-skipped result that an operator might mistake for completed cleanup. The `audit` input still runs only read-only live checks. No one can turn on deletion merely by setting a repository variable or entering the confirmation; enabling remains a separate PR with independent security review, enforced branch and archive-tag protections, and a new exact-head recovery/retirement plan. Synthetic CI demonstrates only workflow structure, not that administrators have configured those protections or that source archives are independently verified.
+
+## Dormant credential transport: disable inherited diagnostics
+
+Before passing the ephemeral Authorization header to Git, the dormant deletion
+implementation removes inherited `GIT_TRACE*` selectors and `GIT_CURL_VERBOSE`,
+and explicitly disables normal, curl and Trace2 outputs, including trace targets
+configured in Git settings. Otherwise Trace2 environment logging could write the
+credential header to a file even with subprocess stdout/stderr captured. An
+offline regression uses a synthetic credential and the real Git `version`
+command to check this boundary without a network request or ref mutation.
+This hardening leaves the unconditional workflow retirement hold in place and
+does not constitute independent security review or retirement authorization.
+
+
+## 2026-10-15 privileged Git transport isolation follow-up (proposed PR #294)
+
+The dormant SHA-leased deletion transport is additionally hardened on PR #294: discard inherited `GIT_CONFIG_*` and tracing environment, suppress system/global configuration, disable Git hooks using `core.hooksPath=os.devnull` at command invocation, and keep the one narrowly scoped ephemeral HTTPS authorization header. A synthetic regression checks these controls even when host configuration tries to override hooks/credentials. No authorized branch deletion or live credential use has occurred. This does **not** grant approval to enable privileged cleanup, establish archive-tag protection, or replace independent security review. Recheck the exact final head and CI after this addition.

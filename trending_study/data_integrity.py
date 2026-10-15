@@ -10,6 +10,8 @@ from decimal import Decimal, InvalidOperation
 import io
 import json
 import math
+import os
+import stat
 from pathlib import Path
 import sys
 
@@ -28,7 +30,7 @@ def _unique_pairs(pairs):
     obj = {}
     for key, value in pairs:
         if key in obj:
-            raise ResearchJSONError(f"duplicate JSON object key {key!r}")
+            raise ResearchJSONError("duplicate JSON object key")
         obj[key] = value
     return obj
 
@@ -82,6 +84,48 @@ def decode_research_json(raw, label):
     """
     return _decode_document(raw, label)
 
+
+
+def load_research_json_file(path, max_bytes=MAX_FILE_BYTES):
+    """Read one bounded offline JSON input and decode with canonical strict rules.
+
+    Rejects nonregular files (including FIFOs), refuses leaf symlinks where
+    supported, checks the *opened* descriptor and actual bytes read. It is
+    not a hostile ancestor-directory sandbox or source-authenticity proof.
+    CLI diagnostics must never include user-supplied keys or paths.
+    """
+    if type(max_bytes) is not int or not 0 < max_bytes <= MAX_FILE_BYTES:
+        raise ResearchJSONError("invalid bounded JSON input byte limit")
+    path = Path(path)
+    if path.is_symlink():
+        raise ResearchJSONError("input must be a regular non-symlink file")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    flags |= getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as exc:
+        raise ResearchJSONError("input must be a readable regular non-symlink file") from exc
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ResearchJSONError("input must be a regular non-symlink file")
+        if metadata.st_size > max_bytes:
+            raise ResearchJSONError("input exceeds configured JSON byte limit")
+        with os.fdopen(descriptor, "rb") as stream:
+            descriptor = None
+            raw = stream.read(max_bytes + 1)
+        if len(raw) > max_bytes:
+            raise ResearchJSONError("input exceeds configured JSON byte limit")
+    except OSError as exc:
+        raise ResearchJSONError("cannot safely read input file") from exc
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+    try:
+        return decode_research_json(raw, "input")
+    except (ResearchJSONError, RecursionError, OverflowError) as exc:
+        # Full decoder diagnostics can contain sensitive duplicate-key text.
+        raise ResearchJSONError("invalid or ambiguous JSON input") from exc
 
 def _check_file(path, root):
     label = str(path.relative_to(root))

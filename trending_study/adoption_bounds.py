@@ -8,6 +8,8 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
+
+from .data_integrity import load_research_json_file
 from urllib.parse import urlsplit
 
 class AdoptionError(ValueError):
@@ -121,7 +123,7 @@ def main(argv=None):
     p.add_argument("--input", required=True, type=Path)
     a = p.parse_args(argv)
     try:
-        raw = json.loads(a.input.read_text(encoding="utf-8"))
+        raw = load_research_json_file(a.input)
         result = summarize(raw["cards"] if isinstance(raw, dict) and "cards" in raw else [raw])
     except (OSError, ValueError, TypeError, KeyError) as exc:
         p.error(str(exc))

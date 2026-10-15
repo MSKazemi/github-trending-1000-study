@@ -13,11 +13,13 @@ import math
 import os
 from pathlib import Path
 import re
+import stat
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 import uuid
 
+from .data_integrity import MAX_FILE_BYTES, decode_research_json
 from .safe_io import disjoint, publish_json, publish_jsonl, refuse_existing
 
 PLAN_VERSION = "followup-plan-1.0"
@@ -27,6 +29,17 @@ REPO_NAME = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 EVENT_ID = re.compile(r"^[0-9a-f]{32}$")
+MAX_PLAN_BYTES = MAX_FILE_BYTES
+MAX_EVENT_BYTES = 1024 * 1024
+MAX_PLAN_ROWS = 15000
+MAX_EVENT_FILES = 25000
+PLAN_FIELDS = frozenset((
+    "schema_version", "task_id", "study_id", "repository_id",
+    "full_name_at_baseline", "baseline_stars", "baseline_at_utc",
+    "baseline_capture_sha256", "cohort_input_sha256", "cohort_approval_ref",
+    "protocol_commit", "followup_days", "grace_days", "scheduled_at_utc",
+    "expires_at_utc", "approval_verification",
+))
 EVENT_COMMON = frozenset((
     "schema_version", "event_id", "plan_sha256", "task_id", "study_id",
     "repository_id", "followup_days", "scheduled_at_utc", "expires_at_utc",
@@ -82,14 +95,51 @@ def text(value, field):
     return value.strip()
 
 
-def jsonl_data(raw, kind):
+def _read_regular(path, maximum, label):
+    """Read bounded bytes from an opened regular file, never from a FIFO/link.
+
+    Descriptor checks protect the leaf on O_NOFOLLOW platforms. This is not a
+    sandbox against a maliciously replaced ancestor directory.
+    """
+    path = Path(path)
+    if path.is_symlink():
+        raise FollowupError(f"{label}: regular non-symlink file required")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     try:
-        lines = raw.decode("utf-8").splitlines()
-        rows = [json.loads(line) for line in lines if line.strip()]
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise FollowupError(f"{kind}: malformed UTF-8 JSONL") from exc
-    if not rows or any(not isinstance(x, dict) for x in rows):
-        raise FollowupError(f"{kind}: expected nonempty JSONL objects")
+        fd = os.open(path, flags)
+    except OSError:
+        raise FollowupError(f"{label}: readable regular non-symlink file required") from None
+    try:
+        metadata = os.fstat(fd)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise FollowupError(f"{label}: regular non-symlink file required")
+        if metadata.st_size > maximum:
+            raise FollowupError(f"{label}: byte limit exceeded")
+        with os.fdopen(fd, "rb") as stream:
+            fd = None
+            raw = stream.read(maximum + 1)
+        if len(raw) > maximum:
+            raise FollowupError(f"{label}: byte limit exceeded")
+        return raw
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
+def jsonl_data(raw, kind):
+    """Reject ambiguous JSON, non-finite numbers, blank rows and excess size."""
+    if not isinstance(raw, bytes) or len(raw) > MAX_PLAN_BYTES:
+        raise FollowupError(f"{kind}: byte limit exceeded")
+    lines = raw.splitlines()
+    if not lines or len(lines) > MAX_PLAN_ROWS or any(not line.strip() for line in lines):
+        raise FollowupError(f"{kind}: expected bounded nonblank JSONL rows")
+    try:
+        rows = [decode_research_json(line, kind) for line in lines]
+    except (ValueError, RecursionError):
+        # Strict-decoder messages can reveal user-controlled confidential keys.
+        raise FollowupError(f"{kind}: malformed or ambiguous strict UTF-8 JSONL") from None
+    if any(type(row) is not dict for row in rows):
+        raise FollowupError(f"{kind}: expected JSONL objects")
     return rows
 
 
@@ -175,12 +225,19 @@ def make_plan(raw_baselines, grace_days):
 
 
 def load_plan(path):
-    raw = Path(path).read_bytes()
+    raw = _read_regular(path, MAX_PLAN_BYTES, "plan")
     plan = jsonl_data(raw, "plan")
     by_id = {}
     cohort_identity = None
     repo_days = set()
+    repository_contracts = {}
+    horizon_graces = {}
+    horizons = {}
     for row in plan:
+        if set(row) != PLAN_FIELDS:
+            raise FollowupError("plan has missing or unexpected fields")
+        if row["approval_verification"] != "self_reported_not_authenticated_by_software":
+            raise FollowupError("plan approval cannot be certified by a file")
         if row.get("schema_version") != PLAN_VERSION:
             raise FollowupError("unsupported plan version")
         rid, days, grace = row.get("repository_id"), row.get("followup_days"), row.get("grace_days")
@@ -189,6 +246,10 @@ def load_plan(path):
         if (rid, days) in repo_days:
             raise FollowupError("plan repeats a repository/horizon")
         repo_days.add((rid, days))
+        horizons.setdefault(rid, set()).add(days)
+        if days in horizon_graces and horizon_graces[days] != grace:
+            raise FollowupError("plan has inconsistent cohort-wide horizon grace")
+        horizon_graces[days] = grace
         if type(grace) is not int or grace < 0 or grace > 60:
             raise FollowupError("plan has invalid grace duration")
         baseline = utc(row.get("baseline_at_utc"), "plan.baseline_at_utc")
@@ -208,8 +269,17 @@ def load_plan(path):
             raise FollowupError("plan repository name is invalid")
         if not is_natural(row.get("baseline_stars")):
             raise FollowupError("plan has invalid baseline stars")
-        if not isinstance(row.get("cohort_input_sha256"), str) or not HEX64.fullmatch(row["cohort_input_sha256"]):
-            raise FollowupError("plan is missing source evidence hash")
+        for label in ("baseline_capture_sha256", "cohort_input_sha256"):
+            value = row.get(label)
+            if not isinstance(value, str) or not HEX64.fullmatch(value):
+                raise FollowupError(f"plan is missing valid {label}")
+        contract = tuple(row[field] for field in (
+            "full_name_at_baseline", "baseline_stars", "baseline_at_utc",
+            "baseline_capture_sha256", "cohort_input_sha256",
+        ))
+        if rid in repository_contracts and contract != repository_contracts[rid]:
+            raise FollowupError("plan has inconsistent per-repository baseline evidence")
+        repository_contracts[rid] = contract
         approval = text(row.get("cohort_approval_ref"), "plan.cohort_approval_ref")
         identity = (study, protocol, approval, row["cohort_input_sha256"])
         if cohort_identity is None:
@@ -219,6 +289,8 @@ def load_plan(path):
         if row["task_id"] in by_id:
             raise FollowupError("duplicate follow-up task_id")
         by_id[row["task_id"]] = row
+    if any(days != set(FOLLOWUP_DAYS) for days in horizons.values()):
+        raise FollowupError("plan must contain all 30/90/180-day horizons per repository")
     return plan, by_id, sha256(raw).hexdigest()
 
 
@@ -292,35 +364,50 @@ def validate_event(record, task):
 
 
 def load_events(events_dir, plan_by_id, plan_digest):
+    """Fail closed on corrupted, ambiguous or concealed immutable events."""
     path = Path(events_dir)
     events = {key: [] for key in plan_by_id}
+    if path.is_symlink():
+        raise FollowupError("events-dir must not be a symlink")
     if not path.exists():
         return events
     if not path.is_dir():
         raise FollowupError("events-dir exists but is not a directory")
     ids = set()
-    for item in sorted(path.glob("*.json")):
+    files = sorted(path.iterdir())
+    if len(files) > MAX_EVENT_FILES + 1:
+        raise FollowupError("event ledger exceeds bounded file count")
+    for item in files:
         if item.is_symlink():
-            raise FollowupError(f"symlinked event is not an immutable record: {item}")
+            raise FollowupError("symlinked event is not an immutable record")
+        # The collector itself owns this one non-evidence file while locked.
+        if item.name == ".followup.lock" and item.is_file():
+            continue
+        if item.suffix != ".json" or not item.is_file():
+            raise FollowupError("event ledger contains unexpected file or directory")
         try:
-            record = json.loads(item.read_text(encoding="utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise FollowupError(f"invalid event file (quarantine; do not delete): {item}") from exc
-        if not isinstance(record, dict) or record.get("schema_version") != EVENT_VERSION:
-            raise FollowupError(f"unrecognized event file: {item}")
+            record = decode_research_json(
+                _read_regular(item, MAX_EVENT_BYTES, "event"), "event"
+            )
+        except (ValueError, RecursionError):
+            raise FollowupError(
+                "invalid event file (ambiguous strict JSON); preserve for quarantine"
+            ) from None
+        if type(record) is not dict or record.get("schema_version") != EVENT_VERSION:
+            raise FollowupError("unrecognized event file")
         key = record.get("task_id")
-        if key not in events or record.get("plan_sha256") != plan_digest:
-            raise FollowupError(f"event does not belong to the immutable plan: {item}")
+        if not isinstance(key, str) or key not in events or record.get("plan_sha256") != plan_digest:
+            raise FollowupError("event does not belong to the immutable plan")
         expected = plan_by_id[key]
         if (record.get("repository_id") != expected["repository_id"]
                 or record.get("followup_days") != expected["followup_days"]):
-            raise FollowupError(f"event identity or horizon mismatch: {item}")
+            raise FollowupError("event identity or horizon mismatch")
         event_id = text(record.get("event_id"), "event_id")
         if event_id in ids:
             raise FollowupError("duplicate event_id")
         ids.add(event_id)
-        if record.get("status") not in EVENT_STATES:
-            raise FollowupError(f"unrecognized event status in {item}")
+        if not isinstance(record.get("status"), str) or record["status"] not in EVENT_STATES:
+            raise FollowupError("unrecognized event status")
         validate_event(record, expected)
         events[key].append(record)
     for key, history in events.items():
@@ -417,7 +504,7 @@ def _request_snapshot(task, name, opener, token, clock):
             result["status"] = "invalid_response"
             stop = True
         else:
-            info = json.loads(payload.decode("utf-8"))
+            info = decode_research_json(payload, "GitHub API payload")
             if not isinstance(info, dict):
                 raise ValueError("expected JSON object")
             actual_id = info.get("id")
@@ -466,7 +553,7 @@ def _request_snapshot(task, name, opener, token, clock):
     except (URLError, OSError, TimeoutError):
         result["status"] = "network_error"
         stop = True
-    except (UnicodeDecodeError, ValueError):
+    except (UnicodeDecodeError, ValueError, RecursionError):
         result["status"] = "invalid_response"
         stop = True
     if result["rate_limit_remaining"] is not None and result["rate_limit_remaining"] <= 1:
@@ -598,7 +685,7 @@ def main(argv=None):
         if args.command == "plan":
             disjoint(args.input, args.output)
             refuse_existing(args.output)
-            raw = Path(args.input).read_bytes()
+            raw = _read_regular(args.input, MAX_PLAN_BYTES, "baseline")
             plan = make_plan(raw, args.grace_days)
             publish_jsonl(args.output, plan)
             output = {
