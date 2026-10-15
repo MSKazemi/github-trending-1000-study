@@ -18,7 +18,7 @@ import stat
 from .blind_review import _exact, _utc, fingerprint
 from .data_integrity import decode_research_json
 from .rubric_agreement import _agreement
-from .safe_io import disjoint, publish_once
+from .safe_io import ProvenanceWriteError, disjoint, publish_once
 
 SCHEMA = "hiring-223-v1"
 SAMPLE = "hiring-223-direct-read-candidates-2026-10-14"
@@ -62,11 +62,15 @@ def _read_bytes(path):
         if parent.is_symlink():
             raise HiringError("symlink input paths are not accepted")
     flags = os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0)
-    fd = os.open(path, flags)
-    with os.fdopen(fd, "rb") as stream:
-        if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
-            raise HiringError("regular file required")
-        raw = stream.read(MAX_BYTES + 1)
+    try:
+        fd = os.open(path, flags)
+        with os.fdopen(fd, "rb") as stream:
+            if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                raise HiringError("regular file required")
+            raw = stream.read(MAX_BYTES + 1)
+    except OSError:
+        # Neither confidential input paths nor platform errors belong in logs.
+        raise HiringError("input must be a readable bounded regular file") from None
     if len(raw) > MAX_BYTES:
         raise HiringError("input exceeds 1 MiB")
     return raw
@@ -76,8 +80,10 @@ def load_document(path):
     raw = _read_bytes(path)
     try:
         value = decode_research_json(raw, "hiring input")
-    except RecursionError as exc:
-        raise HiringError("JSON nesting limit exceeded") from exc
+    except (ValueError, RecursionError):
+        # The shared decoder can otherwise echo arbitrary duplicate object
+        # keys from confidential coder notes. Keep a fixed, safe CLI error.
+        raise HiringError("invalid or ambiguous strict UTF-8 JSON") from None
     pending = [(value, 0)]
     nodes = 0
     while pending:
@@ -355,7 +361,9 @@ def main(argv=None):
         publish_once([(args.output,payload)])
         print(json.dumps({"output_created": True, "frame_sha256": verification["frame_sha256"],
                           "research_enrollment": "blocked"}))
-    except (OSError, ValueError, TypeError, KeyError, RecursionError) as exc:
+    except (OSError, ProvenanceWriteError):
+        parser.exit(2, "error: input/output filesystem operation failed; details withheld\n")
+    except (ValueError, TypeError, KeyError, RecursionError) as exc:
         parser.exit(2, f"error: {exc}\n")
 
 
