@@ -38,3 +38,16 @@ AI-assisted inspection of readable publisher pages may verify what a publisher *
 - [ ] Obtain final-head CI and safe integration verification; retain the underlying company issue open until genuine scientific acceptance.
 
 This file is a **source-screen audit trail**, not an endorsement, user study, company ranking, proof of safer code, causal claim or permission to publish completed research.
+
+
+## 2026-10-15 secondary-source and artifact QA supplement
+
+**Access/read status:** A dated AI-assisted public-source desk check. Selected pages were read or located via public web search on 2026-10-15. URLs and journalistic observations are reproducible *leads*, not signed/archived historical captures, systematic recall, independent human signoff or measured task outcomes. Retrospective study publication cutoff is **2026-10-12**; post-window analysis must remain separate.
+
+### Amp — identity and source-independence boundary
+
+- **Pre-window historical identity:** [Sourcegraph's 2025-12-02 announcement](https://sourcegraph.com/blog/why-sourcegraph-and-amp-are-becoming-independent-companies) describes the planned split of Amp and Sourcegraph, and [Amp's own contemporaneous statement](https://ampcode.com/news/amp-frontier-corporation) confirms its supplier portrayal of an independent company. These sources share organizational history and do **not** constitute unrelated independent judicial/registry verification of corporate ownership. Neither is a 2026-04-12 onward product event.
+- **Company announcement, 2026-10-12:** [Amp's GitHub PR feedback listeners](https://ampcode.com/news/github-listeners) describes subscriptions to GitHub comments/reviews/CI results and webhook-triggered agent threads. This is company-described capability, not an independently tested authorization boundary. GitHub webhook authenticity, replay defense, secret separation, prompted-agent permissions and write controls remain unchecked.
+- **Coverage gap:** A targeted external search did not surface a credible controlled, independent 2026 acceptance or defect-rate trial of Amp remote orbs. This is a limitation of the selected queries and search index, **not** proof no such research exists. Full returned-hit and exclusion denominators remain unrecorded.
+
+**Practical repository consequence:** test remote agents on a non-sensitive fixture repository first; restrict credentials/branch-writing permissions, preserve full review context and stop on untrusted webhook instructions. Count actual human intervention and wrong-branch writes against a baseline.
