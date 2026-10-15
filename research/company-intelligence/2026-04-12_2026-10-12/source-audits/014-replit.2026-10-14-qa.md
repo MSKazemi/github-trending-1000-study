@@ -38,3 +38,17 @@ AI-assisted inspection of readable publisher pages may verify what a publisher *
 - [ ] Obtain final-head CI and safe integration verification; retain the underlying company issue open until genuine scientific acceptance.
 
 This file is a **source-screen audit trail**, not an endorsement, user study, company ranking, proof of safer code, causal claim or permission to publish completed research.
+
+
+## 2026-10-15 secondary-source and artifact QA supplement
+
+**Access/read status:** A dated AI-assisted public-source desk check. Selected pages were read or located via public web search on 2026-10-15. URLs and journalistic observations are reproducible *leads*, not signed/archived historical captures, systematic recall, independent human signoff or measured task outcomes. Retrospective study publication cutoff is **2026-10-12**; post-window analysis must remain separate.
+
+### Replit — independent privacy caution versus company claims
+
+- **First-party product source, 2026-04-22:** [Replit Auto-Protect](https://replit.com/blog/auto-protect) documents an **opt-in** vulnerability-related workflow in which a proposed patch is delivered for the user to apply and then republish. This is not a promise that all vulnerabilities are caught or all fixes are automatic, nor proof of correct patch behavior.
+- **Independent reporting, 2026-05-07:** [Axios — AI coding tools exposed sensitive corporate and personal data](https://www.axios.com/2026/05/07/loveable-replit-vibe-coding-privacy) summarizes third-party security research into exposed applications across **multiple** vibe-coding platforms. The report discusses Replit but does **not** establish that every sampled exposure, application or cause is attributable to Replit. Do not translate aggregated sample counts into a platform-specific leak rate, and do not store any exposed content or affected-user identity here.
+- **First-party product source, 2026-05-06:** [Private Publishing and External Access Tokens](https://replit.com/blog/secure-more-apps) describes entitlements and access controls. Claiming a control is offered does not verify it was enabled in an individual deployment or prevents misconfiguration.
+- **Study limitation:** No reproducible independent test of Auto-Protect's false-negative rate, the security properties of arbitrary generated apps, or actual cost savings from Replit model routing has been performed in this repository.
+
+**Practical repository consequence:** any AI-generated demonstration app should have frozen authorization/negative tests (unauthenticated routes, server-side secrets, private data access) before public deployment. Count the full denominator of attempted tests and failures, rather than equating a vendor scan label with security.
