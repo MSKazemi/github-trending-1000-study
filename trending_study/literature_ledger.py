@@ -6,13 +6,11 @@ import argparse
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 import json
-import os
 from pathlib import Path
 import re
-import stat
 from urllib.parse import urlsplit
 
-from .data_integrity import MAX_FILE_BYTES, decode_research_json
+from .data_integrity import ResearchJSONError, load_research_json_file
 
 DECISIONS = {"include", "exclude", "pending"}
 SOURCE_TYPES = {"peer_reviewed", "preprint", "standard", "news", "vendor", "other"}
@@ -100,7 +98,7 @@ def audit(data):
             source_url = row.get("source_url")
             if (not isinstance(source_url, str) or not source_url.strip()
                     or source_url != source_url.strip()
-                    or any(ord(ch) < 33 for ch in source_url)):
+                    or any(ord(ch) < 33 or ord(ch) == 127 for ch in source_url)):
                 raise LiteratureError("included record requires clean source_url")
             try:
                 parsed_source = urlsplit(source_url)
@@ -142,39 +140,20 @@ def audit(data):
 
 
 def audit_file(path):
-    """Load one bounded regular artifact without following an input symlink."""
-    path = Path(path)
-    if path.is_symlink():
-        raise LiteratureError("input must be a regular non-symlink file")
-    # Reuse the lesson registry's descriptor-based read pattern. NONBLOCK
-    # prevents a FIFO open from hanging before fstat rejects special files.
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    """Load one bounded regular artifact via the shared strict research reader.
+
+    ``load_research_json_file`` refuses symlinks, special files, oversized or
+    grown inputs and ambiguous JSON with fixed, non-path diagnostics.
+    """
     try:
-        descriptor = os.open(path, flags)
-    except OSError as exc:
-        raise LiteratureError("input must be a readable regular non-symlink file") from exc
-    try:
-        metadata = os.fstat(descriptor)
-        if not stat.S_ISREG(metadata.st_mode):
-            raise LiteratureError("input must be a regular non-symlink file")
-        if metadata.st_size > MAX_FILE_BYTES:
-            raise LiteratureError("input exceeds research JSON byte limit")
-        stream = os.fdopen(descriptor, "rb")
-        descriptor = None
-        with stream:
-            raw = stream.read(MAX_FILE_BYTES + 1)
-        if len(raw) > MAX_FILE_BYTES:
-            raise LiteratureError("input exceeds research JSON byte limit")
-    finally:
-        if descriptor is not None:
-            os.close(descriptor)
-    try:
-        data = decode_research_json(raw, "literature input")
-    except (ValueError, RecursionError) as exc:
-        # The shared decoder identifies duplicate object keys in its detailed
-        # errors. Those arbitrary keys may be private; keep CLI diagnostics
-        # fixed rather than echoing source content or the input filename.
-        raise LiteratureError("input must be strict UTF-8 JSON without duplicate keys or invalid numbers") from None
+        data = load_research_json_file(path)
+    except ResearchJSONError as exc:
+        if str(exc) == "invalid or ambiguous JSON input":
+            # The shared reader already hides duplicate keys and filenames;
+            # keep this tool's established decoder diagnostic.
+            raise LiteratureError("input must be strict UTF-8 JSON without duplicate "
+                                  "keys or invalid numbers") from None
+        raise LiteratureError(str(exc)) from exc
     return audit(data)
 
 

@@ -90,6 +90,15 @@ class LiteratureLedgerTests(unittest.TestCase):
             with self.subTest(url=link), self.assertRaises(LiteratureError):
                 audit(payload)
 
+    def test_included_source_url_rejects_ascii_delete_control(self):
+        for link in ("https://doi.org/10.1000/XYZ" + chr(127),
+                     "https://doi.org/10.1000/" + chr(127) + "XYZ"):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(link=repr(link)), self.assertRaisesRegex(
+                    LiteratureError, "clean source_url"):
+                audit(payload)
+
     def test_zero_or_empty_explicit_https_port_is_invalid(self):
         for link in ("https://doi.org:0/10.1000/XYZ",
                      "https://doi.org:/10.1000/XYZ"):
@@ -264,7 +273,7 @@ class LiteratureFileIntegrityTests(unittest.TestCase):
             path = Path(tmp) / "oversized.json"
             with path.open("wb") as stream:
                 stream.truncate(MAX_FILE_BYTES + 1)
-            with patch("trending_study.literature_ledger.decode_research_json") as decode:
+            with patch("trending_study.data_integrity.decode_research_json") as decode:
                 with self.assertRaisesRegex(LiteratureError, "byte limit"):
                     audit_file(path)
                 decode.assert_not_called()
@@ -276,9 +285,9 @@ class LiteratureFileIntegrityTests(unittest.TestCase):
                 stream.truncate(MAX_FILE_BYTES + 1)
             stale_metadata = list(path.stat())
             stale_metadata[6] = 0  # fstat's stale size before concurrent growth.
-            with patch("trending_study.literature_ledger.os.fstat",
+            with patch("trending_study.data_integrity.os.fstat",
                        return_value=os.stat_result(stale_metadata)):
-                with patch("trending_study.literature_ledger.decode_research_json") as decode:
+                with patch("trending_study.data_integrity.decode_research_json") as decode:
                     with self.assertRaisesRegex(LiteratureError, "byte limit"):
                         audit_file(path)
                     decode.assert_not_called()

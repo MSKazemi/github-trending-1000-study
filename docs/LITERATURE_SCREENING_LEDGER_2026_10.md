@@ -59,12 +59,15 @@ errors use a fixed diagnostic so arbitrary private keys and source filenames
 are not echoed to the terminal.
 
 Input must be a regular file of at most the existing research-JSON limit
-(**16 MiB**). The descriptor-based bounded reader follows the existing lesson
-registry pattern: the final input component cannot be a symlink on supported
+(**16 MiB**). `audit_file` now reuses the shared
+`data_integrity.load_research_json_file` bounded reader (2026-10-15) instead of
+a local copy: the final input component cannot be a symlink on supported
 platforms; directories and special files are rejected using `fstat`, and a
 nonblocking open prevents FIFO inputs without writers from hanging. The read
 itself also enforces the byte limit if the opened file grows after inspection.
-No shared helper or real source records changed. On platforms lacking
+Errors remain `LiteratureError` with fixed, non-path diagnostics. Included
+`source_url` values also reject the ASCII DEL control character (0x7F) in
+addition to space and C0 controls. No real source records changed. On platforms lacking
 `O_NOFOLLOW`, the preliminary symlink check remains best effort; the cloud
 Linux environment supplies the descriptor-level protection.
 
