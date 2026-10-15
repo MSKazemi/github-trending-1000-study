@@ -80,6 +80,8 @@ The new check is run before unit tests on **each** CI Python interpreter (3.10, 
 
 **Evidence boundary:** Git-tracked coverage and green CI are engineering claims about the particular checkout and interpreter. They do not authenticate source URLs, historical observations, ethics/legal permission, code safety, reviewer independence, approved preregistration or any environmental impact. Repository branch-rule enforcement and independent human merge review remain separate open gates tracked in [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248).
 
+Because every tracked `.py` and `.json` file is checked, deliberately malformed fixtures must be generated at test time (for example in a temporary directory) rather than committed.
+
 **Practical lesson:** put a negative regression in a surprising location (for example `ops/broken.json` or `.hidden/broken.py`) and prove your CI rejects it. A scanner that only knows familiar directories cannot promise full tracked-file coverage.
 
 
@@ -97,7 +99,9 @@ caller-provided key into a CI failure. Keys in untrusted research files can
 contain accidentally pasted tokens, names or other sensitive material; their
 values are not necessary to locate the offending tracked file. The tracked
 Git-index scanner checks **both** the checked-out file and the staged Git blob.
-Synthetic negative regression checks assert redaction for both paths. This
+Synthetic negative regression checks assert redaction for both paths, and
+a CLI regression checks that a token-shaped duplicate key is absent from
+`--tracked-code-json` failure output. This
 protects one diagnostic class, not arbitrary private information in other
 file names, Python syntax tracebacks or source materials. Treat CI logs as
 public outputs and independently review proposed data before uploading it.

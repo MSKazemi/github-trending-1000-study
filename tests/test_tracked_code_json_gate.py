@@ -304,6 +304,28 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         self.assertEqual(report["tracked_code_json"]["files"], 2)
         self.assertEqual(report["files"], 1)
 
+    def test_cli_failure_output_never_echoes_secret_like_duplicate_key(self):
+        # Synthetic token-shaped key; CI job logs are treated as public.
+        secret = "ghp_SECRETTOKEN"
+        for dirname in ("examples", "references", "research-notes"):
+            (self.root / dirname).mkdir()
+        (self.root / "examples" / "sample.json").write_text(
+            '{"synthetic":true}', encoding="utf-8"
+        )
+        path = self.root / ".hidden" / "good.json"
+        path.write_text('{"' + secret + '":1,"' + secret + '":2}', encoding="utf-8")
+        self.git("add", "--", ".hidden/good.json")
+        script = Path(__file__).resolve().parents[1] / "scripts" / "check_research_artifacts.py"
+        result = subprocess.run(
+            [sys.executable, str(script), "--root", str(self.root),
+             "--tracked-code-json"],
+            capture_output=True, text=True, timeout=30,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("duplicate JSON object key", result.stderr)
+        self.assertNotIn(secret, result.stderr)
+        self.assertNotIn(secret, result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

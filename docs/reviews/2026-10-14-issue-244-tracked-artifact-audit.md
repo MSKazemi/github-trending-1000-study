@@ -51,3 +51,7 @@ A live compare showed that current `main` (commit `b6ece720220297e78f47720beadd8
 Also corrected **both** public-CI duplicate-key diagnostic paths: `scripts/check_research_artifacts.py` and `trending_study/data_integrity.py` now raise stable duplicate-key error classes without printing any attacker-provided key string. Added a direct-cli regression for a synthetic contact-like duplicate key; the index/worktree validator already has a matching regression. This is narrow diagnostic containment, not a promise of complete log anonymization. **No qualified human review yet**; wait for all five new exact-head PR CI jobs and verify post-merge main CI only after the authorized review/merge.
 
 **Practical lesson:** when two PRs touch a validator, reconcile unique functions against the latest main tree with explicit negative tests; neither a green older head nor an 'ours' overwrite is an acceptable no-loss merge.
+
+## 2026-10-15 correction note (supersedes two earlier statements)
+
+The "Validation and limitation" paragraph above says the checker inspects only **working-tree bytes** for indexed paths. That was accurate when written but is superseded by the 2026-10-14 staged-blob follow-up: the gate now validates **both** the checked-out file and the regular staged Git index blob (`git cat-file`) for every tracked `.py`/`.json`. It still does not authenticate blob content against any external trusted origin. The original text is retained as history.
