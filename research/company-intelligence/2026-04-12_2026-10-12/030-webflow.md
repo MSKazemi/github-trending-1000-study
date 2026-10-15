@@ -117,7 +117,7 @@ Stars, funding, valuation and press coverage are **not** verified adoption.
 - **Conjectures and unknowns:** §6 hypotheses; actual usage of agent surfaces; the open-source status of MCP 2.x; per-customer pricing impact; whether the legacy Editor shutdown happened as scheduled on Aug 4.
 - **Important contradictory or null evidence:** the Apr 14 outage and later incidents (Jul 8, Jul 19, Aug 25, Sep 15) against the production-reliability positioning; the "open source" GSAP wording against GSAP's proprietary standard license; the public MIT `mcp-server` repo frozen at v1.2 while hosted 2.x ships; press coverage relaying vendor claims without testing; critical pricing reports seen only as unverified snippets.
 - **Untrusted content:** one agency page (Digidop) embedded instructions aimed at AI agents. These were ignored, and the page was not used as evidence (see search log).
-- **Reviewer links and audit date:** pending. A human factual/link spot check (suggested: rows 002, 006, 014, 016, 019, 024), source-access/rights review and methods review are required before this screen can be treated as reviewed. The issue stays open.
+- **Reviewer links and audit date:** pending. A human factual/link spot check (suggested: rows 002, 006, 014, 016, 019, 024), source-access/rights review and methods review are required before this screen can be treated as reviewed. Issue #97 was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open.
 
 ## Independent source spot-check (2026-10-16)
 
