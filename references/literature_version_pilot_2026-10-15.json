@@ -1,0 +1,90 @@
+{
+  "search_runs": [
+    {
+      "run_id": "oa_arxiv_version_pages_20261015",
+      "database": "arXiv official versioned HTML (direct public URL)",
+      "query": "https://arxiv.org/abs/2601.18341v1 ; https://arxiv.org/abs/2601.18341v2",
+      "searched_at_utc": "2026-10-15T00:00:00Z"
+    },
+    {
+      "run_id": "oa_acm_agent_20261015",
+      "database": "ACM official article landing page (public web lookup)",
+      "query": "doi 10.1145/3822180 Agentic Much Adoption of Coding Agents on GitHub TOSEM 2026 sample",
+      "searched_at_utc": "2026-10-15T00:00:00Z"
+    },
+    {
+      "run_id": "oa_acm_space_20261015",
+      "database": "ACM Queue official article page (public web lookup)",
+      "query": "doi 10.1145/3454122.3454124 SPACE developer productivity ACM Queue framework",
+      "searched_at_utc": "2026-10-15T00:00:00Z"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "AM_ARXIV_V1",
+      "run_id": "oa_arxiv_version_pages_20261015",
+      "title": "Agentic Much? Adoption of Coding Agents on GitHub",
+      "publication_year": 2026,
+      "doi": "10.48550/arXiv.2601.18341",
+      "source_url": "https://arxiv.org/abs/2601.18341v1",
+      "source_type": "preprint",
+      "decision": "pending",
+      "reason": "Superseded version; retain for transparent numerical-drift audit, not a separately included independent study.",
+      "study_extract": {
+        "design": "Authors' GitHub repository-mining estimate reported in the v1 abstract; no independent full-methods replication.",
+        "population": "129,134 projects according to official 2026-01-26 v1 arXiv abstract.",
+        "outcome": "Abstract reports 15.85%-22.60% estimated coding-agent adoption, a version-specific observational estimate.",
+        "limitations": "Trace detection and selection frame are not independently rechecked; v1 is a version of the same study, not a new replication."
+      }
+    },
+    {
+      "record_id": "AM_ARXIV_V2",
+      "run_id": "oa_arxiv_version_pages_20261015",
+      "title": "Agentic Much? Adoption of Coding Agents on GitHub",
+      "publication_year": 2026,
+      "doi": "10.48550/arXiv.2601.18341",
+      "source_url": "https://arxiv.org/abs/2601.18341v2",
+      "source_type": "preprint",
+      "decision": "pending",
+      "reason": "Retained as accepted-manuscript precursor; journal version is preferred for main bibliography.",
+      "study_extract": {
+        "design": "Authors' revised GitHub repository-mining estimate in the 2026-04-08 v2 abstract.",
+        "population": "128,018 projects according to the arXiv v2 abstract.",
+        "outcome": "Abstract reports 22.20%-28.66% estimated coding-agent adoption.",
+        "limitations": "Not an independent replication of v1 or of the later ACM version; no human review of complete methods or denominator reconciliation here."
+      }
+    },
+    {
+      "record_id": "AM_ACM_JOURNAL",
+      "run_id": "oa_acm_agent_20261015",
+      "title": "Agentic Much? Adoption of Coding Agents on GitHub",
+      "publication_year": 2026,
+      "doi": "10.1145/3822180",
+      "source_url": "https://dl.acm.org/doi/10.1145/3822180",
+      "source_type": "peer_reviewed",
+      "decision": "include",
+      "study_extract": {
+        "design": "Peer-reviewed observational mining of public GitHub coding-agent traces; journal accepted 2026-05-13, online accepted-manuscript 2026-06-26.",
+        "population": "128,018 projects as reported by ACM article abstract, sampled according to its trace-based study method.",
+        "outcome": "Authors report 22.20%-28.66% estimated coding-agent adoption by 2026-02-21; this is not all-GitHub population prevalence or causal productivity.",
+        "limitations": "Trace sensitivity/specificity, project frame and missing silent-agent use require method-level review; journal and arXiv revisions count as ONE scientific study."
+      }
+    },
+    {
+      "record_id": "SPACE_QUEUE_2021",
+      "run_id": "oa_acm_space_20261015",
+      "title": "The SPACE of Developer Productivity: There's more to it than you think.",
+      "publication_year": 2021,
+      "doi": "10.1145/3454122.3454124",
+      "source_url": "https://queue.acm.org/detail.cfm?id=3454124",
+      "source_type": "other",
+      "decision": "include",
+      "study_extract": {
+        "design": "ACM Queue conceptual multi-dimensional developer-productivity framework, published 2021-03-06.",
+        "population": "Methodological framework and practice examples; not an experimental sample that estimates agent outcomes.",
+        "outcome": "Defines satisfaction/well-being, performance, activity, communication/collaboration, efficiency/flow as distinct productivity dimensions.",
+        "limitations": "Framework alone demonstrates no measured benefit from coding agents and supplies no causal or carbon effect."
+      }
+    }
+  ]
+}
