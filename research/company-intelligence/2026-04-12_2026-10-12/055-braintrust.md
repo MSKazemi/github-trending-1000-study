@@ -1,6 +1,6 @@
 # Braintrust: provisional six-month technology intelligence screen (055)
 
-> **Provisional source-lead screen (2026-10-16):** this report, its [event ledger](055-braintrust.events.csv) and [search log](055-braintrust.search-log.md) are **provisional, AI-assisted documentary source leads** prepared for [issue #122](https://github.com/MSKazemi/github-trending-1000-study/issues/122). **No qualified human has reviewed them.** Factual/link review, source-access/rights review and methods review are all still **pending**. This screen is not scientific or security sign-off and does not close issue #122.
+> **Provisional source-lead screen (2026-10-16):** this report, its [event ledger](055-braintrust.events.csv) and [search log](055-braintrust.search-log.md) are **provisional, AI-assisted documentary source leads** prepared for [issue #122](https://github.com/MSKazemi/github-trending-1000-study/issues/122). **No qualified human has reviewed them.** Factual/link review, source-access/rights review and methods review are all still **pending**. This screen is not scientific or security sign-off; issue #122 was closed on maintainer instruction (2026-10-16) with these review gates still open; reopen it if review finds a defect.
 
 - **Watchlist:** 055; [issue #122](https://github.com/MSKazemi/github-trending-1000-study/issues/122). Study lens: *structured datasets, evals and failure analysis* (AI evaluation and observability).
 - **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened on 2026-10-16**. The following are unavailable:
@@ -196,4 +196,4 @@ A null or negative result is a valid outcome and must be preserved. **Nothing ha
   - methods review;
   - running the three unexecuted queries.
 
-  **Do not close #122** on the basis of this screen.
+  **Issue #122 was closed on maintainer instruction (2026-10-16); this screen alone is not scientific completion — reopen it if factual, rights or methods review finds a defect.** on the basis of this screen.
