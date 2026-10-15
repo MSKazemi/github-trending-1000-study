@@ -1,0 +1,32 @@
+# Issue #12 — adoption and maintenance indicator design: bounded acceptance audit
+
+**Audit date:** 2026-10-15. **Scope:** design of measurable, ethics-aware indicators and a finite-panel offline instrument. **Not a field study.** Neither human participants nor verified installs, independent downstream tasks, traffic, downloads or 30/90/180-day followups were collected or inferred by this review.
+
+## Acceptance crosswalk (design only)
+
+| Requirement | Tracked evidence | Verified design decision |
+| --- | --- | --- |
+| Project-type applicability rather than one universal adoption statistic | [Independent adoption measures](../INDEPENDENT_ADOPTION_MEASURES_2026_10_12.md) and [design codebook](../ADOPTION_MAINTENANCE_EVIDENCE_DESIGN_2026_10.md) | Library: exercised downstream API/integration; CLI: separately accepted first-use/repeated tasks; service: consented organization-side functional integration; research artifact: independent rerun; template/agent skill: accepted generated result; documentation: independently solved reader task. Absence of telemetry is `unknown`, not negative. |
+| Verified reuse vs attention/activity | [Adoption-bounds instrument](../../trending_study/adoption_bounds.py), [synthetic fixture](../../examples/adoption_signals.synthetic.json) | Stars, forks, Trending, package download counts and pageviews are explanatory **exposure/proxy covariates**, never conversions to distinct users or functional success. Match the source/version/functional unit. |
+| 30/90/180-day longitudinal followup | [Follow-up contract](../LONGITUDINAL_FOLLOWUPS_2026_10_12.md), [longitudinal instrument](../../trending_study/longitudinal.py) | Schedule from actual eligible baseline with real observation times; separate right-censoring, inaccessible/withdrawn units, not-applicable conditions, true negatives, role/location variants and post-baseline maintenance. Do not backfill missing visits. |
+| Attrition, selective observability and bounds | [Design codebook](../ADOPTION_MAINTENANCE_EVIDENCE_DESIGN_2026_10.md), [regression tests](../../tests/test_adoption_bounds.py) | In a fixed, explicitly enumerated, signal-eligible finite panel: lower bound = verified / eligible; upper bound = (verified + unknown + withdrawn) / eligible. Undefined when eligible=0. These are **logical** bounds, not confidence intervals or population-adjusted estimators. |
+| Comparable observational design | [Independent adoption measures](../INDEPENDENT_ADOPTION_MEASURES_2026_10_12.md) | Preselect Trending and non-Trending candidate frames plus project archetype/ecosystem, language, vintage, initial visibility, maintenance status and baseline prior reuse; compare frozen exposure at t0 with subsequent independent acceptance. Report association and alternative explanations, not a causal claim from Trending rank. |
+| Ethical source applicability | [Ethics](../ETHICS.md), [independent adoption measures](../INDEPENDENT_ADOPTION_MEASURES_2026_10_12.md) | Only independently reviewable open records and consented opt-in tasks; private app traffic and unique human identities are **not available by default**. No automated user profiling, license bypass or inferred hidden users. |
+
+### Exact meanings and statistical limitations
+
+- The candidate frame must be frozen **before** inspecting outcomes. Stable GitHub numeric ID and pinned source/version/UTC make the *repository* unit traceable; a private deployment, verified upstream dependent, package download, person and accepted software **task** have different denominators and must never be silently pooled.
+- Distinguish (a) structural `not_applicable` (not in signal denominator), (b) `observed_negative` after a valid complete test, (c) `unknown` due to absent source, incomplete test or out-of-scope telemetry, (d) `withdrawn` from a consented panel, and (e) independently `observed_verified` outcome. A failed network request is not a verified non-user.
+- For one *fully enumerated* convenience sample, example with **synthetic** counts: 2 verified, 1 negative, 2 unknown, 1 withdrawn, 1 structurally N/A gives signal-eligible N=6, finite-panel bounds [2/6, (2+2+1)/6] = [0.333…, 0.833…]. This is deliberately *not* an estimate for all GitHub projects, and gives no evidence of actual adoption.
+- Cross-window panel analysis must report originally eligible N, observed N, attrited N, right-censored N and applicable failures at each of 30/90/180 days. Complete-case percentages alone can be severely biased. Report best/worst-case bounds and sensitivity to missing-not-at-random attrition; sampling uncertainty requires separately justified sampling design.
+- Both **successful** integrations and abandoned searches, rejected tasks, adverse license/security results, human review/repair time and upstream support must remain observable if the design supports them. Do not use stars or code-generation volume as substitutes for accepted user value.
+
+## Read-only verification and requirements still outside issue #12
+
+Checked the canonical docs, offline calculator, source fixture and named regression modules on `main` `6539e24340d573b488f6c3b964b94a49b1d62914`. Its [push workflow](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38752612150) completed successfully; green automated tests validate the **synthetic instrumentation only**, and a review of docs does **not** authenticate observations or ethics approval. Recheck fresh head and PR checks at merge time.
+
+This completes **the requested applicability/comparison/attrition design**, not any 2027 longitudinal fieldwork. Remaining empirical and human-approval work belongs to [#8](https://github.com/MSKazemi/github-trending-1000-study/issues/8) (consented independently accepted user tasks), [#27](https://github.com/MSKazemi/github-trending-1000-study/issues/27) (cohort/freeze and outcomes) and [#24](https://github.com/MSKazemi/github-trending-1000-study/issues/24) (upstream maintenance burden). No ethically unavailable sample is substituted by synthetic tests.
+
+## Practical improvements to the maintainer's own repositories
+
+Publish a version-pinned working integration and one independently runnable acceptance task, record source version and known failure modes, recruit **opt-in** downstream reusers for a reproducible first-use check, then ask for 30/90/180-day followup. Track every eligible response and dropout; retain negative/unknown outcomes. Treat stars and GitHub Trending appearances as *discovery* measures, not evidence of useful adoption.
