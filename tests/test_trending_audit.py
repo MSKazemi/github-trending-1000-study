@@ -167,6 +167,23 @@ class ChronologicalProxyTests(unittest.TestCase):
         self.assertFalse(report["independent_verification"])
         self.assertFalse(report["eligible_for_confirmatory_cohort"])
 
+    def test_constant_predictor_negative_control_is_explicit_and_not_significance(self):
+        report = evaluate_proxy(proxy())
+        self.assertEqual(report["constant_predictor_baseline_accuracy"], 0.5)
+        self.assertAlmostEqual(report["heldout_excess_over_constant_baseline"], 1 / 3)
+        self.assertAlmostEqual(report["heldout_macro_pairwise_accuracy"], 5 / 6)
+        self.assertIn("not a significance test", report["interpretation"])
+        # A tied predictor has precisely the noninformative 0.5 baseline.
+        tied = proxy()
+        for page in tied["pages"]:
+            for row in page["features"]:
+                for feature in ("prior_7d_star_delta", "prior_stars", "prior_forks"):
+                    row[feature] = 1
+        null = evaluate_proxy(tied)
+        self.assertEqual(null["heldout_macro_pairwise_accuracy"], 0.5)
+        self.assertEqual(null["heldout_excess_over_constant_baseline"], 0)
+        self.assertFalse(null["independent_verification"])
+
     def test_holdout_cannot_change_training_selected_feature(self):
         original = proxy()
         control = evaluate_proxy(original)
