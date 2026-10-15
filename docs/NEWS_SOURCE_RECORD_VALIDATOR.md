@@ -42,3 +42,17 @@ Both require `review_status=pending`, `independent_reviewer=null`, `independent_
 Retain all 20 original record files on the existing draft branch. Before any evidence records go to `main`, a qualified source/method reviewer must independently inspect the **exact primary documents, publication/event dates, URL revisions, rights and relevant independent counter-evidence**, record unresolved disputes and negative findings, freeze a documented inclusion/exclusion protocol, and rerun this instrument plus full exact-head CI. Do **not** report "20 authenticated sources" merely because 20 syntactically valid JSON files pass. Separate an engineering merge from scientific source acceptance.
 
 **Practical lesson for other repositories:** merge small, testable **data-contract code** independently from unreviewed research content; keep original branches/PRs as immutable provenance until verified transfer; maximize safely reusable functionality and clear acceptance criteria instead of PR volume, stars or unsupported green-computing claims.
+
+
+## 2026-10-15 private input-filename diagnostics
+
+The news-source directory validator rejects unexpected files, directories and
+symlinks but now reports a generic **error category** instead of echoing an
+untrusted, potentially private filename. This affects only failed inputs:
+valid record filenames remain bound to their declared `NEWS-YYYY-NNNN` IDs
+and successful count/duplicate semantics are unchanged. Synthetic cases test
+unexpected JSON, non-JSON files, directories and symlink names containing a
+private-looking marker. Error redaction does not itself make publicly committed
+records or arbitrary OS-level diagnostics private; pre-publication review is
+still required. The one-thousand-item corpus and human source assessment remain
+unfinished.
