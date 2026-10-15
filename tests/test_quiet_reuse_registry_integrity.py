@@ -165,6 +165,26 @@ class RegistryPairIntegrityTests(unittest.TestCase):
         self.assertEqual(audit["concordant_provisional_fit"], 0)
         self.assertEqual(audit["pair_statuses"], [{"pair_id": "P1", "status": "single_review_only"}])
 
+    def test_reviews_cannot_predate_independent_frozen_task_frame(self):
+        packet = self.packet()
+        a, b = self.reports(packet)
+        a["reviewed_at_utc"] = "2025-12-31T23:59:59Z"
+        with self.assertRaisesRegex(registry.RegistryFrameError, "predates"):
+            registry.audit_pair_reviews(packet, a, b)
+        # A modified packet with its hash recomputed still cannot accept a
+        # coder's favorable pre-task vote as prospective task assessment.
+        packet["tasks"][0]["baseline_utc"] = "2026-01-03T00:00:00Z"
+        self.fingerprint(packet)
+        a, b = self.reports(packet)
+        with self.assertRaisesRegex(registry.RegistryFrameError, "predates"):
+            registry.audit_pair_reviews(packet, a, b)
+        # A report at the task baseline is chronologically possible but never
+        # authenticates real human raters or independently frozen tasks.
+        a["reviewed_at_utc"] = b["reviewed_at_utc"] = "2026-01-03T00:00:00Z"
+        result = registry.audit_pair_reviews(packet, a, b)
+        self.assertFalse(result["reviewers_authenticated_as_real_independent_humans"])
+        self.assertFalse(result["meets_issue_15_scientific_acceptance"])
+
     def test_direct_reader_reuses_strict_json_guard(self):
         documents = ('{"version": "wrong", "version": "1.0"}',
                      '{"value": NaN}', '{"value": Infinity}',
