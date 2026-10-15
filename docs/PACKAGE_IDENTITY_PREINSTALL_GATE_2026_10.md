@@ -111,3 +111,17 @@ This is intentionally narrower than URL parsing in general: an escaped URL must
 be resolved and authenticated independently, not silently treated as a pinned
 identity. The gate still only validates self-declared input; it does not
 establish a real distribution, artifact digest, rights, provenance, or approval.
+
+
+## 2026-10-15 schema and negative-source safety correction
+
+The offline evidence gate now rejects undeclared top-level, candidate and
+per-check fields, rather than silently ignoring an arbitrary extra string that
+could contain private user data or a competing unchecked security claim.
+Declared `evidence_url` values are validated **for pass, fail and unknown**
+states: a source URL with embedded credentials, query tokens or malformed
+ports does not become safe simply because a check reports failure or
+uncertainty. A passing gate still requires an evidence URL; a failing or
+unknown gate may omit one. Synthetic negative tests exercise all three
+unknown-field locations and both non-pass statuses. These rules validate
+submission shape, not the truth of a source or actual package safety.
