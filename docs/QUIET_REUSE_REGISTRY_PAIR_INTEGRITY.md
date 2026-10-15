@@ -12,8 +12,9 @@ Malformed identities, unsupported schema versions, inconsistent uncertainty
 flags and undeclared fields are rejected. One submitted decision cannot be
 multiplied by repeating a pair record.
 
-All three subcommands use the existing `data_integrity.decode_research_json`
-reader. Duplicate object keys, nonstandard or non-finite numeric values,
+All three subcommands read every input through the shared
+`data_integrity.load_research_json_file` reader (see the 2026-10-15
+maintainer-review correction below). Duplicate object keys, nonstandard or non-finite numeric values,
 overflow, underflow and invalid UTF-8 fail before publishing a result.
 Outputs retain the existing write-once publication contract.
 
@@ -30,6 +31,16 @@ against hostile ancestor-directory replacement. Offline synthetic tests cover
 oversized sparse files, directories, symlinks, FIFOs, private duplicate keys,
 and no-output-on-failure behavior. This corrects a code safety defect, not
 scientific sample validation.
+
+**2026-10-15 maintainer-review correction (supersedes the bespoke reader
+described above).** The module-local `_read` duplicated the repository's
+shared bounded reader. It now delegates to
+`data_integrity.load_research_json_file`, the house pattern also used by
+`package_review`, `literature_ledger` and other strict CLIs, and maps its
+fixed diagnostics to `RegistryFrameError` without echoing paths or keys. The
+oversized/symlink/FIFO/directory/duplicate-key/no-output regressions are kept
+unchanged and still pass. On platforms without `O_NOFOLLOW`, the shared
+reader's pre-open symlink check applies instead of failing closed.
 
 Run the offline regression checks with:
 
@@ -55,9 +66,25 @@ This checks consistency of submitted artifacts, not source authenticity: an
 invented source manifest/plan cannot become independently verified evidence by
 passing the comparison.
 
+`audit-pairs` likewise requires `--manifest` and `--plan`. A packet's
+`packet_sha256` is computed by whoever wrote the packet, so before counting any
+review the audit re-derives `select_registry(manifest, plan)` and requires the
+packet's `selection_plan_sha256` and `selection_source_sha256` to equal the
+fresh selection's hashes and every pair's `package_id` to be a selected lead.
+An off-frame package or a re-bound plan/source hash can no longer be counted
+by recomputing the packet fingerprint.
+
+The manifest reader also recomputes each segment's Git tree-object SHA-1 from
+its entries (mode `100644`, name, blob SHA, byte-sorted names) and requires it
+to equal the declared `directory_tree_sha`. Dropping, adding, renaming or
+re-hashing an entry while adjusting `declared_count` therefore fails. This
+binds the listing to a content address; it does not prove that the upstream
+repository actually served that tree.
+
 This is a compatibility correction to a new, unmerged pilot interface with no
 existing repository consumers. Python callers must supply the original inputs
-as `prepare_pair_packet(selection, tasks, nominations, manifest, plan)`.
+as `prepare_pair_packet(selection, tasks, nominations, manifest, plan)` and
+`audit_pair_reviews(packet, review_a, review_b, manifest, plan)`.
 Existing selection/result output fields are preserved. For example:
 
 ```bash

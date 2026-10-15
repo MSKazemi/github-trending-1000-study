@@ -9,12 +9,9 @@ import argparse
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
-import os
-from pathlib import Path
 import re
-import stat
 
-from .data_integrity import MAX_FILE_BYTES, decode_research_json
+from .data_integrity import ResearchJSONError, load_research_json_file
 from .safe_io import publish_json
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
@@ -70,6 +67,27 @@ def _sha(value, pattern, label):
     return value
 
 
+def _git_tree_sha(rows):
+    """Git tree-object SHA-1 of an all-blob (mode 100644) directory listing.
+
+    Recomputing it offline binds every listed name and blob SHA, and the
+    absence of unlisted entries, to the declared ``directory_tree_sha``. It
+    checks internal consistency with that content address only; it does not
+    prove the tree was actually served by the named upstream repository.
+    """
+    body = b"".join(
+        b"100644 " + row["package_name"].encode("ascii") + b"\0" +
+        bytes.fromhex(row["blob_sha"])
+        for row in sorted(rows, key=lambda row: row["package_name"].encode("ascii")))
+    return hashlib.sha1(b"tree %d\0" % len(body) + body).hexdigest()
+
+
+def _hashable_text(value, label):
+    if not isinstance(value, str):
+        raise RegistryFrameError(f"{label}: string required")
+    return value
+
+
 def _source(manifest):
     _keys(manifest, {"schema_version", "dataset_kind", "registry",
                      "index_commit_sha", "observed_at_utc", "segments"}, "manifest")
@@ -89,10 +107,11 @@ def _source(manifest):
     for segment in segments:
         _keys(segment, {"segment_id", "index_path", "directory_tree_sha",
                         "source_url", "declared_count", "entries"}, "segment")
-        sid, path = segment["segment_id"], segment["index_path"]
+        sid = _hashable_text(segment["segment_id"], "segment_id")
+        path = segment["index_path"]
         if sid not in allowed_segments or allowed_segments[sid] != path or sid in buckets:
             raise RegistryFrameError("unsupported, duplicate or mismatched index directory")
-        _sha(segment["directory_tree_sha"], HEX40, "directory tree")
+        tree_sha = _sha(segment["directory_tree_sha"], HEX40, "directory tree")
         expected_url = (f"https://api.github.com/repos/{INDEX}/contents/"
                         f"{path}?ref={commit}")
         if segment["source_url"] != expected_url:
@@ -115,6 +134,8 @@ def _source(manifest):
                 raise RegistryFrameError("duplicate crate name")
             actual.add(name)
             all_names.add(name)
+        if _git_tree_sha(rows) != tree_sha:
+            raise RegistryFrameError("directory entries do not reproduce declared tree SHA")
         buckets[sid] = rows
     if set(buckets) != set(allowed_segments):
         raise RegistryFrameError("both prespecified directory slices required")
@@ -230,8 +251,8 @@ def prepare_pair_packet(selection, tasks, nominations, manifest, plan):
                   "release_evidence_ref", "repository_id", "identity_evidence_ref"},
               "nomination")
         pid = _string(n["pair_id"], "pair_id")
-        tid = n["task_id"]
-        pkg = n["package_id"]
+        tid = _hashable_text(n["task_id"], "task_id")
+        pkg = _hashable_text(n["package_id"], "package_id")
         if (IDENT.fullmatch(pid) is None or pid in seen or tid not in task_map or
                 pkg not in allowed or (tid, pkg) in seen_combination):
             raise RegistryFrameError("duplicate or out-of-frame task/component nomination")
@@ -282,11 +303,11 @@ def _review(packet, report, slot):
     found = {}
     for item in report["decisions"]:
         _keys(item, set(GATES) | {"pair_id", "evidence_ref", "test_evidence_ref"}, "review decision")
-        pid = item["pair_id"]
+        pid = _hashable_text(item["pair_id"], "pair_id")
         if pid not in expected or pid in found:
             raise RegistryFrameError("unrecognized/duplicate review pair")
         for field, values in GATES.items():
-            if item[field] not in values:
+            if not isinstance(item[field], str) or item[field] not in values:
                 raise RegistryFrameError(f"invalid {field} judgment")
         for field in ("evidence_ref", "test_evidence_ref"):
             if item[field] is not None:
@@ -298,8 +319,14 @@ def _review(packet, report, slot):
     return ref, found
 
 
-def audit_pair_reviews(packet, review_a, review_b):
-    """Summarize *submitted* reviews, NEVER authenticate real humans."""
+def audit_pair_reviews(packet, review_a, review_b, manifest, plan):
+    """Summarize *submitted* reviews, NEVER authenticate real humans.
+
+    The packet fingerprint is self-computed, so the packet is re-bound to the
+    original manifest and plan: its selection hashes must equal a fresh
+    ``select_registry(manifest, plan)`` and every pair must name a selected
+    lead. This checks artifact consistency, not source authenticity.
+    """
     _keys(packet, {"schema_version", "dataset_kind", "selection_plan_sha256",
                    "selection_source_sha256", "independent_task_claims_unverified",
                    "nominated_pair_count", "tasks", "pairs", "packet_sha256"}, "packet")
@@ -349,6 +376,12 @@ def audit_pair_reviews(packet, review_a, review_b):
             packet.get("packet_sha256") != _digest({
                 k: v for k, v in packet.items() if k != "packet_sha256"})):
         raise RegistryFrameError("invalid or changed pair packet fingerprint")
+    frame = select_registry(manifest, plan)
+    in_frame = {row["package_id"] for row in frame["selected"]}
+    if (packet["selection_plan_sha256"] != frame["selection_plan_sha256"] or
+            packet["selection_source_sha256"] != frame["source_manifest_sha256"] or
+            any(pair["package_id"] not in in_frame for pair in packet["pairs"])):
+        raise RegistryFrameError("pair packet does not match original manifest and plan")
     a_ref, a = _review(packet, review_a, "A")
     b_ref, b = _review(packet, review_b, "B")
     if a_ref.casefold() == b_ref.casefold():
@@ -404,32 +437,19 @@ def audit_pair_reviews(packet, review_a, review_b):
 
 
 def _read(path):
-    """Read a bounded regular JSON file without following a leaf symlink.
+    """Read one CLI input with the shared bounded strict research JSON reader.
 
-    Check the opened descriptor, not a path stat performed before opening it.
-    Nonblocking open rejects FIFOs promptly and the length-bounded read also
-    rejects growth after fstat. This is not an ancestor-path sandbox.
+    ``load_research_json_file`` refuses leaf symlinks, FIFOs/special files and
+    oversized or grown inputs, and its diagnostics never echo paths or keys.
     """
-    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_NONBLOCK"):
-        raise RegistryFrameError("secure nonfollowing registry input unsupported on this platform")
     try:
-        with os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK), "rb") as stream:
-            metadata = os.fstat(stream.fileno())
-            if not stat.S_ISREG(metadata.st_mode):
-                raise RegistryFrameError("registry input must be an ordinary regular file")
-            if metadata.st_size > MAX_FILE_BYTES:
-                raise RegistryFrameError("registry input exceeds research JSON byte limit")
-            raw = stream.read(MAX_FILE_BYTES + 1)
-    except OSError:
-        # Paths and OS errors may reveal local/private filesystem structure.
-        raise RegistryFrameError("registry input could not be opened safely") from None
-    if len(raw) > MAX_FILE_BYTES:
-        raise RegistryFrameError("registry input exceeds research JSON byte limit")
-    try:
-        return decode_research_json(raw, "registry input")
-    except (ValueError, RecursionError):
-        # Shared decoder errors may include private duplicate object key text.
-        raise RegistryFrameError("registry input must be unambiguous strict UTF-8 JSON") from None
+        return load_research_json_file(path)
+    except ResearchJSONError as exc:
+        if str(exc) == "invalid or ambiguous JSON input":
+            raise RegistryFrameError(
+                "registry input must be unambiguous strict UTF-8 JSON") from None
+        # Remaining shared-reader messages are fixed and contain no path.
+        raise RegistryFrameError(f"registry {exc}") from None
 
 
 def main(argv=None):
@@ -450,6 +470,8 @@ def main(argv=None):
     a.add_argument("--packet", required=True)
     a.add_argument("--review-a", required=True)
     a.add_argument("--review-b", required=True)
+    a.add_argument("--manifest", required=True)
+    a.add_argument("--plan", required=True)
     a.add_argument("--output", required=True)
     args = parser.parse_args(argv)
     try:
@@ -461,7 +483,8 @@ def main(argv=None):
                                          _read(args.manifest), _read(args.plan))
         else:
             result = audit_pair_reviews(_read(args.packet),
-                                        _read(args.review_a), _read(args.review_b))
+                                        _read(args.review_a), _read(args.review_b),
+                                        _read(args.manifest), _read(args.plan))
         publish_json(args.output, result)
     except (OSError, ValueError, TypeError, KeyError) as exc:
         parser.error(str(exc))
