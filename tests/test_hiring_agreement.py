@@ -159,6 +159,45 @@ class HiringAgreementTests(unittest.TestCase):
             alias=Path(tmp)/"alias.json";alias.symlink_to(path)
             with self.assertRaises(ValueError):h.load_json(alias)
 
+    def test_inputs_reuse_shared_bounded_reader(self):
+        # House pattern: no hiring-specific copy of the bounded regular-file
+        # reader; JSON and source CSV bytes go through data_integrity.
+        from unittest import mock
+        from trending_study import data_integrity
+        self.assertFalse(hasattr(h, "_read_bytes"))
+        self.assertIs(h.read_research_input_bytes, data_integrity.read_research_input_bytes)
+        seen = []
+        real = data_integrity.read_research_input_bytes
+        def spy(path, max_bytes=data_integrity.MAX_FILE_BYTES):
+            seen.append(max_bytes)
+            return real(path, max_bytes)
+        with mock.patch.object(data_integrity, "read_research_input_bytes", spy):
+            value, digest = h.load_document(FRAME)
+        self.assertEqual(seen, [h.MAX_BYTES])
+        self.assertEqual(value, self.frame)
+        self.assertEqual(digest, hashlib.sha256(FRAME.read_bytes()).hexdigest())
+        value, digest = data_integrity.load_research_json_file(FRAME, with_sha256=True)
+        self.assertEqual((value, digest), (self.frame, hashlib.sha256(FRAME.read_bytes()).hexdigest()))
+        self.assertEqual(data_integrity.load_research_json_file(FRAME), self.frame)
+
+    def test_zero_overlap_and_single_item_are_missing_not_agreement(self):
+        # Disjoint A/B submissions: no jointly rated item, no dispute, no kappa.
+        a = copy.deepcopy(self.a); b = copy.deepcopy(self.b)
+        a["ratings"] = [r for r in a["ratings"] if r["item_id"] in ("S01", "S02", "S03", "S04")]
+        b["ratings"] = [r for r in b["ratings"] if r["item_id"] not in ("S01", "S02", "S03", "S04")]
+        result = self.analyze(a=a, b=b)
+        self.assertEqual(result["disagreements"], [])
+        self.assertEqual(result["review_submission"]["paired_selected_n"], 0)
+        self.assertEqual(result["adjudication"]["status"], "incomplete_reviews")
+        for stats in list(result["per_theme"].values()) + [result["primary_task"]]:
+            self.assertEqual(stats["n"], 0)
+            self.assertIsNone(stats["observed_agreement"])
+            self.assertIsNone(stats["cohens_kappa"])
+            self.assertEqual(stats["reason"], "no jointly rated items")
+            self.assertEqual(stats["selected_n"], 9)
+            self.assertEqual(stats["excluded_n"], 9)
+            self.assertEqual(stats["rater_a_exclusions"]["missing"] + stats["rater_b_exclusions"]["missing"], 9)
+
     def test_cli_write_once_and_collisions(self):
         with tempfile.TemporaryDirectory() as tmp:
             out=Path(tmp)/"report.json"

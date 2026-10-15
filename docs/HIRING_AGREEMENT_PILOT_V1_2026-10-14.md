@@ -77,7 +77,7 @@ Outputs use the existing atomic write-once storage and reject existing destinati
 
 `synthetic` inputs must set `human_attested=false`; `self_reported` inputs must set it true. That field is an **assertion**, not identity/consent authentication. A/B pseudonyms must differ even ignoring case. Blank packets contain null timestamps/references and are rejected until completed; do not fill these from fictional reviewers and call them human data.
 
-**Adjudication contract:** exact fields are `schema_version`, `sample_id`, `frame_sha256`, `review_a_sha256`, `review_b_sha256`, `dataset_kind`, `adjudicator_id`, `adjudicated_at_utc`, `predictions_unseen_attested=true`, and `decisions`. Each decision contains `item_id`, `code` (a theme or `primary_task`), `decision`, and opaque `evidence_ref`. The third pseudonym must differ from A/B; adjudication must occur strictly after both submissions. Only unique actual A/B disagreements qualify, including abstention disagreements. Resolved primary codes require a corresponding agreed/adjudicated present theme. Abstentions and unsubmitted disputes remain pending. Original disagreement records and all pre-adjudication statistics remain unchanged. No file field establishes a real independent third person or blinded review.
+**Adjudication contract:** exact fields are `schema_version`, `sample_id`, `frame_sha256`, `review_a_sha256`, `review_b_sha256`, `dataset_kind`, `adjudicator_id`, `adjudicated_at_utc`, `predictions_unseen_attested=true`, and `decisions`. Each decision contains `item_id`, `code` (a theme or `primary_task`), `decision`, and opaque `evidence_ref`. The third pseudonym must differ from A/B; adjudication must occur strictly after both submissions. Only unique actual A/B disagreements qualify, including abstention disagreements. Resolved primary codes require a corresponding agreed/adjudicated present theme. Abstentions and unsubmitted disputes remain pending. Original disagreement records and all pre-adjudication statistics remain unchanged. No file field establishes a real independent third person or blinded review. Likewise, **a matching pair of generated or copied A/B annotations may pass every documentary check but is not independent human verification**; distinct pseudonyms do not authenticate distinct people (see [independent page-audit wording](INDEPENDENT_PAGE_AUDIT_2026_10_12.md)).
 
 **Synthetic CLI demonstration only:** the committed [A](../tests/fixtures/hiring_agreement/coder_a.synthetic.json), [B](../tests/fixtures/hiring_agreement/coder_b.synthetic.json), and [C](../tests/fixtures/hiring_agreement/adjudication.synthetic.json) files contain **fictional votes and evidence references on candidate aliases**, not observations of job descriptions or real reviewers:
 
@@ -158,3 +158,22 @@ full original denominator remain independently visible for all three states.
 The initial CI failure on head `e99aa645a74586357435f2c65e6ae20c717526b3`
 was a backwards-compatibility contract mismatch, not a passed check; the
 adjusted head must pass all four Python suites and the artifact job.
+
+
+## 2026-10-15 maintainer review: shared reader reuse
+
+The hiring CLI no longer carries its own bounded file reader. JSON inputs use
+`trending_study.data_integrity.load_research_json_file(..., with_sha256=True)`
+(the same strict reader as the energy, lifecycle, literature and package-review
+CLIs), and the two source-ledger CSVs use the shared
+`read_research_input_bytes`. Both refuse leaf symlinks, FIFOs/directories and
+oversized files (1 MiB limit here) with fixed messages that never echo paths or
+keys; invalid JSON now reports the house message `invalid or ambiguous JSON
+input`. Like the shared reader, this is not an ancestor-directory sandbox. The
+raw-input SHA-256 values are computed from the exact bytes decoded (no second
+read). Statistics were hand-recomputed with exact fractions on the synthetic
+fixtures (agent_runtime and primary-task kappa 1/3; other themes undefined
+because chance agreement is one), and a zero-overlap regression confirms
+disjoint A/B submissions yield `n=0`, null kappa and `incomplete_reviews`,
+never agreement. This is an AI-assisted maintainer review, not independent
+human approval.

@@ -1,7 +1,9 @@
-"""Independent fictional CLI acceptance for ISSUE-223-HIRING-AGREEMENT-OFFLINE-V1.
+"""Black-box fictional CLI acceptance for ISSUE-223-HIRING-AGREEMENT-OFFLINE-V1.
 
-Requirements frozen before candidate implementation inspection. These tests neither
-authenticate reviewers nor supply real research observations or source permission.
+Written as a separate CLI-level suite; its authorship independence from the
+implementation is self-reported and NOT verified, so it is not independent
+acceptance. These tests neither authenticate reviewers nor supply real research
+observations or source permission.
 """
 import copy
 import hashlib
@@ -406,7 +408,7 @@ class HiringAgreementIndependentAcceptance(unittest.TestCase):
         path = self.dir / (private_name + ".json")
         path.write_text('{"' + private_name + '":1,"' + private_name + '":2}', encoding="utf-8")
         bad = self.cli("verify-frame", "--frame", path, success=False)
-        self.assertIn("strict UTF-8 JSON", bad.stderr)
+        self.assertIn("invalid or ambiguous JSON input", bad.stderr)
         self.assertNotIn(private_name, bad.stderr)
         self.assertNotIn(str(path), bad.stderr)
         self.assertNotIn("Traceback", bad.stderr)

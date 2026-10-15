@@ -1,7 +1,7 @@
 """Offline agreement for supplied hiring labels; no authenticated human study.
 
-Uses the existing rubric kappa engine, structural validators, strict JSON
-reader and write-once storage. Never fetches sources or grants research rights.
+Uses the existing rubric kappa engine, structural validators, the shared
+bounded strict reader (data_integrity) and write-once storage. Never fetches sources or grants research rights.
 """
 import argparse
 from collections import Counter
@@ -10,13 +10,11 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import io
 import json
-import os
 from pathlib import Path
 import re
-import stat
 
 from .blind_review import _exact, _utc, fingerprint
-from .data_integrity import decode_research_json
+from .data_integrity import load_research_json_file, read_research_input_bytes
 from .rubric_agreement import _agreement
 from .safe_io import ProvenanceWriteError, disjoint, publish_once
 
@@ -55,35 +53,9 @@ def _identifier(value, name):
     return value
 
 
-def _read_bytes(path):
-    """Bounded regular-file read; reject symlinks in every path component."""
-    path = Path(os.path.abspath(path))
-    for parent in (path, *path.parents):
-        if parent.is_symlink():
-            raise HiringError("symlink input paths are not accepted")
-    flags = os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0)
-    try:
-        fd = os.open(path, flags)
-        with os.fdopen(fd, "rb") as stream:
-            if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
-                raise HiringError("regular file required")
-            raw = stream.read(MAX_BYTES + 1)
-    except OSError:
-        # Neither confidential input paths nor platform errors belong in logs.
-        raise HiringError("input must be a readable bounded regular file") from None
-    if len(raw) > MAX_BYTES:
-        raise HiringError("input exceeds 1 MiB")
-    return raw
-
-
 def load_document(path):
-    raw = _read_bytes(path)
-    try:
-        value = decode_research_json(raw, "hiring input")
-    except (ValueError, RecursionError):
-        # The shared decoder can otherwise echo arbitrary duplicate object
-        # keys from confidential coder notes. Keep a fixed, safe CLI error.
-        raise HiringError("invalid or ambiguous strict UTF-8 JSON") from None
+    """Shared bounded strict reader; returns (value, raw-bytes SHA-256)."""
+    value, digest = load_research_json_file(path, MAX_BYTES, with_sha256=True)
     pending = [(value, 0)]
     nodes = 0
     while pending:
@@ -95,7 +67,7 @@ def load_document(path):
             pending.extend((v, depth + 1) for v in item.values())
         elif isinstance(item, list):
             pending.extend((v, depth + 1) for v in item)
-    return value, hashlib.sha256(raw).hexdigest()
+    return value, digest
 
 
 def load_json(path):
@@ -106,7 +78,7 @@ def derive_frame(root):
     """Project source ledgers into candidate identities, never analyst theme votes."""
     sources, items = [], []
     for index, relative in enumerate(SOURCES):
-        raw = _read_bytes(Path(root) / relative)
+        raw = read_research_input_bytes(Path(root) / relative, MAX_BYTES)
         reader = csv.DictReader(io.StringIO(raw.decode("utf-8")))
         rows = list(reader)
         if len(rows) != (18 if index == 0 else 6):
