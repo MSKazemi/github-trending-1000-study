@@ -299,6 +299,10 @@ def evaluate_proxy(data):
         heldout_scores.append({"capture_id": cap["capture_id"],
             "captured_at_utc": cap["captured_at_utc"],
             "n_displayed_repositories": len(cap["repository_ids"]), **score})
+    heldout_macro = sum(x["pairwise_accuracy"] for x in heldout_scores) / len(heldout_scores)
+    # A predictor with constant scores earns 0.5 per pair. This descriptive
+    # negative-control baseline is NOT a calibrated null distribution or a p-value.
+    constant_baseline = 0.5
     return {
         "schema_version": PROXY_VERSION,
         "dataset_kind": data["dataset_kind"],
@@ -315,9 +319,9 @@ def evaluate_proxy(data):
         "selected_predictor_train_only": selected,
         "train_selected_macro_accuracy": candidate_scores[selected],
         "heldout_page_scores": heldout_scores,
-        "heldout_macro_pairwise_accuracy": (
-            sum(x["pairwise_accuracy"] for x in heldout_scores) / len(heldout_scores)
-        ),
+        "heldout_macro_pairwise_accuracy": heldout_macro,
+        "constant_predictor_baseline_accuracy": constant_baseline,
+        "heldout_excess_over_constant_baseline": heldout_macro - constant_baseline,
         "holdout_frozen_by_external_review": False,
         "selection_universe_known": False,
         "independent_verification": False,
@@ -325,7 +329,7 @@ def evaluate_proxy(data):
         "interpretation": (
             "Chronological, page-conditioned single-feature prediction of "
             "relative order among ALREADY DISPLAYED repositories, using only "
-            "pre-capture metadata. Fixed candidate predictors are selected "
+            "pre-capture metadata. Constant-score 0.5 reference is descriptive, not a significance test. Fixed candidate predictors are selected "
             "only on pre-lock pages; page-macro pairwise accuracy and tied "
             "feature pairs are descriptive. No future stars, inclusion "
             "prediction, inferred algorithm weights or causal effect. "
