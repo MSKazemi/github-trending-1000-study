@@ -34,7 +34,9 @@ def _unique_fields(pairs):
     out = {}
     for key, value in pairs:
         if key in out:
-            raise IntegrityError(f"duplicate JSON object key {key!r}")
+            # JSON keys are caller-controlled and may contain secrets or PII.
+            # Show only a stable error class in CI diagnostics.
+            raise IntegrityError("duplicate JSON object key")
         out[key] = value
     return out
 
