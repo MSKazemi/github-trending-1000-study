@@ -70,7 +70,7 @@
   - Added: GLM 5/5.1 and Kimi K2.6 (dedicated); StepFun 3.5/3.7 Flash (dedicated); Gemma 4 31B (preview, later pulled from the shared tier); Qwen 3.8 27B (public).
   - **Retired in window:** llama3.1-8b, qwen-3-235b-a22b-instruct-2507, zai-glm-4.7, and Gemma 4 31B from the shared tier.
 - **SDK/OSS (E2):**
-  - SDK 1.91.0 on PyPI and npm (Apache-2.0). GitHub tag 1.79.0 has no PyPI files, and the SDK CHANGELOG links to a **private** upstream repository, so the public repo is a mirror.
+  - SDK 1.91.0 on PyPI and npm (Apache-2.0). The GitHub repo has no git tags; a pre-window `release: 1.79.0` commit (2026-04-09) has no PyPI files, and the SDK CHANGELOG links to a **private** upstream repository, so the public repo is a mirror.
   - VS Code extension maintenance (MIT). New Dataiku plugin repository (Apache-2.0).
   - No security advisory for the SDKs was found. That is a search limit, not an audit.
 - **Hardware and roadmap (E1, vendor claims):** CS-4/WSE-3T; CS-5 targeted for 2027; CS-6 with 3D-stacked DRAM. **No independent benchmark** of CS-4 was found.
@@ -174,3 +174,38 @@ If speed does not reduce maintainer minutes per accepted task, keep the simpler 
 - **Raw-text confirmation:** every number in the ledger was matched against raw page text (curl/urllib HTML, docs Markdown, GitHub/PyPI/npm JSON, status RSS). The exceptions are the two SEC dates (Jun 23, Aug 12), which were read only via WebFetch summaries, and the Jul 9 RAISE event date, which comes from secondary reports.
 - **Candidate #56 items (unminted, pending human verification):** DCD 2026-06-25 (independent contrary reporting); The Next Web 2026-08-14 (independent, non-duplicative of the vendor post); DCD 2026-09-02 (independent construction report).
 - **Reviewer links and audit date:** none yet; first pass dated 2026-10-16. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+This is an AI-assisted spot-check by a second agent, not a qualified human review. Each cited URL was re-fetched on 2026-10-16 with a generic user agent, and the date and figures were matched against raw page text (HTML converted to text and searched), or against the GitHub API, the PyPI JSON API and the npm registry JSON. sec.gov/EDGAR was not contacted. All 45 rows were checked: **40 confirmed, 4 corrected, 1 unverifiable, 0 wrong.**
+
+| Rows checked | Outcome | Note |
+|---|---|---|
+| 001 | confirmed | Apr 15 2026 display date; five-year syndicated revolver "for up to $850 million". |
+| 002 | confirmed | Dateline "April 17, 2026"; Class A; Nasdaq Global Select; "CBRS"; share count and price range "not yet been determined". The DCD Apr 18 date it is contrasted with could not be rechecked (DCD returned HTTP 403). |
+| 008 | confirmed | 28,000,000 shares plus a 30-day option for 4,200,000; "$115.00 to $125.00"; BUSINESS WIRE dateline carries no date and the page shows May 04 2026. |
+| 010 | confirmed | 30,000,000 shares at $185.00; option for 4,500,000; trading expected May 14, 2026 and closing on May 15, 2026. |
+| 011 | confirmed | 34,500,000 shares including the full option; about $6.38 billion gross; trading began May 14, 2026; the release text does say "declared effective ... on May 13, 2025". |
+| 016, 028 | confirmed (figures) | StorageNewsletter raw text matches every figure: Q1 $193.4M / $191.3M (+92%) / $79.8M (+167%) / net loss $14.0M / 750 MW / >$20B; Q2 $180.1M (+74%) / $209.9M (+103%) / $126.0M (+281%) / RPO $25.4B / $880-890M / "more than triple revenue in 2027" / >600 MW. The SEC datelines (Jun 23, Aug 12) remain unverified because EDGAR was not contacted. |
+| 017 | unverifiable | DCD returned HTTP 403 to curl and to WebFetch. The ~20% fall, 38-41% guidance, "at a premium", rent-back and Apr 18 / May 15 dates are not rechecked. |
+| 003-006, 014, 018, 023, 024, 026, 036, 038 | confirmed | Change-log entries match the dates and wording (prompt_cache_key; 422→400 with UnprocessableEntityError→BadRequestError; GLM 5/5.1/Kimi K2.6 dedicated; Projects GA; StepFun 3.5/3.7 Flash; Gemma 4 31B image preview; $5 / 30-day credits and dual-bucket limits fully in effect Aug 17; API v2 default on Jul 22; Predicted Outputs by request; Flowise legacy with support ending Aug 31; Qwen 3.8 27B with reasoning defaulting to high). |
+| 013, 031, 039 | confirmed | The deprecations page lists 2026-05-27 (llama3.1-8b, qwen-3-235b-a22b-instruct-2507 → GPT OSS 120B), 2026-08-17 (zai-glm-4.7) and 2026-09-03. The "public endpoints" (change log) vs "Shared Inference" (deprecations page) terminology conflict is real. |
+| 045 | corrected | The change log says only that docs were updated "to match the current service-tier behavior". The ledger's "earlier docs implied different semantics" is an inference and has been reworded. |
+| 007 | corrected | The page footnote does disclose the method: the ~5x is Cognition-provided output speed for its GPU "Free" tier (~200 TPS) vs its Cerebras "Fast" tier (~950 TPS). It is a throughput ratio between tiers, not task time. The limitation "method not published" was wrong. |
+| 009, 020 | confirmed | Multi-LoRA: private preview, dedicated endpoints, "no additional cost", HF PEFT format, May 06 2026. Upstage: Jul 10 2026, "explore", Solar 31B "up to 2,000 tokens per second". |
+| 012, 015 | confirmed | 981 tok/s, 6.7x and enterprise trials (May 19); 981 vs 181 tok/s with a 10,000-token input (Jun 05). The Artificial Analysis providers HTML mentions Cerebras only in a slug/logo list, which is consistent with the ledger. |
+| 019 | confirmed | Dateline July 9, 2026; Milpitas; "approximately 7x through 2026" for CS-3. |
+| 021, 037 | confirmed (figures) | StorageNewsletter text matches 200 MW by end-2027, France and the Nordics, first capacity by end-2026, and part of it for OpenAI; 165 MW phased from 50 MW, seven-year service orders, closed-loop cooling and waste-heat recovery "designed", and EUR 1.0-1.7B from the Ramboll study. The event dates (Jul 9, Sep 1) are not in the reproductions and remain unconfirmed. |
+| 022 | corrected | PyPI 1.91.0 was uploaded 2026-07-16T17:07Z and npm 1.91.0 on 2026-07-16T20:54Z; the `release: 1.91.0` commit is dated 2026-07-08; Apache-2.0. **The repo has zero git tags**, so the "GitHub tag 1.79.0" was wrong: it is a `release: 1.79.0` commit dated 2026-04-09 with no PyPI files. The CHANGELOG does link `cerebras-cloud-sdk-python-private`, which returns 404 publicly. Fixed in the CSV and §4. |
+| 025 | corrected | Footnote [i] was reviewed. The "up to 5x" T/s/W comes from *modelling* by AMD Performance Labs and Cerebras (July 2026) on Kimi 2.6 1T, comparing Helios+WSE against a **WSE-only** configuration. It is not a measurement and not a comparison against GPUs. H2 2026 availability confirmed. |
+| 027, 033, 042, 043 | confirmed | Lovable: "selected latency-sensitive workloads on dedicated Cerebras capacity", 50M projects, and the duplicate URL serves the same release (Aug 05 2026). Callosum: the finviz reproduction (Aug 20, 2026, GLOBE NEWSWIRE) has "available through Callosum APIs". Gimlet: Sept. 28, 2026, "up to 3,000 tokens per second", "later this year", CS-4 launch partner. General Compute: Sept. 29, 2026, first use case agentic coding, "starting Q1 2027". |
+| 029, 030, 035 | confirmed | The Cerebras blog (Aug 13) has 750 tok/s, the select-customer limited preview and HLE 2,500 questions in 11h11m vs 78h27m (Jul 10 vs Jul 13-15 runs). The "14x" appears in the OpenAI community post (Aug 13), not in the Cerebras blog. TNW (Aug 14) reports a preview opened 13 August and that OpenAI "has not published pricing". The Aug 27 explainer states it is "not ... distilled, or quantized" and runs on WSE-3. |
+| 032, 034 | confirmed | CS-4: dateline Aug. 18, 2026 while the page shows Aug 19; three WSE-3T; up to twice CS-3 speed; up to 10x throughput/W; >4,400 TPS/user on GPT-OSS-120B; 750 PFLOPs; RoCE v2; Direct Wafer Links; "First CS-4 shipments begin this quarter". Hot Chips (Aug 25): CS-5 "targeted for 2027" at 10,000 / 5,000 tok/s/user; CS-6 with 3D-stacked DRAM; "double token-generation speed year over year". |
+| 040, 044 | confirmed | The GitHub API shows Sep 14 merges of release-v0.1.21, the internal-model-option filter and the Qwen 3.8 speed docs (MIT). The Dataiku repo was created 2026-10-05T19:17Z (Apache-2.0); the internal sync commit is dated Oct 9 and the merge Oct 12. |
+| 041 | confirmed (detail added) | Status page: 10:54 UTC onset (first post 12:16 UTC), monitoring at 13:41, resolved at 17:14. The ledger now also names GPT-OSS-120B and Qwen-3.8-27b as the affected components shown on the page. |
+
+**In-window leads seen during the check but not ledgered or verified:**
+- Change-log entries for 2026-07-14 (Gemma 4 31B in coding integrations), 2026-07-23 (image limit raised to 10), 2026-07-26 (15,000 px per-side image limit returning 413) and 2026-09-22 (temporary Qwen 3.8 27B total-TPM increase).
+- A related-topic title on the OpenAI community page, "Ultrafast is rolling out today for GPT-6.1 Sol in the API, Codex, and ChatGPT Work", dated October 9, 2026. Only the title was seen.
+
+The §9 raw-text-confirmation statement did not hold for the SDK "tag 1.79.0" claim (022). The limitations of 007 and 025 said that footnote or method text was unavailable or unreviewed, but that text is on the cited pages.
