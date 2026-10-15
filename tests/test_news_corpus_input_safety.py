@@ -35,9 +35,25 @@ class NewsInputSafetyTests(unittest.TestCase):
             return real_open(path, flags, *args, **kwargs)
 
         with patch("trending_study.news_corpus.os.open", side_effect=replace_file):
-            with self.assertRaises(OSError):
+            with self.assertRaises(ValueError) as raised:
                 news_corpus.validate_directory(self.root)
+        self.assertNotIsInstance(raised.exception, OSError)
+        self.assertNotIn(str(self.root), str(raised.exception))
+        self.assertNotIn(self.path.name, str(raised.exception))
         self.assertEqual(target.read_bytes(), FIXTURE.read_bytes())
+        # The CLI must not echo the OS error's full private input path either.
+        self.path.unlink()
+        self.path.write_bytes(FIXTURE.read_bytes())
+        error = io.StringIO()
+        with patch("trending_study.news_corpus.os.open", side_effect=replace_file), \
+                redirect_stderr(error), self.assertRaises(SystemExit) as exc:
+            news_corpus.main(["--directory", str(self.root)])
+        self.assertEqual(exc.exception.code, 2)
+        self.assertIn("ordinary non-symlink", error.getvalue())
+        self.assertNotIn(str(self.root), error.getvalue())
+        self.assertNotIn(str(self.path), error.getvalue())
+        self.assertNotIn("Errno", error.getvalue())
+        self.assertNotIn("Traceback", error.getvalue())
 
     @unittest.skipUnless(hasattr(os, "mkfifo"), "FIFO support required")
     def test_fifo_swap_is_rejected_without_a_writer(self):

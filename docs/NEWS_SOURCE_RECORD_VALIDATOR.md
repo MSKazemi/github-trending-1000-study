@@ -56,3 +56,12 @@ private-looking marker. Error redaction does not itself make publicly committed
 records or arbitrary OS-level diagnostics private; pre-publication review is
 still required. The one-thousand-item corpus and human source assessment remain
 unfinished.
+
+**Follow-up (2026-10-15):** OS-level failures while opening, inspecting or
+reading one record (for example a leaf symlink swapped in after the preliminary
+`is_symlink()` check, which `O_NOFOLLOW` refuses with `ELOOP`) are now reported
+as the fixed `ValueError` "news input must be a readable ordinary non-symlink
+file" instead of an `OSError` whose text embeds the full private input path.
+The module keeps its own bounded reader rather than the shared
+`data_integrity.load_research_json_file`, because the directory-wide total
+byte cap needs the bytes actually read from each record.

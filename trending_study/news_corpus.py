@@ -153,9 +153,14 @@ def validate_records(records):
 
 def _read_record(path):
     """Bound actual bytes from one opened regular file, not an earlier stat."""
+    # A local reader (not data_integrity.load_research_json_file) is kept
+    # because the directory-wide total cap needs the actual bytes read.
+    # OSError text embeds the full input path, so it is replaced by a fixed
+    # diagnostic (e.g. a leaf symlink swapped in after the is_symlink check).
     flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
-    descriptor = os.open(path, flags)
+    descriptor = None
     try:
+        descriptor = os.open(path, flags)
         metadata = os.fstat(descriptor)
         if not stat.S_ISREG(metadata.st_mode):
             raise ValueError(f"{path.name}: expected an ordinary JSON file")
@@ -168,6 +173,8 @@ def _read_record(path):
         if len(raw) > MAX_FILE_BYTES:
             raise ValueError(f"{path.name}: news input exceeds file-size limit")
         return raw
+    except OSError:
+        raise ValueError("news input must be a readable ordinary non-symlink file") from None
     finally:
         if descriptor is not None:
             os.close(descriptor)
