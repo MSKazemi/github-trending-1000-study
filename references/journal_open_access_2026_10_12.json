@@ -3,6 +3,14 @@
   "snapshot_date": "2026-10-15",
   "original_shortlist_vintage": "2026-10-12",
   "scope": "targeted_non_systematic_journal_shortlist_not_empirical_results",
+  "register_status": "provisional_unreviewed_source_leads",
+  "pending_review_gates": [
+    "public_pdf_access_and_checksum",
+    "publisher_vs_author_manuscript_version_check",
+    "license_and_reuse_rights_review",
+    "full_text_method_extraction",
+    "independent_qualified_human_signoff"
+  ],
   "publication_dates_are_online_not_necessarily_volume_year": true,
   "editorial_source_review": "publisher_landing_only",
   "independent_human_review_completed": false,

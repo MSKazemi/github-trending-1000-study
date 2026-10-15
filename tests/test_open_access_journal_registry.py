@@ -3,13 +3,12 @@
 Passing this test does not authenticate publications, reviewers, PDF bytes or
 scientific findings. Those require separate source/access/method assessment.
 """
-import json
-from trending_study.data_integrity import (ResearchJSONError, decode_research_json,
-                                          load_research_json_file)
 from pathlib import Path
-import re
 import unittest
 from urllib.parse import urlsplit
+
+from trending_study.data_integrity import (ResearchJSONError, decode_research_json,
+                                          load_research_json_file)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,6 +78,9 @@ class JournalShortlistContractTests(unittest.TestCase):
         self.assertEqual(data["scope"], "targeted_non_systematic_journal_shortlist_not_empirical_results")
         self.assertFalse(data["independent_human_review_completed"])
         self.assertFalse(data["pdf_content_or_checksum_verified"])
+        self.assertEqual(data["register_status"], "provisional_unreviewed_source_leads")
+        self.assertEqual(len(data["pending_review_gates"]), 5)
+        self.assertIn("independent_qualified_human_signoff", data["pending_review_gates"])
         for row in data["articles"]:
             with self.subTest(id=row["id"]):
                 self.assertTrue(row["article_type"])
@@ -95,6 +97,8 @@ class JournalShortlistContractTests(unittest.TestCase):
         self.assertIn("journal_open_access_2026_10_12.json", reading)
         self.assertIn("journal_open_access_2026_10_12.json", shortlist)
         self.assertIn("independent scientific approval", shortlist)
+        self.assertIn("provisional, unreviewed source leads", shortlist)
+        self.assertIn("Provisional, unreviewed source leads", reading)
 
 
 if __name__ == "__main__":
