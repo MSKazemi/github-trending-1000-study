@@ -2,12 +2,20 @@
 
 **Implemented as an offline engineering control, 2026-10-13.** This is **not** a systematic literature review, an authenticated data capture, an ethics approval, a schema registry or empirical research evidence.
 
-The GitHub Actions Python 3.10/3.12/3.14 matrix runs three steps before treating a pull request as technically verified:
+The GitHub Actions Python 3.10/3.12/3.13/3.14 **test matrix** compiles source, checks every Git-tracked Python and JSON artifact, runs offline tests, and smoke-tests CLI entrypoints. The separate **research-artifacts** job runs both pre-existing JSON/JSONL/CSV validators. Both jobs run on pull requests and pushes to `main`:
 
 ```bash
-python -m compileall -q trending_study tests
-python -m trending_study.data_integrity --root .
+# Each Python matrix job
+python -m compileall -q trending_study scripts tests
+python scripts/check_research_artifacts.py --root . --tracked-code-json
 python -m unittest discover -s tests -v
+python -m trending_study --help
+python -m trending_study.reuse_gate --help
+python -m trending_study.goldset --help
+
+# Separate research-artifacts job (Python 3.12)
+python -m trending_study.data_integrity --root .
+python scripts/check_research_artifacts.py --root .
 ```
 
 The standard-library validator inspects committed `.json`, `.jsonl` and `.csv` research files under `examples/`, `references/`, `research/`, `research-notes/` and `templates/`. It **does not read, rewrite, delete, fetch or enroll** real raw captures. It deterministically fails on duplicate object keys (including deeply nested keys), malformed JSON/CSV or UTF-8, nonstandard JSON `NaN`/`Infinity`, overflowing or underflowing nonzero floating-point literals, extremely long integer tokens, empty JSONL, malformed/duplicate CSV headers, inconsistent CSV row widths, embedded NUL bytes in CSV, symlinked data files/directories and files exceeding 16 MiB. JSONL errors include the actual record line number.
@@ -54,3 +62,46 @@ A later audit of the canonical JSON/JSONL/CSV tool found that recursive discover
 ## Preserved test evidence from legacy nested-symlink branch (2026-10-13)
 
 The older `fix/canonical-nested-symlink-audit-20261013` branch adds useful negative witnesses even though the current validator and its existing tests already reject nested symlinked directories. The integration retains the stronger synthetic duplicate-key JSON witness **outside** a symlinked subtree and tests a symlink to an existing **extensionless file**; both must fail closed without following the link. The older branch commit `7301a0207032dee0175ff27d12e965fd6e8b3b48` is retained as a merge parent, not overwritten. The canonical implementation and its newer CSV/JSON numeric checks remain unchanged. This is offline integrity coverage, not evidence-source authentication or permission to collect data.
+
+
+## 2026-10-14 — Git-tracked Python and JSON coverage (issue #244)
+
+The existing, dependency-free `scripts/check_research_artifacts.py` now has an **additive** option, `--tracked-code-json`. This avoids shipping the competing standalone checker previously proposed by [closed PR #251](https://github.com/MSKazemi/github-trending-1000-study/pull/251). Its useful negative-test cases informed this integration.
+
+```bash
+python scripts/check_research_artifacts.py --root . --tracked-code-json
+python -m unittest discover -s tests -p 'test_tracked_code_json_gate.py' -v
+python -m unittest discover -s tests -v
+```
+
+The checker obtains a NUL-delimited, staged-mode-aware inventory from **`git ls-files --stage --cached --full-name -z`**, requires the supplied root to be the Git top-level, then checks every indexed `.py` or `.json` regardless of location (including hidden and unimported paths). It rejects symlink Git modes, missing checkout files, symlinked ancestor directories, oversized files, invalid Python syntax, malformed/non-UTF-8 JSON, duplicate object keys and nonstandard/overflowing/underflowing JSON numerics. Python code is compiled for comprehensive syntax validation **without imports or execution** (including contextual compiler errors such as module-level `return`). JSON is checked for syntax and ambiguity, not arbitrary research-schema fields; valid scalar JSON remains valid. Untracked build output is not represented as committed source, and Git submodule internals are not traversed.
+
+The new check is run before unit tests on **each** CI Python interpreter (3.10, 3.12, 3.13, 3.14). The existing research-directory JSON/JSONL/CSV validations remain intact. Per-file and total-size limits (16 MiB, 128 MiB), a 5,000-file limit and an 8 MiB index-listing cap prevent silently skipping unusually large tracked input. On POSIX systems with `dir_fd`, `O_DIRECTORY` and `O_NOFOLLOW`, the checkout reader opens each ancestor relative to its parent descriptor to reject directory-to-symlink swaps after prechecks. Other platforms retain best-effort pathname checks; neither path is a comprehensive hostile-filesystem sandbox. A Git index is required for the opt-in mode; if it is missing or unreadable, the command fails rather than claiming coverage. This remains a bounded read-only checkout inspection, not a race-hardened filesystem sandbox or verifier of the index blob bytes against external trusted origins.
+
+**Evidence boundary:** Git-tracked coverage and green CI are engineering claims about the particular checkout and interpreter. They do not authenticate source URLs, historical observations, ethics/legal permission, code safety, reviewer independence, approved preregistration or any environmental impact. Repository branch-rule enforcement and independent human merge review remain separate open gates tracked in [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248).
+
+Because every tracked `.py` and `.json` file is checked, deliberately malformed fixtures must be generated at test time (for example in a temporary directory) rather than committed.
+
+**Practical lesson:** put a negative regression in a surprising location (for example `ops/broken.json` or `.hidden/broken.py`) and prove your CI rejects it. A scanner that only knows familiar directories cannot promise full tracked-file coverage.
+
+
+## 2026-10-14 follow-up: staged Git blob divergence
+
+The tracked-code/JSON gate also validates each eligible regular **Git index blob** using `git cat-file`, independently of the checked-out working-tree bytes. This catches an important local pre-commit failure mode: a contributor stages invalid Python/JSON and subsequently repairs only the working copy. Both representations must be parseable; differing but valid contents are allowed. The output `tracked_code_json.index_checked_bytes` counts inspected staged bytes, separately from `checked_bytes`. Blobs and working files each have independent 16 MiB/file and 128 MiB/aggregate bounds; blob type and declared size are checked before reading bytes. No clean/smudge filters or staged source code are executed.
+
+Four offline Git-index tests cover hidden staged duplicate JSON keys, staged module-level Python errors, valid divergent content and oversized staged blobs. CI checks the checkout and index actually supplied by GitHub Actions; this does **not** prove the local staging area, Git host provenance, file signatures, package safety, or trustworthiness of scientific observations. An authorized reviewer must still approve the PR and separately enable repository branch rules (#248).
+
+
+## 2026-10-15 validation-error privacy hardening
+
+The validator now reports **duplicate JSON object key** without copying the
+caller-provided key into a CI failure. Keys in untrusted research files can
+contain accidentally pasted tokens, names or other sensitive material; their
+values are not necessary to locate the offending tracked file. The tracked
+Git-index scanner checks **both** the checked-out file and the staged Git blob.
+Synthetic negative regression checks assert redaction for both paths, and
+a CLI regression checks that a token-shaped duplicate key is absent from
+`--tracked-code-json` failure output. This
+protects one diagnostic class, not arbitrary private information in other
+file names, Python syntax tracebacks or source materials. Treat CI logs as
+public outputs and independently review proposed data before uploading it.
