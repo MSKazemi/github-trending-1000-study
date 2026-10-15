@@ -31,3 +31,7 @@ For each candidate theme create a future evidence pair `(hire_snapshot_utc,relea
 Make code discoverable by search/repository metadata, keep component interfaces and license clear, provide agent-safe sandbox and approval rules, independently executable quickstarts/tests and a repair-cost ledger. If the new scaffolding harms first-task success or raises total cost, roll it back. Prefer contributing verified fixes upstream rather than copying functionality into new repositories.
 
 **Pending:** primary-source release/event ledger, contradictory product evidence audit, independent held-out task trial, and human methodological review.
+
+## 2026-10-15: dated observed job–release source-pair review
+
+The [bounded primary-source and counterevidence screen](reviews/2026-10-15-hiring-release-triangulation-source-pairs.md) adds six candidate themes, dated April–September official events, inaccessible/missing pair controls and falsifiable task experiments. **Jobs first observed in October cannot be retrospective predictors of earlier releases.** No independent user test, authenticated first posting date, actual hire, personnel census, causal forecast or carbon result has been produced. The earlier “pending release/event ledger” note above refers to the historical 2026-10-13 draft; the new pair screen remains exploratory until authentic prospective enrollment and rights/methods approval.

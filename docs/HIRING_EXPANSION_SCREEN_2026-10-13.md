@@ -29,3 +29,7 @@ The recruiting data is **qualitative candidate evidence**, not a time-series: ex
 3. Reconcile openings/locations/aliases, and hand off manual source QA to two reviewers under [codebook](HIRING_CODEBOOK_2026-10-13.md). Only then decide whether the dataset is suitable for a preregistered sampling frame.
 
 **Methodological status:** exploratory, no preregistration, no independent double coding, no verified complete company coverage.
+
+## 2026-10-15 follow-up screen (not full five-company eligibility)
+
+The [new access audit](reviews/2026-10-15-hiring-source-recheck-220-221.md) screened all five target company categories and logged failed direct Google/NVIDIA retrieval, Microsoft/Meta index-only evidence and a readable Mistral employer-branded individual description that says the position is **no longer available** (not evidence of a filled vacancy). Five verified individual official requisitions with authentic access/rights and human QA **remain outstanding**; this is methodological progress, not a source-complete expansion. No first-posted dates were backfilled.

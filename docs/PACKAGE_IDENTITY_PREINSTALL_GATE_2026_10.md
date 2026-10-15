@@ -73,3 +73,65 @@ well-formed and contradictory identity inputs.
 The canonical pre-install evidence gate now validates the entire **structural** HTTPS URL for both declared registry locations and self-reported pass evidence, rather than trusting a parsed hostname while ignoring semicolon parameters, hidden queries, malformed ports, bracket errors or whitespace. In particular, Python's URL parser may discard embedded newlines and separate trailing `;` parameters from the path: these are rejected before identity comparison. Malformed hosts/ports must raise the documented `PackageReviewError` rather than escaping as raw parser exceptions. Genuine clean evidence links continue to pass. The new negative regression tests exercise these bypass cases.
 
 **Validity boundary:** a structurally clean HTTPS link is not authenticated evidence of a working release, correct bytes, provenance, license compatibility, advisory completeness or trusted publisher. The tool continues to **never approve automatic installation**. Any unknown or unsupported registry origin is deferred until independent checks occur. Existing report inputs are not overwritten.
+
+## 2026-10-14 package input integrity
+
+The CLI and `evaluate_file(path)` now use the existing research JSON decoder,
+rejecting duplicate object keys (including contradictory fail/pass gate labels),
+nonstandard numbers, numeric overflow/underflow and invalid UTF-8. Inputs must be
+regular non-symlink files of at most the shared 16 MiB byte limit; devices, FIFOs,
+directories and oversized files are rejected. The opened descriptor is inspected
+and reads are bounded, including when a file grows after the size check. Deep
+JSON decoder errors produce a nonzero CLI error without a traceback or a report.
+Decoder failures use a fixed diagnostic, including nesting-limit errors, so
+arbitrary private duplicate-key names, filenames and decoder context are not
+echoed to the terminal or exposed through a chained exception.
+
+PyPI URL and optional purl bindings now apply the same
+[PyPA name normalization](https://packaging.python.org/en/latest/specifications/name-normalization/):
+case-folding and replacing each run of hyphens, underscores or periods with one
+hyphen. Thus `Fictional__Pkg` can bind to `fictional-pkg`; a different normalized
+name or an inexact version still fails. This resolves a false rejection of
+equivalent registry names, without authenticating any registry or artifact.
+
+These are offline structural checks only. Existing output fields and decisions
+retain their limits: source checks remain self-declared and
+`automatic_install_approved` remains false. Independent package, license,
+provenance, advisory, functional and human security review are still outstanding
+for any real reuse candidate.
+
+### 2026-10-15 PyPI path-identity hardening
+
+The offline gate requires a literal ASCII project/version path on the official
+PyPI host, rejecting percent-escaped or Unicode URL segments before applying
+[PyPA normalized project-name equality](https://packaging.python.org/en/latest/specifications/name-normalization/).
+Otherwise decoding a URL first and then applying Unicode `casefold()` can
+confuse a non-ASCII character such as long-s (`ſ`) with an ASCII package name.
+This is intentionally narrower than URL parsing in general: an escaped URL must
+be resolved and authenticated independently, not silently treated as a pinned
+identity. The gate still only validates self-declared input; it does not
+establish a real distribution, artifact digest, rights, provenance, or approval.
+
+
+## 2026-10-15 schema and negative-source safety correction
+
+The offline evidence gate now rejects undeclared top-level, candidate and
+per-check fields, rather than silently ignoring an arbitrary extra string that
+could contain private user data or a competing unchecked security claim.
+Declared `evidence_url` values are validated **for pass, fail and unknown**
+states: a source URL with embedded credentials, query tokens or malformed
+ports does not become safe simply because a check reports failure or
+uncertainty. A passing gate still requires an evidence URL; a failing or
+unknown gate may omit one. Synthetic negative tests exercise all three
+unknown-field locations and both non-pass statuses. These rules validate
+submission shape, not the truth of a source or actual package safety.
+
+**Follow-up (2026-10-15):** a failing or unknown gate may omit `evidence_url`
+*or* set it to `null`, which this repository uses for an explicitly unknown
+value (`{"status": "unknown", "evidence_url": null}` defers, as on `main`
+before this branch); any non-null value must still be a clean HTTPS URL, and a
+pass still requires one. HTTPS URLs with an explicit port `0` are rejected as a
+malformed authority. `evaluate_file` now reuses the shared
+`data_integrity.load_research_json_file` bounded reader instead of a local
+copy; errors remain `PackageReviewError` with fixed diagnostics that do not
+echo the input path or private object keys.
