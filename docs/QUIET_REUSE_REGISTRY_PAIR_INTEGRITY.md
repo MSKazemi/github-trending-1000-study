@@ -17,6 +17,20 @@ reader. Duplicate object keys, nonstandard or non-finite numeric values,
 overflow, underflow and invalid UTF-8 fail before publishing a result.
 Outputs retain the existing write-once publication contract.
 
+**2026-10-15 input-safety correction.** The first draft passed `Path.read_bytes()`
+to that strict parser; this silently followed leaf symlinks and read an unbounded
+input before parsing. All three CLI modes now open each input nonblocking and
+without following its final symlink (on platforms with the required OS flags),
+verify the opened descriptor is an ordinary file, cap the actual read at
+`MAX_FILE_BYTES + 1`, and sanitize malformed JSON diagnostics so sensitive
+object keys and local file paths are not echoed. The same bound applies to each
+input separately, not to the sum of the several input files. On platforms
+without these safe-open flags, the CLI fails closed. This is not a guarantee
+against hostile ancestor-directory replacement. Offline synthetic tests cover
+oversized sparse files, directories, symlinks, FIFOs, private duplicate keys,
+and no-output-on-failure behavior. This corrects a code safety defect, not
+scientific sample validation.
+
 Run the offline regression checks with:
 
 ```bash
