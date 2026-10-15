@@ -1,4 +1,6 @@
 # Meta — six-month AI/software company intelligence (initial source screen)
+
+> **Provisional initial evidence screen (integration status 2026-10-15):** accepted for `main` by maintainer decision as a *provisional source-lead screen*, following the precedent of #67/#81/#86/#87/#93. It has **not** been reviewed by a qualified independent human; every event row remains an E0/E1 publisher-document lead, not a verified release, adoption or task outcome. **Pending gates:** seven-segment search with hit/screen/exclusion denominators and archived captures; independent human factual, licensing and methods review; adverse/independent reporting screen; exact artifact, licence and access checks; any prospective task trial. Issue #71 stays open. The text below is retained as drafted on 2026-10-12..15; where it conflicts with the [canonical events CSV](005-meta.events.csv), the CSV and the closing *Controlled integration review — 2026-10-15* section govern.
  
 - **Watchlist ID:** 005
 - **Issue:** [#71](https://github.com/MSKazemi/github-trending-1000-study/issues/71)
@@ -166,3 +168,23 @@ This source-screened working report retains the full **original PR #191 report**
 Added Aug 5 Muse Code beta and Aug 14 vendor cybersecurity evaluation response as separately dated publisher leads. These do not establish independent deployment, source security or model performance.
 
 **Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
+
+
+## Controlled integration review — 2026-10-15 (provisional first-party leads only)
+
+The maintainer decided on 2026-10-15 to integrate this documentary draft as a **provisional initial evidence screen**, as with #67/#81/#86/#87/#93. This is an AI-assisted maintainer pass, **not** an independent or qualified human review. The section 9 line "Keep the issue and PR open/draft; **do not merge**" guarded against promotion to completed research; it is superseded only to the extent of retaining this explicitly labelled, source-linked working artifact on `main`. Issue #71 remains open.
+
+**Canonical files and ID crosswalk.** [005-meta.events.csv](005-meta.events.csv) (8 publisher URL leads) is canonical. Sections 3, 4 and 9 are the original PR #191 text: its "5 directly linked dated source events" and IDs `CI-005-04`/`CI-005-05` refer to the [archived 2026-10-12 ledger](source-archives/005-meta.2026-10-12-source-ledger.csv). The same two URLs are carried in the canonical CSV as `CI2026-005-002` (Enterprise Platform, `announced_only`) and `CI2026-005-003` (Muse Wonder). Where section 4 labels the Enterprise Platform `shipped`, the CSV's `announced_only` governs.
+
+**Source spot-checks** (publisher pages read on 2026-10-15 with an AI web reader; not archived captures):
+
+- *Muse Wonder* (`CI2026-005-003`): the page says Muse Wonder "is available today for developers and builders through the Meta Model API and Muse Code", Muse Wonder Full "is available today for Muse Code subscribers", and Wonder "will soon power experiences in Muse". It makes no open-weights statement. The page displays both 12 and 13 October 2026 without saying which is the publication and which the update date; the ledger's 2026-10-12 is kept as the earliest displayed date.
+- *Meta Enterprise Platform* (`CI2026-005-002`): dated 2026-09-28; "Today we are starting the next major pillar" and "Initially, we will focus on…"; Muse API and Muse Code appear only in a list, with no availability date or pricing. This supports the `announced_only` / initial-direction reading; no general availability is established.
+- *Muse Glimmer* (`CI-005-03`): dated 2026-08-10; states open weights under Apache 2.0 released on Hugging Face. Matches the ledger; the exact model revision SHA is still unrecorded.
+- *Muse Code and Muse Spark 1.2* (`CI2026-005-004`): dated 2026-08-05; "Muse Code (beta), a terminal coding agent powered by Muse Spark 1.2". Matches `preview`.
+
+No date or claim mismatch was found. No evidence tier was changed: these checks confirm what the publisher wrote, not product behaviour, access or licence compliance.
+
+**Format checks:** the CSV header matches sibling event ledgers (21 columns); event IDs and source URLs are unique; all `published_utc` values fall within 2026-04-12..2026-10-12 and are date-sorted. The archived ledger and first-screen Markdown are unchanged.
+
+**Still pending:** auditable seven-segment hit/screen/exclusion denominators with archived captures; qualified independent human factual, licensing and methods review; screening of independent/adverse reporting (the 2026-10-10 Verge piece in the QA log is a lead, not a verified finding); exact artifact, licence and access checks; any prospective task trial. No adoption, accepted-code, cost or environmental outcome is claimed.
