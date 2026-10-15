@@ -1,5 +1,7 @@
 # Replit — company intelligence, preliminary six-month source screen
 
+> **Provisional initial evidence screen (integration status 2026-10-15):** accepted for `main` by maintainer decision as a *provisional source-lead screen*, following the precedent of #67/#81/#86/#87/#93. It has **not** been reviewed by a qualified independent human; every event row remains an E0/E1 publisher-document lead, not a verified release, adoption or task outcome. **Pending gates:** seven-segment search with hit/screen/exclusion denominators and archived captures; independent human factual, licensing and methods review; adverse/independent reporting screen; exact artifact, licence and access checks; any prospective task trial. Issue #80 stays open. The text below is retained as drafted on 2026-10-12..15; where it conflicts with the [canonical events CSV](014-replit.events.csv), the CSV and the closing *Controlled integration review — 2026-10-15* section govern.
+
 - **Watchlist entry:** 014
 - **Research issue:** [#80](https://github.com/MSKazemi/github-trending-1000-study/issues/80)
 - **Retrospective publication interval:** 2026-04-12 to 2026-10-12 inclusive.
@@ -129,7 +131,7 @@ This is a **source-discovery handoff counted only as one provisional vendor URL 
 - [June 9 Package Firewall post](https://replit.com/blog/package-firewall) attributes default-on install-time detection to a **Socket partnership** and reports roughly **8,000 flagged package blocks per day**. That figure is a *vendor counter* with unknown uniqueness, false-positive/negative rates and denominator; it is **not** 8,000 independently proven supply-chain attacks or distinct vulnerable packages.
 - [June 10 Skills and Custom Instructions release](https://replit.com/blog/custom-skills) describes task-specific, versionable `SKILL.md` assets and workspace-level instructions; availability depends on plan/role. The article itself notes that overly broad and conflicting descriptions can make agent outcomes worse. That is an engineering design hypothesis, not a measured local benefit.
 - [Aug 18 Free Mode](https://replit.com/blog/replit-introduces-free-mode) is indexed with publication and updated Aug 19 in the official Replit blog, although the direct reader returned an internal error; record as **partly checked** until a direct full-page audit.
-- [Sept 29 model routing/subagents](https://replit.com/blog?replit_sid=0418e563-1d02-44de-bd5e-740c65db311d) appears in the blog index; the cited full post URL did not load in this reader. Vendor claims about reduced cost must not substitute for a frozen matched-task trial.
+- [Sept 29 model routing/subagents](https://replit.com/blog/free-the-models) appears in the blog index; the cited full post URL did not load in this reader. Vendor claims about reduced cost must not substitute for a frozen matched-task trial.
 
 **Practical action:** Keep skills narrowly scoped, opt out when inapplicable, and test both false activation and correct task completion. Preserve human review and deny unreviewed package installs.
 
@@ -189,3 +191,26 @@ The archive is separate source provenance, not another independent observation. 
 Preserved #196 model-routing URL as a provisional E0 lead (the vendor's relative cost claim remains unreplicated); added Apr 22 Auto-Protect opt-in dependency-repair announcement without asserting objective security or adoption effects.
 
 **Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
+
+
+## Controlled integration review — 2026-10-15 (provisional first-party leads only)
+
+The maintainer decided on 2026-10-15 to integrate this documentary draft as a **provisional initial evidence screen**, as with #67/#81/#86/#87/#93. This is an AI-assisted maintainer pass, **not** an independent or qualified human review. The section 9 merge-gate line ("draft PR only; do not … merge to `main` …") guarded against promotion to completed research; it is superseded only to the extent of retaining this explicitly labelled, source-linked working artifact on `main`. Issue #80 remains open.
+
+**Relationship to the archived originals.** Preservation PR #300 has since merged (commit `73897ba`). Its byte-preserved originals are now on `main`: [PR #212 original report](source-archives/014-replit.2026-10-12-pr-212-original-report.md) (Git blob `87eba24d0a013bcdccce9105e50f3df4f9b5a98a`, the same blob cited in the 2026-10-14 historical-copy clarification above) and [PR #196 original report](source-archives/014-replit.2026-10-12-pr-196-original-report.md). This file is the **canonical working screen**; the archives record what those closed-unmerged PRs originally said and are not separate corroboration. #196's machine-readable ledger is additionally preserved as the [first-pass JSON archive](source-archives/014-replit.2026-10-12-first-pass.events.json). No publication date or source URL in this screen was found to contradict either archived original, and the canonical CSV contains every Replit post URL they cite. One labelling difference is kept deliberately: #196 graded `014-E03` as "E1 company-working", whereas the canonical CSV holds it at the more conservative `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` pending human review.
+
+**Canonical event index.** [014-replit.events.csv](014-replit.events.csv) holds **11** publisher URL leads: 3 from the later screen (`CI2026-014-001`..`003`), the 2026-04-22 Auto-Protect lead (`CI2026-014-004`), 6 earlier-screen leads (`CI-014-01`..`06`) and #196's model-routing lead (`014-E03`). The "10 unique vendor URL leads" in the 2026-10-14 archival supplement predates the Auto-Protect addition; 11 is current.
+
+**Source spot-checks** (publisher pages read on 2026-10-15 with an AI web reader; not archived captures):
+
+- *Package Firewall* (`CI-014-01`): published 2026-06-09, updated 2026-06-10; built "in partnership with Socket", "on by default for every builder"; the body says it "has been blocking around 8,000 packages per day". The page title says "8,000+ malicious packages daily"; the body figure is the one used here, and it remains a vendor counter with unknown denominator and false-positive rate.
+- *Intelligent Model Routing* (`014-E03`): published 2026-08-26, updated 2026-08-27; "In our testing, Intelligent Model Routing delivered the same output quality at 65% lower cost than the previous version of Max Mode". The draft-attributed date is now confirmed against the page; the 65% figure stays an unreplicated vendor-internal claim and the E0 tier is unchanged.
+- *Replit Auto-Protect* (`CI2026-014-004`): published 2026-04-22; admin opt-in, "off by default for our initial launch"; Replit Agent prepares and tests a patch, and applying it and republishing are user actions. Matches the ledger.
+- *Replit Databricks GA* (`CI2026-014-003`): published 2026-09-10 and **updated 2026-10-13** (after the study window); states the integration "is generally available alongside … native Databricks Lakebase support" and refers to a public preview "this past June". The post-window revision means the in-window wording is not frozen.
+- *Free the models* (`CI-014-06`, published 2026-09-29) and *Free Mode* (`CI-014-05`, published 2026-08-18, updated 2026-08-19) both loaded directly on 2026-10-15, resolving the 2026-10-13 "did not load / partly checked" notes for dates and titles. The Sept 29 recheck link, which previously pointed at the blog index with a session query parameter, now points to the canonical post URL.
+
+No date or claim mismatch was found. No evidence tier was changed: these checks confirm what the publisher wrote, not product behaviour, security outcomes or cost.
+
+**Format checks:** the CSV header matches sibling event ledgers (21 columns); event IDs and source URLs are unique; all `published_utc` values fall within 2026-04-12..2026-10-12 and are date-sorted; the #196 JSON archive parses. Archived ledgers and Markdown are unchanged.
+
+**Still pending:** auditable seven-segment hit/screen/exclusion denominators with archived captures; qualified independent human factual, licensing and methods review; screening of independent/adverse reporting; plan, access and entitlement checks; any prospective task trial. No adoption, accepted-code, security, cost or environmental outcome is claimed.

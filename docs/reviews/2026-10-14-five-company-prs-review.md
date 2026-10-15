@@ -63,3 +63,8 @@ This section supersedes the earlier 37/39-record interim count, without erasing 
 **Result: all five are draft / not yet authorized to merge**, despite GitHub reporting them mergeable and automated CI being available. A green unit test verifies structured file behavior, not full scholarly screen recall, independently corroborated deployment/rights or third-party experiment outcomes. Check exact-head jobs again after the last PR content commit. Do not close issues #71, #72, #80, #82 or #85 or mark any completed company study until all acceptance criteria are satisfied.
 
 **Action for another repository:** separate merge policy into (1) reproducible code/provenance checks and (2) independently reviewed scientific interpretations. Keep a unique URL event ledger plus origin and disagreement notes; avoid counting duplicated AI-generated source lists as corroboration. A reader should always see *what was searched*, *what was found*, and *what remains unknown*.
+
+
+## Addendum — 2026-10-15 maintainer decision for #228, #229 and #230
+
+The sections above are retained as written on 2026-10-14. On 2026-10-15 the maintainer decided that documentary research drafts are merged as **provisional initial evidence screens** (source leads), following #67/#81/#86/#87/#93. For #228 (Meta), #229 (Amazon/AWS) and #230 (Replit) this supersedes the "BLOCKED / remain draft" disposition only to that extent: each report now carries a provisional status note under its title and a closing *Controlled integration review — 2026-10-15* section with source spot-checks and the still-pending gates. An AI-assisted maintainer pass is **not** independent human review; issues #71, #72 and #80 stay open. This addendum makes no decision about #231 or #232.
