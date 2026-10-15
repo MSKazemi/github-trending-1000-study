@@ -6,9 +6,11 @@ Related: [PR #290](https://github.com/MSKazemi/github-trending-1000-study/pull/2
 
 ## Review boundary
 
-This is a code, test and documentation review of a **synthetic, offline** instrument. It is **not** a qualified, independent human methodology review, a security certification or evidence of source permission. Inspectors reviewed the 10-file changed-file inventory, both new contracts, their shared overlap/JSON validators, related roadmap, regression tests, PR discussion and GitHub Actions jobs. The PR remains a contribution toward issue #6, not a completed empirical study.
+This is a code, test and documentation review of a **synthetic, offline** instrument. It is **not** a qualified, independent human methodology review, a security certification or evidence of source permission. Inspectors reviewed the changed-file inventory (originally recorded here as a "10-file" inventory; see the 2026-10-15 correction below), both new contracts, their shared overlap/JSON validators, related roadmap, regression tests, PR discussion and GitHub Actions jobs. The PR remains a contribution toward issue #6, not a completed empirical study.
 
 The observed base-branch reference during the review was `main@2efbf2fbf7dabc9199945bc366baaaf7a2148b17`; it can advance. The baseline changed-file comparison was mergeable without declared conflicts, but the feature branch had diverged from main. Reconfirm the exact merge head and final combined CI immediately before any authorized merge.
+
+**2026-10-15 correction.** The "10-file" count above was inaccurate. Compared with `origin/main` after merging main at `d751a84`, the PR branch changed 11 files before this follow-up and **12 files** after it (the follow-up adds the `trending_audit --help` line to `.github/workflows/ci.yml`). Re-count with `git diff --name-only origin/main...HEAD` on the exact final head before any authorized merge.
 
 ## Correctness, privacy and safety findings
 

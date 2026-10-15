@@ -10,11 +10,12 @@ Requires Python 3.10+ and standard library only. These examples are **entirely s
 python -m trending_study.trending_overlap --input examples/trending_overlap.synthetic.json
 python -m trending_study.trending_audit coverage --input examples/trending_language_coverage.synthetic.json
 python -m trending_study.trending_audit proxy --input examples/trending_rank_proxy.synthetic.json
+python -m trending_study.trending_audit --help   # also smoke-tested in CI
 python -m unittest discover -s tests -v
 python -m trending_study.data_integrity --root .
 ~~~
 
-The new CLI reads a bounded, regular, non-symlink JSON file with the repository's existing strict decoder. It opens the actual file descriptor with `O_NOFOLLOW` and `O_NONBLOCK`, verifies the descriptor is a regular file, and caps **bytes actually read**, not only an earlier file-size check. Platforms without secure `O_NOFOLLOW` support fail closed rather than fall back to race-prone path-only checks. This mitigates a symlink-swap/time-of-check-time-of-use race and prevents a FIFO from blocking indefinitely. A concurrently modified regular file is still untrusted input, not immutable evidence. Duplicate keys, nonstandard NaN/Infinity, unrepresentable non-finite numbers, invalid UTF-8 and unsupported fields fail closed; error text counts unknown field names rather than repeating potentially private names. Decoder errors (including duplicate JSON keys) are summarized without repeating source-key names, as those names may contain sensitive text. It makes **zero network requests** and does not collect, enrich or process raw HTML. Neither model nor output validates source permission, cohort eligibility, human review or real observed data.
+The new CLI reads a bounded, regular, non-symlink JSON file with the repository's existing strict decoder. It opens the actual file descriptor with `O_NOFOLLOW` and `O_NONBLOCK`, verifies the descriptor is a regular file, and caps **bytes actually read**, not only an earlier file-size check. Platforms without secure `O_NOFOLLOW` support fail closed rather than fall back to race-prone path-only checks. This mitigates a symlink-swap/time-of-check-time-of-use race and prevents a FIFO from blocking indefinitely. `O_NOFOLLOW` applies **only to the final path component**: symlinks in parent directories are still followed, so the guard does not confine the input to a trusted directory tree. Invoke the CLI on paths whose parent directories the operator controls. A concurrently modified regular file is still untrusted input, not immutable evidence. Duplicate keys, nonstandard NaN/Infinity, unrepresentable non-finite numbers, invalid UTF-8 and unsupported fields fail closed; error text counts unknown field names rather than repeating potentially private names. Decoder errors (including duplicate JSON keys) are summarized without repeating source-key names, as those names may contain sensitive text. It makes **zero network requests** and does not collect, enrich or process raw HTML. Neither model nor output validates source permission, cohort eligibility, human review or real observed data.
 
 ## 1. Coverage with an explicit denominator
 
@@ -88,7 +89,7 @@ Input version: `trending-rank-proxy-1.0`.
 }
 ~~~
 
-**Target:** pairwise ordering among repositories that were **already on one recorded page**. It is *not* a prediction of Trending appearance, recommendation quality, usefulness, adoption, or the hidden candidate universe. Features are self-declared **prior-to-capture** snapshots; their collection method, the 7-day delta's endpoint alignment and their license/access approval still require verification. A current/future snapshot may never be labeled as a pre-capture feature.
+**Target:** pairwise ordering among repositories that were **already on one recorded page**. It is *not* a prediction of Trending appearance, recommendation quality, usefulness, adoption, or the hidden candidate universe. Features are self-declared **prior-to-capture** snapshots; their collection method, the 7-day delta's endpoint alignment and their license/access approval still require verification. A current/future snapshot may never be labeled as a pre-capture feature. The instrument enforces only that `recorded_at_utc` is **strictly earlier** than the target capture; it imposes **no maximum feature age**, so a "prior" snapshot may be arbitrarily stale. Feature recency is self-reported and must be reviewed (and, for a real study, bounded by a preregistered rule) outside this CLI.
 
 **Frozen and bounded evaluation procedure:**
 

@@ -461,5 +461,28 @@ class OfflineCLITests(unittest.TestCase):
                 load_offline_json(link)
 
 
+class CommandLineEntrypointTests(unittest.TestCase):
+    """The standalone module CLI must stay reachable and CI-smoke-tested."""
+
+    def test_module_help_exits_cleanly_and_lists_both_modes(self):
+        import subprocess
+        import sys
+        root = Path(__file__).resolve().parents[1]
+        result = subprocess.run(
+            [sys.executable, "-m", "trending_study.trending_audit", "--help"],
+            cwd=root, capture_output=True, text=True, timeout=60, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("coverage", result.stdout)
+        self.assertIn("proxy", result.stdout)
+
+    def test_ci_workflow_smoke_tests_module_help(self):
+        workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "ci.yml"
+        self.assertIn(
+            "python -m trending_study.trending_audit --help",
+            workflow.read_text(encoding="utf-8"),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
