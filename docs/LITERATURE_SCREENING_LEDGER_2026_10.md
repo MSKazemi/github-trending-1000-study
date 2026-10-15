@@ -88,3 +88,15 @@ Additional 2026-10-15 regression: syntactically parseable but unusable
 explicit HTTPS port zero and empty port delimiter are rejected; legitimate
 nondefault HTTPS ports remain structurally acceptable. URL shape alone does
 not certify a reachable or fact-checked source.
+
+
+## 2026-10-15 source-specific URL integrity
+
+An `include` decision now requires a nonempty HTTPS item path (rather than
+accepting only a publisher homepage), and rejects literal backslashes or
+malformed percent escapes in the canonical source URL. The previously enforced
+host, port, credential, fragment and query constraints remain. Synthetic
+negative tests protect this bounded source-link contract; an apparently clean
+DOI/paper URL is **not** proof that the content was accessed, bibliographic
+metadata verified, a systematic search performed or review acceptance met.
+Preserve unresolved leads as pending rather than calling them included.
