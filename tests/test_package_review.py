@@ -124,6 +124,42 @@ class PackageReviewTests(unittest.TestCase):
             self.assertEqual(result["decision"], "reject" if status == "fail" else "defer")
             self.assertFalse(result["automatic_install_approved"])
 
+    def test_null_evidence_url_means_unknown_on_nonpassing_gates(self):
+        # Regression: on main, {"status": "unknown", "evidence_url": null}
+        # deferred; null is this repository's explicit "unknown" value.
+        for status, decision in (("unknown", "defer"), ("fail", "reject")):
+            p = candidate()
+            p["checks"]["known_advisories"] = {"status": status, "evidence_url": None}
+            with self.subTest(status=status):
+                result = evaluate(p)
+                self.assertEqual(result["decision"], decision)
+                self.assertFalse(result["automatic_install_approved"])
+        p = candidate()
+        p["checks"]["known_advisories"] = {"status": "pass", "evidence_url": None}
+        with self.assertRaisesRegex(PackageReviewError, "evidence_url"):
+            evaluate(p)
+        for unsafe in ("", "http://vendor.example.test/notice", 0, False):
+            p["checks"]["known_advisories"] = {"status": "unknown", "evidence_url": unsafe}
+            with self.subTest(unsafe=repr(unsafe)), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+    def test_explicit_port_zero_rejected_for_every_https_url(self):
+        for status in ("pass", "unknown"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": status, "evidence_url": "https://vendor.example.test:0/notice"}
+            with self.subTest(status=status), self.assertRaisesRegex(
+                    PackageReviewError, "evidence_url"):
+                evaluate(p)
+        p = candidate()
+        p["candidate"].update(ecosystem="npm",
+                              registry_url="https://registry.example.test:0/fictionalpkg/1.0")
+        with self.assertRaisesRegex(PackageReviewError, "registry_url"):
+            evaluate(p)
+        # A valid nondefault port is still structurally acceptable.
+        p["candidate"]["registry_url"] = "https://registry.example.test:8443/fictionalpkg/1.0"
+        self.assertEqual(evaluate(p)["decision"], "defer")
+
     def test_invalid_digest_rejected(self):
         p = candidate()
         p["candidate"]["artifact_sha256"] = "not-a-digest"
@@ -382,7 +418,7 @@ class PackageReviewInputTests(unittest.TestCase):
 
     def test_decoder_recursion_failure_has_portable_private_error_contract(self):
         self.path.write_text(json.dumps(candidate()))
-        with patch("trending_study.package_review.decode_research_json",
+        with patch("trending_study.data_integrity.decode_research_json",
                    side_effect=RecursionError("PRIVATE-synthetic-decoder-context")):
             with self.assertRaises(PackageReviewError) as raised:
                 evaluate_file(self.path)

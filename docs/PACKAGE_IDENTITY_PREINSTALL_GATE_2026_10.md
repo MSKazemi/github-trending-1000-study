@@ -125,3 +125,13 @@ uncertainty. A passing gate still requires an evidence URL; a failing or
 unknown gate may omit one. Synthetic negative tests exercise all three
 unknown-field locations and both non-pass statuses. These rules validate
 submission shape, not the truth of a source or actual package safety.
+
+**Follow-up (2026-10-15):** a failing or unknown gate may omit `evidence_url`
+*or* set it to `null`, which this repository uses for an explicitly unknown
+value (`{"status": "unknown", "evidence_url": null}` defers, as on `main`
+before this branch); any non-null value must still be a clean HTTPS URL, and a
+pass still requires one. HTTPS URLs with an explicit port `0` are rejected as a
+malformed authority. `evaluate_file` now reuses the shared
+`data_integrity.load_research_json_file` bounded reader instead of a local
+copy; errors remain `PackageReviewError` with fixed diagnostics that do not
+echo the input path or private object keys.

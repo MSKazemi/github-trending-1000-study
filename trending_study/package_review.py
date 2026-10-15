@@ -5,13 +5,11 @@ All provenance, licence and security statuses are *supplied* and unverified.
 import argparse
 from datetime import datetime, timedelta, timezone
 import json
-import os
 from pathlib import Path
 import re
-import stat
 from urllib.parse import urlparse
 
-from .data_integrity import MAX_FILE_BYTES, decode_research_json
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 
 FIELDS = ("registry_identity", "license_compatibility", "known_advisories",
           "release_provenance", "functional_fit", "maintenance_suitability")
@@ -52,9 +50,11 @@ def _clean_https_url(url, field):
     try:
         parsed = urlparse(url)
         # Access .port to force validation of malformed/out-of-range port syntax.
-        _ = parsed.port
+        port = parsed.port
     except ValueError as exc:
         raise PackageReviewError(f"{field} has malformed HTTPS authority") from exc
+    if port == 0:
+        raise PackageReviewError(f"{field} has malformed HTTPS authority (port 0)")
     if (parsed.scheme != "https" or not parsed.hostname or parsed.netloc.endswith(":")
             or parsed.username is not None or parsed.password is not None
             or parsed.params or parsed.query or parsed.fragment):
@@ -145,8 +145,9 @@ def evaluate(data):
                 or cell["status"] not in STATES):
             raise PackageReviewError(f"{key} must declare pass/fail/unknown without unknown fields")
         # A failing/unknown gate can carry a corroborating source, but its URL
-        # must not hide a credential or arbitrary URL payload either.
-        if "evidence_url" in cell:
+        # must not hide a credential or arbitrary URL payload either. Absent or
+        # null means the source is unknown, which only a pass cannot accept.
+        if cell.get("evidence_url") is not None:
             _clean_https_url(cell["evidence_url"], f"{key} evidence_url")
         elif cell["status"] == "pass":
             raise PackageReviewError(f"{key} pass requires an evidence_url")
@@ -174,39 +175,18 @@ def evaluate(data):
 
 
 def evaluate_file(path):
-    """Read one bounded regular artifact using the shared strict JSON decoder."""
-    path = Path(path)
-    if path.is_symlink():
-        raise PackageReviewError("input must be a regular non-symlink file")
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    """Read one bounded regular artifact via the shared strict research reader."""
     try:
-        descriptor = os.open(path, flags)
-    except OSError as exc:
-        raise PackageReviewError("input must be a readable regular non-symlink file") from exc
-    try:
-        metadata = os.fstat(descriptor)
-        if not stat.S_ISREG(metadata.st_mode):
-            raise PackageReviewError("input must be a regular non-symlink file")
-        if metadata.st_size > MAX_FILE_BYTES:
-            raise PackageReviewError("input exceeds research JSON byte limit")
-        stream = os.fdopen(descriptor, "rb")
-        descriptor = None  # ownership transferred to the stream
-        with stream:
-            raw = stream.read(MAX_FILE_BYTES + 1)
-        if len(raw) > MAX_FILE_BYTES:
-            raise PackageReviewError("input exceeds research JSON byte limit")
-    finally:
-        if descriptor is not None:
-            os.close(descriptor)
-    try:
-        data = decode_research_json(raw, "package review input")
-    except (ValueError, RecursionError):
-        # Detailed decoder failures may contain arbitrary private object keys
-        # or source filenames. Expose a fixed diagnostic, without a chained
-        # exception, including when Python's nesting limit is exceeded.
-        raise PackageReviewError(
-            "input must be strict UTF-8 JSON without duplicate keys or invalid numbers"
-        ) from None
+        data = load_research_json_file(path, max_bytes=MAX_FILE_BYTES)
+    except ResearchJSONError as exc:
+        if str(exc) == "invalid or ambiguous JSON input":
+            # The shared reader already hides duplicate keys, nesting-limit
+            # context and filenames; keep this tool's established diagnostic.
+            raise PackageReviewError(
+                "input must be strict UTF-8 JSON without duplicate keys or invalid numbers"
+            ) from None
+        # Remaining shared-reader messages are fixed and contain no path.
+        raise PackageReviewError(str(exc)) from exc
     return evaluate(data)
 
 
