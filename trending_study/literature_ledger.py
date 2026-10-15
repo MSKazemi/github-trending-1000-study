@@ -10,6 +10,8 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 
+from .data_integrity import ResearchJSONError, load_research_json_file
+
 DECISIONS = {"include", "exclude", "pending"}
 SOURCE_TYPES = {"peer_reviewed", "preprint", "standard", "news", "vendor", "other"}
 DOI = re.compile(r"^10\.\d{4,9}/\S+$", re.I)
@@ -96,16 +98,23 @@ def audit(data):
             source_url = row.get("source_url")
             if (not isinstance(source_url, str) or not source_url.strip()
                     or source_url != source_url.strip()
-                    or any(ord(ch) < 33 for ch in source_url)):
+                    or any(ord(ch) < 33 or ord(ch) == 127 for ch in source_url)):
                 raise LiteratureError("included record requires clean source_url")
             try:
                 parsed_source = urlsplit(source_url)
+                # urlsplit defers malformed/out-of-range port checks until access.
+                port = parsed_source.port
                 clean_source = (parsed_source.scheme == "https"
                                 and bool(parsed_source.hostname)
+                                and port != 0
+                                and not parsed_source.netloc.endswith(":")
                                 and parsed_source.username is None
                                 and parsed_source.password is None
                                 and not parsed_source.fragment
-                                and not parsed_source.query)
+                                and not parsed_source.query
+                                and bool(parsed_source.path.strip("/"))
+                                and "\\" not in source_url
+                                and re.search(r"%(?![0-9A-Fa-f]{2})", source_url) is None)
             except ValueError as exc:
                 raise LiteratureError("invalid included source_url") from exc
             if not clean_source:
@@ -130,13 +139,31 @@ def audit(data):
             "screening_is_self_reported": True}
 
 
+def audit_file(path):
+    """Load one bounded regular artifact via the shared strict research reader.
+
+    ``load_research_json_file`` refuses symlinks, special files, oversized or
+    grown inputs and ambiguous JSON with fixed, non-path diagnostics.
+    """
+    try:
+        data = load_research_json_file(path)
+    except ResearchJSONError as exc:
+        if str(exc) == "invalid or ambiguous JSON input":
+            # The shared reader already hides duplicate keys and filenames;
+            # keep this tool's established decoder diagnostic.
+            raise LiteratureError("input must be strict UTF-8 JSON without duplicate "
+                                  "keys or invalid numbers") from None
+        raise LiteratureError(str(exc)) from exc
+    return audit(data)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
     try:
-        out = audit(json.loads(args.input.read_text(encoding="utf-8")))
-    except (OSError, ValueError) as exc:
+        out = audit_file(args.input)
+    except (OSError, ValueError, RecursionError) as exc:
         ap.error(str(exc))
     print(json.dumps(out, indent=2, sort_keys=True))
 

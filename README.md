@@ -345,3 +345,7 @@ python scripts/check_research_artifacts.py --root .
 ```
 
 The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
+
+### All-tracked-code integrity gate (issue #244)
+
+Run `python scripts/check_research_artifacts.py --root . --tracked-code-json` to inspect all Git-indexed Python/JSON in addition to the normal reference/CSV gate. The scan checks staged blobs and working files without importing code. It rejects malformed JSON including duplicated keys without echoing their values in CI. This is an offline engineering control, not source authentication, rights review or proof of scientific claims; see [integrity runbook](docs/RESEARCH_JSON_INTEGRITY_GATE.md).
