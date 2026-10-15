@@ -9,10 +9,12 @@ import argparse
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import stat
 
-from .data_integrity import decode_research_json
+from .data_integrity import MAX_FILE_BYTES, decode_research_json
 from .safe_io import publish_json
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
@@ -392,7 +394,32 @@ def audit_pair_reviews(packet, review_a, review_b):
 
 
 def _read(path):
-    return decode_research_json(Path(path).read_bytes(), str(path))
+    """Read a bounded regular JSON file without following a leaf symlink.
+
+    Check the opened descriptor, not a path stat performed before opening it.
+    Nonblocking open rejects FIFOs promptly and the length-bounded read also
+    rejects growth after fstat. This is not an ancestor-path sandbox.
+    """
+    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_NONBLOCK"):
+        raise RegistryFrameError("secure nonfollowing registry input unsupported on this platform")
+    try:
+        with os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK), "rb") as stream:
+            metadata = os.fstat(stream.fileno())
+            if not stat.S_ISREG(metadata.st_mode):
+                raise RegistryFrameError("registry input must be an ordinary regular file")
+            if metadata.st_size > MAX_FILE_BYTES:
+                raise RegistryFrameError("registry input exceeds research JSON byte limit")
+            raw = stream.read(MAX_FILE_BYTES + 1)
+    except OSError:
+        # Paths and OS errors may reveal local/private filesystem structure.
+        raise RegistryFrameError("registry input could not be opened safely") from None
+    if len(raw) > MAX_FILE_BYTES:
+        raise RegistryFrameError("registry input exceeds research JSON byte limit")
+    try:
+        return decode_research_json(raw, "registry input")
+    except (ValueError, RecursionError):
+        # Shared decoder errors may include private duplicate object key text.
+        raise RegistryFrameError("registry input must be unambiguous strict UTF-8 JSON") from None
 
 
 def main(argv=None):
