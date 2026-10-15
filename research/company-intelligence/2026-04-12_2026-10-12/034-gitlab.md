@@ -1,6 +1,6 @@
 # GitLab — provisional six-month technology intelligence screen (034)
 
-> **PROVISIONAL, AI-assisted first-pass screen (2026-10-16), not reviewed by a human.** This report, its [event ledger](034-gitlab.events.csv) and its [search log](034-gitlab.search-log.md) are documentary source leads for [issue #101](https://github.com/MSKazemi/github-trending-1000-study/issues/101). They were prepared with AI assistance and have **not been reviewed by a qualified human**. Factual/link review, source-access/rights review and methods review are **pending**. Nothing here is a verified finding, an adoption measurement or scientific sign-off. **Do not close #101 on the basis of this file.** Verified, non-duplicate news items may later feed [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56), but only after human verification.
+> **PROVISIONAL, AI-assisted first-pass screen (2026-10-16), not reviewed by a human.** This report, its [event ledger](034-gitlab.events.csv) and its [search log](034-gitlab.search-log.md) are documentary source leads for [issue #101](https://github.com/MSKazemi/github-trending-1000-study/issues/101). They were prepared with AI assistance and have **not been reviewed by a qualified human**. Factual/link review, source-access/rights review and methods review are **pending**. Nothing here is a verified finding, an adoption measurement or scientific sign-off. **Issue #101 was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates above remain open.** Verified, non-duplicate news items may later feed [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56), but only after human verification.
 
 - **Company watchlist ID:** 034, GitLab (slug `gitlab`).
 - **Research issue:** [#101](https://github.com/MSKazemi/github-trending-1000-study/issues/101). Linked corpus: [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
@@ -171,7 +171,7 @@ Company adoption claims are vendor statements. They are not independent task out
   - A third-party claim that 19.0 and 18.11 had no fix for CVE-2026-85706 was superseded by GitLab's Sep 23 backport.
   - A third-party date of Oct 8 for the CVE-2026-97229 patch conflicts with the official Oct 12.
   - DevOps.com coverage of Transcend adds no independent measurement.
-- **Reviewer links and audit date:** AI-assisted screen on 2026-10-16. Human factual/link reviewer: **pending**. Methods reviewer: **pending**. Request review on the PR for #101, and do not close #101 until that review is documented.
+- **Reviewer links and audit date:** AI-assisted screen on 2026-10-16. Human factual/link reviewer: **pending**. Methods reviewer: **pending**. Issue #101 was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates above remain open; reopen it to document human review.
 
 ## Independent source spot-check (2026-10-16)
 
