@@ -148,3 +148,13 @@ actual source permission, sufficient kappa, or scientific acceptance: the
 `human_independence_verified`, `source_rights_verified` and
 `research_enrollment` limits remain unchanged. Regression tests include
 both one-rater and two-rater omissions that otherwise appear to agree.
+
+**CI reconciliation (2026-10-15):** the existing regression suite requires
+`adjudication.status=partial` when actual coder disagreements remain, even
+if another selected item is unpaired. This priority is preserved: unresolved
+disputes → `partial`; otherwise missing A/B submissions →
+`incomplete_reviews`; otherwise → `complete`. Missing item IDs and their
+full original denominator remain independently visible for all three states.
+The initial CI failure on head `e99aa645a74586357435f2c65e6ae20c717526b3`
+was a backwards-compatibility contract mismatch, not a passed check; the
+adjusted head must pass all four Python suites and the artifact job.
