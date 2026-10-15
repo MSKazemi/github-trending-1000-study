@@ -83,3 +83,8 @@ permissive duplicate/nonstandard defaults; its
 [URL parsing documentation](https://docs.python.org/3/library/urllib.parse.html)
 explains deferred port errors. New tests use synthetic files only and verify
 CLI privacy, bounded inputs, no-follow behavior and FIFO rejection.
+
+Additional 2026-10-15 regression: syntactically parseable but unusable
+explicit HTTPS port zero and empty port delimiter are rejected; legitimate
+nondefault HTTPS ports remain structurally acceptable. URL shape alone does
+not certify a reachable or fact-checked source.

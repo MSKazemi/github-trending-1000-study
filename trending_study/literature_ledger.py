@@ -105,9 +105,11 @@ def audit(data):
             try:
                 parsed_source = urlsplit(source_url)
                 # urlsplit defers malformed/out-of-range port checks until access.
-                parsed_source.port
+                port = parsed_source.port
                 clean_source = (parsed_source.scheme == "https"
                                 and bool(parsed_source.hostname)
+                                and port != 0
+                                and not parsed_source.netloc.endswith(":")
                                 and parsed_source.username is None
                                 and parsed_source.password is None
                                 and not parsed_source.fragment

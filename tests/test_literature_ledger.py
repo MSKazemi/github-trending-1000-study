@@ -90,6 +90,18 @@ class LiteratureLedgerTests(unittest.TestCase):
             with self.subTest(url=link), self.assertRaises(LiteratureError):
                 audit(payload)
 
+    def test_zero_or_empty_explicit_https_port_is_invalid(self):
+        for link in ("https://doi.org:0/10.1000/XYZ",
+                     "https://doi.org:/10.1000/XYZ"):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(link=link), self.assertRaises(LiteratureError):
+                audit(payload)
+        # A valid nondefault HTTPS port remains acceptable as documented.
+        payload = source()
+        payload["records"][0]["source_url"] = "https://example.org:8443/article"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
     def test_canonical_doi_source_url_is_structural_only(self):
         self.assertEqual(audit(source())["decisions"]["include"], 1)
         # An HTTPS string is *not* independent content verification.
