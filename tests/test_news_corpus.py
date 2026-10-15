@@ -9,6 +9,7 @@ from trending_study import news_corpus
 import unittest
 
 from trending_study.news_corpus import validate_directory, validate_records
+from trending_study.data_integrity import decode_research_json
 
 ROOT = Path(__file__).resolve().parents[1]
 ITEMS = ROOT / "tests" / "fixtures" / "news_corpus"
@@ -170,8 +171,13 @@ class NewsCorpusTests(unittest.TestCase):
             with self.subTest(expected=expected), tempfile.TemporaryDirectory() as folder:
                 path = Path(folder) / "NEWS-2026-0001.json"
                 path.write_text(raw, encoding="utf-8")
-                with self.assertRaisesRegex(ValueError, expected):
+                # Rejection must not echo user-controlled duplicate key names.
+                with self.assertRaisesRegex(ValueError, "invalid or ambiguous research JSON"):
                     validate_directory(folder)
+                # The fixed CLI diagnostic hides it, but the canonical decoder
+                # rule named by ``expected`` must be what rejected the input.
+                with self.assertRaisesRegex(ValueError, expected):
+                    decode_research_json(raw.encode("utf-8"), "synthetic news input")
 
     def test_symlinked_news_input_and_root_are_rejected(self):
         with tempfile.TemporaryDirectory() as root:
