@@ -21,3 +21,13 @@ Both are **first-party release documents**. They independently cross-check *that
 **Scientific disposition:** this spot check supports selected attributed vendor disclosure claims, not six-month systematic completeness, independently measured security improvement, company-wide roadmaps, actual adoption, participant consent or energy/carbon outcomes. Keep [issue #164](https://github.com/MSKazemi/github-trending-1000-study/issues/164) open pending actual qualified review and traceable final acceptance.
 
 **Practical lesson:** for an agent-enabled repository, include a synthetic-token test for *both provider output and local transcript persistence*, with an explicit bypass/denied-action denominator, before trusting a hook or scanner. Mere vendor support lists are not proof of end-to-end containment.
+
+## Additional official release-version cross-check — 2026-10-15
+
+- [ggshield release page](https://github.com/GitGuardian/ggshield/releases) identifies **v1.55.0** as a September 24, 2026 OSS release, including added Kiro and Junie CLI integration; the [versioned changelog](https://github.com/GitGuardian/ggshield/blob/v1.55.0/CHANGELOG.md) separates CLI vs IDE integration. Do **not** infer Junie-in-IDE hook support, or that this September 24 release independently confirms the distinct September 25 SaaS deployment.
+- [Self-hosted 2026.7](https://docs.gitguardian.com/releases/self-hosted/2026-07-changelog) states the Endpoint Protection feature is **nonfunctional on self-hosted v2026.7.0**. It also describes beta/opt-in MCP deployment; a vendor feature list cannot nullify the documented failure mode.
+- [September 25 SaaS note](https://docs.gitguardian.com/releases/saas/2026/09/25/changelog) distinguishes per-agent interception from **local transcript retention** and tool outputs still reaching some models. Treat Kiro, Junie and other tools separately; a hook's presence is not equivalent to end-to-end secret containment.
+
+**Identity/dedup boundary:** A date on a tag/release vs a SaaS notice has a different unit of observation. Retain both provenance links and the existing 24 lead records rather than synthesizing a single inferred installation state. No user/organization-level breach incidence, rate of blocked secrets, or independent clinical-style efficacy claim is supported.
+
+**Maintainer test extension (still unexecuted):** add four negative cases to the 12-task synthetic plan: a tool-output secret that is withheld before model input, an output that still lands in a local transcript, a CLI-vs-IDE unsupported hook, and a nonfunctional/disabled endpoint. Do not feed actual credentials or proprietary transcripts into any model/test. Reviewer must accept these as *proposed cases*, not measured results.
