@@ -4,6 +4,8 @@ Passing this test does not authenticate publications, reviewers, PDF bytes or
 scientific findings. Those require separate source/access/method assessment.
 """
 import json
+from trending_study.data_integrity import (ResearchJSONError, decode_research_json,
+                                          load_research_json_file)
 from pathlib import Path
 import re
 import unittest
@@ -17,7 +19,34 @@ REGISTER = ROOT / "references" / "journal_open_access_2026_10_12.json"
 class JournalShortlistContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data = json.loads(REGISTER.read_text(encoding="utf-8"))
+        cls.data = load_research_json_file(REGISTER)
+
+    def test_ambiguous_or_untrusted_registry_input_is_rejected(self):
+        # Reuse the existing canonical decoder rather than silently resolving
+        # duplicate DOI fields or accepting nonstandard numeric values.
+        cases = (
+            b'{"articles":[{"doi":"10.fake/a","doi":"10.fake/b"}]}',
+            b'{"article_count":NaN}',
+            b'{"article_count":1e9999}',
+            b'{"article_count":1e-9999}',
+            bytes([0xff]),
+        )
+        for raw in cases:
+            with self.subTest(raw=repr(raw[:40])):
+                with self.assertRaises(ResearchJSONError):
+                    decode_research_json(raw, "synthetic-register")
+
+    def test_declared_pdf_version_matches_repository_or_publisher_host(self):
+        # Host consistency is necessary but never sufficient to authenticate
+        # license, full-text access, scientific claims or exact PDF content.
+        for r in self.data["articles"]:
+            with self.subTest(id=r["id"]):
+                pdf = urlsplit(r["pdf_url"])
+                publisher = urlsplit(r["publisher_url"])
+                if r["pdf_type"] == "publisher_pdf":
+                    self.assertEqual(pdf.hostname, publisher.hostname)
+                else:
+                    self.assertEqual(pdf.hostname, "arxiv.org")
 
     def test_complete_distinct_declared_shortlist(self):
         data = self.data
