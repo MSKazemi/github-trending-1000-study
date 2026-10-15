@@ -170,3 +170,31 @@ A null or negative result is a valid outcome and must be recorded as such. **No 
   - "2.8T" vs "3T-class" framing for Kimi K3;
   - no independent provider-fidelity audit, incident post-mortem or user-outcome study was found. This is a search gap, not proof of absence.
 - **Reviewer links and audit date:** none yet. Human factual/link spot-check, rights review and methods review are pending. The issue may be closed with this provisional status recorded, and those gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited URLs on 2026-10-16 and compared each date, figure and quote with the raw page text (`curl` with a generic `Mozilla/5.0` User-Agent plus text search). The docs changelog, deprecations and Together Link pages were read in their `.md` form. Blog dates come from each page's JSON-LD `datePublished` / `dateModified`. GitHub data came from `gh api` and the CVE record from the NVD JSON API. No access gate was bypassed and no personal identifier was sent.
+
+| Rows checked | Outcome | Note |
+|---|---|---|
+| 001 | confirmed | `gh api`: 41 together-py releases in the window (v2.8.0 2026-04-13 to v2.41.0 2026-10-12) and 23 together-typescript releases (v0.40.0 2026-05-11 to v0.58.0 2026-10-07). Both are Apache-2.0 |
+| 002, 018, 034 | confirmed | The changelog entries (Apr 14, Jun 26, Jul 10, Aug 25, Sep 1, Sep 15) and the deprecations tables match. History dates are 2026-04-16, 2026-07-10, 2026-08-25 and 2026-09-15. The scheduled table still lists 2026-09-14. Llama-3-8B-Lite is "No" in the history table but "Available as an on-demand dedicated endpoint" in the changelog. The date conflicts are real |
+| 003, 038 | confirmed | Apr 22: Build Tiers retired, dynamic rate limits, fully prepaid billing, "$5 credit purchase is the only gate". Oct 2: dynamic rate limits retired, 429/503 with exponential backoff |
+| 004, 009, 010, 014, 030 | confirmed | DeepSeek-V4-Pro 512,000 context, FP4, $2.10/$4.40/$0.20; the Jun 9 cut to $1.74/$3.48. gemma-4-31b-it $0.20→$0.39 and $0.50→$0.97 from May 21. pearl-ai/gemma-4-31b-it 32,000 context, INT8, $0.28/$0.86. The May 29 increases are as stated (Llama-3-8B-Lite is $0.10→$0.14 for input and output). Aug 27 removals and the GET /billing/usage beta match. Kimi-K2.7-Code was added Jun 13 |
+| 005 | unverifiable | HPCwire still returns HTTP 403. No Genesis Mission item was found in the together.ai sitemap or press page. The row stays E0 |
+| 006 | confirmed; limitation updated | CVE-2026-31431 (NVD published 2026-04-22, algif_aead), "containers are not a security boundary", datePublished 2026-04-30. The same 2026-09-10T11:3x `dateModified` appears on at least seven Together blog posts. That points to a bulk CMS re-save, so it is weak evidence of a content edit. The limitation now says so |
+| 007, 015, 017, 025, 031 | confirmed | Adaption "average 82% increase in data quality". ISO 27001:2022 from A-LIGN (ANAB-accredited), certificate copy on request. ParallelKernelBench: 87 problems, "under a third", "fewer than a quarter of those beat the naive baseline"; repo Apache-2.0, created 2026-06-03. YC cluster: "short-term sprints while benefiting from long-term rates". OSS stack layers and "a few minutes" |
+| 008, 013, 016, 023, 024, 029, 032, 033, 035, 037 | confirmed | The changelog text matches each claim. v2.10.0 was published 2026-04-23, v2.34.0 2026-09-15T19:51:54Z and v2.36.0 2026-09-23. The preemptible blog says `TogetherPreempted` while the changelog says `TogetherPreemptionNotified`. together-sandbox is MIT |
+| 011 | confirmed | Body: 31% more TPS than TensorRT-LLM; p50 TTFT 0.71 s / 1.1 s / 5.1 s at 2.5M TPM; "70% cheaper" for Kimi K2.7 Code vs Claude Opus 4.8. The /blog index teaser still reads "76% lower cost than Claude Opus 4.6" |
+| 012 | confirmed | "Updated May 19, 2026"; "Together Computer, Inc., a Delaware corporation" |
+| 019, 020 | confirmed | Blog: $800M, the investor list including "SE Ventures", "over 500 MW" of commitments, "6x to 20x lower costs". TechCrunch (July 1): $8.3B, led by Aramco Ventures, "SentinelOne's S Ventures", ">$1.15 billion" bookings, and The Information's spring report of $1B at $7.5B |
+| 021 | confirmed | 99% uptime SLA, one-month minimum term, MiniMax M3 and GLM-5.2, "up to 90% below Claude Opus 4.8 at list price" |
+| 022, 036 | confirmed | Jul 15 "open-source launcher". Nutlope/togetherlink: MIT, created 2026-06-22, owner type User, 0 tags, 0 releases. Oct 1 beta on macOS and Linux. Docs: "connect directly to its hosted gateway ... No local proxy or daemon runs" |
+| 026 | confirmed | 452 rollouts (113 × 4), 69.9% vs 68.5%, $4.65 vs $13.41, 58 vs 45 four-for-four |
+| 027 | confirmed | "2.8T parameter sparse Mixture-of-Experts", 1M context, "every open weights model Moonshot ships going forward", US-hosted, "zero data retention" |
+| 028, 040 | confirmed | StorageReview (Aug 11): multi-year $240M, HGX B300. StorageNewsletter (Aug 14): "expected availability in Q1 2027", "400 trillion tokens monthly". Oct 6 blog: "first customer running on it", "Hundreds of trillions of tokens ... over a million developers" |
+| 039 | confirmed | "over 50% less"; Opus 5.5 / GLM 5.3 with an Anthropic key, otherwise GLM 5.3 / GLM 5.3 Flash; per-session tracker; `dateModified` 2026-10-14 |
+
+**Counts:** 40 of 40 rows checked. 38 confirmed, 1 confirmed with its limitation updated (006), 1 unverifiable (005, already E0), 0 corrected, 0 wrong. Not checked: the "3T-class" wording in the Kimi K3 guide summary (row 027 limitation) and the status-page uptime figures (row 021 limitation).
+
+*This is an AI-assisted spot-check, not a qualified human review.*
