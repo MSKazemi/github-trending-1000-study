@@ -31,7 +31,7 @@ class JournalShortlistContractTests(unittest.TestCase):
     def test_publisher_and_pdf_links_are_explicit_but_not_authenticated(self):
         for r in self.data["articles"]:
             with self.subTest(r=r["id"]):
-                self.assertRegex(r["doi"], r"^10\\.[0-9]{4,9}/[^\\s]+$")
+                self.assertRegex(r["doi"], r"^10\.[0-9]{4,9}/[^\s]+$")
                 self.assertEqual(r["doi_url"], "https://doi.org/" + r["doi"])
                 for field in ("publisher_url", "pdf_url"):
                     url = urlsplit(r[field])
