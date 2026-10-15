@@ -58,7 +58,7 @@ All 32 rows are in the [CSV](032-railway.events.csv). Grouped by capability clus
 | **App builder / onboarding** (015, 019, 021, 027) | dev.new prompt-to-deployed-app preview; code lives on a persistent volume in a normal Railway project; deploy without an account (60 min build, 24 h claim, $3 LLM cap) | Preview only; source export to GitHub **not described**; abuse and conversion data absent | E2 |
 | **Data services and maintenance** (017, 022, 025, 029) | Default Postgres CVE patching; Redis/MySQL/MongoDB HA; one-click Postgres major upgrades; MySQL PITR GA | CVEs and patch latency unspecified; HA conversions drop connections; rollback window unstated | E2 |
 | **Governance and security** (006, 017, 020, 022, 031) | GitHub-org deploy allowlist; Access Groups; staged reviewable template change sets; Edge Rules; identity-aware proxy (enterprise, $5,000/mo commitment) | Many controls plan-gated to committed spend; no independent security review | E2 |
-| **Reliability incidents** (004, 005, 013, 018, 028) | Three vendor postmortems: GCP account suspension (~8 h, platform-wide), US East carrier/routing (~2 h degraded), routing deploy-ordering bug (~5 min global 404s); ~10 h invalid certificates for some US users | Vendor-authored except The Register, which relays Railway's account; remediation completion unverified | E2 (vendor) / E1 (press) |
+| **Reliability incidents** (004, 005, 013, 018, 028) | Three vendor postmortems: GCP account suspension (~8 h, platform-wide), US East carrier/routing (~4 h of degraded cross-US connectivity 07:44–12:01 UTC, incl. ~2 h disk/private-network degradation and ~20 min without a default route in one zone), routing deploy-ordering bug (~5 min global 404s); ~10 h invalid certificates for some US users | Vendor-authored except The Register, which relays Railway's account; remediation completion unverified | E2 (vendor) / E1 (press) |
 | **Infrastructure** (008) | Metal Gen 2 live in 3 of 4 regions, ~13% of containers on Gen 2 at Jun 1, ~40% workloads on cloud burst | Throughput/capacity multipliers vendor-stated; no energy data | E2 |
 | **Deprecation** (023) | Config as Code (railway.json/railway.toml) stops for new services Aug 28 and ends Dec 1, replaced by TypeScript IaC SDK (experimental since Jun 5) | Real migration burden for existing repos; end date outside window | E2 |
 
@@ -123,3 +123,33 @@ Company adoption claims (millions of users, 50M+ builds/month, 80M deployments/m
 - **Conjectures and unknowns:** all section 6 hypotheses; isolation/security of sandboxes and Cloud Agents; dev.new code portability; real adoption, task quality and lifecycle cost; filing-level ownership.
 - **Important contradictory or null evidence:** three vendor-documented outages plus a ~10 h certificate defect in the window; vendor's own admission that reliability "cost us customer trust"; The Register could not obtain Google's account of the suspension; secondary source misdates Sandboxes GA; changelog slug/display date mismatches; CDN headline metric inconsistent across two first-party pages.
 - **Reviewer links and audit date:** none yet. Pending: human factual/link spot-check of sampled rows, rights/source-access review, methods review, PR review linked to [#99](https://github.com/MSKazemi/github-trending-1000-study/issues/99). No `NEWS-YYYY-NNNN` corpus items were created for [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56); The Register article (row 005) is the one independent candidate, subject to human verification.
+
+## Independent source spot-check (2026-10-16)
+
+An independent reviewer agent (not the author of this screen) re-fetched every cited URL on 2026-10-16 (all returned HTTP 200) and compared dates and specific figures against raw page text (`curl` + grep) or the GitHub REST API (`gh api`). Classification: confirmed / corrected / unverifiable / wrong.
+
+| Row(s) checked | Outcome | Note |
+|---|---|---|
+| Entity (§2) | confirmed | ToS: "Effective date: 2026-04-20", "Railway Corporation", 548 Market St … San Francisco address, Delaware law; "Railway Corp." in page footers. No filing-level check. |
+| Pre-window Series B (§2) | confirmed | SiliconANGLE: $100 million Series B led by TQ Ventures (Jan 22, 2026). Axios not re-read. |
+| 032-001 | confirmed | Page 2026-04-17; OAuth workspace/project scoping, "7 tools today", destructive tool prompt, llms.txt. |
+| 032-002 | confirmed | Page 2026-04-24; "live for every workspace", per-token rates, mix of Anthropic models, default Agent hard limit "$5 on Hobby, $20 on Pro", outbound IPv6. |
+| 032-004 | confirmed | Postmortem dated May 20, 2026; "between 22:20 UTC and approximately 06:14 UTC on May 20 (~8 hours)", Google Cloud suspended the production account. |
+| 032-005 | confirmed | The Register, "wed 20 May 2026 // 05:37 UTC"; relays Railway (Angelo Saraceno); "has contacted Google"; no Google response at writing. Article was written mid-incident. |
+| 032-008 | confirmed | Jun 2, 2026; "live in three of four regions today: US West, US East, and Amsterdam", "40 percent of our workloads are on cloud burst", "About 13% of the containers … as of June 1". |
+| 032-009 | confirmed | Jun 3, 2026; NPM-hosted MCP deprecation, sign-up "Soon", 48-hour soft delete, destructiveHint; "exceeded 80 million deployments" last month. |
+| 032-010 / CLI count (§4, §9) | confirmed | `gh api`: v5.0.0 published 2026-06-04T15:57:44Z (PR #933); **207** releases (all non-prerelease) published 2026-04-12..10-12, first v4.37.3 (2026-04-15), last v5.66.0 (2026-10-12). cli/railway-skills/railway-ts-sdk all MIT; created dates match. |
+| 032-013 | **corrected** | Postmortem (Jul 3, 2026) says increased latency/intermittent cross-US connectivity **07:44–12:01 UTC** (~4 h 17 min); disk and private-network degradation in one US East zone lasted **roughly two hours**; ~20 min without default route; ~20,000 links blackholed. The row had attached the 07:44–12:01 window to the "~2 h" figure; CSV row and §4 text fixed. |
+| 032-012 / 016 | confirmed | Jun 26 entry: six coding agents preinstalled incl. Claude Code, Droid, Pi; Aug 7 entry: "Cloud Agents Beta", "we promote the VM to prod", Android app. |
+| 032-014 / 030 | confirmed | Jul 10 entry: Slack/Discord agent "in beta", percentage rollout; Oct 5 blog: shipped to Priority Boarding in July, now GA. |
+| 032-017 / 018 | confirmed | Aug 7 entry: CVE patching on notification + known mitigation, no public internet provisioning, not yet "fully managed"; fixes list "invalid cert for 10 hours". |
+| 032-021 / 023 | confirmed | Aug 17 blog: 60 minutes build, 24 hours to claim, "Max of $3 of LLM credit", free trial rolled back over fraud/abuse. Aug 21 entry (slug 2026-08-20): Config as Code stops for new projects Aug 28, ends December 1. |
+| 032-026 / 027 / 029 | confirmed | Sep 17 (slug 09-18) Sandboxes GA "on every plan", MySQL PITR 7 days in Priority Boarding; Sep 25: 2 vCPU / 2 GB, 60 min + 24 h; Oct 1 (slug 10-02) MongoDB 7/8 HA, MySQL PITR GA; CLI v5.63.1 (2026-09-28) PITR/Patroni fix. |
+| 032-028 | confirmed | Sep 30, 2026; "between roughly 07:35 and 07:40 UTC … HTTP 404 in all regions"; serial migration ordering, schema-gated rollout, shard-based regional rollouts. |
+| 032-031 / 032 | confirmed | Oct 8 blog: enterprise, admin-only, "$5,000/mo"; Oct 9 entry: OpenRouter beta, App Store rename pending, SAML "coming soon", "big stuff coming this quarter". |
+| 032-007 | confirmed (paraphrase note) | May 27, 2026; "cost us customer trust", Q2/Q3/Q4 framing, "50M+ builds a month". ISO wording on the page is "angling to work on ISO27001" / "serious push toward ISO27001"; "exploring" is the screen's paraphrase. |
+| CDN headline discrepancy (§3) | confirmed | Blog index "30M RPS" vs Compute Week page "100M RPS". |
+
+Outcome: 23 of 32 ledger rows (001, 002, 004, 005, 007–010, 012–014, 016–018, 021, 023, 026–032) plus 4 report-level items (entity, Series B baseline, CLI count, CDN discrepancy) checked → 22 rows confirmed, 1 row corrected (013 duration), 4 report items confirmed; 0 unverifiable, 0 wrong. No fabricated URL, date or figure found; no cross-company contamination found. Not re-checked: rows 003, 006, 011, 015, 019, 020, 022, 024, 025 (URLs resolve, figures not compared), the Axios article and the unopened changelog weeks.
+
+*This is an AI-assisted spot-check, not qualified human review; the human factual/link, rights and methods reviews remain pending.*
