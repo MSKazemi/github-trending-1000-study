@@ -1,193 +1,120 @@
-# Amazon / AWS — six-month AI/software company intelligence (initial source screen)
+# Amazon / AWS — provisional six-month technology intelligence screen (006)
 
-> **Provisional initial evidence screen (integration status 2026-10-15):** accepted for `main` by maintainer decision as a *provisional source-lead screen*, following the precedent of #67/#81/#86/#87/#93. It has **not** been reviewed by a qualified independent human; every event row remains an E0/E1 publisher-document lead, not a verified release, adoption or task outcome. **Pending gates:** seven-segment search with hit/screen/exclusion denominators and archived captures; independent human factual, licensing and methods review; adverse/independent reporting screen; exact artifact, licence and access checks; any prospective task trial. Issue #72 stays open. The text below is retained as drafted on 2026-10-12..15; where it conflicts with the [canonical events CSV](006-amazon.events.csv), the CSV and the closing *Controlled integration review — 2026-10-15* section govern.
- 
-- **Watchlist ID:** 006
-- **Issue:** [#72](https://github.com/MSKazemi/github-trending-1000-study/issues/72)
-- **Period:** 2026-04-12 to 2026-10-12 inclusive, calendar publication dates.
-- **As-of source review:** 2026-10-12.
-- **Research status:** **INITIAL source-screened draft only**. Not a complete six-month systematic search, independently adjudicated result, formal peer review, real product deployment test, or study finding.
-- **Company sector:** AWS developer tooling, cloud agents and Bedrock.
-- **Official publication entry:** https://aws.amazon.com/blogs/devops/
-- **Individual machine-readable events:** [006-amazon.events.csv](006-amazon.events.csv).
-- **Methods:** [company-source protocol](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md); [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](006-amazon.events.csv), [search log](006-amazon.search-log.md) and [source-QC note](006-amazon.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads** under the maintainer's 2026-10-15 integration decision (precedent: PRs #67/#81/#86/#87/#93/#301). They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Merging is not scientific or security sign-off; issue [#72](https://github.com/MSKazemi/github-trending-1000-study/issues/72) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-## 1. Search and coverage audit
+- **Watchlist:** 006; [issue #72](https://github.com/MSKazemi/github-trending-1000-study/issues/72). Scope: Amazon / AWS coding-agent products — **Kiro** (IDE, CLI, Web, Crew), **Amazon Q Developer**, **Amazon Bedrock AgentCore** and related AWS developer-security services.
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened on 2026-10-16** (earlier passes 2026-10-12…15). Per-query UTC times, search-hit totals, page snapshots and an independent reviewer are unavailable.
+- **Status:** **provisional dated documentary screen — 30 source leads covering all seven calendar segments**; not reviewed by a qualified human. Not independently verified task outcomes, exhaustive retrieval or scientific completion. [Study method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md); [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+- **Official channels checked:** [AWS DevOps blog](https://aws.amazon.com/blogs/devops/), AWS Security blog, [AWS What's New](https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-agentcore-harness-generally-available/), [AWS security bulletins](https://aws.amazon.com/security/security-bulletins/), [Kiro blog](https://kiro.dev/blog/), [Kiro changelog](https://kiro.dev/changelog/), [AgentCore release notes](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html), and GitHub repositories via read-only `gh api`. **Claim grading** is company-watch E0–E4, not the separate [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-Source screening consulted the linked first-party publication/archive pages, product announcement text and relevant source discovery for this organization as of 2026-10-12. The following are **reproduction search suggestions**, not a log claiming these literal exact queries were all executed. They should be run independently for every month, in official and high-quality secondary sources, before final issue completion:
+## 1. Discovery, coverage and exclusions
 
-1. `"Amazon / AWS" after:2026-04-11 before:2026-10-13 agent coding open weights`
-2. `site:aws.amazon.com 2026 model launch agents`
-3. `"Amazon / AWS" 2026 developer API security pricing`
-4. `"Amazon / AWS" 2026 independent benchmark and criticism`
+The [2026-10-16 search log](006-amazon.search-log.md) records the five web searches and ~30 page reads actually run, with include/exclude decisions per segment; the [2026-10-14 query log](source-audits/006-amazon.2026-10-14-qa.md) is preserved unchanged. The ledger grew from **9 to 30 rows**: Apr 12–30 **4**, May **3**, June **8**, July **3**, August **6**, September **3**, Oct 1–12 **3**. The earlier statement that September and October 1–12 had no documented event was already superseded on 2026-10-15 and is now further corrected.
 
-**Audit limitations:** Search-hit totals, all screened/excluded URL counts, frozen web snapshots, completeness/recall and an independently audited secondary corpus were **not measured**. The included events below are a bounded purposive screen, not an enumeration of every release. The seven partial/full month segments are displayed even when an event was not found. **An unfilled month is missing evidence, not a zero-activity finding.** Verify link accessibility, page update history, publication timezone, actual release date vs article date and region/plan availability before declaring the report done. No web scraping or private-user data collection.
+Coverage is **purposive**: Kiro blog/changelog page 1, AWS What's New items found by search, and AWS security bulletins found by search. Third-party model-availability posts in Kiro (many per month) were excluded by rule. Amazon Q Developer feature changes beyond the sunset notice were **not searched** (query logged as not executed), so Q-side activity is **unknown**, not zero. Search-hit and exclusion denominators are unknown.
 
-## 2. Identity and product boundary
+## 2. Corporate/product identity and rights baseline
 
-Amazon.com, Inc. operates Amazon Web Services (AWS). Amazon Q Developer, Kiro, and Amazon Bedrock are distinct products, not interchangeable brand names; each has a different support, data and billing boundary.
+Amazon.com, Inc. operates Amazon Web Services (AWS). Kiro, Amazon Q Developer and Amazon Bedrock AgentCore are **distinct products** with separate support, data and billing boundaries; Kiro is billed through its own plans (Pro, Pro+, Pro Max, Power) and AWS identity integration (IAM Identity Center, Service Quotas). Corporate ownership was not re-checked at filing level (SEC EDGAR skipped because it demands a personal identifier).
 
-Public first-party landing/news channels identify product offerings, but this report does not independently verify corporate cap tables or product rights. Amazon's 2026-04-30 post dates IDE-plugin support end to 2027-04-30, while preserving AWS Console Q; do not misreport this as a 2026 product shutdown.
+**Open-source and licence status (GitHub API, read 2026-10-16):**
 
-## 3. Month-by-month candidate events
+| Repository | Licence (GitHub-detected) | What it is | Note |
+|---|---|---|---|
+| [kirodotdev/Kiro](https://github.com/kirodotdev/Kiro) | none detected | Public issue/feedback tracker | README: "The Kiro product source code is not hosted here." Kiro IDE/CLI are closed source |
+| [aws/amazon-q-developer-cli](https://github.com/aws/amazon-q-developer-cli) | Apache-2.0 | Former open-source Q Developer CLI | README: "no longer being actively maintained and will only receive critical security fixes"; now "available as Kiro CLI, a closed-source product". Last release v1.19.7 on 2025-11-17 (pre-window) |
+| [kirodotdev/KiroCrew](https://github.com/kirodotdev/KiroCrew) | Apache-2.0 | Open-source agent workspace (created 2026-07-16; v0.1.0 2026-07-22; v0.8.0 2026-10-09) | Runs on the closed-source Kiro CLI |
+| [aws/bedrock-agentcore-sdk-python](https://github.com/aws/bedrock-agentcore-sdk-python) | Apache-2.0 | AgentCore Python SDK | 26 releases dated in window (v1.6.2 Apr 13 … v1.24.1 Oct 7); SDK licence does not cover the hosted AgentCore service |
+| strands-agents/sdk-python → `strands-agents/harness-sdk` (API redirect) | Apache-2.0 | Strands agent SDK, the AgentCore harness export target | Renaming not investigated |
 
-| Period | Source-linked discovered candidate(s) | Coverage characterization |
+**Rights consequence:** the one AWS coding-agent CLI that was open source (Q Developer CLI) has been replaced by a closed-source successor. Reusable open code in this ecosystem is the SDK/workspace layer (AgentCore SDK, Strands, Kiro Crew), not the agent clients.
+
+## 3. Seven-segment dated chronology
+
+| Period | In-window source evidence (publication dates) | Availability and attribution limits |
 |---|---|---|
-| 2026-04-12..30 | [Amazon Q Developer support transition](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) | First-party pages; see events |
-| 2026-05 | [Introducing Kiro Web](https://kiro.dev/blog/introducing-kiro-web/) | First-party pages; see events |
-| 2026-06 | [Kiro power for AWS DevOps Agent](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/) | First-party pages; see events |
-| 2026-07 | [Control framework for AI coding agents](https://aws.amazon.com/blogs/security/balancing-speed-and-safety-a-control-framework-for-ai-coding-agents/) | First-party pages; see events |
-| 2026-08 | [AWS Continuum developer workflow](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/) | First-party pages; see events |
-| 2026-09 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
-| 2026-10-01..12 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
+| Apr 12–30 | Apr 13 [Kiro CLI headless mode](https://kiro.dev/blog/introducing-headless-mode/) (API key, `--no-interactive`); Apr 22 [AgentCore managed harness preview, CLI and skills](https://aws.amazon.com/about-aws/whats-new/2026/04/agentcore-new-features-to-build-agents-faster/); Apr 29 [The Register interview](https://www.theregister.com/software/2026/04/29/amazon-tells-its-engineers-to-review-all-ai-output/5224124); Apr 30 [Q Developer IDE end-of-support notice](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) | Harness is **preview** in 4 Regions. Q sunset is **2027-04-30** for IDE plugins and paid subscriptions only; new sign-ups stop 2026-05-15 |
+| May | May 12 [Specs faster/smarter](https://kiro.dev/blog/faster-smarter-specs/) (parallel independent tasks, quick plan, requirements analysis); May 18 [Kiro Web preview](https://kiro.dev/blog/introducing-kiro-web/); May 22 [2026-035-AWS / CVE-2026-9255](https://aws.amazon.com/security/security-bulletins/2026-035-aws/) Kiro CLI tool approval bypass via piped stdin | Kiro Web **preview** for paid plans; CVE fixed in kiro-cli 1.28.0 |
+| June | Jun 2 [CVE-2026-10591](https://aws.amazon.com/security/security-bulletins/2026-037-aws/) file-write to execution-sensitive paths; Jun 11 [Kiro Web specs + GitLab](https://kiro.dev/blog/kiro-web-specs-gitlab/); Jun 11 [Pro Max $100/mo](https://kiro.dev/blog/kiro-pro-max/); Jun 15 [CVE-2026-11931](https://aws.amazon.com/security/security-bulletins/2026-045-aws/) world-readable token cache; Jun 17 [AgentCore harness GA](https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-agentcore-harness-generally-available/); Jun 18 [scheduled automations](https://kiro.dev/blog/introducing-automations/); Jun 19 [Kiro power for AWS DevOps Agent](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/); Jun 25 [Agent Focus (experimental)](https://kiro.dev/blog/introducing-agent-focus/) | Harness **GA** (Jun 17 on What's New; Jun 18 suggested for a blog not opened). Automations live inside a still-**preview** Kiro Web. Two security fixes in the IDE |
+| July | Jul 2 [overage caps / prepaid credits](https://kiro.dev/blog/cap-prepay-overage/); Jul 14 [One year of Kiro](https://kiro.dev/blog/one-year/) (direction and adoption claims); Jul 30 [control framework for AI coding agents](https://aws.amazon.com/blogs/security/balancing-speed-and-safety-a-control-framework-for-ai-coding-agents/) | Adoption numbers are vendor claims. Framework is guidance. A third-party July report on a Kiro prompt-injection flaw returned HTTP 403 and is not cited |
+| August | Aug 4 [Kiro Crew open source](https://kiro.dev/blog/introducing-kiro-crew/); Aug 4 [CVE-2026-18656/18657](https://aws.amazon.com/security/security-bulletins/2026-074-aws/) Windows search path; Aug 5 [AWS Continuum for code vulnerabilities](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/); Aug 6 [AgentCore runtime instances GA](https://aws.amazon.com/about-aws/whats-new/2026/08/aws-bedrock-agentcore-runtime-instances-generally-available/); Aug 18 [cloud sessions preview](https://kiro.dev/blog/cloud-sessions/); Aug 26 [diagnostics-over-time analysis](https://kiro.dev/blog/diagnostics-over-time/) | Continuum is **preview**; its Claude Code/Codex/Kiro integrations were **"coming soon"** (QC correction). Cloud sessions us-east-1 only. Crew repo existed and released v0.1.0 before the blog |
+| September | Sep 8 [ISO/IEC 27001 scope](https://kiro.dev/blog/iso-27001/); Sep 18 [1,000 PRs in a week](https://kiro.dev/blog/software-factory-1000-prs/); Sep 30 [Kiro Web Workflows opt-in](https://kiro.dev/changelog/web/introducing-workflows/) | ISO is inclusion in AWS's certificate scope, not a Kiro certificate. PR count without defect/revert data |
+| Oct 1–12 | Oct 9 [Kiro CLI V3 rollout](https://kiro.dev/blog/cli-3/); Oct 12 [CLI 2.30.0 changelog](https://kiro.dev/changelog/cli/); Oct 12 [FedRAMP Class C scope](https://kiro.dev/changelog/general/kiro-is-now-in-scope-for-fedramp-class-c/) | V3 general default planned for **end of October** (after cutoff). Oct 13 sign-in controls and Oct 14 local sandboxing **excluded** |
 
-## 4. Dated evidence and feature map
+## 4. Feature, rights and security cross-check
 
-| Event | Published / underlying event | Source-linked provider claim or dated documentary event | Availability / constraint | Evidence grade and independent check | Relevant objectives |
-|---|---|---|---|---|---|
-| CI-006-01 | 2026-04-30 / event day not independently timed | [Amazon Q Developer support transition](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) — AWS announces April 30 2027 end-of-support for Q Developer IDE plugins/subscriptions; encourages Kiro migration. | announced_only; Future 2027 sunset; AWS Console and some first-party Q surfaces explicitly unaffected. | Provider E1; independent efficacy **not** verified | M1;M4 |
-| CI-006-02 | 2026-05-18 / event day not independently timed | [Introducing Kiro Web](https://kiro.dev/blog/introducing-kiro-web/) — Kiro announces web workflow for delegated development tasks. | preview; Preview status and region/plan scope may vary. | Provider E1; independent efficacy **not** verified | M1;M2 |
-| CI-006-03 | 2026-06-19 / event day not independently timed | [Kiro power for AWS DevOps Agent](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/) — AWS presents Kiro integration with AWS DevOps Agent. | shipped; Availability is vendor-described; task cost and reliability unmeasured. | Provider E1; independent efficacy **not** verified | M1 |
-| CI-006-04 | 2026-07-30 / event day not independently timed | [Control framework for AI coding agents](https://aws.amazon.com/blogs/security/balancing-speed-and-safety-a-control-framework-for-ai-coding-agents/) — AWS publishes author/build-time controls and governance guidance. | reported_undetermined; Security guidance is not empirical evidence of effectiveness. | Provider E1; independent efficacy **not** verified | M2;M5 |
-| CI-006-05 | 2026-08-05 / event day not independently timed | [AWS Continuum developer workflow](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/) — AWS announces partner-integrated code-security workflow. | preview; Preview; performance and measured vulnerability reduction unverified. | Provider E1; independent efficacy **not** verified | M2 |
+| Evidence cluster | What the cited documents support | Non-equivalence or counterexample |
+|---|---|---|
+| Q Developer → Kiro migration (-001; Q CLI README) | Future IDE-plugin sunset; Kiro positioned as successor; Q CLI now closed-source Kiro CLI | Not a 2026 shutdown of Q; Console, docs sites, mobile and Chat Apps not impacted. Migration also moves users from an Apache-2.0 client to a closed one |
+| Spec-driven, multi-surface agent (-002, CI-006-02, -011, -015, -016, -005, -022, -003) | Specs, parallel tasks, Web, automations, workflows, cloud sessions and CLI V3, all vendor-described | Most surfaces are **preview, experimental or opt-in**; no accepted-task, review-load or cost data |
+| AgentCore harness preview → GA (-007, -014), runtime instances (-021) | Configuration-defined agents, export to Strands code, EC2-hosted runtimes | Export portability untested; Claude Agent SDK export announced only; compute billed separately |
+| Kiro security bulletins (-009, -010, -013, -020) | Four vendor CVE disclosures in the window: tool-approval bypass, file-write to auto-exec paths, world-readable token cache, Windows search path | Disclosures, not exploitation evidence. They show that agent tool permissions and workspace trust are real attack surfaces. Other bulletins in the window were not enumerated |
+| Governance guidance and security products (CI-006-04, CI-006-05, -024, -026) | Control framework (deterministic/non-deterministic/human controls); Continuum preview; compliance-scope inclusions | Guidance and compliance scope are not measured risk reduction |
+| Vendor self-measurement (-018, -023, -025, -019) | Adoption counts, internal diagnostics error rates, 1,000 merged PRs, 39,000 internal Crew users | Unaudited; internal Amazon users; diagnostics authors state "a clean diagnostic check does not mean correct code"; no defect/revert counts |
+| Independent reporting (-008) | Named Amazon Stores director: all AI output human-reviewed; spec-driven work "reduces" hallucination "at best" | One interview, internal retail teams, no denominator |
 
-**Grading:** **E1** = provider-described release or policy. It supports attribution and reported availability, **not** reproducible behavior, quality, adoption or effectiveness. API version/docs and actual package licenses remain to be independently inspected; **E3/E4 is not awarded** to vendor metrics. The event CSV separately records class, observed limitations and link provenance. `shipped` means the **provider described availability** on the date, not independently validated access. **No claims about measured carbon impact or representative adoption.**
+## 5. Publicly stated direction versus shipped functionality
 
-### Feature, integration, licensing and security boundaries
+| Dated first-party source | Stated intention | Classification on 2026-10-12 |
+|---|---|---|
+| [Apr 30 Q Developer notice](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) | Move IDE users to Kiro by 2027-04-30 | **Announced** future sunset; sign-up stop 2026-05-15 |
+| [Apr 22 AgentCore](https://aws.amazon.com/about-aws/whats-new/2026/04/agentcore-new-features-to-build-agents-faster/) / [Jun 17 GA](https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-agentcore-harness-generally-available/) | Terraform support; skills for Claude Code/Codex/Cursor; Claude Agent SDK export | Harness **GA**; the named extensions **announced only** (delivery not checked) |
+| [Jul 14 One year of Kiro](https://kiro.dev/blog/one-year/) | "the roadmap ahead is the most ambitious we've ever had"; partner/community-driven evolution | **Aspiration**, no dated commitments |
+| [Aug 5 Continuum](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/) | Integrations with Claude Code, Codex and Kiro | **Announced only** ("coming soon"); Continuum itself preview |
+| [Sep 18 1,000 PRs](https://kiro.dev/blog/software-factory-1000-prs/) | Crews that propose their own work once governance and cost controls are "fully tested" | **Aspiration**; authors: "A capability an enterprise cannot control, audit, or afford is a demo, not a product" |
+| [Oct 9 CLI V3](https://kiro.dev/blog/cli-3/) | V3 default with CLI 3.0 "at end of October" | **Planned**, after the cutoff |
 
-- **Current/new capabilities reported by provider:** AWS publicly shifts coding workflow focus from Q Developer IDE plugins toward Kiro's specification-led agent environment while extending hosted/cloud agent operations.
-- **Availability:** check every event's status (including preview and future-only); descriptions of features are not interchangeable with externally accepted user tasks.
-- **Open-source/API/license:** A Q Developer IDE **future** sunset is not a completed 2026 shutdown. AWS explicitly keeps Q Developer in AWS Console and first-party surfaces outside the scheduled plugin sunset.
-- **Security and provenance:** do not execute untrusted build instructions, model install scripts or agent-recommended dependencies; record exact artifact identities, license, origin, signing/release tag, vulnerability results and permissions.
-- **Economic context:** model/API prices, tokens, human review, CI and ongoing support must be measured per functional task. Vendor throughput claims are not metered kWh or emissions.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company forecasts)
 
-## 5. Public roadmap / intention (not independently guaranteed)
+| Testable scenario | Rival explanation | Disconfirming observation |
+|---|---|---|
+| Spec-first agent workflows lower review effort per accepted change | Gains come from task selection or more reviewers, not specs | Same frozen tasks show equal accepted-change rate and review minutes with a plain test-first prompt |
+| Closed agent clients plus open SDK/export layers (Strands, Crew) keep agent logic portable | Export paths lag the hosted features and lock-in grows through billing and identity | An exported harness fails the same acceptance suite outside AWS, or needs major rework |
+| Agent tool-permission CVEs keep appearing as agent surfaces multiply | Early-product defect density that falls as the products mature | Bulletin count for Kiro falls across 2027 while surfaces grow |
 
-**Direction attributable to the company's publications:** AWS publicly shifts coding workflow focus from Q Developer IDE plugins toward Kiro's specification-led agent environment while extending hosted/cloud agent operations.
+## 7. M1–M7 study relevance
 
-A roadmap statement, planned support sunset, future model release or planned deployment **must not** be counted as generally available in the window. See specific `announced_only` and `preview` items in the dated table. Commitments are scope- and time-specific, and product marketing is a weaker evidence class than a pinned artifact and repeated independent task result.
-
-## 6. Analyst interpretation, alternatives and disconfirmation (2027–2031)
-
-| Conditional inference — NOT company commitment | Motivation | Rival explanation | Disconfirming observation |
-|---|---|---|---|
-| Agent orchestration via spec-driven workflows could improve maintainable integrations when tests and approvals travel with tasks. | Above source-linked product directions (E1) | Migrating from Q to Kiro can impose license, workflow and retraining costs without user-outcome gains. | Stable legacy CLI+tests achieve equal accepted tasks with lower total burden. |
-
-**Confidence:** exploratory/low until independent task comparisons and lifecycle measurement. Some genuinely useful reusable components predate this six-month interval; they remain eligible as controls/candidates, not excluded as old technology.
-
-## 7. Mapping to the study's M1–M7 objectives
-
-| Question | Needed observation rather than a product popularity proxy |
+| Construct | Prospective measurement (not an inferred conclusion) |
 |---|---|
-| M1 agent/workflow change | Timestamped, consented and version-pinned task use; feature availability is **not adoption** |
-| M2 accepted quality and review load | Frozen external acceptance suite; failures, review minutes, defects and follow-up counted for **all assigned tasks** |
-| M3 discoverability | Prospective matched repo controls and pre/post visibility measures with exposure/selection confounding |
-| M4 independent reuse | Audited outsider import, deployment or working repeat-use; stars and installs alone insufficient |
-| M5 reuse vs rebuilding | Pre-screened OSS candidates, provenance/license/security, missing/no-solution cases and same objective task |
-| M6 whole lifecycle | Same functional unit; human time, provider costs, CI/hosting, runtime, upgrades and upstream burden; kWh only if metered or transparently modeled |
-| M7 maintainer intervention | Ethics-reviewed opt-in onboarding/API/docs intervention; independent first-use success and no artificial star boosting |
+| **M1** agent workflow change | Opt-in, version-pinned records of spec/automation/cloud-session use; availability is not adoption |
+| **M2** accepted quality and review load | Frozen external acceptance suites; count all attempts, review minutes and reverts (the 1,000-PR post gives none) |
+| **M3** discoverability | Not addressed by these sources |
+| **M4** verified third-party reuse | Audited outside use of Kiro Crew or the AgentCore SDK; stars, "tried" counts and internal users are not reuse |
+| **M5** reuse vs rebuilding, rights and security | Licence/closed-source status per client; CVE fixed-version checks; harness export vs hand-written Strands code |
+| **M6** lifecycle cost | Credits, overage caps, EC2 runtime and human minutes per accepted task; no token-to-CO2e conversion |
+| **M7** maintainer intervention | Below: one controlled spec-first task trial |
 
-These are study **measurement targets**, **not observations** of M1–M7 effects in this report.
+## 8. One falsifiable reuse-first maintainer experiment
 
-## 8. Practical, falsifiable pilot for the maintainer's own repository
+**Target:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), offline only (live Trending `capture` stays disabled under the source-access decision).
 
-**Repository:** [GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study) (existing offline CLI and synthetic fixture; do not scrape live Trending).
+**Practice to test:** for a small change to the *existing* offline parser/CLI, write a short frozen spec card (requirements, design, task list, acceptance tests) before any agent edits, versus the current prompt-plus-docs workflow. Reuse the existing CLI and fixtures; build nothing new.
 
-**Practice to test:** Use the current offline synthetic Trending fixture to compare the existing documented CLI workflow with a frozen requirements/spec card for a delegated change to the *existing* parser.
+**Arms:** A = current docs plus a plain task prompt; B = the same task with the spec card. Same repository SHA, pinned agent/model version, synthetic fixtures, time cap and evaluator. Any coding agent may be used; Kiro is not required.
 
-**Treatment/comparator:** A: baseline agent or human prompt with current docs; B: the same task with a reusable spec, review gate and preselected existing CLI; pin versions and independent tests.
+**Acceptance test (frozen first, by a second person):** existing unit suite passes, plus 6 hidden synthetic parser cases (3 valid, 3 malformed that must be rejected). Agent-authored tests do not count.
 
-**Freeze before treatment:** same repository SHA, dependency/model versions, synthetic inputs, objective expected outputs, task/time cap and evaluator; record failures and no-solution tasks. A second person creates or freezes acceptance tests before any agent-generated change.
+**Verified external-use signal:** none expected from this trial; record it as **not measured**, not zero.
 
-**Primary outcome and verifiable reuse:** Outside evaluator accepts no-regression parser output and rejects malformed input as expected; record attempts, reviewer minutes, cost, and 30-day issues.
+**Outcomes:** accepted changes / all assigned tasks (including refusals and time-outs), reviewer minutes, reverts within 30 days, agent credits or tokens where billed.
 
-**Costs / constraints:** record active human time, reviewer minutes, task-level billed/model tokens where known, CI runtime, 30-day defects, code provenance, package-license/security checks and any upstream support work. Tokens/LOC/stars are **not kWh or CO2e**. Prospective experiment **not run**; sample size/power and human consent not secured.
+**Cost cap and stop rule:** 6 tasks per arm and 4 reviewer-hours in total. Stop and keep arm A if B does not raise the accepted-change share by at least 1 task out of 6 **or** raises reviewer minutes by more than 25 %. Stop immediately on any agent write outside the repo or any use of an unapproved network source. **Not run; no effect estimated.**
 
-**Stop/reversal:** Do not adopt the spec-agent layer if it increases review time without better accepted work, creates uncontrolled AWS use, or violates source-access policy.
+## 9. Evidence quality, alternative outcomes and release checklist (2026-10-16)
 
-**Transferable maintainer lesson:** prefer a reusable, versioned interface with an independently testable first-use task over a flashy new repository; test whether verified outside use improves without shifting hidden maintenance/security costs.
+- **Inventory:** 30 CSV rows across all seven segments: 22 first-party announcements or documents, 4 official security bulletins (E2), 1 independent news interview, 3 vendor analysis, case-report or strategy posts. This is a **purposive screen**, not a census.
+- **QC of the 9 earlier rows:** all reachable, all dates match; two claims partly supported and two clarified (`limitation` appended, no status change). See [source QC](006-amazon.source-qc-2026-10-16.md).
+- **Contrary or adverse evidence:** four in-window Kiro CVEs; the Register interview on mandatory human review; vendor authors' own caveats on diagnostics and the 1,000-PR pipeline.
+- **Unknowns:** Q Developer in-window changes; bulletins not found by search; Kiro blog/changelog pages beyond page 1; actual first availability per account or Region; the Jun 17 vs Jun 18 harness GA date across AWS pages; independent replication of any vendor number.
+- **Pending:** qualified human factual/link review, source-access/rights review and methods review; any task trial.
+- **Cross-link:** distinct verified articles may enter the [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after their own verification; no `NEWS-` ID minted here.
 
-## 9. Evidence quality, counterclaims and pending QA
+## Earlier screen (preserved)
 
-- **Observed in documentation:** 5 directly linked dated source events, primarily first-party. Only the publication/product claims and their reported availability are supported.
-- **Not demonstrated:** independent feature efficacy, benchmark validity, customer/OSS adoption, earned GitHub attention, per-task cost savings, kWh/CO2e, or causal environmental benefit.
-- **Counterclaim / specific uncertainty:** Amazon's 2026-04-30 post dates IDE-plugin support end to 2027-04-30, while preserving AWS Console Q; do not misreport this as a 2026 product shutdown. Migrating from Q to Kiro can impose license, workflow and retraining costs without user-outcome gains.
-- **Required next verification:** (1) independent second-reviewer date/link/identity pass; (2) seven-segment systematic queries with preserved screen counts and exclusion rationale; (3) inspect exact weights/code license, APIs, prices, status and data policies; (4) seek credible independent adverse/critical reporting; (5) duplicate/correction and secondary coverage audit; (6) independent task trial and tests before recommending broad adoption.
-- **Review state:** analyst-drafted with source URLs, independent human factual QA **pending**, no full Python test suite run for this documentation-only proposal. Keep the issue and PR open/draft; **do not merge** or close until criteria satisfied.
-- **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
+The first screen came from original PR #192 and draft [PR #229](https://github.com/MSKazemi/github-trending-1000-study/pull/229), integrated into `main` as commit `2cc5411` ("research(006): provisional initial Amazon / AWS evidence screen (#229)") on 2026-10-15. Its full texts remain in git history, in [the archived first-screen Markdown](source-archives/006-amazon.2026-10-13-first-screen.md), [the archived 22-column ledger](source-archives/006-amazon.2026-10-12-source-ledger.csv) and [the 2026-10-14 QA log](source-audits/006-amazon.2026-10-14-qa.md). It claimed:
 
-**Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
-
-### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
-
-- [Amazon Q Developer transition, dated April 30](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/): IDE plugins and paid Q Developer subscriptions are scheduled for **end of support April 30, 2027**, not shutdown in the 2026 collection window. New signups were scheduled to stop **May 15, 2026**; existing customers retain relevant access through the transition. **Q Developer in AWS Management Console and specified first-party AWS surfaces is explicitly excluded from this sunset**. Preserve product/channel-specific denominators when counting retirements.
-- [Kiro Web announcement](https://kiro.dev/blog/introducing-kiro-web/) describes **preview** for paid subscribers. The referenced trial/rollout should not be counted as fully available or supported in all environments.
-- [June 19 AWS blog](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/) documents a Kiro Power connecting the IDE to AWS DevOps Agent. A provider how-to supports the integration description, **not** independent improvement in incident resolution, accepted code or energy use.
-
-**Practical reuse gate:** Record provider, product, host surface and announced support-end date in dependency decisions. Run a migration acceptance test using the current pinned project CLI before replacing a working path with an agent platform.
-
-
-## Evidence-preserving reconciliation of competing drafts (2026-10-13)
-
-This source-screened working report retains the full **original PR #192 report** and its factual limitations. Later [draft PR #229](https://github.com/MSKazemi/github-trending-1000-study/pull/229) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/006-amazon.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/006-amazon.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
-
-**Canonical working event index:** [006-amazon.events.csv](006-amazon.events.csv) contains **9** deduplicated *publisher URL leads*: 4 retained from the later original screening, 4 unique archived older sources, and one newly located dated Kiro workflow changelog permalink on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
-
-| URL in both screens | Original status | Newer status | Required disposition |
-|---|---|---|---|
-| No differing categorical labels identified | — | — | Source assertions still require human verification |
-
-### Unique source material from each branch
-
-**Earlier screen source leads retained in the canonical CSV (archived E0 until checked):**
-- 2026-05-18: [Introducing Kiro Web](https://kiro.dev/blog/introducing-kiro-web/), prior status `preview`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-06-19: [Kiro power for AWS DevOps Agent](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-07-30: [Control framework for AI coding agents](https://aws.amazon.com/blogs/security/balancing-speed-and-safety-a-control-framework-for-ai-coding-agents/), prior status `reported_undetermined`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-08-05: [AWS Continuum developer workflow](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/), prior status `preview`, prior tier `E1` (author's working label; not independent product proof)
-
-**Later screen unique links (publisher working records):**
-- 2026-05-12: [Specs just got faster (and smarter)](https://kiro.dev/blog/faster-smarter-specs/) — `shipped`; source-bound, not an independent effectiveness test
-- 2026-10-09: [Kiro CLI V3 is rolling out as the default experience](https://kiro.dev/blog/cli-3/) — `preview`; source-bound, not an independent effectiveness test
-- 2026-10-12: [CLI changelog: version 2.30.0](https://kiro.dev/changelog/cli/) — `shipped`; source-bound, not an independent effectiveness test
-
-**Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #72 open until study acceptance is satisfied.
-
-
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
-
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
-
-- **Publisher page and source publication date:** [Kiro CLI V3 is rolling out as the default experience](https://kiro.dev/blog/cli-3/) — 2026-10-09 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** The Kiro publisher distinguishes June opt-in V3 from startup prompts gradually beginning 12 October and a planned general default by the end of October. The latter is future intent relative to the study's 12 October cutoff.
-- **Correction / uncertainty to retain:** Do not label CLI V3 universally default or the late-October change completed as of 12 October. Page text is a first-party rollout claim, not an install-verified release population or independent performance outcome.
-- **Falsifiable maintainer experiment (not performed):** Freeze a small spec-driven code-change task and compare documented spec/review-first flow with a baseline. Require clean-room acceptance and source/security checks; record task refusals and actual reviewer effort rather than promotional speed.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
-
-
-## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
-
-[Source search log and scientific cautions](source-audits/006-amazon.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 9 distinct publisher URL leads, not 9 independently confirmed product outcomes.**
-
-Added Sep 30 opt-in Kiro Web workflows. Apr 30 2027 Q Developer IDE support sunset is not a 2026 termination of all Q Developer services, and Oct 2026 CLI general-default claims must respect their dates.
-
-**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
-
-
-## Controlled integration review — 2026-10-15 (provisional first-party leads only)
-
-The maintainer decided on 2026-10-15 to integrate this documentary draft as a **provisional initial evidence screen**, as with #67/#81/#86/#87/#93. This is an AI-assisted maintainer pass, **not** an independent or qualified human review. The section 9 line "Keep the issue and PR open/draft; **do not merge**" guarded against promotion to completed research; it is superseded only to the extent of retaining this explicitly labelled, source-linked working artifact on `main`. Issue #72 remains open.
-
-**Canonical files and ID crosswalk.** [006-amazon.events.csv](006-amazon.events.csv) (9 publisher URL leads) is canonical. Sections 3, 4 and 9 are the original PR #192 text: its "5 directly linked dated source events" refer to the [archived 2026-10-12 ledger](source-archives/006-amazon.2026-10-12-source-ledger.csv). Original `CI-006-01` (Q Developer end of support) is carried in the canonical CSV as `CI2026-006-001`; `CI-006-02`..`CI-006-05` keep their IDs as E0 archived leads. Section 3's "no event documented" for September and October 1–12 is superseded by the CSV rows for 2026-09-30 (Kiro Web Workflows), 2026-10-09 (Kiro CLI V3) and 2026-10-12 (CLI 2.30.0 changelog).
-
-**Source spot-checks** (publisher pages read on 2026-10-15 with an AI web reader; not archived captures):
-
-- *Amazon Q Developer end of support* (`CI2026-006-001`): dated 2026-04-30; "Amazon Q Developer IDE plugins and paid Subscriptions will reach end of support on April 30, 2027"; new signups stop 2026-05-15; Q Developer in the AWS Management Console and other first-party AWS experiences (including Chat Apps) "are not impacted by this sunset"; the post points users to Kiro. Matches the ledger and the "not a 2026 shutdown" caveat.
-- *Introducing Kiro Web* (`CI-006-02`): dated 2026-05-18; "launching Kiro Web in preview for all paid subscribers — Pro, Pro+, and Power". Matches `preview`.
-- *Kiro CLI V3* (`CI2026-006-003`): dated 2026-10-09; a startup prompt is rolled out gradually "Starting October 12", with V3 becoming the default with "the CLI 3.0 release by the end of October". Matches `preview` and the no-backdating caveat.
-- *Kiro Web Workflows* (`CI2026-006-005`): dated 2026-09-30; "Workflows are now available as an opt-in feature in Kiro Web cloud sessions". Matches the opt-in caveat.
-
-No date or claim mismatch was found. No evidence tier was changed: these checks confirm what the publisher wrote, not product behaviour, access or migration cost.
-
-**Format checks:** the CSV header matches sibling event ledgers (21 columns); event IDs and source URLs are unique; all `published_utc` values fall within 2026-04-12..2026-10-12 and are date-sorted. The archived ledger and first-screen Markdown are unchanged.
-
-**Still pending:** auditable seven-segment hit/screen/exclusion denominators with archived captures; qualified independent human factual, licensing and methods review; screening of independent/adverse reporting (the 2026-04-29 Register article in the QA log is a lead, not a verified finding); exact product, plan and access checks; any prospective task trial. No adoption, accepted-code, cost or environmental outcome is claimed.
+- **5 then 9 dated publisher leads**, all E0/E1: the Apr 30 Q Developer notice (`CI-006-01` → `CI2026-006-001`), [Specs faster/smarter](https://kiro.dev/blog/faster-smarter-specs/), [Kiro Web](https://kiro.dev/blog/introducing-kiro-web/), [Kiro power for AWS DevOps Agent](https://aws.amazon.com/blogs/devops/supercharge-your-cloud-operations-with-the-kiro-power-for-aws-devops-agent/), [control framework](https://aws.amazon.com/blogs/security/balancing-speed-and-safety-a-control-framework-for-ai-coding-agents/), [AWS Continuum](https://aws.amazon.com/blogs/security/aws-partners-with-anthropic-and-openai-to-bring-aws-continuum-into-developer-workflows/), [Kiro Web Workflows](https://kiro.dev/changelog/web/introducing-workflows/), [Kiro CLI V3](https://kiro.dev/blog/cli-3/) and the [CLI 2.30.0 changelog](https://kiro.dev/changelog/cli/).
+- Direction: "AWS publicly shifts coding workflow focus from Q Developer IDE plugins toward Kiro's specification-led agent environment while extending hosted/cloud agent operations." The 2026-10-16 evidence supports this as a vendor-stated direction and adds the closed-source move of the Q CLI.
+- Key caveat, still valid: "do not misreport this as a 2026 product shutdown" (AWS user guide on [Q Developer IDE end of support](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html), linked by the 2026-10-14 audit and not re-opened on 2026-10-16).
+- Its September and October 1–12 "no event documented" entries were superseded on 2026-10-15 and again here. Its description of Continuum as a "partner-integrated code-security workflow" is narrowed by the 2026-10-16 QC: the partner integrations were "coming soon".
+- Its earlier maintainer experiment (frozen spec card vs baseline on the existing offline parser) is kept and tightened in §8.
