@@ -45,6 +45,7 @@ def _clean_https_url(url, field):
     a publisher, registry, license statement or an evidence artifact.
     """
     if (not isinstance(url, str) or not url or url != url.strip()
+            or "\\" in url
             or any(ord(char) <= 32 or ord(char) == 127 for char in url)):
         raise PackageReviewError(f"{field} requires clean HTTPS URL without whitespace")
     try:
