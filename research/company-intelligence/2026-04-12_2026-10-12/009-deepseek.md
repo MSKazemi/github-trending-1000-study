@@ -1,123 +1,99 @@
-# DeepSeek — six-month AI/software company intelligence (initial source screen)
- 
-- **Watchlist ID:** 009
-- **Issue:** [#75](https://github.com/MSKazemi/github-trending-1000-study/issues/75)
-- **Period:** 2026-04-12 to 2026-10-12 inclusive, calendar publication dates.
-- **As-of source review:** 2026-10-12.
-- **Research status:** **INITIAL source-screened draft only**. Not a complete six-month systematic search, independently adjudicated result, formal peer review, real product deployment test, or study finding.
-- **Company sector:** reasoning and coding models and API compatibility.
-- **Official publication entry:** https://api-docs.deepseek.com/news/
-- **Individual machine-readable events:** [009-deepseek.events.csv](009-deepseek.events.csv).
-- **Methods:** [company-source protocol](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md); [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+# DeepSeek — provisional six-month AI/software company intelligence screen (009)
 
-## 1. Search and coverage audit
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](009-deepseek.events.csv), [search log](009-deepseek.search-log.md) and [source-QC note](009-deepseek.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link, source-access/rights and methods review are **pending**. Merging is not scientific or security sign-off; issue [#75](https://github.com/MSKazemi/github-trending-1000-study/issues/75) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-Source screening consulted the linked first-party publication/archive pages, product announcement text and relevant source discovery for this organization as of 2026-10-12. The following are **reproduction search suggestions**, not a log claiming these literal exact queries were all executed. They should be run independently for every month, in official and high-quality secondary sources, before final issue completion:
+- **Watchlist ID:** 009; [issue #75](https://github.com/MSKazemi/github-trending-1000-study/issues/75).
+- **Window:** 2026-04-12 to 2026-10-12 inclusive (calendar publication dates). **Source-screened:** 2026-10-16.
+- **Status:** **provisional dated documentary screen — 24 traceable source leads covering all seven calendar segments**; not exhaustive retrieval, not independently verified task outcomes, not human-approved scientific completion.
+- **Official channels checked:** [news index](https://deepseek.com/en/news/), [API news](https://api-docs.deepseek.com/news/) (sidebar), [API change log](https://api-docs.deepseek.com/updates), [pricing](https://api-docs.deepseek.com/quick_start/pricing), [GitHub deepseek-ai](https://github.com/deepseek-ai), [Hugging Face deepseek-ai](https://huggingface.co/deepseek-ai), [DeepSeek Harness](https://deepseek.com/harness).
+- **Method:** [company-source protocol](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) (E0–E4 company-watch tiers); [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md). Claim grading is not the separate [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-1. `"DeepSeek" after:2026-04-11 before:2026-10-13 agent coding open weights`
-2. `site:deepseek.com 2026 model launch agents`
-3. `"DeepSeek" 2026 developer API security pricing`
-4. `"DeepSeek" 2026 independent benchmark and criticism`
+## 1. Discovery, coverage and exclusions
 
-**Audit limitations:** Search-hit totals, all screened/excluded URL counts, frozen web snapshots, completeness/recall and an independently audited secondary corpus were **not measured**. The included events below are a bounded purposive screen, not an enumeration of every release. The seven partial/full month segments are displayed even when an event was not found. **An unfilled month is missing evidence, not a zero-activity finding.** Verify link accessibility, page update history, publication timezone, actual release date vs article date and region/plan availability before declaring the report done. No web scraping or private-user data collection.
+The [search log](009-deepseek.search-log.md) records the official index reads, six web searches (shared budget), read-only GitHub and Hugging Face API calls, and queries **not executed**. The previous screen's statement that May, June, July and early October had no documented event is **superseded**: each now has dated official or artifact records. Coverage remains purposive. Machine-translated explainers, prediction markets, pricing trackers and star-count aggregators were excluded; independent reporting for June, July and October is **unknown** (queries not run), not absent.
 
-## 2. Identity and product boundary
+## 2. Identity and rights baseline
 
-DeepSeek (model platform) and DeepSeek V4 family naming denote one provider, multiple model/API surfaces. A provider's open-weight positioning does not establish a license for every named checkpoint, tokenizer or dataset.
+- **Entity:** the API documentation footer reads "Copyright © 2026 DeepSeek, Inc."; the GitHub organisation is `deepseek-ai` and arXiv papers are authored as "DeepSeek-AI". Parent company, ownership and jurisdictional structure were **not verified** to filing level in this screen.
+- **Host behaviour:** on 2026-10-16 every tested `https://www.deepseek.com/...` path answered HTTP 302 to `chat.deepseek.com`, while the same paths on `https://deepseek.com/...` answered 200 (QC note). Links in this report use whichever form was reachable; the ledger keeps original URLs.
+- **Open-weight licences (Hugging Face metadata, not LICENSE text):** DeepSeek-V4-Pro, V4-Flash, V4-Flash-0731, V4-Pro-0813, V4-Pro-DSpark, V4-Flash-Vision-Exp and V4.1-Flash are tagged `license:mit` and not gated. The V4 `-Base` checkpoints and the twelve small Jun 28 draft models carry **no** licence tag in the API listing.
+- **Code licences (GitHub API `license.spdx_id`, 2026-10-16):** MIT for [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness), DeepSpec, DeepSelect, DeepJIT, DeepGEMM, DeepGEMM-Ascend, TileKernels, FlashMLA, DeepEP, 3FS and deepseek-recipe; MPL-2.0 for dsh-libreoffice-kit; **no licence detected** for DeepEP-Ascend and awesome-deepseek-agent; NOASSERTION for clangd-ascend. An "open-source" label does not substitute for a detected licence.
+- **API service terms, data-retention and regional restrictions** were not reviewed; they matter more than weight licences for hosted-API use.
 
-Public first-party landing/news channels identify product offerings, but this report does not independently verify corporate cap tables or product rights. DeepSeek's Sep 10 statement about V4-Pro retirement and current update guidance may conflict; preserve incompatible public statements and require a live controlled endpoint test before deployment.
+## 3. Seven-segment dated chronology
 
-## 3. Month-by-month candidate events
-
-| Period | Source-linked discovered candidate(s) | Coverage characterization |
+| Segment | In-window source evidence (ledger IDs) | Availability / attribution limits |
 |---|---|---|
-| 2026-04-12..30 | [DeepSeek V4 Preview](https://deepseek.com/en/news/v4-preview/) | First-party pages; see events |
-| 2026-05 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
-| 2026-06 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
-| 2026-07 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
-| 2026-08 | [DeepSeek V4-Pro API](https://api-docs.deepseek.com/news/news260813/) | First-party pages; see events |
-| 2026-09 | [DeepSeek V4.1 Flash](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) | First-party pages; see events |
-| 2026-10-01..12 | No event documented in this bounded source subset | Unresolved coverage; not evidence of inactivity |
+| Apr 12–30 | [V4 Preview, Apr 24](https://deepseek.com/en/news/v4-preview/) (-01); [HF V4-Pro/Flash weights, MIT tag](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro) (-05); [legacy alias retirement notice](https://api-docs.deepseek.com/news/news260424/) (-15); [V4 technical report](https://arxiv.org/abs/2606.19348) (-04) | "Preview" but live API; arXiv dateline Apr 26 conflicts with ID prefix 2606 and DeepSeek's "June 24" index date |
+| May | [NIST CAISI evaluation, May 1](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro) (-06); [FAR.AI stress test, May 11](https://www.far.ai/blog/security-stress-test-deepseek-v4-pros-safeguards) (-07); DeepGEMM tag (-08); clangd-ascend repo (-09) | Two independent evaluations; FAR.AI page looks unfinished (E0) |
+| June | [DeepSpec](https://github.com/deepseek-ai/DeepSpec) (-10); [V4-Pro-DSpark](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-DSpark) (-11) | Same checkpoint plus speculative-decoding module; dates are repository creation |
+| July | [Change log Jul 31: V4-Flash public beta + Responses API](https://api-docs.deepseek.com/updates) (-14); scheduled Jul 24 retirement of `deepseek-chat`/`deepseek-reasoner` (event date on -15) | Retirement execution not verified |
+| August | [V4-Pro GA, Aug 13](https://api-docs.deepseek.com/news/news260813/) (-02, -12 same event); [DeepSeek Harness preview](https://github.com/deepseek-ai/deepseek-harness) (-13); [V4-Flash-Vision-Exp, Aug 21](https://api-docs.deepseek.com/news/news260821/) (-16) | Pricing announced Aug 13, effective Aug 16 16:00 UTC; harness is developer preview |
+| September | DeepSelect/DeepJIT (-22); [V4.1-Flash, Sep 10](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) (-03; reachable at [bare host](https://deepseek.com/en/news/deepseek-v4-1-flash/)); [V4.1-Flash weights](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) (-18); **conflicting** change-log statement on V4-Pro (-19); [V4.1-Flash report](https://arxiv.org/abs/2609.19969) (-17); [DeepGEMM-Ascend](https://github.com/deepseek-ai/DeepGEMM-Ascend) (-20); [DeepEP-Ascend](https://github.com/deepseek-ai/DeepEP-Ascend) (-21) | V4-Pro reroute plan contradicted by change log and current pricing page |
+| Oct 1–12 | [dsh-v0.2.1-alpha.1, Oct 3](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.1) (-23); [alpha.2, Oct 9](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.2) (-24) | Pre-releases; Oct 14/15 pre-releases excluded (post-window); no official news item found Oct 1–12 |
 
-## 4. Dated evidence and feature map
+## 4. Feature map and integration surface
 
-| Event | Published / underlying event | Source-linked provider claim or dated documentary event | Availability / constraint | Evidence grade and independent check | Relevant objectives |
-|---|---|---|---|---|---|
-| CI-009-01 | 2026-04-24 / event day not independently timed | [DeepSeek V4 Preview](https://deepseek.com/en/news/v4-preview/) — DeepSeek announces V4 preview for reasoning/coding API uses. | preview; Preview and provider benchmark/weight claims not independently checked. | Provider E1; independent efficacy **not** verified | M1 |
-| CI-009-02 | 2026-08-13 / event day not independently timed | [DeepSeek V4-Pro API](https://api-docs.deepseek.com/news/news260813/) — API docs introduce V4-Pro availability and pricing changes. | shipped; Pricing depends on traffic/window, not life-cycle energy. | Provider E1; independent efficacy **not** verified | M1;M6 |
-| CI-009-03 | 2026-09-10 / event day not independently timed | [DeepSeek V4.1 Flash](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) — Provider announces new model API and alias/routing retirement plans. | shipped; Provider claims about benchmark and future alias routing require independent check. | Provider E1; independent efficacy **not** verified | M1;M2;M5 |
+| Cluster | Supported by cited documents | Non-equivalence / counter-evidence |
+|---|---|---|
+| Models: V4-Pro, V4-Flash → V4-Flash-0731 → V4.1-Flash; Vision-Exp | 1M context, thinking/non-thinking modes, effort levels low/high/max, open weights (MIT tag) | Benchmark claims vendor-reported; [CAISI](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro) found self-reported scores higher than its own |
+| API compatibility | OpenAI ChatCompletions and Anthropic formats (Apr 24); native OpenAI Responses API for Codex (Jul 31/Aug 13); Files API for images (Aug 21) | Format compatibility ≠ behavioural equivalence; not tested here |
+| Aliases and routing | Legacy `deepseek-chat`/`deepseek-reasoner` retirement after Jul 24; `deepseek-v4-flash` → V4.1-Flash; `deepseek-v4-pro` reroute plan | Change log says V4-Pro continues; pricing page lists V4-Pro-0813 — **a model name is not a stable treatment label** |
+| Pricing | Peak/off-peak (off-peak 50%) from Aug 16; further price change Sep 10 | List prices only; no metered per-task cost |
+| Agent tooling | [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness): plugin architecture (Cordis), web UI via `npx @deepseek-ai/dsh web`, experimental Claude Code Mods layer, Git-worktree plugin, AGENTS.md loading | Developer preview with explicit breaking-change warning; translation plugin may send content to third-party services |
+| Inference infrastructure | DeepSpec + DSpark speculative decoding, DeepSelect, DeepJIT, DeepGEMM, TileKernels; Ascend ports | Hardware-specific; DeepSpec default target cache ~38 TB; DeepEP-Ascend has no detected licence |
 
-**Grading:** **E1** = provider-described release or policy. It supports attribution and reported availability, **not** reproducible behavior, quality, adoption or effectiveness. API version/docs and actual package licenses remain to be independently inspected; **E3/E4 is not awarded** to vendor metrics. The event CSV separately records class, observed limitations and link provenance. `shipped` means the **provider described availability** on the date, not independently validated access. **No claims about measured carbon impact or representative adoption.**
+## 5. Stated direction versus shipped
 
-### Feature, integration, licensing and security boundaries
+| Dated first-party statement | Stated intention | Classification |
+|---|---|---|
+| [Apr 24 V4 Preview](https://deepseek.com/en/news/v4-preview/) | Retire legacy aliases after Jul 24 | Announced; execution unverified |
+| [Jul 31 change log](https://api-docs.deepseek.com/updates) | Official V4-Pro release to follow | Delivered Aug 13 (vendor-reported GA) |
+| [Sep 10 V4.1-Flash](https://deepseek.com/en/news/deepseek-v4-1-flash/) | Phase out V4-Pro; route to V4.1-Flash until a V4.1-Pro launches; work with OSS community on inference support | V4.1-Pro **not observed** by Oct 12; reroute **contradicted** by change log (CI-009-19) |
+| [deepseek.com/harness](https://deepseek.com/harness) | Global testing, parallel open-sourcing | Preview; no stable release by Oct 16 |
+| Ascend repositories (Sep 29–30) | Non-NVIDIA hardware support | Code published; scope claims in secondary press unverified |
 
-- **Current/new capabilities reported by provider:** DeepSeek is expanding multimodal and reasoning-oriented API models while altering routing, endpoint compatibility and pricing.
-- **Availability:** check every event's status (including preview and future-only); descriptions of features are not interchangeable with externally accepted user tasks.
-- **Open-source/API/license:** September vendor article says V4-Pro alias would reroute September 14, whereas a current provider update may indicate continued service; do not assume successful migration based on either alone.
-- **Security and provenance:** do not execute untrusted build instructions, model install scripts or agent-recommended dependencies; record exact artifact identities, license, origin, signing/release tag, vulnerability results and permissions.
-- **Economic context:** model/API prices, tokens, human review, CI and ongoing support must be measured per functional task. Vendor throughput claims are not metered kWh or emissions.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company commitments)
 
-## 5. Public roadmap / intention (not independently guaranteed)
+| Hypothesis | Rival explanation | Disconfirming observation |
+|---|---|---|
+| MIT-tagged open weights plus OpenAI/Anthropic-compatible endpoints lower switching cost for routine repository tasks | Alias churn, regional/data terms and output differences dominate | A pinned-model replay fails frozen acceptance tests more often than the incumbent, or migrations need ongoing adapter work |
+| Plugin-style harnesses converge on shared conventions (AGENTS.md, Mods-like APIs) | Each vendor's harness stays incompatible | The same AGENTS.md task gives materially different behaviour across harnesses |
+| Hardware-diverse kernel ports widen self-hosting options | Ports stay unlicensed, unmaintained or hardware-locked | No downstream project imports the Ascend ports within 12 months |
 
-**Direction attributable to the company's publications:** DeepSeek is expanding multimodal and reasoning-oriented API models while altering routing, endpoint compatibility and pricing.
+## 7. M1–M7 mapping
 
-A roadmap statement, planned support sunset, future model release or planned deployment **must not** be counted as generally available in the window. See specific `announced_only` and `preview` items in the dated table. Commitments are scope- and time-specific, and product marketing is a weaker evidence class than a pinned artifact and repeated independent task result.
-
-## 6. Analyst interpretation, alternatives and disconfirmation (2027–2031)
-
-| Conditional inference — NOT company commitment | Motivation | Rival explanation | Disconfirming observation |
-|---|---|---|---|
-| Open-weight models and API-compatible replacement paths may lower integration friction for routine documentation/code-reuse tasks. | Above source-linked product directions (E1) | Endpoint alias changes, hidden compatibility differences and version/license risk may dominate marginal performance gains. | A pinned alternative fails strict output and cost acceptance more often than the stable control. |
-
-**Confidence:** exploratory/low until independent task comparisons and lifecycle measurement. Some genuinely useful reusable components predate this six-month interval; they remain eligible as controls/candidates, not excluded as old technology.
-
-## 7. Mapping to the study's M1–M7 objectives
-
-| Question | Needed observation rather than a product popularity proxy |
+| Question | Observation needed (not inferred here) |
 |---|---|
-| M1 agent/workflow change | Timestamped, consented and version-pinned task use; feature availability is **not adoption** |
-| M2 accepted quality and review load | Frozen external acceptance suite; failures, review minutes, defects and follow-up counted for **all assigned tasks** |
-| M3 discoverability | Prospective matched repo controls and pre/post visibility measures with exposure/selection confounding |
-| M4 independent reuse | Audited outsider import, deployment or working repeat-use; stars and installs alone insufficient |
-| M5 reuse vs rebuilding | Pre-screened OSS candidates, provenance/license/security, missing/no-solution cases and same objective task |
-| M6 whole lifecycle | Same functional unit; human time, provider costs, CI/hosting, runtime, upgrades and upstream burden; kWh only if metered or transparently modeled |
-| M7 maintainer intervention | Ethics-reviewed opt-in onboarding/API/docs intervention; independent first-use success and no artificial star boosting |
+| M1 agent workflow | Opt-in, version-pinned use of Harness/Responses-API workflows; availability ≠ adoption |
+| M2 accepted quality | Frozen external acceptance tests; CAISI shows self-reported vs independent gaps |
+| M3 discoverability | Star counts reported for the harness conflict and are not evidence |
+| M4 verified reuse | Audited downstream imports of DeepGEMM/DeepSpec/harness plugins |
+| M5 reuse vs rebuild | Compare existing harnesses/libraries; check licence gaps (DeepEP-Ascend, clangd-ascend) |
+| M6 lifecycle cost | Per-task billed tokens at peak/off-peak, migration minutes after alias changes; tokens ≠ kWh |
+| M7 maintainer intervention | Pinned-model compatibility test below |
 
-These are study **measurement targets**, **not observations** of M1–M7 effects in this report.
+## 8. One falsifiable reuse-first maintainer experiment
 
-## 8. Practical, falsifiable pilot for the maintainer's own repository
+**Repository:** [GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study); offline synthetic fixtures only (live Trending capture remains disabled).
 
-**Repository:** [GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study) (existing offline CLI and synthetic fixture; do not scrape live Trending).
+**Practice:** before adopting any provider model for a documentation/summary helper, reuse the existing deterministic CLI and add a **model-identity pin check** rather than new model-calling code.
 
-**Practice to test:** Evaluate a simple JSON schema compliance task for the existing offline parser-summary adapter using a provider-model adapter versus the current non-model deterministic CLI.
+- **A (comparator):** existing offline Python CLI, no model calls.
+- **B (treatment):** same task through an OpenAI-compatible client against an explicitly pinned open-weight checkpoint (e.g. a Hugging Face revision hash), recording the resolved model identity, endpoint, response schema and billed tokens.
+- **Frozen acceptance:** a second person writes 10 hidden fixture cases (exact expected JSON fields, rejection of invented fields) before any run; all assigned cases, refusals and timeouts stay in the denominator.
+- **Verified external-use signal:** none expected; record "unknown" unless an outside user reproduces the task.
+- **Cost cap:** 2 human hours and a fixed token budget; record reviewer minutes.
+- **Stop rule:** drop B if it adds no accepted case over A, if the resolved model differs from the pin (cf. CI-009-03 vs CI-009-19), or if licence/data terms are unclear. Report nulls. **Not run.**
 
-**Treatment/comparator:** A: existing Python CLI with no model calls; B: model-assisted selection/summarization with strict schema validation; neither may fetch live Trending.
+## 9. Evidence quality and limitations
 
-**Freeze before treatment:** same repository SHA, dependency/model versions, synthetic inputs, objective expected outputs, task/time cap and evaluator; record failures and no-solution tasks. A second person creates or freezes acceptance tests before any agent-generated change.
+- **Inventory:** 24 rows (3 preserved, 21 new): E2 = 15, E1 = 8, E0 = 1. Mostly first-party or artifact metadata; two independent evaluations (CAISI E2 because partly non-public benchmarks; FAR.AI E0).
+- **Dates:** GitHub/Hugging Face dates are creation timestamps, not announcements; arXiv V4 date conflict unresolved.
+- **Contradiction:** V4-Pro routing after Sep 14 is contradicted between official pages; unresolved without change-history or live test.
+- **Not demonstrated:** benchmark validity, adoption, safety of the harness, per-task cost savings, energy/CO2e.
+- **Pending:** human link/date spot-check, licence-text and API-terms review, independent methods review. Cross-link verified items to [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) only after that review; no `NEWS-` IDs minted.
 
-**Primary outcome and verifiable reuse:** Independent verifier checks exact expected fixture output, rejects hallucinated fields and logs all assigned cases, retries, billed tokens, reviewer minutes and timeout.
+## Earlier screen (preserved)
 
-**Costs / constraints:** record active human time, reviewer minutes, task-level billed/model tokens where known, CI runtime, 30-day defects, code provenance, package-license/security checks and any upstream support work. Tokens/LOC/stars are **not kWh or CO2e**. Prospective experiment **not run**; sample size/power and human consent not secured.
-
-**Stop/reversal:** Reject model layer if no additional accepted functionality, incompatibility on alias change, leak or net cost increase; report nulls.
-
-**Transferable maintainer lesson:** prefer a reusable, versioned interface with an independently testable first-use task over a flashy new repository; test whether verified outside use improves without shifting hidden maintenance/security costs.
-
-## 9. Evidence quality, counterclaims and pending QA
-
-- **Observed in documentation:** 3 directly linked dated source events, primarily first-party. Only the publication/product claims and their reported availability are supported.
-- **Not demonstrated:** independent feature efficacy, benchmark validity, customer/OSS adoption, earned GitHub attention, per-task cost savings, kWh/CO2e, or causal environmental benefit.
-- **Counterclaim / specific uncertainty:** DeepSeek's Sep 10 statement about V4-Pro retirement and current update guidance may conflict; preserve incompatible public statements and require a live controlled endpoint test before deployment. Endpoint alias changes, hidden compatibility differences and version/license risk may dominate marginal performance gains.
-- **Required next verification:** (1) independent second-reviewer date/link/identity pass; (2) seven-segment systematic queries with preserved screen counts and exclusion rationale; (3) inspect exact weights/code license, APIs, prices, status and data policies; (4) seek credible independent adverse/critical reporting; (5) duplicate/correction and secondary coverage audit; (6) independent task trial and tests before recommending broad adoption.
-- **Review state:** analyst-drafted with source URLs, independent human factual QA **pending**, no full Python test suite run for this documentation-only proposal. Keep the issue and PR open/draft; **do not merge** or close until criteria satisfied.
-- **Cross-link:** distinct validated articles may enter [#56 news corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) after its own verification; no `NEWS-` ID minted by this screen.
-
-**Validity conclusion:** The only defensible output here is a **testable engineering hypothesis** and a documented source shortlist; not a conclusive company ranking or a green-coding result.
-
-### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
-
-- [DeepSeek-V4 Preview article dated April 24](https://deepseek.com/en/news/v4-preview/) uses **Preview** as a release name but explicitly says the model/API were **available that day** and links weights. Distinguish *live access to a preview model* from a product that is merely an unfulfilled announcement. Exact weight license and immutable model hash still require artifact inspection.
-- [DeepSeek API docs August 13](https://api-docs.deepseek.com/news/news260813/) explicitly label **V4-Pro GA** and report a **future API price change effective August 16 at 16:00 UTC**. Announcement date and effective date must be distinct; neither establishes real user cost without usage records.
-- [September 10 V4.1-Flash notice](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) says the new API model was live, while **V4-Pro alias redirection was scheduled** for September 14 at 04:00 UTC. The source's plan for `deepseek-v4-pro` routing is **not** independently verified runtime behavior. This creates an important backwards-compatibility risk, not guaranteed feature equivalence.
-
-**Practical migration test:** Record resolved model identity, HTTP endpoint, response schema, server timestamp and actual billed rates before and after an alias change; run the same independently frozen parser task. Do not use a shared alias as a stable model-treatment label.
+The previous version (commits `b59ffe1` "source-graded DeepSeek six-month screen" and `5e97838` "source-check product status, license and reuse boundaries", issue #75; full text in git history) was an **initial source-screened draft** with three first-party rows: [DeepSeek V4 Preview](https://deepseek.com/en/news/v4-preview/) (Apr 24, preview with live API), [DeepSeek V4-Pro API](https://api-docs.deepseek.com/news/news260813/) (Aug 13, GA; pricing effective Aug 16 16:00 UTC) and [DeepSeek V4.1 Flash](https://www.deepseek.com/en/news/deepseek-v4-1-flash/) (Sep 10, V4.1-Flash live; V4-Pro alias reroute scheduled Sep 14 04:00 UTC). It named [api-docs.deepseek.com/news](https://api-docs.deepseek.com/news/) as the publication entry, marked May, June, July and Oct 1–12 as "no event documented" (unresolved coverage), listed suggested queries that were explicitly **not** a log of executed searches, and flagged that "DeepSeek's Sep 10 statement about V4-Pro retirement and current update guidance may conflict". Its 2026-10-13 recheck advised: "Do not use a shared alias as a stable model-treatment label." This upgrade confirms that conflict with dated evidence (CI-009-19), corrects the empty-month statements, and keeps all three original rows and event IDs.
