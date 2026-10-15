@@ -88,3 +88,16 @@ The new check is run before unit tests on **each** CI Python interpreter (3.10, 
 The tracked-code/JSON gate also validates each eligible regular **Git index blob** using `git cat-file`, independently of the checked-out working-tree bytes. This catches an important local pre-commit failure mode: a contributor stages invalid Python/JSON and subsequently repairs only the working copy. Both representations must be parseable; differing but valid contents are allowed. The output `tracked_code_json.index_checked_bytes` counts inspected staged bytes, separately from `checked_bytes`. Blobs and working files each have independent 16 MiB/file and 128 MiB/aggregate bounds; blob type and declared size are checked before reading bytes. No clean/smudge filters or staged source code are executed.
 
 Four offline Git-index tests cover hidden staged duplicate JSON keys, staged module-level Python errors, valid divergent content and oversized staged blobs. CI checks the checkout and index actually supplied by GitHub Actions; this does **not** prove the local staging area, Git host provenance, file signatures, package safety, or trustworthiness of scientific observations. An authorized reviewer must still approve the PR and separately enable repository branch rules (#248).
+
+
+## 2026-10-15 validation-error privacy hardening
+
+The validator now reports **duplicate JSON object key** without copying the
+caller-provided key into a CI failure. Keys in untrusted research files can
+contain accidentally pasted tokens, names or other sensitive material; their
+values are not necessary to locate the offending tracked file. The tracked
+Git-index scanner checks **both** the checked-out file and the staged Git blob.
+Synthetic negative regression checks assert redaction for both paths. This
+protects one diagnostic class, not arbitrary private information in other
+file names, Python syntax tracebacks or source materials. Treat CI logs as
+public outputs and independently review proposed data before uploading it.
