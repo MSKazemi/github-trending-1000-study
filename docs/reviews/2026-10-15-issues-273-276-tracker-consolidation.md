@@ -48,3 +48,12 @@ The older `chore/safe-merged-branch-retirement-20261013` still contains its hist
 1. Compare *actual current blob bytes and content hashes*, not only `git compare` ahead/behind, when asking if a divergence lost code.
 2. A tagged historical source is not a deletion permit; use verified immutable recovery refs and server-enforced checks before SHA-leased removal.
 3. Close duplicate issue trackers to reduce ambiguous responsibility, **never** to improve the apparent completion rate. Report real branches, PRs, reviewed integrations and missing evidence separately.
+
+## Supplemental engineering correction proposed under canonical #279
+
+The already-retained read-only `scripts/branch_lifecycle_audit.py` was further hardened on **draft PR #300**, without modifying `main` or running deletions. Two defects could otherwise produce misleading prune-candidate advice on inconsistent REST observations:
+
+- A paginated branch listing could have seen base commit A but the later explicit base lookup saw B. Comparing all branches against B and then re-reading B would falsely look stable. The auditor now **fails closed** unless the listed base commit matches the independently read base SHA before branch comparisons.
+- An open PR with unavailable/deleted/ambiguous `head.repo` was silently ignored by the original inventory. The auditor now rejects unknown open-PR owner metadata instead of treating it as evidence that no PR is linked. It also rejects logically impossible ahead/behind/status combinations.
+
+Four new offline test methods cover an intervening base move, missing PR owner, contradictory comparison states, and positive preservation of a known same-repository open PR. These are **regression fixtures** (not a fresh authenticated audit of live ref races). The current branch's exact-head CI and a separate qualified reviewer remain required before merging; #279 and #277 are still open. This change does not improve the numerical 97-ref snapshot or authorize pruning.
