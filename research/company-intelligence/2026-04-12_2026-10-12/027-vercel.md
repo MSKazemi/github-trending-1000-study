@@ -17,7 +17,7 @@
 |---|---|---|---:|---:|---:|---:|---|
 | 2026-10-16 (time not recorded) | vercel.com/blog index, read directly | Full blog index (619 posts reported; first 317 rendered) | unknown | about 80 in-window titles read | 19 (plus 2 nextjs.org and 1 KB bulletin) | Customer stories, recaps and hiring/intern posts were excluded as non-events or duplicates | Index text was truncated at the 2024-08 posts. All in-window posts were visible |
 | 2026-10-16 | vercel.com/changelog, pages 1–2 | Direct read | 16 | 16 | 0 | All entries were dated Oct 13–15, after the window | The changelog needs deeper pagination. In-window entries were reached through linked pages and community weeklies |
-| 2026-10-16 | GitHub REST API (`gh api`) | `repos/vercel/next.js/security-advisories`, `releases`, repo license metadata | 39 advisories / 15 releases listed | all | 4 rows | Advisories before Apr 12 or after Oct 12 were excluded | API data reflects the state at access time |
+| 2026-10-16 | GitHub REST API (`gh api`) | `repos/vercel/next.js/security-advisories`, `releases`, repo license metadata | 39 advisories / 15 releases listed (not reproduced on 2026-10-16: the paginated API returned 72 advisories; the in-window per-date counts were reproduced exactly) | all | 4 rows | Advisories before Apr 12 or after Oct 12 were excluded | API data reflects the state at access time |
 | 2026-10-16 | Web search (see the log for exact strings) | Incident, acquisition, funding, Ship 2026, Agent Plugins, Next.js security | unknown | about 40 results | 3 independent sources | Aggregator, SEO and mirror pages were excluded | No paywalled outlets were read. No Reuters, Bloomberg or FT item was found |
 
 The included rows are a **purposive, material-event screen**. They are not a census of Vercel releases. The changelog lists dozens of entries per week, many of them AI Gateway model additions, and those were not ledgered individually.
@@ -184,3 +184,28 @@ Stars, funding, revenue, npm downloads, registry installs and customer stories a
   - The Context.ai attribution comes from Vercel's bulletin as read on 2026-10-16. The page carries an update log, but no immutable snapshot was kept.
   - Several pages (Connect, Ship recap) have been edited since publication.
 - **Reviewer links and audit date:** AI-assisted first pass, 2026-10-16. **Human factual/link spot check, source-access/rights review and methods review are pending.** Do not close #94 on the basis of this file.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent, who did not write this screen, re-fetched the cited sources on 2026-10-16. Each page was downloaded with `curl -sL` and searched in its raw text (HTML and embedded JSON-LD `datePublished`), or read with `gh api`. A model summary was not used for any figure. Pages were not archived.
+
+| Row(s) checked | Outcome | Note |
+|---|---|---|
+| Entity (section 2) | confirmed | TechCrunch 2026-04-13 (JSON-LD 15:22 UTC): "last valued at $9.3 billion when it raised a $300 million Series F led by Accel in September". IPO quote "ready and getting more ready" is present. This is still press, not a filing |
+| 001 | confirmed | "$100 million at the beginning of 2024, as reported by The Information" and "$340 million by the end of February 2026, according to Forbes"; "30% of the apps running on the company's platform already came from agents" |
+| 002 | confirmed | `datePublished` 2026-04-16; "over 100 million runs ... more than 1,500 customers, with more than 200K npm downloads every week"; Python SDK "now in beta"; `vercel/workflow` is Apache-2.0 (API) |
+| 003 | confirmed | Context.ai origin and "non-sensitive environment variables" wording present; update log runs April 19 11:04 AM PST to April 24 4:22 PM PST; npm packages validated as not compromised (April 20 entry) |
+| 005, 015, 022 | confirmed | `gh api repos/vercel/next.js/security-advisories` (paginated): 12 on 05-06 plus GHSA-26hh-7cqf-hhc6 on 05-07; 9 on 07-21 (including GHSA-6gpp-xcg3-4w24 and two SSRF); 2 critical on 08-25 (GHSA-p293-qw3h-jr36 / CVE-2026-75604 and GHSA-2xp9-vwfh-vxw4, which has no CVE); 1 on 09-22 and 7 on 09-30. The section 4 total of 32 is reproduced. Releases v15.5.24 and v16.3.3 are dated 2026-08-25. The "39 advisories" denominator in section 1 was **not** reproduced (72 returned); it is annotated |
+| 006 | confirmed | 22.2% / 11.4% of requests, 58.9% / 31.6% of tokens, "Roughly 3.5%" after fallback, "200K+ unique teams"; `datePublished` 2026-05-12 |
+| 007 | confirmed | April 12 spike "roughly ten times normal", "1,300 requests per minute at peak", BotID "blocked more than ten thousand bot requests"; Kasada named; `datePublished` 2026-05-29 |
+| 012 | corrected | The Services post says "public beta" (2026-06-30). The recap says Services is "available July 1", but the words "coming soon" quoted in the CSV do not appear. The CSV quote was fixed; the ambiguity stands |
+| 013 | confirmed | 2026-07-07; "4.7M+ weekly npm downloads and more than 850 contributors"; "remains free and open source under MIT"; `better-auth/better-auth` is MIT (API) |
+| 019 | confirmed | Window "Tuesday, August 18 to Tuesday, September 1, 2026"; "Max per report: $50,000 USD"; pool "Up to $1,000,000 USD" |
+| 020 (with 009) | confirmed, detail added | Discrepancy is real: the June FAQ says "$3 per 10K token requests", while the Aug 25 page says "$3 per 1,000 token requests and $0.95 per 1,000 triggers". The figures were added to the CSV limitation. The June page now says "generally available as of August 25, 2026" |
+| 023 | confirmed | `datePublished` 2026-09-18; timeline Aug 11-12 report, Aug 13 mitigation, Aug 25 libheif v1.23.2. `gh api` libheif GHSA-g89c-p67h-r497: CVE-2026-84383, critical, patched v1.23.2 |
+| 025 | confirmed | "one million agent skills", "nearly 280 million installs", "375 skills, or 0.04% of the registry, account for 62% of installs", "Nearly half of all skills were installed exactly once"; `datePublished` 2026-09-25 |
+| 026 | confirmed | Blog dated 2026-10-06T20:00Z. GitHub release v16.4.0: created 2026-10-06T17:57Z, published 2026-10-07T10:03Z. The date difference is publication-time only. `agentUpgrade: 'security'` default and `agentFeedback` opt-in are present |
+
+**Totals:** 16 ledger rows (001, 002, 003, 005, 006, 007, 009, 012, 013, 015, 019, 020, 022, 023, 025, 026) and the entity claim checked. 14 rows confirmed, 1 corrected (012 quote), 1 confirmed with detail added (020), plus 1 search-denominator annotation in section 1. No fabricated URL or figure was found and no row was removed. No evidence grade was changed.
+
+*This is an AI-assisted source spot-check, not qualified human factual, rights or methods review. Every pending gate above still applies.*
