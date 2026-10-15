@@ -31,3 +31,23 @@ The offline Decimal scenario now additionally rejects a **zero-day horizon** and
 **Source:** [ISO/IEC 21031:2024 SCI methodology](https://www.iso.org/standard/86612.html). The input/output cannot certify full SCI; grid intensity, marginal effects, embodied allocation, usage displacement and uncertainty need separate justified measurement evidence. Keep physical kWh and gCO2e separate, and report all abandoned/failed tasks in both arms.
 
 **Practical lesson:** only call a reusable component environmentally advantageous when externally accepted functionality and the time/usage/environmental boundary are comparable; otherwise publish the transparent break-even condition and open evidence gaps.
+
+
+## 2026-10-15 — lifecycle scenario input-integrity fix (#308)
+
+The scenario CLI now uses the shared strict research JSON decoder and bounded
+regular-file reader from issue #306, replacing the unsafe separate
+\`Path.stat().st_size\` then \`Path.read_text()\` sequence. Its input limit
+remains **1,000,000 actual bytes**. FIFO/nonregular files, leaf symlinks,
+malformed UTF-8, duplicate JSON keys, NaN/Infinity and invalid numeric
+overflow/underflow fail closed without exposing private keys/file names.
+Existing exact signed crossing and \`unknown\` propagation are retained.
+
+This change does not convert a scenario into calibrated physical energy,
+provider inference, total lifecycle carbon impact or validated savings.
+The user-task acceptance, embodied allocations and rebound remain external
+measurement questions requiring separately approved evidence.
+
+**Practical maintainer lesson:** correct algebra does not make a research
+calculator safe. Validate representation, filesystem input, units and
+unknowns at the entrypoint before interpreting any output.
