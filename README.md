@@ -22,7 +22,6 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
-- [Offline CI artifact gate](docs/RESEARCH_JSON_INTEGRITY_GATE.md) — strict JSON/CSV validation plus full Git-tracked Python/JSON syntax coverage; engineering checks, not scientific source verification.
 - [**Ten-issue parallel scientific methods audit (2026-10-13)**](docs/TEN_ISSUE_METHODS_INTEGRATION_2026_10_13.md) — ten reproducible research workstreams, per-PR Python 3.10/3.12 CI evidence, shared task/denominator design, remaining human/permission/metering gates and practical lessons; **not empirical findings or approved enrollment**.
 - [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
@@ -214,6 +213,8 @@ python -m trending_study.longitudinal status \
   --plan /tmp/followup-plan.synthetic.jsonl --events-dir /tmp/followup-events.synthetic
 ```
 
+**2026-10-15 engineering completion hardening:** The offline follow-up reader now requires a complete, internally consistent 30/90/180-day schedule, strictly decodes GitHub/baseline/plan/event JSON, caps actual file reads and fails closed on incomplete or unrecognized event artifacts. See [reproducible adversarial tests and recovery policy](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md#2026-10-15-issue-4-completion-hardening-fail-closed-raw-input-and-safe-resume). This is not observed follow-up evidence.
+
 **The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
 
 ## Structural Trending parser QA — pending real-page audit (2026-10-12)
@@ -343,3 +344,7 @@ python scripts/check_research_artifacts.py --root .
 ```
 
 The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
+
+### All-tracked-code integrity gate (issue #244)
+
+Run `python scripts/check_research_artifacts.py --root . --tracked-code-json` to inspect all Git-indexed Python/JSON in addition to the normal reference/CSV gate. The scan checks staged blobs and working files without importing code. It rejects malformed JSON including duplicated keys without echoing their values in CI. This is an offline engineering control, not source authentication, rights review or proof of scientific claims; see [integrity runbook](docs/RESEARCH_JSON_INTEGRITY_GATE.md).

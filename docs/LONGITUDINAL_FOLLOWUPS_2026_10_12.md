@@ -83,3 +83,26 @@ This issue-#4 follow-up hardening makes `status`, `collect` resume, and any late
 **Scope and evidence:** these are local structural consistency guards, not tamper-proof cryptographic signatures. An attacker or operator could still forge a self-consistent unsigned record; official GitHub source authentication, original HTTP logs, actual source access permission, human review, proper time synchronization and external protocol approval remain separate. The offline tests create fictional positive, negative, late, missing, duplicate and damaged events; **no real follow-up collection occurred** in this change.
 
 Run `python -m unittest discover -s tests -v`. Do not treat successful tests as human verification of historical GitHub measurements.
+
+
+## 2026-10-15 issue #4 completion hardening: fail-closed raw input and safe resume
+
+This is an **engineering-only** correction to the existing version-1 follow-up plan and event collector. It retains the public CLI, stable ID/horizon schedule, event schemas, explicit network consent and original write-once semantics. It does **not** unlock source capture, retroactively approve the cohort, validate research participants or imply real follow-ups have happened.
+
+- **Strict input parsing:** Baseline and frozen plan JSONL, replayed event JSON, and simulated/real REST JSON responses reject duplicate object keys, NaN/Infinity, numeric overflow/underflow and invalid UTF-8 through the shared offline research JSON decoder. Parser error messages for user-controlled data are bounded so private JSON keys are not echoed to the terminal.
+- **Bounded reads and file types:** Baseline/plan files are limited to the same **16 MiB** byte limit as the repository's common research validator. Each event JSON is limited to **1 MiB**, with a maximum of **25,000 event files** plus the collector lock. The opened file descriptor is checked as a regular file, and reads stop at limit+1 bytes, catching growth after pre-open metadata. Symlinks and FIFOs are rejected; nonblocking/nofollow flags apply where the platform supports them. This protects **leaf files, not hostile ancestor-directory replacement**.
+- **Complete frozen plan contract:** Every repository must have exactly the three **30/90/180-day tasks**, with stable per-repository baseline counters, timestamp, source digest and shared cohort/horizon grace. A self-declared approval flag cannot be upgraded to a claimed authenticated human reviewer by editing a JSON field. Missing/unexpected plan fields are rejected.
+- **No invisible ledger entries:** A \`status\` or \`collect\` run fails closed if the event folder is a symlink or contains unrecognized files/directories (including interrupted \`.capture-pending-*\` files), malformed event JSON, duplicate IDs or unrecognized/unsupported task keys. The **one** known \`.followup.lock\` file is tolerated during a running collector, but it cannot be forged as a successful observation.
+- **API semantics:** A JSON response with duplicate \`id\`/counter fields or malformed numeric values yields **\`invalid_response\`**, with no accepted star/fork counters. HTTP request totals remain bounded; explicit \`--confirm-network\` is unchanged. None of the adversarial synthetic tests issues a live HTTP request.
+- **Operator recovery:** On malformed input or an unexpected temporary file, **stop and preserve the original bytes** for manual incident review. Do not simply delete the offending evidence and continue; if necessary create a new versioned plan or investigated derivation with an explicit provenance crosswalk.
+
+Reproduction from the checkout:
+
+\`\`\`bash
+python -m unittest tests.test_longitudinal tests.test_longitudinal_input_integrity -v
+python -m unittest discover -s tests -v
+python -m trending_study.data_integrity --root .
+python scripts/check_research_artifacts.py --root .
+\`\`\`
+
+**Scientific validity boundary:** Passing CI establishes only internal schema/replay correctness. Without independently authorized original GitHub Trending captures, actual enrolled baseline timestamps, approved protocol and true 30/90/180-day observations, there is **no observed study cohort, growth estimate, retention estimate, emissions effect or causal result**. Those are separate future fieldwork obligations and must be left incomplete in the roadmap.

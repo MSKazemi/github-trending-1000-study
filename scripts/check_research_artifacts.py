@@ -9,12 +9,15 @@ import os
 import stat
 import subprocess
 import csv
+from datetime import date
 from decimal import Decimal, InvalidOperation
 import io
 import json
 import math
+import re
 from pathlib import Path
 import sys
+from urllib.parse import urlsplit
 
 
 DATA_DIRS = ("examples", "references", "research-notes", "research", "templates")
@@ -34,8 +37,6 @@ def _unique_fields(pairs):
     out = {}
     for key, value in pairs:
         if key in out:
-            # JSON keys are caller-controlled and may contain secrets or PII.
-            # Show only a stable error class in CI diagnostics.
             raise IntegrityError("duplicate JSON object key")
         out[key] = value
     return out
@@ -106,6 +107,106 @@ def _strict_json(text):
     )
 
 
+
+# These are structural contracts for the versioned *candidate-source* indices,
+# not an evaluation of source authenticity, license, availability or outcomes.
+_COMPANY_EVENT_COLUMNS = (
+    "event_id", "company_id", "company_label", "product", "source_url",
+    "source_title", "source_publisher", "source_type", "published_utc",
+    "event_date_utc", "accessed_utc", "kind", "claim_summary", "feature",
+    "availability", "status", "study_construct", "limitation", "confidence",
+    "duplicate_event_group", "independent_check_url",
+)
+_COMPANY_ALLOWED_STATUSES = frozenset((
+    "shipped", "preview", "announced_only", "reported_undetermined",
+    "reversed/cancelled", "corrected", "unavailable/unknown",
+))
+_COMPANY_FILE = re.compile(r"^([0-9]{3})-[a-z0-9]+(?:-[a-z0-9]+)*\.events\.csv$")
+_DATE_PART = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+_WINDOW_PART = re.compile(
+    r"^([0-9]{4}-[0-9]{2}-[0-9]{2})_([0-9]{4}-[0-9]{2}-[0-9]{2})$"
+)
+
+
+def _event_date(value, field, row_number):
+    if not _DATE_PART.fullmatch(value):
+        raise IntegrityError(f"company event row {row_number}: {field} must be YYYY-MM-DD")
+    try:
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise IntegrityError(
+            f"company event row {row_number}: {field} is not a calendar date"
+        ) from exc
+
+
+def _company_event_context(path, header):
+    """Return (company ID, inclusive date bounds, column positions) or None.
+
+    Apply only to a canonical NNN-name.events.csv beneath company-intelligence.
+    Historical archives and arbitrary CSV fixtures retain the existing generic
+    CSV syntax gate. Both 21-column and 22-column source indices are supported.
+    """
+    if "company-intelligence" not in path.parts or not path.name.endswith(".events.csv"):
+        return None
+    match = _COMPANY_FILE.fullmatch(path.name)
+    if not match:
+        raise IntegrityError("company event file must be NNN-slug.events.csv")
+    windows = [_WINDOW_PART.fullmatch(part) for part in path.parts]
+    windows = [window for window in windows if window is not None]
+    if len(windows) != 1:
+        raise IntegrityError("company event file requires one dated window directory")
+    start = _event_date(windows[0].group(1), "window start", 1)
+    end = _event_date(windows[0].group(2), "window end", 1)
+    if start > end:
+        raise IntegrityError("company event window ends before it begins")
+    required = set(_COMPANY_EVENT_COLUMNS)
+    actual = set(header)
+    if not required.issubset(actual) or actual - required - {"evidence_tier"}:
+        raise IntegrityError("company event CSV has missing or unsupported columns")
+    return (match.group(1), start, end, {name: header.index(name) for name in required})
+
+
+def _validate_company_event_row(row, context, record_no, seen_ids, last_date):
+    company_id, start, end, columns = context
+    value = lambda name: row[columns[name]]
+    event_id = value("event_id")
+    if not event_id or event_id != event_id.strip():
+        raise IntegrityError(f"company event row {record_no}: missing/unclean event_id")
+    if event_id in seen_ids:
+        raise IntegrityError(f"company event row {record_no}: repeated event_id")
+    seen_ids.add(event_id)
+    if value("company_id") != company_id:
+        raise IntegrityError(f"company event row {record_no}: company_id differs from filename")
+    for column in ("company_label", "source_title", "source_publisher", "confidence"):
+        if not value(column).strip():
+            raise IntegrityError(f"company event row {record_no}: empty {column}")
+    published = _event_date(value("published_utc"), "published_utc", record_no)
+    if not start <= published <= end:
+        raise IntegrityError(f"company event row {record_no}: publication outside study window")
+    if last_date is not None and published < last_date:
+        raise IntegrityError(f"company event row {record_no}: nonchronological publication dates")
+    for optional_date in ("event_date_utc", "accessed_utc"):
+        if value(optional_date):
+            _event_date(value(optional_date), optional_date, record_no)
+    if value("status") not in _COMPANY_ALLOWED_STATUSES:
+        raise IntegrityError(f"company event row {record_no}: unrecognized source status")
+    url = value("source_url")
+    if not url or url != url.strip() or any(char.isspace() for char in url):
+        raise IntegrityError(f"company event row {record_no}: malformed source_url")
+    try:
+        parsed = urlsplit(url)
+        if (parsed.scheme != "https" or not parsed.hostname
+                or parsed.username is not None or parsed.password is not None):
+            raise IntegrityError(f"company event row {record_no}: source_url must be public HTTPS")
+        # Accessing .port also rejects invalid/overflowing port syntax.
+        parsed.port
+    except ValueError as exc:
+        raise IntegrityError(f"company event row {record_no}: malformed source_url") from exc
+    # Multiple real changes may legitimately cite the same *dated changelog*
+    # URL. Their event IDs and publication dates must remain distinct instead
+    # of claiming distinct URLs or independent corroboration.
+    return published
+
 def validate_text(path, content):
     """Validate one UTF-8 document; return number of logical data records."""
     if "\x00" in content:
@@ -138,11 +239,18 @@ def validate_text(path, content):
         canonical = [column.strip().casefold() for column in header]
         if len(canonical) != len(set(canonical)):
             raise IntegrityError("CSV header has repeated names")
+        context = _company_event_context(path, header)
+        seen_event_ids = set()
+        last_published = None
         count = 0
         for number, row in enumerate(reader, 2):
             if len(row) != len(header):
                 raise IntegrityError(
                     f"CSV record {number} has {len(row)} cells, expected {len(header)}"
+                )
+            if context is not None:
+                last_published = _validate_company_event_row(
+                    row, context, number, seen_event_ids, last_published
                 )
             count += 1
         if count == 0:
@@ -202,7 +310,6 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MA
             + ("\n[additional failures omitted]" if len(failures) > 25 else "")
         )
     return {"files": examined, "checked_bytes": total_bytes, **counts}
-
 
 
 def _read_git_index_blob(root, oid, max_file_bytes):
