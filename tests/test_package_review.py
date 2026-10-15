@@ -74,6 +74,7 @@ class PackageReviewTests(unittest.TestCase):
             "https://pypi.org/project/fictionalpkg/1.0/" + chr(10),
             " https://pypi.org/project/fictionalpkg/1.0/",
             "https://pypi.org:/project/fictionalpkg/1.0/",
+            "https://pypi.org/project/fictionalpkg/1.0/\\hidden",
         ):
             p = candidate()
             p["candidate"]["registry_url"] = url
@@ -93,6 +94,7 @@ class PackageReviewTests(unittest.TestCase):
             "https://security.example.org:65536/advisory",
             "https://[broken/issue",
             "https://security.example.org/one" + chr(10) + "two",
+            "https://security.example.org/advisory\\hidden",
         ):
             p["checks"]["known_advisories"]["evidence_url"] = url
             with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
