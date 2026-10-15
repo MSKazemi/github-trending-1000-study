@@ -38,3 +38,16 @@ AI-assisted inspection of readable publisher pages may verify what a publisher *
 - [ ] Obtain final-head CI and safe integration verification; retain the underlying company issue open until genuine scientific acceptance.
 
 This file is a **source-screen audit trail**, not an endorsement, user study, company ranking, proof of safer code, causal claim or permission to publish completed research.
+
+
+## 2026-10-15 secondary-source and artifact QA supplement
+
+**Access/read status:** A dated AI-assisted public-source desk check. Selected pages were read or located via public web search on 2026-10-15. URLs and journalistic observations are reproducible *leads*, not signed/archived historical captures, systematic recall, independent human signoff or measured task outcomes. Retrospective study publication cutoff is **2026-10-12**; post-window analysis must remain separate.
+
+### AWS — third-party caution and exact service boundary
+
+- **First-party notice, 2026-04-30:** [AWS Amazon Q Developer end-of-support announcement](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/) says Q Developer **IDE plugins and paid subscriptions** reach end of support **2027-04-30**. AWS Console, Chat Apps, and other first-party surfaces are expressly excluded from that sunset. [AWS user documentation](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html) separately repeats the IDE scope. This is a publisher-reported policy, not evidence of all Amazon Q services terminating in 2026.
+- **Independent newsroom reporting, 2026-04-29:** [The Register — Amazon tells its engineers to review all AI output](https://www.theregister.com/software/2026/04/29/amazon-tells-its-engineers-to-review-all-ai-output/5224124) reports employee/executive perspectives on AI coding, hallucinations, off-task agent behavior and review requirements. This is useful as adversarial reporting; interviews do not provide a denominator or controlled comparison of AWS Kiro acceptance/cost.
+- **First-party versioned product item, 2026-09-30:** [Kiro Web Workflows changelog](https://kiro.dev/changelog/web/introducing-workflows/) says the workflow was **opt-in**, not universally enabled. Avoid backdating planned default rollouts and measure end-to-end independent acceptance rather than how many workflows run.
+
+**Practical repository consequence:** keep agent-generated changes behind human review, immutable test fixtures and bounded permissions; when planning CLI migration, version-pin both the old Q Developer IDE state and the replacement Kiro workflow and explicitly record support dates, access and failover.
