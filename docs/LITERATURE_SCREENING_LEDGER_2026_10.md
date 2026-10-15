@@ -100,3 +100,22 @@ negative tests protect this bounded source-link contract; an apparently clean
 DOI/paper URL is **not** proof that the content was accessed, bibliographic
 metadata verified, a systematic search performed or review acceptance met.
 Preserve unresolved leads as pending rather than calling them included.
+
+
+## 2026-10-15 small real-source version screen (NOT systematic)
+
+The [versioned source pilot](../references/literature_version_pilot_2026-10-15.json)
+and [reconciliation memo](LITERATURE_VERSION_RECONCILIATION_2026-10-15.md)
+record public arXiv v1/v2, the subsequent ACM journal edition of
+*Agentic Much?*, and the older ACM Queue SPACE framework. Four source
+**records** represent only **two distinct research works**; the preprint
+versions remain pending duplicate adjudication. Unlike the synthetic unit
+fixtures, these source URLs and their dated abstract metadata were directly
+inspected in a bounded public-web pass. This is not an actual ACM/IEEE/Scopus
+systematic index search, a PDF/full-text audit, or a completed two-rater
+screen. The pilot's `searched_at_utc` uses midnight on 2026-10-15 solely as
+an **UTC date-precision normalization** required by the existing schema;
+no claim is made that the queries ran at midnight or that the historical
+search results have immutable exports. No PRISMA flow is certified. CI
+ensures these linked source versions are never silently treated as four
+independent empirical studies.
