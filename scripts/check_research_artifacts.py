@@ -5,13 +5,19 @@ third-party licensing, evidence provenance, or participant consent). In
 particular, duplicate JSON keys must not silently replace earlier values.
 """
 import argparse
+import os
+import stat
+import subprocess
 import csv
+from datetime import date
 from decimal import Decimal, InvalidOperation
 import io
 import json
 import math
+import re
 from pathlib import Path
 import sys
+from urllib.parse import urlsplit
 
 
 DATA_DIRS = ("examples", "references", "research-notes", "research", "templates")
@@ -31,7 +37,7 @@ def _unique_fields(pairs):
     out = {}
     for key, value in pairs:
         if key in out:
-            raise IntegrityError(f"duplicate JSON object key {key!r}")
+            raise IntegrityError("duplicate JSON object key")
         out[key] = value
     return out
 
@@ -101,6 +107,106 @@ def _strict_json(text):
     )
 
 
+
+# These are structural contracts for the versioned *candidate-source* indices,
+# not an evaluation of source authenticity, license, availability or outcomes.
+_COMPANY_EVENT_COLUMNS = (
+    "event_id", "company_id", "company_label", "product", "source_url",
+    "source_title", "source_publisher", "source_type", "published_utc",
+    "event_date_utc", "accessed_utc", "kind", "claim_summary", "feature",
+    "availability", "status", "study_construct", "limitation", "confidence",
+    "duplicate_event_group", "independent_check_url",
+)
+_COMPANY_ALLOWED_STATUSES = frozenset((
+    "shipped", "preview", "announced_only", "reported_undetermined",
+    "reversed/cancelled", "corrected", "unavailable/unknown",
+))
+_COMPANY_FILE = re.compile(r"^([0-9]{3})-[a-z0-9]+(?:-[a-z0-9]+)*\.events\.csv$")
+_DATE_PART = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+_WINDOW_PART = re.compile(
+    r"^([0-9]{4}-[0-9]{2}-[0-9]{2})_([0-9]{4}-[0-9]{2}-[0-9]{2})$"
+)
+
+
+def _event_date(value, field, row_number):
+    if not _DATE_PART.fullmatch(value):
+        raise IntegrityError(f"company event row {row_number}: {field} must be YYYY-MM-DD")
+    try:
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise IntegrityError(
+            f"company event row {row_number}: {field} is not a calendar date"
+        ) from exc
+
+
+def _company_event_context(path, header):
+    """Return (company ID, inclusive date bounds, column positions) or None.
+
+    Apply only to a canonical NNN-name.events.csv beneath company-intelligence.
+    Historical archives and arbitrary CSV fixtures retain the existing generic
+    CSV syntax gate. Both 21-column and 22-column source indices are supported.
+    """
+    if "company-intelligence" not in path.parts or not path.name.endswith(".events.csv"):
+        return None
+    match = _COMPANY_FILE.fullmatch(path.name)
+    if not match:
+        raise IntegrityError("company event file must be NNN-slug.events.csv")
+    windows = [_WINDOW_PART.fullmatch(part) for part in path.parts]
+    windows = [window for window in windows if window is not None]
+    if len(windows) != 1:
+        raise IntegrityError("company event file requires one dated window directory")
+    start = _event_date(windows[0].group(1), "window start", 1)
+    end = _event_date(windows[0].group(2), "window end", 1)
+    if start > end:
+        raise IntegrityError("company event window ends before it begins")
+    required = set(_COMPANY_EVENT_COLUMNS)
+    actual = set(header)
+    if not required.issubset(actual) or actual - required - {"evidence_tier"}:
+        raise IntegrityError("company event CSV has missing or unsupported columns")
+    return (match.group(1), start, end, {name: header.index(name) for name in required})
+
+
+def _validate_company_event_row(row, context, record_no, seen_ids, last_date):
+    company_id, start, end, columns = context
+    value = lambda name: row[columns[name]]
+    event_id = value("event_id")
+    if not event_id or event_id != event_id.strip():
+        raise IntegrityError(f"company event row {record_no}: missing/unclean event_id")
+    if event_id in seen_ids:
+        raise IntegrityError(f"company event row {record_no}: repeated event_id")
+    seen_ids.add(event_id)
+    if value("company_id") != company_id:
+        raise IntegrityError(f"company event row {record_no}: company_id differs from filename")
+    for column in ("company_label", "source_title", "source_publisher", "confidence"):
+        if not value(column).strip():
+            raise IntegrityError(f"company event row {record_no}: empty {column}")
+    published = _event_date(value("published_utc"), "published_utc", record_no)
+    if not start <= published <= end:
+        raise IntegrityError(f"company event row {record_no}: publication outside study window")
+    if last_date is not None and published < last_date:
+        raise IntegrityError(f"company event row {record_no}: nonchronological publication dates")
+    for optional_date in ("event_date_utc", "accessed_utc"):
+        if value(optional_date):
+            _event_date(value(optional_date), optional_date, record_no)
+    if value("status") not in _COMPANY_ALLOWED_STATUSES:
+        raise IntegrityError(f"company event row {record_no}: unrecognized source status")
+    url = value("source_url")
+    if not url or url != url.strip() or any(char.isspace() for char in url):
+        raise IntegrityError(f"company event row {record_no}: malformed source_url")
+    try:
+        parsed = urlsplit(url)
+        if (parsed.scheme != "https" or not parsed.hostname
+                or parsed.username is not None or parsed.password is not None):
+            raise IntegrityError(f"company event row {record_no}: source_url must be public HTTPS")
+        # Accessing .port also rejects invalid/overflowing port syntax.
+        parsed.port
+    except ValueError as exc:
+        raise IntegrityError(f"company event row {record_no}: malformed source_url") from exc
+    # Multiple real changes may legitimately cite the same *dated changelog*
+    # URL. Their event IDs and publication dates must remain distinct instead
+    # of claiming distinct URLs or independent corroboration.
+    return published
+
 def validate_text(path, content):
     """Validate one UTF-8 document; return number of logical data records."""
     if "\x00" in content:
@@ -133,11 +239,18 @@ def validate_text(path, content):
         canonical = [column.strip().casefold() for column in header]
         if len(canonical) != len(set(canonical)):
             raise IntegrityError("CSV header has repeated names")
+        context = _company_event_context(path, header)
+        seen_event_ids = set()
+        last_published = None
         count = 0
         for number, row in enumerate(reader, 2):
             if len(row) != len(header):
                 raise IntegrityError(
                     f"CSV record {number} has {len(row)} cells, expected {len(header)}"
+                )
+            if context is not None:
+                last_published = _validate_company_event_row(
+                    row, context, number, seen_event_ids, last_published
                 )
             count += 1
         if count == 0:
@@ -199,12 +312,220 @@ def audit_repository(root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MA
     return {"files": examined, "checked_bytes": total_bytes, **counts}
 
 
+def _read_git_index_blob(root, oid, max_file_bytes):
+    """Read a bounded Git-index blob without running clean/smudge filters.
+
+    A locally staged blob may differ from the checked-out file. A checkout-only
+    scan must not report success while an invalid blob is staged for commit.
+    """
+    if len(oid) not in (40, 64) or any(b not in b"0123456789abcdef" for b in oid):
+        raise IntegrityError("invalid Git index blob identifier")
+    try:
+        header = subprocess.run(
+            ["git", "-C", str(root), "cat-file",
+             "--batch-check=%(objecttype) %(objectsize)"],
+            input=oid + b"\n", check=True, capture_output=True, timeout=20,
+        ).stdout.strip().split()
+        if len(header) != 2 or header[0] != b"blob" or not header[1].isdigit():
+            raise IntegrityError("Git index entry is missing or not a blob")
+        size = int(header[1])
+        if size > max_file_bytes:
+            raise IntegrityError(f"Git index blob exceeds {max_file_bytes} byte limit")
+        payload = subprocess.run(
+            ["git", "-C", str(root), "cat-file", "blob", oid.decode("ascii")],
+            check=True, capture_output=True, timeout=20,
+        ).stdout
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise IntegrityError("cannot read Git index blob") from exc
+    if len(payload) != size:
+        raise IntegrityError("Git index blob size changed during inspection")
+    return payload
+
+
+
+def _open_tracked_file(root, parts, flags):
+    """Open indexed path without following ancestor symlinks on POSIX.
+
+    Resolving each directory relative to an already-open directory descriptor
+    closes the check-then-open ancestor swap window. Platforms without
+    O_NOFOLLOW/O_DIRECTORY/dir_fd use the existing best-effort path checks.
+    This is not a comprehensive hostile-filesystem sandbox.
+    """
+    if (hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_DIRECTORY")
+            and os.open in os.supports_dir_fd):
+        directory_flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_DIRECTORY
+        parent_fd = os.open(root, directory_flags)
+        try:
+            for part in parts[:-1]:
+                next_fd = os.open(part, directory_flags, dir_fd=parent_fd)
+                os.close(parent_fd)
+                parent_fd = next_fd
+            return os.open(parts[-1], flags, dir_fd=parent_fd)
+        finally:
+            os.close(parent_fd)
+    return os.open(root.joinpath(*parts), flags)
+
+
+def audit_tracked_code_json(
+    root, max_file_bytes=MAX_BYTES_PER_FILE, max_total_bytes=MAX_TOTAL_BYTES
+):
+    """Validate every Git-indexed .py/.json file in a checkout, without imports.
+
+    Unlike the research-directory scan, Git index enumeration reaches files in
+    any directory, including hidden paths. It checks checked-out and Git-index blob bytes; it does
+    not authenticate sources or inspect Git submodule internals.
+    """
+    root = Path(root)
+    if root.is_symlink() or not root.is_dir():
+        raise IntegrityError("tracked-file root must be a real directory")
+    root = root.resolve()
+    try:
+        origin = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=True, capture_output=True, timeout=20,
+        ).stdout.decode("utf-8").rstrip("\n")
+        if Path(origin).resolve() != root:
+            raise IntegrityError("tracked-file root must be the Git top-level directory")
+        listing = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--stage", "--cached",
+             "--full-name", "-z"],
+            check=True, capture_output=True, timeout=20,
+        ).stdout
+    except (OSError, UnicodeError, subprocess.SubprocessError) as exc:
+        raise IntegrityError("cannot inspect local Git index") from exc
+
+    if len(listing) > 8 * 1024 * 1024:
+        raise IntegrityError("Git index listing exceeds 8 MiB inspection limit")
+    if not listing:
+        raise IntegrityError("no Git-tracked Python/JSON files were found")
+    if not listing.endswith(b"\0"):
+        raise IntegrityError("Git index listing is incomplete")
+
+    counts = {"python": 0, "json": 0, "files": 0, "checked_bytes": 0,
+              "index_checked_bytes": 0}
+    failures = []
+    seen = set()
+
+    for entry in listing[:-1].split(b"\0"):
+        metadata, separator, filename = entry.partition(b"\t")
+        fields = metadata.split()
+        if not separator or len(fields) != 3:
+            raise IntegrityError("malformed Git index entry")
+        try:
+            relative = filename.decode("utf-8")
+        except UnicodeError as exc:
+            raise IntegrityError("Git index has a non-UTF-8 filename") from exc
+        suffix = Path(relative).suffix.lower()
+        if suffix not in (".py", ".json"):
+            continue
+        counts["files"] += 1
+        if counts["files"] > MAX_FILES:
+            raise IntegrityError("tracked Python/JSON count exceeds inspection limit")
+
+        label = repr(relative)  # Escape newlines/control chars in CI diagnostics.
+        if relative in seen:
+            failures.append(f"{label}: duplicate Git index path")
+            continue
+        seen.add(relative)
+        parts = relative.split("/")
+        if relative.startswith("/") or any(part in ("", ".", "..") for part in parts):
+            failures.append(f"{label}: unsafe Git index path")
+            continue
+        mode, _sha, stage = fields
+        if stage != b"0" or mode not in (b"100644", b"100755"):
+            failures.append(f"{label}: nonregular or unmerged Git index entry")
+            continue
+
+        try:
+            parent = root
+            for part in parts[:-1]:
+                parent /= part
+                if parent.is_symlink():
+                    raise IntegrityError("symlinked parent directory")
+            path = root.joinpath(*parts)
+            if path.is_symlink():
+                raise IntegrityError("tracked file is a symlink")
+            # Open the checked path once and inspect the *opened descriptor*.
+            # O_NONBLOCK avoids hanging on a swapped-in FIFO; O_NOFOLLOW
+            # rejects a swapped-in leaf symlink where the OS supports it.
+            flags = os.O_RDONLY | getattr(os, "O_NONBLOCK", 0)
+            flags |= getattr(os, "O_NOFOLLOW", 0)
+            with os.fdopen(_open_tracked_file(root, parts, flags), "rb") as handle:
+                file_stat = os.fstat(handle.fileno())
+                if not stat.S_ISREG(file_stat.st_mode):
+                    raise IntegrityError("tracked path is missing or not a regular file")
+                if file_stat.st_size > max_file_bytes:
+                    raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
+                if counts["checked_bytes"] + file_stat.st_size > max_total_bytes:
+                    raise IntegrityError(
+                        f"tracked artifact total exceeds {max_total_bytes} byte limit"
+                    )
+                # A size precheck alone is not a memory limit if the file
+                # grows between fstat and read. Bound the actual read too.
+                raw = handle.read(max_file_bytes + 1)
+            if len(raw) > max_file_bytes:
+                raise IntegrityError(f"file exceeds {max_file_bytes} byte limit")
+            if len(raw) != file_stat.st_size:
+                raise IntegrityError("file changed size during inspection")
+            if counts["checked_bytes"] + len(raw) > max_total_bytes:
+                raise IntegrityError(
+                    f"tracked artifact total exceeds {max_total_bytes} byte limit"
+                )
+            counts["checked_bytes"] += len(raw)
+            indexed = _read_git_index_blob(root, _sha, max_file_bytes)
+            if counts["index_checked_bytes"] + len(indexed) > max_total_bytes:
+                raise IntegrityError(
+                    f"Git index blobs exceed {max_total_bytes} byte total limit"
+                )
+            counts["index_checked_bytes"] += len(indexed)
+            if suffix == ".json":
+                _strict_json(raw.decode("utf-8"))
+                if indexed != raw:
+                    try:
+                        _strict_json(indexed.decode("utf-8"))
+                    except (IntegrityError, UnicodeError, ValueError,
+                            RecursionError) as exc:
+                        raise IntegrityError(f"Git index blob: {exc}") from exc
+                counts["json"] += 1
+            else:
+                # Compiling creates a code object but does not execute it;
+                # unlike AST-only parsing this checks contextual syntax too,
+                # e.g. 'return' outside a function. Respect PEP 263 cookies.
+                compile(raw, relative, "exec", dont_inherit=True)
+                if indexed != raw:
+                    try:
+                        compile(indexed, relative, "exec", dont_inherit=True)
+                    except (SyntaxError, UnicodeError, ValueError,
+                            OverflowError, RecursionError) as exc:
+                        raise IntegrityError(f"Git index blob: {exc}") from exc
+                counts["python"] += 1
+        except (IntegrityError, OSError, UnicodeError, SyntaxError,
+                ValueError, OverflowError, RecursionError) as exc:
+            failures.append(f"{label}: {exc}")
+
+    if counts["files"] == 0:
+        failures.append("no Git-tracked Python/JSON files were found")
+    if failures:
+        raise IntegrityError(
+            f"{len(failures)} tracked Python/JSON problem(s):\n"
+            + "\n".join(failures[:25])
+            + ("\n[additional failures omitted]" if len(failures) > 25 else "")
+        )
+    return counts
+
+
 def main(argv=None):
     cli = argparse.ArgumentParser(description="Offline research artifact syntax and integrity gate")
     cli.add_argument("--root", type=Path, default=Path("."))
+    cli.add_argument(
+        "--tracked-code-json", action="store_true",
+        help="also validate every Git-tracked Python and JSON file, in any directory",
+    )
     args = cli.parse_args(argv)
     try:
         result = audit_repository(args.root)
+        if args.tracked_code_json:
+            result["tracked_code_json"] = audit_tracked_code_json(args.root)
     except IntegrityError as exc:
         cli.exit(2, f"artifact integrity gate failed: {exc}\n")
     print(json.dumps({
