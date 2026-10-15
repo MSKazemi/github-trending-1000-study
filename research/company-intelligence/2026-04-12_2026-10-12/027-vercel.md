@@ -1,6 +1,6 @@
 # Vercel — provisional six-month technology intelligence screen (027)
 
-> **PROVISIONAL INITIAL EVIDENCE SCREEN (2026-10-16). AI-assisted, NOT reviewed by a qualified human.** This report, its [event ledger](027-vercel.events.csv) (26 rows) and its [search log](027-vercel.search-log.md) are a first-pass **documentary source-lead screen**. They are not an accepted six-month study, verified chronology, license determination, security assessment, product test or empirical reuse result. Factual/link review, source-access/rights review and methods review are all **pending**. Issue [#94](https://github.com/MSKazemi/github-trending-1000-study/issues/94) stays open. No item here has been minted as a [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) news-corpus ID; candidates are listed in section 9 for a human to verify before minting.
+> **PROVISIONAL INITIAL EVIDENCE SCREEN (2026-10-16). AI-assisted, NOT reviewed by a qualified human.** This report, its [event ledger](027-vercel.events.csv) (26 rows) and its [search log](027-vercel.search-log.md) are a first-pass **documentary source-lead screen**. They are not an accepted six-month study, verified chronology, license determination, security assessment, product test or empirical reuse result. Factual/link review, source-access/rights review and methods review are all **pending**. Issue [#94](https://github.com/MSKazemi/github-trending-1000-study/issues/94) was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open. No item here has been minted as a [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) news-corpus ID; candidates are listed in section 9 for a human to verify before minting.
 
 - **Company watchlist ID:** 027
 - **Research issue:** [#94](https://github.com/MSKazemi/github-trending-1000-study/issues/94); linked corpus initiative [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
@@ -183,7 +183,7 @@ Stars, funding, revenue, npm downloads, registry installs and customer stories a
   - The Dealroom page was seen only as a search result and was not fetched.
   - The Context.ai attribution comes from Vercel's bulletin as read on 2026-10-16. The page carries an update log, but no immutable snapshot was kept.
   - Several pages (Connect, Ship recap) have been edited since publication.
-- **Reviewer links and audit date:** AI-assisted first pass, 2026-10-16. **Human factual/link spot check, source-access/rights review and methods review are pending.** Do not close #94 on the basis of this file.
+- **Reviewer links and audit date:** AI-assisted first pass, 2026-10-16. **Human factual/link spot check, source-access/rights review and methods review are pending.** Issue #94 was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open.
 
 ## Independent source spot-check (2026-10-16)
 
