@@ -72,3 +72,9 @@ No named-company roadmap is guaranteed; public product launch dates are not adop
 ## Review and rights
 
 Consult [study protocol](PROTOCOL.md), [AI-era mission](AI_ERA_CODING_REUSE_RESEARCH_MISSION.md), [reading list](READING_LIST_2027.md), [five-year roadmap](FIVE_YEAR_ROADMAP_2027_2031.md), and [evidence-to-lesson protocol](EVIDENCE_TO_LESSON_PROTOCOL.md). This document adds no observations, amendments, preregistration or human-review approvals. A planned systematic review needs logged queries across ACM, IEEE, Scopus/OpenAlex, dates, duplicate screening, reviewer decisions and full-text eligibility tracking. All third-party PDFs remain external links, not redistributed copies.
+
+## 2026-10-15 registry-integrity follow-up (issue #55)
+
+The shortlist test now reads the machine-readable register through the **existing canonical strict, bounded JSON file reader**, not permissive default `json.loads`. New negative fixtures establish that duplicate object keys (including DOI identity), nonstandard `NaN`, numeric overflow/underflow and non-UTF-8 bytes fail instead of silently changing records. A further check requires a declared `publisher_pdf` host to match its publisher article host and existing `author_manuscript` entries to use arxiv.org. These are **offline contract tests, not PDF requests or license verification**. They do not inspect PDF bytes, establish open-access rights, validate study methods, or replace independent qualified human review. The PR stays draft and issue #55 open.
+
+**Practical lesson:** reuse one strict decoder for machine-readable citations. An HTTPS-looking PDF link alone proves neither the file content nor distribution rights; keep PDF/version/rights authentication as a separate documented gate.
