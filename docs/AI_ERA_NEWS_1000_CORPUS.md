@@ -2,6 +2,9 @@
 
 **Started:** 2026-10-12. **Stage:** provisional editorial/source review, NOT systematic literature review, not preregistered and not independently fact-checked. **Target:** up to 1,000 individually cited distinct entries; **currently committed:** 20 (NEWS-2026-0001 through 0020). **Important:** 20/1,000 = 2.0%; this does not imply coverage or representativeness.
 
+
+> **Incremental provenance note — 2026-10-15:** The 20-record count immediately above is the **2026-10-12 historical snapshot**, not a current total. [NEWS-2026-0021](../references/ai-era-news/items/NEWS-2026-0021.json) was later added to the working corpus for [GitGuardian company issue #164](https://github.com/MSKazemi/github-trending-1000-study/issues/164), bringing the *provisional* count to **21/1,000 = 2.1%**. This is a first-party Sept 22 GitHub App key report; sampled vendor validation is not a population rate, independently replicated paper, incident-prevention outcome, human review or claim of exhaustive source discovery.
+
 **Scope:** major research updates, official vendor launches, standards/governance announcements, independently sourced technology journalism and contradictory investigations relevant to agentic software engineering, coding methods, quality, reuse, OSS adoption, interoperability, supply-chain security, human/energy cost, and bounded 2027–2031 futures. Source publication may precede 2026; future events must never be represented as observed.
 
 ## Files and conventions
