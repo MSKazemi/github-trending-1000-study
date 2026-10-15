@@ -126,3 +126,32 @@ Company adoption claims (attendance, customer names, "12M downloads per week") a
 - **Important contradictory or null evidence:** (a) companies say terms undisclosed while Bloomberg (anonymous source, unread, 403) reports ~$1.65B; (b) a web-search summary attributed Nscale's $2B Series C at $14.6B to **Anyscale** — raw TechCrunch text shows that figure is Nscale's, and the claim was screened out; (c) GPU observability "beta for select organizations" (notes, Aug 20) vs "private preview" (blog, Aug 25); (d) log limit heading "per organization" vs body "per cloud"; (e) Skills 0.3.0 Codex date (Jul 2) vs CLI 0.26.104 (Jun 30) already referencing Codex hooks; Skills 0.6.0 Kiro (notes Oct 5) vs CLI 0.26.109 (PyPI Oct 1); (f) Ray 2.58.0 dated Aug 22 in Anyscale notes vs 2026-08-23T05:42Z on GitHub; (g) TNW calls Ray "maintained by Anyscale" though it is PyTorch Foundation–governed; (h) the July advisory explicitly states the April deserialization fix did not cover the bug class.
 - **#56 candidates (not minted):** Reuters via The Star 2026-07-30; TechCrunch 2026-07-30; SiliconANGLE 2026-07-31; The Next Web 2026-08-18; CNBC 2026-09-18; CISA KEV entry (government record). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned; the three acquisition reports are one event, not three.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources (raw HTML/Markdown via `curl`, GitHub REST API, PyPI JSON, CISA KEV JSON feed) and compared each figure, date and quote against the raw text. 20 ledger rows checked; 20 confirmed, 0 corrected, 0 unverifiable, 0 wrong. No CSV or report change was needed.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-069-001 | confirmed | GitHub release published 2026-04-15T20:34:27Z; PyPI first upload 2026-04-15T04:31Z; DataSourceV2, rapidsmpf, Kafka/Turbopuffer datasinks and GPU-stage autoscaling all in release body |
+| CI2026-069-002 | confirmed | GitHub API: CVE-2026-41486, severity high, published 2026-04-21, range 2.54.0 → patched 2.55.0 |
+| CI2026-069-003 | confirmed | `datePublished` 2026-04-22; "general availability"; "5x development speed compared to general-purpose agents"; Optimization Services Program early access |
+| CI2026-069-007 | confirmed | May notes, May 4: feature flag required; AWS VM-backed clouds only |
+| CI2026-069-009 | confirmed | May 15: "512 MB per second per cloud"; heading says "per organization" (inconsistency correctly flagged) |
+| CI2026-069-010 | confirmed | Press release dated June 2, 2026; public preview on AKS/ARM; "up to 90% cost savings" |
+| CI2026-069-011 | confirmed | `datePublished` 2026-06-12; 1.3x–2.3x QPS, up to 67% cost reduction, Qwen3-235B and DeepSeek-V3, negative cases shown |
+| CI2026-069-013 | confirmed | GitHub API: CVE-2026-57516, CVSS 8.8, published 2026-07-01, `< 2.56.0` → `>= 2.56.0`; advisory text confirms 2.55.0 fix made cloudpickle opt-in via `RAY_DATA_AUTOLOAD_CLOUDPICKLE_TENSOR_METADATA=1` |
+| CI2026-069-019 | confirmed | PyPI `anyscale` 0.26.106 first upload 2026-07-28T18:45Z; PyPI licence field "AS License" |
+| CI2026-069-020 | confirmed | Blog `datePublished` 2026-07-30; Nscale release: closing conditions/regulatory approvals, H2 2026, terms undisclosed, ~200 people, brand retained, "will join the PyTorch Foundation"; ">70% quarter-over-quarter revenue growth" is in the Anyscale blog (not the Nscale release) |
+| CI2026-069-021 | confirmed | Reuters via The Star: Bloomberg "about $1.65 billion, citing a person familiar"; "Nscale declined to disclose the financial terms" |
+| CI2026-069-022 | confirmed | TechCrunch: $1.65B (Bloomberg, anonymous source), $1.38B 2022 Series C, Nscale $2B Series C at $14.6B in March |
+| CI2026-069-023 | confirmed | August notes dated August 10; affected Ray 2.52.0–2.56.1; fix in 2.57.0; PR #64946 |
+| CI2026-069-025 | confirmed | KEV feed: dateAdded 2026-08-17, dueDate 2026-08-20, BOD 26-04, forensicTriage Yes, knownRansomwareCampaignUse Unknown, Firefox and Safari |
+| CI2026-069-031 | confirmed | `datePublished` 2026-08-25; co-author from Google; "100,000 gVisor sandboxes in 20 seconds, distributed across thousands of nodes" on GKE |
+| CI2026-069-034 | confirmed | `datePublished` 2026-09-08; Summit Aug 24–26, "more than 2,000 attendees"; Nemotron RL on "more than 3,000 GPUs" on Ray Core; Microsoft AI RELAY |
+| CI2026-069-037 | confirmed | CNBC: NYSE ticker NSCL; $1.02 billion net loss on $140.6 million revenue in six months to 2026-06-30; "In July it announced plans to acquire" Anyscale |
+| CI2026-069-038 | confirmed | GitHub release 2026-10-02T07:04Z, PyPI 07:01Z; LLM APIs GA with vLLM 0.27.0; token auth default for local clusters, `RAY_AUTH_MODE=disabled`; runtime_env redaction; read_hudi guard |
+| CI2026-069-040 | confirmed (PyPI component only) | PyPI `anyscale` 0.26.109 first upload 2026-10-01T07:27Z; October notes text not re-read |
+| CI2026-069-042 | confirmed | `datePublished` 2026-10-08; ~$2,920/month (~$58 per registered developer), ~$800/month API baseline, ~$4 per GPU-node hour, 50 developers per GPU, "planning projections rather than a TCO"; 3.79x, 1.86x, 2.87x |
+
+This is an AI-assisted source spot-check, not qualified human factual review; the human review gates listed above remain open.
