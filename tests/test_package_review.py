@@ -98,6 +98,32 @@ class PackageReviewTests(unittest.TestCase):
             with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
                 evaluate(p)
 
+    def test_unexpected_root_candidate_and_gate_fields_fail_closed(self):
+        for level in ("root", "candidate", "gate"):
+            p = candidate()
+            if level == "root":
+                p["private_prompt_text"] = "should-not-be-accepted"
+            elif level == "candidate":
+                p["candidate"]["private_registry_token"] = "should-not-be-accepted"
+            else:
+                p["checks"]["known_advisories"]["private_key"] = "should-not-be-accepted"
+            with self.subTest(level=level), self.assertRaises(PackageReviewError):
+                evaluate(p)
+
+    def test_failure_or_unknown_evidence_url_also_rejects_secrets(self):
+        for status in ("fail", "unknown"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": status, "evidence_url": "https://vendor.example.test/notice?token=private"
+            }
+            with self.subTest(status=status), self.assertRaises(PackageReviewError):
+                evaluate(p)
+            p["checks"]["known_advisories"]["evidence_url"] = (
+                "https://vendor.example.test/notice")
+            result = evaluate(p)
+            self.assertEqual(result["decision"], "reject" if status == "fail" else "defer")
+            self.assertFalse(result["automatic_install_approved"])
+
     def test_invalid_digest_rejected(self):
         p = candidate()
         p["candidate"]["artifact_sha256"] = "not-a-digest"
