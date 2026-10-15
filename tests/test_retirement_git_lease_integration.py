@@ -31,6 +31,7 @@ class RetirementLeaseIntegrationTests(unittest.TestCase):
         self.env = os.environ.copy()
         self.env["GIT_TERMINAL_PROMPT"] = "0"
         self.env["GIT_CONFIG_NOSYSTEM"] = "1"
+        self.env["GIT_CONFIG_GLOBAL"] = os.devnull
         self.run_git("init", "--bare", "-q", self.remote)
         self.run_git("init", "-q", self.local)
         self.run_git("-c", "user.name=Fixture", "-c",

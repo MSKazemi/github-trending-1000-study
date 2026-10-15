@@ -49,3 +49,7 @@ It is not a sandbox against a maliciously replaced ancestor directory.
 when the CLI silently overwrites duplicate JSON keys or trusts unbounded file
 reads. Keep missingness explicit, use one strict decoder at public input
 boundaries, and never call this a real adoption result.
+
+## 2026-10-15 design-scope acceptance reconciliation
+
+The [dated issue #12 acceptance audit](reviews/2026-10-15-issue-12-adoption-design-acceptance.md) reconciles the existing archetype matrix, finite-frame missingness/bounds instrument and 30/90/180-day prospective followup rules. **Design acceptance is complete**, while the **separately gated empirical study remains unperformed**. Earlier "partial issue #12" language above records the 2026-10-12 snapshot, not a claim that field participants or genuine adoption measurements have since been collected. Continue real user/consent/capture decisions in issues #8, #27 and #24; no pilot data are invented here.
