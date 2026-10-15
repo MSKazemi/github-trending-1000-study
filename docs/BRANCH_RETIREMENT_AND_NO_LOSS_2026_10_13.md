@@ -82,3 +82,8 @@ offline regression uses a synthetic credential and the real Git `version`
 command to check this boundary without a network request or ref mutation.
 This hardening leaves the unconditional workflow retirement hold in place and
 does not constitute independent security review or retirement authorization.
+
+
+## 2026-10-15 privileged Git transport isolation follow-up (proposed PR #294)
+
+The dormant SHA-leased deletion transport is additionally hardened on PR #294: discard inherited `GIT_CONFIG_*` and tracing environment, suppress system/global configuration, disable Git hooks using `core.hooksPath=os.devnull` at command invocation, and keep the one narrowly scoped ephemeral HTTPS authorization header. A synthetic regression checks these controls even when host configuration tries to override hooks/credentials. No authorized branch deletion or live credential use has occurred. This does **not** grant approval to enable privileged cleanup, establish archive-tag protection, or replace independent security review. Recheck the exact final head and CI after this addition.
