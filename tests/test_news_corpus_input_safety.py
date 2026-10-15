@@ -93,6 +93,29 @@ class NewsInputSafetyTests(unittest.TestCase):
         self.assertNotIn(private_key, error.getvalue())
         self.assertNotIn("Traceback", error.getvalue())
 
+    def test_undeclared_file_names_do_not_expose_private_path_details(self):
+        for kind in ("unexpected_json", "unexpected_file", "nested", "symlink"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                (root / FIXTURE.name).write_bytes(FIXTURE.read_bytes())
+                private = root / "PRIVATE-synthetic-person-name.json"
+                if kind == "unexpected_json":
+                    private.write_text('{}', encoding="utf-8")
+                elif kind == "unexpected_file":
+                    private = private.with_suffix(".txt")
+                    private.write_text("unrelated", encoding="utf-8")
+                elif kind == "nested":
+                    private.mkdir()
+                else:
+                    try:
+                        private.symlink_to(root / FIXTURE.name)
+                    except (OSError, NotImplementedError):
+                        self.skipTest("symlinks not available")
+                with self.assertRaises(ValueError) as raised:
+                    news_corpus.validate_directory(root)
+                self.assertNotIn("PRIVATE", str(raised.exception))
+                self.assertNotIn(str(root), str(raised.exception))
+
     def test_deep_json_fails_with_controlled_diagnostic(self):
         self.path.write_text("[" * 2000 + "0" + "]" * 2000)
         # C decoder recursion thresholds vary across supported interpreters;
