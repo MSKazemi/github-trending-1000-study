@@ -197,6 +197,36 @@ class HiringAgreementIndependentAcceptance(unittest.TestCase):
         self.assertEqual(stats["selected_n"], 9)
         self.assertEqual(stats["rater_b_exclusions"]["missing"], 1)
 
+    def test_missing_rater_rows_do_not_masquerade_as_completed_adjudication(self):
+        # All submitted votes agree, so there are *zero disputes*. Yet the
+        # selected denominator remains nine and the review is not complete.
+        self.b["ratings"].pop()
+        report = self.analyze(output=self.dir / "one-unpaired.json")
+        self.assertEqual(report["disagreements"], [])
+        self.assertEqual(report["selected_n"], 9)
+        self.assertEqual(report["review_submission"]["paired_selected_n"], 8)
+        self.assertEqual(report["review_submission"]["missing_a_item_ids"], [])
+        self.assertEqual(report["review_submission"]["missing_b_item_ids"], ["S12"])
+        self.assertEqual(report["adjudication"]["status"], "incomplete_reviews")
+        self.assertEqual(report["adjudication"]["missing_rating_item_ids"], ["S12"])
+        self.assertEqual(report["adjudication"]["pending"], [])
+        # Both coders can omit an item; that is still missing, not agreement.
+        self.a["ratings"].pop()
+        both = self.analyze(output=self.dir / "both-unpaired.json")
+        self.assertEqual(both["review_submission"]["paired_selected_n"], 8)
+        self.assertEqual(both["review_submission"]["missing_a_item_ids"], ["S12"])
+        self.assertEqual(both["review_submission"]["missing_b_item_ids"], ["S12"])
+        self.assertEqual(both["adjudication"]["status"], "incomplete_reviews")
+        self.assertFalse(both["human_independence_verified"])
+
+    def test_complete_submission_without_disputes_does_not_certify_humans(self):
+        report = self.analyze(output=self.dir / "full-submissions.json")
+        self.assertEqual(report["review_submission"]["paired_selected_n"], 9)
+        self.assertEqual(report["adjudication"]["status"], "complete")
+        self.assertEqual(report["adjudication"]["missing_rating_item_ids"], [])
+        self.assertFalse(report["human_independence_verified"])
+        self.assertEqual(report["research_enrollment"], "blocked")
+
     def test_pseudonyms_do_not_authenticate_humans_or_source_rights(self):
         report = self.analyze()
         self.assertFalse(report["human_independence_verified"])
