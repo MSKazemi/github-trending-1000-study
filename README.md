@@ -214,6 +214,8 @@ python -m trending_study.longitudinal status \
   --plan /tmp/followup-plan.synthetic.jsonl --events-dir /tmp/followup-events.synthetic
 ```
 
+**2026-10-15 engineering completion hardening:** The offline follow-up reader now requires a complete, internally consistent 30/90/180-day schedule, strictly decodes GitHub/baseline/plan/event JSON, caps actual file reads and fails closed on incomplete or unrecognized event artifacts. See [reproducible adversarial tests and recovery policy](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md#2026-10-15-issue-4-completion-hardening-fail-closed-raw-input-and-safe-resume). This is not observed follow-up evidence.
+
 **The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
 
 ## Structural Trending parser QA — pending real-page audit (2026-10-12)
