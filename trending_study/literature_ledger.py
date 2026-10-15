@@ -113,7 +113,10 @@ def audit(data):
                                 and parsed_source.username is None
                                 and parsed_source.password is None
                                 and not parsed_source.fragment
-                                and not parsed_source.query)
+                                and not parsed_source.query
+                                and bool(parsed_source.path.strip("/"))
+                                and "\\\\" not in source_url
+                                and re.search(r"%(?![0-9A-Fa-f]{2})", source_url) is None)
             except ValueError as exc:
                 raise LiteratureError("invalid included source_url") from exc
             if not clean_source:
