@@ -10,7 +10,7 @@ This is a code, test and documentation review of a **synthetic, offline** instru
 
 The observed base-branch reference during the review was `main@2efbf2fbf7dabc9199945bc366baaaf7a2148b17`; it can advance. The baseline changed-file comparison was mergeable without declared conflicts, but the feature branch had diverged from main. Reconfirm the exact merge head and final combined CI immediately before any authorized merge.
 
-**2026-10-15 correction.** The "10-file" count above was inaccurate. Compared with `origin/main` after merging main at `d751a84`, the PR branch changed 11 files before this follow-up and **12 files** after it (the follow-up adds the `trending_audit --help` line to `.github/workflows/ci.yml`). Re-count with `git diff --name-only origin/main...HEAD` on the exact final head before any authorized merge.
+**2026-10-15 correction.** The "10-file" count above was inaccurate. Compared with `origin/main` after merging main at `bd23691` (includes PRs #291, #295–#297, #301, #314, #315), the PR branch changed 11 files before this follow-up and **12 files** after it (the follow-up adds the `trending_audit --help` line to `.github/workflows/ci.yml`). Re-count with `git diff --name-only origin/main...HEAD` on the exact final head before any authorized merge.
 
 ## Correctness, privacy and safety findings
 
