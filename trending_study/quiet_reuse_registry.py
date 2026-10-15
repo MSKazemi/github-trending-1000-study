@@ -389,6 +389,10 @@ def audit_pair_reviews(packet, review_a, review_b):
         "two_reports_present": complete, "unresolved_disagreements": disagreements,
         "concordant_provisional_fit": provisional,
         "still_needed_for_50_provisional": max(0, 50-provisional),
+        # Submitted matching labels alone can NEVER reduce the issue's 50
+        # genuinely human-validated-pair acceptance denominator.
+        "externally_authenticated_human_pairs": 0,
+        "still_needed_for_50_authenticated_human_pairs": 50,
         "reviewers_authenticated_as_real_independent_humans": False,
         "meets_issue_15_scientific_acceptance": False,
         "pair_statuses": status,
