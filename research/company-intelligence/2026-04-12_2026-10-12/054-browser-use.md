@@ -1,6 +1,6 @@
 # Browser Use — provisional six-month technology intelligence screen (054)
 
-> **Provisional source-lead screen (2026-10-16):** this report, its [event ledger](054-browser-use.events.csv) and [search log](054-browser-use.search-log.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Committing them is not scientific or security sign-off and does not close issue #121.
+> **Provisional source-lead screen (2026-10-16):** this report, its [event ledger](054-browser-use.events.csv) and [search log](054-browser-use.search-log.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Committing them is not scientific or security sign-off; issue #121 was closed on maintainer instruction (2026-10-16) with these review gates still open; reopen it if review finds a defect.
 
 - **Watchlist:** 054; [issue #121](https://github.com/MSKazemi/github-trending-1000-study/issues/121). Sector in the issue: agent execution environments, observability and evaluations. Study angle: open browser automation, grounded test outcomes.
 - **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened on 2026-10-16**. Exact UTC search-run times, full result counts, immutable page snapshots and an independent reviewer are unavailable.
@@ -121,4 +121,4 @@ A stated intention is not a scheduled delivery. These statements do not establis
   - independent methods review;
   - any real opt-in task comparison.
 
-**Do not close #121** on the basis of this screen.
+**Issue #121 was closed on maintainer instruction (2026-10-16); this screen alone is not scientific completion — reopen it if factual, rights or methods review finds a defect.** on the basis of this screen.
