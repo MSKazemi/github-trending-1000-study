@@ -10,7 +10,7 @@ import stat
 from urllib.parse import parse_qsl, unquote, urlsplit
 
 from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, decode_research_json
-from .safe_io import disjoint, publish_json
+from .safe_io import ProvenanceWriteError, disjoint, publish_json
 from .task_intake import IntakeError, utc
 
 VERSION = "hiring-observations-1.0"
@@ -285,7 +285,11 @@ def main(argv=None):
         disjoint(args.input, args.output)
         result = audit(load(args.input))
         publish_json(args.output, result)
-    except (ValueError, OSError, RecursionError) as exc:
+    except (OSError, ProvenanceWriteError):
+        # Neither local/CI absolute paths nor private file names are useful to
+        # validate submitted observations. Suppress low-level exception text.
+        parser.error("input/output filesystem operation failed; path details withheld")
+    except (ValueError, RecursionError) as exc:
         parser.error(str(exc))
     print(json.dumps({"output": str(args.output), "observation_attempts": result["observation_attempts"],
                       "scientific_acceptance": False}, sort_keys=True))

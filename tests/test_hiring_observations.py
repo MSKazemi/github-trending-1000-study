@@ -208,6 +208,28 @@ class ObservationLedgerTests(unittest.TestCase):
 
 
 class SecurePublicationTests(unittest.TestCase):
+    def test_cli_filesystem_errors_do_not_expose_private_input_or_output_paths(self):
+        # The old OSError and write-once publication errors include local
+        # filenames; the public CLI must not echo private paths on failure.
+        private_label = "private-person@example.invalid"
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / (private_label + ".json")
+            output = Path(tmp) / "safe-report.json"
+            error = io.StringIO()
+            with contextlib.redirect_stderr(error), self.assertRaises(SystemExit):
+                instrument.main(["--input", str(missing), "--output", str(output)])
+            self.assertNotIn(private_label, error.getvalue())
+            self.assertFalse(output.exists())
+            # On an existing destination, preserve bytes and redact its name.
+            nested = Path(tmp) / (private_label + ".report.json")
+            nested.write_bytes(b"ORIGINAL")
+            before = nested.read_bytes()
+            error = io.StringIO()
+            with contextlib.redirect_stderr(error), self.assertRaises(SystemExit):
+                instrument.main(["--input", str(EXAMPLE), "--output", str(nested)])
+            self.assertNotIn(private_label, error.getvalue())
+            self.assertEqual(nested.read_bytes(), before)
+
     def test_strict_json_keys_numbers_and_private_error_redaction(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "bad.json"
