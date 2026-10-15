@@ -59,5 +59,69 @@ class BranchAuditTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit("o/r", get=fetch)
 
+    def test_base_sha_changed_during_paginated_inventory_fails_before_compare(self):
+        a, b, c = "a" * 40, "b" * 40, "c" * 40
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "old", "commit": {"sha": b}, "protected": False}]
+            if "/pulls?state" in path:
+                return []
+            if "/branches/main" in path:
+                return {"commit": {"sha": c}}
+            self.fail("moved base must fail before any branch comparison")
+        with self.assertRaisesRegex(ValueError, "Base SHA moved"):
+            audit("o/r", get=fetch)
+
+    def test_unknown_open_pr_head_owner_cannot_be_silently_ignored(self):
+        a, b = "a" * 40, "b" * 40
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "old", "commit": {"sha": b}, "protected": False}]
+            if "/pulls?state" in path:
+                return [{"number": 7, "head": {"ref": "old", "repo": None}}]
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            self.fail("unknown owner must fail before comparisons")
+        with self.assertRaisesRegex(ValueError, "Unverifiable open PR head repository"):
+            audit("o/r", get=fetch)
+
+    def test_inconsistent_comparison_status_with_zero_divergence_rejected(self):
+        a, b = "a" * 40, "b" * 40
+        for status, ahead, behind in (("behind", 0, 0),
+                                      ("ahead", 1, 1),
+                                      ("diverged", 1, 0),
+                                      ("identical", 0, 2)):
+            def fetch(path):
+                if "/branches?per_page" in path:
+                    return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                            {"name": "old", "commit": {"sha": b}, "protected": False}]
+                if "/pulls?state" in path:
+                    return []
+                if "/branches/main" in path:
+                    return {"commit": {"sha": a}}
+                return {"status": status, "ahead_by": ahead, "behind_by": behind}
+            with self.subTest(status=status), self.assertRaisesRegex(
+                    ValueError, "Inconsistent comparison"):
+                audit("o/r", get=fetch)
+
+    def test_known_open_pr_same_repository_is_never_prune_candidate(self):
+        a, b = "a" * 40, "b" * 40
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "old", "commit": {"sha": b}, "protected": False}]
+            if "/pulls?state" in path:
+                return [{"number": 9, "head": {
+                    "ref": "old", "repo": {"full_name": "o/r"}}}]
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            return {"status": "behind", "ahead_by": 0, "behind_by": 11}
+        report = audit("o/r", get=fetch)
+        self.assertEqual(report["branches"][1]["decision"], "keep-open-pr")
+        self.assertEqual(report["branches"][1]["open_prs"], [9])
+
+
 if __name__ == "__main__":
     unittest.main()

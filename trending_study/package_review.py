@@ -7,7 +7,9 @@ from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse
+
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 
 FIELDS = ("registry_identity", "license_compatibility", "known_advisories",
           "release_provenance", "functional_fit", "maintenance_suitability")
@@ -17,6 +19,10 @@ _SHA = re.compile(r"^[0-9a-f]{64}$")
 
 class PackageReviewError(ValueError):
     pass
+
+
+def _normalize_pypi_name(name):
+    return re.sub(r"[-_.]+", "-", name.casefold())
 
 
 def _date(raw, *, allow_future=False):
@@ -39,14 +45,17 @@ def _clean_https_url(url, field):
     a publisher, registry, license statement or an evidence artifact.
     """
     if (not isinstance(url, str) or not url or url != url.strip()
+            or "\\" in url
             or any(ord(char) <= 32 or ord(char) == 127 for char in url)):
         raise PackageReviewError(f"{field} requires clean HTTPS URL without whitespace")
     try:
         parsed = urlparse(url)
         # Access .port to force validation of malformed/out-of-range port syntax.
-        _ = parsed.port
+        port = parsed.port
     except ValueError as exc:
         raise PackageReviewError(f"{field} has malformed HTTPS authority") from exc
+    if port == 0:
+        raise PackageReviewError(f"{field} has malformed HTTPS authority (port 0)")
     if (parsed.scheme != "https" or not parsed.hostname or parsed.netloc.endswith(":")
             or parsed.username is not None or parsed.password is not None
             or parsed.params or parsed.query or parsed.fragment):
@@ -57,11 +66,14 @@ def _clean_https_url(url, field):
 
 
 def evaluate(data):
-    if not isinstance(data, dict):
-        raise PackageReviewError("expected object")
+    if not isinstance(data, dict) or set(data) != {"candidate", "task_frozen_at_utc", "checks"}:
+        raise PackageReviewError("expected exact package review fields; unknown fields forbidden")
     candidate = data.get("candidate")
-    if not isinstance(candidate, dict):
-        raise PackageReviewError("candidate object required")
+    allowed_candidate = {"ecosystem", "package_name", "version", "registry_url",
+                         "artifact_sha256", "first_available_at_utc", "spdx_expression",
+                         "purl", "source_commit"}
+    if not isinstance(candidate, dict) or set(candidate) - allowed_candidate:
+        raise PackageReviewError("candidate must be an object without unsupported/private fields")
     for key in ("ecosystem", "package_name", "version"):
         if not isinstance(candidate.get(key), str) or not candidate[key].strip():
             raise PackageReviewError(f"candidate.{key} required")
@@ -80,11 +92,16 @@ def evaluate(data):
     if is_pypi:
         if re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", candidate["package_name"]) is None:
             raise PackageReviewError("PyPI package_name must contain valid registry-name characters")
-        parts = [unquote(p) for p in parsed.path.strip("/").split("/")]
+        # Accept only literal ASCII path segments. Percent-escaped UTF-8 can
+        # casefold to an unrelated ASCII package name (e.g. long-s to "s"),
+        # so decoded-name equality alone is not safe identity binding.
+        if not parsed.path.isascii() or "%" in parsed.path:
+            raise PackageReviewError("PyPI registry URL requires literal ASCII path segments")
+        parts = parsed.path.strip("/").split("/")
         if (parsed.hostname != "pypi.org" or parsed.port not in (None, 443)
                 or len(parts) != 3 or parts[0] != "project"
-                or parts[1].casefold().replace("_", "-").replace(".", "-") !=
-                   candidate["package_name"].casefold().replace("_", "-").replace(".", "-")
+                or _normalize_pypi_name(parts[1]) !=
+                   _normalize_pypi_name(candidate["package_name"])
                 or parts[2] != candidate["version"]):
             raise PackageReviewError("PyPI registry URL must match official host, exact name and version")
     # Optional Package URL and source commit (ported from superseded #186).
@@ -96,8 +113,8 @@ def evaluate(data):
         from_purl = re.fullmatch(r"pkg:pypi/([A-Za-z0-9._-]+)@([A-Za-z0-9][A-Za-z0-9._+!-]{0,127})", purl)
         if not from_purl:
             raise PackageReviewError("purl must be exact pkg:pypi/name@version")
-        normalize = lambda name: re.sub(r"[-_.]+", "-", name.casefold())
-        if (normalize(from_purl.group(1)) != normalize(candidate["package_name"])
+        if (_normalize_pypi_name(from_purl.group(1)) !=
+                _normalize_pypi_name(candidate["package_name"])
                 or from_purl.group(2) != candidate["version"]):
             raise PackageReviewError("purl conflicts with pinned PyPI identity/version")
     source_commit = candidate.get("source_commit")
@@ -124,11 +141,18 @@ def evaluate(data):
         ["artifact_sha256"] if sha is None else [])
     for key in FIELDS:
         cell = checks[key]
-        if (not isinstance(cell, dict) or not isinstance(cell.get("status"), str)
+        if (not isinstance(cell, dict) or set(cell) - {"status", "evidence_url"}
+                or not isinstance(cell.get("status"), str)
                 or cell["status"] not in STATES):
-            raise PackageReviewError(f"{key} must declare pass/fail/unknown")
+            raise PackageReviewError(f"{key} must declare pass/fail/unknown without unknown fields")
+        # A failing/unknown gate can carry a corroborating source, but its URL
+        # must not hide a credential or arbitrary URL payload either. Absent or
+        # null means the source is unknown, which only a pass cannot accept.
+        if cell.get("evidence_url") is not None:
+            _clean_https_url(cell["evidence_url"], f"{key} evidence_url")
+        elif cell["status"] == "pass":
+            raise PackageReviewError(f"{key} pass requires an evidence_url")
         if cell["status"] == "pass":
-            _clean_https_url(cell.get("evidence_url"), f"{key} pass evidence_url")
             if key == "license_compatibility" and (
                     not spdx or spdx.strip().upper() in {"NONE", "NOASSERTION"}):
                 raise PackageReviewError("license pass requires an actual SPDX license expression, not NONE/NOASSERTION")
@@ -151,13 +175,29 @@ def evaluate(data):
             "source_checks_self_declared": True}
 
 
+def evaluate_file(path):
+    """Read one bounded regular artifact via the shared strict research reader."""
+    try:
+        data = load_research_json_file(path, max_bytes=MAX_FILE_BYTES)
+    except ResearchJSONError as exc:
+        if str(exc) == "invalid or ambiguous JSON input":
+            # The shared reader already hides duplicate keys, nesting-limit
+            # context and filenames; keep this tool's established diagnostic.
+            raise PackageReviewError(
+                "input must be strict UTF-8 JSON without duplicate keys or invalid numbers"
+            ) from None
+        # Remaining shared-reader messages are fixed and contain no path.
+        raise PackageReviewError(str(exc)) from exc
+    return evaluate(data)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
     try:
-        out = evaluate(json.loads(args.input.read_text(encoding="utf-8")))
-    except (OSError, ValueError) as exc:
+        out = evaluate_file(args.input)
+    except (OSError, ValueError, RecursionError) as exc:
         ap.error(str(exc))
     print(json.dumps(out, indent=2, sort_keys=True))
 
