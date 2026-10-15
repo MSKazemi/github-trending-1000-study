@@ -21,9 +21,11 @@ python -m trending_study pilot-preflight \
 
 The first command reports which documentary prerequisites remain. The second is **expected to return nonzero** for the example: that is a safety feature. A result `ready_for_human_review` is **not** ethics approval, access authorization, preregistration, an independent audit, or confirmation that observations have been collected.
 
-## Step 1: Capture one page once, with provenance
+## Step 1: Capture one page once, with provenance (currently BLOCKED)
 
-Use the **actual current UTC date**; this CLI will not pretend a present-day fetch reconstructs an older Trending snapshot. Example commands use POSIX shell date and explicitly include a source-manifest file:
+**STOP — do not execute the capture command at present.** As of 2026-10-13 the CLI hard-blocks live `/trending?since=...` retrieval before any HTTP request, because source-access approval for this study is absent and published [GitHub robots rules](https://github.com/robots.txt) contain `Disallow: /*since=*`. Review the [decision record](SOURCE_ACCESS_DECISION_2026-10-13.md). This is a conservative operating decision, not a legal ruling that every manual public-page visit is unlawful. There is no user-facing override; re-enablement requires an explicit reviewed code/protocol amendment after a genuinely favorable human platform/access assessment.
+
+**Future procedure only, after authorization:** use the **actual current UTC date**, not a backfilled historical date. The example below is preserved to specify the intended manifest and output contract; it currently exits nonzero before writing files:
 
 ```bash
 UTC_DAY="$(date -u +%F)"
@@ -32,7 +34,7 @@ python -m trending_study capture --date "$UTC_DAY" --window daily \
   --manifest-output "data/raw/$UTC_DAY-daily.manifest.json"
 ```
 
-The capture command makes **one** user-initiated HTTPS request, does not bypass site access rules, validates successful HTTP status and HTML response, writes raw bytes (4 MB maximum) and creates an adjacent capture-time JSON manifest containing source URL, UTC timestamp, content type, HTTP date header if supplied, byte count and SHA-256. Paths under `data/raw` are ignored by Git. Preserve exact bytes in a controlled study data store with appropriate rights; never silently overwrite the first capture on a retry. If a fetch fails or a parser encounters a bot page, record failure/missingness, do not convert to an empty Trending day.
+Once a documented, independently reviewed re-enablement PR has been approved, the original capture implementation is designed to make **one** user-initiated HTTPS request, validate HTTP status/HTML, write at most 4 MB of raw bytes and create an adjacent capture-time JSON manifest. **In the current release it makes zero live requests and writes no capture files**, regardless of the date or command parameters. Paths under `data/raw` are ignored by Git. Preserve exact bytes in a controlled study data store with appropriate rights; never silently overwrite the first capture on a retry. If a fetch fails or a parser encounters a bot page, record failure/missingness, do not convert to an empty Trending day.
 
 **Limitation:** the manifest is client-recorded metadata. A matching hash detects later local file changes but cannot independently prove that the original HTML came from GitHub, that the server used a particular ranking formula, or that a timestamp could not have been edited. Restrict trusted data handling, preserve original network/tool logs and validate rows independently.
 
@@ -75,7 +77,7 @@ python -m unittest discover -s tests -v
 python -m trending_study --help
 ```
 
-CI tests synthetic manifest creation, tamper/date/source filtering, legacy timestamp labeling, simulated one-call HTTP capture, pilot CLI output, pending/verified documentary gates and nonzero strict gating. **Passing these tests is not the same as real-page parser or scientific-data validation.**
+CI tests synthetic manifest creation, tamper/date/source filtering, legacy timestamp labeling, a **default-denied live capture with zero network requests**, mock-only capture code-path preservation, pilot CLI output, pending/verified documentary gates and nonzero strict gating. **Passing these tests is not the same as real-page parser or scientific-data validation.**
 
 See [Issue #27](https://github.com/MSKazemi/github-trending-1000-study/issues/27), prerequisites [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2), [#3](https://github.com/MSKazemi/github-trending-1000-study/issues/3), [#21](https://github.com/MSKazemi/github-trending-1000-study/issues/21) and [#25](https://github.com/MSKazemi/github-trending-1000-study/issues/25).
 

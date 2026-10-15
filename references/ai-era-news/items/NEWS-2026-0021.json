@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "author": "Gaetan Ferry",
+  "accessed_date_utc": "2026-10-15",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0021",
+  "title": "GitHub App Private Keys: 474 Leaked Keys Exposed",
+  "publisher": "GitGuardian Security Research",
+  "original_publication_date": "2026-09-22",
+  "canonical_url": "https://blog.gitguardian.com/github-app-private-keys-leaked/",
+  "source_type": "first_party_vendor_security_research",
+  "topics": [
+    "software-supply-chain",
+    "secrets-detection",
+    "github-app-security",
+    "machine-identity",
+    "agent-security"
+  ],
+  "attributed_claim_summary": "GitGuardian's own September 2026 investigation selected 4,802 GitHub-context private-key candidates from more than 500,000 previously detected RSA keys and reported that 474 keys authenticated as 440 GitHub Apps. Reported access included high-privilege apps; these results have not been independently reproduced.",
+  "evidence_or_event": "First-party research article published on September 22, 2026 by Gaetan Ferry, describing vendor-performed API validation and permissions analysis of a selected set of previously leaked GitHub App private keys. Underlying leak examples included 2020–2025 and are not new 2026 leak incidents.",
+  "limitations": "Selection-conditioned result: 474/4,802 is NOT an ecosystem-wide GitHub App key leakage rate; no random frame, externally authenticated key-pool provenance, independent replication, sensitivity/specificity denominator, or evidence of GitGuardian preventing incidents. Original article content was accessed via public indexed publisher content, and direct-page retrieval intermittently failed. No raw keys, screenshots, personal records or exploit instructions retained. Do not treat syndicated retellings as independent confirmation.",
+  "research_relevance": "Machine identity governance: a forgotten non-expiring GitHub App private key with broad scopes can create a downstream supply-chain exposure path. Security and code reuse require least privilege, inventory, safe key rotation and independently tested fail-closed workflows.",
+  "practical_experiment": "Freeze nonworking synthetic GitHub App-key-form fixture cases and independent hidden acceptance tests; compare existing GitHub App scope/inventory and CI security controls to a bounded, version-pinned ggshield integration in an isolated disposable repository. Measure missed/false alerts, unauthorized context/network exposure, accepted-task outcomes and reviewer minutes; do not test actual keys or claim population prevalence.",
+  "related_existing_sources": [
+    "company-intelligence:GG096-2026-014",
+    "research/company-intelligence/2026-04-12_2026-10-12/096-gitguardian.md",
+    "#164",
+    "#56"
+  ]
+}

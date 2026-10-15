@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "id": "NEWS-2026-0012",
+  "title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+  "publisher": "METR",
+  "author": null,
+  "original_publication_date": "2025-07-10",
+  "accessed_date_utc": "2026-10-12",
+  "canonical_url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+  "source_type": "independent_research_report",
+  "topics": [
+    "evaluation"
+  ],
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "attributed_claim_summary": "METR randomized AI access across 246 tasks completed by 16 experienced maintainers; reported 19% longer task time with early-2025 AI tools.",
+  "evidence_or_event": "Claims are attributed to the original publisher; no original study results produced here.",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "limitations": "Narrow mature-repository, experienced-developer, 2025-model context; not a universal 2026 or 2027 effect.",
+  "research_relevance": "AI-era coding methods, independently accepted functionality, OSS reuse and lifecycle cost",
+  "practical_experiment": "Pre-register total task completion time and accepted functionality; include no-AI baseline.",
+  "policy_conclusion": "testable_hypothesis_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "related_existing_sources": [
+    "P08",
+    "R03"
+  ],
+  "correction_status": "not_checked",
+  "fulltext_stored": false
+}
