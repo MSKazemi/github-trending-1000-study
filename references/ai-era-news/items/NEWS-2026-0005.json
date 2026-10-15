@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "NEWS-2026-0005",
+  "title": "Introducing Codex",
+  "publisher": "OpenAI",
+  "author": null,
+  "original_publication_date": "2025-05-16",
+  "accessed_date_utc": "2026-10-12",
+  "canonical_url": "https://openai.com/index/introducing-codex/",
+  "source_type": "primary_platform_or_vendor_report",
+  "topics": [
+    "coding-agents"
+  ],
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "attributed_claim_summary": "OpenAI launched a cloud-based coding agent designed to carry out multiple software engineering tasks in parallel.",
+  "evidence_or_event": "Source-authored report or launch; no original measurements collected in this repository.",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "limitations": "The original launch article explicitly notes that it is outdated; launch capability does not imply safe production operation.",
+  "research_relevance": "AI-era coding workflow -> secure functionality -> independent reuse -> lifetime cost; distinguish release availability from observed adoption.",
+  "practical_experiment": "Compare parallel-agent branches against serial workflows on accepted tasks and total review/rework cost.",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "related_existing_sources": [],
+  "correction_status": "not_checked",
+  "fulltext_stored": false
+}

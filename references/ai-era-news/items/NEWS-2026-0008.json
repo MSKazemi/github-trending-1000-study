@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "NEWS-2026-0008",
+  "title": "Agents panel: Launch Copilot coding agent tasks anywhere on GitHub",
+  "publisher": "GitHub",
+  "author": null,
+  "original_publication_date": "2025-08-19",
+  "accessed_date_utc": "2026-10-12",
+  "canonical_url": "https://github.blog/news-insights/product-news/agents-panel-launch-copilot-coding-agent-tasks-anywhere-on-github/",
+  "source_type": "primary_platform_or_vendor_report",
+  "topics": [
+    "coding-agents"
+  ],
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "attributed_claim_summary": "GitHub expanded ways to start and track delegated agent work through an agents panel.",
+  "evidence_or_event": "Source-authored report or launch; no original measurements collected in this repository.",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "limitations": "Interface reach does not measure task success, external reuse, or distinct agent users.",
+  "research_relevance": "AI-era coding workflow -> secure functionality -> independent reuse -> lifetime cost; distinguish release availability from observed adoption.",
+  "practical_experiment": "Record task starts, abandonments, accepted outputs and follow-up defects, not launches alone.",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "related_existing_sources": [],
+  "correction_status": "not_checked",
+  "fulltext_stored": false
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0018",
+  "title": "Summary Analysis of Responses to the Request for Information Regarding Security Considerations for AI Agents",
+  "publisher": "NIST",
+  "original_publication_date": "2026-05-18",
+  "canonical_url": "https://www.nist.gov/publications/summary-analysis-responses-request-information-regarding-security-considerations-ai",
+  "source_type": "public_institution_stakeholder_consultation_summary",
+  "topics": [
+    "agent-security",
+    "governance",
+    "evaluation"
+  ],
+  "attributed_claim_summary": "NIST summarized external responses to an AI-agent-security RFI; respondents described agent-specific threat concerns and called for adapted security practices and implementation guidance.",
+  "evidence_or_event": "Original NIST Trustworthy and Responsible AI 800-5 report dated May 18, 2026; a compilation and analysis of stakeholder comments.",
+  "limitations": "Stakeholder submissions are not a measured prevalence sample, an RCT or product-level security certification; a consensus on concerns is not a verified incident frequency.",
+  "research_relevance": "Turn security claims into isolated negative tests of authority boundaries, source trust, tool misuse and human approval for irreversible agent actions.",
+  "practical_experiment": "Construct a synthetic least-privilege tool-agent harness with benign unauthorized-action cases, count policy denials and accepted safe tasks without accessing real credentials.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E18"
+  ]
+}
