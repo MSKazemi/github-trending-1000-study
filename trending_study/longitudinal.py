@@ -391,7 +391,7 @@ def load_events(events_dir, plan_by_id, plan_digest):
             )
         except (ValueError, RecursionError):
             raise FollowupError(
-                "invalid or ambiguous event file; preserve for quarantine"
+                "invalid event file (ambiguous strict JSON); preserve for quarantine"
             ) from None
         if type(record) is not dict or record.get("schema_version") != EVENT_VERSION:
             raise FollowupError("unrecognized event file")
