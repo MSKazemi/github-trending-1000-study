@@ -5,6 +5,8 @@ No tokens-to-energy conversion. No claim of full SCI or cloud inference coverage
 import argparse
 import json
 from pathlib import Path
+
+from .data_integrity import load_research_json_file
 import math
 
 COMPONENTS = ("local_development", "ci", "model_inference", "runtime",
@@ -121,7 +123,7 @@ def main(argv=None):
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
     try:
-        out = compare(json.loads(args.input.read_text(encoding="utf-8")))
+        out = compare(load_research_json_file(args.input, max_bytes=1_000_000))
     except (OSError, ValueError) as exc:
         ap.error(str(exc))
     print(json.dumps(out, indent=2, sort_keys=True))
