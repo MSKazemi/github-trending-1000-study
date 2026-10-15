@@ -145,4 +145,4 @@ Patronus's statements of intent describe what it plans to do. They do not guaran
   - Archive snapshots showing when the site repositioned.
   - Complete search-hit counts.
   - The final arXiv-wide query, which was not run because the web-search budget ran out.
-- **Pending:** a human factual/link spot-check, source-access and rights review (especially the gated and unlicensed artifacts), methods review, and any real opt-in experiment. **Do not close #126 on the basis of this screen.**
+- **Pending:** a human factual/link spot-check, source-access and rights review (especially the gated and unlicensed artifacts), methods review, and any real opt-in experiment. **Issue #126 was closed on maintainer instruction (2026-10-16); this screen alone is not scientific completion — reopen it if factual, rights or methods review finds a defect.**
