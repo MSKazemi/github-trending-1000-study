@@ -14,7 +14,20 @@
 | J06 | **Large Scale Reuse of Microservices Using CI/CD and InnerSource Practices**; *Empirical Software Engineering*, 2025 | [Publisher PDF](https://link.springer.com/content/pdf/10.1007/s10664-024-10595-w.pdf) | [Springer article](https://link.springer.com/article/10.1007/s10664-024-10595-w) | Industrial case study; organizational reuse, discoverability and CI workflows. | Context-specific, not proof of universal gain. Trial an independently runnable quickstart and maintained API contract. |
 | J07 | **CODE Beyond FAIR: A Roadmap for Reusable Research Software**; *Scientific Data*, 2026 | [Publisher PDF](https://www.nature.com/articles/s41597-026-06705-6.pdf) | [Nature article](https://www.nature.com/articles/s41597-026-06705-6) | Guidance/roadmap for FAIR and beyond-FAIR research software. | A framework, **not** a controlled causal effect. Test independent first-time researcher reproduction before and after improved docs. |
 
-**Access queue:** No university-login request is necessary for these seven entries while the PDF links remain publicly reachable. If an individual link becomes unavailable, record date, HTTP/access result, DOI and legitimate institutional-access need; do not circumvent access restrictions. Journal reputation is a filter, not a substitute for per-paper methods appraisal.
+**Access queue:** These seven entries provide intended public author-manuscript or publisher PDF links, but a fresh bytes-level access, version and license check has **not** been performed in this pass. Publisher landing pages were screened on 2026-10-15. If an individual link is inaccessible, record the failure and whether legitimate institutional access is needed; never bypass access controls. If an individual link becomes unavailable, record date, HTTP/access result, DOI and legitimate institutional-access need; do not circumvent access restrictions. Journal reputation is a filter, not a substitute for per-paper methods appraisal.
+
+## Machine-readable review registry and quality gate (2026-10-15)
+
+The [seven-entry journal register](../references/journal_open_access_2026_10_12.json) transcribes this curated shortlist with DOI/publisher URLs, publication date, manuscript-vs-publisher-PDF distinction, design category, explicit inference limitations, one proposed falsifiable repository test, and **unverified** review/access fields. This is a 2026-10-15 metadata checkpoint of a **2026-10-12 selection vintage**; no older source-retrieval date was retroactively overwritten.
+
+Validation is offline and bundled with unit tests:
+
+```bash
+python -m unittest tests.test_open_access_journal_registry -v
+python -m unittest discover -s tests -v
+```
+
+**Review workflow:** a qualified independent reviewer must inspect each publisher article's metadata/version and legitimate public PDF accessibility, record license and rights, read methods and result tables, evaluate conflicts and applicability, and store actual human signoff separately. Do not flip `verified_research_findings` or the human approval status on the basis of citation syntax checks. The current snapshot asserts **neither PDF-byte verification nor independent scientific approval**. Do not modify the original forecast vintage in later updates: create dated append-only check records instead. Errors/corrections should preserve previous citations and record the resolution.
 
 ## Further relevant evidence: deliberately excluded from journal-only seven
 
