@@ -99,3 +99,15 @@ retain their limits: source checks remain self-declared and
 `automatic_install_approved` remains false. Independent package, license,
 provenance, advisory, functional and human security review are still outstanding
 for any real reuse candidate.
+
+### 2026-10-15 PyPI path-identity hardening
+
+The offline gate requires a literal ASCII project/version path on the official
+PyPI host, rejecting percent-escaped or Unicode URL segments before applying
+[PyPA normalized project-name equality](https://packaging.python.org/en/latest/specifications/name-normalization/).
+Otherwise decoding a URL first and then applying Unicode `casefold()` can
+confuse a non-ASCII character such as long-s (`ſ`) with an ASCII package name.
+This is intentionally narrower than URL parsing in general: an escaped URL must
+be resolved and authenticated independently, not silently treated as a pinned
+identity. The gate still only validates self-declared input; it does not
+establish a real distribution, artifact digest, rights, provenance, or approval.

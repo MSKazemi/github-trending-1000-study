@@ -149,6 +149,26 @@ class PackageReviewTests(unittest.TestCase):
             with self.subTest(url=url), self.assertRaises(PackageReviewError):
                 evaluate(p)
 
+    def test_pypi_url_rejects_escaped_or_unicode_name_aliases(self):
+        # urllib.parse.unquote plus Unicode casefold can otherwise turn the
+        # long-s character into ASCII 's', falsely binding another URL path.
+        cases = (
+            ("fictionalpkg", "%66ictionalpkg"),
+            ("safety", "%C5%BFafety"),
+            ("fictionalpkg", "fictional%2Fpkg"),
+            ("fictionalpkg", "fictionalpkg%00"),
+            ("fictionalpkg", "fictionalpkg\u200d"),
+        )
+        for declared, url_segment in cases:
+            p = candidate()
+            p["candidate"]["package_name"] = declared
+            p["candidate"]["registry_url"] = (
+                "https://pypi.org/project/" + url_segment + "/1.0/"
+            )
+            with self.subTest(segment=url_segment), self.assertRaisesRegex(
+                    PackageReviewError, "literal ASCII"):
+                evaluate(p)
+
     def test_moving_aliases_not_pinned_release(self):
         for version in ("latest", "main", "HEAD", ">=1.0", "1.*", "*"):
             p = candidate()

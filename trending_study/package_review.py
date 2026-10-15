@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import re
 import stat
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse
 
 from .data_integrity import MAX_FILE_BYTES, decode_research_json
 
@@ -88,7 +88,12 @@ def evaluate(data):
     if is_pypi:
         if re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", candidate["package_name"]) is None:
             raise PackageReviewError("PyPI package_name must contain valid registry-name characters")
-        parts = [unquote(p) for p in parsed.path.strip("/").split("/")]
+        # Accept only literal ASCII path segments. Percent-escaped UTF-8 can
+        # casefold to an unrelated ASCII package name (e.g. long-s to "s"),
+        # so decoded-name equality alone is not safe identity binding.
+        if not parsed.path.isascii() or "%" in parsed.path:
+            raise PackageReviewError("PyPI registry URL requires literal ASCII path segments")
+        parts = parsed.path.strip("/").split("/")
         if (parsed.hostname != "pypi.org" or parsed.port not in (None, 443)
                 or len(parts) != 3 or parts[0] != "project"
                 or _normalize_pypi_name(parts[1]) !=
