@@ -371,6 +371,21 @@ class HiringAgreementIndependentAcceptance(unittest.TestCase):
         self.cli("verify-frame", "--frame", fifo, success=False)
         self.cli("verify-frame", "--frame", self.dir, success=False)
 
+    def test_cli_json_and_missing_path_errors_never_echo_private_input_details(self):
+        private_name = "PRIVATE-fictional-rater-identity"
+        path = self.dir / (private_name + ".json")
+        path.write_text('{"' + private_name + '":1,"' + private_name + '":2}', encoding="utf-8")
+        bad = self.cli("verify-frame", "--frame", path, success=False)
+        self.assertIn("strict UTF-8 JSON", bad.stderr)
+        self.assertNotIn(private_name, bad.stderr)
+        self.assertNotIn(str(path), bad.stderr)
+        self.assertNotIn("Traceback", bad.stderr)
+        path.unlink()
+        absent = self.cli("verify-frame", "--frame", path, success=False)
+        self.assertNotIn(private_name, absent.stderr)
+        self.assertNotIn(str(path), absent.stderr)
+        self.assertNotIn("Traceback", absent.stderr)
+
     def test_pack_and_analyze_outputs_are_write_once_even_for_aliases(self):
         output = self.dir / "existing.json"
         output.write_bytes(b"original fictional evidence")
