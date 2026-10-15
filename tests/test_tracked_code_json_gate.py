@@ -78,6 +78,24 @@ class TrackedCodeJSONIntegrityTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "duplicate JSON object key"):
             audit_tracked_code_json(self.root)
 
+    def test_untrusted_duplicate_key_is_not_echoed_from_worktree_or_index(self):
+        path = self.root / ".hidden/good.json"
+        secret = "secret-private-json-key-DO-NOT-LOG"
+        payload = '{"' + secret + '":1,"' + secret + '":2}'
+        # Failing checked-out input cannot print the content-derived key.
+        path.write_text(payload, encoding="utf-8")
+        with self.assertRaises(IntegrityError) as output:
+            audit_tracked_code_json(self.root)
+        self.assertIn("duplicate JSON object key", str(output.exception))
+        self.assertNotIn(secret, str(output.exception))
+        # A malformed staged blob must be equally private when worktree is valid.
+        self.git("add", "--", ".hidden/good.json")
+        path.write_text('{"repaired":true}', encoding="utf-8")
+        with self.assertRaises(IntegrityError) as staged:
+            audit_tracked_code_json(self.root)
+        self.assertIn("Git index blob", str(staged.exception))
+        self.assertNotIn(secret, str(staged.exception))
+
     def test_rejects_nan_infinity_underflow_and_overflow_in_tracked_json(self):
         path = self.root / ".hidden/good.json"
         for value in ("NaN", "Infinity", "-Infinity", "1e9999", "1e-9999"):
