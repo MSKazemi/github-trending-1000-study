@@ -189,15 +189,15 @@ def validate_directory(directory):
         if count > MAX_FILES + 1:
             raise ValueError("news source directory exceeds file-count limit")
         if path.is_symlink():
-            raise ValueError(f"{path.name}: symlinked news input is forbidden")
+            raise ValueError("symlinked news input is forbidden")
         if path.is_dir():
-            raise ValueError(f"{path.name}: nested news directories are not inspected")
+            raise ValueError("nested news directories are not inspected")
         if path.suffix == ".json":
             if not ID_RE.fullmatch(path.stem):
-                raise ValueError(f"{path.name}: unexpected JSON record filename")
+                raise ValueError("unexpected JSON record filename")
             paths.append(path)
         elif path.name != "README.md":
-            raise ValueError(f"{path.name}: unexpected non-record file")
+            raise ValueError("unexpected non-record file")
     if not paths:
         raise ValueError("no news records found")
     paths.sort()
@@ -208,7 +208,7 @@ def validate_directory(directory):
         # This CLI must be fail-closed even outside a full repository checkout:
         # the main CI integrity gate alone cannot protect standalone callers.
         if path.is_symlink():
-            raise ValueError(f"{path.name}: symlinked news input is forbidden")
+            raise ValueError("symlinked news input is forbidden")
         if not path.is_file():
             raise ValueError(f"{path.name}: expected an ordinary JSON file")
         raw = _read_record(path)
