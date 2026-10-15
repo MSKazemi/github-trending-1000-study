@@ -53,7 +53,7 @@
 
 ## Known conflicts and limits
 
-- **Open Secure AI Alliance founding size:** Engadget says 27, the CSA note says press settled on 37, and NVIDIA says more than 40. Unresolved.
+- **Open Secure AI Alliance founding size:** Engadget says 27, and the CSA note says press settled on 37 while NVIDIA cited more than 40. The 2026-10-16 spot-check found NVIDIA's own blog naming 52 organisations (including NVIDIA) in a Wayback Machine capture of 2026-07-29 and 122 in the current version (dateModified 2026-09-22). Unresolved.
 - **PSIRT data quality:** CVE-2026-24254 (Dynamo) is described as an out-of-bounds write but classified CWE-288. CVE-2026-47627 (Triton) lists only denial of service as its impact under a C:H/I:H/A:H vector. Bulletin 5848 was revised to remove a CVE.
 - **OpenShell status:** "early preview" on May 31, "broadly available" on Sep 28, but public on GitHub since 2026-02-24 with near-daily v0.0.x releases.
 - **TensorRT-LLM:** the July 14 security fixes exist only in v1.3.0 release candidates. No stable v1.3.0 appears by 2026-10-12.
