@@ -127,3 +127,17 @@ The fabricated fixture chooses `prior_7d_star_delta` on the training pages (accu
 - Preserve negative, inconclusive and missing observations: a high predictive score on selected Trending repos would still not demonstrate additional real users, reduced human effort or lower carbon emissions.
 
 See [the black-box audit design](TRENDING_ALGORITHM_AUDIT.md), [construct validity caveats](TRENDING_VALIDITY_AUDIT.md), [source-access stop gate](SOURCE_ACCESS_DECISION_2026-10-13.md), and [roadmap](ROADMAP.md).
+
+
+## 2026-10-15 explicit noninformative ranking baseline
+
+The per-page heldout rank-proxy report includes a fixed **0.5 pairwise
+accuracy** reference for a constant-score predictor and the descriptive
+heldout macro accuracy minus that reference. This makes the trivial
+no-information comparator visible rather than treating a positive score as
+intrinsically meaningful. A synthetic all-tied fixture must return exactly
+0.5 and zero excess. Pair comparisons within a page are correlated, selected
+predictors were chosen on pre-lock data, and the study has neither
+independently authenticated source snapshots nor a valid null sampling
+distribution. **Do not** interpret the excess as a p-value, confidence
+interval, causal effect, ranking-algorithm recovery, or deployed model utility.
