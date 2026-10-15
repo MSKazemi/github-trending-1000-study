@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0020",
+  "title": "OWASP Top 10 for Agentic Applications for 2026",
+  "publisher": "OWASP GenAI Security Project",
+  "original_publication_date": "2025-12-09",
+  "canonical_url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+  "source_type": "open_security_community_risk_guidance",
+  "topics": [
+    "agent-security",
+    "software-supply-chain",
+    "governance"
+  ],
+  "attributed_claim_summary": "OWASP published practitioner-reviewed agentic-application risk guidance spanning agent goal hijack, tool misuse, identity/privilege abuse and agentic supply-chain security.",
+  "evidence_or_event": "Original OWASP agentic Top 10 resource dated December 9, 2025; practitioner security guidance rather than an intervention trial.",
+  "limitations": "The named risk categories do not establish quantitative prevalence, vulnerability status of a package or the protective effect of a checklist without independent operational testing.",
+  "research_relevance": "Make reuse-first agents reject incompatible licensing, suspicious tool/plugin provenance and unauthorized side effects, not optimize only code-generation speed.",
+  "practical_experiment": "Create an offline secret-free negative-test suite for tool misuse, untrusted retrieval and permission escalation; record independent pass/failure before task integration.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E17"
+  ]
+}
