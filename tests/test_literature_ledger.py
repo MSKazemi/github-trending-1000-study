@@ -150,6 +150,33 @@ class LiteratureLedgerTests(unittest.TestCase):
         self.assertEqual(report["screened_records"], 2)
         self.assertFalse(report["prisma_flow_authenticated"])
 
+    def test_real_version_pilot_preserves_one_study_across_three_reports(self):
+        # Public bibliographic metadata screened 2026-10-15; no journal PDF,
+        # independent reviewer, or complete database recall is certified.
+        source = (Path(__file__).resolve().parents[1] / "references" /
+                  "literature_version_pilot_2026-10-15.json")
+        fixture = json.loads(source.read_text(encoding="utf-8"))
+        result = audit(fixture)
+        self.assertEqual(result["search_runs"], 3)
+        self.assertEqual(result["screened_records"], 4)
+        self.assertEqual(result["decisions"], {"exclude": 0, "include": 2, "pending": 2})
+        self.assertEqual(
+            result["possible_duplicate_groups"]["doi:10.48550/arxiv.2601.18341"],
+            ["AM_ARXIV_V1", "AM_ARXIV_V2"],
+        )
+        self.assertEqual(
+            result["title_year_collision_groups"][
+                "title:agenticmuchadoptionofcodingagentsongithub:2026"],
+            ["AM_ACM_JOURNAL", "AM_ARXIV_V1", "AM_ARXIV_V2"],
+        )
+        self.assertTrue(result["duplicate_detection_is_not_adjudication"])
+        self.assertFalse(result["prisma_flow_authenticated"])
+        self.assertTrue(result["screening_is_self_reported"])
+        ids = {x["record_id"]: x for x in fixture["records"]}
+        self.assertIn("129,134", ids["AM_ARXIV_V1"]["study_extract"]["population"])
+        self.assertIn("128,018", ids["AM_ACM_JOURNAL"]["study_extract"]["population"])
+        self.assertEqual(ids["SPACE_QUEUE_2021"]["source_type"], "other")
+
     def test_future_search_timestamp_is_not_historical_evidence(self):
         p = source()
         p["search_runs"][0]["searched_at_utc"] = "2099-01-01T00:00:00Z"
