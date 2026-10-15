@@ -1,6 +1,6 @@
 # Bubble — provisional six-month technology intelligence screen (028)
 
-> **PROVISIONAL INITIAL EVIDENCE SCREEN (2026-10-16), AI-assisted and not reviewed by a qualified human.** This report, its [event ledger](028-bubble.events.csv) and its [search log](028-bubble.search-log.md) are **documentary source leads**. They are not a verified chronology, product test, license determination or empirical reuse result. Factual/link review, source-access/rights review and methods review are all **pending**. The report does not close [issue #95](https://github.com/MSKazemi/github-trending-1000-study/issues/95), and no `NEWS-YYYY-NNNN` items for [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) should be minted from it until a human reads and verifies each source.
+> **PROVISIONAL INITIAL EVIDENCE SCREEN (2026-10-16), AI-assisted and not reviewed by a qualified human.** This report, its [event ledger](028-bubble.events.csv) and its [search log](028-bubble.search-log.md) are **documentary source leads**. They are not a verified chronology, product test, license determination or empirical reuse result. Factual/link review, source-access/rights review and methods review are all **pending**. [Issue #95](https://github.com/MSKazemi/github-trending-1000-study/issues/95) was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open; no `NEWS-YYYY-NNNN` items for [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) should be minted from it until a human reads and verifies each source.
 
 - **Company watchlist ID:** 028 ([watchlist](../../../docs/AI_SOFTWARE_COMPANIES_100_WATCHLIST_2026-10-12.md)).
 - **Research issue:** [#95](https://github.com/MSKazemi/github-trending-1000-study/issues/95). Linked corpus initiative: [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
@@ -172,7 +172,7 @@ These are researcher hypotheses, not Bubble's strategy. Funding, user counts and
   - MCP client-compatibility failures.
   - Pushback on the forced editor migration and the price rise.
   - No in-window independent press coverage found.
-- **Reviewer links and audit date:** none. The human factual/link spot-check, the source-access/rights review and the methods review are all pending. Raise them on the PR for [#95](https://github.com/MSKazemi/github-trending-1000-study/issues/95). **Do not close #95 on the basis of this screen.**
+- **Reviewer links and audit date:** none. The human factual/link spot-check, the source-access/rights review and the methods review are all pending. Raise them on the PR for [#95](https://github.com/MSKazemi/github-trending-1000-study/issues/95). **Issue #95 was closed on 2026-10-16 by maintainer decision with this provisional status recorded; closure is not scientific validation, and the human review gates remain open.**
 
 ## Independent source spot-check (2026-10-16)
 
