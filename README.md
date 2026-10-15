@@ -213,6 +213,8 @@ python -m trending_study.longitudinal status \
   --plan /tmp/followup-plan.synthetic.jsonl --events-dir /tmp/followup-events.synthetic
 ```
 
+**2026-10-15 engineering completion hardening:** The offline follow-up reader now requires a complete, internally consistent 30/90/180-day schedule, strictly decodes GitHub/baseline/plan/event JSON, caps actual file reads and fails closed on incomplete or unrecognized event artifacts. See [reproducible adversarial tests and recovery policy](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md#2026-10-15-issue-4-completion-hardening-fail-closed-raw-input-and-safe-resume). This is not observed follow-up evidence.
+
 **The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
 
 ## Structural Trending parser QA — pending real-page audit (2026-10-12)
@@ -342,3 +344,7 @@ python scripts/check_research_artifacts.py --root .
 ```
 
 The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
+
+### All-tracked-code integrity gate (issue #244)
+
+Run `python scripts/check_research_artifacts.py --root . --tracked-code-json` to inspect all Git-indexed Python/JSON in addition to the normal reference/CSV gate. The scan checks staged blobs and working files without importing code. It rejects malformed JSON including duplicated keys without echoing their values in CI. This is an offline engineering control, not source authentication, rights review or proof of scientific claims; see [integrity runbook](docs/RESEARCH_JSON_INTEGRITY_GATE.md).
