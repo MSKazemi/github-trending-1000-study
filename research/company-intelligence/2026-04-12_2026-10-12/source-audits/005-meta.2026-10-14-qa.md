@@ -38,3 +38,17 @@ AI-assisted inspection of readable publisher pages may verify what a publisher *
 - [ ] Obtain final-head CI and safe integration verification; retain the underlying company issue open until genuine scientific acceptance.
 
 This file is a **source-screen audit trail**, not an endorsement, user study, company ranking, proof of safer code, causal claim or permission to publish completed research.
+
+
+## 2026-10-15 secondary-source and artifact QA supplement
+
+**Access/read status:** A dated AI-assisted public-source desk check. Selected pages were read or located via public web search on 2026-10-15. URLs and journalistic observations are reproducible *leads*, not signed/archived historical captures, systematic recall, independent human signoff or measured task outcomes. Retrospective study publication cutoff is **2026-10-12**; post-window analysis must remain separate.
+
+### Meta — security/product interpretation
+
+- **Company source, dated 2026-08-05:** [Muse Code and Muse Spark 1.2](https://research.meta.ai/blog/introducing-muse-code-and-muse-spark-1-2) identifies Muse Code as a **beta** terminal coding agent. It presents company-created benchmarks; the source does not independently establish accepted maintenance tasks, security or total operator costs.
+- **Company source, published 2026-09-08 and visibly updated 2026-09-30:** [Introducing Muse](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/) describes a purported isolated VM, sentinel permissions, an audit trail, and a *future* confidential-VM feature. Each is a supplier statement, **not** a demonstrated universal safeguard, and the September revisions require a frozen version before time-specific comparisons.
+- **Separate professional reporting, 2026-10-10:** [The Verge — AI agent makers are promising privacy](https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots) discusses independent security concerns, reports and claimed shortcomings relating to Muse. It synthesizes third-party allegations and reporting rather than furnishing this study with verified exploit artifacts or controlled task data. This provides **counter-evidence to screen**, not a quantified breach rate or finding that every user's agent was compromised.
+- **Window boundary:** October 13–15 follow-up journalism can inform later QA, but is **outside** the April 12–October 12 source-publication window and must not be counted as an eligible in-window article. Consumer Muse privacy stories are not evidence of coding-agent reuse or accepted software tasks.
+
+**Practical repository consequence:** require least-privilege, read-only-by-default agent permissions, explicit action confirmation and an immutable command/output audit trail in any optional agent integration; measure actual rejected or unsafe actions in a pre-frozen synthetic test, never rely on self-reported vendor security.
