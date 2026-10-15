@@ -1,4 +1,6 @@
 # Amazon / AWS — six-month AI/software company intelligence (initial source screen)
+
+> **Provisional initial evidence screen (integration status 2026-10-15):** accepted for `main` by maintainer decision as a *provisional source-lead screen*, following the precedent of #67/#81/#86/#87/#93. It has **not** been reviewed by a qualified independent human; every event row remains an E0/E1 publisher-document lead, not a verified release, adoption or task outcome. **Pending gates:** seven-segment search with hit/screen/exclusion denominators and archived captures; independent human factual, licensing and methods review; adverse/independent reporting screen; exact artifact, licence and access checks; any prospective task trial. Issue #72 stays open. The text below is retained as drafted on 2026-10-12..15; where it conflicts with the [canonical events CSV](006-amazon.events.csv), the CSV and the closing *Controlled integration review — 2026-10-15* section govern.
  
 - **Watchlist ID:** 006
 - **Issue:** [#72](https://github.com/MSKazemi/github-trending-1000-study/issues/72)
@@ -169,3 +171,23 @@ This source-screened working report retains the full **original PR #192 report**
 Added Sep 30 opt-in Kiro Web workflows. Apr 30 2027 Q Developer IDE support sunset is not a 2026 termination of all Q Developer services, and Oct 2026 CLI general-default claims must respect their dates.
 
 **Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
+
+
+## Controlled integration review — 2026-10-15 (provisional first-party leads only)
+
+The maintainer decided on 2026-10-15 to integrate this documentary draft as a **provisional initial evidence screen**, as with #67/#81/#86/#87/#93. This is an AI-assisted maintainer pass, **not** an independent or qualified human review. The section 9 line "Keep the issue and PR open/draft; **do not merge**" guarded against promotion to completed research; it is superseded only to the extent of retaining this explicitly labelled, source-linked working artifact on `main`. Issue #72 remains open.
+
+**Canonical files and ID crosswalk.** [006-amazon.events.csv](006-amazon.events.csv) (9 publisher URL leads) is canonical. Sections 3, 4 and 9 are the original PR #192 text: its "5 directly linked dated source events" refer to the [archived 2026-10-12 ledger](source-archives/006-amazon.2026-10-12-source-ledger.csv). Original `CI-006-01` (Q Developer end of support) is carried in the canonical CSV as `CI2026-006-001`; `CI-006-02`..`CI-006-05` keep their IDs as E0 archived leads. Section 3's "no event documented" for September and October 1–12 is superseded by the CSV rows for 2026-09-30 (Kiro Web Workflows), 2026-10-09 (Kiro CLI V3) and 2026-10-12 (CLI 2.30.0 changelog).
+
+**Source spot-checks** (publisher pages read on 2026-10-15 with an AI web reader; not archived captures):
+
+- *Amazon Q Developer end of support* (`CI2026-006-001`): dated 2026-04-30; "Amazon Q Developer IDE plugins and paid Subscriptions will reach end of support on April 30, 2027"; new signups stop 2026-05-15; Q Developer in the AWS Management Console and other first-party AWS experiences (including Chat Apps) "are not impacted by this sunset"; the post points users to Kiro. Matches the ledger and the "not a 2026 shutdown" caveat.
+- *Introducing Kiro Web* (`CI-006-02`): dated 2026-05-18; "launching Kiro Web in preview for all paid subscribers — Pro, Pro+, and Power". Matches `preview`.
+- *Kiro CLI V3* (`CI2026-006-003`): dated 2026-10-09; a startup prompt is rolled out gradually "Starting October 12", with V3 becoming the default with "the CLI 3.0 release by the end of October". Matches `preview` and the no-backdating caveat.
+- *Kiro Web Workflows* (`CI2026-006-005`): dated 2026-09-30; "Workflows are now available as an opt-in feature in Kiro Web cloud sessions". Matches the opt-in caveat.
+
+No date or claim mismatch was found. No evidence tier was changed: these checks confirm what the publisher wrote, not product behaviour, access or migration cost.
+
+**Format checks:** the CSV header matches sibling event ledgers (21 columns); event IDs and source URLs are unique; all `published_utc` values fall within 2026-04-12..2026-10-12 and are date-sorted. The archived ledger and first-screen Markdown are unchanged.
+
+**Still pending:** auditable seven-segment hit/screen/exclusion denominators with archived captures; qualified independent human factual, licensing and methods review; screening of independent/adverse reporting (the 2026-04-29 Register article in the QA log is a lead, not a verified finding); exact product, plan and access checks; any prospective task trial. No adoption, accepted-code, cost or environmental outcome is claimed.
