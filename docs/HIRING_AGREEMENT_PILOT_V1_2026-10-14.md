@@ -129,3 +129,22 @@ reporting and write-once outputs for **successful** runs are unchanged.
 A redacted error is not a guarantee of anonymity or independent human blinding:
 actual coders, access rights, source eligibility and third-party methods review
 are not yet authenticated. Issue #223 remains open until that evidence exists.
+
+
+## 2026-10-15 paired-rating completeness correction (issue #223)
+
+The first report labeled `adjudication.status=complete` when no A/B
+*disagreements* remained, even if one or both coders omitted a selected item.
+That could conflate absence of a dispute with completion of the nine-item
+review frame. The offline auditor now reports `review_submission` with
+both-coder submissions, A/B-specific missing IDs and `paired_selected_n`
+without reducing the original `selected_n` denominator. If any selected
+item is missing one review, `adjudication.status` is
+`incomplete_reviews` and `missing_rating_item_ids` identifies the pending
+pair; actual disagreements remain separately listed in `pending`. Only a
+fully submitted frame with no unresolved disputes receives the **structural**
+`complete` status. This status **never** means qualified human reviewers,
+actual source permission, sufficient kappa, or scientific acceptance: the
+`human_independence_verified`, `source_rights_verified` and
+`research_enrollment` limits remain unchanged. Regression tests include
+both one-rater and two-rater omissions that otherwise appear to agree.
