@@ -1,0 +1,33 @@
+{
+  "schema_version": "proposed-adoption-evidence-0.1",
+  "synthetic": true,
+  "frame_id": "FICTIONAL-FRAME-001",
+  "selection_method": "synthetic illustration only",
+  "repository_id": 99999999,
+  "full_name_at_baseline": "fictional/example",
+  "baseline_at_utc": null,
+  "project_archetype": "library",
+  "signals": [
+    {
+      "name": "independently_verified_downstream_integration",
+      "observation_eligible": true,
+      "status": "unknown",
+      "evidence_source_url": null,
+      "observed_at_utc": null,
+      "exact_dependency_version": null,
+      "independent_reviewer": null,
+      "access_basis": "not collected"
+    },
+    {
+      "name": "desktop_gui_completion",
+      "observation_eligible": false,
+      "status": "not_applicable",
+      "evidence_source_url": null,
+      "observed_at_utc": null
+    }
+  ],
+  "followup_windows_days": [30, 90, 180],
+  "followup_status": "not_started",
+  "human_consent": "not_obtained",
+  "not_empirical_data": true
+}

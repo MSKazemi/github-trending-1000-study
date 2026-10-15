@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "author": null,
+  "accessed_date_utc": "2026-10-12",
+  "screening_status": "included_provisional_single_reviewer",
+  "source_review_status": "web_primary_page_inspected_not_independently_fact_checked",
+  "confidence_in_article_reporting": "attributed_to_source",
+  "independent_corrob_status": "not_assessed",
+  "policy_conclusion": "hypothesis_or_local_trial_not_generalized_advice",
+  "independent_reviewer": null,
+  "review_status": "pending",
+  "correction_status": "not_checked",
+  "fulltext_stored": false,
+  "id": "NEWS-2026-0016",
+  "title": "Balancing AI tensions: Moving from AI adoption to effective SDLC use",
+  "publisher": "DORA / Google Cloud",
+  "original_publication_date": "2026-03-10",
+  "canonical_url": "https://dora.dev/insights/balancing-ai-tensions/",
+  "source_type": "organizational_research_analysis",
+  "topics": [
+    "human-factors",
+    "software-delivery",
+    "evaluation"
+  ],
+  "attributed_claim_summary": "DORA's research synthesis describes associations between greater AI use and both software-delivery throughput and instability; creation effort may shift into review and verification.",
+  "evidence_or_event": "Original DORA March 2026 analysis interpreting its 2025 state-of-AI-assisted-software-development report and qualitative material.",
+  "limitations": "Organizational associations and selected qualitative material cannot identify causal effects for a particular GitHub repo or agent; measures and sampling differ from prospective user-task trials.",
+  "research_relevance": "Test productivity with complete planning, reviewer, CI, rework and incident costs, not generated LOC or number of PRs.",
+  "practical_experiment": "Define an opt-in task-level ledger covering planning, independent review, CI, follow-up failures and accepted completions; compare complete rather than code-writing effort.",
+  "related_existing_sources": [
+    "industry_technology_outlook_2026_10_12.json:E05"
+  ]
+}

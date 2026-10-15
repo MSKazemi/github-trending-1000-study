@@ -22,6 +22,8 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [**Ten-issue parallel scientific methods audit (2026-10-13)**](docs/TEN_ISSUE_METHODS_INTEGRATION_2026_10_13.md) — ten reproducible research workstreams, per-PR Python 3.10/3.12 CI evidence, shared task/denominator design, remaining human/permission/metering gates and practical lessons; **not empirical findings or approved enrollment**.
+- [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
 - [**Execution plan after the audit**](docs/NEXT_STEPS_EXECUTION_2026-10-12.md) — evidence-gated development tasks, human approvals, PR dependencies, go/no-go milestones and a bounded feasibility pilot.
 - [Faculty-style methodological review](docs/FACULTY_STYLE_RESEARCH_RECOMMENDATIONS_2026-10-12.md) — evidence-grounded advice, **not actual professorial endorsement**; [first expanded task intake](docs/CROSS_ECOSYSTEM_TASK_INTAKE_2026-10-12.md).
@@ -41,13 +43,11 @@ python -m trending_study parse-trending --input tests/fixtures/trending.html --d
 python -m trending_study summarize --input /tmp/trending.jsonl
 ```
 
-**Source-access warning (2026-10-12):** [GitHub's published robots.txt](https://github.com/robots.txt) currently lists `Disallow: /*since=*` under `User-agent: *`, which includes the collector's `/trending?since=daily|weekly|monthly` URLs. **Do not run the live Trending collector until access rules have been independently reviewed and the proposed method is permitted or amended.** Code availability and one-request rate limiting do not constitute permission. This does not restrict the separately documented, bounded public REST API issue-candidate intake.
+**Source-access stop gate (2026-10-13):** GitHub's [published robots.txt](https://github.com/robots.txt) includes `Disallow: /*since=*` under `User-agent: *`, matching the `/trending?since=daily|weekly|monthly` paths this prototype would request. Because appropriate access for the proposed research cadence is **not documented or independently approved**, the `capture` command is now **hard-blocked before any HTTP request**. There is **no CLI flag, token or environment override**. A PR that re-enables live fetching must contain a dated platform/source-access assessment, exact authorized URLs and cadence, independent human review, and any needed signed protocol amendment. A robots rule is an access warning, not by itself a complete legal opinion; neither code nor self-written approval text grants permission.
 
-To capture a *live*, public Trending page (explicit opt-in, no automatic scraping, **subject to the access restriction above**):
+The [source-access decision and lawful alternatives](docs/SOURCE_ACCESS_DECISION_2026-10-13.md), [pilot runbook](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md) document the controls. **Offline** `parse-trending`, `pilot-parse` for already-authorized, locally preserved evidence, synthetic page QA, and approved GitHub REST API metadata workflows remain available. Offline parser success is not independently authenticated live Trending data. Do not use manual snapshots as a workaround without the same source-access and provenance review.
 
-For an explicitly permitted **current-day** single-page pilot, use the UTC-date and checksum-manifest workflow in the [pilot instructions](docs/PILOT_CAPTURE_AND_PREFLIGHT.md) and [write-once capture safety contract](docs/CAPTURE_IMMUTABILITY_2026_10_12.md). Do not reuse a raw, manifest, JSONL or audit filename; accidental overwrites now fail closed. Historical pages cannot be recreated from today's endpoint.
-
-`capture` makes **one** HTTPS request. It does not bypass access controls or retry aggressively. Collection date must reflect the date on which the page is actually observed; backdated Trending rankings cannot be recovered from today's page. Consider manual snapshots if automated access is disallowed.
+**Current command behavior:** `python -m trending_study capture --date <current-UTC-date> --window daily --output ...` returns a nonzero error before accessing GitHub or creating files. The earlier UTC/manifest capture example is retained as a *future conditional procedure* in the pilot SOP, **not** an instruction to run it now. Observations cannot be backdated or reconstructed from today's Trending page.
 
 Enrich observed repositories with current public metadata (optional `GITHUB_TOKEN`; do not commit tokens):
 
@@ -74,7 +74,7 @@ Open an issue for reproducibility defects, language coverage, validity threats, 
 - [Discussion synthesis / decision history](docs/CONVERSATION_SYNTHESIS.md)
 - [Usefulness constructs and metrics](docs/USEFULNESS_FRAMEWORK.md)
 - [AI-assisted and vibe-coding sub-study](docs/AI_CODING_STUDY_2027.md)
-- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md)
+- [Evidence-to-lesson protocol (E0–E5)](docs/EVIDENCE_TO_LESSON_PROTOCOL.md) and [versioned offline lesson registry v1.1](docs/LESSON_REGISTRY_AUDIT_2026_10.md) — strict synthetic examples, source/result metadata, unknown-versus-null handling, no certified findings
 - [Developer build/reuse/pivot playbook](docs/DEVELOPER_DECISION_PLAYBOOK.md)
 - [Total token, human and maintenance economics](docs/TOKEN_TIME_ECONOMICS.md)
 - [2027 conditional scenarios and monitoring](docs/FUTURES_2027.md)
@@ -106,6 +106,7 @@ We now explicitly study **reuse before generation**, not only repository popular
 - **[Agent development reuse guide](docs/REUSE_FIRST_PLAYBOOK.md)** — practical search, license, security, validation, stop rules
 - **[Reusable evidence gate](docs/REUSE_GATE_TOOL.md)** — offline deterministic heuristic; unknown is not pass
 - **[Scientific source list](docs/READING_LIST_2027.md)**; [35 AI/GitHub/tech news sources](references/study_sources_2026.json); [16 green/reuse/energy sources](references/green_reuse_sources_2026.json)
+- [Offline provisional news-record validator](docs/NEWS_SOURCE_RECORD_VALIDATOR.md) — reusable, synthetic-tested source-structure gate extracted from draft #59; **no real records or scientific findings merged**
 - **[Conversation checkpoint](research-notes/conversation-checkpoint-2026-10-11.md)** — all study-related user prompts in this chat, dated assistant findings and decision history
 
 To use the **offline reuse-first evidence check**:
@@ -212,6 +213,8 @@ python -m trending_study.longitudinal status \
   --plan /tmp/followup-plan.synthetic.jsonl --events-dir /tmp/followup-events.synthetic
 ```
 
+**2026-10-15 engineering completion hardening:** The offline follow-up reader now requires a complete, internally consistent 30/90/180-day schedule, strictly decodes GitHub/baseline/plan/event JSON, caps actual file reads and fails closed on incomplete or unrecognized event artifacts. See [reproducible adversarial tests and recovery policy](docs/LONGITUDINAL_FOLLOWUPS_2026_10_12.md#2026-10-15-issue-4-completion-hardening-fail-closed-raw-input-and-safe-resume). This is not observed follow-up evidence.
+
 **The fixture is synthetic and deliberately lacks real approval. Do not run live collection against it.** No 1,000-repository cohort or real follow-up result exists; source access, external method approval, human-reviewed parser QA and confirmatory preregistration remain pending.
 
 ## Structural Trending parser QA — pending real-page audit (2026-10-12)
@@ -239,6 +242,21 @@ An [offline task-intake validator and documented exploratory public-issue frame]
 python -m trending_study.task_intake --input examples/task_intake.cross_ecosystem_2026-10-12.json --output /tmp/task-intake-cross-ecosystem-2026-10-12.json
 ```
 
+## 2026-10-12: 16 public issue metadata rechecks and pre-search review instrument
+
+The existing **16 hash-selected, unreviewed** public issue leads were rechecked through individual permitted GitHub REST issue endpoints at a batch completion time of **2026-10-12 20:25:45 UTC**. All 16 stable numeric IDs/links matched and were open at recheck, with no `updated_at` timestamp differences from their original reduced intake metadata. This **does not** establish independently accepted tasks, absence of public solution hints, genuine reviewer independence, agent outcomes, 1,000 Trending observations or environmental savings.
+
+The [limited observed metadata and scientific caveats](docs/TASK_SCREENING_SOURCE_RECHECK_2026-10-12.md) accompany the [reduced recheck JSON](research-notes/issue-recheck-2026-10-12.json), [offline task-screening CLI](trending_study/task_screen.py) and [synthetic reviewer consistency tests](tests/test_task_screen.py). The **human-source screening and independent acceptance criteria remain open** at [issue #65](https://github.com/MSKazemi/github-trending-1000-study/issues/65).
+
+```bash
+python -m trending_study.task_screen prepare \
+  --frame examples/task_intake.cross_ecosystem_2026-10-12.json \
+  --recheck research-notes/issue-recheck-2026-10-12.json \
+  --output /tmp/issue65-screen-packet.json
+```
+
+Avoid interpreting even two matching *synthetic or self-reported* reviewer labels as verified human approval. **Original public issues may already contain specific fixes**; real maintenance and independent blind task-solving require different experimental designs.
+
 ## 2026-10-12: reproducible, synthetic 2027 task-trial pilot instrument
 
 For the **separate, opt-in randomized reuse-first experiment** (not the observational Trending cohort), the initial [offline task-frame allocation and outcome audit](docs/TRIAL_PILOT_INSTRUMENT.md) is available. It validates frozen task/acceptance hashes, prespecified screening exclusions, deterministic task-cluster randomization across the proposed 2×2 human/agent × usual/reuse-first arms, and all-assigned-task outcome accounting including failures, refusals, pending work and missing human time.
@@ -253,9 +271,9 @@ python -m trending_study.trial audit --frame examples/trial_frame.synthetic.json
 
 ## Independent Github Trending page QA (2026-10-12, Issue #2)
 
-The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
+The new **offline** `audit-pages` command compares each preserved raw HTML+UTC/SHA manifest against two separately annotated, full-page ranked row lists. It records reviewer disagreements, exact rank+identity true/false positives and omissions, and whole-page parser rejections. For a genuine A/B disagreement, the same command now also accepts an **optional third reviewer-C adjudication record**; original A/B disagreement and the separate C decision remain visible, never self-certifying reviewer independence. It can detect off-selector pages that a positive-subset parser would otherwise miss. The report can reach a **documentary consistency pass** but **never claims actual human independence, permission, cohort eligibility or real recall**.
 
-[Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
+Use optional `--markdown-output <new-summary.md>` for a write-once **derived** review table; the JSON report remains canonical, and neither output proves human independence. [Detailed independent 30-real-row QA protocol](docs/INDEPENDENT_PAGE_AUDIT_2026_10_12.md) · [Template input](templates/page_audit_bundle.template.json) · [CLI source](trending_study/page_audit.py) · [Synthetic unit tests](tests/test_page_audit.py).
 
 ```bash
 python -m trending_study audit-pages --bundle data/raw/qa-bundle.json \
@@ -305,3 +323,28 @@ python -m trending_study.task_costs \
 ```
 
 All eight **synthetic** randomized tasks remain in the denominator, including failures/refusals/pending records. Unknown human/token/event-cost coverage remains `null`, and output is write-once. This engineering instrument addresses part of [issue #10](https://github.com/MSKazemi/github-trending-1000-study/issues/10) and CTO systems-economics priority CT2; it is **not** a completed scientific trial.
+
+
+## Merge assurance and code/research quality
+
+Follow the [canonical enterprise PR merge gate](docs/PR_MERGE_QUALITY_GATE_2026_10_13.md) and the [dated integration audit](docs/PR_REVIEW_CHECKPOINT_2026_10_13.md). PRs require real code review, **latest-head PR CI**, conflict checks and preservation of useful parallel work. Synthetic method checks cannot certify GitHub-source authenticity, independent human review, package safety or lifecycle energy findings. The test matrix covers Python 3.10/3.12/3.14 with official immutable SHA-pinned actions; only verified tasks and observations can support scientific conclusions.
+
+## October 2026: enterprise PR merge and research-artifact integrity
+
+**[Enterprise PR policy](docs/PR_QUALITY_AND_MERGE_POLICY.md)** | **[Dated 45-PR audit and collision register](docs/PR_AUDIT_2026-10-13.md)** | [Issue #240](https://github.com/MSKazemi/github-trending-1000-study/issues/240)
+
+The 2026-10-13 audit found many **draft PRs**, green head-only test checks, and multiple pairs modifying the **same company-intelligence evidence note**. Draft status, scientific human review, updated merge-tree CI and no-loss comparison are independent merge gates; a green badge alone is **not** sufficient.
+
+The CI suite now tests Python 3.10/3.12/3.13/3.14 compilation and regressions plus a separate read-only research artifact integrity check. Locally:
+
+```bash
+python -m compileall -q trending_study scripts tests
+python -m unittest discover -s tests -v
+python scripts/check_research_artifacts.py --root .
+```
+
+The integrity check rejects corrupt JSON/JSONL/CSV, duplicate keys and nonfinite constants; it **does not** validate factual sources, rights, human approval, empirical results or permitted access. See the PR policy for reviewer and branch-protection requirements. These are proposed contributor/repository engineering controls, **not** completion of scientific study prerequisites.
+
+### All-tracked-code integrity gate (issue #244)
+
+Run `python scripts/check_research_artifacts.py --root . --tracked-code-json` to inspect all Git-indexed Python/JSON in addition to the normal reference/CSV gate. The scan checks staged blobs and working files without importing code. It rejects malformed JSON including duplicated keys without echoing their values in CI. This is an offline engineering control, not source authentication, rights review or proof of scientific claims; see [integrity runbook](docs/RESEARCH_JSON_INTEGRITY_GATE.md).

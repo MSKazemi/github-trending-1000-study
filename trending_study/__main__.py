@@ -15,7 +15,7 @@ from urllib.request import Request, urlopen
 from .pilot import (build_capture_manifest, evaluate_preflight, validate_capture)
 from .safe_io import (disjoint, refuse_existing, publish_once, publish_json,
                       publish_jsonl, jsonl_bytes)
-from .page_audit import audit_bundle_file
+from .page_audit import audit_bundle_file, markdown_report
 
 VERSION = "0.4.0"
 GITHUB_HOST = "https://github.com"
@@ -30,6 +30,24 @@ def valid_repo(name):
 
 def utc_now():
     return datetime.now(timezone.utc).isoformat()
+
+
+def require_trending_source_access():
+    """Default-deny live Trending HTTP requests until a reviewed access amendment.
+
+    This deliberate hard stop has no CLI/environment bypass. Documentation or a
+    self-authored JSON approval card is NOT proof of platform authorization.
+    Re-enablement requires an explicit reviewed code change and human assessment
+    of platform terms, robots instructions and the permitted sampling protocol.
+    Offline tests may mock this function but must never perform a real request.
+    """
+    raise ValueError(
+        "Live GitHub Trending capture is BLOCKED pending independent source-access "
+        "review: github.com/robots.txt disallows the /*since=* crawl pattern used "
+        "by this CLI. Do not circumvent this gate; obtain documented permission "
+        "and a reviewed source/protocol amendment before enabling live requests. "
+        "Offline parse, pilot checks, and synthetic QA remain available."
+    )
 
 
 class TrendingParser(HTMLParser):
@@ -169,6 +187,9 @@ def capture(args):
     # Reject repeated capture filenames and path aliases *before* network access.
     disjoint(args.output, args.manifest_output)
     refuse_existing(args.output, args.manifest_output)
+    # Permission must be resolved BEFORE constructing/sending an HTTP request.
+    # Mock only in offline synthetic unit tests, never as a user-facing override.
+    require_trending_source_access()
     url = f"{GITHUB_HOST}/trending?since={args.window}"
     request = Request(
         url,
@@ -258,11 +279,20 @@ def audit_pages(args):
     This reports documentary consistency, not proof of human independence,
     GitHub origin, permissible scraping or approval for cohort enrollment.
     """
-    disjoint(args.bundle, args.output)
-    refuse_existing(args.output)
+    disjoint(args.bundle, args.output, args.markdown_output)
+    refuse_existing(args.output, args.markdown_output)
     report = audit_bundle_file(args.bundle, extract_repos=extract_repos,
                                min_rows=args.min_rows)
-    publish_json(args.output, report)
+    if args.markdown_output:
+        # Both payloads are write-once; multi-file publication is not atomic.
+        # Preserve a partial pair on failure for human incident review.
+        json_bytes = (json.dumps(report, ensure_ascii=False, sort_keys=True,
+                                 indent=2) + "\n").encode("utf-8")
+        md_bytes = markdown_report(report).encode("utf-8")
+        publish_once([(args.output, json_bytes),
+                      (args.markdown_output, md_bytes)])
+    else:
+        publish_json(args.output, report)
     print(json.dumps({
         "audit_output": args.output,
         "evidence_kind": report["evidence_kind"],
@@ -326,7 +356,7 @@ def summarize(args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="GitHub Trending 1000 Study research CLI")
     sub = parser.add_subparsers(dest="command", required=True)
-    cp = sub.add_parser("capture", help="Fetch one currently observed public Trending HTML page")
+    cp = sub.add_parser("capture", help="DISABLED: live Trending capture awaits a reviewed source-access decision")
     cp.add_argument("--date", required=True, help="UTC observation date (today only)")
     cp.add_argument("--window", required=True, choices=("daily", "weekly", "monthly"))
     cp.add_argument("--output", required=True)
@@ -346,7 +376,8 @@ def main(argv=None):
     vp.set_defaults(func=pilot_parse)
     qa = sub.add_parser("audit-pages", help="Compare raw captures to two complete, blinded independent row annotations")
     qa.add_argument("--bundle", required=True, help="Local audit bundle index with capture/manifest paths and both reviewer labels")
-    qa.add_argument("--output", required=True, help="Write-once JSON audit report")
+    qa.add_argument("--output", required=True, help="Write-once canonical JSON audit report")
+    qa.add_argument("--markdown-output", help="Optional write-once derived Markdown QA summary")
     qa.add_argument("--min-rows", type=int, default=30, help="Documentary full-page row threshold (default: 30 across windows)")
     qa.add_argument("--require-consistent", action="store_true", help="Return nonzero for incomplete/mismatched annotations or parser outputs")
     qa.set_defaults(func=audit_pages)

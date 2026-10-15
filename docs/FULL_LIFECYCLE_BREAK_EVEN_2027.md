@@ -34,6 +34,8 @@ where pre-run includes discovery, development, verification, and the horizon's m
 ### Synthetic illustration ONLY (not observed)
 Suppose B costs 12 kWh pre-run, R 4 kWh, but R uses 0.04 kWh per accepted task versus B 0.01 kWh. Then the *hypothetical* break-even is 8/0.03 ≈ 267 task executions; after more executions, the fresh implementation would consume less energy in this simplified boundary. Carbon and costs can have different thresholds, and cloud inference energy may be unknown. **Never call this an actual software saving.**
 
+A [synthetic, fail-closed scenario CLI](LIFECYCLE_BREAK_EVEN_SCENARIO_CLI.md) and [test fixture](../examples/lifecycle_break_even.synthetic.json) exercise this arithmetic without any measured energy. Its exact integer workload crossover avoids rounding an equality threshold into a misleading action recommendation. **This is not protocol signoff or lifecycle calibration.**
+
 ## Costs beyond electricity
 - **Energy (kWh):** metered or scope-defined modelled; calibrate local telemetry, CI, retrieval-index build, searches and inference. Unknown cloud internals ≠ 0.
 - **Carbon (gCO2e):** [ISO SCI / SCI for AI](https://sci.greensoftware.foundation/), matched useful functional unit, grid intensity by region/time and embodied hardware allocation; distinguish allocation from marginal-avoided emissions (the latter needs a valid counterfactual).
