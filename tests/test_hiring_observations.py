@@ -10,6 +10,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
+from trending_study import data_integrity
 from trending_study import hiring_observations as instrument
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples/hiring_observations.synthetic.json"
@@ -245,15 +246,23 @@ class SecurePublicationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); path = root / "input.json"; path.write_text(EXAMPLE.read_text())
             link = root / "link.json"; link.symlink_to(path)
-            with self.assertRaises(OSError): instrument.load(link)
+            # Every unsafe input is a contract error, never a raw OSError.
+            with self.assertRaises(instrument.HiringObservationError): instrument.load(link)
             with self.assertRaises(instrument.HiringObservationError): instrument.load(root)
             fifo = root / "fifo"; os.mkfifo(fifo)
             with self.assertRaises(instrument.HiringObservationError): instrument.load(fifo)
-            with patch.object(instrument, "MAX_FILE_BYTES", 10), self.assertRaises(instrument.HiringObservationError):
-                instrument.load(path)
+            with self.assertRaises(instrument.HiringObservationError): instrument.load(path, max_bytes=10)
             fake = SimpleNamespace(st_mode=path.stat().st_mode, st_size=1)
-            with patch.object(instrument, "MAX_FILE_BYTES", 10), patch.object(instrument.os, "fstat", return_value=fake):
-                with self.assertRaises(instrument.HiringObservationError): instrument.load(path)
+            with patch.object(data_integrity.os, "fstat", return_value=fake):
+                with self.assertRaises(instrument.HiringObservationError): instrument.load(path, max_bytes=10)
+
+    def test_load_reuses_shared_bounded_research_json_reader(self):
+        # House rule: no private copy of the bounded descriptor reader.
+        sentinel = {"sentinel": True}
+        with patch.object(instrument, "load_research_json_file", return_value=sentinel) as shared:
+            self.assertIs(instrument.load(EXAMPLE), sentinel)
+        shared.assert_called_once_with(EXAMPLE, max_bytes=data_integrity.MAX_FILE_BYTES)
+        self.assertFalse(hasattr(instrument, "decode_research_json"))
 
     def test_cli_write_once_and_input_output_alias(self):
         with tempfile.TemporaryDirectory() as tmp:

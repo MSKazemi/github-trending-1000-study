@@ -3,13 +3,11 @@ import argparse
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
-import os
 from pathlib import Path
 import re
-import stat
 from urllib.parse import parse_qsl, unquote, urlsplit
 
-from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, decode_research_json
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 from .safe_io import ProvenanceWriteError, disjoint, publish_json
 from .task_intake import IntakeError, utc
 
@@ -255,25 +253,18 @@ def audit(data):
             "interpretation": "Self-reported source changes only; no filled-job, hiring-rate, headcount or causal inference."}
 
 
-def load(path):
-    """Strict bounded descriptor read; refuse final symlinks and nonregular inputs."""
-    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_NONBLOCK"):
-        raise HiringObservationError("secure nonfollowing input unsupported on this platform")
-    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_NONBLOCK", 0))
+def load(path, max_bytes=MAX_FILE_BYTES):
+    """Read input through the shared bounded strict research JSON reader.
+
+    ``load_research_json_file`` refuses leaf symlinks, FIFOs and other
+    nonregular files, checks the opened descriptor and actual bytes read, and
+    rejects duplicate keys, NaN/Infinity and numeric overflow. Its diagnostics
+    are generic and never contain user-supplied keys or paths.
+    """
     try:
-        metadata = os.fstat(descriptor)
-        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > MAX_FILE_BYTES:
-            raise HiringObservationError("input must be a bounded regular non-symlink file")
-        with os.fdopen(descriptor, "rb", closefd=False) as source:
-            raw = source.read(MAX_FILE_BYTES + 1)
-        if len(raw) > MAX_FILE_BYTES:
-            raise HiringObservationError("input exceeds research JSON byte bound")
-    finally:
-        os.close(descriptor)
-    try:
-        return decode_research_json(raw, "hiring observation input")
-    except (ResearchJSONError, RecursionError) as exc:
-        raise HiringObservationError("malformed strict JSON; input details withheld") from exc
+        return load_research_json_file(path, max_bytes=max_bytes)
+    except ResearchJSONError as exc:
+        raise HiringObservationError(f"hiring observation input: {exc}") from exc
 
 
 def main(argv=None):
