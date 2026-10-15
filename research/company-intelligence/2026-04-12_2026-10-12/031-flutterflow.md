@@ -18,7 +18,7 @@ Full queries, opened pages, exclusions and inaccessible sources are in the [sear
 |---|---|---|---:|---:|---:|---|---|
 | 2026-10-16 | flutterflow.io changelog (direct) | 9 in-window entries | 9 | 9 | 8 entries → 9 rows | none | displayed dates only; no archive hashes |
 | 2026-10-16 | GitHub REST API (FlutterFlow org) | repos created/released in window | 10 created | 10 | 5 rows | 10 repos created in window (4 cited in rows); 6 without dated release or claim relevance (e.g. `campus-extensions` with no licence, patched `flutter_webrtc`, `flutter_cef`) not given rows | `created_at` ≠ public-visibility date |
-| 2026-10-16 | pub.dev API (`flutterflow_cli`) | versions in window | 15 | 15 | 2 rows | individual betas folded into a row | registry licence field "unknown" |
+| 2026-10-16 | pub.dev API (`flutterflow_cli`) | versions in window | 14 | 14 | 2 rows | individual betas folded into a row | registry licence field "unknown" |
 | 2026-10-16 | general web search (13 queries) | press, reviews, FFDC, pricing, incidents | unknown | unknown | 2 rows (Product Hunt, PricingSaaS) | spam mirrors, undated blogs, aggregators | no outlet-specific search; US index |
 | 2026-10-16 | status.flutterflow.io history | incidents | — | — | 0 | **inaccessible** (load error) | outages unknown, not zero |
 
@@ -118,8 +118,36 @@ No dated in-window public roadmap was found. Commercial messaging is not treated
 
 ## 9. Findings, uncertainties and review outcome
 
-- **Observed/shipped (documentary, E2):** nine dated changelog entries; GitHub-observable plugin releases (MIT Claude plugin, BSL Codex plugin); 15 pub.dev CLI versions; a documented plugin install breakage and fix. These are records of what the vendor published, not verified functionality.
+- **Observed/shipped (documentary, E2):** nine dated changelog entries; GitHub-observable plugin releases (MIT Claude plugin, BSL Codex plugin); 14 in-window pub.dev CLI versions (0.0.32-beta.1 on 2026-04-27 to 0.0.41 on 2026-09-23; count corrected from 15 by the 2026-10-16 spot-check); a documented plugin install breakage and fix. These are records of what the vendor published, not verified functionality.
 - **Claims/announcements only:** MCP edit correctness, Test Pilot QA accuracy, "higher quality" generators, Campus capabilities, scheduled October cutoffs.
 - **Conjectures and unknowns:** user adoption of MCP/agents (no data), outages (status history inaccessible), Dreamflow in-window activity (none found), FFDC roadmap content (no dated recap), independent reception (no in-window independent press found), exact legal relationship of Dreamflow to FlutterFlow Inc.
 - **Important contradictory or null evidence:** FlutterFlow 7.0 dated Jun 17 by the vendor vs an undated venue page tying it to FFDC May 27–28; plugin repos shipped ~4 weeks before the changelog announced them; pub.dev shows CLI licence "unknown" while GitHub reports BSD-3-Clause; the vendor blog published nothing in window.
 - **Reviewer links and audit date:** none yet. Required before acceptance: human factual/link spot-check of all 19 rows, licence re-check of each repo at a pinned commit, and methods review. Request reviewer feedback on the PR; do **not** close #98.
+
+## Independent source spot-check (2026-10-16)
+
+An independent reviewer agent (not the author of this screen) re-fetched the cited sources on 2026-10-16 and compared dates and every specific figure against raw page text (`curl` + grep for flutterflow.io, pub.dev API JSON, Product Hunt embedded JSON, Google docs) or the GitHub REST API (`gh api`). Classification: confirmed / corrected / unverifiable / wrong.
+
+| Row(s) checked | Outcome | Note |
+|---|---|---|
+| Entity (§2) | confirmed | YC page: Active, batch W21, founded 2020, founders Abel Mengistu and Alex Greaves, San Francisco; Codex LICENSE names FlutterFlow Inc. as licensor. No registry-level check. |
+| 031-001 | confirmed | `gh api`: created 2026-04-17T19:07Z, MIT, description matches. |
+| 031-002 | confirmed | Page dated April 23, 2026; "31 bug fixes"; code-export, Local Run offline, AspectRatio text present. |
+| 031-003 | confirmed | pub.dev API: 0.0.32-beta.1 2026-04-27 … 0.0.34 2026-04-30; SDK floor `>=2.17.0` (0.0.31) → `>=3.7.0` (0.0.32-beta.1). |
+| §1 / §9 pub.dev count | **corrected** | In-window versions are **14**, not 15 (0.0.32-beta.1 … 0.0.41; 0.0.31 is 2026-04-10 and 0.0.42 is 2026-10-15, both outside). Text fixed. |
+| 031-004 | confirmed | Page dated May 7, 2026; names Claude Code, Cursor, "any agent"; validate locally and push; API token. pub.dev 0.0.35 on 2026-05-06. CLI docs `datetime` 2026-10-12, optimistic-concurrency and out-of-scope text present. |
+| 031-005 | confirmed | Page dated May 18, 2026; A2UI and Firebase AI Logic (Gemini); Flutter genui docs say "alpha and is likely to change". |
+| 031-006 | confirmed (still E1) | PricingSaaS: "Jun 8, 2026 … FlutterFlow drops Activity Logging from Business plan"; tracking since Apr 29, 2026. "Week 24" is the reviewer-derivable ISO week, not page text. |
+| 031-007 | confirmed | Page dated June 17, 2026; Live Sessions & MCP, Test Pilot (schedule/commit/GitHub deploy), Edge Functions, "No more 30-minute limit", audio. |
+| 031-008 / 031-009 | confirmed | Releases v0.1.2 "Initial release" 2026-07-01T16:54Z, v0.1.3–v0.1.6 Jul 2/15; Codex v0.1.0 2026-07-01, v0.1.1 2026-07-15; repo created 2026-06-29/06-30. LICENSE (current `main`, not a pinned commit): BSL 1.1, Additional Use Grant and competing-product clause, Change Date April 22, 2055 → Apache-2.0. Commit 9260839 (2026-06-30) adds the LICENSE and notes argv exposure and plaintext credential store. |
+| 031-010 | confirmed (still E1) | Product Hunt: Campus, "Launched on July 15th, 2026", embedded `dailyRank":"3"`. FF Designer listing Feb 19th, 2026 also confirmed. |
+| 031-011 / 012 / 013 / 015 | confirmed | Dates Jul 27, Aug 13, Sep 2 (updated Sep 10), Sep 24; "8 Bug Fixes"; credential-flagging text; 29 Sep-2 bug-fix items counted (6 under AI Agent reliability); "22 features and improvements and 18 bug fixes". |
+| 031-014 / 016 | confirmed | 0.0.41 published 2026-09-23T16:53Z, no 0.0.40; plugin CHANGELOG `[0.1.7] — 2026-09-25` states pin 0.0.38, SDK 0.0.41 needs CLI ≥ 0.0.41, auto-upgrade at most every 6h, forward-only; tag v0.1.7 2026-09-25. |
+| 031-017 | confirmed | dart_acp created 2026-09-30, Apache-2.0, 0 GitHub releases. Org has exactly 10 repos created in window. |
+| 031-018 / 019 | confirmed, limitation added | Page dated October 6, 2026; 7.2, Flutter 3.47.1, Android API 24 / iOS 15 / macOS 12, "14 features and improvements and 29 bug fixes", RevenueCat 10, Oct 14/29 and Oct 16 dates. Firebase FAQ: shutdown August 25th, 2025; AI Logic page: "October 2026". **Added to 019:** the same cutoffs already appear in the Sep 2 (updated Sep 10) and Sep 24 entries, so Oct 6 is not the first notice. |
+| Pre-window community post | confirmed | `publishedAt` 2026-02-02T21:54Z; Dreamflow/innovation-slowed text and FFDC May 27–28, 2026. |
+| Changelog completeness | confirmed | Index lists exactly 9 entries dated 2026-04-23 … 2026-10-06. |
+
+Outcome: all 19 ledger rows plus 4 report-level items (entity, pre-window post, changelog completeness, §1 pub.dev count) checked → 19 rows confirmed (row 019 with an added limitation), 3 report items confirmed, 1 report item corrected (pub.dev count 15 → 14); 0 unverifiable, 0 wrong. No fabricated URL, date or figure found; no cross-company contamination found. Not re-checked: status page, Dreamflow pages, upstream genui/A2UI provenance, licence at a pinned commit.
+
+*This is an AI-assisted spot-check, not qualified human review; the human factual/link, rights and methods reviews remain pending.*
