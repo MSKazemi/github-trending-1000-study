@@ -9,3 +9,7 @@ The guard now accepts ASCII DNS labels of up to 63 characters with letters, digi
 Synthetic tests check valid hyphenated hosts, edge-hyphen and overlong labels, and representative internal/private hosts. Acceptance of a host string is **not** DNS resolution, proof of an actual employer, source permission, time-stamped observation, requisition identity, actual closure or a hire. Future network collection must undergo its own allowlist and connection-time DNS/SSRF security review.
 
 **Practical maintainer lesson:** input validation should reject dangerous/ambiguous evidence without excluding ordinary valid source formats that would distort a sampling frame. Record rejected-source counts as missingness, not verified negative outcomes.
+
+## Additional numeric-host hardening (same-day merge preparation)
+
+A follow-up review found that strict `ipaddress.ip_address` parsing does not recognize legacy numeric IPv4 aliases such as `127.1`, decimal integer `2130706433`, octal `0177.0.0.1`, or hexadecimal `0x7f000001`. Some URL/network stacks interpret them as loopback destinations. The offline URL validator now rejects fully numeric/hex/octal dotted host forms as ambiguous before considering them acceptable public-source metadata. Synthetic negative tests cover six examples. This remains a lexical check only: DNS rebinding, redirects, and connection-time network restrictions are not addressed; the instrument performs no network access. Human security review and successful CI on the *new* head are still required.
