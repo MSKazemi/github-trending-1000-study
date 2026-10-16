@@ -133,3 +133,38 @@ Company adoption claims (e.g., 6,000 Booz Allen engineers, coalition member coun
 - **Important contradictory or null evidence:** (a) Wolfi users publicly objected to packages moved to a private repository without public PRs; Chainguard's answer was that Wolfi only covers free images — a scope reduction for community reusers; (b) Athena's launch release was re-issued as a correction, and the promised July disclosure wave and "beginning with 50" both under-delivered (14 on 2026-09-28); (c) Athena launch dated 2026-06-15 (PR Newswire, 19:38 ET) vs 2026-06-16 (Infosecurity Magazine); (d) Go/.NET Libraries: changelog "Launched September 28, 2026" vs blog/PR dated 2026-10-14; (e) a Hacker News commenter disputed the Docker-rebuttal post's handling of scanners (E0); (f) competitor Minimus launched a free hardened-image Community Edition on 2026-06-23, the same month Wolfi narrowed (relationship not established); (g) the devops.com critical article and The Register's summer-vulnerabilities piece were not read (403 / robots).
 - **#56 candidates (not minted):** Infosecurity Magazine 2026-06-16; SiliconANGLE 2026-06-25; IT Brief 2026-08-06; wolfi-dev/os#78721 (community record); NIST CMVP #5523. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned; vendor-release restatements must not be counted as independent confirmation.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Raw sources were re-fetched with a generic `Mozilla/5.0` User-Agent after checking robots.txt for `*` and for ClaudeBot / Claude-User / anthropic-ai / Claude-SearchBot / Claude-Web (RFC 9309 longest-match). Every cited path on www.chainguard.dev, edu.chainguard.dev, prnewswire.com, infosecurity-magazine.com, siliconangle.com, itbrief.co.uk, csrc.nist.gov and github.com is permitted. hn.algolia.com and raw.githubusercontent.com return 404 for robots.txt, meaning no rules. The search log's skip decisions were re-confirmed against current robots.txt: thenewstack.io, bloomberg.com, zdnet.com and diginomica.com disallow ClaudeBot/anthropic-ai, theregister.com disallows `/` for `*`, and axios.com robots.txt returns 403. No ledger row relies on a robots-disallowed source, so none was marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-094-003 | confirmed | 22 npm libraries, xinference 2.6.0–2.6.2, "refuses to build packages that depend on install-time scripts", TeamPCP attribution "still pending". RSS date 2026-04-22 |
+| CI2026-094-004 | confirmed | "within one calendar day" KEV SLA, "less than 20-hour average" for Critical, 2-day median |
+| CI2026-094-006 | confirmed | malcontent v1.23.0 was published 2026-05-06T21:21Z. 26 in-window releases, v1.22.0 (Apr 15) to v1.27.1 (Oct 7) |
+| CI2026-094-008 | confirmed | "A new supply chain worm hit 400+ packages in the last 24 hours. Chainguard customers were not affected". The npm attribution comes from the post's title and context |
+| CI2026-094-010 | confirmed | 100,000+ packages a day, 52,000+ blocked, npm upstream fallback |
+| CI2026-094-011 | confirmed | "Seventy-seven minutes" (spelled out). Fix landed Apr 30. GitHub advisory database caught up "on May 7, six days later". RSS date 2026-06-10 |
+| CI2026-094-012 | confirmed | PR Newswire correction re-issue, 2026-06-15 19:38 ET. Founding-member list, 20,000+ findings, 2,000+ patches, 500 projects, "first wave of disclosures begins next month". Infosecurity Magazine (2026-06-16T11:00Z) says "announced … on June 16" |
+| CI2026-094-013 | confirmed | cg-skills repo created 2026-06-22T22:37Z, Apache-2.0 |
+| CI2026-094-015 | confirmed | wolfi-dev/os#78721 opened 2026-06-19 and names spark/keycloak plus a "private enterprise repo". Commit 227baf7 (2026-06-09): 29 files, 4,128 deletions. Commit dcf7584 (2026-06-11): 139 files. MEMBER reply on 2026-07-10 matches the paraphrase. The commit message says "move … to enterprise-packages" |
+| CI2026-094-018 | confirmed | Licences: cursor plugin NOASSERTION, kiro-power none. Cursor plugin v0.1.0 was published 2026-06-15 |
+| CI2026-094-019 | confirmed | "more than 4,700" (4,746) PRs over 8 weeks, 75% auto-merged of those judged low-risk |
+| CI2026-094-022 | confirmed | 886 / 377 / 154 CVEs, March–May, "over 63% were high-severity" |
+| CI2026-094-023 | confirmed | Bugcrowd event July 6–27, up to $200,000 |
+| CI2026-094-024 | confirmed | 40,000+ processed, 42% critical/high. All eight named new members appear, as does Akrites |
+| CI2026-094-026 | confirmed | "More than 6,000 Booz Allen engineers will now have access" |
+| CI2026-094-030 | confirmed | Changelog "Launched August 13, 2026": npm 403 naming e.g. MALWARE_DETECTED instead of 404 |
+| CI2026-094-032 | confirmed | "Launched August 19, 2026": API v2 GA at /v2/ replacing v2beta1, cursor pagination |
+| CI2026-094-033 | confirmed | JFrog: Java shipped, JavaScript and Python "by the end of September 2026" |
+| CI2026-094-034 | confirmed | PR Newswire 2026-09-03 12:00 ET: 1 billion manifests, doubled "from 500 million in just six months", 3,000 images, 675,000 variants |
+| CI2026-094-035 | confirmed | apko 57 in-window releases (v1.2.3–v1.4.11) and melange 41 (v0.49.0–v0.62.1). v1.3.0 on Sep 9, v1.4.0 on Sep 14 |
+| CI2026-094-036 | confirmed | "beginning with 50" ("All 50 are silent fixes") and "We joined Anthropic's Project Glasswing", both as vendor statements |
+| CI2026-094-038 | confirmed | NIST #5523: Chainguard, Inc., Active, Overall Level 1, initial validation 9/15/2026 (atsec), sunset 9/14/2031, ML-KEM listed. Blog: v3.6, opt-in from October 1, 2026 |
+| CI2026-094-039 | confirmed | 14 disclosures (1 critical, 1 high, 8 medium, 4 low), five through Akrites. athena repo created 2026-09-25T12:21Z with no licence and 14 `CGP-` advisory entries |
+| CI2026-094-040 | confirmed | Changelog: "Chainguard Libraries for Go and .NET (invite-only beta) Launched September 28, 2026" |
+
+Totals: 24 rows checked, 24 confirmed, 0 corrected, 0 wrong, 0 unverifiable. The search log's "figures confirmed against raw text" statement held for every figure re-checked here. That is a sample, not an exhaustive re-verification.
+
+*This is an AI-assisted spot-check, not qualified human review.*
