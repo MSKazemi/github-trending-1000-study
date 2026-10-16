@@ -51,10 +51,10 @@
 
 ## Inclusion, deduplication and conflicts
 
-- **Included:** 35 rows (Apr 5, May 9, Jun 7, Jul 2, Aug 4, Sep 7, Oct 1). Every row cites a URL that was fetched as raw text or queried by API. No row relies on a search snippet alone. July and October are thin because the in-scope material there is mostly model-availability notices.
+- **Included:** 35 rows (Apr 5, May 9, Jun 7, Jul 2, Aug 4, Sep 7, Oct 1). Every row cites a URL that was fetched as raw text or queried by API; **however, the 2026-10-16 spot-check found that four rows (005, 010, 017, 027) rest only on pages whose robots.txt disallows Claude agents** (see below). No row relies on a search snippet alone. July and October are thin because the in-scope material there is mostly model-availability notices.
 - **Duplicate groups:** `083-evolve` (beta 2026-08-18, GA 2026-09-08, same title); `083-palantir-mcp` (launcher releases, MCP GA, tool search); `083-ontology-mcp`; `083-osdk-react`; `083-results` (Q1, Q2); `083-exit` (BBC, berthub, Guardian France: related theme, separate events); `083-sovereign-ai`; `083-cost-controls`; `083-ontology-governance`; `083-ide-shift`; `083-ai-fde`; `083-branching`; `083-evals`.
 - **Conflicts recorded, not resolved:** `palantir-mcp` GitHub releases 0.9.0–0.11.0 absent from npm; npm Apache-2.0 vs GitHub "no licence" for `palantir/osdk-ts`; `@osdk/react` AGENTS.md refers to stable 1.x while npm latest is 2.x; Vulcan beta (Sep 8) and GA (Sep 29) under the same title, with the Sep 8 entry edited to add an "Update" line; Global Branching GA announced for "the week of May 18" without a dated confirmation entry; blog posts edited after publication (Security Forge 2026-10-06; AI Sovereignty 2026-10-09).
-- **Figures confirmed against raw text** (grep of saved text): "Nineteen built-in evaluators" (Apr 14); "up to twice" capacity (Apr 21); Q1 $1.633B / 85% / $595M / 133% / TCV $2.41B / guidance $7.650–7.662B and $3.224B; Q2 $1.935B / 93% / $764M / 149% / TCV $3.373B / guidance $8.150–8.158B and $3.424B / 134%; Spark 3.5.5 → 4.0.1; BBC £4.5m / £5.5m / 157,000; Met 98 officers / 500 notices / three arrests; Guardian 2025 renewal; Fujitsu "over $10 million"; Bootcamps "nearly 200"; npm and PyPI timestamps quoted in the ledger. All remain **vendor, customer or press statements**, not verified measurements.
+- **Figures confirmed against raw text** (grep of saved text; the BBC, Met and Guardian figures came from robots-disallowed pages and could not be re-verified in the 2026-10-16 spot-check): "Nineteen built-in evaluators" (Apr 14); "up to twice" capacity (Apr 21); Q1 $1.633B / 85% / $595M / 133% / TCV $2.41B / guidance $7.650–7.662B and $3.224B; Q2 $1.935B / 93% / $764M / 149% / TCV $3.373B / guidance $8.150–8.158B and $3.424B / 134%; Spark 3.5.5 → 4.0.1; BBC £4.5m / £5.5m / 157,000; Met 98 officers / 500 notices / three arrests; Guardian 2025 renewal; Fujitsu "over $10 million"; Bootcamps "nearly 200"; npm and PyPI timestamps quoted in the ledger. All remain **vendor, customer or press statements**, not verified measurements.
 - **Approximate figure:** "about 31 model-availability notices of 115 entries" is a title-regex count and may misclassify a few entries.
 
 ## Embedded agent instructions observed (untrusted content)
@@ -69,3 +69,15 @@
 - publictechnology.net NHS article (HTTP 403); FT Swiss-magazine story (paywall, not attempted); SEC/EDGAR filings (deliberately not contacted); the MHCLG blog and NAO report behind the BBC story; Palantir's Ontology MCP and Palantir MCP reference documentation pages; the proprietary `@palantir/mcp` package; any Palantir security-bulletin page (none located); archived (Wayback) copies of mutable documentation pages as of 2026-10-12; WebSearch-based discovery of trade press (TechCrunch, The Register, SiliconANGLE) for in-window developer-platform coverage.
 - No product was executed, no account created, no Foundry enrollment accessed, no paywall circumvented, no energy measurement.
 - **Reproduction:** re-run the requests above, save raw HTML hashes, and have an independent human spot-check at least rows 002, 008, 010, 017, 018 and both financial rows (006, 024) before any evidence is promoted beyond provisional status.
+
+## Robots.txt deviations found in the 2026-10-16 spot-check
+
+The original screen checked `www.palantir.com/robots.txt` but not every other host. A later per-host check (generic and Claude/Anthropic agent groups) found these fetches were of disallowed paths; they were **not** re-fetched:
+
+- `www.theguardian.com` (disallows `/` for anthropic-ai, ClaudeBot, Claude-SearchBot, Claude-User): rows 005 and 017.
+- `www.bbc.com` (disallows `/` for Claude-Web, ClaudeBot, anthropic-ai): row 010.
+- `www.dw.com` (disallows `/` for anthropic-ai, ClaudeBot, Claude-Web): DW article read, not ledgered.
+- `blog.palantir.com` (Medium; disallows `/` for ClaudeBot): RSS feed, row 027 and the essays read for context.
+- `pypi.org/pypi/*/json` (disallowed for all user agents): `foundry-platform-sdk` upload count (context only).
+
+Allowed and re-fetched: `www.palantir.com` docs, `palantir2020ipo.q4web.com`, `registry.npmjs.org`, `berthub.eu`, GitHub API; `hn.algolia.com` and `services.nvd.nist.gov` return 404 for robots.txt (no rules). Affected rows carry confidence `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
