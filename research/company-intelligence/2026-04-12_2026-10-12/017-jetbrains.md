@@ -210,11 +210,12 @@ None of these is a binding commitment, and no 2027–2031 product plan was found
 - No product was run, and no benchmark was replicated.
 - Several blog posts were not retrieved because of the WAF challenge (see *Blog posts not retrieved*). Coverage of JetBrains AI blog research posts, IDE 2026.2 release notes and AI Assistant changes is therefore thin.
 - Mutable vendor pages and the SWE-rebench leaderboard were not archived.
+- Related-post links seen inside fetched posts point to in-window items that were not read: "Introducing a Recommended Agent in AI Chat, With Codex as the Current Default" (June), "A New Agentic Experience: JetBrains Air in IDEs – EAP Now Open" (October), a TeamCity post on CVE-2026-63077 (July) and a Netflix case study (October). The title of the second suggests Air in IDEs was still in EAP in October, which would bear on the Air row's availability; this is an E0 lead only.
 - The selection bias described under *Conflict of interest* is unresolved.
 
 ### Blog posts not retrieved (E0 leads, not ledgered)
 
-These blog.jetbrains.com posts are in the window and relevant. They were found through Hacker News titles or the blog sitemaps but were not read in this pass because of the WAF rate limit, so they support no claim here:
+These blog.jetbrains.com posts are in the window and relevant. They were found through Hacker News titles, the blog sitemaps or related-post links, but were not fetched in this pass (WAF rate limit, then the screening time budget ran out), so they support no claim here:
 
 - <https://blog.jetbrains.com/blog/2026/07/07/jetbrains-ai-for-teams-and-organizations-from-fragmented-ai-usage-to-coordinated-software-development/>
 - <https://blog.jetbrains.com/blog/2026/10/06/jetbrains-joins-the-open-source-security-foundation/>
@@ -233,6 +234,7 @@ These blog.jetbrains.com posts are in the window and relevant. They were found t
 - <https://blog.jetbrains.com/ai/2026/06/agentic-ai-governance-designing-for-accountability-and-control/>
 - <https://blog.jetbrains.com/ai/2026/10/air-in-ides-eap/>
 - <https://blog.jetbrains.com/teamcity/2026/07/cve-2026-63077/>
+- <https://blog.jetbrains.com/ai/2026/10/how-netflix-made-ai-coding-agents-more-efficient/>
 
 ## Independent source spot-check (2026-10-16)
 
