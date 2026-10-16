@@ -384,3 +384,11 @@ archive tags to an unprotected state; report that explicitly. Preserve any new
 archive tags and their original SHAs even if the rules are removed. Do not
 close #248 until actual owner review, successful application and required
 negative/positive server-enforcement evidence are complete.
+
+## 2026-10-16 strict ruleset-fixture integrity follow-up
+
+The proposed (still **uninstalled**) administrator ruleset test loader now uses the existing strict research JSON decoder rather than permissive `json.loads`. Duplicate JSON keys, invalid numeric values and malformed payloads cannot be silently interpreted with last-key-wins semantics; the test suite also explicitly checks that `rules[].type` is unique for both proposed branch and archive-tag policies. A synthetic negative test rejects conflicting duplicate `enforcement`, `bypass_actors` and rule `type` keys.
+
+This is deliberately **an offline regression for the checked-in administrator review payloads**, not proof that GitHub enabled, normalized or enforced either ruleset. Owner approval, qualified independent security review, actual current-main SHA preflight, rule application/readback and negative authorization tests (failing CI, stale/unreviewed PR, forbidden archive-tag rewrite) remain mandatory under #248. Do not allow current green tests or a proposed `enforcement: active` JSON field to masquerade as deployed protection. The owner must independently consider that a one-review requirement blocks a solo contributor who cannot provide a genuine second qualified reviewer.
+
+**Practical maintainer lesson:** security policy-as-code needs strict schema integrity and checks against duplicate rules, but *configuration intent* and *server enforcement* are distinct facts. Measure the actual denied operations before closing a governance issue.
