@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 import unittest
 
+from trending_study.data_integrity import decode_research_json
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OPS = ROOT / "ops" / "rulesets"
@@ -21,7 +23,9 @@ REQUIRED_CHECKS = {
 class ProposedRulesetTests(unittest.TestCase):
     @staticmethod
     def get_ruleset(name):
-        return json.loads((OPS / name).read_text(encoding="utf-8"))
+        # A ruleset with duplicate JSON keys has ambiguous security
+        # semantics; never let last-key-wins parsing mask a weak override.
+        return decode_research_json((OPS / name).read_bytes(), name)
 
     def test_main_rejects_unreviewed_or_stale_changes(self):
         ruleset = self.get_ruleset("main.json")
@@ -31,6 +35,8 @@ class ProposedRulesetTests(unittest.TestCase):
         self.assertEqual(ruleset["conditions"]["ref_name"],
                          {"include": ["refs/heads/main"], "exclude": []})
         entries = {rule["type"]: rule for rule in ruleset["rules"]}
+        self.assertEqual(len(entries), len(ruleset["rules"]),
+                         "duplicate main security rule types forbidden")
         self.assertEqual(set(entries), {
             "deletion", "non_fast_forward", "pull_request",
             "required_status_checks",
@@ -62,9 +68,22 @@ class ProposedRulesetTests(unittest.TestCase):
                          {"include": ["refs/tags/branch-archive/**/*"],
                           "exclude": []})
         entries = {rule["type"]: rule for rule in ruleset["rules"]}
+        self.assertEqual(len(entries), len(ruleset["rules"]),
+                         "duplicate archive security rule types forbidden")
         self.assertEqual(set(entries), {"update", "deletion"})
         self.assertIs(entries["update"]["parameters"]["update_allows_fetch_and_merge"],
                       False)
+
+    def test_duplicate_security_json_keys_cannot_be_silently_overridden(self):
+        # Exercise the same fail-closed decoder used by the ruleset fixture
+        # loader. This is a lexical integrity test, not GitHub enforcement.
+        for content in (
+            b'{"enforcement":"disabled","enforcement":"active"}',
+            b'{"bypass_actors":["admin"],"bypass_actors":[]}',
+            b'{"rules":[{"type":"deletion","type":"pull_request"}]}',
+        ):
+            with self.subTest(content=content), self.assertRaises(ValueError):
+                decode_research_json(content, "synthetic-ruleset.json")
 
     def test_admin_runbook_fails_closed_on_main_movement(self):
         text = RUNBOOK.read_text(encoding="utf-8")
