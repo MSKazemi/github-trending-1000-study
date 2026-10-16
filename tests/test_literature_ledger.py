@@ -111,6 +111,26 @@ class LiteratureLedgerTests(unittest.TestCase):
         payload["records"][0]["source_url"] = "https://example.org:8443/article"
         self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
+    def test_included_source_requires_public_not_local_host(self):
+        for link in (
+            "https://localhost/paper", "https://metadata.google.internal/paper",
+            "https://search.internal/paper", "https://archive.local/paper",
+            "https://127.0.0.1/paper", "https://10.0.0.1/paper",
+            "https://169.254.169.254/latest/meta-data",
+            "https://192.168.1.5/paper", "https://[::1]/paper",
+            "https://[fd00::1]/paper",
+        ):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(link=link), self.assertRaisesRegex(
+                    LiteratureError, "public host"):
+                audit(payload)
+        # The check only protects against literal/local origins and cannot
+        # verify actual DNS responses or the authenticity of a real article.
+        payload = source()
+        payload["records"][0]["source_url"] = "https://doi.org/10.1000/XYZ"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
     def test_included_source_url_requires_unambiguous_item_path(self):
         for link in ("https://doi.org", "https://doi.org/",
                      "https://example.org/paper%ZZ",
