@@ -1,145 +1,112 @@
-# Amp Inc.: 2026 six-month AI software intelligence (source-screened working report)
+# Amp Inc. — provisional six-month technology intelligence screen (016)
 
-> **PROVISIONAL INITIAL EVIDENCE SCREEN (status as of 2026-10-15).** By the maintainer's 2026-10-15 decision, this report is merged as a **provisional source-lead screen**, following the precedent of the merged first-pass company reports from #67, #81, #86, #87 and #93. It has **not been reviewed by a qualified independent human** and is not an accepted six-month study, verified chronology, product test or empirical software-reuse result. Every row in the [canonical working CSV](016-amp-inc.events.csv) (**9 publisher URL leads**: 7 `E1_VENDOR_DOCUMENT_ONLY`, 2 `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD`) is a vendor statement or an unreviewed lead, not an independently confirmed event. Older counts below (for example "5 distinct canonical vendor URLs") are dated history superseded by this 9-row ledger.
->
-> **Pending gates (all open):** (1) qualified human factual, date, entity/ownership, license and methods review; (2) complete seven-segment search logs with returned-hit, screened and excluded URL denominators and archived captures; (3) independent and critical/contrary reporting; (4) first-availability versus publication-date resolution and plan/version checks; (5) security/permission review of remote-execution, multi-repository and webhook features; (6) any proposed experiment below, which was **not executed**. Issue [#82](https://github.com/MSKazemi/github-trending-1000-study/issues/82) stays open. The original "Review gates" step "then decide whether to merge" (section 8) is answered only for controlled retention of provisional source leads; it is **not** satisfied for promotion to validated findings. The sections below are kept in their dated order; see the [2026-10-15 provisional-merge spot check](#provisional-merge-spot-check--2026-10-15-ai-assisted-not-independent-human-review) at the end.
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](016-amp-inc.events.csv), [search log](016-amp-inc.search-log.md) and [source-QC note](016-amp-inc.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue [#82](https://github.com/MSKazemi/github-trending-1000-study/issues/82) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-**Issue:** [#82](https://github.com/MSKazemi/github-trending-1000-study/issues/82) · **Watchlist ID:** 016 · **Window:** 2026-04-12–2026-10-12 inclusive (UTC) · **First research pass:** 2026-10-12 · **Status:** partially screened; independent/human review outstanding.
+- **Watchlist:** 016; [issue #82](https://github.com/MSKazemi/github-trending-1000-study/issues/82). Sector: AI coding agents. **Entity caution:** separate organisation from Sourcegraph (watchlist [015](015-sourcegraph.md)); Sourcegraph events are not duplicated here.
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened 2026-10-16** (earlier passes 2026-10-12/13/14/15 preserved below). Exact UTC run times, search-engine result totals, archived page bytes and an independent reviewer are unavailable.
+- **Status:** **27 traceable source leads covering all seven calendar segments** (26 Amp-published: 24 news posts and 2 engineering notes; 1 customer press release); not reviewed by a qualified human; no installation, benchmark, account test or user study performed.
+- **Official sources checked:** [ampcode.com](https://ampcode.com/), the [news / Chronicle index](https://ampcode.com/news) (also served at [/chronicle](https://ampcode.com/chronicle)), engineering [notes](https://ampcode.com/notes), the [ampcode GitHub organisation](https://github.com/ampcode) via read-only `gh api`, and GitHub's global advisory database. Claim grading is company-watch E0–E2, not the separate [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-> **Methodological status:** This report offers directly attributed, dated primary materials and one preregisterable repo experiment. It does **not** complete the issue's systematic seven-segment literature/media search, prove vendor claims, document actual user adoption, or establish benefits of any tool. Independent product/ownership due diligence and second-person factual review remain required.
+## 1. Discovery, coverage and exclusions
 
-## 1. Reproducible scope and search audit
+The [search log](016-amp-inc.search-log.md) records a one-fetch census of Amp's own news index: **66 in-window posts** (Apr 12–30: 1; May: 9; Jun: 8; Jul: 14; Aug: 17; Sep: 13; Oct 1–12: 4) plus 4 in-window engineering notes. 24 posts, 2 notes and 1 counterparty release were selected for the ledger by a stated relevance rule (agent autonomy/remote execution, security/privacy, commit provenance, pricing/rights, distribution identity, company direction); routine model swaps and UI polish were screened by title only. The earlier statements that April 12–30, August, September and early October had "no verified event" are **superseded**: every segment now has dated official items. That is a correction of coverage, not evidence of more innovation.
 
-**Search expressions used as a targeted discovery strategy (2026-10-12, public web and the publisher sites):** `site:ampcode.com/news 2026 May June; site:ampcode.com/notes "Orb" 2026; site:ampcode.com/chronicle 2026 September`. The vendor blog/chronicle/product directory and in-window individual results were checked. The retrieval interface did not preserve reliable search-result totals or a complete excluded-URL set: **found/screened/excluded counts beyond the 4 selected leads are not available**. This is *not* a systematic-review search log. Re-run dated queries per each month and save the underlying result list before claiming coverage.
+Five web searches looked for independent and contrary coverage. Only the **Westpac** partnership has a non-Amp primary source; no independent technical review, security advisory or funding report for Amp in the window surfaced. That is a limit of the queries and index, **not** proof that none exists. Aggregator/comparison pages with unsourced pricing, adoption ("40,000 teams") or model-routing claims were excluded.
 
-**Eligibility:** publication date 2026-04-12–2026-10-12 and a material product, incident, governance or architectural event. For an event reported on one day that occurred earlier, the first release/effective date remains **unknown** until independently established. Do not count news repetitions as separate innovations. Search-page returns are not an unbiased denominator.
+## 2. Corporate/product identity and rights baseline
 
-| Calendar segment | In-window lead found in this pass | Primary source | Missingness |
-|---|---|---|---|
-| 2026-04-12..30 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-05 | Amp, Rebuilt (2026-05-06) | [source](https://ampcode.com/news/neo) | Source-read leads only; supplementary events possible. |
-| 2026-06 | Agents, Everywhere (2026-06-04); Diffs (2026-06-16) | [source](https://ampcode.com/news/agents-everywhere), [source](https://ampcode.com/news/diffs) | Source-read leads only; supplementary events possible. |
-| 2026-07 | Putting an Agent in an Orb (2026-07-02) | [source](https://ampcode.com/notes/putting-an-agent-in-an-orb) | Source-read leads only; supplementary events possible. |
-| 2026-08 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-09 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-10-01..12 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
+- **Origin (pre-window baseline, not an event):** on 2025-12-02 [Sourcegraph](https://sourcegraph.com/blog/why-sourcegraph-and-amp-are-becoming-independent-companies) wrote that its co-founders "are founding Amp Inc." with the Amp team, Sourcegraph's board investors serving on both boards; [Amp's own post the same day](https://ampcode.com/news/amp-frontier-corporation) is titled "Amp Frontier Corporation" and says Amp is "spinning out of Sourcegraph to become an independent research lab". Westpac's [2026-08-07 release](https://www.westpac.com.au/about-westpac/media/media-releases/2026/7-august/) also says "Amp Frontier Corporation". **The legal entity name (Amp Inc. vs Amp Frontier Corporation) was not verified against a registry**; this report keeps the watchlist label "Amp Inc." and records the alias. Both 2025 sources share organisational history and are not independent ownership verification. (An earlier QA file cited a copy on `sourcegraphdev.com`; the canonical `sourcegraph.com` URL is used.)
+- **In-window evidence of the split:** on 2026-05-14 Amp moved its npm packages from `@sourcegraph/amp` / `@sourcegraph/amp-sdk` to `@ampcode/cli` / `@ampcode/sdk` and switched the CLI to a single-file compiled executable ([CI2026-016-009](https://ampcode.com/news/npm-package-changes)). That is a distribution-namespace change, not a legal fact.
+- **Size:** an Amp engineering note (2026-08-13) says "We're 20 people" — a self-report.
+- **Code and licences (GitHub, read 2026-10-16):** the [ampcode](https://github.com/ampcode) organisation (created 2025-11-04) has 16 public repositories. Licences reported by the GitHub API: Apache-2.0 for `amp.nvim`, `svelte-check-daemon`, `substrate`, `trestle`, `goal-cup-tracer`; MIT for `homebrew-tap`, `zvelte-check`, `merge`; **no licence detected** for `official-plugins`, `amp-examples-and-guides`, `amp-contrib`, `amp-contrib-2`, `amp-sdk-demo` (so reuse rights for those are unclear by default). The Amp agent/CLI and the hosted service (threads, orbs, Puck) have **no public source repository** in that organisation; terms of service and data-processing terms were **not reviewed**. GitHub returned 0 global advisories for `@sourcegraph/amp` and `@ampcode/cli` and no releases for `amp.nvim`.
+- **Third-party dependencies:** Amp routes to third-party models (Anthropic, OpenAI and open-weight models named in posts) and, from 2026-10-10, can run Anthropic's Claude Agent SDK as a mode. Changes in those providers' terms or models change Amp's behaviour.
 
-## 2. Identity, ownership and baseline separation
+## 3. Seven-segment dated chronology
 
-Amp was historically associated with Sourcegraph; treat Amp product/company boundary independently from Sourcegraph's code-search company and avoid combining Sourcegraph feature or user numbers. Amp's own May 2026 post describes a new agent architecture; legal ownership documents remain unreviewed.
-
-**Official starting point:** https://ampcode.com/. Homepage content alone is not dated release evidence; where ownership is inferred from a company announcement, independent legal registry verification remains a separate step. Pre-April announcements are historical baseline, not in-window events.
-
-## 3. Individual dated primary-source events and feature map
-
-| ID | Publication date / underlying actual event | What is directly documented | Availability status | Original link and source class | Independent audit | Working tier |
-|---|---|---|---|---|---|---|
-| 016-E01 | 2026-05-06; **actual first-shipment date not independently established** | Amp, Rebuilt: Company says rebuilt CLI is being gradually rolled out with remote control, compaction-first behavior and plugins; article explicitly warns not all parts released yet | preview (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://ampcode.com/news/neo) | No independent functional replication | E1 company-working |
-| 016-E02 | 2026-06-04; **actual first-shipment date not independently established** | Agents, Everywhere: First-party announcement of web/mobile/CLI thread sidebar and remote-controlling agent threads; says rollout to everyone | shipped (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://ampcode.com/news/agents-everywhere) | No independent functional replication | E1 company-working |
-| 016-E03 | 2026-06-16; **actual first-shipment date not independently established** | Diffs: First-party announcement of inspecting/staging code diffs for agent threads, including mobile review; does not validate reviewer accuracy | shipped (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://ampcode.com/news/diffs) | No independent functional replication | E1 company-working |
-| 016-E04 | 2026-07-02; **actual first-shipment date not independently established** | Putting an Agent in an Orb: First-party discussion of headless remote execution design; no independent isolation or safety audit | reported_undetermined (vendor-reported; version/plan limits not independently tested) | [engineering-method](https://ampcode.com/notes/putting-an-agent-in-an-orb) | No independent functional replication | E1 company-working |
-
-**Availability semantics:** `shipped` means the *publisher reports release*, not that our team installed/tested it. `preview` denotes an expressly preview/beta or other constrained offering. `reported_undetermined` denotes engineering analysis or vendor result whose real-world deployment is not verified. `corrected` denotes incident/disclosed mitigation. `announced_only` is not a delivered feature. Do not treat a product benchmark, download/install count, funding announcement, star rank or a vendor-created survey as independently established task value.
-
-**Evidence grades:** the company-watch E0/E1/E2 grades here are **not equivalent** to the study's causal/practical E0–E5 lesson evidence. E1 is first-party traceable announcement/argument; E2 is documentary multi-page corroboration or technical artifact *without* reproduced function. **No E3 independent performance replication, no E4 external multi-context impact evidence**. Where a source is only indexed rather than read completely, its E0 lead remains awaiting full verification.
-
-## 4. Public strategy vs hypothetical outlook (2027–2031)
-
-**Company-attributed public direction:** Amp's May and June sources establish a direction toward longer-running agents with durable remote control, auditable diffs and multi-surface review; chronicle lists September shared-runner and October integration releases but those entries need separate line-by-line verification.
-
-**Confirmed binding future releases:** none established by this pass. Announced intentions do not amount to delivery schedules.
-
-**Analyst hypothesis, not a company promise (E0):** Durable runs with precise diffs could decrease interruption/rework and improve review; rival costs include privileged remote execution, maintenance and confused permissions.
-
-**Confounding / alternative mechanism:** Remote connectivity may improve perceived responsiveness while total background compute and reviewer effort rise; a better viewer may not change correctness. A disconfirming result is a randomized or matched test showing no added independently accepted task value, or higher lifetime cost and security incidents despite more generated work.
-
-## 5. Connection to study constructs M1–M7
-
-- **M1 workflow chronology:** preserve date and exact feature availability; do not equate tool release with verified developer adoption.
-- **M2 accepted code quality/effort:** independently judge fixed tasks and failures/abstentions, rather than patch counts or anecdotes.
-- **M3 visibility:** stars and promotion are *attention*, never sufficient for actual reuse.
-- **M4 externally reproducible adoption:** require clean external first-use and downstream integration with an eligible denominator.
-- **M5 reuse versus new build:** compare package discovery + license/security/version checks against bounded new build.
-- **M6 lifecycle sustainability:** include planning, reviews, inference, CI, runtime, upgrades and upstream maintenance; **no token-to-kWh or carbon conversion**.
-- **M7 ethical adoption:** only organic, task-verified contributor/user onboarding evidence—not purchased stars or low-value PR activity.
-
-## 6. One practical falsifiable repository experiment
-
-**Repository for initial pilot:** `MSKazemi/github-trending-1000-study`, with only its existing offline code/docs/fixture surfaces. **Proposed—not executed:**
-
-In this study repo, freeze 5 offline parser documentation/fixture tasks with independently authored acceptance criteria. Compare interrupted local-only execution with resumable isolated-worker execution on matched tasks; record resume-from-checkpoint validity (not merely cancel/restart), reviewer time and network/secret-denial tests.
-
-**Acceptance design:** before assignment, a person other than the implementing agent must freeze the task description, user success conditions and hidden tests. Use fixed versions, identical safe fixtures and matched task difficulty; record the sampling frame and every refusal, timeout, unsuccessful run or abstention. **Primary endpoint:** fraction of independently accepted tasks with an explicit denominator and uncertainty. **Secondary:** downstream clean-install success, matching legal package identity/license, reviewer-repair minutes, money actually billed or clearly modeled and version drift at 30/90 days. Report kWh/CO2e only if instrumented with a documented system boundary and sensitivity analysis.
-
-**Stop / rollback rule:** Reject remote execution if it cannot prevent credential/network exposure or produces extra cost without accepted-task gains.
-
-**Expected null/negative scenario:** no difference in accepted-task results, higher maintainer or review costs, poorer security, portability or upstream rights, or inability to obtain externally valid task ratings. Do not turn a null result into a fabricated positive lesson.
-
-## 7. Scientific and security limitations
-
-- The sources above are primarily vendor-operated. Independent investigative reporting, complete month searches, detailed feature/version license audits and disagreement resolution remain uncompleted.
-- Distinguish **date a report was published** from actual launch or customer-availability; these are unknown where not explicitly documented.
-- No vendor installation, benchmark run, respondent sampling, source-code security assessment, trial enrollment, verified third-party reuse, power calculation or environmental measurement was carried out.
-- An AI assistant drafting its own report is **not** an independent scientific reviewer. Date and link spot checks are preliminary, not full blind confirmation.
-- Vendor prices/savings, context benefits and release claims require same-task external replication and lifecycle boundaries before becoming recommendations.
-- Do not automatically ingest untrusted code, post to upstream communities or grant tools network/secret access to gather evidence.
-
-## 8. Conditional practical maintainer lesson
-
-**Low-risk practice to test:** inspect existing tools, record their exact versions/rights, freeze user acceptance, measure agent/maintainer costs and keep human-governed review; promote only evidence-backed, type-specific conclusions, including failures. This is an **experiment suggestion** rather than a demonstrated method of increasing repository popularity or reducing energy.
-
-**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #82. A draft report alone is not issue completion.
-
-**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
-
-## No-loss branch consolidation and source attribution (2026-10-13)
-
-This report preserves the complete initial [PR #197](https://github.com/MSKazemi/github-trending-1000-study/pull/197) research note unchanged above (the 2026-10-15 provisional status block under the title was added later and is not part of that note; the exact original is also retrievable at [#197 head `23a08bb`](https://github.com/MSKazemi/github-trending-1000-study/blob/23a08bbc0758223ce6f1f3b9dbda53c809ca9df8/research/company-intelligence/2026-04-12_2026-10-12/016-amp-inc.md)). Its [original source ledger](016-amp-inc.events.json) is retained byte-for-byte, including original event IDs, E0/E1 working labels and limitations. The newer [PR #231](https://github.com/MSKazemi/github-trending-1000-study/pull/231) first-screen report is also preserved verbatim in [the dated alternate-screen archive](source-archives/016-amp-inc.2026-10-13-first-screen.md). **Those two versions are editorial screens, NOT independent confirmations of the same announcement.**
-
-The consolidated [candidate ledger](016-amp-inc.events.csv) contains 5 distinct canonical vendor URLs (3 already in the newer ledger, plus 2 older-only E0 leads). The original JSON remains independent audit provenance; repeated URLs are counted once in the working index. No third-party source or runtime test is imputed.
-
-### Older-only URLs preserved as tentative E0 leads
-
-- 2026-06-16: [Diffs](https://ampcode.com/news/diffs) — earlier `shipped` / `E1` working labels; not an independently tested release
-- 2026-07-02: [Putting an Agent in an Orb](https://ampcode.com/notes/putting-an-agent-in-an-orb) — earlier `reported_undetermined` / `E1` working labels; not an independently tested release
-
-### Newer-only URLs retained in the working ledger
-
-- 2026-07-08: [Agents, Anywhere](https://ampcode.com/news/agents-anywhere) — `shipped` company statement only
-
-**Quality limits:** require complete seven-segment screened/excluded URL denominators, first release dates, product/ownership/rights/security checks, independent and critical reporting, and an actual qualified human factual reviewer. Statements about efficiency, profitability, market usage or emissions remain vendor claims or hypotheses; no independent adoption or task evaluation was executed. Issue #82 remains open. This consolidation is a working-source preservation step, not scientific signoff.
-
-
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
-
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
-
-- **Publisher page and source publication date:** [Agents, Everywhere](https://ampcode.com/news/agents-everywhere) — 2026-06-04 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** Amp states that web/mobile/CLI thread monitoring and remote control had rolled out to everyone at publication; the post also describes a distributed agent loop and plugin API.
-- **Correction / uncertainty to retain:** That is vendor-reported UI availability, not independent verification of durable execution, team access isolation, functionality under failures or lower maintenance cost. Scope of 'everyone' was not reproduced from an independent account.
-- **Falsifiable maintainer experiment (not performed):** On a fixed multi-file change with existing acceptance tests, compare one local-agent workflow with a remote-thread workflow; audit access permissions, conflicting writes, rollback safety and reviewer active minutes.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
-
-
-## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
-
-[Source search log and scientific cautions](source-audits/016-amp-inc.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 9 distinct publisher URL leads, not 9 independently confirmed product outcomes.**
-
-The canonical working CSV now has 9 vendor URL leads: original 5 plus May 27 staged-to-broad Neo rollout clarification, Aug 27 multi-repository support, Sep 1 diff importance sorting, and Oct 12 PR/CI webhook listener announcement. Do not backdate broad availability to May 6 or infer verified security or reliability.
-
-**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
-
-
-## Provisional-merge spot check — 2026-10-15 (AI-assisted; not independent human review)
-
-On 2026-10-15 an AI-assisted maintainer pass re-read selected publisher pages to check that the recorded dates and claims match what the publisher currently displays. This verifies **what the publisher wrote and its displayed date at access time**, not historical page versions, actual availability, security, adoption or task value. No evidence tier was upgraded and no ledger row was added.
-
-| Cited source | Ledger row / claim checked | Result on 2026-10-15 |
+| Period | In-window source evidence (publisher-displayed dates) | Availability and attribution limits |
 |---|---|---|
-| [Drop the Neo](https://ampcode.com/news/drop-the-neo) | `CI2026-016-004`: 2026-05-27; Neo available to everyone | Matches: page dated May 27, 2026 and states "Amp Neo is now available to everyone." |
-| [Projects with Multiple Repositories](https://ampcode.com/news/multi-repo-projects) | `CI2026-016-005`: 2026-08-27; up to 20 additional repositories; only primary setup automatic | Matches: dated August 27, 2026; "up to 20 additional repositories per project"; only the primary repository's `.agents/setup` script runs automatically. |
-| [You've Got Comments](https://ampcode.com/news/github-listeners) | `CI2026-016-007`: 2026-10-12; PR comments/reviews/CI subscriptions via GitHub webhooks | Matches: dated October 12, 2026; subscriptions to "the PR's comments, reviews, and CI for its latest commit" with GitHub Webhooks support. Publication is on the window's last day; the in-window date is publisher-stated only. |
-| Sourcegraph split announcement (QA file, out-of-window baseline) | 2025-12-02 separation; Amp Inc. founded by Sourcegraph leaders | Content matches on [sourcegraph.com](https://sourcegraph.com/blog/why-sourcegraph-and-amp-are-becoming-independent-companies) (dated December 2, 2025: "Quinn Slack and Beyang Liu … are founding Amp Inc."). **URL correction:** the QA file's first-listed host `sourcegraphdev.com` serves a copy whose `rel="canonical"` points to `sourcegraph.com`; ownership of `sourcegraphdev.com` was not verified, so cite the `sourcegraph.com` URL. The original URL is retained in the QA file for provenance. |
-| [Amp Frontier Corporation](https://ampcode.com/news/amp-frontier-corporation) | QA supplement: Amp's own statement of becoming a separate company | Matches: dated December 2, 2025; "Amp is becoming a separate company." Same-organization history, not independent registry verification. |
+| Apr 12–30 | [Apr 25 Opus 4.7 powers smart mode](https://ampcode.com/news/opus-4.7) (-008) | Vendor internal eval (~72% vs ~65%) is unpublished; the only in-window index item. Mar 30 ad-free free tier is **outside** the window. |
+| May | [May 6 Amp, Rebuilt / Neo CLI](https://ampcode.com/news/neo) (-001, preview); [May 14 npm package changes](https://ampcode.com/news/npm-package-changes) (-009); [May 21 Amp Labs](https://ampcode.com/news/amp-labs) (-010, announced only); [May 27 Drop the Neo](https://ampcode.com/news/drop-the-neo) (-004, broad availability); [May 27 Proof of Human passkeys](https://ampcode.com/news/proof-of-human) (-011) | May 6 staged rollout vs May 27 "available to everyone" are **two dated states**, not one; Neo page was edited later (passkey and September notes). |
+| June | [Jun 2 End of Public Threads](https://ampcode.com/news/end-of-public-threads) (-012, reversal); [Jun 4 Agents, Everywhere](https://ampcode.com/news/agents-everywhere) (-002); [Jun 16 Diffs](https://ampcode.com/news/diffs) (016-E03); [Jun 30 Agents in Orbs](https://ampcode.com/news/agents-in-orbs) (-013) | Public discoverable sharing removed for sensitive-content risk, "not prompted by any incident" (vendor claim). Orbs are Amp-hosted, billed per minute. |
+| July | [Jul 2 Putting an Agent in an Orb (note)](https://ampcode.com/notes/putting-an-agent-in-an-orb) (016-E04); [Jul 8 Agents, Anywhere / runners](https://ampcode.com/news/agents-anywhere) (-003); [Jul 9 The Dial](https://ampcode.com/news/the-dial) (-014); [Jul 14 OIDC for orbs](https://ampcode.com/news/secrets-of-the-orb) (-015); [Jul 18 Subscriptions beta](https://ampcode.com/news/subscriptions) (-016, preview); [Jul 23 Event Driven Orbs](https://ampcode.com/news/event-driven-orbs) (-017); [Jul 29 Amp Labs × Westpac](https://ampcode.com/news/amp-labs-westpac) (-018) | The Jul 2 note is commentary on the Jun 30 launch, not a release. Westpac partnership has **two source dates**: Amp Jul 29, Westpac Aug 7. |
+| August | [Aug 7 Westpac release](https://www.westpac.com.au/about-westpac/media/media-releases/2026/7-august/) (-025, same partnership); [Aug 13 "That's not SOC 2 compliant" (note)](https://ampcode.com/notes/thats-not-soc-2-compliant) (-019); [Aug 19 MCP in Orbs](https://ampcode.com/news/mcp-in-orbs) (-020); [Aug 27 multi-repository projects](https://ampcode.com/news/multi-repo-projects) (-005); [Aug 28 No Mailmap Required](https://ampcode.com/news/no-mailmap-required) (-021) | -025 is counterparty documentation of -018, **not** a second event. SOC 2 note says "working toward" — no attestation claimed. MCP support is partial (no Apps/Resources/Prompts). |
+| September | [Sep 1 intelligently ordered diffs](https://ampcode.com/news/intelligently-ordered-diffs) (-006); [Sep 13 Free Agent](https://ampcode.com/news/free-agent) (-022); [Sep 22 One Runner, Many Worktrees](https://ampcode.com/news/one-runner-many-worktrees) (-023) | Free tier depends on user-supplied compute and model subscriptions; page updated Sep 30. Runner secret delivery is opt-in. |
+| Oct 1–12 | [Oct 10 Use Your Claude Plan](https://ampcode.com/news/use-your-claude-plan) (-024); [Oct 12 You've Got Comments / GitHub listeners](https://ampcode.com/news/github-listeners) (-007) | Oct 12 is the window's last day (publisher date only). [Oct 13 Take Puck with You](https://ampcode.com/news/take-puck-with-you) **excluded**. |
 
-**Not checked in this pass:** the remaining ledger URLs, the June 2 public-thread removal lead, legal entity registration, and any non-vendor source. All pending gates in the status block above remain open.
+See the [CSV](016-amp-inc.events.csv) for 27 dated records. `event_date_utc` is blank throughout: no source gives a separate first-availability timestamp, and the publication date is not assumed to be the rollout date.
+
+## 4. Feature map, rights and security cross-check
+
+| Capability cluster | What the cited documents support | Non-equivalence / open risk |
+|---|---|---|
+| **Rebuilt agent architecture** — [Neo](https://ampcode.com/news/neo) → [broad availability](https://ampcode.com/news/drop-the-neo) | Remote-controllable CLI, automatic compaction at 90% context, Plugin API; pre-Neo client retired | Vendor-described; no independent reliability or quality measure |
+| **Remote execution** — [orbs](https://ampcode.com/news/agents-in-orbs), [runners](https://ampcode.com/news/agents-anywhere), [worktrees + secrets](https://ampcode.com/news/one-runner-many-worktrees), [multi-repo](https://ampcode.com/news/multi-repo-projects) | Unsupervised agents on Amp-hosted machines or user machines; up to 20 extra repositories; hosted secrets optionally delivered to runners | Runners accept remote thread creation in any directory, "even home directories"; isolation, egress and secret-scope boundaries untested |
+| **Event-driven autonomy** — [webhooks](https://ampcode.com/news/event-driven-orbs) → [GitHub listeners](https://ampcode.com/news/github-listeners) | Orbs wake on HTTP events (CI failures, issues, Discord, alerts); PR comments/reviews/CI routed back to the agent thread | Untrusted issue/comment text becomes agent input — prompt-injection, webhook authentication and replay controls not evaluated |
+| **Identity and security controls** — [passkeys](https://ampcode.com/news/proof-of-human), [OIDC](https://ampcode.com/news/secrets-of-the-orb), [commit identity](https://ampcode.com/news/no-mailmap-required), [end of public threads](https://ampcode.com/news/end-of-public-threads) | Step-up auth for remote control; short-lived OIDC tokens instead of injected secrets; admin policy for which name/email signs agent commits; removal of public discoverable threads | OIDC token example carries user email; commit identity can attribute agent commits to a human account — repository-mining inference of AI authorship from git metadata is unreliable |
+| **Review tooling** — [Diffs](https://ampcode.com/news/diffs), [ordered diffs](https://ampcode.com/news/intelligently-ordered-diffs) | Mobile/desktop diff review and staging; importance-ordered files | Vendor's own engineering note says it ships **without pull requests** and that SOC 2 criteria do not require human code review ([note](https://ampcode.com/notes/thats-not-soc-2-compliant)) — a stated process choice, not evidence about defect rates |
+| **Model and pricing layer** — [Opus 4.7](https://ampcode.com/news/opus-4.7), [Dial](https://ampcode.com/news/the-dial), [Subscriptions](https://ampcode.com/news/subscriptions), [Free Agent](https://ampcode.com/news/free-agent), [Claude plan](https://ampcode.com/news/use-your-claude-plan), [MCP](https://ampcode.com/news/mcp-in-orbs) | Mode names replaced by effort levels; subscriptions (beta) then free tier with BYO compute/keys; zero/minimal data retention extended to all users (vendor statement); third-party agent harness as a mode; partial MCP | Model behind a mode changed several times in the window — runs are not reproducible unless the mode→model mapping is logged; retention promise not audited |
+| **Services business** — [Amp Labs](https://ampcode.com/news/amp-labs), [Westpac](https://www.westpac.com.au/about-westpac/media/media-releases/2026/7-august/) | Embedded engineering teams paid via warrants; one named bank partner with on-site team | No delivered outcome, scope or contract terms public |
+
+## 5. Publicly stated direction versus shipped functionality
+
+| Dated first-party source | Company-stated direction | Classification |
+|---|---|---|
+| [May 6 Amp, Rebuilt](https://ampcode.com/news/neo) | "agents with longer leashes, less handholding, and many more places to run" | Direction statement; the CLI part **shipped** (broad May 27); later pieces delivered as separate posts (orbs, runners, events) |
+| [Jun 30 Agents in Orbs](https://ampcode.com/news/agents-in-orbs) → [Oct 12 GitHub listeners](https://ampcode.com/news/github-listeners) | Agents that run unsupervised and react to repository events | **Shipped** per vendor across Jun–Oct; effectiveness unmeasured |
+| [Jul 9 The Dial](https://ampcode.com/news/the-dial), [Jul 29 Who Cares About the Model?](https://ampcode.com/news/who-cares-about-the-model) (title only, not opened) | Model choice should be abstracted behind task difficulty | Shipped as UI change; claim that users do not notice model swaps is vendor framing |
+| [May 21 Amp Labs](https://ampcode.com/news/amp-labs) | "a single company per industry and region, with CEO mandates"; profit "only through warrants" | **Announced**; one counterparty (Westpac) confirmed by its own release |
+| [Sep 13 Free Agent](https://ampcode.com/news/free-agent) | Monetise hosted compute (orbs), not tokens | **Shipped** pricing change; sustainability of this model unknown |
+| [Aug 13 SOC 2 note](https://ampcode.com/notes/thats-not-soc-2-compliant) | Working toward SOC 2 with PR-free change controls | **Not yet attested** per the note itself |
+
+No binding future release dates were found. Intentions are not delivery schedules.
+
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company forecasts)
+
+| Testable scenario | Rival cause | Disconfirming observation |
+|---|---|---|
+| Event-driven remote agents may cut maintainer time to first fix for CI failures | Existing CI annotations + human triage already fast for small repos; agent fixes need review anyway | Matched task test shows no gain in independently accepted fixes, or more reviewer minutes per accepted fix |
+| Effort-dial abstraction may reduce cost per accepted task | Cheaper models simply shift cost into rework and re-prompts | Logged runs show equal or higher total spend per accepted task at lower dial settings |
+| Hosted orbs + OIDC may reduce secret exposure compared with laptop agents | Correctly scoped CI OIDC already achieves the same | Synthetic secret-read tests show equal leak rate and higher setup burden |
+| PR-free, agent-heavy workflows may sustain quality at small scale | Small, high-trust team effect, not the tooling | Defect/rollback rates comparable to PR-reviewed peers cannot be shown with public data |
+
+## 7. M1–M7 study relevance
+
+| Construct | Prospective measurement, not inferred conclusion |
+|---|---|
+| **M1** coding practice | Amp's window shows a move from interactive CLI to delegated, event-triggered remote agents; measure with opt-in workflow logs, not vendor posts |
+| **M2** accepted task quality | Independently authored acceptance tests on fixed tasks; count failures, refusals and timeouts; note Amp's own no-PR process claim |
+| **M3** discovery | Removal of public discoverable threads (Jun 2) shrinks a public signal of agent use; do not treat its absence as non-use |
+| **M4** verified third-party reuse | Configurable commit identity (Aug 28) means agent-written commits may carry human or vendor identities — do not infer authorship from git metadata |
+| **M5** reuse-first | Compare reuse of existing CI/OIDC/GitHub Actions against adopting hosted orbs or event triggers on the same task |
+| **M6** lifecycle human and resource cost | Per-minute orb billing, BYO compute and model subscriptions shift costs; record actual billed amounts and maintainer minutes; **no token-to-kWh or CO2e conversion** |
+| **M7** actionable interventions | Test least-privilege agent tokens and draft-only write rules as maintainer interventions, with independent grading |
+
+## 8. One falsifiable reuse-first maintainer experiment (proposed, not executed)
+
+**Target:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), offline code and committed synthetic fixtures only. The live Trending `capture` command stays disabled under the source-access decision; nothing here re-enables it.
+
+**Reusable practice under test:** before adopting any event-driven remote agent (Amp event-driven orbs/GitHub listeners or a comparable tool), first reuse what the repository already has — GitHub Actions failure logs plus a frozen local triage checklist (`python3 -m unittest discover -s tests -v`, read failing assertion, minimal patch).
+
+**Design:** a person other than the implementing agent seeds **12 synthetic CI failures** on throwaway branches (e.g. fixture schema drift, date-window off-by-one, CSV quoting) and writes hidden acceptance tests before any arm runs. **Arm A (reused baseline):** maintainer + existing Actions logs + checklist. **Arm B:** an event-triggered remote agent receives the same failure event, with a token limited to opening **draft** PRs on a sandbox fork, no secrets, no merge rights. Same 12 tasks, randomised order, all failures/refusals/timeouts in the denominator.
+
+**Primary endpoint:** independently accepted fixes / 12 per arm. **Secondary:** maintainer active minutes per accepted fix, money actually billed, writes outside the draft branch (must be 0), secret or token-scope violations (must be 0), prompt-injection canaries planted in issue text that change agent behaviour.
+
+**Stop / decision rule:** stop Arm B on any out-of-scope write, secret exposure or followed injected instruction. Adopt B only if it gains **≥3 accepted fixes** over A **and** does not increase maintainer minutes per accepted fix; otherwise keep the reused baseline and record the null result.
+
+## 9. Evidence quality and limitations
+
+- **27 rows:** 26 Amp-published (E1 vendor documents, including 2 legacy `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` labels kept unchanged), 1 counterparty release (E2). No E3 independent replication, no E4 multi-context outcome evidence.
+- **QC:** all 9 pre-existing rows re-opened 2026-10-16 — reachable, dates match, claims supported, **0 corrections** ([QC note](016-amp-inc.source-qc-2026-10-16.md)).
+- **Mutable sources:** Amp edits posts in place (Neo, Proof of Human, Free Agent, Amp Labs; a leftover authoring placeholder on the Oct 10 page). No archived captures or hashes exist.
+- **Unknowns:** legal entity name and ownership at registry level; funding; pricing values; real-account availability; isolation and security of orbs/runners/webhooks; any adoption or task-value data; complete independent/contrary coverage.
+- An AI assistant drafted this report and its QC; that is not independent review. No vendor installation, benchmark, user study or environmental measurement was performed. Vendor claims about speed, cost or "everyone" availability remain claims.
+
+## 10. Earlier screen (preserved)
+
+Prior full texts are in git history and the archives; this section summarises what earlier versions claimed so nothing is silently lost.
+
+- **[PR #197](https://github.com/MSKazemi/github-trending-1000-study/pull/197) (2026-10-12, original at [head `23a08bb`](https://github.com/MSKazemi/github-trending-1000-study/blob/23a08bbc0758223ce6f1f3b9dbda53c809ca9df8/research/company-intelligence/2026-04-12_2026-10-12/016-amp-inc.md)):** a "partially screened" report with 4 dated vendor leads — 016-E01 [Amp, Rebuilt](https://ampcode.com/news/neo) (preview), 016-E02 [Agents, Everywhere](https://ampcode.com/news/agents-everywhere) (shipped), 016-E03 [Diffs](https://ampcode.com/news/diffs) (shipped), 016-E04 [Putting an Agent in an Orb](https://ampcode.com/notes/putting-an-agent-in-an-orb) (reported_undetermined) — logged queries `site:ampcode.com/news 2026 May June; site:ampcode.com/notes "Orb" 2026; site:ampcode.com/chronicle 2026 September`, and marked April 12–30, August, September and October 1–12 as "No verified event in this bounded source screen … NOT a zero-event assertion". Its stated direction: "longer-running agents with durable remote control, auditable diffs and multi-surface review". Its experiment compared interrupted local-only vs resumable isolated-worker execution on 5 offline parser tasks. The [original JSON ledger](016-amp-inc.events.json) is kept byte-for-byte and was not modified in this upgrade.
+- **[PR #231](https://github.com/MSKazemi/github-trending-1000-study/pull/231) (2026-10-13 → merged 2026-10-15 as a provisional screen):** the alternate first screen, archived verbatim in [source-archives/016-amp-inc.2026-10-13-first-screen.md](source-archives/016-amp-inc.2026-10-13-first-screen.md), added [Agents, Anywhere](https://ampcode.com/news/agents-anywhere); a 2026-10-13 consolidation counted "5 distinct canonical vendor URLs"; the 2026-10-14 checkpoint ([QA file](source-audits/016-amp-inc.2026-10-14-qa.md)) ran seven month-targeted queries and grew the ledger to 9 rows with [Drop the Neo](https://ampcode.com/news/drop-the-neo), [multi-repository projects](https://ampcode.com/news/multi-repo-projects), [intelligently ordered diffs](https://ampcode.com/news/intelligently-ordered-diffs) and [GitHub listeners](https://ampcode.com/news/github-listeners); it also flagged the Jun 2 [End of Public Threads](https://ampcode.com/news/end-of-public-threads) lead (now row -012) and the out-of-window Oct 13 Puck integration. A 2026-10-15 spot check confirmed dates for -004, -005, -007 and the 2025 split sources ([Sourcegraph](https://sourcegraph.com/blog/why-sourcegraph-and-amp-are-becoming-independent-companies), [Amp Frontier Corporation](https://ampcode.com/news/amp-frontier-corporation)), and recorded the `sourcegraphdev.com` → `sourcegraph.com` URL correction.
+- **What changed in this upgrade:** 9 → 27 rows; all seven segments now have dated sources; first non-vendor (counterparty) source added; entity alias and licence baseline recorded; old event IDs, rows and evidence labels unchanged.
+
+**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md) · [news corpus issue #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) (no NEWS records minted here).
