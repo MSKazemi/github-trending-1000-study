@@ -1,0 +1,227 @@
+{
+  "schema_version": "2026-10-17-issue-triage-v1",
+  "source_kind": "dated_connected_github_read_only_and_review_handoff",
+  "snapshot_local_date": "2026-10-17",
+  "snapshot_main_sha": "1e656cfcbceb4995467280b796e77e870c6c5f39",
+  "snapshot_open_issues": 32,
+  "snapshot_open_prs": 13,
+  "snapshot_main_protected": false,
+  "snapshot_rulesets_count": 0,
+  "issues_scoped": 20,
+  "evidence_limits": "No independent human acceptance, real source collection, energy calibration, or completed trial is inferred from this index. CI passes are engineering checks and branch commits are not main merges.",
+  "issue_tracking_rule": "Do not close an issue from this handoff alone. Verify original acceptance criteria, independent qualified review, final diff/CI, and separately required human source/ethics/admin gates.",
+  "issues": [
+    {
+      "issue_number": 2,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/2",
+      "focus": "Trending parser QA",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "source_permission",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Obtain approved page source access and 30+ independent real-row labels across exact surfaces",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 3,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/3",
+      "focus": "Preregistered cohort, controls and power",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_methods",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Freeze eligible frame, power assumptions, matched controls and preregistration before outcomes",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 5,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/5",
+      "focus": "Documentation applicability rubric",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Recruit independent blinded raters for 100+ eligible repos, preserve kappa and disputes",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 6,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/6",
+      "focus": "Trending rank and drift instrument",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "source_permission",
+      "related_open_pr": 290,
+      "proposed_next_verifiable_action": "Review frozen proxy and acquire lawful verified chronological held-out samples",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 7,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/7",
+      "focus": "Structured literature review",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": 418,
+      "proposed_next_verifiable_action": "Reproduce searches by database/query/date and double-screen included and excluded records",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 8,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/8",
+      "focus": "Useful task outcomes",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_participants",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Freeze type-specific tasks and obtain consented independently assessed real user outcomes",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 15,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/15",
+      "focus": "Quiet reusable OSS frame",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": 293,
+      "proposed_next_verifiable_action": "Validate registry source/version rights and at least 50 independent task-component pair labels",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 17,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/17",
+      "focus": "Reuse-first randomized trial",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_participants",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Obtain consent, independent tests, stratified power and preregistration before assignments",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 18,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/18",
+      "focus": "Energy and carbon calibration",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "measurement",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Measure comparable local/CI/cloud and embodied boundaries with uncertainty",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 19,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/19",
+      "focus": "OSS retrieval benchmark",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": 425,
+      "proposed_next_verifiable_action": "Get independently frozen gold tasks and real lexical/embedding/hybrid relevance, security and cost judgments",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 22,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/22",
+      "focus": "Supply-chain provenance gate",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "source_verification",
+      "related_open_pr": 429,
+      "proposed_next_verifiable_action": "Review 2026-10-17 bounded diagnostic fix; authenticate exact registry, licence, digest and advisories",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 23,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/23",
+      "focus": "Lifecycle break-even",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "measurement",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Calibrate same-task energy/serving/upkeep/rebound components instead of synthetic envelopes",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 24,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/24",
+      "focus": "Maintainer burden and newcomer comprehension",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_participants",
+      "related_open_pr": 432,
+      "proposed_next_verifiable_action": "Review offline diagnostic fix; recruit opt-in maintainers and measure independently consented time",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 56,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/56",
+      "focus": "Auditable news source corpus",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "source_verification",
+      "related_open_pr": 426,
+      "proposed_next_verifiable_action": "Review URL lexical hardening, verify original source/event dates/rights and independent screening",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 65,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/65",
+      "focus": "Sixteen frozen public issue leads",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": null,
+      "proposed_next_verifiable_action": "Double-screen 16 source leads and freeze separate hidden acceptance tests",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 222,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/222",
+      "focus": "Hiring requisition longitudinal observation",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "source_permission",
+      "related_open_pr": 428,
+      "proposed_next_verifiable_action": "Review privacy fix and permit authentic employer/ATS longitudinal observations",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 223,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/223",
+      "focus": "Hiring inter-rater codebook",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "human_coding",
+      "related_open_pr": 298,
+      "proposed_next_verifiable_action": "Approve eligible direct-source frame and collect two real blind reviewers plus adjudication",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 248,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/248",
+      "focus": "Server-enforced GitHub PR protections",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "admin",
+      "related_open_pr": 302,
+      "proposed_next_verifiable_action": "Install main/tag rulesets and prove rejection of failing, stale and unreviewed PRs",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 277,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/277",
+      "focus": "Protected no-loss branch retirement",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "admin",
+      "related_open_pr": 431,
+      "proposed_next_verifiable_action": "Review SHA-leased deletion, archive tag protection, read-only live preflight and freeze",
+      "independently_verified_completion": false
+    },
+    {
+      "issue_number": 279,
+      "issue_url": "https://github.com/MSKazemi/github-trending-1000-study/issues/279",
+      "focus": "No-loss active branch consolidation",
+      "closure_status": "open_requires_original_acceptance",
+      "blocker_category": "provenance",
+      "related_open_pr": 417,
+      "proposed_next_verifiable_action": "Verify exact per-branch no-loss crosswalk and recovery before any retirement",
+      "independently_verified_completion": false
+    }
+  ],
+  "verified_2026_10_17_engineering_sha": {
+    "issue_56": "b137d301805418c15d335f30b4eb22bcaf00bc7a",
+    "issue_222": "43246acd6dc63b8550f1927d07ad0374a6c2ebcb",
+    "issue_22": "db8db8077560f8c90a5ddcdd38569999735af5a6"
+  },
+  "maintainer_lessons": [
+    "Separate regression-tested engineering from independently accepted scientific outcomes",
+    "Validate raw URLs before normalizing; never equate syntax with safe source access",
+    "Test full exception causes and contexts for private identifiers",
+    "Use server-enforced independent review and SHA protection, not merely green CI",
+    "Keep null/unknown, failed tasks and consent/rights blockers visible, not silently zero or close"
+  ]
+}
