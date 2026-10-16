@@ -215,7 +215,8 @@
   "verified_2026_10_17_engineering_sha": {
     "issue_56": "b137d301805418c15d335f30b4eb22bcaf00bc7a",
     "issue_222": "43246acd6dc63b8550f1927d07ad0374a6c2ebcb",
-    "issue_22": "db8db8077560f8c90a5ddcdd38569999735af5a6"
+    "issue_22": "db8db8077560f8c90a5ddcdd38569999735af5a6",
+    "issue_24": "c1d0fe5dea4ded960ac0620785a0d81fb3aa87f7"
   },
   "maintainer_lessons": [
     "Separate regression-tested engineering from independently accepted scientific outcomes",
@@ -223,5 +224,23 @@
     "Test full exception causes and contexts for private identifiers",
     "Use server-enforced independent review and SHA protection, not merely green CI",
     "Keep null/unknown, failed tasks and consent/rights blockers visible, not silently zero or close"
-  ]
+  ],
+  "exact_head_ci": {
+    "issue_56": {
+      "run_id": 38983636487,
+      "required_jobs_passed": 5
+    },
+    "issue_222": {
+      "run_id": 38983852246,
+      "required_jobs_passed": 5
+    },
+    "issue_22": {
+      "run_id": 38983916869,
+      "required_jobs_passed": 5
+    },
+    "issue_24": {
+      "run_id": 38984121317,
+      "required_jobs_passed": 5
+    }
+  }
 }
