@@ -77,10 +77,132 @@ The 2026-10-12 initial source screen above remains valid as a **preliminary, unv
 
 Freeze 8–12 small license-compatible Python maintenance tasks, repo SHAs, requirements, hidden acceptance checks and all-assigned-task counts. Compare a pinned OpenHands harness to a bounded scripted developer-agent workflow using the same model/budget where possible. Record accepted, independently reviewed patches; failures/abstentions; provenance, secrets/network permissions, dependency audit, reviewer/repair minutes, CI reruns, external reuse where actually verified and 30-day support costs. Stop for credential exposure, license conflict, worse accepted-task outcomes or disproportionate total maintenance cost. Map findings to M1–M7 (workflow, discovery, task quality, verified reuse, review, security/rights, lifecycle). No energy or carbon benefit measured.
 
-**Outstanding gates:** systematically screen all seven calendar segments; confirm entity/ownership; preserve exact source publication and rollout dates, accessible/versioned docs, independent contrary reports, source-specific licenses and actual review records. **Issue #89 remains open; this bounded first-party source note can be published without claiming scientific completion.** A green CI badge cannot replace scientific factual review.
+**Outstanding gates:** systematically screen all seven calendar segments; confirm entity/ownership; preserve exact source publication and rollout dates, accessible/versioned docs, independent contrary reports, source-specific licenses and actual review records. **Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.** A green CI badge cannot replace scientific factual review.
 
 ## Bounded documentary merge gate (2026-10-14)
 
 This PR records **selected first-party release notes**, not an exhaustive company study or independently accepted agent performance. Dates cross-checked on [June 16 Agent Canvas](https://hub.openhands.dev/blog/introducing-agent-canvas), [June 18 ACP support](https://hub.openhands.dev/blog/use-any-coding-agent-in-openhands-with-acp), [September 2 post describing August releases](https://hub.openhands.dev/blog/new-in-agent-canvas-august-2026), and [October 7 post describing September releases](https://hub.openhands.dev/blog/new-in-agent-canvas-september-2026). They have different **publication and underlying change-month dates**. For the August Canvas Apps beta the company explicitly describes JavaScript running in the same browser context rather than in an iframe/worker; this is a **stated trust boundary**, not an exploited vulnerability.
 
 The independent reviewer, seven-segment inclusion/exclusion denominator, version-pinned product-level licenses, conflicting sources and real task acceptance remain pending in #89. No external code was executed and no security, energy or market claims are accepted by this preliminary publication.
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED.** This section adds a standard 21-column ledger, [`022-openhands-all-hands-ai.events.csv`](022-openhands-all-hands-ai.events.csv), a [search log](022-openhands-all-hands-ai.search-log.md) and a source check of the earlier text above. Text above this heading is unchanged except for one closure sentence reworded to the standard form. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. The earlier checklist line about closing #89 is superseded by this sentence. Related: [#89](https://github.com/MSKazemi/github-trending-1000-study/issues/89), news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+### What the ledger adds
+
+- **40 dated rows** (`CI2026-022-001`…`040`), screened 2026-10-16. Per segment: Apr 12–30: 4 · May: 6 · Jun: 7 · Jul: 8 · Aug: 9 · Sep: 3 · Oct 1–12: 3. No segment is empty. The earlier "no eligible event independently confirmed" for July was a coverage gap, not a quiet month.
+- **Status mix:** 29 shipped, 10 reported_undetermined, 1 preview.
+- **Source mix:**
+  - 15 GitHub records from the OpenHands organisation (releases, commits, the migration tracking issue), read through the GitHub API.
+  - 22 vendor pages: 18 blog posts and 4 dated Enterprise release-note pages on docs.openhands.dev (one more, 0.70.0, is used as a check).
+  - 3 non-vendor sources: an external reporter's GitHub issue, the NVD record of CVE-2026-19022 (CNA: VulDB) and one self-published Hacker News analysis.
+- **Entity check.** The vendor's responsible-disclosure policy says "All Hands AI, a limited liability company registered in the USA". The Enterprise licence says "Copyright (c) 2026 All Hands AI". The old GitHub path `All-Hands-AI/OpenHands` redirects to `OpenHands/OpenHands`. This is the vendor's own description; no company registry was checked.
+- **Independent coverage is thin.** The HN search found no mainstream press story about OpenHands in the window. The BusinessWire release of May 6 could not be fetched. The swebench.com leaderboard data lists no OpenHands entry dated in the window; its newest entry for any system is dated 2026-02-26.
+
+### Crosswalk: earlier report → ledger
+
+| Earlier claim (section) | Ledger event_id | Status after source check |
+|---|---|---|
+| Agent Canvas August 2026 post; date "not independently archived" (Product scope) | CI2026-022-035 (and 034) | **confirmed.** Page metadata `datePublished` 2026-09-02. It summarises eight GitHub releases, v1.9.0 (Aug 3) to v1.16.0 (Aug 27). |
+| Apr 27 asynchronous-agents post, "technical discussion" (2026-10-14 addendum) | 003 | **corrected (framing).** Date confirmed. It is a guest post by a Carnegie Mellon University author about CAID, a research system built on OpenHands, not an OpenHands product item. |
+| May 6 Enterprise Agent Control Plane | 006 | **confirmed.** The post also says OpenHands Automations "is now available in OpenHands Enterprise". |
+| Jun 16 Agent Canvas | 012, 013 | **confirmed.** v1.0.0 was tagged the day before (2026-06-15T20:03Z) in the separate `OpenHands/agent-canvas` repository. |
+| Jun 18 ACP interoperability | 014 | **confirmed** |
+| July: "no eligible event independently confirmed; not zero activity" | 018–025 | **corrected.** See Corrections, item 1. |
+| Aug: Canvas releases v1.9–v1.16, published Sep 2 | 034, 035 | **confirmed.** Eight releases, Aug 3–27. |
+| Sep: Canvas v1.17–v1.24, published Oct 7 | 039 | **confirmed.** Eight releases, Sep 9–25. |
+| Oct 1–12: only the Oct 7 recap | 038–040 | **extended.** Canvas v1.25.0 (Oct 6) and v1.27.0 (Oct 12) added. |
+| Canvas Apps run JavaScript in the same browser context, not an iframe or worker | 034, 035 | **confirmed verbatim.** The release itself calls the feature "Canvas Extensions". |
+| "Do not assume proprietary Enterprise/hosted features share the license of open agent code" | 023 | **confirmed.** `OpenHands/enterprise` carries the PolyForm Free Trial License 1.0.0. The open repositories are MIT. |
+| Ownership "requires verification" | — (entity check above) | **partly confirmed** (vendor self-description only) |
+| Negative/contradictory coverage "pending" | 015, 026, 033 | **corrected.** See New events. |
+| No binding 2027–2031 commitments verified | — | **still none** |
+
+Every hub.openhands.dev URL cited above still returns the dated page. The www.openhands.dev host serves the same posts.
+
+### Corrections to the earlier report (stated here; earlier text left as written)
+
+1. **July was not empty.** July had:
+   - two Enterprise integrations (Azure DevOps and Bitbucket Data Center, Jul 22);
+   - Enterprise 0.24.0 (Jul 16);
+   - the last PyPI release of the Python app (openhands-ai 1.11.0, Jul 9);
+   - a repository migration on Jul 27, the largest structural event of the window.
+2. **The experiment design above needs a new pin.** The earlier text proposes "a pinned OpenHands harness". After 2026-07-27, `OpenHands/OpenHands` holds the Agent Canvas TypeScript/Electron app, not the Python agent (023). The previous monorepo is the archived `OpenHands/legacy` at `ee9e78b7`. openhands-ai on PyPI has had no release since 1.11.0, and the OpenHands CLI is "no longer actively maintained" (030). Any harness pin must therefore name both the Agent Canvas tag and the `software-agent-sdk` version. A tag of the `OpenHands/OpenHands` repository from before July 27 refers to different code than one from after it.
+3. **The licence boundary is now documented, not only a caution.** The vendor states "OpenHands is MIT licensed" (013). That is true of the public repositories checked: OpenHands, software-agent-sdk, OpenHands-CLI and extensions. It is not true of `OpenHands/enterprise` (PolyForm Free Trial). The migration issue called that repository private; it is public on 2026-10-16.
+4. **Security boundaries.** The earlier section mentions only the Canvas Apps trust boundary. It misses a publicly reported, still-open command-injection disclosure (015). That disclosure later became CVE-2026-19022 (026).
+5. **Construct labels.** The earlier sections use a different M-numbering (e.g. "M4 external integration", "M6 lifecycle cost"). The ledger's `study_construct` column uses the issue #89 order: M1 agent workflow change, M2 discoverability, M3 independently verified reuse, M4 accepted task quality, M5 review/maintenance, M6 rights/security, M7 lifecycle human/energy cost.
+
+### New events found (themes)
+
+- **One repository name, two codebases (023).** On 2026-07-27 the vendor emptied `OpenHands/OpenHands` (about 91k stars) and replayed the 821-commit Agent Canvas history into it. The old code was split into three repositories:
+  - `legacy` (public, archived);
+  - `enterprise` (PolyForm Free Trial);
+  - `sandbox-server`.
+
+  For this study, stars, forks and links to `OpenHands/OpenHands` now count toward a different product than before. Any longitudinal metric on that repository needs a break at this date (M2/M3).
+- **Disclosure handling (015, 026).** On Jun 19 an external reporter publicly filed command-injection findings in the resolver for versions below 0.62.0. The reporter said a private advisory had gone unanswered for "6-7 months". During the migration the issue moved to the enterprise repository. NVD then published CVE-2026-19022 (Aug 6) with the statement that the vendor "deleted" the report. As of 2026-10-16 the issue is open, with one automated stale-activity comment. No vendor advisory exists for it. The only OpenHands GHSA overall is from March, before the window. Security fixes in the window appear only as release-note lines: WebSocket token handling (002, 025) and 16 dependency CVE/GHSA updates in one Cloud release (017).
+- **Maintenance churn.** Several of the vendor's own products changed status within months:
+  - the CLI was declared feature-complete (May 18) and then unmaintained (Aug 11);
+  - the Python app package stopped after 1.11.0;
+  - the standalone Automation frontend was retired (029);
+  - the free MiniMax M2.7 default was replaced by GLM 5.2 (029).
+
+  The vendor's own analysis counts 5,679 merged PRs, 31% of them bug fixes, across four repositories in 12 months (024). It uses this to argue against in-house agent platforms. The same figure also measures the upstream churn that downstream users absorb.
+- **Agent-agnostic harness (014, 020, 040).** The ACP client support now covers Claude Code, Codex, Gemini CLI, OpenCode and Pi. This creates a reuse-first comparator: one interface can drive several existing agents instead of a new harness being built.
+- **Verification and review tooling (016, 039).** The vendor describes a critic model, PR-review and QA agents, and review checks against the PR's exact head commit. No accuracy denominators are published.
+- **Independent reuse of benchmark artefacts (033).** A third party re-analysed OpenHands' published SWE-bench Verified GPT-5.5 run: 391 of 500 tasks resolved. The author estimates human review at about 2.1× the model cost per accepted line. That figure depends heavily on wage and review-rate assumptions and should not be generalised.
+
+### M1–M7 notes for new events (issue #89 ordering)
+
+| Construct | What the new events show | What they cannot show |
+|---|---|---|
+| M1 agent workflow | Shift from chat sessions to scheduled or event-triggered automations (006, 013, 035, 039); swappable harnesses via ACP (014, 040); model routing (010, 038) | Adoption, or effect on accepted work |
+| M2 discoverability | Repository identity reused for a new codebase (023); CLI users redirected to Canvas (030) | Whether users found or switched products |
+| M3 verified reuse | MIT SDK and Canvas reused by third-party harnesses through ACP (014); a third party reused published benchmark trajectories (033) | Any downstream production reuse; no import was traced |
+| M4 accepted quality | Vendor critic and review agents (016); vendor index (007); independent re-analysis 78.2% after one outlier was removed (033) | Maintainer-accepted outcomes outside benchmarks |
+| M5 review/maintenance | 64 SDK releases and 46 OpenHands releases in six months; deprecations (001, 008, 030); vendor maintenance analysis (024); human-tested checkbox removed from the PR template (025) | Migration minutes for downstream users |
+| M6 rights/security | Open-core licence split (023); unresolved disclosure and CVE (015, 026); WebSocket and dependency fixes (002, 017, 025); Apps trust boundary (034) | Exploitation in the wild; legal assessment of PolyForm terms |
+| M7 human/lifecycle cost | Budgets, quotas and per-run cost (020, 029, 032, 035); time-limited free model (010); independent cost-per-accepted-line estimate (033) | Energy or emissions. Tokens are not kWh, and no energy figure is given. |
+
+### Vendor-stated near-term plans (dated, not a roadmap)
+
+- Local GUI features "will be made available in OpenHands Cloud in a future release" (009, May 20).
+- Agent Canvas "is becoming the main interface for OpenHands" (013, Jun 16). The Apps "API, and supported extension points may evolve" (035).
+- "We are also working with the community to explore other container options" beyond Docker (039, Oct 7).
+- More frequent OpenHands Index updates "going forward" (007).
+
+None of these is a binding commitment, and no 2027–2031 product plan was found.
+
+**Researcher's conditional interpretation (E0 hypothesis).** If open-core agent vendors keep moving governance features (budgets, secrets, audit, organisation automations) into source-available or proprietary editions while the MIT core changes shape every few months (023, 030), then maintainers who adopt the open core will carry rising re-integration costs (M5). The governance controls they need will also sit behind licence boundaries (M6).
+
+- **Falsifiers:**
+  - two or more quarters without a breaking repository, package or interface change in the MIT core;
+  - the governance features (budgets, organisation secrets, audit) appearing in MIT repositories;
+  - a vendor advisory process that resolves public disclosures such as 015 within a stated window.
+- **Rival explanation:** the churn is a one-time consolidation after an early product phase, and the licence split matches common open-core practice without reducing what the MIT core can do for a single maintainer.
+
+### Revised small experiment for this repository (proposed, not performed)
+
+**Reuse-first PR-review check against the existing workflow.**
+
+- **Tasks:** freeze 8 historical PRs from this repository at their merge-parent SHAs, each with a defect that a later commit fixed. Add 2 PRs with no known defect. The defect list is written by a human before any run and kept out of agent context.
+- **Arm A:** Agent Canvas `v1.27.1` with `software-agent-sdk` `v1.54.0` and its PR Review automation template, pinned exactly. Run it on a local backend with the Docker conversation runtime and an Agent Profile that has no secrets and no network beyond the model endpoint. Canvas Apps stay disabled.
+- **Comparator (arm B):** the existing workflow on the same PRs — the repository's CI (`python3 -m unittest discover -s tests`, `scripts/check_research_artifacts.py`) plus the maintainer's own review, timed.
+- **Accepted-task unit:** a review comment that an independent human reviewer, blind to the arm, judges to identify the known defect. False positives are counted on all 10 PRs.
+- **Guardrails:**
+  - no credentials in the container and no write access to the real repository;
+  - review checks must run against the exact head SHA, per the vendor's own feature;
+  - record the exact versions;
+  - no paid API spend without approval: a locally hosted open-weights model endpoint or a pre-approved budget only.
+- **Measurement:** human minutes to set up arm A, human minutes to triage its comments, and defects found per arm. Tokens and energy are not inferred.
+- **Stop rule:** stop if arm A needs more than one hour of setup, if it misses more defects than the comparator, or if its triage minutes exceed the comparator's review minutes on 5 of the 10 PRs.
+
+### Remaining limits
+
+- No product was run, and no benchmark was replicated.
+- Mutable vendor pages were not archived.
+- Five dated Enterprise release-note pages (0.28.0, 0.36.0, 0.41.0, 0.74.0, 0.76.0) were not read.
+- Mainstream independent coverage is almost absent from this screen.
+- The PolyForm licence terms were identified but not legally assessed.
+- The reporter's claims in 015 are unverified.
