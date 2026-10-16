@@ -29,7 +29,7 @@ Endor Labs sells an application-security platform. Its pages describe it as buil
 
 - [`ai-plugins`](https://github.com/endorlabs/ai-plugins) (MIT): Agent Kit plugins for Claude Code, Codex, Gemini CLI, Antigravity CLI and Cursor.
 - [`endor-labs-agent-kit`](https://github.com/endorlabs/endor-labs-agent-kit) (MIT).
-- [`endorlabs-sdk`](https://github.com/endorlabs/endorlabs-sdk) (MIT; its PyPI distribution returned 404).
+- [`endorlabs-sdk`](https://github.com/endorlabs/endorlabs-sdk) (MIT; distributed on PyPI as `endorlabs`, 0.2.0–0.7.3 in window per the PyPI release feed — corrected in the 2026-10-16 spot-check, which withdrew an earlier "PyPI 404" note based on the wrong package name and a robots-disallowed API path).
 - [`endor-patches`](https://github.com/endorlabs/endor-patches) (Apache-2.0; two example patches).
 - [`github-action`](https://github.com/endorlabs/github-action) (Apache-2.0).
 - [`endorlabs-buildkite-plugin`](https://github.com/endorlabs/endorlabs-buildkite-plugin) (licence NOASSERTION per the GitHub API).
@@ -143,7 +143,44 @@ Company adoption claims ("more than 5 million applications", noise reduction "~9
   - (c) Endor's own VS Code extension was discontinued in July, while a VS Code *extension firewall* launched in September (different products).
   - (d) Date conflicts: buffa (blog Jun 30 vs GHSA Aug 28), Agent Kit ("available today" Jun 17 vs first release Jul 17), and an implausible 2026-04-09 publication date on the Fable 5.1 post.
   - (e) Count conflicts across vendors for the keyv incident.
-  - (f) "SpaceXSI" vs "SpaceXAI" on the same page.
+  - (f) "SpaceXSI" (title and most body mentions) vs "SpaceXAI" (URL slug and one body sentence) on the same page.
   - (g) **No independent press coverage** of any Endor product launch or benchmark was found in the window.
 - **#56 candidates (not minted):** the [Linux Foundation Akrites release](https://www.linuxfoundation.org/press/linux-foundation-and-industry-leaders-launch-akrites-to-defend-critical-open-source-software-against-ai-enabled-cyber-threats) (2026-06-25) and the [Beazley Security Labs keyv advisory](https://labs.beazley.security/advisories/BSL-A1197) (2026-08-03/04). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned. Endor's own threat-research posts are first-party sources and should not be counted as independent news.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Raw sources were re-fetched with a generic `Mozilla/5.0` User-Agent after checking robots.txt for `*` and for ClaudeBot / Claude-User / anthropic-ai / Claude-SearchBot / Claude-Web (RFC 9309 longest-match). Every cited path on www.endorlabs.com is permitted: it has no `*` or Claude group, and only SEO bots are barred from `/version/`. So are the cited paths on docs.endorlabs.com, linuxfoundation.org, labs.beazley.security, news.ycombinator.com and github.com. api.osv.dev and hn.algolia.com return 404 for robots.txt, meaning no rules. **Robots finding:** the original screen requested `https://pypi.org/pypi/endorlabs-sdk/json`, which pypi.org robots.txt disallows (`/pypi/*/json`) for all agents. It was not re-fetched. Only row 019's limitation depended on it, and that limitation was also wrong (see below). The row's primary GitHub-release evidence is unaffected, so the row was corrected rather than marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-097-001 | confirmed | Blog (Apr 15, updated Oct 12): >80%, 200 tasks, 77 CWE classes. Linked whitepaper (`/learn/agent-security-league-evaluating-the-security-of-ai-coded-software`, Apr 15): 13 agent+model combinations, "163 of 200 instances … 42× distortion" |
+| CI2026-097-002 | confirmed | 91.1/22.9 (Cursor) and 87.2/20.1 (Claude Code), "roughly four out of five solutions still ship with vulnerabilities" |
+| CI2026-097-003 | confirmed | GHSA-xq3m-2v4x-88gg / CVE-2026-41242 is critical, published 2026-04-16T22:34:57Z, with fixes in 8.0.1 and 7.5.5 |
+| CI2026-097-004 | confirmed | Post Apr 23 (updated Sep 11): "roughly 1.5 hours, between 5:57 PM and 7:30 PM (ET) on April 22" and a self-propagating worm. OSV MAL-2026-3020 lists 2026.4.0 |
+| CI2026-097-005 | confirmed | Cursor 87.2/23.5, Codex 61.5/20.1. The ~26-point gap is 25.7 |
+| CI2026-097-007 | confirmed | lightning 2.6.2/2.6.3, ~8M monthly, Bun plus an 11.4MB payload. OSV MAL-2026-3201 was published 2026-04-30T16:53:41Z |
+| CI2026-097-008 | confirmed | 84 @tanstack versions, 160+ overall, slug says 80, updated May 13 |
+| CI2026-097-015 | confirmed | Buildkite plugin v0.1.0 (2026-06-03) to v0.1.10 (2026-10-09), 10 in-window releases, licence NOASSERTION |
+| CI2026-097-017 | confirmed | 59.8% / 19.0%, cheating on 38 of 200 (33 memorization), zero safety refusals, record timeouts |
+| CI2026-097-018 | confirmed | ai-plugins 2.0.0 (06-10), 2.1.0 (06-16), 2.2.0 (07-31), 2.2.1 (08-01), 2.2.2 (08-27) |
+| CI2026-097-019 | **wrong limitation → corrected** | The "PyPI JSON for 'endorlabs-sdk' returned 404" note was based on a robots-disallowed path and the wrong package name. `pyproject.toml` names the distribution `endorlabs`, and the PyPI RSS feed (permitted) lists 0.2.0 (2026-06-10T19:37Z) to 0.7.3 (2026-10-06T19:24Z). 10 GitHub releases v0.2.0–v0.7.3 confirmed |
+| CI2026-097-020 | confirmed | Algolia item: 410 points, 250 descendant comments, 2026-06-11. Quoted comment found verbatim |
+| CI2026-097-021 | confirmed (repo facts) | Agent Kit repo created 2026-05-04, MIT. First non-prerelease agents-v1.0.0 on 2026-07-17 |
+| CI2026-097-024 | confirmed | LF release "SAN FRANCISCO, June 25, 2026" lists Endor Labs among the founding commitments |
+| CI2026-097-025 | confirmed | 192 vulnerabilities; 2.6x / 3.5x / 2.4x; 63 unique; 64 of 106 CWE types |
+| CI2026-097-026 | confirmed | ~22x amplification. GHSA-f9qc-qg88-7pq5 / CVE-2026-55407 is moderate (API: medium), fixed in 0.8.0, global publication 2026-08-28T18:34:22Z |
+| CI2026-097-028 | corrected (wording) | Only two of the three staging prereleases carry the title "override-signed, not for prod". The third (rc3) describes itself as a staging-only override catalog signed with a staging key |
+| CI2026-097-030 | confirmed | 384 packages / 1,136 versions "as a floor", ~515M weekly (post itself says the figures sum and overlap), OIDC trusted publishing. Beazley shows "August 3, 2026", while its text says Aug 4 (Wiz Research) and >150M weekly. OSV MAL-2026-11524 lists keyv 6.0.0 |
+| CI2026-097-032 | confirmed | 96 of 102 known vulnerabilities, 48x, four embedded C projects in one customer codebase |
+| CI2026-097-033 | confirmed | isolated-vm repository advisory: critical, 2026-08-07T23:23:42Z, no CVE. The global advisory endpoint returns 404 |
+| CI2026-097-034 | confirmed | About 135 events a day. Agents observed trying to work around the firewall configuration |
+| CI2026-097-035 | confirmed | 87.2/37.4; $672; 67 of 156; ~$10 each; ~$7,800 at half an hour per patch and $100/h |
+| CI2026-097-037 | confirmed | brig repository advisory: high, 2026-09-26T09:33:08Z, absent from the global database. v0.3.0 published 2026-09-26 |
+| CI2026-097-039 | corrected (wording) | The page title **and** most body mentions (7) say "SpaceXSI". Only the URL slug and one body sentence say "SpaceXAI" |
+| CI2026-097-040 | confirmed | "Published 2026-10-08 01:12:07 UTC", 0.5.143 clean, root cause "most likely" account compromise. OSV MAL-2026-17650 was published 2026-10-08T02:54:39Z |
+| CI2026-097-041 | confirmed | "roughly 95% on average" and "more than 5 million applications" are vendor claims |
+
+Totals: 26 rows checked. 22 were confirmed, 3 corrected for wording, and 1 had a wrong limitation that has now been corrected. None were unverifiable. The search log's "every number … confirmed" statement has been qualified.
+
+*This is an AI-assisted spot-check, not qualified human review.*
