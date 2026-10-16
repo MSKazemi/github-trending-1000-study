@@ -133,3 +133,19 @@ or privileged execution occurred.
 **Practical maintainer lesson:** evaluate the exact bytes used by a privileged
 operation, not merely a prior file-size check. Reject duplicate JSON keys
 before they can alter an approved source SHA or branch list.
+
+## 2026-10-17 privileged Git environment hardening
+
+The same focused retirement preflight found that dropping only `GIT_CONFIG_*`
+and trace variables left dangerous inherited Git controls such as
+`GIT_SSL_NO_VERIFY=1`, `GIT_ASKPASS`, and `GIT_EXEC_PATH` intact. With an
+ephemeral Authorization header attached to a privileged HTTPS Git process,
+these settings could disable TLS verification or invoke untrusted helpers.
+The proposed Git subprocess environment now drops **all** inherited `GIT_*`
+variables plus `SSH_ASKPASS` / `SSH_ASKPASS_REQUIRE`, and then explicitly
+sets only the required safe Git config, trace-disable and noninteractive flags.
+A synthetic subprocess inspection injects hostile values and asserts they are
+not passed to Git. This is defense in depth and still assumes a trusted runner,
+executable path and HTTPS proxy/CA environment. No credential was used on a
+real Git remote and the destructive workflow remains disabled. Final-head CI
+and independent security review remain required.
