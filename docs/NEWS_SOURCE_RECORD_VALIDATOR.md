@@ -18,6 +18,14 @@ The bundled `NEWS-2026-0001.json` lives **only** under `tests/fixtures/news_corp
 
 ## Schema v1.0 and failure policy
 
+Standalone reads inspect the opened file descriptor, refuse nonregular inputs,
+and cap bytes actually read. This prevents a leaf symlink or FIFO substituted
+after a preliminary path check from being read on platforms with no-follow
+and nonblocking file flags. Aggregate limits count actual bytes, including file
+growth after stat. This does not make ancestor-directory traversal a hostile
+filesystem sandbox. Strict JSON rejection uses a controlled diagnostic rather
+than echoing untrusted duplicate key names or recursion tracebacks.
+
 The reader requires a stable `NEWS-YYYY-NNNN` ID matching the JSON filename; fixed version `1.0`; bounded title, publisher, topic and attributed-claim text; original publication/access `YYYY-MM-DD` dates not later than execution date; clean HTTPS canonical source URL and nonduplicated canonical URL identity. It only strips common marketing query trackers while retaining meaningful query selectors such as `ref` and `id`. Blank/malformed fields, duplicate IDs/URLs, missing expected data, malformed ports, user-info/fragment URLs, URL whitespace/control characters, malformed percent escapes and backslashes fail. Source folders must be ordinary directories; symlinks, nested folders, unexpected JSON names, unexpected files, oversized artifacts, and ambiguous/overlarge raw JSON fail rather than being silently omitted.
 
 The validator permits only two **non-verifying** states:
@@ -34,3 +42,26 @@ Both require `review_status=pending`, `independent_reviewer=null`, `independent_
 Retain all 20 original record files on the existing draft branch. Before any evidence records go to `main`, a qualified source/method reviewer must independently inspect the **exact primary documents, publication/event dates, URL revisions, rights and relevant independent counter-evidence**, record unresolved disputes and negative findings, freeze a documented inclusion/exclusion protocol, and rerun this instrument plus full exact-head CI. Do **not** report "20 authenticated sources" merely because 20 syntactically valid JSON files pass. Separate an engineering merge from scientific source acceptance.
 
 **Practical lesson for other repositories:** merge small, testable **data-contract code** independently from unreviewed research content; keep original branches/PRs as immutable provenance until verified transfer; maximize safely reusable functionality and clear acceptance criteria instead of PR volume, stars or unsupported green-computing claims.
+
+
+## 2026-10-15 private input-filename diagnostics
+
+The news-source directory validator rejects unexpected files, directories and
+symlinks but now reports a generic **error category** instead of echoing an
+untrusted, potentially private filename. This affects only failed inputs:
+valid record filenames remain bound to their declared `NEWS-YYYY-NNNN` IDs
+and successful count/duplicate semantics are unchanged. Synthetic cases test
+unexpected JSON, non-JSON files, directories and symlink names containing a
+private-looking marker. Error redaction does not itself make publicly committed
+records or arbitrary OS-level diagnostics private; pre-publication review is
+still required. The one-thousand-item corpus and human source assessment remain
+unfinished.
+
+**Follow-up (2026-10-15):** OS-level failures while opening, inspecting or
+reading one record (for example a leaf symlink swapped in after the preliminary
+`is_symlink()` check, which `O_NOFOLLOW` refuses with `ELOOP`) are now reported
+as the fixed `ValueError` "news input must be a readable ordinary non-symlink
+file" instead of an `OSError` whose text embeds the full private input path.
+The module keeps its own bounded reader rather than the shared
+`data_integrity.load_research_json_file`, because the directory-wide total
+byte cap needs the bytes actually read from each record.

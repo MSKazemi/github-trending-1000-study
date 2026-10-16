@@ -71,7 +71,7 @@ Relevant constructs: M1 agent/model selection workflows, M2 task quality, M5 app
 - **Practical lesson (hypothesis to test, not recommendation):** route small retrieval/triage tasks to a smaller model and difficult patch tasks to a larger one to reduce cost per independently accepted task.
 - **Evidence risk:** Do not treat vendor benchmark or unit token-price claims as cost per successful maintained task. Record source edits and model drift; initial benchmark/chart correction is a concrete audit caveat.
 - **Not established:** entire six-month event coverage, external model benchmark comparability, true user adoption, measured whole-life CO2e or energy, counter-evidence, legal ownership beyond vendor assertions.
-- **Independent 2nd reviewer / link QA:** **pending**. Do not mark #68 completed or merge automatically.
+- **Independent 2nd reviewer / link QA:** **pending**. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
 - **Required next pass:** month-specific queries with preserved dates/results, independent high-quality reporting and corrections, archive exact release/version availability and product license/plan boundary, external functional test or explicitly absent, human review.
 - **No corpus inflation:** these first-party announcements are *not* added to the 1,000-news corpus pending independent full article screening and deduplication.
 
@@ -80,4 +80,179 @@ Relevant constructs: M1 agent/model selection workflows, M2 task quality, M5 app
 
 ## 2026-10-14 provisional source-preservation integration (not empirical validation)
 
-An AI-assisted source reviewer checked official Anthropic announcements and dates for Claude Sonnet 5 (June 30), Sonnet 5.5 (September 28), and Haiku 5.5 (October 7). Vendor benchmark, token-price, and claimed speed/efficiency figures were **not independently reproduced** or converted to energy impacts. The Sonnet 5 source has a later August 10 pricing edit and June 30 methodology correction, so a snapshot of its current text is not an immutable record of the original post. This E1 first-pass company shortlist can be preserved as working research per maintainer request, but is **not** accepted as a complete systematic six-month study, independent human factual review or tested recommendation. Keep research issue #68 open for publication-archive versioning, legal/source review, complete monthly search and measured reuse-first trials; previous draft-stage scientific-review holds are not silently declared satisfied.
+An AI-assisted source reviewer checked official Anthropic announcements and dates for Claude Sonnet 5 (June 30), Sonnet 5.5 (September 28), and Haiku 5.5 (October 7). Vendor benchmark, token-price, and claimed speed/efficiency figures were **not independently reproduced** or converted to energy impacts. The Sonnet 5 source has a later August 10 pricing edit and June 30 methodology correction, so a snapshot of its current text is not an immutable record of the original post. This E1 first-pass company shortlist can be preserved as working research per maintainer request, but is **not** accepted as a complete systematic six-month study, independent human factual review or tested recommendation. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open (publication-archive versioning, legal/source review, complete monthly search and measured reuse-first trials are still outstanding); previous draft-stage scientific-review holds are not silently declared satisfied.
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED.** This section adds a standard 21-column ledger, [`002-anthropic.events.csv`](002-anthropic.events.csv), a [search log](002-anthropic.search-log.md) and a source check of the earlier text above. Text above this heading is unchanged except for the two closure sentences reworded to the standard form. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Related: [#68](https://github.com/MSKazemi/github-trending-1000-study/issues/68), news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+>
+> **Conflict of interest.** This upgrade was prepared with an Anthropic model (Claude) researching Anthropic. Which events were included or left out, how claims are summarised, and which criticisms are reported may lean in Anthropic's favour. A human reviewer must check the selection and wording before any of it is relied on. To reduce the risk, the ledger includes every in-window Claude Code security advisory, user-reported billing and quality incidents, and independent critical research. It does not include Anthropic's own success claims about itself unless they are recorded as vendor statements.
+
+### What the ledger adds
+
+- **49 dated rows** (`CI2026-002-001`…`049`), screened 2026-10-16. Per segment: Apr 12–30: 7 · May: 7 · Jun: 11 · Jul: 3 · Aug: 6 · Sep: 10 · Oct 1–12: 5. No segment is empty. The earlier "no qualifying item validated" for April, May, July and August was a gap in coverage, not a quiet period.
+- **Status mix:** 28 shipped, 10 reported_undetermined, 5 announced_only, 3 corrected, 2 preview, 1 reversed/cancelled.
+- **Source mix:**
+  - 12 GitHub security advisories, from the advisory API. Each is matched to the npm publish time of its patched version.
+  - 2 user-filed GitHub issues that have maintainer replies.
+  - 7 independent third-party sources: Semafor, thereallo.dev, Systima, Daring Fireball, Embrace The Red, Armature and blog.szypowi.cz.
+  - The remaining rows are Anthropic pages, the dated Claude Platform release notes and the Claude Code changelog.
+- **Pages not fetched:** several mainstream outlets disallow Claude/Anthropic agents in robots.txt, including TechCrunch, The Verge, AP, CNBC and Reuters. They were not fetched, and their headlines are not used as evidence (search log, access table).
+
+### Crosswalk: earlier report → ledger
+
+| Earlier claim (section) | Ledger event_id | Status after source check |
+|---|---|---|
+| 002-E01 Claude Sonnet 5, 2026-06-30. Page carries a June 30 BrowseComp methodology correction and an August 10 pricing edit (§3, §4) | CI2026-002-023 | **confirmed.** Both edit notes appear in the raw page text, and the page metadata `publishedOn` is 2026-06-30T18:00Z. The Aug 10 edit makes the introductory $2/$10 per MTok price permanent, and the planned $3/$15 from Sep 1 no longer applies. |
+| 002-E02 Claude Sonnet 5.5, 2026-09-28: capabilities, effort settings, coding use and prices (§3, §4) | CI2026-002-042 | **confirmed.** The date is on the page and in the release notes. The page charts cost per task at every effort level and claims "up to 30% less" cost. The release notes confirm availability on the Claude API, Bedrock, Claude Platform on AWS, Google Cloud and Microsoft Foundry, and list five breaking changes from Sonnet 5. |
+| 002-E03 Claude Haiku 5.5, 2026-10-07: smaller, cost-sensitive model for subagent workflows (§3, §4) | CI2026-002-046 | **confirmed.** The page says it "pairs well with Opus 5.5 and Sonnet 5.5 as a subagent on coding work" and costs "around 75% less" than Haiku 4.5 (vendor claim). |
+| April, May, July and August: no qualifying item validated (§3) | 001–014, 026–034 | **corrected.** See Corrections, item 1. |
+| Model tiers and effort settings named only in the Sep 28 and Oct 7 announcements (§5) | 002, 014, 027, 035, 039, 042, 046 | **corrected and extended.** Effort controls (xhigh on Apr 16; the full ladder with Opus 5 on Jul 24) and tiering appear across the window, not only in the last two announcements. |
+| 2026-10-14 integration: dates June 30, September 28 and October 7 | 023, 042, 046 | **confirmed** |
+| "Initial benchmark/chart correction is a concrete audit caveat" (§9) | 023 | **confirmed.** Further revisions to vendor benchmarks are recorded on the Sonnet 5 page itself (Humanity's Last Exam grader, OSWorld-Verified rerun of Sonnet 4.6). |
+| Planned 2027–2031 releases verified: none (§5) | — | **still none.** Only near-term dated vendor statements were found (see below). |
+
+No earlier claim turned out to be unverifiable.
+
+### Corrections to the earlier report (stated here; earlier text left as written)
+
+1. **Coverage.** The earlier report found three September–October model posts. This pass finds dated, in-window material in every segment. Most of it matters more to a coding-agent study than model launches do: harness regressions and their postmortem (005), billing and usage incidents (001, 007), nine Claude Code security advisories, and changes to default autonomy (029).
+2. **Omitted model events.**
+   - The earlier §3 table lists Sonnet 5.5 as the September item but omits Claude Opus 5.5 (Sep 22, 039), the first model of the 5.5 family.
+   - It also omits Claude Fable 5.1 / Mythos 5.1 (Sep 1, 035).
+   - Most importantly, it omits Claude Fable 5 / Mythos 5 (Jun 9, 015). US export controls suspended access to that model line on Jun 12 (016), and access was restored on Jul 1 (024; Semafor 022 independently reports the Jun 26 approval for Mythos 5). This is the largest availability event in the window.
+3. **The routing hypothesis in §6 and §8 has a vendor-native comparator.** The release notes document an **advisor tool** (public beta 2026-04-09, just before the window) and a Managed Agents **advisor** roster entry (2026-08-07). Both pair a cheaper executor model with a stronger advisor. Under the repository's reuse-first rule, any test of small-model triage plus large-model implementation should include this existing feature as a comparator before a custom router is built.
+4. **Breaking-change cost.** The earlier report treats model releases as capability upgrades. Each 2026 model release in the ledger also came with API breaking changes in the release notes:
+   - non-default `temperature` / `top_p` / `top_k` returning 400;
+   - forced `tool_choice` returning 400;
+   - restrictions on disabling thinking;
+   - thinking blocks bound to a model or account;
+   - tokenizer changes of roughly 1.0–1.35x (Sonnet 5 page; the Sonnet 5 release notes say about 30%) and about 30% (Fable 5 notes).
+
+   Per-token price comparisons in §9 therefore understate migration and token-count effects.
+
+### New events found (themes)
+
+- **Security of the coding-agent boundary.** Twelve advisories were published in the window:
+  - 9 for Claude Code: sandbox escapes via symlinks and git worktrees, a trust-dialog bypass, WebFetch exfiltration via a pre-approved domain, a TOCTOU file write, a plugin SHA-pin bypass, and others;
+  - 3 for Claude Desktop/Cowork.
+
+  For all nine Claude Code advisories, the patched npm release came before the advisory. The gap ranges from 9 days to about 5 months.
+- **Autonomy defaults versus independent attack results.** Auto mode became the default for Pro, Max and Team on Aug 14 (029). An independent researcher then reported a 60–80% prompt-injection success rate on a small sample, against a 0.00% figure from a vendor-commissioned evaluation (034).
+- **Harness transparency.**
+  - An independent binary analysis reports hidden, gateway-dependent markers added to the system prompt (025).
+  - An independent measurement reports roughly 33k vs 7k tokens of scaffolding against OpenCode (026).
+  - AGENTS.md support (038) was found to depend on a remote feature flag (040). The vendor changelog changed this in 2.1.281 on the same day.
+  - Text watermarking (030) drew criticism (031).
+- **Reuse surface.**
+  - Stainless acquisition: an SDK and MCP-server generator (011).
+  - Python SDK 1.0 switched to the `httpx2` fork (033).
+  - Files and Skills APIs became GA; the computer-use and browser-use toolsets became available (032).
+  - `ant apply` with a lockfile (036).
+  - An Apache-2.0 vulnerability-discovery harness repository (013).
+  - An opt-in OSS Scanner. The vendor reports nearly 5,000 unverified reports sent to maintainers at their request (047).
+- **Lifecycle.**
+  - Model retirements in the window: Haiku 3, Sonnet 4/Opus 4 and Opus 4.1.
+  - Sonnet 4.5 retirement is scheduled for Nov 30 (044).
+  - Usage Policy update effective Nov 12 (048).
+
+### M1–M7 notes for new events (issue #68 ordering)
+
+The `study_construct` column uses the issue #68 ordering: M1 agent workflow, M2 code discovery, M3 verified reuse, M4 accepted quality, M5 review/maintenance, M6 rights/security, M7 human and lifecycle costs.
+
+| Construct | What the new events show | What they cannot show |
+|---|---|---|
+| M1 agent workflow | Dynamic workflows (014), Claude Tag (019), auto-mode default (029), Managed Agents orchestration (010), AGENTS.md (038/040) | Adoption or effect on accepted work |
+| M2 code discovery | Armature's study of which services agents pick (037; commercially interested source) | Whether those picks are good reuse |
+| M3 verified reuse | SDK/MCP generation (011), GA Skills/Files APIs (032), Apache-2.0 harness (013), open-weights stance (028) | Any downstream reuse; no import was traced |
+| M4 accepted quality | Postmortem shows that harness defaults (effort, context clearing, prompt wording) degraded quality without any model change (005); vendor usage research classifies "success" itself (018) | Independent acceptance rates |
+| M5 review/maintenance | Breaking API changes with each model; SDK dependency fork (033); deprecations (044); OSS Scanner shifts triage work onto maintainers (047) | Measured migration or triage minutes |
+| M6 rights/security | Twelve advisories, disclosure lag, prompt injection under auto mode (034), hidden client markers (025), export-control suspension (016), retention requirements (015, 035), watermark (030/031), usage policy (048) | Exploitation in the wild; legal assessment |
+| M7 human/lifecycle cost | Cache-TTL and billing incidents (001, 007), usage-limit changes (008), scaffolding overhead (026), price changes (023, 039, 046) | Energy or emissions. Tokens are not kWh, and no energy figure is given. |
+
+### Vendor-stated near-term plans (dated, not a roadmap)
+
+- Auto mode as the default "across all" remaining surfaces, including the API and cloud platforms, "in the coming month" (029, Aug 7).
+- Watermarking for future models; detection API in private preview (030, 035).
+- Sonnet 4.5 retirement on 2026-11-30 (044).
+- Usage Policy effective 2026-11-12 (048).
+- Mythos access to expand "to the broader set" of Glasswing partners (024).
+
+None of these is a binding commitment, and no 2027–2031 product plan was found.
+
+**Researcher's conditional interpretation (E0 hypothesis).** If default autonomy keeps rising (029) while independent injection results stay high (034) and boundary advisories keep appearing, then maintainers using such agents will face growing review and isolation costs (M5/M6). Those costs could offset throughput gains.
+
+- **Falsifiers:** independent replications showing near-zero injection success under default settings; a falling rate of boundary advisories per release over two or more quarters; measured review minutes per accepted task not rising.
+- **Rival explanation:** the advisory count reflects better disclosure practice and bug-bounty volume, not worse security.
+
+### Revised small experiment for this repository (proposed, not performed)
+
+**Instruction-file portability and isolation check.** This repository already relies on `AGENTS.md`.
+
+- **Tasks:** freeze 5 offline issues from this repo with independently written acceptance tests, including one with no viable solution.
+- **Arms:** run each task in a disposable, network-restricted container under two conditions:
+  - (a) `AGENTS.md` only, on Claude Code at version 2.1.281 or later with telemetry off;
+  - (b) a one-line `CLAUDE.md` that points to `AGENTS.md`.
+- **Comparator:** the same tasks done by hand by the maintainer, with time recorded.
+- **Accepted-task unit:** the hidden acceptance tests pass, `python3 -m unittest discover -s tests` passes, and an independent human reviewer confirms that the repository rules were followed (no network capture, no backfilled timestamps).
+- **Guardrails:** permission prompts on, not auto mode, because of 034. No secrets in the container. Pin and record the exact client version.
+- **Spending:** subscription use only, with no paid API spend without approval.
+- **Measurement:** human review and repair minutes per accepted task. Tokens and energy are not inferred.
+- **Stop rule:** stop if either agent arm breaks a repository rule, or if review minutes exceed the manual-comparator minutes on 3 of the 5 tasks.
+
+### Remaining limits
+
+- No product was run, and no benchmark was replicated.
+- The selection bias described under *Conflict of interest* is unresolved.
+- Mutable vendor pages were not archived.
+- Status-page incidents, Claude apps release notes and Agent SDK changelogs were not covered.
+- Robots-blocked mainstream reporting is missing, which limits the independent counter-evidence available.
+
+A PyPI JSON request made before its robots rule was checked is disclosed in the search log. Its data was deleted unused.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the sources cited by the 49 new ledger rows and the *Standardisation upgrade* section, and compared each figure, date and quote with the raw text or API response. Text above the *Standardisation upgrade* heading was not reviewed or edited. Robots.txt was checked first for every host. No host fetched has a rule blocking Claude/Anthropic agents for the paths used. The upgrade's disclosed `pypi.org/pypi/*/json` fetches (robots-disallowed) support no ledger row; the SDK 1.0 date was re-confirmed from the GitHub release. No row needed `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+**Conflict of interest applies here too.** This spot-check was also done with an Anthropic model (Claude). It reduces, but does not remove, the risk described under *Conflict of interest* above.
+
+| Row(s) | Outcome | Note |
+|---|---|---|
+| 003, 004, 006, 009, 017, 020, 021, 041, 043, 045, 049 (advisories) | **corrected** | IDs, severities, version ranges, publication times and npm patch times all match; 35 total and 12 in window confirmed; disclosure gaps of 9 days to about 5 months confirmed. But "no CVSS score in the API response" was **wrong**: the repository-advisory API gives a CVSS v4 base score for every one (2.0 to 8.5; only the v3 field is empty), and 11 of the 12 carry CVE IDs. Limitations now give the score and CVE |
+| 001, 007 | confirmed | Issue #46829 closed 2026-04-12T10:15Z with the listed labels; collaborator reply on 04-13 ("nuanced"). #53262: "overactive anti-abuse system. Fixed." (04-25) and the refund-plus-credits reply (04-30) |
+| 002, 014, 027 | confirmed | Prices, Cyber Verification Program, xhigh, task budgets, 2576 px, Bedrock self-serve (Apr 16); dynamic workflows research preview, default effort high, fast-mode default for Max (May 28); $5/$25, thinking-disable restriction, fast mode removed for Opus 4.7 (Jul 24) |
+| 005 | confirmed | Mar 4 / Mar 26 / Apr 7 / Apr 16 / Apr 20 / v2.1.116 / "The API was not impacted" / usage-limit reset as of Apr 23 are verbatim |
+| 008 | confirmed | Three changes "all effective today" (May 6); help-center promotion May 13–Sep 13, 2026, 50% higher weekly limit |
+| 010, 032, 033, 036, 044 | confirmed | Release-note entries on May 6, Aug 19, Aug 20, Sep 3 and Sep 30 match. Retirements Haiku 3 (Apr 20), Sonnet 4/Opus 4 (Jun 15), Opus 4.1 (Aug 5); Sonnet 4.5 scheduled for Nov 30. SDK v1.0.0 released 2026-08-20T19:58Z, MIT |
+| 011, 012, 018, 019, 028, 048 | confirmed | Stainless "every official Anthropic SDK"; "approximately 50 partners", "more than ten thousand"; ~400,000 sessions / ~235,000 people / debugging "fell by nearly half"; Claude Tag beta for Enterprise and Team, 65%; open-weights statement; Usage Policy effective November 12 |
+| 013 | confirmed | created 2026-05-22T16:00Z, pushed 2026-08-06, Apache-2.0 LICENSE text, API licence NOASSERTION |
+| 015 | corrected (minor) | Launch facts and release notes (1M context, adaptive thinking, refusals not billed, 30-day retention, ~30% tokenizer) confirmed. The page now carries both the Jun 12 suspension notice and a Jul 1 redeployment update, not only a suspension banner |
+| 016, 024 | confirmed | "5:21pm (ET)", "any foreign national … including foreign national Anthropic employees", jailbreak understanding; June 30 lifting, July 1 global availability, June 26 US approval |
+| 022 | corrected (omission) | datePublished 2026-06-26T22:06:03Z, "more than 100 US institutions", "significant progress", silent on Fable 5 confirmed. Added Semafor's statement that the original controls followed "warnings from Amazon and other companies" about jailbreaks |
+| 023 | corrected (conflict added) | $2/$10 permanent, $3/$15 from Sep 1 dropped, Aug 10 and Jun 30 edits and 1.0–1.35× confirmed on the page. The Jun 30 release notes instead say "approximately 30% more tokens"; the conflict is now recorded. The Jun 30 correction, per the vendor, had *underestimated* Sonnet 5 |
+| 025 | corrected (framing) | Signing timestamp Jun 29, ANTHROPIC_BASE_URL trigger, Asia/Shanghai and Asia/Urumqi, apostrophe code points and XOR key confirmed. The summary now also carries the author's line that hiding the signal "makes every other privacy claim harder to believe", not only "not malicious" |
+| 026 | confirmed | ~33,000 vs ~7,000, up to 54×, 3.3× vs 4.7× verbatim (datePublished 2026-07-12) |
+| 029, 030, 031 | confirmed | Auto mode post dated 2026-08-07, default from Aug 14 for Pro/Max/Team, opt-in elsewhere, "in the coming month"; watermark "to comply with the EU AI Act", "no practical impact on the quality"; Daring Fireball 16 August 2026 quotes "imperceptible watermark directly into the text" |
+| 034 | **wrong → corrected** | 60–80% (3/5, 3/5, 4/5) and 0.00% confirmed. "No vendor response located" was wrong: the post reports that Anthropic closed the report as "Informative", working as designed, and described auto mode as "a convenience feature backed by a best-effort classifier, not a security guarantee" |
+| 035 | confirmed | Same model with different safeguards; 25% cheaper for typical workloads; $0.25 cache reads; page shows only "September 2026"; Sep 1 notes cover tool_choice 400, preserved thinking blocks, C2PA and 30-day retention; EFS described as equivalent to zero data retention |
+| 037 | confirmed | 16,893 runs, 5,292 sessions, 51 codebases; "Disclaimer: Armature sells growth services to dev tools" |
+| 038, 040 | confirmed | 2.1.277 (Sep 18) adds AGENTS.md; Szypowicz (2026-09-23) describes the `tengu_agents_md_mod` flag with a false fallback, measured on 2.1.280; 2.1.281 (Sep 23) "also work[s] … in sessions with telemetry disabled" |
+| 039 | **wrong → corrected** | $4/$20, 40%, METR, thinking cannot be disabled and tool_choice 400 confirmed. The clause "preserved-thinking anti-distillation for API accounts created on or after Aug 31" is not in the cited Sep 22 entry; the Aug 31 cutoff is a Fable 5.1 thinking-block prefix check in the Sep 1 notes. Replaced with the page's own safeguards statement |
+| 042, 046 | confirmed | 30%+ faster, up to 30% cheaper, 70.6% / 10.3% / 66.4%, five breaking changes, account-bound thinking blocks; Haiku 5.5 "around 75% less", subagent quote, Oct 7 cache-read cut to $0.10 and web_fetch limited to URLs already seen in the session |
+| 047 | corrected (omission) | 29,000 / ~6,000 / nearly 5,000 and no-cost opt-in confirmed. Added the vendor's own statement that scanner outputs are "fully model-generated, without human review or triage" |
+| Upgrade-section counts | confirmed | 49 rows; per segment 7/7/11/3/6/10/5; status mix 28/10/5/3/2/1; date order correct |
+
+**Vendor-favourable framing flagged.** No evidence was found of deliberately left-out events: all 12 in-window advisories and several critical independent sources are in the ledger. However, every material error found leaned the same way, softening or leaving out information unfavourable to Anthropic:
+
+- the advisories were described as having no CVSS score although scores up to 8.5 exist;
+- Anthropic's "not a security guarantee" response, which undercuts its auto-mode safety messaging, was recorded as not located;
+- the lower tokenizer range was used without the release notes' ~30%;
+- the steganography finding led with "not malicious";
+- Semafor's attribution of the export controls to jailbreak warnings from Amazon and others was left out;
+- the OSS Scanner row omitted the absence of human triage.
+
+All six are corrected above. A human reviewer should still re-read the claim summaries for tone, and should check the upgrade's choice to exclude corporate-finance events (Series H, draft S-1).
+
+**Counts:** 49 of 49 new ledger rows checked, plus the upgrade-section counts. 31 confirmed, 16 corrected (11 advisory CVSS limitations, and 015, 022, 023, 025, 047), 2 wrong and corrected (034, 039); 0 unverifiable. One upgrade-section bullet (tokenizer) was amended in place. The search log's "figures confirmed against raw saved text" statement is now qualified. No personal identifier was sent in any request (generic `Mozilla/5.0` User-Agent only; no sec.gov access).
+
+*This is an AI-assisted spot-check, not qualified human review.*

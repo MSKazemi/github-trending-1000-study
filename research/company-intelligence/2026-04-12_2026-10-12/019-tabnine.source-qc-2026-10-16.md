@@ -1,0 +1,37 @@
+# Tabnine (019) — source QC of existing ledger rows and spot-check of new rows (2026-10-16)
+
+> **Provisional source-lead screen (upgraded 2026-10-16):** this QC note, the [report](019-tabnine.md), [event ledger](019-tabnine.events.csv) and [search log](019-tabnine.search-log.md) are **provisional, AI-assisted documentary source leads**, unreviewed by a qualified human; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue [#86](https://github.com/MSKazemi/github-trending-1000-study/issues/86) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
+
+**Scope:** AI-assisted, read-only link/date/claim check performed 2026-10-16 (UTC calendar date). Not an independent human reviewer, not an authenticated or hashed capture.
+
+## Key access finding (2026-10-16)
+
+Every `www.tabnine.com` URL tested on 2026-10-16 — the homepage, `/blog/`, `/blog/category/product-news/`, `/pricing` and all three ledger article URLs — returns **HTTP 301** to a generic `www.tricentis.com` page (`/products`, `/learn`, `/blog` or `/contact-us`, with `utm_campaign=redirect`). The original Tabnine articles are therefore **not reachable at their canonical URLs**. Content was checked instead against **Internet Archive Wayback Machine captures** (raw `id_` captures, timestamps listed below). The earlier 2026-10-14 desk check recorded the redirect only for the July 30 article; it now applies to the whole marketing site. `docs.tabnine.com` was still reachable (HTTP 200) on 2026-10-16.
+
+## Existing rows (3)
+
+| event_id | URL | Reachable at canonical URL? | Archived copy used | Date matches published_utc? | Claim supported? | Action |
+|---|---|---|---|---|---|---|
+| CI2026-019-001 | https://www.tabnine.com/blog/april-recap-agents-you-can-trust/ | **No** — 301 → tricentis.com/learn | [Wayback 2026-05-12 00:41:59](https://web.archive.org/web/20260512004159/https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | **Yes** — byline "Chris du Toit / 2 minutes / May 6, 2026" | **Yes** — archived text lists "Plan Mode in the CLI", "CLI Sandboxed execution + tighter tool restrictions", "More granular command approvals", "Token consumption & cost APIs", "Per-team quota enforcement", CLI Extensions, `/ide` command, Generalist Agent mode, and states "The old IDE review tab is gone" (agent-driven code review). Status `shipped` is the vendor's "this release" framing only. | Status kept `shipped`; **limitation** amended to record canonical-URL redirect and archive-only verification; confidence unchanged. |
+| CI-019-02 | https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/ | **No** — 301 → tricentis.com/learn | [Wayback 2026-06-21 14:47:58](https://web.archive.org/web/20260621144758/https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) | **Yes** — "Lee Somerhalder / 5 minutes / June 18, 2026" (title on page: "Shared Memory for Multi-Agent Development") | **Yes** — architectural essay ("They need shared memory"); no release announced. `reported_undetermined` remains appropriate. | Status kept; **limitation** amended (redirect, archive-only); confidence unchanged. Note: the row's `source_type` "first-party" and `kind` spelling differ from row 001 — left unchanged per contract. |
+| CI2026-019-002 | https://www.tabnine.com/blog/a-new-chapter-for-tabnine/ | **No** — 301 → tricentis.com/learn | [Wayback 2026-08-04 13:06:54](https://web.archive.org/web/20260804130654/https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | **Yes** — "Chris du Toit / 2 minutes / July 30, 2026" | **Yes** — "Tabnine has been acquired by Tricentis"; Enterprise Context Engine "becomes part of the Tricentis Agentic Quality Engineering Platform"; "Existing customers will continue to receive support for the products they use today." Buyer-side corroboration now found: [Tricentis press release, July 30 2026](https://www.tricentis.com/news/tricentis-acquires-tabnine) (reachable, HTTP 200) "today announced the acquisition of Tabnine". No deal terms disclosed in either. | Status kept `reported_undetermined` (no filing-level closing evidence); **limitation** amended to cite the buyer release and the post-acquisition site redirect; confidence unchanged. Buyer release added as a **separate transaction-party row** (not an independent confirmation). |
+
+No existing event_id was changed or removed; no existing row's columns other than `limitation` were edited.
+
+## Spot-check of new rows
+
+Second read of 7 of the 15 new rows on 2026-10-16 (same AI-assisted pass, so **not independent**):
+
+| event_id | URL | Reachable? | Date matches? | Claim supported? | Note |
+|---|---|---|---|---|---|
+| CI2026-019-003 | [release notes](https://docs.tabnine.com/main/administering-tabnine/release-notes) v6.1.0 | Yes (200) | Yes — "April 15, 2026" | Yes — Plan mode, sandboxing, extensions, `/ide`, Generalist Agent, Token Consumption & Cost API, per-team quota, review tab removed, "Code Review/Coaching (private beta)" | Release date precedes the May 6 recap (row 001) by three weeks; row 001's `published_utc` is correctly the recap date, not the release date |
+| CI2026-019-004 | [PR agent v2](https://github.com/codota/tabnine-pr-agent/releases/tag/v2) | Yes (`gh api`) | Yes — published 2026-04-29T12:48:27Z | Yes — `prompt_override`, `step_name`, `comment_prefix`, clone depth | Repo licence: none detected |
+| CI2026-019-010 | [Tricentis release](https://www.tricentis.com/news/tricentis-acquires-tabnine) | Yes (200; WebFetch failed with header overflow, read via plain HTTPS) | Yes — "July 30, 2026" | Yes — "today announced the acquisition of Tabnine"; integration of Enterprise Context Engine; terms not stated | Vendor outcome numbers (2x accuracy, 80% fewer tokens) are unaudited marketing |
+| CI2026-019-011 | [Calcalist](https://www.calcalistech.com/ctechnews/article/1o1nf7vd3) | Yes | Yes — "31.07.26" | Yes — "estimated to be worth tens of millions of dollars" | Conflicting $500M aggregator figure not opened, not used |
+| CI2026-019-012 | [beri.net analysis](https://www.beri.net/article/tricentis-tabnine-acquisition-air-gapped-coding-assistant-roadmap-risk) | Yes | Yes — "August 2, 2026" | Yes — roadmap/air-gap continuity critique, contract recommendations | Opinion piece |
+| CI2026-019-015 | release notes v6.6.0; [GHSA-6gpp-xcg3-4w24](https://github.com/advisories/GHSA-6gpp-xcg3-4w24) | Yes | Yes — "September 15, 2026"; advisory published 2026-07-22 | Yes — "Tabnine CLI, powered by OpenCode: Now available to all customers"; CVE-2026-64642 fix; "This version is unstable" flag | CVE ID resolves in GitHub Advisory DB to a Next.js high-severity middleware/proxy bypass |
+| CI2026-019-016 | [opencode v1.0.0](https://github.com/codota/tabnine-opencode-public/releases/tag/tabnine-v1.0.0) | Yes (`gh api`) | Yes — 2026-09-24T08:06:47Z | Yes — tag and notes exist | Notes link to PRs in a non-public fork (`codota/opencode` returns 404) |
+
+**Unresolved:** CI2026-019-005 and CI2026-019-008 rest on blog-index listings only (article bodies unavailable); the Gartner MQ post was excluded because its displayed date ("May 28, 2025") conflicts with its 2026 title. Personal GitHub handles that appear in release notes were deliberately not copied into this repository.
+
+**Untrusted-content note:** the Tabnine OpenCode docs page contains an "Agent Instructions" section addressed to AI agents (how to query the docs API). It was treated as page data and not followed.

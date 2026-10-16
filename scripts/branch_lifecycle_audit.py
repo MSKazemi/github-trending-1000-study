@@ -59,10 +59,26 @@ def audit(repo, base="main", get=fetch):
             raise ValueError("Invalid base SHA")
         return sha
     main_sha = base_sha()
+    # Pagination and base lookup are separate REST requests. If the branch
+    # listing saw another base commit, abort instead of suggesting stale
+    # candidates: a later stable lookup alone cannot repair that snapshot.
+    listed_base = [item for item in branches if item.get("name") == base]
+    if (len(listed_base) != 1 or
+            listed_base[0].get("commit", {}).get("sha") != main_sha):
+        raise ValueError("Base SHA moved or missing during branch inventory")
     open_heads = {}
     for pr in prs:
-        head = pr["head"]
-        if head.get("repo") and head["repo"].get("full_name", "").lower() == repo.lower():
+        if not isinstance(pr, dict) or type(pr.get("number")) is not int:
+            raise ValueError("Malformed open PR inventory")
+        head = pr.get("head")
+        if not isinstance(head, dict) or not isinstance(head.get("ref"), str):
+            raise ValueError("Malformed open PR head")
+        owner = head.get("repo")
+        if not isinstance(owner, dict) or not isinstance(owner.get("full_name"), str):
+            # Unknown/deleted repository identity must not be interpreted as
+            # proof that no open PR can depend on an apparently unused ref.
+            raise ValueError("Unverifiable open PR head repository")
+        if owner["full_name"].lower() == repo.lower():
             open_heads.setdefault(head["ref"], []).append(pr["number"])
     rows, seen = [], set()
     for branch in branches:
@@ -80,7 +96,13 @@ def audit(repo, base="main", get=fetch):
             comparison = get(f"{prefix}/compare/{main_sha}...{sha}")
             ahead, behind = comparison["ahead_by"], comparison["behind_by"]
             status = comparison["status"]
-            if status not in ("identical", "behind", "ahead", "diverged") or type(ahead) is not int or type(behind) is not int or ahead < 0 or behind < 0 or (ahead == 0) != (status in ("identical", "behind")):
+            if (status not in ("identical", "behind", "ahead", "diverged")
+                    or type(ahead) is not int or type(behind) is not int
+                    or ahead < 0 or behind < 0
+                    or (status == "identical" and (ahead != 0 or behind != 0))
+                    or (status == "behind" and (ahead != 0 or behind <= 0))
+                    or (status == "ahead" and (ahead <= 0 or behind != 0))
+                    or (status == "diverged" and (ahead <= 0 or behind <= 0))):
                 raise ValueError("Inconsistent comparison for " + name)
         linked_prs = sorted(open_heads.get(name, []))
         rows.append({"branch": name, "sha": sha, "ahead": ahead, "behind": behind, "open_prs": linked_prs, "protected": protected, "decision": classify(base, name, protected, linked_prs, ahead)})
