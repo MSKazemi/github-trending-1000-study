@@ -64,3 +64,16 @@
 ## Reproduction
 
 Re-run the requests above, save raw HTML hashes, and have an independent human spot-check at least rows 009-012 (incident, policy, free tier), 018 and 037 (agent tooling announcements), two patch bundles (002, 019) and two GitHub releases (030, 032) before any row is promoted beyond provisional status.
+
+## Robots.txt deviations found in the 2026-10-16 spot-check
+
+The robots check above used `urllib.robotparser` for the generic User-Agent only. A later per-host check (the `*` group plus ClaudeBot, Claude-User, Claude-SearchBot, anthropic-ai and Claude-Web) found that these fetches went to paths disallowed for Claude agents. They were **not** re-fetched:
+
+- `arstechnica.com` disallows `/` for all five Claude/Anthropic agents. Row 010 depends only on it, and it is the independent check for 009.
+- `www.bbc.com` disallows `/` for ClaudeBot, Claude-Web and anthropic-ai. Row 014 depends only on it.
+- `www.heise.de` disallows `/` for all five Claude/Anthropic agents. Row 017 depends only on it.
+- `techcrunch.com` disallows `/` for ClaudeBot, anthropic-ai and Claude-Web. It was read for a date only.
+- `pypi.org/pypi/*/*/json` (per-version JSON for oracledb 26.0.0, pyagentspec 26.3.1 and wayflowcore 26.3.0) is disallowed for all user agents. Rows 030 and 032 use details from it. The allowed project HTML pages served a JS challenge and were not bypassed.
+- The Register fetch already disclosed above remains unused.
+
+Rows 010, 014 and 017 carry confidence `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.

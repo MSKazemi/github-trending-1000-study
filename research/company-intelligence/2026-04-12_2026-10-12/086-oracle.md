@@ -25,6 +25,7 @@ The full request log is in the [search log](086-oracle.search-log.md). Web searc
 - blogs.oracle.com returned HTTP 403, so Oracle's engineering blogs are not covered.
 - Reuters and WSJ were paywalled.
 - The Register disallows generic agents in robots.txt, so it was not used.
+- The robots.txt check covered only the generic User-Agent. The 2026-10-16 spot-check found that Ars Technica, heise and TechCrunch disallow Claude agents, and that BBC disallows ClaudeBot/anthropic-ai. Rows 010, 014 and 017 rest only on those pages and are now graded `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE` (see the spot-check section).
 - SEC EDGAR was deliberately not contacted.
 - Oracle AI World 2026 (Oct 25–28) falls after the window.
 
@@ -195,3 +196,44 @@ Energy is **not measured**, and no carbon figure is computed.
   - re-run the Wayback diffs for 011 and 012.
 
 Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Each cited host's robots.txt was checked for the generic `*` group and for ClaudeBot, Claude-User, Claude-SearchBot, anthropic-ai and Claude-Web. Allowed sources were re-fetched with a generic User-Agent (no personal identifier sent): oracle.com security alerts and news releases, docs.oracle.com release notes, InfoQ, openjdk.org, the Wayback Machine, and `gh api`. Disallowed pages were **not** fetched.
+
+| Row | Outcome | Note |
+|---|---|---|
+| Entity line | confirmed | "Oracle Corporation (NYSE: ORCL)" appears in the Q1 FY27 release (the Q4 FY26 release cited was not re-fetched) |
+| 001 | confirmed | commit 2cdf99e580 at 2026-04-14T18:47:56Z adds CODING_ASSISTANTS.md; attribution "optional", disclosure "encouraged", "cannot explain, defend, or maintain" |
+| 002 | confirmed | 481 patches; Java SE 11 (7 remote unauthenticated); GraalVM for JDK 17.0.18/21.0.10 and EE 21.3.17; Rev 2 on 2026-April-24 |
+| 004 | confirmed | `xai.grok-4.3`, one million-token context (the 49-note count was not recounted) |
+| 005 | confirmed | v4.0.0 published 2026-05-04; SQL-injection helper functions in the notes |
+| 006 | confirmed | 1.0.0 initial; 1.0.1 improves CM and PI accuracy; ListGuardrailVersions |
+| 007 | confirmed | 35 patches; index page: CSPUs "complement" CPUs, run in eight listed non-CPU months, first on May 28, 2026, pre-release announcements "beginning in June 2026" |
+| 009 | confirmed | CVE-2026-35273, 9.8, PeopleTools 8.61/8.62, possible RCE, "high-priority risk reduction measure"; the Ars Technica check is robots-disallowed (noted in the row) |
+| 010 | unverifiable | robots-disallowed source (arstechnica.com disallows `/` for all five Claude/Anthropic agents); not re-fetched; confidence set to `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE` |
+| 011 | confirmed | InfoQ 2026-06-12: Skara checkbox, private use to understand/debug/review, same OCA; openjdk.org/legal/ai confirms "comprehend, debug, and review" |
+| 012 | confirmed | current docs: 1,500 OCPU hours / 9,000 GB hours (2 OCPUs, 12 GB); Wayback 2026-06-05: 3,000 / 18,000 (4 OCPUs, 24 GB); Wayback 2026-06-12: new text |
+| 013 | confirmed | 245 patches; Fusion Middleware 106; E-Business Suite 55 |
+| 014 | unverifiable | robots-disallowed source (bbc.com disallows `/` for ClaudeBot, Claude-Web, anthropic-ai); not re-fetched; confidence set to E0 robots |
+| 017 | unverifiable | robots-disallowed source (heise.de disallows `/` for all five Claude/Anthropic agents); not re-fetched; confidence set to E0 robots |
+| 018 | confirmed | VS Code, Codex, Claude Code, CLIs, Git; a public GitHub repository "will provide" templates; Agent Studio "at no additional cost" |
+| 019 | confirmed | 1448 patches; Java SE 19 (17 remote unauthenticated); Rev 1 2026-July-21 to Rev 7 2026-August-20 including CVSS and affected-version updates |
+| 023 | confirmed | aliases removed; command-r(-plus)-08-2024 retired from on-demand and dedicated serving on July 30, 2026 |
+| 025 | confirmed | rust-oracledb created 2026-07-20, beta.1 2026-08-06, beta.4 2026-09-23 (all pre-releases), licence field NOASSERTION; go-oracledb created 2026-04-15, 26.0.0-beta 2026-08-19 |
+| 027 | confirmed | 943 patches; Rev 2 changes CVE-2026-71062 from 23.4.0-23.26.3 to 23.4.0-23.26.2; Rev 3 Helidon; Rev 4 on 2026-September-4 |
+| 029 | confirmed | release date September 03, 2026; `target.model.id`; inference-only scope incl. text-rerank |
+| 030 | confirmed (partly) | v26.0.0 2026-09-10 with 3.14, asyncio and GCP/AWS items; node-oracledb v26.0.0 2026-10-08; the PyPI licence expression came from robots-disallowed PyPI JSON and the HTML page was JS-challenged, so it is unverifiable |
+| 031 | confirmed | IaaS +121% to $7.4B, RPO $664B, more than $30B contracts, more than 300,000 GPUs, FCF negative $5B, $20B ATM sale |
+| 032 | confirmed (partly) | agent-spec-26.3.1 2026-09-11: MCP retry_policy, DBMS_VECTOR_CHAIN config, CrewAI adapter removed over a CVE in Chroma DB 1.1.0; the WayFlow PyPI time is unverifiable (PyPI JSON) |
+| 033 | confirmed | nine JEPs incl. 527, 537 (twelfth incubator), 534, 523; OpenJDK GA 2026/09/15; Helidon 27 and JDK 28 early access mentioned |
+| 034 | confirmed | 673 patches; Commerce 27; Database Products 13 |
+| 035 | confirmed | java-select-ai created 2026-08-21, UPL-1.0, v1.0.0 "Initial public release" 2026-09-30 |
+| 037 | confirmed | 25 Claw-powered apps "available today" in a portfolio of 75; Gemini and OpenAI; Enterprise Operating Envelope, Outcome Trust Harness, Outcome Receipt |
+| 038 | confirmed | PR #390 merged 2026-10-01; UPL-1.0; 35 directories under `src/`, one of them `common`, so 34 MCP server directories |
+| 039 | confirmed | eight listed regions |
+| 040 | confirmed | PR #487 merged 2026-10-09, 67 files; PyJWT 2.15.1, urllib3 2.8.0, MCP SDK 1.30.0; cryptography 49.0.0 below the 50.0.0 target |
+
+**Counts:** 30 items (29 rows + entity line): 27 confirmed (030 and 032 only partly), 0 corrected, 3 unverifiable (010, 014 and 017, robots-disallowed and set to E0), 0 wrong. The Register fetch disclosed in the search log was not used as evidence, and that disclosure holds. TechCrunch, read "for date only", is also robots-disallowed for ClaudeBot/anthropic-ai.
+
+This is an AI-assisted spot-check, not qualified human review.
