@@ -100,6 +100,26 @@ class PackageReviewTests(unittest.TestCase):
             with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
                 evaluate(p)
 
+    def test_noncanonical_numeric_ipv4_aliases_rejected_in_evidence_urls(self):
+        # Older HTTP stacks can resolve these spellings to loopback even
+        # though ipaddress.ip_address does not parse them as canonical IPv4.
+        for host in ("127.1", "2130706433", "0x7f000001",
+                     "0177.0.0.1", "0x7f.0.0.1", "192.168.1"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "unknown", "evidence_url": f"https://{host}/evidence"
+            }
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    PackageReviewError, "canonical public evidence host"):
+                evaluate(p)
+        p = candidate()
+        p["checks"]["known_advisories"] = {
+            "status": "unknown",
+            "evidence_url": "https://advisories.example.org/evidence"
+        }
+        self.assertEqual(evaluate(p)["decision"], "defer")
+        self.assertFalse(evaluate(p)["automatic_install_approved"])
+
     def test_unexpected_root_candidate_and_gate_fields_fail_closed(self):
         for level in ("root", "candidate", "gate"):
             p = candidate()
