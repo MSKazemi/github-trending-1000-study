@@ -19,7 +19,7 @@ Summary only; exact queries, opened URLs and exclusions are in the [search log](
 |---|---|---|---:|---:|---:|---:|---|
 | 2026-10-16 | socket.dev | robots.txt, /, /blog, sitemap | 0 | 0 | 0 | — | Cloudflare challenge (403); not bypassed |
 | 2026-10-16 | GitHub `gh api` | SocketDev repos (57) and releases of 13 repos; changelogs | ~750 in-window GitHub releases (mostly CLI and registry-firewall patch builds) | 13 repos | 13 rows | patch/CI-only releases folded | some GitHub release timestamps are bulk backfills |
-| 2026-10-16 | npm / PyPI JSON | socket, @socketsecurity/cli, @socketsecurity/mcp, @coana-tech/cli, sfw, socketsecurity, @bitwarden/cli | 7 packages | 7 | used as checks | — | registry time ≠ announcement date |
+| 2026-10-16 | npm / PyPI JSON | socket, @socketsecurity/cli, @socketsecurity/mcp, @coana-tech/cli, sfw, socketsecurity, @bitwarden/cli | 7 packages | 7 | used as checks | PyPI JSON path is robots-disallowed (see spot-check) | registry time ≠ announcement date |
 | 2026-10-16 | docs.socket.dev | sitemap (266 URLs), llms.txt, MCP/firewall pages, reachability changelog | 254 engine versions listed (all 2026) | 6 pages | 2 rows | docs pages carry `updatedAt` only | no product changelog page found (404) |
 | 2026-10-16 | HN Algolia | `socket.dev` (url), `"Socket Security"`, `Socket researchers`, `Socket Firewall`, `socket.dev` (all fields) | 43 url-matched stories | 43 | 5 E0 rows + 7 cross-checks | duplicates, non-Socket stories | titles only |
 | 2026-10-16 | web search (7 queries) | funding, Bitwarden, TanStack, Mythos, Rust crates, false positives, Laravel Lang, re-enabled Actions | unknown | ~60 | 7 rows | aggregators E0; heise robots-disallowed; SecurityWeek/BleepingComputer/THN/SC World 403 | snippet text never used as evidence |
@@ -123,9 +123,42 @@ Vendor claims (customer names, "most important security tool" quotes) are **not*
 
 ## 9. Findings, uncertainties and review outcome
 
-- **Observed/shipped (documentary):** sfw-free 1.8–1.15.4; socket-patch 3.1.0, 4.0.0, 5.0.0; socket-basics 2.1.0 and 3.0.0; socket-mcp 0.0.18–0.2.1; Socket CLI 1.1.82–1.8.0 (npm) and Python CLI 2.2.81–2.10.11 (PyPI); Coana engine 15.0.x–15.12.x; status incidents from mid-July; GitHub malware advisories for Bitwarden CLI, TanStack and keyv; GitHub API blocks on actions-cool repos (2026-09-24T23:51Z).
+- **Observed/shipped (documentary):** sfw-free 1.8–1.15.4; socket-patch 3.1.0, 4.0.0, 5.0.0; socket-basics 2.1.0 and 3.0.0; socket-mcp 0.0.18–0.2.1; Socket CLI 1.1.82–1.8.1 (npm) and Python CLI 2.2.81–2.10.11 (GitHub releases; PyPI RSS for the final version); Coana engine 15.0.x–15.12.x; status incidents from mid-July; GitHub malware advisories for Bitwarden CLI, TanStack and keyv; GitHub API blocks on actions-cool repos (2026-09-24T23:51Z).
 - **Claims/announcements only:** Socket's attack disclosures (blog unreadable; five title-only leads), "Introducing Data Exports", detection priority, customer quotes, "winner-take-all" flywheel, expansion into MCP servers/AI skills marketplaces, Trivy rebuild integrity.
 - **Conjectures and unknowns:** H1–H4 in §6; false-positive rates (only an E0 snippet about a pre-window January 2026 mis-flagging incident was found); actual blocking efficacy; Coana ownership history; status history before mid-July.
 - **Important contradictory or null evidence:** (a) **detection credit** — TanStack's postmortem has StepSecurity detecting first with Socket calling later; the Rust Project credits Nextron Systems for the arrayref discovery and does not mention Socket; (b) Bitwarden: npm registry records 2026.4.0 at 2026-04-22T21:22:59Z (5:22 PM EDT) while Bitwarden's stated window starts 5:57 PM ET; (c) socket-mcp 0.1.0 is in the changelog (2026-09-14) but not on npm; GitHub releases 0.0.4–0.0.19 were bulk-created 2026-06-15; (d) Coana 15.0.6 is in the docs changelog but absent from the npm time map, and 15.8.0 is dated Jul 2 in the changelog vs Jul 3 on npm; (e) GHSA for `@mastra/core` (2026-06-17) predates the July Socket Mastra lead — relation unknown; (f) Series C co-lead claims differ in aggregator snippets (E0, unused).
 - **#56 candidates (not minted):** BankInfoSecurity 2026-04-30 and 2026-05-26; CyberInsider 2026-04-23; TanStack postmortem 2026-05-11; Security Affairs 2026-05-26; Rust Project 2026-08-20. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned; syndicated copies (bankinfosecurity/govinfosecurity mirrors) must not be counted twice.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Raw sources were re-fetched with a generic `Mozilla/5.0` User-Agent after checking each host's robots.txt for `*` and for ClaudeBot / Claude-User / anthropic-ai / Claude-SearchBot (RFC 9309 longest-match). **BankInfoSecurity** (rows 006 and 008): its robots.txt has no Claude/Anthropic group and the `*` group disallows only `/includes/`, `/rsa2011_old/`, `/util/` and `/hybridauth/` (crawl-delay 10, respected), so both article paths were permitted and the rows remain usable. **Robots finding:** the original screen read `https://pypi.org/pypi/socketsecurity/json`, but pypi.org robots.txt disallows `/pypi/*/json` for all agents. It was not re-fetched. Row 001 does not depend only on it: npm counts plus GitHub releases of `socket-python-cli` and the permitted PyPI RSS feed support the claim, so the row stays usable with a re-sourced check URL. The PyPI project page returned a client challenge and was not bypassed. No other cited path is robots-disallowed: heise and status.socket.dev `/api/` were correctly skipped, and socket.dev returned a challenge.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-093-001 | corrected | 106 in-window npm versions confirmed, but the last in-window version is 1.8.1 (2026-10-12T20:07Z), not 1.8.0. The search log also wrongly called 1.8.1 post-window. The PyPI count was re-sourced away from the robots-disallowed JSON API (78 GitHub releases v2.2.81–v2.10.11; RSS shows 2.10.11 at 20:28Z). The 2.0.0/2.1.0 "bad build" deprecations and latest 1.8.3 were confirmed |
+| CI2026-093-002 | confirmed | Changelog text for 15.0.6 (Apr 22) and 15.0.1 (Mar 30) matches. 15.0.6 is absent from the npm time map (15.0.5 and 15.0.7 are present). No npm licence field |
+| CI2026-093-003 | confirmed | CyberInsider (2026-04-23T16:18Z) attributes 2026.4.0/bw1.js to the Socket Research Team, credits Socket with Docker for the KICS discovery, and quotes Bitwarden. It also states the 5:57–7:30 PM ET window. GHSA-g98r-qjhg-4fmr was published 2026-04-23T17:07:51Z. npm 2026.4.0 is at 21:22:59Z |
+| CI2026-093-006 | confirmed (qualified) | ISMG, April 30, 2026: founded Nov 2024, sole employee, browser/IDE extensions. The body says "the proposed deal", so a caveat was added. The HN submission is dated 2026-04-28T14:06Z |
+| CI2026-093-007 | confirmed | Postmortem: 84 versions / 42 packages, 19:20–19:26 UTC, StepSecurity issue #7383 at 19:46 UTC, Socket.dev phone call, last updated 2026-05-15. GHSA-g7cv-rxg3-hmpx (2026-05-12T00:12Z) references a socket.dev URL |
+| CI2026-093-008 | confirmed | $60M Thrive-led Series C, $1B valuation, 103 employees, nearly $125M raised, $40M Series B in October 2024. The Cursor/OpenAI/Anthropic remarks are a CEO quote. The HN submission is dated 2026-05-21T18:40Z |
+| CI2026-093-009 | corrected (wording) | Security Affairs (May 26) gives May 22–23 as the date Socket *discovered* the attack, not the date the tags were rewritten. Four packages and more than 700 tags were confirmed, as was the Aikido fork-commit attribution |
+| CI2026-093-012 | confirmed | HN item 2026-06-09T15:20Z. The worm names come from the linked URL slug only (title-level) |
+| CI2026-093-013 | confirmed | 0.0.19 and 0.0.20 changelog text matches. npm 0.0.18 is at Jun 5, 0.0.19 at 2026-06-15T14:37Z, and 0.0.20 at Jun 18 |
+| CI2026-093-014 | confirmed | 15.7.0 exit codes 2/3 and 15.8.0 Rush support (Jul 2). npm 15.8.0 is at 2026-07-03T08:16Z. 176 engine versions in window |
+| CI2026-093-015 | confirmed | HN title and date (2026-07-13). GHSA-pp62-grrw-hvfp was published 2026-06-17 |
+| CI2026-093-017 | confirmed | sfw-free v1.15.0 was published 2026-07-27 and adds index.rubygems.org |
+| CI2026-093-018 | confirmed | GHSA-3p9h-f68w-m6fx: keyv = 6.0.0, 2026-08-04T11:19Z, no Socket reference. The HN item is dated Aug 4 |
+| CI2026-093-019 | confirmed | v3.0.0 (2026-08-07): Trivy re-enabled from a Socket-built rebuild of v0.73.0 pinned by digest. Trivy had been disabled in 2.x |
+| CI2026-093-020 | confirmed | HN: 62 points, 39 comments. Malwarebytes (2026-08-06) does not mention Socket |
+| CI2026-093-021 | confirmed | Atom feed: Aug 12 15:02 PDT GitHub disruption (existing deployments unaffected); Aug 20 16:05 PDT Events rejection |
+| CI2026-093-022 | confirmed | Rust blog: arrayref 0.3.10, internment 0.8.7 and append-only-vec 0.1.9 were online 86/90/107 minutes. Nextron Systems is credited and Socket is not mentioned |
+| CI2026-093-024 | corrected (wording) | 0.1.0 *moved* the existing socket-gate hook to `dist/socket-gate` rather than shipping it. Other items were confirmed. 0.1.0 is absent from npm, and 0.2.0 reached npm at 2026-09-17T14:00Z |
+| CI2026-093-025 | confirmed | `gh api` shows both actions-cool repos blocked (tos) at 2026-09-24T23:51:05Z / 23:51:54Z. The HN item is dated 2026-09-24T21:50Z |
+| CI2026-093-027 | corrected (UTC date) | The restart ran 20:00–20:27 PDT Sep 30, which is 2026-10-01 03:00–03:27 UTC, so event_date_utc changed to 2026-10-01. The "no longer than 10 minutes" quote and the Oct 1 14:00 PDT degraded-performance resolution were confirmed |
+| CI2026-093-029 | confirmed | v1.8.0 notes: JVM facts dependency trees and Coana 15.12.5. npm 1.6.0/1.7.0/1.8.0 dates match |
+| CI2026-093-030 | confirmed | v5.0.0 (2026-10-12T21:38Z): full-state rollback default, --preserve-state, path targeting, per-registry workflows, "free cargo tier is unpublished" |
+
+Totals: 22 rows checked. 18 were confirmed (one with a qualifier) and 4 corrected (1 figure, 2 wording, 1 UTC date). None were wrong or unverifiable, and no row was marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`. The search log's "every number … checked" statement has been qualified.
+
+*This is an AI-assisted spot-check, not qualified human review.*
