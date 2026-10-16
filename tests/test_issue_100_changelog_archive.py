@@ -45,7 +45,7 @@ class HistoricalChangelogArchiveTests(unittest.TestCase):
 
     def test_historical_blob_is_byte_exact_and_noncanonical(self):
         content, columns, records = self.read_csv(ARCHIVE)
-        git_object = b"blob " + str(len(content)).encode("ascii") + b"\\0" + content
+        git_object = b"blob " + str(len(content)).encode("ascii") + b"\0" + content
         self.assertEqual(hashlib.sha1(git_object).hexdigest(), HISTORICAL_GIT_BLOB)
         self.assertEqual(len(columns), 21)
         self.assertEqual(len(records), 19)
