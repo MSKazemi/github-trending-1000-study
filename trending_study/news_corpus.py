@@ -151,6 +151,10 @@ def validate_records(records):
         url = record["canonical_url"]
         if not isinstance(url, str) or len(url) > 2048 or url != url.strip():
             raise ValueError(f"{name}: invalid canonical URL")
+        # urlsplit may silently strip certain ASCII control characters.
+        # Reject the raw submitted spelling before any parsing or filtering.
+        if any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in url):
+            raise ValueError(f"{name}: canonical URL cannot contain whitespace or controls")
         try:
             parsed = urlsplit(url)
             # Force malformed/overflowing ports and broken IPv6 authority to
