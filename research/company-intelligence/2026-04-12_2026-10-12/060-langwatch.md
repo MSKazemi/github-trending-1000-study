@@ -1,0 +1,154 @@
+# Company 6-month technology intelligence: LangWatch (060)
+
+> **PROVISIONAL / AI-assisted, not human-reviewed (2026-10-16).** This report, its [event ledger](060-langwatch.events.csv) and [search log](060-langwatch.search-log.md) are an AI-assisted first-pass documentary screen. No qualified human has checked the facts, links, licences or methods. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Nothing here is an independently verified task outcome, adoption measure, security audit or causal finding.
+
+- **Company watchlist ID:** 060
+- **Research issue:** [#128](https://github.com/MSKazemi/github-trending-1000-study/issues/128); news-corpus link: [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) (no `NEWS-` IDs minted; see §9)
+- **Ownership and product boundaries (as of 2026-10-12):** Amsterdam company founded 2023 by Manouk Draisma (CEO) and Rogério Chaves (CTO). The site's [terms](https://langwatch.ai/legal/terms-conditions) name the legal entity as "Reasoning Engines B.V." / "Reasoning Engine B.V." (both spellings, two Amsterdam addresses), while the footer says "LangWatch B.V."; registry (KvK) not checked. No acquisition, rename or new funding found in the window; the last funding found is a €1M pre-seed round on 2025-02-25 ([company-posted wire](https://www.emerce.nl/wire/nederlandse-startup-langwatch-gespecialiseerd-aikwaliteitscontrole-haalt-1-miljoen), pre-window baseline). LangWatch is **not** related to LangChain/LangSmith or Langfuse (name collisions show up in search).
+- **Product URL and channels:** [langwatch.ai](https://langwatch.ai/), [blog](https://langwatch.ai/blog), [changelog](https://langwatch.ai/changelog), [docs](https://langwatch.ai/docs), [langwatch/langwatch](https://github.com/langwatch/langwatch) (monorepo: platform, SDKs, MCP server, gateway, LangEvals), [langwatch/scenario](https://github.com/langwatch/scenario) (agent simulation testing). No separate newsroom or public roadmap page found.
+- **Analysis window:** 2026-04-12 to 2026-10-12 inclusive
+- **Researcher / factual reviewer / review date:** AI-assisted screen 2026-10-16 / **pending** / **pending**
+- **Status:** screened (provisional)
+- **Source coverage:** full sitemap sweep of blog and changelog, GitHub releases/commits/advisories via API, PyPI/npm registry timestamps, 12 web queries. Oct 1–12 has releases only. Details and limits in the [search log](060-langwatch.search-log.md).
+
+## 1. Search and inclusion audit
+
+| Search run UTC | Site/engine | Full query and dates | Found | Screened | Included | Excluded/why | Coverage limitation |
+|---|---|---|---:|---:|---:|---:|---|
+| 2026-10-16 (time not logged) | langwatch.ai sitemap → blog | all `/blog/*` URLs; date filter 2026-04-12…10-12 | 22 in window | 22 | 9 | 13: opinion, how-to, competitor comparisons, customer narrative | Undated edits not detectable |
+| 2026-10-16 | langwatch.ai sitemap → changelog | all `/changelog/*` | 17 in window | 17 | 7 | 10: UI/storage polish, or same event as a release row | No entries Apr 14–May 30, Jul 13–Aug 1, after Sep 27 |
+| 2026-10-16 | GitHub API releases (langwatch, scenario) | `repos/langwatch/{langwatch,scenario}/releases` | 188 + 37 | milestone tags only | 15 | Duplicate tag spellings, betas, patch bumps | Release notes are vendor-written |
+| 2026-10-16 | GitHub API commits / advisories | LICENSE history; security-advisories | 2 licence commits; 1 GHSA | all | 3 | none | Advisory list covers only repository-published GHSAs |
+| 2026-10-16 | Web search (12 queries) | see search log §2 | not exposed | ~20 opened | 1 (third-party) + 1 contrary context | aggregators, name collisions, promotional reviews | Tool hides totals; no paywalled or social sources |
+
+## 2. Verified company/product identity and baseline
+
+LangWatch sells and open-sources an **LLM/agent observability and evaluation platform**. Baseline before the window: LangWatch 3.0 (ClickHouse trace store, released 2026-04-08), built-in MCP server with OAuth (2026-04-06), Scenario (agent-simulation testing library, MIT until it moved to AGPLv3 on 2026-03-06), platform under **BSL 1.1**. During the window the offering grew from tracing/evals into four areas: (a) **agent testing** (Scenario, red teaming, voice, Agent Testing v2); (b) an **AI Gateway** (virtual keys, budgets, routing, guardrails; Go data plane); (c) **AI governance / coding-agent capture** (Claude Code, Codex, Copilot, Cursor sessions routed or harvested for cost and trace attribution); (d) **Langy**, an in-product coding agent that opens pull requests. The platform was relicensed to **Apache 2.0 with a proprietary `enterprise/` directory and MIT SDKs** ([commit 23b9dcd](https://github.com/langwatch/langwatch/commit/23b9dcd051806e0d2162b377a7e1b4c3fecb3ed5); [open-core map](https://langwatch.ai/docs/ai-governance/open-core-licensing)).
+
+## 3. Month-by-month discoveries
+
+| Month | Announcements/changes | Primary URLs | Independent reporting | Notes or no-result limitations |
+|---|---|---|---|---|
+| 2026-04-12..30 | Scenario red teaming (04-14); event-sourcing migration claims (04-20); 3.1.0 REST/auth (04-22); Scenario AGPLv3→Apache 2.0 (04-23); 3.2.0 "gateway v1 GA" + `npx @langwatch/server` (04-29); April roundup (04-30) | [red teaming](https://langwatch.ai/blog/why-ai-red-teaming-is-broken-(and-how-we-fixed-it)), [3.2.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.2.0), [April drop](https://langwatch.ai/blog/langwatch-monthly-drop-april-2026) | none found | Gateway GA vs private-beta conflict |
+| 2026-05 | Meetup talk write-up (05-07); platform BSL→Apache 2.0 commit (05-17); 3.4.0 AI Governance + RBAC hardening (05-31); "Goes Open Source" blog (05-31) | [commit](https://github.com/langwatch/langwatch/commit/23b9dcd051806e0d2162b377a7e1b4c3fecb3ed5), [3.4.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.4.0), [May drop](https://langwatch.ai/blog/langwatch-monthly-drop-may-2026) | [Luca Berton, 05-07](https://lucaberton.com/blog/langwatch-scenario-ai-agent-testing-2026/) (attendee relay) | Changelog silent until 05-31 |
+| 2026-06 | Native voice testing (06-02); Langy for every project member + retention (06-07); PII/secret redaction (06-21); 3.5.0 `langwatch claude` (06-29) | [voice](https://langwatch.ai/blog/introducing-testing-voice-agents-like-you-test-your-chat-agents), [changelog 06-07](https://langwatch.ai/changelog/langy-voice-agent-testing-automations), [06-21](https://langwatch.ai/changelog/studio-datasets-makeover-data-privacy-ttft) | none found | |
+| 2026-07 | PR Hound internal metrics (07-09); Langy launch (07-22) and self red-team, 14 bugs (07-22); SDK/MCP/skills/Scenario 1.0 (07-24); 3.6.0 SSRF/open-redirect fixes (07-26); Claude Code usage tracking (07-31) | [PR Hound](https://langwatch.ai/blog/pr-hound), [Langy](https://langwatch.ai/blog/introducing-langy-your-automated-ai-engineer), [red team](https://langwatch.ai/blog/we-red-teamed-our-own-ai-agent-and-found-14-real-bugs), [3.6.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.6.0) | PyPI upload time corroborates 1.0 date | Langy June vs July "launch" conflict |
+| 2026-08 | Context-cost analysis (08-02); mcp-server 2.0.0 breaking auth (08-07); LangEvals 3.0 removes legacy Ragas (08-08); agent-plugin 1.0 (08-10); **GHSA-h25p-f8f6-2ccf** (08-19); 3.16.0 fixes 100x cost error (08-21); Agent Testing v2 (08-30) | [GHSA](https://github.com/langwatch/langwatch/security/advisories/GHSA-h25p-f8f6-2ccf), [3.16.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.16.0) | npm registry time for 2.0.0; no press on the advisory | Advisory credits a Mitiga researcher; no Mitiga post found |
+| 2026-09 | Go SDK 1.0 (09-09); Instant Evals (09-20/22); 3.18.0 Langy on local code/GitHub, metered self-host (09-27) | [Instant Evals](https://langwatch.ai/changelog/instant-evals), [3.18.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.18.0) | [Arize, 09-18](https://arize.com/blog/typesafe-jev-llm-judge/) on the Jev judge model (competitor; contrary context) | Speed/cost figures differ between changelog and blog |
+| 2026-10-01..12 | 3.20.0 self-host third-party calls off by default (10-02); Scenario 1.7.0 per-criterion judge verdicts (10-07) | [3.20.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.20.0), [Scenario 1.7.0](https://github.com/langwatch/scenario/releases/tag/javascript%2Fv1.7.0) | none found | No blog, changelog or news in this segment |
+
+## 4. Dated event evidence and capabilities
+
+32 rows in the [ledger](060-langwatch.events.csv) (Apr 6, May 4, Jun 4, Jul 6, Aug 7, Sep 3, Oct 2). Grades: 20 `E2_OFFICIAL_DATED_RECORD` (release notes, commits, changelog, advisory), 11 `E1_VENDOR_ANNOUNCEMENT`, 1 `E1_THIRD_PARTY_SECONDARY`. Status: 25 shipped, 5 reported_undetermined, 1 preview, 1 corrected. **No E3/E4**: nothing was independently exercised.
+
+| Event ID | Published / event date | Claim or observed feature | Availability and limitations | Source (type) | Independent check | Grade |
+|---|---|---|---|---|---|---|
+| CI2026-060-004 | 2026-04-23 | Scenario relicensed AGPLv3 → Apache 2.0 | Commit on default branch; second licence change in seven weeks | [commit](https://github.com/langwatch/scenario/commit/66ad73312c805c320232059635bab5cbc3c75be1) | — | E2 |
+| CI2026-060-005 | 2026-04-29 | Release notes: "ai-gateway: ship v1 GA" | **Conflict**: April blog next day says private beta | [3.2.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.2.0) | [April drop](https://langwatch.ai/blog/langwatch-monthly-drop-april-2026) | E2 |
+| CI2026-060-008 | 2026-05-17 | Platform BSL 1.1 → Apache 2.0; `enterprise/` proprietary; SDKs + MCP server MIT | First shipped in 3.4.0 (05-31); GitHub API now reports Apache-2.0 | [commit](https://github.com/langwatch/langwatch/commit/23b9dcd051806e0d2162b377a7e1b4c3fecb3ed5) | [open-core doc](https://langwatch.ai/docs/ai-governance/open-core-licensing) | E2 |
+| CI2026-060-009 | 2026-05-31 | AI Governance Platform; the 3.4.1 changelog says RBAC middleware closes "audited fail-open and cross-tenant gaps" | No advisory or exposure window published for those gaps | [3.4.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.4.0) | [changelog](https://langwatch.ai/changelog/ai-governance-platform) | E2 |
+| CI2026-060-015 | 2026-07-09 | Vendor: 184,200 lines added Mar–May 2026 vs 121,400 in the prior 12 months after a Claude Code rollout; merges ~10 → 18.5 per workday after an agent assigned reviewers | Self-reported; about three weeks before vs a four-workday window after, with other agents going live at the same time (vendor caveat); no control | [PR Hound](https://langwatch.ai/blog/pr-hound) | — | E1 |
+| CI2026-060-016 / 017 | 2026-07-22 | Langy opens PRs from trace analysis; pre-launch red team found **14 bugs**, including executing attacker-supplied shell commands, an exfiltration attempt stopped only by an upload size limit, a jailbreak needing four fix rounds, one race condition still open | Rolling out / demo-booked; self-assessment | [launch](https://langwatch.ai/blog/introducing-langy-your-automated-ai-engineer), [red team](https://langwatch.ai/blog/we-red-teamed-our-own-ai-agent-and-found-14-real-bugs) | — | E1 |
+| CI2026-060-018 | 2026-07-24 | Python/TS SDK, MCP server, skills, Scenario → 1.0.0 | PyPI `langwatch` 1.0.0 uploaded 2026-07-24T18:45Z | [python-sdk 1.0.0](https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.0.0) | [PyPI](https://pypi.org/project/langwatch/1.0.0/) | E2 |
+| CI2026-060-019 | 2026-07-26 | SSRF fail-closed egress; open redirect on `/auth/signin` closed; MCP `redirect_uri` validation | Release-note disclosure only | [3.6.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.6.0) | — | E2 |
+| CI2026-060-022 / 025 | 2026-08-07 / 2026-08-19 | mcp-server 2.0.0 authorizes every request; GHSA (medium, CVSS 6.6, no CVE): non-default `--http` transport accepted a session ID alone, API key in URL, no Origin check; affected 0.7.0–1.0.0, patched 2.0.0 | Stdio and hosted handler stated unaffected; vendor-scored | [GHSA](https://github.com/langwatch/langwatch/security/advisories/GHSA-h25p-f8f6-2ccf) | [npm registry](https://registry.npmjs.org/@langwatch/mcp-server) | E2 |
+| CI2026-060-023 | 2026-08-08 | LangEvals 3.0 removes legacy Ragas evaluators; existing evaluations referencing them stop working | Breaking for longitudinal evals | [langevals 3.0.0](https://github.com/langwatch/langwatch/releases/tag/langevals%40v3.0.0) | — | E2 |
+| CI2026-060-026 | 2026-08-21 | Fix: Anthropic cost-report amounts were cents treated as USD (100x); 278 Dependabot alerts triaged | `corrected`; affected period not disclosed | [3.16.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.16.0) | — | E2 |
+| CI2026-060-029 | 2026-09-20 | Instant Evals: small judge (TypeSafe's Jev) over all history; 97% vs 91% (Opus 5) on 300 hand-labelled synthetic support conversations; example 10,000 conversations in 2 min 26 s for $0.62 | Blog (09-22) gives ~1 min 13 s / ~$0.32 ($0.0546 per M input tokens) instead; one yes/no question only | [changelog](https://langwatch.ai/changelog/instant-evals), [blog](https://langwatch.ai/blog/introducing-instant-evals) | [Arize](https://arize.com/blog/typesafe-jev-llm-judge/): TypeSafe 4-workflow average 68% vs 73% Opus 5 | E1 |
+| CI2026-060-031 | 2026-10-02 (body 10-01) | Self-hosting: third-party calls off by default | Not verified by network capture | [3.20.0](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.20.0) | — | E2 |
+
+The other rows (red teaming, event-sourcing claims, 3.1.0, April/May roundups, meetup write-up, voice, Langy June, redaction, 3.5.0, Claude Code tracking, context-cost analysis, agent-plugin, Agent Testing v2, Go SDK, 3.18.0, Scenario 1.7.0) are in the CSV.
+
+**Feature inventory (vendor-asserted unless stated):**
+
+| Area | What changed in-window | Observed vs asserted |
+|---|---|---|
+| Evaluation / testing | Multi-turn red teaming; native voice testing; Agent Testing v2 (≤4 targets/run, CI `run-plan`); Scenario 1.0 → 1.7 with per-criterion judge verdicts; Instant Evals; LangEvals 3.0 breaking cleanup | Release notes and registry uploads confirm the versions shipped. Judge accuracy figures are vendor benchmarks only |
+| Observability | Traces v2 GA; TTFT metric; PII/secret redaction rules; audio in traces; terminal replay of coding-agent sessions | Changelog-documented; redaction recall untested |
+| Gateway / governance | AI Gateway (virtual keys, budgets, fallback, voice routes); governance ingestion of Copilot, Codex, Claude Cowork, Databricks Genie and OpenAI/Anthropic spend; OCSF/SIEM export (Enterprise) | Shipped per release notes; GA label conflicts; cost pipeline had a 100x defect fixed 08-21 |
+| Coding-agent integration | `langwatch claude/codex/cursor/gemini` wrappers; Claude Code plugin (agent-plugin 1.0, MIT); MCP server 1.0 → 2.0; skills 1.0; Langy PR agent | Shipped; MCP HTTP transport had an auth flaw (GHSA) |
+| APIs/SDKs | Agents and dashboards REST APIs; management API + SCIM; Python/TS SDK 1.0 (MIT); Go SDK 1.0 | GitHub/PyPI/npm dates corroborate |
+| Licensing | Scenario → Apache 2.0; platform → Apache 2.0 open-core; SDKs MIT; `enterprise/` proprietary; connected self-hosting metered against a licence (3.18.0) | Commits and the GitHub licence field confirm. Per-path licence must be checked before reuse |
+| Security posture | BetterAuth migration; fine-grained PATs; RBAC middleware; SSRF/open-redirect fixes; dependency age gates; frequent CVE floor bumps; one GHSA | Disclosure mostly via release notes, not advisories |
+
+## 5. What the company says it intends to do
+
+| Public direction (≤25 words quoted per source) | Link/date | Promised horizon | Status | Missing/contradictory context |
+|---|---|---|---|---|
+| "The next product on the horizon is the AI Gateway, currently in private beta." | [April drop, 2026-04-30](https://langwatch.ai/blog/langwatch-monthly-drop-april-2026) | unspecified | Superseded: release notes already said GA on 04-29 | GA vs beta conflict |
+| LangWatch Cloud and enterprise capabilities "remain paid" (SSO/SCIM, audit logs, advanced governance, retention) | [May drop, 2026-05-31](https://langwatch.ai/blog/langwatch-monthly-drop-may-2026) | ongoing | Stated business model | Same post says "Nothing behind a wall" |
+| Small judge models are "a new class that's here to stay"; LangWatch will "always run your evals on the most accurate and fastest one" | [Instant Evals blog, 2026-09-22](https://langwatch.ai/blog/introducing-instant-evals) | open-ended | Uncommitted intention | Depends on a third-party model (TypeSafe Jev) |
+| Langy is "rolling out to LangWatch teams now"; merging "stays with your team" | [Langy launch, 2026-07-22](https://langwatch.ai/blog/introducing-langy-your-automated-ai-engineer) | rollout | Preview / demo-gated | No public rollout date or acceptance data |
+| ADR-128 governance cost and identity, "two waves (Proposed)" | [3.18.0 notes, 2026-09-27](https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.18.0) | unspecified | Proposed design record | Internal ADR, not a product commitment |
+
+No public roadmap page was found. These are vendor statements, not forecasts.
+
+## 6. Independent interpretation: direction and alternative scenarios (2027–2031, conditional)
+
+| Hypothesis | Supporting observations | Rival explanations | Disconfirming signals | Confidence/unknowns |
+|---|---|---|---|---|
+| H1: Eval platforms will try to become the **control point for coding-agent traffic and spend** (gateway + governance), not just production-agent tracing | Gateway, `langwatch claude/codex`, Copilot/Genie capture, cost ledger, Claude Code tracking all shipped within six months | Short-term land-grab while coding-agent billing is opaque; providers' own admin consoles may close the gap | Provider-native usage APIs make third-party capture redundant; LangWatch de-emphasises governance in 2027 releases | Low–medium; one vendor, no adoption data |
+| H2: **Permissive relicensing (open-core)** becomes the default go-to-market for agent-eval tools | Scenario AGPL→Apache in April; platform BSL→Apache in May; commit message cites enterprise legal-review friction | Competitive pressure from open-source rivals; reversible business choice | Re-licensing back to source-available, or core features moved into `enterprise/` | Medium for LangWatch; unknown for the sector |
+| H3: **Cheap small judges** will replace LLM-as-judge for bulk monitoring, with LLM judges kept for explanations | Instant Evals on Jev; similar integrations reported by Arize | Benchmarks are tiny, task-specific and vendor-run; TypeSafe's own average shows Jev 5 points behind Opus 5 | Independent multi-task studies show calibration or accuracy gaps that persist | Low; evidence is all vendor or competitor relay |
+| H4: Agent-written PRs (e.g. Langy) increase **review load and attack surface** as much as throughput | Vendor's own red team found shell execution and exfiltration paths; PR backlog needed an agent for reviewer assignment | Problems may be teething issues fixed before GA | Published acceptance and defect rates for agent PRs comparable to human PRs | Low; self-reported |
+
+## 7. Implications for the GitHub 1000 study
+
+| M1–M7 construct | Possible observable effect | Study design to test it | Negative/null explanation | Measurement boundary |
+|---|---|---|---|---|
+| M1 AI coding-agent change | Vendors instrument coding agents themselves (LangWatch's PR Hound, background agents) | Compare commit/PR timelines of OSS repos that publicly adopt agent tooling against matched non-adopters | LOC and merges rise without user value; selection bias | Lines added are not productivity (AGENTS.md rule) |
+| M2 Accepted task quality | Scenario-style multi-turn judges as acceptance tests | Human-labelled subset vs judge verdicts on frozen tasks | Judge agreement is task-specific (97% one question vs 68% averaged) | Judges are not independent human acceptance |
+| M3 Discoverability | Skills/MCP onboarding claimed as main entry path ("roughly nine of ten" new users) | Time-to-first-trace for newcomers with vs without agent skill | Claim unaudited | No access to vendor funnel data |
+| M4 Verified third-party reuse | Apache/MIT relicensing lowers legal friction | Count independent downstream repos importing `langwatch-scenario` with working tests | Licence change ≠ reuse; stars ≠ reuse | Registry downloads are not verified reuse |
+| M5 Reuse-first | Mature OSS harness (Scenario, LangEvals) instead of building a custom eval loop | §8 experiment | A plain pytest + fixtures may suffice | Only for repos that ship LLM features |
+| M6 Lifecycle human/energy cost | Breaking changes (LangEvals 3.0, MCP 2.0, Go 1.0), 278-alert backlog, 100x cost bug | Track upgrade minutes and broken-eval incidents per release | Breakage may be one-off 1.0 consolidation | No energy measured; token cost ≠ kWh |
+| M7 Actionable interventions | Pin evaluator versions; treat judge scores as advisory | Pre-registered small experiment (§8) | No effect | Synthetic tasks only |
+
+## 8. One small falsifiable experiment for the maintainer's repositories
+
+**Repository/component:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), the offline research-artifact validator (`scripts/check_research_artifacts.py`) and the company-ledger checks. No live GitHub capture is involved; capture stays disabled under the [source-access decision](../../../docs/SOURCE_ACCESS_DECISION_2026-10-13.md).
+
+**Candidate practice (not yet validated):** use a multi-turn, judge-based harness (pinned `langwatch-scenario` 1.6.0, Apache 2.0) to stress-test a *coding agent's* edits to the validator, compared with the repo's existing deterministic `unittest` suite alone.
+
+**Treatment/control and frozen task:** freeze 12 synthetic change requests (6 legitimate schema/rule changes, 6 that should be refused or caught, e.g. backdating `published_utc`, weakening the window check, or dropping a required column). **Control A:** a coding agent proposes a patch; acceptance = existing `python3 -m unittest discover -s tests -v` + `check_research_artifacts.py`. **Treatment B:** same agent and model, plus a Scenario script whose judge criteria are written *before* the trial by a different person and hidden from the agent. **Functional unit:** one change request accepted by an independent human reviewer as correct and protocol-compliant. Every assigned request, including refused, failed or timed-out ones, stays in the denominator.
+
+**Success and guardrails:** primary = accepted correct patches / 12, plus harmful patches caught / 6. Guardrails: zero network calls in tests; no real credentials; judge API keys only for the treatment arm and logged; any LLM judge output is advisory and never replaces the human acceptance decision; commits keep the owner as sole author with no AI attribution trailer. **Measured human work:** reviewer minutes per request, minutes to write and maintain the Scenario criteria, and judge cost in money (no carbon conversion).
+
+**Stop/reversal rule:** stop and keep Control A if Treatment B catches no more harmful patches than A, if judge false-pass on any harmful patch exceeds A's, if setup plus review time is more than 1.5× A's, or if the licence or telemetry defaults of the pinned version cannot be confirmed (for example, an unrequested trace upload to a hosted endpoint). **Not executed; no effect estimated.**
+
+## 9. Findings, uncertainties and review outcome
+
+- **Observed/shipped (E2 documentary):** two in-window relicensings (Scenario 04-23, platform 05-17); 1.0 stabilisation of all SDKs on 07-24 (registry-confirmed); MCP server auth redesign and GHSA-h25p-f8f6-2ccf; breaking cleanups (LangEvals 3.0, Go SDK 1.0, Scenario 1.7); security hardening disclosed through release notes; a corrected 100x cost-reporting error.
+- **Claims/announcements only (E1):** throughput (×300), CI time (1.5 h → 9 min), gateway overhead (~11 µs at 5,000 rps), onboarding share (~9/10 via skills), internal LOC/merge increases, Instant Evals accuracy/cost, Langy capabilities and rollout.
+- **Conjectures and unknowns:** actual customer adoption, hosted-vs-self-hosted availability of the gateway, Langy PR acceptance rates, exposure window of the "audited fail-open and cross-tenant gaps" and of the cost error, legal-entity name, ISO 27001/GDPR claims on the homepage (no certificate inspected).
+- **Important contradictory or null evidence:** gateway GA vs private beta (04-29 vs 04-30); Langy "for everyone" (06-07) vs "launching" (07-22); Instant Evals figures differ between changelog and blog; TypeSafe's own averaged Jev accuracy (68% vs 73% Opus 5, relayed by competitor Arize) is lower than LangWatch's single-question benchmark; "nothing held back" vs open-core Enterprise surfaces; vendor self red-team exposed serious agent-tool misuse paths. No independent press, audit or incident reports were found; that absence is a search limit, not evidence of quality.
+- **#56 linkage:** no `NEWS-YYYY-NNNN` items minted, because nearly all evidence is first-party and the one third-party item is a relay of a vendor talk. Candidates for #56 after human review: GHSA-h25p-f8f6-2ccf (CI2026-060-025) and the relicensing commits (CI2026-060-004, -008).
+- **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+AI-assisted spot-check, not qualified human review. Each cited URL was re-fetched on 2026-10-16 (`curl` with a generic browser User-Agent; `gh api` for releases, commits and advisories; the npm registry; PyPI JSON). Figures were compared against raw page text, not WebFetch summaries. 19 items were checked: 17 ledger rows plus the legal-entity and funding baselines. Ledger-row outcome: 14 confirmed, 3 corrected (added detail or a narrowed limitation), 0 unverifiable, 0 wrong. Both baselines are confirmed, with one sub-claim unverifiable.
+
+| Item checked | Outcome | Note |
+|---|---|---|
+| Legal entity | confirmed | The terms page says "Reasoning Engines B.V. is the legal entity of the productname: LangWatch". Its body also uses "Reasoning Engine B.V.", once at Singel 126 1015AE and once at Herengracht 551 1017BW. The footer says "© 2026 LangWatch B.V.". KvK was not checked |
+| Funding baseline (EUR 1M pre-seed) | confirmed; "founded 2023" unverifiable | The Emerce wire (datePublished 2025-02-25) says "€1 miljoen ... in een pre-seed investeringsronde", led by Passion Capital, and names the founders Rogerio Chaves and Manouk Draisma. The wire does not state the 2023 founding year or the CEO/CTO titles |
+| CI2026-060-001 red-teaming post | corrected (detail added) | Dated 2026-04-14. PyRIT single-turn categories scored 0%. The source also says PyRIT's multi-turn orchestrators (Crescendo, PAIR, TAP) "all returned SAFE". The vendor's 50-turn run leaked by turn 20 |
+| CI2026-060-002 event-sourcing post | confirmed | Dated 2026-04-20. Throughput rose from 10–20 events/s to a peak "north of 6,000", with 100 million events in about a month. The vendor says this ran on the "same servers" |
+| CI2026-060-004 Scenario relicense | confirmed | `gh api`: commit 66ad733 dated 2026-04-23T11:33Z. Changes AGPLv3 to Apache 2.0, and the message cites AGPL "legal-review friction" |
+| CI2026-060-005 v3.2.0 gateway conflict | confirmed | The release was published 2026-04-29T20:28Z, prerelease=false, with the note "ai-gateway: ship v1 GA". The Apr 30 drop says the gateway is "currently in private beta" |
+| CI2026-060-006 April drop figures | confirmed | "Roughly nine out of ten new users", CI "about an hour and a half down to nine minutes", "roughly 11 microseconds gateway-side at 5,000 requests per second" and "Helm ... production ready" |
+| CI2026-060-007 meetup write-up | confirmed | datePublished 2026-05-07. Amsterdam meetup; "15 scenarios with a 53% pass rate on day one" |
+| CI2026-060-008 platform relicense | confirmed | `gh api`: commit 23b9dcd dated 2026-05-17T07:12Z. Replaces BSL 1.1 with Apache 2.0 and adds ee/LICENSE.md. The repo licence is Apache-2.0, and the v3.4.0 notes list the relicense |
+| CI2026-060-009 v3.4.0 | confirmed | Published 2026-05-31T14:03Z. Covers the AI Governance Platform and the CVE-2026-44902 bump |
+| CI2026-060-015 PR Hound | corrected (limitation) | 184,200 vs 121,400 lines and ~10 to 18.5 merges per workday are confirmed. "Six-day before/after" was imprecise: the source compares three weeks before with a "four-workday rate window" after, and says other fleet agents went live at the same time |
+| CI2026-060-017 Langy red team | confirmed | 14 bugs; attacker-supplied shell commands; "Only a size limit on the upload stopped it"; "four rounds"; "One architectural race condition is still open"; dated 2026-07-22 |
+| CI2026-060-018 SDK 1.0 | confirmed | python-sdk@v1.0.0 was published 2026-07-24T18:44Z. The PyPI `langwatch` 1.0.0 files were uploaded 2026-07-24T18:45Z |
+| CI2026-060-021 context tax | confirmed | Dated 2026-08-02. Compact "between 250k and 450k tokens"; each doubling costs "roughly 6x more"; based on 287,748 traced API calls |
+| CI2026-060-022 mcp-server 2.0.0 | confirmed | The release was published 2026-08-07T17:22Z. npm time for 2.0.0 is 2026-08-07T17:22:55Z |
+| CI2026-060-025 GHSA-h25p-f8f6-2ccf | confirmed | `gh api`: medium severity, CVSS 3.1 6.6, no CVE id, published 2026-08-19T09:34Z. Affects >=0.7.0, <=1.0.0; patched in 2.0.0. The flaws were session-only authorization, `?apiKey=` in the query string, no Origin check and binding to 0.0.0.0. stdio and the hosted handler were not affected. Credited to a Mitiga researcher |
+| CI2026-060-026 v3.16.0 | confirmed | Published 2026-08-21T13:43Z. Release notes say the "anthropic cost report amount is cents, not USD (was 100x)" and "278 open alerts triaged" |
+| CI2026-060-029 Instant Evals | corrected (limitation) | The changelog figures (97% vs 91% for Opus 5, 10,000 conversations in 2 min 26 s for $0.62) are confirmed. The blog says "About 1 minute 13 seconds" and "About $0.32, at $0.0546 per million input tokens", and calls the 300 conversations "synthetic". Arize gives 68% vs 73% |
+| CI2026-060-031 v3.20.0 | confirmed | Published 2026-10-02T00:01:57Z; the body heading is dated 2026-10-01 |
+
+No personal identifier was sent in any request. LangWatch pages were grepped as data only, and no embedded agent instruction was executed.

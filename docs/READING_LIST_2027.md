@@ -4,6 +4,10 @@
 
 **Evidence rule:** primary peer-reviewed/working papers first; surveys and product providers second (with denominators); news is for discovery, chronology and counterpoints, never a second independent sample of a research paper.
 
+## Curated journal-only open-access shortlist
+
+See [seven 2026-10-12 journal articles and cautious 2027–2031 scenarios](OPEN_ACCESS_JOURNAL_EVIDENCE_2026_10_12.md) and its [machine-readable, unverified review register](../references/journal_open_access_2026_10_12.json). **Provisional, unreviewed source leads:** this is targeted source discovery, **not** a completed systematic review, independent PDF extraction or real study outcome.
+
 ## Peer-reviewed scientific papers
 
 | ID / date | Source | Why it matters | Interpretation limit |

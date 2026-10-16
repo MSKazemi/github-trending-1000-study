@@ -1,122 +1,118 @@
-# Factory: 2026 six-month AI software intelligence (source-screened working report)
+# Factory — provisional six-month technology intelligence screen (021)
 
-**Issue:** [#88](https://github.com/MSKazemi/github-trending-1000-study/issues/88) · **Watchlist ID:** 021 · **Window:** 2026-04-12–2026-10-12 inclusive (UTC) · **First research pass:** 2026-10-12 · **Status:** partially screened; independent/human review outstanding.
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](021-factory.events.csv), [search log](021-factory.search-log.md) and [source-QC note](021-factory.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue #88 was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-> **Methodological status:** This report offers directly attributed, dated primary materials and one preregisterable repo experiment. It does **not** complete the issue's systematic seven-segment literature/media search, prove vendor claims, document actual user adoption, or establish benefits of any tool. Independent product/ownership due diligence and second-person factual review remain required.
+- **Watchlist:** 021; [issue #88](https://github.com/MSKazemi/github-trending-1000-study/issues/88).
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened 2026-10-16** (earlier passes 2026-10-12/13/14, see [Earlier screen (preserved)](#earlier-screen-preserved)).
+- **Status:** provisional dated documentary screen — **30 ledger rows covering all seven calendar segments** (6 earlier rows, all re-checked and unchanged; 24 new). Not exhaustive retrieval, not independently verified task outcomes, not human-approved. [Study method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md).
+- **Official sources checked:** [factory.com](https://factory.com/) (formerly factory.ai; `factory.ai` paths redirect to `factory.com`), [news index](https://factory.com/news), [CLI/Desktop changelog](https://docs.factory.com/changelog/cli-updates), [GitHub org Factory-AI](https://github.com/Factory-AI) via read-only `gh api`. Grades are company-watch E0–E4, not the [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-## 1. Reproducible scope and search audit
+## 1. Discovery, coverage and exclusions
 
-**Search expressions used as a targeted discovery strategy (2026-10-12, public web and the publisher sites):** `site:factory.com/news 2026 "software factories" "routing" "cost" product; 2026 August September 2026 droid`. The vendor blog/chronicle/product directory and in-window individual results were checked. The retrieval interface did not preserve reliable search-result totals or a complete excluded-URL set: **found/screened/excluded counts beyond the 3 selected leads are not available**. This is *not* a systematic-review search log. Re-run dated queries per each month and save the underlying result list before claiming coverage.
+The [search log](021-factory.search-log.md) records every fetch, `gh api` call and the 4 web searches run, per segment, with include/exclude decisions. The earlier screen's statement that April, May, July and early October had no verified event reflected a narrow search, **not** absence: all four segments now hold dated official records. Search result totals are **unknown**, not zero. "Factory" is a generic word; only the Droid maker (factory.com / GitHub `Factory-AI`) was kept, and generic "software/AI factory" hits were excluded. Out of window and excluded: OpenCompute (Oct 14) and the Blackstone case study (Oct 15).
 
-**Eligibility:** publication date 2026-04-12–2026-10-12 and a material product, incident, governance or architectural event. For an event reported on one day that occurred earlier, the first release/effective date remains **unknown** until independently established. Do not count news repetitions as separate innovations. Search-page returns are not an unbiased denominator.
+## 2. Identity, ownership and rights baseline
 
-| Calendar segment | In-window lead found in this pass | Primary source | Missingness |
+- **Entity:** Factory, a San Francisco company building the **Droid** autonomous software-development agents (CLI, Desktop app, IDE extensions, GitHub/GitLab actions). Search-result-level reporting (S1 in the log) gives founding in 2023; corporate registry and beneficial ownership were **not** checked to filing level. Funding: [$150M Series C at $1.5B, Apr 16](https://factory.com/news/series-c) (Khosla lead, concurred by [counsel's client note](https://www.gunder.com/en/news-insights/client-news/factory-announces-dollar150-million-series-c-at-dollar15-billion-valuation)); [$200M at $5B, Sep 15](https://factory.com/news/5-billion-valuation). Acquisition announced: [Mentlio, Oct 9](https://factory.com/news/mentlio) (closing not stated). No parent company or rename beyond the factory.ai → factory.com domain change was found.
+- **Product surface is proprietary SaaS** with a Factory-hosted control plane; [Factory Private](https://factory.com/news/factory-private) (customer VPC/on-prem/air-gapped) is private preview.
+- **OSS / licences (GitHub API, 2026-10-16):**
+
+| Repository | Licence detected by GitHub | Note |
+|---|---|---|
+| [Factory-AI/droid-action](https://github.com/Factory-AI/droid-action) | **none detected** | releases v5–v10 in window |
+| [Factory-AI/vfs](https://github.com/Factory-AI/vfs) | **none detected** (licence endpoint 404) | fork of agentfs; v1.0.0 Aug 8 |
+| [Factory-AI/factory](https://github.com/Factory-AI/factory) | none detected | created 2026-07-29, no releases |
+| [Factory-AI/factory-plugins](https://github.com/Factory-AI/factory-plugins) | none detected | plugin marketplace |
+| [Factory-AI/legacy-bench](https://github.com/Factory-AI/legacy-bench) | Apache-2.0 | 10 public tasks |
+| [Factory-AI/droid-sdk-python](https://github.com/Factory-AI/droid-sdk-python) / droid-sdk-typescript | Apache-2.0 / NOASSERTION | no tagged releases |
+| [Factory-AI/droid-code-review](https://github.com/Factory-AI/droid-code-review), tui-test, pb-gdal-fable | MIT | |
+| [Hugging Face factoryai models](https://huggingface.co/api/models?author=factoryai) (Droid Shield 2.0 adapters) | **no licence tag** | open weights, rights unclear |
+
+"No licence detected" means GitHub's API found no recognisable licence file — it is a rights **gap to resolve before reuse**, not a legal conclusion.
+
+## 3. Seven-segment dated chronology
+
+| Segment | In-window evidence (displayed publication date) | Availability / attribution limits |
+|---|---|---|
+| Apr 12–30 | [Apr 16 Series C](https://factory.com/news/series-c); [Apr 16 droid-action v5 review-depth presets](https://github.com/Factory-AI/droid-action/releases/tag/v5); Apr 21 changelog v0.106.0 full-project security audit mode; [Apr 23 Automated QA](https://factory.ai/news/automated-qa) | Funding is context only; QA "available today in all plans" (vendor) |
+| May | [May 8 GHSA-fq7h-9x26-6j22 / CVE-2026-42876 in external-secrets](https://github.com/advisories/GHSA-fq7h-9x26-6j22); May 14 changelog v0.126.0 EU data residency | Factory later (Jun 11) claims its reviews surfaced the CVE — vendor attribution unverified |
+| June | [Jun 1 Factory Router](https://factory.ai/news/factory-router) (also at [factory.com](https://factory.com/news/factory-router)); [Jun 11 Automated Security Review](https://factory.com/news/automated-security-review); Jun 12 changelog command blocklist; [Jun 15 Factory 2.0 vision](https://factory.com/news/software-factory); [Jun 17 AutoWiki](https://factory.ai/news/wiki) | Router = private research preview; Factory 2.0 = vision (`announced_only`) |
+| July | [Jul 1 Droid Shield 2.0](https://factory.com/news/droid-shield-2-0); Jul 9 changelog macOS whole-process sandbox (+ Jul 23 hardening); [Jul 28 Open Secure AI Alliance](https://factory.ai/news/open-secure-ai-alliance) | Shield 2.0 = research preview; alliance = commitments only |
+| August | [Aug 4 City AM unconfirmed >$3.5bn report](https://www.cityam.com/?p=2447558); [Aug 8 vfs v1.0.0](https://github.com/Factory-AI/vfs/releases/tag/v1.0.0); [Aug 18 droid-action v7 CI triage/auto-fix](https://github.com/Factory-AI/droid-action/releases/tag/v7); [Aug 24 model-routing essay](https://factory.com/news/model-routing-belongs-in-the-harness); [Aug 25 Connectors/Personas](https://factory.com/news/personas-and-connectors); [Aug 27 multi-role research](https://factory.com/news/what-it-takes-for-coding-agents-to-complete-large-software-tasks) | City AM figure superseded by Sep 15 ($5B); research n=24, one run per cell |
+| September | [Sep 9 Claude Marketplace](https://factory.com/news/claude-marketplace) (+ [Sep 29 OpenAI marketplace](https://factory.com/news/openai-b2b-marketplace)); [Sep 15 $200M/$5B](https://factory.com/news/5-billion-valuation) (restated by [TNW Sep 17](https://thenextweb.com/news/factory-200m-5bn-valuation-ai-coding-agents)); [Sep 18 Factory Private](https://factory.com/news/factory-private); [Sep 23 Router savings 63%](https://factory.com/news/factory-router-inference-savings); [Sep 24 Legacy-Bench](https://factory.com/news/legacy-bench-specialized-intelligence-index); [Sep 30 Automations GA](https://factory.com/news/automations) | Private = private preview; savings are vendor-computed |
+| Oct 1–12 | [Oct 2 Analytics](https://factory.com/news/factory-analytics-transparency); [Oct 6 droid-action v10 token-redaction fix](https://github.com/Factory-AI/droid-action/releases/tag/v10); [Oct 9 Mentlio](https://factory.com/news/mentlio); [Oct 12 Environments](https://factory.com/news/droids-now-have-a-fleet-of-sandboxes) | Analytics: Business/Enterprise only; Mentlio closing not stated |
+
+Per-segment row counts: Apr 4 · May 2 · Jun 5 · Jul 3 · Aug 6 · Sep 6 · Oct 4 (= 30). Multiple rows citing the one [changelog page](https://docs.factory.com/changelog/cli-updates) are distinct dated entries, not corroboration.
+
+## 4. Feature map — vendor assertion vs what we could observe
+
+| Cluster | Vendor-documented capability | What we observed ourselves | Non-equivalence |
 |---|---|---|---|
-| 2026-04-12..30 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-05 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-06 | Factory 2.0: From coding agents to software factories (2026-06-15) | [source](https://factory.com/news/software-factory) | Source-read leads only; supplementary events possible. |
-| 2026-07 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-08 | Why model routing must be in the harness (2026-08-24) | [source](https://factory.com/news/model-routing-belongs-in-the-harness) | Source-read leads only; supplementary events possible. |
-| 2026-09 | Factory Router cuts inference costs by 63% (2026-09-23) | [source](https://factory.com/news/factory-router-inference-savings) | Source-read leads only; supplementary events possible. |
-| 2026-10-01..12 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
+| Review & security | Automated QA (Apr), security-review audit modes (Apr–May), STRIDE Automated Security Review (Jun), Droid Shield 2.0 learned secret detection (Jul), Git scanning (Sep changelog) | GHSA for CVE-2026-42876 exists (May 8); droid-action v10 release fixes its **own** token-redaction gap | No detection-rate evidence; one CVE is an anecdote. The v10 fix shows a secret-handling defect in Factory's own CI action |
+| Model routing & cost | Router private preview (Jun 1, 20–25%), harness routing essay (Aug 24, 58%), Router savings (Sep 23, 63%), Analytics "Router savings" view (Oct 2), Mentlio acquisition (Oct 9) | None — all figures vendor-computed against vendor-chosen baselines | Three different percentages on three different baselines; not a CO2e or lifetime-cost result |
+| Delegation & autonomy | Missions/Droid Computers (changelog), Connectors/Personas (Aug 25), Automations GA (Sep 30), Environments GA (Oct 12), CI triage/auto-fix in droid-action v7 | Releases exist on GitHub with dated notes | Wider tool and data access per agent; unattended runs increase review load |
+| Safety controls | Command blocklist (Jun 12), macOS process sandbox (Jul 9/23), org MCP/hooks governance (Jun changelog) | Changelog entries only | Blocklists/sandboxes not tested for bypass |
+| Deployment / data | EU data residency (May 14), Factory Private preview (Sep 18) | — | Contracts/DPAs not reviewed |
+| Open artifacts | vfs (agent filesystem fork), legacy-bench 10 tasks, Shield adapters on HF, SDKs | Repos/licences via API (§2) | Several have no detected licence |
 
-## 2. Identity, ownership and baseline separation
+## 5. Publicly stated direction vs shipped
 
-Factory is a company/product family: Droid agents, Factory Router, private-preview deployment and proprietary benchmark reports need separate labels. The supplier's published savings are within its selected production sessions, not an externally randomized environmental study.
+| Dated source | Stated direction | Classification |
+|---|---|---|
+| [Jun 15 Factory 2.0](https://factory.com/news/software-factory) | Move "from coding agents to software factories" coordinating Droids, Automations, Droid Computers, Missions, Router | Vision; components shipped piecemeal (Automations GA Sep 30, Environments GA Oct 12) |
+| [Aug 24](https://factory.com/news/model-routing-belongs-in-the-harness) / [Oct 9 Mentlio](https://factory.com/news/mentlio) | Routing and token allocation belong in the harness | Router still preview (Jun 1; in Private preview Sep 23); acquisition announced |
+| [Jul 28 alliance](https://factory.ai/news/open-secure-ai-alliance) | Open-weight secret detection, responsible disclosure, share research | Weights published; no licence tag on Hugging Face, so reuse terms are unstated |
+| [Sep 15 raise](https://factory.com/news/5-billion-valuation) | Invest in research, product, global go-to-market (Japan office Aug 31) | Intent, not delivery |
 
-**Official starting point:** https://factory.com/. Homepage content alone is not dated release evidence; where ownership is inferred from a company announcement, independent legal registry verification remains a separate step. Pre-April announcements are historical baseline, not in-window events.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company promises)
 
-## 3. Individual dated primary-source events and feature map
+| Hypothesis | Rival explanation | Disconfirming observation |
+|---|---|---|
+| Harness-level routing lowers billed cost per **accepted** task | Savings come from task mix/cheaper models that fail more and push cost into review | Matched tasks show equal cost per accepted task or more reviewer minutes |
+| Built-in security review reduces shipped vulnerabilities | Existing SAST/secret scanners already catch the same issues | Paired PR fixtures show no extra true positives over CodeQL/gitleaks |
+| Reusable sandboxes (Environments) cut setup time | Devcontainers/CI images already provide this | Same-repo setup time and failures equal with plain devcontainers |
 
-| ID | Publication date / underlying actual event | What is directly documented | Availability status | Original link and source class | Independent audit | Working tier |
-|---|---|---|---|---|---|---|
-| 021-E01 | 2026-06-15; **actual first-shipment date not independently established** | Factory 2.0: From coding agents to software factories: Company announces wider software-factory workflow vision; distinction between announcement and fully shipped capability is essential | announced_only (vendor-reported; version/plan limits not independently tested) | [product-strategy](https://factory.com/news/software-factory) | No independent functional replication | E1 company-working |
-| 021-E02 | 2026-08-24; **actual first-shipment date not independently established** | Why model routing must be in the harness: Vendor describes harness-sensitive model routing and reports 58% aggregate cost reduction for selected production runs; no independent matched-task replication here | reported_undetermined (vendor-reported; version/plan limits not independently tested) | [benchmark-report](https://factory.com/news/model-routing-belongs-in-the-harness) | No independent functional replication | E1 company-working |
-| 021-E03 | 2026-09-23; **actual first-shipment date not independently established** | Factory Router cuts inference costs by 63%: Vendor reports 63% aggregate inferred cost savings relative to frontier-pinned published rates, with a private-preview deployment option; claims neither full lifetime cost nor causal environmental effect | preview (vendor-reported; version/plan limits not independently tested) | [benchmark-report](https://factory.com/news/factory-router-inference-savings) | No independent functional replication | E1 company-working |
+## 7. M1–M7 mapping
 
-**Availability semantics:** `shipped` means the *publisher reports release*, not that our team installed/tested it. `preview` denotes an expressly preview/beta or other constrained offering. `reported_undetermined` denotes engineering analysis or vendor result whose real-world deployment is not verified. `corrected` denotes incident/disclosed mitigation. `announced_only` is not a delivered feature. Do not treat a product benchmark, download/install count, funding announcement, star rank or a vendor-created survey as independently established task value.
+| Construct | Relevance here (prospective measurement, not a conclusion) |
+|---|---|
+| **M1** coding-practice change | Delegated, scheduled and multi-role agent workflows (Automations, Missions, Aug 27 research) |
+| **M2** accepted task quality | Vendor benchmarks (Aug 27, Sep 24) are not independent acceptance; count all attempts |
+| **M3** discoverability | Marketplace listings (Sep 9/29) are procurement channels, not organic discovery |
+| **M4** verified third-party reuse | None observed; third-party repos with Droid bot PRs were seen in search but not analysed |
+| **M5** reuse-first | Compare droid-action / Automated Security Review against existing CodeQL/gitleaks; licence gaps block reuse of vfs/droid-action |
+| **M6** lifecycle human/energy cost | Routing "savings" are price-based; no kWh/CO2e can be derived from tokens |
+| **M7** ethical/safe adoption | Token-redaction fix (Oct 6), sandbox/blocklist controls, unlicensed weights |
 
-**Evidence grades:** the company-watch E0/E1/E2 grades here are **not equivalent** to the study's causal/practical E0–E5 lesson evidence. E1 is first-party traceable announcement/argument; E2 is documentary multi-page corroboration or technical artifact *without* reproduced function. **No E3 independent performance replication, no E4 external multi-context impact evidence**. Where a source is only indexed rather than read completely, its E0 lead remains awaiting full verification.
+## 8. One falsifiable reuse-first maintainer experiment (proposal, not executed)
 
-## 4. Public strategy vs hypothetical outlook (2027–2031)
+**Question:** does an agent-based PR security review add independently accepted findings over existing free tooling in this repository?
 
-**Company-attributed public direction:** June-September materials emphasize harness-level model selection, governance and coordinated agent work. The private/on-prem deployment claim in September is explicitly preview, not general availability.
+- **Repository:** `MSKazemi/github-trending-1000-study`, offline fixtures only; live Trending capture remains disabled and no Factory feature changes that.
+- **Functional unit:** one *seeded-defect PR* — a person other than the implementer freezes 12 synthetic PRs (6 with a planted secret or injection defect, 6 clean) and hidden expected labels before any run.
+- **Comparator A (reuse baseline):** existing GitHub CodeQL + gitleaks in CI. **B:** A + Factory Automated Security Review / droid-action at a pinned release (v10 or later), only under purchased/approved terms and with a repo-scoped token.
+- **Primary endpoint:** true-positive defects found / 6 and false alarms / 6, per arm, with every timeout or refusal counted.
+- **Secondary:** reviewer minutes to triage, billed cost actually invoiced, CI minutes, 30-day maintenance; kWh only if instrumented.
+- **Guardrails:** no production secrets; synthetic tokens only; confirm no token text appears in action logs (cf. the v10 fix); licence of droid-action resolved first.
+- **Stop rule:** stop and keep A if B finds no additional true positive across the 6 seeded PRs, raises false alarms above A, or any token appears in logs.
+- **Expected null:** B adds nothing over A — publish that result as-is.
 
-**Confirmed binding future releases:** none established by this pass. Announced intentions do not amount to delivery schedules.
+## 9. Limitations
 
-**Analyst hypothesis, not a company promise (E0):** Task-aware model selection may reduce provider bills but only if true independent acceptance, CI/review load, cache and retries remain favorable.
+- Mostly vendor sources (E1) plus vendor-controlled GitHub releases/changelog (E2); second-party items are one GitHub advisory, a law-firm client note and two press articles. No E3 functional replication.
+- Displayed publication dates are not archived snapshots; the Series C page was edited after publication.
+- The changelog was summarised through a fetch model over a ≈214k-character page; version/date pairs need human re-reading.
+- No installation, benchmark run, cost measurement or user study was performed. An AI assistant drafting its own report is not an independent reviewer.
 
-**Confounding / alternative mechanism:** Price/model mix and easier tasks, non-randomized comparison, hidden support costs, and inference versus lifetime energy boundaries can reverse apparent gains. A disconfirming result is a randomized or matched test showing no added independently accepted task value, or higher lifetime cost and security incidents despite more generated work.
+## Earlier screen (preserved)
 
-## 5. Connection to study constructs M1–M7
+The previous versions of this report came from [PR #201](https://github.com/MSKazemi/github-trending-1000-study/pull/201) (initial report, with [JSON source observations](021-factory.events.json) left untouched) and [PR #236](https://github.com/MSKazemi/github-trending-1000-study/pull/236) (alternate draft, archived verbatim at [source-archives/021-factory.2026-10-13-first-screen.md](source-archives/021-factory.2026-10-13-first-screen.md)), followed by a 2026-10-14 desk check. Full texts are in git history (commits d1d8e83 … 67443a2) and the archive.
 
-- **M1 workflow chronology:** preserve date and exact feature availability; do not equate tool release with verified developer adoption.
-- **M2 accepted code quality/effort:** independently judge fixed tasks and failures/abstentions, rather than patch counts or anecdotes.
-- **M3 visibility:** stars and promotion are *attention*, never sufficient for actual reuse.
-- **M4 externally reproducible adoption:** require clean external first-use and downstream integration with an eligible denominator.
-- **M5 reuse versus new build:** compare package discovery + license/security/version checks against bounded new build.
-- **M6 lifecycle sustainability:** include planning, reviews, inference, CI, runtime, upgrades and upstream maintenance; **no token-to-kWh or carbon conversion**.
-- **M7 ethical adoption:** only organic, task-verified contributor/user onboarding evidence—not purchased stars or low-value PR activity.
+What the earlier screen claimed:
+- Search expression `site:factory.com/news 2026 "software factories" "routing" "cost" product; 2026 August September 2026 droid`; result counts not available; April, May, July and Oct 1–12 had "no verified event in this bounded source screen" (now superseded by §3).
+- Three E0/E1 leads: [Factory 2.0](https://factory.com/news/software-factory) (2026-06-15, `announced_only`), [model routing in the harness](https://factory.com/news/model-routing-belongs-in-the-harness) (2026-08-24, 58%, `reported_undetermined`), [Router inference savings](https://factory.com/news/factory-router-inference-savings) (2026-09-23, 63%, `preview`); plus three from the alternate draft: [Automated QA](https://factory.ai/news/automated-qa) (2026-04-23, `shipped`), [Factory Router](https://factory.ai/news/factory-router) (2026-06-01, `preview`), [AutoWiki](https://factory.ai/news/wiki) (2026-06-17, `shipped`).
+- 2026-10-14 desk check of [Factory Router at factory.com](https://factory.com/news/factory-router): private research preview, vendor 20–25% lower token spend; `factory.ai` paths resolve to `factory.com`.
+- Proposed experiment: 6 offline tasks, fixed-model vs cheap-first/escalation routing, independent tests, receipts, reviewer hours; stop if failures/privacy/repair time undermine savings.
+- Study anchors cited: [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
 
-## 6. One practical falsifiable repository experiment
-
-**Repository for initial pilot:** `MSKazemi/github-trending-1000-study`, with only its existing offline code/docs/fixture surfaces. **Proposed—not executed:**
-
-For 6 predeclared offline tasks, randomize task order and compare fixed-model baseline to an explicit cheap-first/escalation rule, record identical outcomes under independent tests, original-cost/provider receipts when possible, aggregate reviewer hours and number of extra attempts; do not infer CO2 from tokens.
-
-**Acceptance design:** before assignment, a person other than the implementing agent must freeze the task description, user success conditions and hidden tests. Use fixed versions, identical safe fixtures and matched task difficulty; record the sampling frame and every refusal, timeout, unsuccessful run or abstention. **Primary endpoint:** fraction of independently accepted tasks with an explicit denominator and uncertainty. **Secondary:** downstream clean-install success, matching legal package identity/license, reviewer-repair minutes, money actually billed or clearly modeled and version drift at 30/90 days. Report kWh/CO2e only if instrumented with a documented system boundary and sensitivity analysis.
-
-**Stop / rollback rule:** Do not deploy routing when task failures, privacy risk, or time-to-repair undermine any savings.
-
-**Expected null/negative scenario:** no difference in accepted-task results, higher maintainer or review costs, poorer security, portability or upstream rights, or inability to obtain externally valid task ratings. Do not turn a null result into a fabricated positive lesson.
-
-## 7. Scientific and security limitations
-
-- The sources above are primarily vendor-operated. Independent investigative reporting, complete month searches, detailed feature/version license audits and disagreement resolution remain uncompleted.
-- Distinguish **date a report was published** from actual launch or customer-availability; these are unknown where not explicitly documented.
-- No vendor installation, benchmark run, respondent sampling, source-code security assessment, trial enrollment, verified third-party reuse, power calculation or environmental measurement was carried out.
-- An AI assistant drafting its own report is **not** an independent scientific reviewer. Date and link spot checks are preliminary, not full blind confirmation.
-- Vendor prices/savings, context benefits and release claims require same-task external replication and lifecycle boundaries before becoming recommendations.
-- Do not automatically ingest untrusted code, post to upstream communities or grant tools network/secret access to gather evidence.
-
-## 8. Conditional practical maintainer lesson
-
-**Low-risk practice to test:** inspect existing tools, record their exact versions/rights, freeze user acceptance, measure agent/maintainer costs and keep human-governed review; promote only evidence-backed, type-specific conclusions, including failures. This is an **experiment suggestion** rather than a demonstrated method of increasing repository popularity or reducing energy.
-
-**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #88. A draft report alone is not issue completion.
-
-**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
-
-## No-loss reconciliation of Factory research drafts (2026-10-13)
-
-The complete initial [PR #201](https://github.com/MSKazemi/github-trending-1000-study/pull/201) report is preserved verbatim above, with its original [JSON source observations](021-factory.events.json) retained byte-for-byte. The alternate [PR #236](https://github.com/MSKazemi/github-trending-1000-study/pull/236) report is preserved verbatim as a [dated draft archive](source-archives/021-factory.2026-10-13-first-screen.md). These reports are *not independent corroboration* of a shared source.
-
-The [working company ledger](021-factory.events.csv) combines 6 deduplicated first-party source URLs (3 from the newer ledger plus 3 additional original-only leads). Earlier-only URLs are marked E0 pending independent factual review, even when the company's own article alleges business performance. **No proprietary token savings, user-value effect or generalizable review benefit is independently measured.**
-
-### Original-only publisher leads retained
-- 2026-06-15: [Factory 2.0: From coding agents to software factories](https://factory.com/news/software-factory) — `announced_only` is an original working description, not a reproduced result
-- 2026-08-24: [Why model routing must be in the harness](https://factory.com/news/model-routing-belongs-in-the-harness) — `reported_undetermined` is an original working description, not a reproduced result
-- 2026-09-23: [Factory Router cuts inference costs by 63%](https://factory.com/news/factory-router-inference-savings) — `preview` is an original working description, not a reproduced result
-
-### Newer draft publisher leads retained
-- 2026-04-23: [Automated QA: Testing Your App the Way a Real User Would](https://factory.ai/news/automated-qa) — `shipped` (vendor statement only)
-- 2026-06-01: [Factory Router](https://factory.ai/news/factory-router) — `preview` (vendor statement only)
-- 2026-06-17: [AutoWiki](https://factory.ai/news/wiki) — `shipped` (vendor statement only)
-
-**Remaining:** all seven month-segment logs, dated source snapshots, verified licenses/product access and independent/critical reviews. Validate endpoints/version compatibility and task-first accepted results before recommendations. Keep issue #88 open and do not claim an executed product experiment or measured energy benefit.
-
-
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
-
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
-
-- **Publisher page and source publication date:** [Factory Router](https://factory.com/news/factory-router) — 2026-06-01 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** Factory's dated post labels Factory Router a private research preview and advertises vendor-run cost/performance comparisons, including 20–25% lower token spend in the described benchmarks. The prior `factory.ai` source path resolves to `factory.com`.
-- **Correction / uncertainty to retain:** The percentages are unreplicated provider-selected benchmark claims, not task-level independent savings, physical energy measurement or universal customer availability. Preserve original-link provenance and label preview correctly.
-- **Falsifiable maintainer experiment (not performed):** Use paired, frozen tasks to compare explicit-model selection and routed-model selection under a fixed acceptance suite; record actual billed cost, missing task outcomes, token usage, human retries and reproducible vendor/model versions.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
-
-
-## Integration review — 2026-10-14 (provisional source preservation)
-
-The earlier #201 report is retained as an exact prefix of this report, its original JSON event ledger retains the same blob SHA, and the alternate source screen is preserved in `source-archives/021-factory.2026-10-13-first-screen.md`. The working CSV has six unique first-party URL leads, including intentional overlap with the JSON events; those repeats **are not independent corroboration**. Publisher desk checks of April 23 Automated QA, June 15 Software Factory and August 24 model-routing article titles/dates confirmed source context, not deployment or independently accepted tasks. Cost reductions, customer outcomes and energy savings are unverified provider claims. This is an AI-assisted documentary/integration assessment, not qualified second-human science/security review. Preserve pending source rights, comprehensive month-segment search, event-family deduplication and matched reuse-first outcome trials in issue #88.
+All six earlier ledger rows passed the 2026-10-16 [source QC](021-factory.source-qc-2026-10-16.md) unchanged.
