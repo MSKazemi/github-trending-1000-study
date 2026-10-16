@@ -222,19 +222,20 @@ class ObservationLedgerTests(unittest.TestCase):
             instrument._url("https://careers.example.invalid/jobs/" + chr(127) + "A")
 
     def test_validation_tracebacks_never_echo_private_invalid_timestamp_or_query(self):
-        # A safe error message is insufficient if a chained ValueError embeds
-        # the original untrusted URL or time in full CI/telemetry tracebacks.
-        samples = (
-            (lambda: instrument._stamp("PRIVATE_TIMESTAMP_20261017", "observed_at_utc"),
-             "PRIVATE_TIMESTAMP_20261017"),
-            (lambda: instrument._url(
-                "https://careers.example.invalid/jobs/A?PRIVATE_QUERY_20261017=secret"),
-             "PRIVATE_QUERY_20261017"),
+        # The source line in a Python 3.11+ formatted traceback must NOT
+        # embed a literal private marker, even in the synthetic test itself.
+        # Exercise values bound to runtime variables, not source-code literals.
+        stamp_marker = "PRIVATE_TIMESTAMP_20261017"
+        query_marker = "PRIVATE_QUERY_20261017"
+        checks = (
+            (lambda value: instrument._stamp(value, "observed_at_utc"), stamp_marker),
+            (lambda value: instrument._url(
+                "https://careers.example.invalid/jobs/A?" + value + "=secret"), query_marker),
         )
-        for call, marker in samples:
-            with self.subTest(marker=marker):
+        for invoke, marker in checks:
+            with self.subTest(case="timestamp" if marker == stamp_marker else "query"):
                 try:
-                    call()
+                    invoke(marker)
                 except instrument.HiringObservationError as error:
                     self.assertIsNone(error.__cause__)
                     self.assertIsNone(error.__context__)
