@@ -54,13 +54,13 @@ Full row detail is in the [CSV](098-aikido-security.events.csv) (37 rows, IDs `C
 | CI2026-098-012 | 2026-06-16 | AI Code Analysis covers "roughly 70-80%" of a pentest at "around 10x lower cost" | internal testing, no denominator | [blog](https://www.aikido.dev/blog/introducing-code-audit-find-complex-vulnerabilities-hidden-in-your-codebase) | HN critique (E0) | E1 |
 | CI2026-098-014 | 2026-06-17 | 141 @mastra packages republished with a malicious dependency | GHSA preceded the post | [blog](https://www.aikido.dev/blog/over-140-popular-mastra-npm-packages-hit-by-supply-chain-attack) | GHSA-pp62-grrw-hvfp; npm | E2 |
 | CI2026-098-017 | 2026-06-30 | Root acquisition → Aikido Libraries/Images (version-pinned backports) | price not disclosed in sources read | [blog](https://www.aikido.dev/blog/aikido-acquires-root) | SiliconANGLE | E1 + press |
-| CI2026-098-025 | 2026-08-04 | keyv family worm published with valid GitHub Actions provenance | scope figures conflict (11 vs 444+ packages) | [blog](https://www.aikido.dev/blog/keyv-and-friends-compromised-in-npm-supply-chain-attack) | GHSA-3p9h-f68w-m6fx; npm | E2 |
+| CI2026-098-025 | 2026-08-04 | keyv family worm published with valid GitHub Actions provenance | scope grew from about 11 listed packages to at least 444 in the post's own 2026-08-05 update | [blog](https://www.aikido.dev/blog/keyv-and-friends-compromised-in-npm-supply-chain-attack) | GHSA-3p9h-f68w-m6fx; npm | E2 |
 | CI2026-098-027 | 2026-08-12 | Deep Review agentic PR review ($1 per PR) | accuracy unmeasured | [changelog #53](https://help.aikido.dev/changelog/q3-2026/53-deep-review-android-pentests-custom-reports-and-free-credits) | — | E2 (documentary) |
 | CI2026-098-029 / 031 | 2026-08-24 / 09-18 | Vendor self-comparison (68/89 vs 60 vs 58) vs competitor comparison (4 of 235 findings shared; Aikido "noisy" on test fixtures) | both are interested parties | [Aikido](https://www.aikido.dev/blog/aikido-finds-more-vulnerabilities-claude-security-mythos), [Audn.AI](https://blog.audn.ai/posts/audn-vs-codex-vs-aikido-juice-shop-comparison) | each other only | E1 / E1 |
 | CI2026-098-030 / 033 | 2026-09-03 / 09-25 | Safe Chain fixes a minimum-age bypass, then adds a safe-patches exemption | guardrail churn | [1.5.16](https://github.com/AikidoSec/safe-chain/releases/tag/1.5.16), [1.5.21](https://github.com/AikidoSec/safe-chain/releases/tag/1.5.21) | npm; changelog #56 | E2 |
 | CI2026-098-032 | 2026-09-21 | Altar: pruned GLM-5.3 derivative, open weights | licence "other", inherits GLM-5.3 terms | [blog](https://www.aikido.dev/blog/aikido-altar-open-weight-ai-sovereign-security) | [Hugging Face](https://huggingface.co/AikidoSec/altar-1) | E2 (artifact exists) |
 | CI2026-098-034 | 2026-09-28 (launch 09-25) | Inaugural funder of OpenJS Security Stewardship Program | amount undisclosed | [blog](https://www.aikido.dev/blog/aikido-openjs-ssp-node-security) | [OpenJS](https://openjsf.org/blog/openjs-foundation-launches-the-security-stewardshi) | E2 (second entity) |
-| CI2026-098-035 | 2026-10-06 | FedRAMP Moderate claim | marketplace link resolves to the Knox Systems package; Aikido not named in static HTML | [blog](https://www.aikido.dev/blog/aikido-fedramp-moderate-authorization) | [FedRAMP marketplace](https://www.fedramp.gov/marketplace/products/F1206111371/) | E1 |
+| CI2026-098-035 | 2026-10-06 | FedRAMP Moderate claim | marketplace link resolves to the Knox Systems package, whose embedded data lists "Aikido for Government" (dateAvailable 2026-09-28) | [blog](https://www.aikido.dev/blog/aikido-fedramp-moderate-authorization) | [FedRAMP marketplace](https://www.fedramp.gov/marketplace/products/F1206111371/) | E2 (government marketplace listing; corrected 2026-10-16) |
 
 **Feature inventory (vendor-documented, not exercised by us):**
 
@@ -139,11 +139,44 @@ Company adoption claims (for example "100k+ teams" in page footers and SiliconAN
 - **Important contradictory or null evidence:**
   - (a) A competitor's public comparison reports low cross-tool agreement and calls Aikido noisy on test-fixture secrets. Anonymous HN comments raise the same issue and plan caps hidden under "fair-usage" (E0).
   - (b) Safe Chain had a minimum-age bypass fixed on 2026-09-03.
-  - (c) keyv scope figures conflict (about 11 packages in the original post vs "444+" in changelog #53).
+  - (c) keyv scope grew from about 11 packages listed in the original post to "at least 444 packages (across 1381 versions)" in the post's own 2026-08-05 update, repeated as "444+" in changelog #53. This is an update, not a contradiction.
   - (d) CVE-2026-40175 still carries an 8.1 ADP score, while the CNA/NVD score is 4.8.
-  - (e) The FedRAMP link resolves to a Knox Systems package that does not name Aikido in static HTML.
+  - (e) The FedRAMP link resolves to the Knox Systems package. *Corrected 2026-10-16:* the page's embedded data lists "Aikido for Government" as a service under that package (dateAvailable 2026-09-28). The earlier note that the page does not name Aikido was wrong.
   - (f) GHSA records for Mastra (04:55Z), Bitwarden and tensorlake predate or coincide with Aikido's posts, so being "first" is not established.
   - (g) A search-tool summary claimed a ~$70M Root price, and no source read supports it.
   - (h) No status-page incidents were published in the window. That is absence of disclosure, not proof of zero incidents.
 - **#56 candidates (not minted):** SiliconANGLE 2026-06-30 (Root); Infosecurity Magazine 2026-06-17 (JetBrains plugins; relays Aikido); OpenJS Foundation 2026-09-25 (SSP); Audn.AI 2026-09-18 (competitor comparison; interested party); Help Net Security 2026-08-27 (ecosystem context). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources on 2026-10-16 and compared each figure, date and quote with the raw text. Robots.txt was checked first for every host. No host fetched has Claude- or Anthropic-specific rules; The New Stack disallows `anthropic-ai`, `ClaudeBot` and `Claude-Web` and was correctly left unread. The original screen fetched `pypi.org/pypi/aikido_zen/json`, which PyPI's robots.txt disallows (`/pypi/*/json`). No ledger row depends on it: the in-window upload count was re-confirmed from the allowed PyPI RSS feed, and the licence value from that endpoint is unverifiable. No row was marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-098-001 | corrected (minor) | NVD history confirms the CNA change on 2026-04-16 (critical-equivalent vector to 4.8) and an 8.1 ADP score. The ADP first added a 9.0-equivalent scope-changed vector on 2026-06-30 and revised it to 8.1 on 2026-08-06; the limitation now says so. The quote about validating with the reporting researcher is confirmed |
+| CI2026-098-004 / 008 / 030 / 033 | confirmed | Safe Chain release timestamps (1.5.0 2026-04-20T21:56Z, 1.5.2 2026-05-04T12:52Z, 1.5.16 2026-09-03T08:51Z, 1.5.21 2026-09-25T10:29Z) match. 27 in-window releases. 1.5.2 notes contain "Bind registry proxy to loopback only" and checksum validation |
+| CI2026-098-005 | confirmed | npm `@bitwarden/cli` 2026.4.0 time 2026-04-22T21:22:59Z and no longer served; GHSA-g98r-qjhg-4fmr published 2026-04-23T17:07:51Z |
+| CI2026-098-006 | confirmed | All four package versions, the preinstall hook and the "11.7 MB" payload are in the post. `@cap-js/sqlite` 2.2.2 published 2026-04-29T11:25Z and no longer served |
+| CI2026-098-009 | confirmed | "25–74%", "Up to 2×", "1.74 million binary downloads from GitHub releases", "2,000+", "10 security companies" are verbatim. Ten named co-forking vendors, including Aikido. Repo LGPL-2.1 |
+| CI2026-098-012 | confirmed | "roughly 70-80% of what a full pentest engagement surfaces, at around 10x lower cost", "Based on our internal testing and early users"; credits pricing confirmed |
+| CI2026-098-013 | confirmed | "At least 15", "seven vendor accounts", "close to 70,000"; inflation caveat present. Infosecurity Magazine (2026-06-17) relays "around 70,000" |
+| CI2026-098-014 | confirmed | 141 packages, 01:15–02:00 UTC, 918K, easy-day-js verbatim. npm 1.42.1 at 01:15:13Z; GHSA at 04:55:41Z; RSS pubDate 08:43Z |
+| CI2026-098-016 | confirmed | Post says Intel powers default malware blocking for Composer 2.10+. Composer 2.10.0 published 2026-05-28 and its notes mention malware but not Aikido |
+| CI2026-098-017 | confirmed | SiliconANGLE (2026-06-30) names "Aikido Security NV", "$37.6 million", "15 to 40 minutes", and states no price. The upstream/paywall wording is in Aikido's post |
+| CI2026-098-021 | confirmed | "more than four million packages" and "under 8 minutes" are verbatim |
+| CI2026-098-022 | confirmed | 23/26, 88.5%, Kimi K3 update of July 19 confirmed. The page also shows "Last updated on: Sep 1, 2026" |
+| CI2026-098-023 | confirmed | "~2%" and default shipping confirmed. Betterleaks is MIT; PR #207 merged 2026-07-01; v1.7.0 2026-07-23 |
+| CI2026-098-025 | corrected | Provenance claim and 565M vs 580M inconsistency confirmed. However, the post's own 2026-08-05 update already states "at least 444 packages (across 1381 versions)", so "11 vs 444+" is an update rather than a conflict. Row, report §4/§9(c) and search log corrected |
+| CI2026-098-028 | confirmed | 11.7 billion tokens, 10 models, three attempts, 32 vulns, 28 of 32, about $295 verbatim |
+| CI2026-098-029 | confirmed | 89 / 68 (76%) / $75; 60 (67%) / $157; 58 (65%) / $125 verbatim; "private benchmark app". The number of runs is not stated explicitly, so "single run" is an inference from "this run" |
+| CI2026-098-031 | confirmed | Audn.AI (datePublished 2026-09-18): 235 findings, four shared by all four, Aikido 36 findings, ~52 seconds, only tool running SCA, "Static only. No diff awareness", "Noisy: many 'secrets' are test fixtures" |
+| CI2026-098-032 | confirmed | W4A16, 488→328 GB, 32.8%, about one point lower recall, 4×H200 confirmed. HF API: created 2026-09-07, not gated, licence `other`, 2,422 downloads |
+| CI2026-098-034 | confirmed | OpenJS "Posted On: September 25, 2026"; Socket and Aikido are inaugural partners; $100,000 minimum annually. Aikido RSS pubDate 2026-09-28 |
+| CI2026-098-035 | **wrong → corrected** | The FedRAMP marketplace page (Knox Systems, F1206111371) **does** name Aikido: its embedded data lists "Aikido for Government" with dateAvailable 2026-09-28. The screen had stripped script content before searching. Row, report §4/§9(e) and search log corrected; confidence raised to `E2_GOV_MARKETPLACE_LISTING`. Agency ATO details remain unread |
+| CI2026-098-036 | confirmed | Title says "6 languages", slug says "5"; Terraform provider and monthly credit top-ups confirmed |
+| CI2026-098-037 | confirmed | npm 0.5.144 at 2026-10-08T01:12:07Z and no longer served; GHSA at 02:54:39Z; "over 100,000" lifetime installs is vendor-reported |
+
+**Counts:** 25 rows checked (22 table lines). 22 confirmed (029 with a caveat noted), 2 corrected (001 minor, 025), 1 wrong and corrected (035); 0 unverifiable. The search log's statement that every ledger figure was regex-confirmed is now qualified, because it missed the 025 and 035 limitation errors. No personal identifier was sent in any request (generic `Mozilla/5.0` User-Agent only; no sec.gov access).
+
+*This is an AI-assisted spot-check, not qualified human review.*
