@@ -31,8 +31,19 @@ def _canonical_url_key(parts):
     not merely marketing attribution. This is syntactic screening, not a claim
     that different URLs describe different underlying events.
     """
-    query = tuple(sorted((key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
-                         if not key.lower().startswith("utm_") and key.lower() not in TRACKING_PARAMS))
+    query_items = [(key, value)
+                   for key, value in parse_qsl(parts.query, keep_blank_values=True)
+                   if not key.lower().startswith("utm_")
+                   and key.lower() not in TRACKING_PARAMS]
+    # For unique parameter names, order is immaterial and normalizing it
+    # catches common marketing/query-order duplicates. Repeated parameter
+    # names are different: e.g. ?step=first&step=second can represent an
+    # ORDERED instruction and reversing the values may select another
+    # document. Keeping their order avoids false duplicate suppression.
+    # This is conservative URL-level identity, not a content/event audit.
+    names = [key for key, _ in query_items]
+    query = tuple(query_items if len(names) != len(set(names))
+                  else sorted(query_items))
     return (parts.hostname.lower(), parts.port if parts.port is not None else 443,
             parts.path.rstrip("/") or "/", query)
 
