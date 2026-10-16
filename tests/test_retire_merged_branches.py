@@ -43,6 +43,9 @@ class FakeClient:
         self.open_checks = 0
         self.archive_moved_after_first_check = False
         self.archive_checks = 0
+        self.main_sha = "c" * 40
+        self.main_reads = 0
+        self.main_change_on_read = None
 
     def get(self, path):
         if path == f"/repos/{REPO}":
@@ -62,7 +65,11 @@ class FakeClient:
                 return {"object": {"sha": "f" * 40}}
             return {"object": {"sha": self.sha}}
         if path == f"/repos/{REPO}/branches/main":
-            return {"commit": {"sha": "c" * 40}}
+            self.main_reads += 1
+            live_sha = (("f" * 40) if self.main_change_on_read is not None
+                        and self.main_reads >= self.main_change_on_read
+                        else self.main_sha)
+            return {"commit": {"sha": live_sha}}
         if "/compare/" in path:
             return {"status": "ahead" if self.ancestor else "diverged",
                     "behind_by": 0 if self.ancestor else 1}
@@ -319,6 +326,56 @@ class BranchCleanupTests(unittest.TestCase):
         p["delete_all"] = True
         with self.assertRaises(CleanupError):
             validate_plan(p)
+
+    def test_repo_dot_segments_are_rejected_before_any_api_or_git_use(self):
+        # A broad owner/repo regex previously accepted '../name' and 'owner/..'.
+        # These must never enter an authenticated GitHub API path or Git URL.
+        for invalid in ("../name", "owner/..", "./name", "owner/.",
+                        "/name", "owner/", "owner/../other", None):
+            with self.subTest(repository=invalid):
+                sample = plan()
+                sample["repository"] = invalid
+                with self.assertRaisesRegex(CleanupError, "invalid repository"):
+                    validate_plan(sample)
+                with self.assertRaisesRegex(CleanupError, "invalid repository"):
+                    GitHubClient(invalid, "offline-only-fixture-token")
+
+    def test_stale_approved_main_aborts_before_tags_or_retirement(self):
+        fake = FakeClient()
+        fake.main_sha = "f" * 40
+        with self.assertRaisesRegex(CleanupError, "approved main SHA moved"):
+            execute(plan(), fake)
+        self.assertEqual(fake.main_reads, 1)
+        self.assertEqual(fake.ref_checks, 0)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_read_only_audit_also_refuses_stale_plan_main(self):
+        fake = FakeClient()
+        fake.main_sha = "f" * 40
+        with self.assertRaisesRegex(CleanupError, "approved main SHA moved"):
+            execute(plan(), fake, audit_only=True)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_main_moved_after_initial_preflight_blocks_archive(self):
+        fake = FakeClient()
+        fake.main_change_on_read = 2
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "blocked_main_moved")
+        self.assertEqual(fake.main_reads, 2)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_main_moved_after_archive_blocks_final_leased_delete(self):
+        fake = FakeClient()
+        fake.main_change_on_read = 3
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "blocked_main_moved_before_delete")
+        self.assertGreaterEqual(fake.main_reads, 3)
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertEqual(len(fake.posts), 1)
+        self.assertFalse(fake.deleted)
 
     def test_repo_mismatch_stops_before_actions(self):
         fake = FakeClient()
