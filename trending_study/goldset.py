@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 import re
 
+from .data_integrity import ResearchJSONError, load_research_json_file
+
 
 LABELS = {"viable", "not_viable", "unknown"}
 GATE_ALLOWED = {"pass", "fail", "unknown"}
@@ -52,7 +54,7 @@ def _candidate(c, taskid, baseline):
     _record(c, "candidate")
     cid = _nonempty(c.get("id"), "candidate.id")
     label = c.get("final_label")
-    if label not in LABELS:
+    if not isinstance(label, str) or label not in LABELS:
         raise GoldsetError(f"{taskid}/{cid}: final_label must be viable/not_viable/unknown")
     evidence = c.get("evidence_ref")
     if evidence is not None and not isinstance(evidence, str):
@@ -63,9 +65,10 @@ def _candidate(c, taskid, baseline):
     if set(gates) - permitted:
         raise GoldsetError(f"{taskid}/{cid}: unsupported gate names")
     for k in required:
-        if gates.get(k) not in GATE_ALLOWED:
+        if not isinstance(gates.get(k), str) or gates[k] not in GATE_ALLOWED:
             raise GoldsetError(f"{taskid}/{cid}: gate {k} must be pass/fail/unknown")
-    if "availability" in gates and gates["availability"] not in GATE_ALLOWED:
+    if ("availability" in gates and
+            (not isinstance(gates["availability"], str) or gates["availability"] not in GATE_ALLOWED)):
         raise GoldsetError(f"{taskid}/{cid}: availability must be pass/fail/unknown")
     release_time = c.get("available_since_utc")
     if release_time is not None and _date(release_time, "available_since_utc") > baseline:
@@ -150,6 +153,8 @@ def evaluate(payload, k=5):
                 raise GoldsetError(f"{taskid}: duplicate system {name}")
             seen_sys.add(name)
             ranked = _list(system.get("ranked_candidate_ids"), "ranked_candidate_ids")
+            if any(not isinstance(cid, str) or not cid.strip() for cid in ranked):
+                raise GoldsetError(f"{taskid}/{name}: ranked candidate IDs must be nonempty strings")
             if len(set(ranked)) != len(ranked):
                 raise GoldsetError(f"{taskid}/{name}: repeated candidate id")
             if any(cid not in candidates for cid in ranked):
@@ -197,8 +202,13 @@ def main(argv=None):
     p.add_argument("--k", type=int, default=5)
     args = p.parse_args(argv)
     try:
-        result = evaluate(json.loads(Path(args.input).read_text(encoding="utf-8")), k=args.k)
-    except (OSError, ValueError, TypeError) as exc:
+        result = evaluate(load_research_json_file(args.input, max_bytes=1_000_000), k=args.k)
+    except ResearchJSONError:
+        # Never echo private duplicate-key text or input paths from the decoder.
+        p.exit(2, "error: invalid or unsafe research JSON input\n")
+    except OSError:
+        p.exit(2, "error: input filesystem operation failed\n")
+    except (ValueError, TypeError, RecursionError) as exc:
         p.exit(2, f"error: {exc}\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 
