@@ -1,0 +1,83 @@
+# Palantir (083) — provisional source-query and inclusion log
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED (screened 2026-10-16).** Companion to the [report](083-palantir.md) and [event ledger](083-palantir.events.csv) for [#151](https://github.com/MSKazemi/github-trending-1000-study/issues/151). Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+**Window:** 2026-04-12…2026-10-12 inclusive (UTC dates). **Accessed:** 2026-10-16. **Method:** raw retrieval with `curl -sL -A 'Mozilla/5.0'` (generic User-Agent; no personal identifier, email, account or credential sent to any site), stdlib HTML-to-text extraction and `grep` confirmation of every number, version, date and quote used in a ledger row; npm registry and PyPI JSON for publication times and licence metadata; `gh api` for GitHub repositories, releases and the GitHub Advisory Database; NVD CVE API; Hacker News Algolia API for independent-coverage leads. **WebSearch was not used** (session search budget exhausted) and **WebFetch was not used**, so no model-summarized text entered the ledger. SEC/EDGAR was **not** contacted. Search-engine result totals are therefore not applicable; HN and feed totals are recorded below. **This is not exhaustive retrieval.** No page snapshots or hashes were archived in the repository; pages may change after access.
+
+## Query and source log by segment
+
+| Date | Segment | Exact query or source request | Opened / decision | Found / screened / excluded |
+|---|---|---|---|---|
+| 2026-10-16 | all | `GET https://www.palantir.com/robots.txt`, `/sitemap.xml` | robots allows all; sitemap `lastmod` uniformly 2026-10-15, so not usable for dating | 619 URLs / — / — |
+| 2026-10-16 | all | `GET https://www.palantir.com/newsroom/press-releases/` | client-rendered (Next.js/Contentful); in-window releases not listed in HTML; switched to IR feed | — |
+| 2026-10-16 | all | `GET https://www.palantir.com/docs/foundry/announcements/` and `/2026-04/` … `/2026-10/` | each entry has "Date published"; 115 distinct in-window entries listed; about 30 read in full | 115 / ~30 / 91 not ledgered (model-availability notices ~31, domain apps such as Vulcan and Quiver, pipeline/Workshop UI items) |
+| 2026-10-16 | all | `GET https://investors.palantir.com/` | client-rendered shell; `bundle.js` points to Q4 Inc host `palantir2020ipo.q4web.com` | — |
+| 2026-10-16 | all | `GET https://palantir2020ipo.q4web.com/feed/PressRelease.svc/GetPressReleaseList?LanguageId=1&bodyType=0&pressReleaseDateFilter=3&pageSize=-1&pageNumber=0&year=2026` | 49 releases in 2026, 30 in window; detail pages on the q4web host are server-rendered and were read there | 30 / 22 fetched / 10 read in full |
+| 2026-10-16 | all | `GET https://blog.palantir.com/feed` (RSS) | 10 items, 9 in window; `content:encoded` read for 3 | 9 / 3 / 6 (hiring, frontend engineering, Elasticsearch, NHS FDP) |
+| 2026-10-16 | all | `gh api orgs/palantir`; `orgs/palantir/repos?sort=created&direction=desc` | 268 public repos; in-window new repos `gradle-docs-distribution` (2026-07-31) and `palantir-fedramp-marketplace` (2026-09-15), both no detected licence, not developer-agent relevant | 2 / 2 / 2 |
+| 2026-10-16 | all | `gh api repos/palantir/palantir-mcp`, `/releases`, `/contents/package.json`, `/contents/README.md` | MIT; releases 0.9.0 (04-13) … 0.14.0 (07-15); README describes wrapper that downloads `@palantir/mcp` from Foundry | included (CI2026-083-002) |
+| 2026-10-16 | all | `GET https://registry.npmjs.org/palantir-mcp` | only 0.12.0, 0.13.0, 0.14.0 published in window; 0.9.0–0.11.0 absent; no `dist.attestations` on 0.8.0–0.14.0 | conflict recorded |
+| 2026-10-16 | all | `GET https://registry.npmjs.org/@osdk%2freact`, `@osdk%2freact-components` | 73 and 62 non-prerelease versions in window; licence Apache-2.0 in metadata; `@osdk/react` 0.17.0 → 2.15.0 on 2026-05-05; 2.18.0 on 2026-05-12 | included (008, 034) |
+| 2026-10-16 | all | `gh api repos/palantir/osdk-ts`; `/contents`; `/contents/packages/react`; commits on `CLAUDE.md` and `packages/react/AGENTS.md` | repo licence `null`; no LICENSE file seen at root or in `packages/react`; `CLAUDE.md` (2025-08-28) and `AGENTS.md` (2026-01-23) predate window | baseline only |
+| 2026-10-16 | all | `GET https://pypi.org/pypi/foundry-platform-sdk/json`; `gh api repos/palantir/foundry-platform-python` | Apache-2.0; 29 in-window first uploads 1.81.0 (2026-04-15) … 1.108.0 (2026-09-25) incl. RCs | context only |
+| 2026-10-16 | all | NVD `cves/2.0?keywordSearch=Palantir` for 2026-04-12..08-09 and 2026-08-10..10-12 | 0 results each | 0 |
+| 2026-10-16 | all | `gh api /advisories?ecosystem=npm&affects=@osdk/client`, `@osdk/react`, `palantir-mcp`; `ecosystem=pip&affects=foundry-platform-sdk` | 0 advisories each | 0 |
+| 2026-10-16 | all | `gh api search/issues?q=org:palantir is:issue created:2026-04-12..2026-10-12 security in:title` | 1 third-party report on `palantir/go-githubapp` (2026-04-17, DoS claim); unverified issue, outside AIP/developer-platform scope | 1 / 1 / 1 |
+| 2026-10-16 | all | HN Algolia `search_by_date?query=Palantir&tags=story&numericFilters=created_at_i>1775952000,created_at_i<1792022400&hitsPerPage=1000` | 239 hits (Apr 41, May 47, Jun 33, Jul 46, Aug 27, Sep 24, Oct 21); stories with ≥25 points screened by title | 239 / ~45 / see below |
+| 2026-10-16 | all | HN Algolia same filter, queries `Palantir AIP`, `Palantir Foundry` | 17 and 10 hits; no independent developer-tooling review found | 27 / 27 / 27 |
+| 2026-10-16 | Apr 12–30 | docs `2026-04` entries: AI FDE + AIP Evals (Apr 14), LLM autoscaling (Apr 21), Chatbot Studio rename (Apr 22), object/property security (Apr 23), AIP usage for projects (Apr 30) | 3 included; autoscaling and usage-view screened, not ledgered | — |
+| 2026-10-16 | Apr 12–30 | Guardian `uk-news/2026/apr/25/met-police-investigates-hundreds-officers-palantir-ai-tool` | read raw (`datePublished` 2026-04-25T15:34Z); included | — |
+| 2026-10-16 | Apr 12–30 | HN leads: TechCrunch manifesto (Apr 19), Reason (Apr 20), Economist (Apr 20), Wired employees (Apr 23), Guardian MPs/NHS (Apr 16, Apr 21) | excluded: corporate culture/politics outside study angle; not opened | — |
+| 2026-10-16 | Apr 12–30 | blog RSS "Connecting Agents to Decisions" (Apr 28) | read; Ontology positioning essay, no dated product change; not ledgered | — |
+| 2026-10-16 | May | IR Q1 results (May 4), SAP (May 12), Army hackathon (May 6) | Q1 and SAP included; hackathon excluded (defence event) | — |
+| 2026-10-16 | May | docs `2026-05`: Global Branching (May 5), SQL Studio (May 7), `@osdk/react` (May 12), Ontology MCP Hub and BYOM (May 21), OAuth client migration (May 26), token-usage dataset (May 28) | 5 included; SQL Studio and OAuth migration screened | — |
+| 2026-10-16 | May | BBC `news/articles/c2l2j1lxdk5o` (`datePublished` 2026-05-14T21:09Z); DW `a-77160897` (2026-05-14T14:27Z); berthub.eu `some-notes-on-palantir` (page time 2026-05-23T10:30+02:00) | BBC and berthub included; DW read but not ledgered (report unconfirmed by the agency) | 3 / 3 / 1 |
+| 2026-10-16 | May | HN leads: El País (May 11), digitalhealth NHS (May 11), 404 Media ICE (May 12), shkspr.mobi (May 15), The National (May 15), Guardian London mayor (May 21) | excluded: immigration enforcement, staffing and police procurement outside study angle; not opened | — |
+| 2026-10-16 | June | docs `2026-06`: Python editing legacy (Jun 4 and Jun 23), Palantir MCP GA, Ontology MCP GA (Jun 25), tool search (Jun 30), SQL Studio GA (Jun 16) | 4 included (Jun 23 confirmation folded into CI2026-083-015) | — |
+| 2026-10-16 | June | IR Google Cloud (Jun 4), Nemotron engine (Jun 29), AIPCon 10, McCarthy, Kirkland & Ellis (Jun 4), NGC2 (Jun 22), Zeta (Jun 23), Surf Air (Jun 29) | 2 included; others excluded as customer/defence deals | — |
+| 2026-10-16 | June | Guardian `world/2026/jun/16/france-ai-data-tools-palantir-chapsvision` (2026-06-16T17:08Z); 404 Media IRS API (2026-06-02) | Guardian included; 404 Media read but excluded (government records story outside scope); FT Swiss magazine story (Jun 12) not opened (paywall) | 3 / 2 / 1 |
+| 2026-10-16 | July | docs `2026-07`: per-user rate limits (Jul 2), Model Evaluations (Jul 7), pro-code agents (Jul 9), AI FDE Workflow Lineage (Jul 23) | 2 included | — |
+| 2026-10-16 | July | blog "AI Sovereignty is Your Alpha" (Jul 27; RSS `atom:updated` 2026-10-09) | read; used in report context, not ledgered (legal-guidance essay) | — |
+| 2026-10-16 | July | HN leads: Spain ban (LBC Jul 1; clashreport Jul 2), Canada contract (Jul 6), NPR/Techdirt ICE Medicaid (Jul 17–23) | excluded: clashreport judged low reliability; others outside scope; not opened | — |
+| 2026-10-16 | August | IR Q2 results (Aug 3), Sovereignty Bootcamps (Aug 19); docs SuperRepo (Aug 4), AIP Evolve (Aug 18), Automate in AI FDE (Aug 27); blog Security Forge (Aug 20) | 4 included; Bootcamps and Automate screened | — |
+| 2026-10-16 | August | `GET publictechnology.net/2026/08/03/.../nhs-apologises-and-admits-palantir-engineers-have-access-to-identifiable-patient-data/` | **HTTP 403: inaccessible**, not used | 1 / 0 / 1 |
+| 2026-10-16 | August | HN leads: Guardian UK tax (Aug 5), Nieman Lab USA Today (Aug 7), Intercept (Aug 7), 404 Media (Aug 11), "You Can't Copy Palantir" substack (Aug 13) | excluded or not opened; substack opinion not read | — |
+| 2026-10-16 | September | docs `2026-09`: AIP Evolve GA, certifications, Vulcan beta (Sep 8); eval suites, Sensitive Data Scanner (Sep 10); Spark 4.0.1 (Sep 22); VS Code functions, `@osdk/react-components`, Vulcan GA (Sep 29) | 6 included | — |
+| 2026-10-16 | September | IR Nebius (Sep 8), AIPCon 11 ×2 (Sep 10, same headline; second URL suffixed `v2`), Fujitsu, Method Security, NVIDIA supply chains (Sep 10), TITAN (Sep 1), PwC (Sep 3), Zaffino (Sep 2) | Nebius included; Fujitsu read, claim cited in report only; others excluded | — |
+| 2026-10-16 | September | HN leads: Mother Jones (Sep 26), Arctic Today (Sep 28), Techdirt Iran strike (Sep 29) | excluded: defence/founder stories outside scope | — |
+| 2026-10-16 | Oct 1–12 | docs `2026-10`: AIP Analyst (Oct 1), Iceberg in faster pipelines (Oct 1), ontology interfaces in Workshop (Oct 6), markings allowlist (Oct 12) | 1 included | — |
+| 2026-10-16 | Oct 1–12 | IR Armada (Oct 1), Seoul pop-up (Oct 11), Q3 date (Oct 12); HN Wired ICE photos (Oct 2), Business Insider CTO remarks (Oct 12) | excluded | — |
+| 2026-10-16 | post-window | docs entries dated 2026-10-13 and 2026-10-15; IR Customers Bank (2026-10-15); `@osdk/react` 2.81.0 (2026-10-15) | **excluded** as out of window | — |
+
+## Inclusion, deduplication and conflicts
+
+- **Included:** 35 rows (Apr 5, May 9, Jun 7, Jul 2, Aug 4, Sep 7, Oct 1). Every row cites a URL that was fetched as raw text or queried by API; **however, the 2026-10-16 spot-check found that four rows (005, 010, 017, 027) rest only on pages whose robots.txt disallows Claude agents** (see below). No row relies on a search snippet alone. July and October are thin because the in-scope material there is mostly model-availability notices.
+- **Duplicate groups:** `083-evolve` (beta 2026-08-18, GA 2026-09-08, same title); `083-palantir-mcp` (launcher releases, MCP GA, tool search); `083-ontology-mcp`; `083-osdk-react`; `083-results` (Q1, Q2); `083-exit` (BBC, berthub, Guardian France: related theme, separate events); `083-sovereign-ai`; `083-cost-controls`; `083-ontology-governance`; `083-ide-shift`; `083-ai-fde`; `083-branching`; `083-evals`.
+- **Conflicts recorded, not resolved:** `palantir-mcp` GitHub releases 0.9.0–0.11.0 absent from npm; npm Apache-2.0 vs GitHub "no licence" for `palantir/osdk-ts`; `@osdk/react` AGENTS.md refers to stable 1.x while npm latest is 2.x; Vulcan beta (Sep 8) and GA (Sep 29) under the same title, with the Sep 8 entry edited to add an "Update" line; Global Branching GA announced for "the week of May 18" without a dated confirmation entry; blog posts edited after publication (Security Forge 2026-10-06; AI Sovereignty 2026-10-09).
+- **Figures confirmed against raw text** (grep of saved text; the BBC, Met and Guardian figures came from robots-disallowed pages and could not be re-verified in the 2026-10-16 spot-check): "Nineteen built-in evaluators" (Apr 14); "up to twice" capacity (Apr 21); Q1 $1.633B / 85% / $595M / 133% / TCV $2.41B / guidance $7.650–7.662B and $3.224B; Q2 $1.935B / 93% / $764M / 149% / TCV $3.373B / guidance $8.150–8.158B and $3.424B / 134%; Spark 3.5.5 → 4.0.1; BBC £4.5m / £5.5m / 157,000; Met 98 officers / 500 notices / three arrests; Guardian 2025 renewal; Fujitsu "over $10 million"; Bootcamps "nearly 200"; npm and PyPI timestamps quoted in the ledger. All remain **vendor, customer or press statements**, not verified measurements.
+- **Approximate figure:** "about 31 model-availability notices of 115 entries" is a title-regex count and may misclassify a few entries.
+
+## Embedded agent instructions observed (untrusted content)
+
+- `palantir/osdk-ts` `CLAUDE.md` (repo root) contains imperative coding-agent instructions (e.g., "NEVER use `any` without asking the user first", turbo command rules).
+- `packages/react/AGENTS.md` contains installation instructions directed at agents ("Must install `@osdk/react` AND `@osdk/client` AND `@osdk/api` together").
+- The `palantir-mcp` README contains setup commands (exporting a Foundry token and running `npx` / `claude mcp add`).
+- None of these were followed or executed; they were recorded as evidence that the vendor ships agent-facing guidance. No fetched page contained instructions aimed at this researcher.
+
+## Missing, inaccessible or not attempted
+
+- publictechnology.net NHS article (HTTP 403); FT Swiss-magazine story (paywall, not attempted); SEC/EDGAR filings (deliberately not contacted); the MHCLG blog and NAO report behind the BBC story; Palantir's Ontology MCP and Palantir MCP reference documentation pages; the proprietary `@palantir/mcp` package; any Palantir security-bulletin page (none located); archived (Wayback) copies of mutable documentation pages as of 2026-10-12; WebSearch-based discovery of trade press (TechCrunch, The Register, SiliconANGLE) for in-window developer-platform coverage.
+- No product was executed, no account created, no Foundry enrollment accessed, no paywall circumvented, no energy measurement.
+- **Reproduction:** re-run the requests above, save raw HTML hashes, and have an independent human spot-check at least rows 002, 008, 010, 017, 018 and both financial rows (006, 024) before any evidence is promoted beyond provisional status.
+
+## Robots.txt deviations found in the 2026-10-16 spot-check
+
+The original screen checked `www.palantir.com/robots.txt` but not every other host. A later per-host check (generic and Claude/Anthropic agent groups) found these fetches were of disallowed paths; they were **not** re-fetched:
+
+- `www.theguardian.com` (disallows `/` for anthropic-ai, ClaudeBot, Claude-SearchBot, Claude-User): rows 005 and 017.
+- `www.bbc.com` (disallows `/` for Claude-Web, ClaudeBot, anthropic-ai): row 010.
+- `www.dw.com` (disallows `/` for anthropic-ai, ClaudeBot, Claude-Web): DW article read, not ledgered.
+- `blog.palantir.com` (Medium; disallows `/` for ClaudeBot): RSS feed, row 027 and the essays read for context.
+- `pypi.org/pypi/*/json` (disallowed for all user agents): `foundry-platform-sdk` upload count (context only).
+
+Allowed and re-fetched: `www.palantir.com` docs, `palantir2020ipo.q4web.com`, `registry.npmjs.org`, `berthub.eu`, GitHub API; `hn.algolia.com` and `services.nvd.nist.gov` return 404 for robots.txt (no rules). Affected rows carry confidence `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.

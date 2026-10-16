@@ -71,7 +71,7 @@ Relevant constructs: M1 model release/agent capability timing, M2 independent co
 - **Practical lesson (hypothesis to test, not recommendation):** immutable task evaluators plus controlled model effort outperform repeated unconstrained code generation.
 - **Evidence risk:** Model cards and lab case studies report supplier evaluations, not generalizable third-party environmental evidence. Keep DeepMind identity distinct from other Google product ownership.
 - **Not established:** entire six-month event coverage, external model benchmark comparability, true user adoption, measured whole-life CO2e or energy, counter-evidence, legal ownership beyond vendor assertions.
-- **Independent 2nd reviewer / link QA:** **pending**. Do not mark #69 completed or merge automatically.
+- **Independent 2nd reviewer / link QA:** **pending**. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
 - **Required next pass:** month-specific queries with preserved dates/results, independent high-quality reporting and corrections, archive exact release/version availability and product license/plan boundary, external functional test or explicitly absent, human review.
 - **No corpus inflation:** these first-party announcements are *not* added to the 1,000-news corpus pending independent full article screening and deduplication.
 
@@ -81,3 +81,99 @@ Relevant constructs: M1 model release/agent capability timing, M2 independent co
 ## 2026-10-14 limited integration review (working source leads, not finished study)
 
 The repository maintainer requested merging this explicitly **provisional E1** source shortlist. A single AI-assisted reviewer checked Google DeepMind's May 7 AlphaEvolve impact article and dated July 21 Gemini 3.6 Flash and September 2 Gemini 3.8 Flash model cards against the publisher's own pages/index. Model cards document *vendor evaluation methods and limitations*, not independent proof of coding-agent quality or kWh reduction. The AlphaEvolve article is an attributed historical impact narrative, not an independently replicated new software release. Source dates and company-product attribution were reviewed but the exhaustive month screen, rights/independent analyst audit, external task trials and scientific signoff remain pending in #69. Previous instructions against automatically merging unverified **scientific findings** still stand; this manual integration only retains appropriately qualified source leads in versioned repository history.
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED.** This section was added on 2026-10-16 by an AI-assisted source screen. It has not been reviewed by a qualified human. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. The text above this heading is unchanged from the merged 2026-10-12/2026-10-14 version, except the closure sentence in section 9, which now uses the standard wording above. Corrections to earlier statements appear in this section and are not made by editing the old text.
+
+### What this upgrade adds
+
+- A standard 21-column ledger, [`003-google-deepmind.events.csv`](003-google-deepmind.events.csv), with **39 dated in-window events** (`CI2026-003-001` to `-039`). Per-segment counts: Apr 12–30: 4; May: 11; Jun: 7; Jul: 4; Aug: 3; Sep: 8; Oct 1–12: 2.
+- A query and inclusion log, [`003-google-deepmind.search-log.md`](003-google-deepmind.search-log.md). It records robots.txt checks, inaccessible sources (Reuters, NYT, TechCrunch, The Verge, Axios, FT, a 404 forum thread), exclusions and conflicts.
+- A source check of the three original events against the raw pages. All three dates were confirmed.
+- **Sources used:** the DeepMind blog index (pages 1–4), the DeepMind sitemap and model cards, the Gemini API changelog, The Keyword (blog.google), the Google for Developers blog, the Antigravity blog, `gh api` (google-gemini, google-deepmind, googleapis/python-genai, google-antigravity, GitHub Advisory Database), Hugging Face model metadata and the PyPI release RSS.
+- **Independent and critical coverage:** two Register articles and one independent developer's blog post. Independent reporting is thin, so most rows remain first-party E1/E2.
+- **Product boundary:** rows about Gemini CLI and Antigravity are tagged as Google products. DeepMind ownership of those products is not established.
+
+### Crosswalk: earlier report claims to the ledger
+
+| Earlier claim (sections 3–5, 9, 2026-10-14 note) | Ledger event_id | Status |
+|---|---|---|
+| 003-E01: AlphaEvolve impact update, 2026-05-07, retrospective vendor narrative | CI2026-003-006 | **confirmed** (`datePublished` 2026-05-07T16:00Z; page modified 2026-07-10) |
+| 003-E02: Gemini 3.6 Flash model card, 2026-07-21, intended use, limitations, coding/agentic results | CI2026-003-023 | **confirmed** ("Published 21 July 2026"); GA in the changelog the same day |
+| 003-E03: Gemini 3.8 Flash model card, 2026-09-02, adjustable effort, SWE and agentic scope, may be revised | CI2026-003-031 | **confirmed** ("Published 2 September 2026"; "customizable effort levels"); a later revision is likely (sitemap lastmod 2026-09-08) but was not archived |
+| Section 3: no qualifying item validated for Apr 12–30, June, August, Oct 1–12 | CI2026-003-001…004; -016…022; -027…029; -038, -039 | **corrected**: each of these segments has dated in-window events (that section already said the gaps were not zero-release claims) |
+| Section 2: Gemini CLI, Antigravity and Google Cloud offerings may be operated by other Google units | CI2026-003-004, -010…013, -027 | **partly corrected**: the 2026-08-05 CEO memo places the Gemini app and developer teams under the new SVP of Google DeepMind. Ownership of Antigravity and Gemini CLI is still **unverifiable** from the sources read |
+| Section 5: model cards expose explicit limits and effort/quality trade-offs | CI2026-003-031, -028 | **confirmed** for 3.8 Flash (effort levels) and 3.7 Flash ("thinks more diligently") |
+| Section 5: planned 2027–2031 releases verified: none | CI2026-003-008, -028, -031 | **confirmed with addition**: still no 2027–2031 product roadmap. The only dated 2027 vendor commitment found is a price reversion: 3.7 Flash goes from $0.75/$3.75 to $1.50/$7.50 per 1M tokens on 2027-01-01 |
+| 2026-10-14 note: dates of the three sources were reviewed against the publisher's pages | CI2026-003-006, -023, -031 | **confirmed** |
+
+### Corrections to the earlier report
+
+1. **Segment coverage.** Section 3 left four segments empty. The upgraded screen found in-window events in all seven segments.
+2. **Missing developer-relevant events.** The first pass omitted several events central to the study angle. These are a critical (CVSS 10.0) Gemini CLI remote-code-execution advisory, the replacement of open-source Gemini CLI by a closed-source Antigravity CLI for individual tiers, Gemma open-weight releases under Apache-2.0, and API lifecycle changes that affect reproducibility (deprecations with **automatic model routing**, deprecated sampling parameters, and breaking agent-tool schema changes).
+3. **Vendor roadmap slip.** The 2026-05-19 statement that Gemini 3.5 Pro would roll out "next month" was not fulfilled in the window per the sources read (CI2026-003-008). Google's own 2026-07-21 post and The Register (2026-09-02) both reflect the slip.
+4. **Benchmark comparability.** The vendor's GDPval-AA value for 3.5 Flash differs between the launch post (1656) and the 3.6 Flash card (1349, "v2"). Vendor model-card numbers should not be compared across cards without the version and evaluation revision.
+
+### New events (summary; details and limitations in the ledger)
+
+- **Developer tooling and agents:** Deep Research agents with MCP (-002); Managed Agents and the hosted Antigravity agent preview (-009); Antigravity 2.0, CLI, SDK and plan changes (-010 to -012); the Gemini CLI transition (-013) and an independent critical report (-015); computer use as a built-in tool (-022); agentic video understanding (-030); the Antigravity agent 09-2026 breaking tool schema (-033).
+- **Security and safety:** the Gemini CLI GHSA-wpqr-6v78-jr5g / CVE-2026-12537 advisory (-004); the AI Control Roadmap (-021); a multi-agent safety funding call (-019); 3.5 Flash Cyber and Fairwind / 3.8 Flash Cyber limited access (-025, -032); Gemini 4 Argon's staged release to trusted defenders "without cyber guardrails" (-036); double-blind evaluations (-029); Private AI Compute memory (-035, announced only).
+- **Open models and licensing:** Gemma 4 12B, DiffusionGemma and EmbeddingGemma 2, all Apache-2.0 and not gated on Hugging Face (-017, -018, -038); SynthID Bio code under Apache-2.0 (-037). Baseline: the Gemma Terms of Use were last modified 2026-04-01, and Gemma 4 moved to Apache 2.0 on 2026-04-02 (pre-window, not ledgered).
+- **Model lifecycle:** 3.5 / 3.7 / 3.8 Flash GA (-007, -028, -031); Gemini 2.0 shutdown (-016); Veo/Imagen deprecations (-020); sampling parameters deprecated (-024); Gemini 2.5 access restricted for new users (-034); deprecations with automatic routing (-039); robotics ER preview churn (-001, -026).
+- **Entity:** the 2026-08-05 leadership change. Hassabis becomes Chair, Kavukcuoglu becomes SVP, and Jeff Dean departs (-027).
+
+### M1–M7 notes for new events (hypotheses, not findings)
+
+Construct labels follow the [mission M1–M7 table](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+
+- **M1 (workflow change chronology):** Within five months Google shipped hosted sandboxed agents (-009), an agent SDK with MCP and policy hooks (-011), scheduled agents (-010), built-in computer use (-022) and agentic video retrieval (-030). These give dated *availability* markers only. Availability is not adoption.
+- **M2 (accepted quality, review cost):** Vendor benchmarks change version between cards (the GDPval-AA conflict). The double-blind evaluation pilot (-029) is a contamination-resistant external-testing method worth tracking, but its results were not read. The CVSS 10.0 headless-mode advisory (-004) is a reminder that review cost for agent output includes the security of the harness itself.
+- **M3 (discovery and contributor participation):** The Gemini CLI transition (-013) moved most individual users from an Apache-2.0 repository with community contributors to a CLI whose public repository had no source or licence on 2026-10-16. This is a dated case where a high-attention repository stopped being the main upstream for its users. Its effect on contributor participation is unmeasured.
+- **M4 (first-use success, useful contribution):** The independent report of a forced 2.0 auto-update that broke an existing IDE workflow (-015) is a negative first-use and upgrade signal from a single user. It needs replication before it is used.
+- **M5 (search/verify/adapt versus generate; licence, security, integration costs):** Apache-2.0 open weights (-017, -018, -038) and open embedding models (-003, -038) lower licence friction for local retrieval-based reuse. The CLI advisory shows CI-run agents need explicit folder trust and real allowlists. Cyber-capable models are released through access gating rather than openly (-025, -032, -036).
+- **M6 (total cost and environmental burden):** Several changes undermine reproducible cost-per-task accounting. These are silent routing of deprecated model IDs (-039), deprecated sampling controls (-024), breaking agent-tool schemas (-033) and time-limited introductory prices (-028, -031). Model cards defer sustainability details to predecessor cards (3.6 → 3.5 → 3 Flash), and no model-specific energy figure was found. Vendor token savings ("up to 88%") are not energy savings.
+- **M7 (maintainer interventions):** None of the new events tests a maintainer intervention. The Gemini CLI case suggests a falsifiable caution: tool popularity on GitHub does not protect downstream users from vendor consolidation. This is a hypothesis, not a finding.
+- **Guardrail for the section 8 experiment:** pin and log the exact model ID **and** check the response's reported model version. Treat a routed substitution as a protocol deviation. Do not report vendor token-saving percentages as measured savings.
+
+### Remaining doubts
+
+- No Wayback snapshots. Model cards and the changelog are mutable, so the text read on 2026-10-16 may differ from the text as of 2026-10-12.
+- Several high-salience items were not read: the Jumper departure (Reuters), the reported AlphaFold team restructuring (FT, paywalled), an Antigravity terms-of-service controversy (X post) and a Gemini API billing-spike forum thread (404). They are logged, not ledgered.
+- The independent-reporting share is low (3 independent documents). No product was run or benchmarked.
+
+Related: [#69](https://github.com/MSKazemi/github-trending-1000-study/issues/69) · news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56). None of these events were added to the news corpus in this upgrade.
+
+## Independent source spot-check (2026-10-16)
+
+A second AI-assisted reviewer re-fetched the cited sources on 2026-10-16 and compared 23 of the 39 new ledger rows with the raw page text, API JSON or RSS. `robots.txt` was checked first for every host. deepmind.google, ai.google.dev, blog.google, developers.googleblog.com, antigravity.google and huggingface.co allow the paths used. The Register disallows `*` and ClaudeBot but **explicitly allows `Claude-User`**, so its two articles were fetched while identifying as `Claude-User`, as the screen did. hn.algolia.com and 0xsid.com serve no robots file. The PyPI JSON API (disallowed) was not used; the release RSS was. No ledger row depends only on a robots-disallowed source. Reuters, NYT, TechCrunch and The Verge were not fetched by the screen or by this review.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-003-004 | confirmed | `gh api` advisory: CVE-2026-12537, critical, CVSS 3.1 10.0, published 2026-04-24, updated 2026-09-24; patched `@google/gemini-cli` 0.39.1 and run-gemini-cli 0.1.22; text names the headless folder-trust breaking change, `.env` and `--yolo` allowlists. The advisory also lists 0.40.0-preview.3 as the patch for 0.40.0-preview.2 (not in the row; not an error) |
+| CI2026-003-006 | confirmed | `datePublished` 2026-05-07T16:00Z, `dateModified` 2026-07-10; 20% write amplification (Spanner LSM compaction), TPU silicon, FM Logistic 10.4%, ~9% storage footprint all in text |
+| CI2026-003-007 | confirmed | Terminal-Bench 2.1 76.2%, GDPval-AA 1656 Elo, MCP Atlas 83.6% in the 2026-05-19 post |
+| CI2026-003-008 | confirmed | "look forward to rolling it out next month" (2026-05-19); Register 2026-09-02 says "failure to release Gemini 3.5 Pro in June as promised" |
+| CI2026-003-010 | confirmed | Post dated 2026-05-19: scheduled tasks (crons), JSON hooks, multi-folder projects, `/goal` and `/grill-me`. `gh api`: antigravity-cli repo has no licence; contents are `.github`, CHANGELOG.md, README.md, a GIF and examples |
+| CI2026-003-011 | confirmed | Post: Apache 2.0, `confirm_run_command()`, stdio/SSE/Streamable HTTP, `skills_paths`. PyPI RSS: 23 releases, 0.1.0 at 2026-05-19T18:17Z, 0.1.21 at 2026-10-07 |
+| CI2026-003-012 | confirmed | $100/month Ultra, $250 → $200, shared quota pool, 5X / 20X versus the $20 Pro plan, Gemini Enterprise Agent Platform |
+| CI2026-003-013 | confirmed | Post dated 2026-05-19; 2026-06-18 cutoff for Google AI Pro/Ultra and free Code Assist for individuals; no new GitHub installs; Standard/Enterprise and paid API keys continue; "won't be 1:1 feature parity". `gh api`: v0.63.0 published 2026-10-06. Register 2026-05-20 confirms the open-source complaint |
+| CI2026-003-015 | confirmed | Blog dated May 21, 2026; auto-update, legacy installer conflict, purge and subreddit all in text; HN Algolia story shows 771 points |
+| CI2026-003-017 | confirmed | 16GB VRAM/unified memory, Apache 2.0, Hugging Face and Kaggle; HF API: apache-2.0, not gated, createdAt 2026-05-23 |
+| CI2026-003-018 | confirmed (HF part) | HF API: apache-2.0, not gated, createdAt 2026-06-09; post text not re-read |
+| CI2026-003-019 | confirmed | Up to $10M; deadline August 8, 2026; awardees expected Autumn 2026; partners as stated |
+| CI2026-003-023 | confirmed | Card "Published 21 July 2026"; 1M input, 64K output; $1.50/$7.50; "not directly comparable"; GDPVal-AA v2 1349 is in the 3.5 Flash column; sitemap lastmod 2026-09-01. Changelog GA on 2026-07-21 |
+| CI2026-003-024 | confirmed | Changelog 2026-07-21: temperature, top_p, top_k deprecated |
+| CI2026-003-027 | confirmed | Memo 2026-08-05: Hassabis Chair of GDM and Chief Scientist of Alphabet, still leading Isomorphic; Kavukcuoglu SVP overseeing "Gemini model development, Frontier AI research, and the Gemini app and developer teams"; Dean and Ghemawat launching an independent public benefit corporation; 950M+ monthly users; 900M+ Gemma downloads |
+| CI2026-003-028 | confirmed | $0.75/$3.75 through December 31, 2026, then $1.50/$7.50 from January 1, 2027; "thinks more diligently" |
+| CI2026-003-030 | confirmed | Changelog 2026-09-01: "up to 88% fewer tokens for long-form content"; blog: costs up to 66%, accuracy up to 7% |
+| CI2026-003-031 | confirmed | Card "Published 2 September 2026"; "customizable effort levels"; $0.75 ($1.50 regular) / $3.75 ($7.50 regular); sitemap lastmod 2026-09-08; Register: Intelligence Index 59, $0.58 per task |
+| CI2026-003-033 | confirmed | Changelog 2026-09-17: PascalCase, `replace_file_content` line ranges, `find_by_name`, `grep_search`; 05-2026 agent shuts down October 5, 2026 |
+| CI2026-003-036 | confirmed | `datePublished` 2026-09-30, modified 2026-10-14; Fairwind; "without cyber guardrails"; 1M output, up from 64K; $2/$10 introductory price; DeepSWE v1.1 77.9%; 300 TiB; C/C++ to Rust. Not in the row: after the introductory period the post states $4/$20 |
+| CI2026-003-037 | confirmed (repo part) | `gh api`: google-deepmind/synthidbio created 2026-09-29, Apache-2.0 |
+| CI2026-003-038 | confirmed | 740 million parameters, Apache 2.0, Model Garden "coming soon"; HF API: apache-2.0, not gated, createdAt 2026-09-14 |
+| CI2026-003-039 | confirmed | Changelog 2026-10-08: 3.7 → 3.8 Flash and 3.5 → 3.6 Flash automatic routing; deep-research-pro-preview-12-2025 shuts down October 23, 2026 |
+
+**Counts:** 23 rows checked (21 in full, 2 partially); 23 confirmed, 0 corrected, 0 unverifiable, 0 wrong. The search log's count of 32 in-window changelog dates was also confirmed. The search log's "figures confirmed against raw text" list matched every figure re-checked here. It does not claim that every number on the source pages was checked, so it needs no qualification. Rows 001–003, 005, 009, 014, 016, 020–022, 025, 026, 029, 032, 034 and 035 were not re-checked. No CSV or report text was changed.
+
+*This is an AI-assisted spot-check, not qualified human review.*
