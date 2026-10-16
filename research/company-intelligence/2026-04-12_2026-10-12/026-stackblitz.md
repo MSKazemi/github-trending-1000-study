@@ -101,7 +101,7 @@ Freeze an independently accepted two-page docs/tutorial site task. Compare verif
 - **Per segment:** Apr 12–30 **3**, May **3**, Jun **0**, Jul **6**, Aug **4**, Sep **4**, Oct 1–12 **2**. June has no ledger row: its seven Bolt blog posts are marketing/SEO, and no npm or GitHub release was found. This is a bounded-screen result, not a zero-activity claim.
 - **Scope:** Bolt.new blog announcements (13 rows), the open-source and SDK surface (`@webcontainer/api`, `@stackblitz/sdk`, `alien-signals`, `pkg.pr.new`, `bolt.diy`, `bolt-slides`: 6 rows, one of them shared with a product row), status records (3 rows) and one independent secondary report.
 - **Source classes:** 13 Bolt.new blog posts, 3 npm registry records, 2 GitHub releases, 3 status-page records, 1 independent secondary report (AlphaSignal). `support.bolt.new` docs, `webcontainers.io/enterprise` and GitHub repos serve as `independent_check_url` cross-checks.
-- **Verification:** every number, price, date and quote in a ledger row was matched against raw page text or API JSON, with the exceptions and conflicts listed in the search log. The blog at `blog.stackblitz.com` has no post after 2025-06-04, so Bolt.new/blog is the active StackBlitz channel.
+- **Verification:** every number, price, date and quote in a ledger row was matched against raw page text or API JSON, with the exceptions and conflicts listed in the search log. *(Spot-check qualification: the status-history counts in CI2026-026-021 did not reproduce exactly on an independent same-day re-parse and were corrected; see the spot-check section below.)* The blog at `blog.stackblitz.com` has no post after 2025-06-04, so Bolt.new/blog is the active StackBlitz channel.
 
 ### Crosswalk: earlier report claims → ledger
 
@@ -126,7 +126,7 @@ Freeze an independently accepted two-page docs/tutorial site task. Compare verif
 
 - **Product cadence:** Opus 4.7 vendor eval (Apr 15), Microsoft Azure/M365 partnership (May 5, mostly future tense), Bolt Slides with an MIT repo (Jul 16), free security audit with auto-fix on publish (Jul 30), dictation (Aug 13), prompt queueing (Aug 27), Visual Edits (Sep 3).
 - **Open source and rights:** `bolt.diy` v1.0.1 (Oct 12) is the first release in 17 months (118 listed changes including MCP integration). `@webcontainer/api` 1.6.4 (Apr 14) is the first stable release since April 2025. Its npm licence field says MIT, but webcontainers.io says production for-profit use needs a commercial licence. The Bolt Open Source Fund 2026 (Aug 21) discloses that some 2025 sponsorships were never applied and raises the run-rate to $11,333/month.
-- **Reliability and dependencies:** the status history (visible only from 2026-07-15) lists 26 own entries and 144 upstream "[Dependency Check]" mirrors (Cloudflare, Anthropic, GitHub, Name.com, Supabase, NPM). Notable incidents: a Cloudflare-linked project-save partial outage (Jul 30) and about 30 hours of stuck publishing (Aug 6–7).
+- **Reliability and dependencies:** the status history (visible only from 2026-07-15) lists 27 own entries and 143 upstream "[Dependency Check]" mirrors (spot-check re-parse; the first pass reported 26/144) (Cloudflare, Anthropic, GitHub, Name.com, Supabase, NPM). Notable incidents: a Cloudflare-linked project-save partial outage (Jul 30) and about 30 hours of stuck publishing (Aug 6–7).
 - **Analyst recognition:** Forrester's Agentic Development Platforms Landscape, Q3 2026, as reported by the vendor. The report itself is gated and was not read.
 
 ### M1–M7 notes for new events
@@ -158,3 +158,41 @@ No paid plan, paid API or Forge opt-in without the maintainer's approval.
 - Status history before 2026-07-15 is not visible. Counts come from our parser of the page's embedded JSON.
 - The open-weights promise attributed to Bolt by AlphaSignal is unconfirmed in first-party text.
 - Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+All 22 new ledger rows were re-checked on 2026-10-16. Each check used a fresh raw fetch (`curl`, generic `Mozilla/5.0` User-Agent, no personal identifier sent), the npm registry JSON or `gh api`. Dates, availability wording and every specific figure or quote were compared with the extracted text. **Outcomes:** 21 confirmed, 1 corrected, 0 wrong, 0 unverifiable.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-026-001 | confirmed | npm: 1.6.4 at 2026-04-14T11:25Z, previous stable 1.6.1 (2025-04-23), 1.6.5-internal.1/.2 on 04-15/07-10, licence MIT. The webcontainers.io/enterprise commercial-licence sentence is present |
+| CI2026-026-002 | confirmed | datePublished 2026-04-15; "up to 10%", "7.5 hours", "AI-resistant" present |
+| CI2026-026-003 | confirmed | 21 in-window versions, 0.0.67 (04-26) to 0.0.91 (10-07), gap 0.0.75 (05-19) to 0.0.78 (07-13), MIT; GitHub repo has 0 releases |
+| CI2026-026-004 | confirmed | 2026-05-05; "will be available", Teams, M365 Copilot, "12 months to three to four months", "50 to nearly 70", "75% of the Fortune 500" present |
+| CI2026-026-005 | confirmed | Release published 2026-05-12T14:05Z with effect cleanup, four bug fixes and the custom-implementor note; npm 3.2.0/3.2.1 on 05-12/05-14 |
+| CI2026-026-006 | confirmed | datePublished 2026-05-20, dateModified 2026-08-17; H1 and og:title as stated; the earlier title string is absent; "Export to Bolt", DESIGN.md and MCP present |
+| CI2026-026-007 | confirmed | npm 1.11.1 on 2026-07-02, prior 1.11.0; commit "fix: allow cross-origin-isolation for the run endpoint (#39)" on 2026-07-01 |
+| CI2026-026-008 | confirmed | 2026-07-10; "Q3 2026", notable vendor, and the Forrester non-endorsement disclaimer present |
+| CI2026-026-009 | confirmed | Blog 2026-07-16; "Available now to every Bolt.new user, free and paid"; repo created 2026-07-14, MIT; 8 commits through 2026-07-30 including merges of external PRs #5 and #6 |
+| CI2026-026-010 | confirmed | 2026-07-22 (modified 08-18); "Skills are live now", skill repos upload and workspace sharing present |
+| CI2026-026-011 | confirmed | 2026-07-30; button text, "two to three minutes", "never touches your tokens", mechanical/architectural split and the three cited statistics present |
+| CI2026-026-012 | confirmed | Embedded JSON gives 07:29:51Z to 08:47:57Z, partial outage, Cloudflare wording. It is the only in-window partial-outage entry |
+| CI2026-026-013 | confirmed | 16:52:38Z (08-06), fix 18:25:33Z, resolved 22:29:42Z (08-07), about 29.6 h, degraded performance |
+| CI2026-026-014 | confirmed | 2026-08-13; "2.93 times" (ACM 2018), false starts/filler present |
+| CI2026-026-015 | confirmed | 2026-08-21; $1,700/month, $11,333/month, 27 and 22 developers, "not applied then" present |
+| CI2026-026-016 | confirmed | 2026-08-27; "live in every Bolt.new project, for everyone", "next five prompts", retry, shared queue, per-prompt agent present |
+| CI2026-026-017 | confirmed | 2026-09-03; "As of September 3, 2026", "free and paid plans", text/styling only, tokens spent |
+| CI2026-026-018 | confirmed | 2026-09-14; model lineup, 50X to October 14, Arcee, "StackBlitz may be paid", exclusions, 92.2/101.0, Claude Opus 5, email deletion. The explicit "(default)" label for GLM 5.3 Flash is in AlphaSignal; the Bolt post only says "start on the default" |
+| CI2026-026-019 | confirmed | AlphaSignal datePublished 2026-09-14T16:01Z; it states the weights will be "released openly". No "weights" or "open-weight" text appears in the Bolt blog or the support doc, so the conflict stands. The $9/month Bolt Lite plan also appears as a banner on the Bolt Forge blog page |
+| CI2026-026-020 | confirmed | 2026-09-29; "first acquisition", "the StackBlitz platform", "built by StackBlitz", "Terms were not disclosed", "roughly half", "34 days", "late fall" present |
+| CI2026-026-021 | **corrected** | The total of 170 in-window entries and the start date 2026-07-15 were confirmed. A re-parse gives 143 dependency mirrors (Anthropic 41, not 42) and 27 own entries (20 degraded, not 19). The last in-window own entry is "Features → Prompting Degraded" (2026-10-12T20:17Z), not "Subscription Updates…". The first-pass split could not be reproduced. Row, upgrade section and search log updated; the counts are parser-dependent |
+| CI2026-026-022 | confirmed | v1.0.1 at 2026-10-12T16:49Z, previous v1.0.0 (2025-05-12); 118 "What's Changed" bullets and 12 new contributors; MIT; the README sentence on WebContainers commercial terms is present |
+
+- **Access rules:** robots.txt was re-checked for bolt.new, support.bolt.new, status.bolt.new (404), alphasignal.ai (explicitly allows Claude-User and ClaudeBot), webcontainers.io (404), stackblitz.com (404), blog.stackblitz.com, evilmartians.com, hn.algolia.com (404) and thenewstack.io.
+  - No cited URL or logged fetch falls under a disallow rule for a generic browser or for Claude/Anthropic agents.
+  - thenewstack.io disallows `anthropic-ai`, `ClaudeBot` and `Claude-Web`, and it was correctly not fetched.
+  - No row depends on a robots-disallowed source, so no row was marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+- **"Every number checked" claim:** the claim was true for the article and registry figures. It did not hold for the status-history split, so the upgrade section is now qualified.
+- **Not re-verified:** the blog-listing counts (120/75/72), the HN hit counts and the GitHub org repo counts. The zero security advisories for bolt.diy, pkg-pr-new and @webcontainer/api were re-confirmed.
+
+This is an AI-assisted source spot-check, not qualified human review.
