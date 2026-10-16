@@ -74,6 +74,7 @@ class BurdenTests(unittest.TestCase):
         b = copy.deepcopy(a)
         b["case_id"] = "CONSENTED-CASE-2"
         b["not_empirical_data"] = False
+        b["synthetic"] = False
         b["frame_commit"] = "a" * 40
         b["consent_state"] = "consented"
         with self.assertRaisesRegex(BurdenError, "never share one aggregate"):
@@ -82,6 +83,7 @@ class BurdenTests(unittest.TestCase):
     def test_real_case_requires_frozen_frame_commit(self):
         p = card()
         p["not_empirical_data"] = False
+        p["synthetic"] = False
         p["consent_state"] = "consented"
         with self.assertRaisesRegex(BurdenError, "frame_commit"):
             summarize([p])
@@ -96,6 +98,81 @@ class BurdenTests(unittest.TestCase):
         p["observed_at_utc"] = "2026-10-12T12:00:00Z"
         with self.assertRaisesRegex(BurdenError, "cannot retain"):
             summarize([p])
+
+    def test_extra_private_case_and_outcome_fields_fail_closed(self):
+        for change in ("raw_prompt", "private_email", "participant_name"):
+            c = card()
+            c[change] = "NEVER_PUBLISH_PRIVATE_PARTICIPANT_DATA"
+            with self.subTest(extra=change), self.assertRaisesRegex(
+                    BurdenError, "case schema or fields"):
+                summarize([c])
+        c = card()
+        c["outcomes"]["person_name"] = "NEVER_PUBLISH"
+        with self.assertRaisesRegex(BurdenError, "outcome schema"):
+            summarize([c])
+        c = card()
+        del c["opt_in_project_id"]
+        with self.assertRaisesRegex(BurdenError, "case schema or fields"):
+            summarize([c])
+
+    def test_synthetic_provenance_flags_must_agree(self):
+        for synthetic, declared in ((False, True), (True, False)):
+            c = card()
+            c["synthetic"] = synthetic
+            c["not_empirical_data"] = declared
+            with self.subTest(synthetic=synthetic, declared=declared):
+                with self.assertRaisesRegex(BurdenError, "conflicting synthetic"):
+                    summarize([c])
+        c = card()
+        c["synthetic"] = "false"
+        with self.assertRaisesRegex(BurdenError, "conflicting synthetic"):
+            summarize([c])
+
+    def test_v01_cannot_self_certify_human_review_or_release(self):
+        for field in ("human_review_state", "data_release_approval"):
+            c = card()
+            c[field] = "approved"
+            with self.subTest(field=field), self.assertRaisesRegex(
+                    BurdenError, "cannot self-certify"):
+                summarize([c])
+
+    def test_identifiers_and_outcome_states_not_free_text(self):
+        for field in ("case_id", "opt_in_project_id", "task_type",
+                      "declared_workflow", "frame_commit"):
+            c = card()
+            c[field] = "PRIVATE\\nPARTICIPANT\\tNAME"
+            with self.subTest(field=field), self.assertRaises(BurdenError):
+                summarize([c])
+        c = card()
+        c["outcomes"]["actionability"] = "contains private interview text"
+        with self.assertRaisesRegex(BurdenError, "outcome schema"):
+            summarize([c])
+
+    def test_unhashable_status_values_are_controlled_domain_errors(self):
+        for field in ("consent_state", "task_accepted_by_independent_reviewer"):
+            c = card()
+            c[field] = []
+            with self.subTest(field=field), self.assertRaises(BurdenError):
+                summarize([c])
+
+    def test_bounded_case_count_prevents_unbounded_direct_processing(self):
+        with self.assertRaisesRegex(BurdenError, "bounded nonempty"):
+            summarize([card()] * 10001)
+
+    def test_cli_privacy_errors_never_echo_private_input_data(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "PRIVATE_PARTICIPANT_MARKER.json"
+            c = card()
+            c["raw_private_interview"] = "PRIVATE_INTERVIEW_CONTENT"
+            path.write_text(json.dumps(c), encoding="utf-8")
+            stderr = io.StringIO()
+            with redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+                main(["--input", str(path)])
+            self.assertEqual(caught.exception.code, 2)
+            self.assertIn("invalid maintainer case schema", stderr.getvalue())
+            self.assertNotIn("PRIVATE_PARTICIPANT_MARKER", stderr.getvalue())
+            self.assertNotIn("PRIVATE_INTERVIEW_CONTENT", stderr.getvalue())
+            self.assertNotIn("raw_private_interview", stderr.getvalue())
 
     def test_row_and_multi_case_float_sums_never_overflow_to_infinity(self):
         a = card()
