@@ -104,7 +104,7 @@ The earlier text above is kept byte-identical, with one exception. Two closure-w
   | Oct 1–12 | 1 |
 
   The earlier report had 3 events and recorded April–July and October as having no validated items.
-- **Discovery sources:** the official changelog RSS (40 in-window items), the blog index (9 recent posts are missing from the sitemap), the official GitHub security advisories (6 published in the window), the npm and PyPI registries for the SDK, the official status page, and independent coverage found through the HN Algolia API and two web searches.
+- **Discovery sources:** the official changelog RSS (43 in-window items; first written as 40, corrected by the spot-check below), the blog index (9 recent posts are missing from the sitemap), the official GitHub security advisories (6 published in the window), the npm and PyPI registries for the SDK, the official status page, and independent coverage found through the HN Algolia API and two web searches.
 - **Rows by source type:**
   - 40 first-party rows: changelog, blog, advisories and status page.
   - 1 parent-company row: x.ai's Grok 4.7 page.
@@ -199,3 +199,47 @@ No earlier claim was found to be wrong. None was unverifiable.
 - **Archives:** no archived page copies were made.
 - **Review:** no human factual or link review has been done.
 - **Next steps:** the independent spot-check list and reproduction steps are in the [search log](012-cursor-anysphere.search-log.md).
+
+## Independent source spot-check (2026-10-16)
+
+A second AI-assisted reviewer re-fetched the cited sources on 2026-10-16 and compared 31 of the 50 ledger rows with the raw page text, `gh api` advisory JSON, the npm registry (including `LICENSE.md` read from the 1.0.37 tarball as a stream, not extracted) and the PyPI release RSS. `robots.txt` was checked first for every host. cursor.com allows `/blog` and `/changelog`. status.cursor.com allows `/incidents/`. Nextgov, Engadget, eSecurity Planet, Free Press Journal, Manifold, x.ai and HN item pages have no rule against these paths for `*` or Claude agents. Daily Maverick explicitly allows `Claude-User` and `ClaudeBot`. Armature allows ClaudeBot and anthropic-ai. Mindgard and Pillar list no rules. **No ledger row depends only on a robots-disallowed source.** Disallowed or blocked originals (Reuters, WSJ, Bloomberg, NYT, The Verge and others) appear only in limitations or as unread leads. The disclosed status-API lapse (`/api/` disallowed) is not used by any row, and this review did not repeat it. Neither the screen nor this review used the PyPI JSON API.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-012-001 | confirmed; limitation extended | `datePublished` 2026-04-21T22:17Z; Colossus, "bottlenecked by compute"; no acquisition wording. The April page already uses the name "SpaceXAI", the same post-publication-edit risk recorded for row 010. That caveat was added to the row's limitation |
+| CI2026-012-003 | confirmed | npm: created 2026-04-26T19:37Z (first version 1.0.7), 32 versions, latest 1.0.37 on 2026-10-07; `LICENSE.md` reads "© Anysphere Inc. All rights reserved. Use is subject to Cursor's Terms of Service". PyPI RSS: 24 items, 0.0.0 and 0.1.0 on 2026-05-13. Changelog dated Apr 29, 2026 |
+| CI2026-012-004 | confirmed | Nextgov `datePublished` 2026-04-29: both committees, letters to "the companies' CEOs", Composer 2, Kimi/Moonshot, "did not immediately respond", "first reported by Semafor" |
+| CI2026-012-008 | confirmed | $40 per seat per month to usage-based billing, "next billing renewal after June 8th, 2026", average run $1.00–$1.50 |
+| CI2026-012-010 | confirmed | Standard $0.50/$2.50, Fast (default) $3.00/$15.00 per M; the blog names "Moonshot's Kimi K2.5" and "10x more total compute" with SpaceXAI |
+| CI2026-012-011 | confirmed | GHSA-pc9j-3qc2-95wv: high, published 2026-05-21, CVSS v4 8.5, affected 2.4.37, patched 3.0.0, `.claude/settings.local.json` |
+| CI2026-012-013 | confirmed | $32/$40 Standard, Premium 5x at $96/$120, renewals from July 1st, 2026 |
+| CI2026-012-015 | confirmed | GHSA-3v8f-48vw-3mjx: critical, 2026-06-05, no CVSS, < 3.0 → 3.0, symlink canonicalisation |
+| CI2026-012-016 | confirmed | GHSA-3p48-7v9f-v5cw: critical, 2026-06-05, no CVSS, `working_directory` |
+| CI2026-012-017 | confirmed | Changelog Jun 10, 2026: ~90 s from ~5 min, 0.62 from 0.56, ~22% less per run, `/review` |
+| CI2026-012-018 | confirmed (E0 as labelled) | HN item 48553224 (2026-06-16) "SpaceX to buy Cursor for $60B" links reuters.com; Engadget confirms $60 billion and a June announcement. The Reuters text was not read, so deal terms stay E0 |
+| CI2026-012-019 | confirmed | Mindgard JSON-LD 2026-06-17, "Last Updated: September 24, 2026"; planted `git.exe`, seven months, CISO and automation failure, HackerOne; issue "remains present in the latest tested version" |
+| CI2026-012-021 | confirmed | 63%; Opus 4.8 Max 87.1% → 73.0%; Composer 2.5 74.7% → 54.0% |
+| CI2026-012-023 | confirmed | HN item 48737226 (2026-06-30): Privacy Mode (Legacy) switched; quoted support reply names "the prompt to turn on Cloud Agents" |
+| CI2026-012-024 | confirmed | GHSA-whx2-4gvm-m3r3: high, published 2026-07-06, CVSS v4 7.7, CWE-306, "Fixed on 03/31/2026" |
+| CI2026-012-025 | confirmed | "trillions of tokens of Cursor data"; `datePublished` 2026-07-08 |
+| CI2026-012-026 | confirmed | GHSA-v4xv-rqh3-w9mc: high, 2026-07-14, < 3.0.0, no patched version, `virtiofs0` |
+| CI2026-012-027 | confirmed | GHSA-p9g2-cr55-cw9c: high, 2026-07-14, < 3.1.2 → 3.1.2. `gh api` lists 33 advisories in total and 6 published in the window, as logged |
+| CI2026-012-030 | confirmed | Changelog Jul 28, 2026: ₹649 per month, UPI, "available from July 28, 2026" |
+| CI2026-012-033 | confirmed | Schellman audit; "70% of the Fortune 500 use Cursor" (vendor claim) |
+| CI2026-012-036 | confirmed | "officially been acquired by SpaceX", "started in April", "largest fleet of GPUs in the world"; `datePublished` 2026-08-14T12:00Z |
+| CI2026-012-037 | confirmed | Engadget `datePublished` 2026-08-15: announced in June, started in April, $60 billion, merged with xAI, SpaceXAI name in July |
+| CI2026-012-039 | confirmed | Incident posts 14:34–20:40 UTC on Aug 17, 2026; "This incident affected: Automations, Review Agents, Cloud Agents, and Origin" |
+| CI2026-012-041 | confirmed | Daily Maverick (Reuters, "WASHINGTON, Aug 27"), `datePublished` 2026-08-28: Belgian chemical company plus at least six other firms, ransomware gang Aur0ra, 28 chat sessions, Gambit and CloudSek, "did not return messages" |
+| CI2026-012-042 | confirmed | FPJ 2026-08-31 (IST): "November 12" proposed cut-off, terms-of-service doubts, "Astra", Truell "roughly 5 per cent of traffic". HN item 49486172 dated 2026-08-29T01:47Z links the openai.com post (not read) |
+| CI2026-012-043 | confirmed | Manifold: Cursor "8 July 2026 · Closed as duplicate of an earlier report · Patched"; `core.fsmonitor`; `datePublished` 2026-09-01 |
+| CI2026-012-045 | confirmed | September 3, 2026: 16,893 sessions, 1,163 prompt variations, 75 repositories, three agents; Cursor uses the web "in 2/3 of the sessions"; disclaimer says Armature sells growth services to dev tools |
+| CI2026-012-046 | confirmed | Changelog Sep 10, 2026: "thousands of subagents", "available in beta and rolling out to all users starting today" |
+| CI2026-012-047 | confirmed | x.ai page title "SpaceXSI", dated Sep 21, 2026: "available today in Cursor and Grok Build", $2/$6, CursorBench 4.0 46.3% |
+| CI2026-012-049 | confirmed | 7%, roughly 66% of the system prompt, 46.9% in MCP sessions, 60% of static-context description tokens |
+| CI2026-012-050 | confirmed | Changelog Oct 6, 2026: on by default for everyone except Enterprise organizations |
+
+**Search-log correction:** the changelog RSS (re-fetched 2026-10-16) has 50 items. 43 of them, not 40, are dated within 2026-04-12..2026-10-12 UTC: 6 are earlier (2026-03-05 to 04-08) and 1 is later (10-13). The search-log row and the upgrade section's "Discovery sources" bullet now say 43. The log still records 40 titles as screened, so up to 3 in-window changelog titles may not have been screened. The feed may also have changed between the two fetches.
+
+**Counts:** 31 rows checked: 31 confirmed (1 with an added limitation), 0 corrected, 0 unverifiable, 0 wrong; 1 search-log count corrected. The search log's "figures confirmed against raw text" list matched every figure re-checked here. It already says that not every figure on every page was checked, so it needs no further qualification. Rows 002, 005–007, 009, 012, 014, 020, 022, 028, 029, 031, 032, 034, 035, 038, 040, 044 and 048 were not re-checked.
+
+*This is an AI-assisted spot-check, not qualified human review.*
