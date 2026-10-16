@@ -40,7 +40,7 @@
 
 ## Inaccessible or not used
 
-- blogs.microsoft.com, news.microsoft.com (homepage), blogs.windows.com: HTTP 403 (Cloudflare/WAF) to curl. The earlier report's three blogs.microsoft.com sources were read only via WebFetch summaries; their quotes/figures are **not** raw-confirmed.
+- blogs.microsoft.com, news.microsoft.com (homepage), blogs.windows.com: HTTP 403 (Cloudflare/WAF) to curl. The earlier report's three blogs.microsoft.com sources were read only via WebFetch summaries; their quotes/figures are **not** raw-confirmed. *(Spot-check 2026-10-16: raw HTML of all three posts was read from Wayback Machine captures on web.archive.org, which has no robots.txt; dates, bylines and the ledger claims were confirmed. See the report's spot-check section.)*
 - microsoft.ai MAI-Code-1-Flash launch page: HTTP 403.
 - thenewstack.io: robots.txt disallows Claude agents — not fetched.
 - bleepingcomputer.com: Cloudflare challenge on robots.txt and pages — not fetched.
