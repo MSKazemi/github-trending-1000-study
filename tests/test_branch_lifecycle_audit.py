@@ -38,6 +38,15 @@ class BranchAuditTest(unittest.TestCase):
         self.assertTrue(report["read_only"])
         self.assertEqual(report["branches"][1]["decision"], "hold-base-moved-rerun")
 
+    def test_repo_route_dot_segments_fail_before_any_network(self):
+        def fail_fetch(path):
+            self.fail("invalid owner/repo identity must not request GitHub API")
+        for invalid in ("../name", "owner/..", "./name", "owner/.",
+                        "/name", "owner/", "owner/../other", None):
+            with self.subTest(repo=invalid), self.assertRaisesRegex(
+                    ValueError, "Expected owner/repo"):
+                audit(invalid, get=fail_fetch)
+
     def test_malicious_base_ref_rejected_before_any_network(self):
         def fail_fetch(path):
             self.fail("network must not be called for invalid base")
