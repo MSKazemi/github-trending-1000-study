@@ -23,7 +23,7 @@ from trending_study.data_integrity import (
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
 TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
-_DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\Z")
+_DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\Z")
 _NUMERIC_IPV4_PART = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
 
 
@@ -41,7 +41,7 @@ def _public_source_host(host):
         return address.is_global
     # Legacy network stacks may resolve numeric spellings rejected by
     # ipaddress (127.1, 2130706433, 0x7f000001) to special IPv4 addresses.
-    if re.fullmatch(_NUMERIC_IPV4_PART + r"(?:\\." + _NUMERIC_IPV4_PART + r"){0,3}",
+    if re.fullmatch(_NUMERIC_IPV4_PART + r"(?:\." + _NUMERIC_IPV4_PART + r"){0,3}",
                     host, flags=re.IGNORECASE):
         return False
     labels = host.split(".")
