@@ -77,7 +77,7 @@ This dated supplement preserves the previous 2026-10-12 E0 lead. Five April–Au
 
 Freeze 8–12 small maintainer-repo maintenance issues, SHA-pinned source and allowed dependencies, a fixed allocation schedule and hidden acceptance/license/security tests. Compare bounded delegated Devin work (if legitimately accessible on known terms) with human-guided reuse-first development. Track **every assigned task including failure**, independent reviewer accepted patches, human review and repair minutes, support follow-up, external reused-component evidence, CI iterations, agent permissions, USD costs if actually billed and reproducibility. Stop for an unreviewed merge, security or license incident, worse accepted-task quality or unacceptable increased human burden. Mapping to M1–M7: agent workflow, discovery, accepted task quality, real reuse, maintenance, rights/security, lifecycle cost. Do not infer CO2e from tokens.
 
-**Still required for acceptance:** full seven-segment vendor + independent source log with dates, counts, exclusions and contradictory evidence; verify each release/plan/rights and effective event date; verify ownership; non-author factual/link and scientific human review; latest integrated tree checks. **Issue #79 remains open; this bounded and uncertainty-labeled documentary screen may be published without representing completion.** Green automated CI is not substantive scientific acceptance.
+**Still required for acceptance:** full seven-segment vendor + independent source log with dates, counts, exclusions and contradictory evidence; verify each release/plan/rights and effective event date; verify ownership; non-author factual/link and scientific human review; latest integrated tree checks. **Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.** Green automated CI is not substantive scientific acceptance.
 
 **Practical lesson:** root-level AGENTS.md plus least-privilege agent tokens and independent review are useful *candidate controls*; verify they actually improve accepted maintenance tasks before relying on autonomous coding.
 
@@ -87,4 +87,144 @@ The live URL [Devin 2026 release notes](https://docs.devin.ai/release-notes/2026
 
 The [2025 Cognition Windsurf acquisition announcement](https://cognition.com/blog/windsurf) is **outside the 2026 event window**; it is corporate baseline only. Maintain company/brand deduplication and distinguish coding-agent features from actual downstream verified reuse.
 
-**Merge scope:** checked public April–August first-party statements, explicitly unverified Sep–Oct research leads, and an unexecuted falsifiable maintainer pilot. No six-month completion, effective-date certainty, independent task performance, safety, sustainability or external adoption is claimed. Issue #79 stays open for the full review.
+**Merge scope:** checked public April–August first-party statements, explicitly unverified Sep–Oct research leads, and an unexecuted falsifiable maintainer pilot. No six-month completion, effective-date certainty, independent task performance, safety, sustainability or external adoption is claimed. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED.** Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. The text above this section is the earlier screen. It is left unchanged except for the closure wording, and every correction below is stated here instead of being edited into that text.
+
+### What the upgrade adds
+
+- **[013-cognition.events.csv](013-cognition.events.csv):** a standard 21-column ledger with 48 dated in-window rows, `CI2026-013-001` to `CI2026-013-048`. Per month: Apr 7, May 5, Jun 7, Jul 7, Aug 6, Sep 13, Oct 1–12 3.
+  - By evidence grade: 27 E2, 17 E1 and 4 E0 rows. The E0 rows are Hacker News titles of Bloomberg or TechCrunch articles that robots.txt prevents a Claude agent from reading.
+  - Rows from independent sources: an arXiv preprint (`026`), Dioxus Labs (`038`), NVD (`040`) and a user review (`042`).
+- **[013-cognition.search-log.md](013-cognition.search-log.md):** robots.txt decisions, exact requests by segment, counts, exclusions, conflicts, figures confirmed against raw text, and sources that were inaccessible or not attempted.
+- **Source check:** every row cites a URL fetched on 2026-10-16. Numbers, dates and versions were confirmed by searching the saved raw text. Earlier versions of mutable pages were checked through Wayback Machine captures.
+
+**Entity verification (as of 2026-10-12):** `cognition.ai` redirects to `cognition.com`. Wayback captures suggest the blog moved between 2026-06-13 and 2026-06-21. Windsurf (acquired in July 2025, before the window) was renamed **Devin Desktop** on 2026-06-02 (`013`). Its Cascade agent was disabled by default for enterprises on 2026-08-07 and removed on 2026-09-08 (`029`, `036`). In-window acquisitions are all vendor-announced acqui-hires with undisclosed terms: TierZero (Jul 20), The Interaction Company (Jul 23, `025`) and Dioxus Labs (Sep 10, `038`). A reported SpaceX acquisition attempt was denied by the CEO, and no ownership change is evidenced (`032`, E0). Official channels:
+
+- [blog](https://cognition.com/blog)
+- [Devin release notes](https://docs.devin.ai/release-notes/2026)
+- [Devin Desktop changelog](https://docs.devin.ai/desktop/changelog)
+- the [CognitionAI GitHub org](https://github.com/CognitionAI)
+
+Count Cognition once. Windsurf and Devin Desktop are the same product line.
+
+### Crosswalk: claims in the earlier report
+
+| Earlier claim | Ledger event | Status |
+|---|---|---|
+| Devin 2026 release notes as an E0 lead | Source for 15 rows | **Confirmed.** The page was fully accessible on 2026-10-16, with 71 dated entries, 52 of them in the window. |
+| 2026-04-15: Devin Review and PR-management improvements | `CI2026-013-004` | **Confirmed.** "Close PR or Convert to Draft in Review UI". |
+| 2026-05-29: automation file-change triggers from GitHub push events | `CI2026-013-012` | **Confirmed.** |
+| 2026-06-10: pending reviews cancelled when the PR head changes | `CI2026-013-016` | **Confirmed.** The PR Review API also exposes a `cancelled` status. |
+| 2026-07-22: Devin Outposts, disabled by default | `CI2026-013-024` | **Confirmed.** Current documentation, read after the window, says Outposts are available on Pro, Max and Teams. |
+| 2026-08-07: security profiles for network access, GA | `CI2026-013-027` | **Confirmed.** |
+| September code-scanning lead, "Sep 2/3" | `CI2026-013-033` | **Corrected.** Verified on the primary page as **2026-09-02** (cleanup scan type, `/scan`, scheduled scans). |
+| October AGENTS.md-on-setup lead, "Oct 12" (and "October 9" in the date-quality note) | `CI2026-013-046` | **Corrected.** Verified on the primary page as **2026-10-09**. |
+| 2025 Windsurf acquisition announcement as pre-window baseline | Not ledgered (outside the window) | **Confirmed.** JSON-LD `datePublished` is 2025-07-14. |
+| 2026-05-29 TechCrunch report on Scott Wu's view | Not ledgered | **Unverifiable here.** TechCrunch's robots.txt disallows `anthropic-ai`, `ClaudeBot` and `Claude-Web`, so the page was not fetched. Treat it as an unread lead. |
+| "No binding 2027–2031 commitments verified" | n/a | **Confirmed.** See the vendor-stated direction below. |
+
+### Corrections to the earlier report
+
+1. **The primary snapshot is no longer outdated.** The earlier text says the official release notes ended on August 7 and that the September and October entries "could not be authenticated". On 2026-10-16 the live page contained both entries, as **Sep 2** and **Oct 9**. The "secondary index" dates of Sep 3 and Oct 12 were wrong. Both leads are now E2 dated records.
+2. **The source count is now broader.** The earlier "one official release-note index" has been expanded to the Cognition blog (39 in-window posts read), the Devin Desktop changelog, GitHub, NVD, an independent arXiv preprint, the second-party Dioxus Labs post and Wayback captures.
+3. **The negative and contradictory coverage is no longer pending.** See the next subsection.
+
+### New events and contrary evidence
+
+**Independent and contrary evidence:**
+
+- **Independent observational study (`026`, E2, preprint):** using the AIDev dataset of 2025-era PRs, the study reports a GLMM-estimated merge probability of **43.0%** for Devin. That is the lowest of the five agents studied: Claude 84.3%, Codex 73.5%, Cursor 63.9%, Copilot 59.6%. The authors attribute part of the gap to Devin's use in less popular repositories. The paper is not peer reviewed, and the data come from before the window.
+- **Inherited vulnerability in the editor fork (`040`):** CVE-2026-81376 is a Visual Studio Code flaw with CVSS 3.1 9.6, published by NVD on 2026-09-08. Devin Desktop lists the fix on 2026-09-16, an eight-day downstream lag.
+- **Headline benchmark claim revised (`019` → `030`):** Fusion launched claiming "35% lower cost", and Wayback captures from Jun 30 and Jul 15 show that figure. The live page now says "up to 60%" on a newer benchmark version, and a footnote discloses the change.
+- **Undisclosed edit:** the Series D post (`011`) originally said "local agents in Windsurf". The live page reads "Devin Desktop" without any note of the change.
+- **Breaking removals:** the `npx devin-review` CLI was retired and installed copies stopped working (`041`). Cascade was removed (`036`). An independent user review describes Windsurf-era chats that cannot be deleted from the full session list (`042`, n=1).
+- **Disputed or unconfirmed press reports (all E0, titles only):**
+  - Funding talks at $40B (Aug 12) and at about $1B/$47B (Sep 2), both differing from the announced terms of over $2B at $48B (`031`, `034`, `035`).
+  - A report of a SpaceX acquisition attempt, denied by the CEO (`032`).
+  - A rival coding-agent CEO's allegation that a board advisor passed information to Cognition (`045`).
+
+  None of these articles was read.
+
+**New shipped or announced capabilities relevant to the study:**
+
+| Capability | Ledger rows |
+|---|---|
+| Devin CLI with local-to-cloud hand-off, installed via a pipe-to-shell script | `005` |
+| Devin Review API | `009` |
+| Devin Review security findings that read `SECURITY.md` | `018` |
+| Plugins for portable skills | `023` |
+| `AGENTS.md` read on repository setup | `046` |
+| Agent Client Protocol support in Devin Desktop | `013` |
+| Terraform provider (Apache-2.0) and the Automations v3 API | `017`, `028` |
+| Security Swarm | `020` |
+| Scheduled code scans | `033` |
+| Cross-session memory, with the resume window cut from 30 to 14 days | `047` |
+| MCP protocol revision 2026-07-28 and an enterprise-only extension marketplace | `048` |
+| Sign in with ChatGPT | `044` |
+| In-house models SWE-check, SWE-1.7 (Kimi K2.7 base) and SWE-2 | `002`, `021`, `037` |
+
+**Commercial and corporate events:**
+
+| Event | Ledger rows |
+|---|---|
+| New plans that start charging for review and Q&A, with open-source repos exempt from Devin Review billing | `001` |
+| AI Productivity Guarantee | `014` |
+| Series D: over $1B at $26B | `011` |
+| Series E: over $2B at $48B | `035` |
+| Claimed $1B run rate | `043` |
+| AWS Strategic Collaboration Agreement | `039` |
+| FedRAMP High In-Process status | `022` |
+
+### Vendor-stated direction and conditional interpretation
+
+- **Vendor statements:**
+  - Engineers will act "like architects" who delegate to "swarms of agents" (`035`).
+  - Cognition is "an independent agent lab" that combines third-party and in-house models instead of tying customers to one provider (`035`).
+  - Cognition says 89% of its own engineers' committed code is committed by Devin (`011`).
+  - "For the first time, more Devins are being triggered asynchronously, via events, automations, schedules, and other Devins" (blog post, 2026-05-29).
+
+  These are aspirations and self-reports, not commitments.
+- **Conditional 2027–2031 reading (the researcher's hypothesis):**
+  - Cognition appears to be moving from an IDE (Windsurf) to an agent-management surface with event-driven, unattended agents. Repo-local instruction files (`AGENTS.md`, `SECURITY.md`) and plugins are the steering interface.
+  - *Rival explanation:* the convergence is driven by pricing and lock-in rather than by maintainer value. Review and Q&A became paid, and the platform measures value with its own estimator.
+  - *Falsifiers:*
+    - Independent accepted-task or merge outcomes for Devin stay below peers in post-2026 data, as in `026`.
+    - Instruction-file adherence cannot be shown on frozen tasks.
+    - Inherited upstream CVEs keep showing multi-day patch lags.
+
+### M1–M7 notes for the new events
+
+| Question | New evidence | What it does not show |
+|---|---|---|
+| **M1** agent workflow | Unattended triggers (`010`, `012`, `033`); local-to-cloud hand-off (`003`, `005`); agent management in place of an editor (`013`); Cascade retired (`029`, `036`) | Whether unattended sessions produce accepted work |
+| **M2** accepted quality | Independent merge estimate of 43.0% (`026`); vendor benchmark FrontierCode (`015`) and its revisions (`019`, `030`); review invalidation when the PR head changes (`016`) | Quality on in-window versions; the benchmark is owned by the vendor |
+| **M3** discovery and retrieval | No new in-window repository-retrieval feature was ledgered | DeepWiki remains pre-window context |
+| **M4** integration and reuse surfaces | ACP (`013`); Review API (`009`); Terraform provider and Automations API (`017`, `028`); `AGENTS.md` (`046`); plugins and skills (`023`); MCP revision (`048`); AWS Marketplace (`039`) | Portability actually tested across agents |
+| **M5** review and maintenance burden | PR auto-close removed (`007`); CLI retired and copies broken (`041`); Cascade removed (`036`); CVE lag in the fork (`040`); open-source acqui-hire with a stated continuation (`038`) | Measured maintainer minutes |
+| **M6** rights and security | Network security profiles (`027`); Security Swarm (`020`); `SECURITY.md`-aware review (`018`); FedRAMP In-Process (`022`); memory with admin controls (`047`); pipe-to-shell installer (`005`) | Bypass tests and data-retention terms |
+| **M7** human and lifecycle cost | Paid review (`001`); AI-graded productivity guarantee (`014`); routing-cost claims (`019`, `030`); revenue claims (`011`, `035`, `043`) | Revenue and vendor cost claims are not usefulness. kWh and CO2e were not measured. |
+
+### Updated maintainer experiment (proposed, not executed)
+
+**Practice tested:** add a root `AGENTS.md` and a `SECURITY.md` to one of the maintainer's repositories. Devin now reads both (`046`, `018`). Because they are plain repository files rather than vendor configuration, they are a candidate vendor-neutral control. Support by other agents was not checked in this screen.
+
+**Comparator:** the same frozen tasks with and without these files. The files are cheap, so the comparison can also be run with a free or self-hosted agent if Devin is not available on known terms. No paid API spend without approval.
+
+**Unit:** one accepted maintenance issue per task. Acceptance needs hidden tests written before the run plus a human reviewer.
+
+**Guardrails:** least-privilege tokens; no auto-merge; fresh-head CI.
+
+**Measured:**
+
+- human review and repair minutes
+- instruction violations
+- security findings
+
+**Stop rule:** stop if instruction-following does not improve accepted tasks on 8–12 issues, or if any unreviewed merge or secret exposure occurs.
+
+### Status
+
+Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Related corpus: [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56). The arXiv study (`026`), the Dioxus Labs post (`038`) and NVD CVE-2026-81376 (`040`) are new independent items that #56 could link to after human review.
