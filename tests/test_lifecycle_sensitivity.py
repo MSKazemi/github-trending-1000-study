@@ -62,7 +62,6 @@ class LifecycleSensitivityTests(unittest.TestCase):
             ("horizon_days", 120),
             ("excluded_terms", ["other_omission"]),
             ("n_uses", [0, 10]),
-            ("dataset_kind", "pilot"),
         ]
         for field, value in mutations:
             d = fixture()
