@@ -54,6 +54,13 @@ def _candidate(c, taskid, baseline):
     # Caller-supplied task/candidate IDs are untrusted, possibly sensitive.
     # Do not echo these values in errors or CLI stderr.
     _record(c, "candidate")
+    # A pooled benchmark must not quietly accept embedded prompts, contact
+    # records or undeclared fields that were never part of the reviewed schema.
+    # Reject unknown *names* without printing those potentially private keys.
+    if set(c) - {"id", "final_label", "reviewer_labels",
+                  "available_since_utc", "gates", "evidence_ref",
+                  "adjudicator_ref"}:
+        raise GoldsetError("candidate: unsupported fields")
     cid = _nonempty(c.get("id"), "candidate.id")
     label = c.get("final_label")
     if not isinstance(label, str) or label not in LABELS:
@@ -106,6 +113,8 @@ def _candidate(c, taskid, baseline):
 def evaluate(payload, k=5):
     """Return per-task and system retrieval summaries with explicit unjudged bounds."""
     _record(payload, "payload")
+    if set(payload) != {"schema_version", "dataset_kind", "tasks"}:
+        raise GoldsetError("payload: unexpected or missing fields")
     if payload.get("schema_version") != "1.0" or payload.get("dataset_kind") not in ("synthetic", "pilot", "observational"):
         raise GoldsetError("expected schema_version=1.0 and dataset_kind synthetic/pilot/observational")
     if isinstance(k, bool) or not isinstance(k, int) or k < 1:
@@ -114,6 +123,9 @@ def evaluate(payload, k=5):
     seen_taskids = set()
     for task in _list(payload.get("tasks"), "tasks"):
         _record(task, "task")
+        if set(task) != {"task_id", "baseline_utc", "spec_sha256",
+                         "acceptance_sha256", "candidates", "systems"}:
+            raise GoldsetError("task: unexpected or missing fields")
         taskid = _nonempty(task.get("task_id"), "task_id")
         if taskid in seen_taskids:
             raise GoldsetError("duplicate task_id")
@@ -150,6 +162,8 @@ def evaluate(payload, k=5):
         seen_sys = set()
         for system in _list(task.get("systems"), "systems"):
             _record(system, "system")
+            if set(system) != {"name", "ranked_candidate_ids"}:
+                raise GoldsetError("system: unexpected or missing fields")
             name = _nonempty(system.get("name"), "system.name")
             if name in seen_sys:
                 raise GoldsetError("task: duplicate system")
