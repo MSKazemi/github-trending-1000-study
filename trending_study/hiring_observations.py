@@ -83,7 +83,7 @@ def _url(value):
             # octal, hex) as IPs even though ipaddress rejects that spelling.
             # Do not label such ambiguous strings as ordinary public DNS hosts.
             ipv4_part = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
-            if re.fullmatch(ipv4_part + r"(?:\\." + ipv4_part + r"){0,3}", host):
+            if re.fullmatch(ipv4_part + r"(?:\." + ipv4_part + r"){0,3}", host):
                 raise ValueError
         # Decode then canonicalize: percent-escaped aliases and traversal are rejected.
         if unquote(p.path) != p.path or any(x in (".", "..") for x in p.path.split("/")):
