@@ -56,3 +56,7 @@ To avoid confusing Git divergence with actual missing content, the following **f
 | `ci/enterprise-pr-qa-gates-issue-240`: `ops/branch-retirement/review-only-2026-10-14.json` | `bec93d96de57e02431966c36e7950a0bb40631f4` | same | Historical snapshot byte-identical on main; still no branch-level no-loss certification |
 
 **What this adds:** two exact preserved file artifacts and three explicit nonidentical files requiring content/claim review. It is not evidence of the correctness of either version, identity of human reviewers, source rights or full retention of all commits. Do not discard source branches until every material file, changed test and cited source is reconciled and approved.
+
+## Historical review addendum rescued without replacing canonical main
+
+An additional [archived original review addendum](2026-10-16-preserved-2026-10-13-pr-merge-gate-addendum.md) retains the **7,590-character original 2026-10-13 PR merge-review section** from the exact historical branch `audit/pr-merge-gate-log-20261013` commit `2b460c8e15819afd54e62bed1d7334d0e6a78a8e`, source file blob `d90c7b906aa85b33c0c1f7bbf6216e60d5a2295e`. Directly reading `docs/PR_REVIEW_2026_10_13.md` from historical head versus current main showed that this section was not fully on main: original length 25,823 characters versus main length 18,840. The archive preserves the complete section with an added source/limitations header, *without changing original or canonical files*. Historical accounts may be AI-assisted and require verification; no new human-authenticated review is implied.
