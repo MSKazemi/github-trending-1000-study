@@ -99,3 +99,37 @@ The original 60-branch allowlist remains intentionally unchanged at main SHA `63
 These checks narrow a time-of-check/time-of-use window but do **not** create an atomic transaction across GitHub `main`, PR creation and archived refs. The existing exact-SHA Git push lease only protects the **branch being deleted**. Actual server-enforced main and archive-tag rulesets, qualified independent review, an operator maintenance freeze for new PRs, read-only live preflight, and a separately approved manual destructive mode remain mandatory. The workflow's unconditional `false &&` destructive-job guard stays intact. No branches were retired by this patch.
 
 **Practical maintainer lesson:** a frozen SHA field must be an *enforced precondition*, not decorative metadata. Test owner/repo identities with `./` and `../` adversarial cases, reject source-state drift between checks, preserve exact original provenance, and prefer refusing to delete rather than making a cleanup count look complete.
+
+## 2026-10-17 strict privileged cleanup-plan input follow-up
+
+A separate fail-closed review found that the dormant retirement CLI originally
+used a **stat-then-unbounded-read** of the operator plan, with Python's permissive
+JSON decoding. A replaced plan file, leaf symlink, FIFO, duplicated JSON
+property, NaN/Infinity literal or nonintegral `merged_pr` could escape the
+reviewed byte/schema preconditions. Plan fields including the frozen main SHA
+must not be subject to ambiguous last-key-wins JSON parsing.
+
+The proposed script now opens the plan once with descriptor-level regular-file
+checks, nonblocking and no-follow flags where supported, and a **35,000-byte
+actual-read bound**. JSON decoding refuses duplicate keys, NaN/Infinity,
+floating-point and overlong integer spellings. Parser failures use fixed
+messages that do not expose a private plan path or field. The retirement plan,
+archived original commits, approval snapshot, and disabled destructive GitHub
+Actions job remain unchanged. Adversarial offline tests cover ambiguous keys,
+malformed numeric spellings, symlink/directory/oversize files, no GitHub-client
+construction on invalid input, and a valid offline dry run.
+
+This script is deliberately executable as `python scripts/retire_merged_branches.py`
+(the documented workflow form); direct file execution does not include the
+repository root in Python's module import path, so the standalone privileged
+boundary implements a small strict decoder instead of depending on an implicit
+PYTHONPATH or dynamically importing another module. This is format safety,
+**not** plan authorship/signature verification or a full hostile-filesystem
+sandbox; directory ancestry, permissions and atomicity of changing GitHub refs
+remain separate security problems. New exact-head CI and independent qualified
+human security review are required before merge. Absolutely no branch deletion
+or privileged execution occurred.
+
+**Practical maintainer lesson:** evaluate the exact bytes used by a privileged
+operation, not merely a prior file-size check. Reject duplicate JSON keys
+before they can alter an approved source SHA or branch list.
