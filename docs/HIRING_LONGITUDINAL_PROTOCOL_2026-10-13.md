@@ -26,3 +26,21 @@ A descriptive company-time panel could compare **predeclared proportions of *obs
 
 ## Exit gates
 Protocol/rights approval, pilot source capture, validation test fixtures, identity adjudication, independent reviewer QA, source accessibility audit and prespecified company-frame coverage all remain **pending**. No human review or benchmark was performed merely by writing this protocol.
+
+
+## 2026-10-16: explicit-only interval-censored closure evidence (issue #222)
+
+The read-only offline `trending_study.hiring_observations` derives two additive output fields per requisition:
+
+- `closure_interval_last_listed_at_utc`: latest independently **claimed** observed live-listing timestamp before the final explicit employer closed signal (if there is one), or null if the role was already marked closed when first observed.
+- `closure_interval_first_explicitly_closed_at_utc`: first **claimed** employer-explicit closure observation after the final live listing, or null if the last informative state was not explicitly closed.
+
+These endpoints bound a **reported observation interval**, not a precise actual position close date. Status `inaccessible`, `removed_or_redirected`, `index_only`, `not_listed_in_bounded_search` and an HTTP failure remain *missingness/censoring*, never actual closure. Reopening resets the interval when a later genuinely listed observation occurs; a later explicit closure is analyzed against that last listed date, not an earlier closure. `actual_closure_at_utc` and `filled_positions` remain **null unconditionally**, and access/ethics/independent-review flags remain false.
+
+Public employer/source URL metadata now rejects literal localhost, `.local`, `.internal` and non-global IP hosts before analysis. This is not DNS verification or authorization to scrape; future source collection requires formal permission and safe source allowlisting. The synthetic `example.invalid` documentation fixture remains supported for offline reproducibility.
+
+**Reproduce:** `python -m unittest tests.test_hiring_closure_interval -v` and `python -m unittest discover -s tests -v`. Test cases cover explicit closure intervals, inferred unknown lower bounds, inaccessible/disappeared sources, reopening and later reclosure, nonpublic hosts and false-independent-review safeguards.
+
+**Still required before issue #222 closure:** approved source rights and retention/ethics processes under #220; an actual prospective, bounded permitted and date-stamped panel; human-checked requisition and location identities; true source captures/provenance; independent methods reviewer and observed changes with censoring/attrition reporting. The software's claimed employer status is **not authenticated** by a unit test. Do not call a vacancy filled because its public listing disappeared.
+
+**Practical repository lesson:** when tracking vendors, GitHub issues, package versions or jobs, model first/last **observed** time separately from the real event date. Never turn a missing webpage into a positive outcome or backfill historical states from current metadata.
