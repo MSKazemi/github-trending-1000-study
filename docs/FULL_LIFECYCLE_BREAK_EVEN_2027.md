@@ -60,3 +60,20 @@ A cheaper tool may attract far more user executions, raising *total* system ener
 - [GSF: green software includes carbon, water, embodied hardware and waste](https://greensoftware.foundation/articles/revisiting-green-software-from-silicon-to-screen/)
 - [Software Carbon Intensity specification](https://sci.greensoftware.foundation/)
 - [2024 systematic review of industrial reuse cost/benefit measurement](https://doi.org/10.1016/j.infsof.2024.107451)
+
+
+## 2026-10-16 bounded sensitivity envelopes — proposal for issue #23
+
+The offline command `python -m trending_study.lifecycle_sensitivity --input examples/lifecycle_sensitivity.synthetic.json` reuses the existing `trending_study.lifecycle_break_even.evaluate` and computes the **minimum/maximum signed Delta E across explicitly supplied scenarios at the same workloads**. It does **not** estimate confidence intervals, fit parameter distributions, meter hardware or infer CO2e. The three fixtures are exclusively artificial.
+
+**Comparator identity:** each supplied case must have the same functional unit, frozen task-spec and acceptance SHA-256, observation horizon H, boundary identifier, declared omissions, dataset kind, and precise sorted workload counts. Mixed incomparable tasks or boundaries fail closed rather than producing a misleading range. Only declared energy terms from the canonical original scenario are used.
+
+**Missingness:** If any included energy term has `basis=unknown` in **any** case, all envelope results are null, the missing scenarios/terms are listed, and no favorable min/max is computed. Missing cloud inference/embodied/upstream/deployment inputs remain explicit boundary exclusions, **never** zero-valued measurements. The scenario envelope is not statistical uncertainty; a genuine uncertainty interval would need calibrated measurement/uncertainty inputs and a prespecified statistical method.
+
+**Meaning of sign:** `delta_build_minus_reuse > 0` indicates reuse is lower only within that artificial comparison's *declared* energy boundary at the same independently accepted functional workload. A positive lower envelope means all included hypothetical scenarios favor reuse; ranges spanning zero are mixed/indeterminate. A claim about carbon, water or whole lifecycle needs time/region-specific energy/carbon factors, embodied allocations, rebound, whole service life and independently matched usage — not tokens-to-kWh guesses.
+
+**Reproducibility:** `tests/test_lifecycle_sensitivity.py` tests three-workload sign conditions, rounding, mismatch/refusal and missingness against canonical decimal arithmetic. It does not claim source truth or a real pilot.
+
+**Unmet issue #23 closure gates:** agree on a real accepted-task functional unit, authorization and energy capture boundaries, physically calibrate local/CI/serving meters with uncertainty, obtain actual independent paired workload observations and cloud-provider limitations, review upstream maintenance and sensitivity/rebound, and arrange qualified human methods review. No calibrated hardware channels were available in this implementation environment, so the measurement gate is **not** passed; #23 remains open.
+
+**Practical repository owner lesson:** for Claude Code vs manual/reuse comparisons, capture human-active time and real task acceptance first. If no calibrated energy instrumentation or cloud inference data exist, report the bounds of what you **do not know** rather than promoting lower token counts as environmental savings.
