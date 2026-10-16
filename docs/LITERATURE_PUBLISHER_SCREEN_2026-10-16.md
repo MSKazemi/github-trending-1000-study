@@ -49,3 +49,9 @@
 - Require at least one non-agent reviewer to verify a submitted fix and report time-to-accept/rework; count every failed and abandoned task (#02/#09/#10).
 - Index older/quiet OSS with explicit identity+license+version and frozen task tests before recommending reuse (#04); never equate copy events with successful integration.
 - Record true GitHub API UTC states, immutable repository IDs, full errors/permission gaps and missing values; avoid historical inference from current API counts (#05).
+
+## Public-host source URL guard (engineering follow-up, 2026-10-16)
+
+The shared literature-ledger validator now rejects an *included* study's `source_url` when its literal host is loopback, link-local, non-global IPv4/IPv6 or a local/cloud-metadata name. A public HTTPS publisher URL remains structurally eligible, **not authenticated**. This avoids making internally-addressed metadata look like normal publisher evidence in a screening record; it also reduces the chance a human reviewer or future tool is directed to a local service.
+
+One synthetic regression covers several private address classes and the unchanged legitimate DOI example. No network calls or DNS lookups occur; public-looking hostnames can later resolve to private addresses, so a future network-enabled source checker would need its own post-resolution SSRF protections. Search coverage, licensed access, independent bibliographic/factual screening, actual human coding and all systematic-review denominators remain unfinished.
