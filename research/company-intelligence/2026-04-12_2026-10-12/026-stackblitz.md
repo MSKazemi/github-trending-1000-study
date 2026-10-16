@@ -84,6 +84,77 @@ Freeze an independently accepted two-page docs/tutorial site task. Compare verif
 
 **Low-risk practice to test:** inspect existing tools, record their exact versions/rights, freeze user acceptance, measure agent/maintainer costs and keep human-governed review; promote only evidence-backed, type-specific conclusions, including failures. This is an **experiment suggestion** rather than a demonstrated method of increasing repository popularity or reducing energy.
 
-**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #93. A draft report alone is not issue completion.
+**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #93. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
 
 **Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
+
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED (screened 2026-10-16).** This section, the new [event ledger](026-stackblitz.events.csv) and the [search log](026-stackblitz.search-log.md) are an AI-assisted documentary source screen. No qualified human has reviewed them. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Nothing here is a verified task outcome, an adoption measure or an endorsement. Research issue [#93](https://github.com/MSKazemi/github-trending-1000-study/issues/93); news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) (no `NEWS-YYYY-NNNN` item minted).
+
+**The text above this heading is unchanged except one sentence in §8, whose closure wording was replaced with the standard provisional-closure wording.** [`026-stackblitz.events.json`](026-stackblitz.events.json) is byte-identical. Everything below is additive.
+
+### What the ledger adds
+
+- **22 dated rows** (`CI2026-026-001` … `CI2026-026-022`) with the 21 standard columns. Every `published_utc` falls within 2026-04-12…2026-10-12, and all rows were accessed 2026-10-16.
+- **Per segment:** Apr 12–30 **3**, May **3**, Jun **0**, Jul **6**, Aug **4**, Sep **4**, Oct 1–12 **2**. June has no ledger row: its seven Bolt blog posts are marketing/SEO, and no npm or GitHub release was found. This is a bounded-screen result, not a zero-activity claim.
+- **Scope:** Bolt.new blog announcements (13 rows), the open-source and SDK surface (`@webcontainer/api`, `@stackblitz/sdk`, `alien-signals`, `pkg.pr.new`, `bolt.diy`, `bolt-slides`: 6 rows, one of them shared with a product row), status records (3 rows) and one independent secondary report.
+- **Source classes:** 13 Bolt.new blog posts, 3 npm registry records, 2 GitHub releases, 3 status-page records, 1 independent secondary report (AlphaSignal). `support.bolt.new` docs, `webcontainers.io/enterprise` and GitHub repos serve as `independent_check_url` cross-checks.
+- **Verification:** every number, price, date and quote in a ledger row was matched against raw page text or API JSON, with the exceptions and conflicts listed in the search log. The blog at `blog.stackblitz.com` has no post after 2025-06-04, so Bolt.new/blog is the active StackBlitz channel.
+
+### Crosswalk: earlier report claims → ledger
+
+| Earlier claim (§§1–4, events.json) | Ledger event_id | Status | Note |
+|---|---|---|---|
+| 026-E01: 2026-05-20 "Export Google Stitch designs to Bolt in one click"; one-click design-to-build handoff, shipped | CI2026-026-006 | corrected (title) / confirmed (date, content) | Date and content confirmed. That title does not appear on the page as fetched: H1 is "Design in Stitch, build in Bolt", og:title is "Google Stitch to Bolt: one-click design export" (dateModified 2026-08-17). The feature lives in Google Stitch, and no Google-side source was found |
+| 026-E02: 2026-07-22 Skills; reusable bundles across projects and teams, shipped | CI2026-026-010 | confirmed | "Skills are live now". Adds upload of skills "from other tools or skill repos" (a provenance/security consideration) and workspace vs project scope. Page modified 2026-08-18 |
+| 026-E03: 2026-09-14 Forge preview; open-weight models; Sep 14–Oct 14 usage offer; consent-based training-data sharing; regional/workspace exclusions; vendor-controlled benchmark | CI2026-026-018, -019 | confirmed and extended | All confirmed. **Not stated earlier:** opted-in sessions go into datasets that Bolt *licenses* to AI developers, starting with Arcee AI, and "StackBlitz may be paid". The benchmark is 92.2 vs 101.0 for Claude Opus 5. A secondary report's "open weights" promise is unconfirmed in first-party text |
+| 026-E04: 2026-09-29 Dokai acquisition; intent to integrate; announced_only | CI2026-026-020 | confirmed | Terms not disclosed. First Dokai-based enterprise capabilities promised for "late fall". The page calls Bolt.new "the StackBlitz platform" |
+| §2: Bolt.new is a StackBlitz product | CI2026-026-020, -022 | confirmed (vendor statement) | Dokai post: "Bolt.new, built by StackBlitz". bolt.diy is in the `stackblitz-labs` GitHub org. Legal-registry verification still not done |
+| §1: Apr 12–30, Jun, Aug, Oct 1–12: no verified event | rows 001–003, 013–016, 021–022 | corrected (Apr, Aug, Oct) / confirmed (Jun) | Apr, Aug and Oct have dated items. June still has none after the full blog pagination and registry checks |
+| §4: no confirmed binding future releases | CI2026-026-004, -020 | confirmed | The Microsoft Azure/M365 items and Dokai capabilities are future-tense vendor statements without dates |
+
+### Corrections to the earlier report (stated here, not by editing it)
+
+1. The 026-E01 source title in the earlier report and in `events.json` is not the page's current title (see the crosswalk). The URL and date are correct.
+2. April, August and October 1–12 are not empty. The earlier "no verified event" entries reflected the four-lead first pass.
+3. The earlier description of Forge as "consent-based optional training-data sharing" omits that the shared sessions are commercially licensed datasets (Arcee AI first, others possible). That is material to M5/M7 rights analysis.
+4. §1 says found/screened/excluded counts were unavailable. The search log now records them per segment (72 in-window blog posts, 4 product rows carried forward, plus 18 new rows from blog, registry, GitHub, status and independent sources).
+
+### New events found (highlights)
+
+- **Product cadence:** Opus 4.7 vendor eval (Apr 15), Microsoft Azure/M365 partnership (May 5, mostly future tense), Bolt Slides with an MIT repo (Jul 16), free security audit with auto-fix on publish (Jul 30), dictation (Aug 13), prompt queueing (Aug 27), Visual Edits (Sep 3).
+- **Open source and rights:** `bolt.diy` v1.0.1 (Oct 12) is the first release in 17 months (118 listed changes including MCP integration). `@webcontainer/api` 1.6.4 (Apr 14) is the first stable release since April 2025. Its npm licence field says MIT, but webcontainers.io says production for-profit use needs a commercial licence. The Bolt Open Source Fund 2026 (Aug 21) discloses that some 2025 sponsorships were never applied and raises the run-rate to $11,333/month.
+- **Reliability and dependencies:** the status history (visible only from 2026-07-15) lists 26 own entries and 144 upstream "[Dependency Check]" mirrors (Cloudflare, Anthropic, GitHub, Name.com, Supabase, NPM). Notable incidents: a Cloudflare-linked project-save partial outage (Jul 30) and about 30 hours of stuck publishing (Aug 6–7).
+- **Analyst recognition:** Forrester's Agentic Development Platforms Landscape, Q3 2026, as reported by the vendor. The report itself is gated and was not read.
+
+### M1–M7 notes for new events
+
+- **M1 workflow:** queueing, dictation, Visual Edits, the security agent and Skills move Bolt towards an agent-pipeline workflow. These are chronology markers, not adoption evidence.
+- **M2 accepted quality:** the only quality data are vendor-run (the Opus 4.7 eval and the Forge Build Index). The security agent auto-applies fixes without published error rates.
+- **M3 visibility:** Forrester inclusion, Bolt Slides repo stars and HN posts are attention. HN signal in the window was weak (all hits ≤ 10 points).
+- **M4 onboarding/adoption:** the Microsoft and Dokai customer figures (75% of the Fortune 500, 34-day first deploy) are vendor statements without a denominator.
+- **M5 rights/security/provenance:**
+  - the WebContainers licence conflict affects anyone reusing MIT-labelled `bolt.diy`/`@webcontainer/api` in production;
+  - Forge licenses user code and fix traces to third parties;
+  - uploadable third-party skills widen the supply-chain surface;
+  - no GitHub security advisories were published for the open repos.
+- **M6 maintenance/lifecycle:** the long gaps in `@stackblitz/sdk` (two years) and `bolt.diy` (17 months) contrast with frequent `pkg.pr.new` releases. Dependency-mirror incidents show an inherited reliability cost.
+- **M7 resource/ethical costs:** Forge exchanges extra usage for training data. "Inference costs dropped 280x" is a second-hand vendor citation. No kWh or CO2e is inferred.
+
+### Bearing on the §6 experiment (still proposed, not performed)
+
+The §6 comparator can be made rights-safe and offline-first. Arm A is an existing MIT template plus a small patch. Arm B is a Bolt build with a project-scoped skill, run on Standard (not Forge), so that no code is licensed for training. Add three guardrails:
+- before any reuse of `bolt.diy` or `@webcontainer/api` output beyond a prototype, record the WebContainers commercial-licence condition as a rights check;
+- record every change the publish-time security agent auto-applies, as reviewer-visible diff lines;
+- stop the arm if export to a plain Git repo fails a clean `npm ci && npm run build` on a fresh machine.
+
+No paid plan, paid API or Forge opt-in without the maintainer's approval.
+
+### Remaining doubts and review status
+
+- No independent (non-vendor) confirmation of the Dokai deal, the Microsoft Marketplace listing or the Stitch export from Google's side. The New Stack Forge article could not be read (robots disallows Claude agents).
+- Status history before 2026-07-15 is not visible. Counts come from our parser of the page's embedded JSON.
+- The open-weights promise attributed to Bolt by AlphaSignal is unconfirmed in first-party text.
+- Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
