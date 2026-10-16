@@ -57,7 +57,7 @@ DNS_HOST = re.compile(rf"{_DNS_LABEL}(?:\.{_DNS_LABEL})*\Z")
 
 def _url(value):
     if (not isinstance(value, str) or len(value) > 1500 or
-            any(ord(c) < 33 for c in value) or "\\" in value):
+            any(ord(c) < 33 or ord(c) == 127 for c in value) or "\\" in value):
         raise HiringObservationError("source URL: invalid bounded HTTPS URL")
     try:
         p = urlsplit(value)
