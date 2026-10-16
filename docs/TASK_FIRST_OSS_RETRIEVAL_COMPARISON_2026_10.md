@@ -50,3 +50,16 @@ Reuse the existing `trending_study.goldset.evaluate` scorer and its independent 
 **Cross-workstream:** [issue #22](SUPPLY_CHAIN_PROVENANCE_2027.md) handles exact package/registry security; [issue #23](FULL_LIFECYCLE_BREAK_EVEN_2027.md) handles bounded environmental impact. A lexical/embedding/hybrid rank advantage does not imply safe utility, adoption, causal effect or less energy.
 
 **Practice to test:** make agent search results actionable by attaching frozen unit tests and an exact-version license/safety checklist; measure actual successful integrations and false positives, not number of returned GitHub repos.
+
+
+## 2026-10-16 offline candidate-pool integrity patch (issue #19)
+
+**Reused existing modules:** `trending_study.goldset` now reads the CLI's `--input` with the **shared bounded strict research JSON reader**, preventing silent duplicate-key replacement, NaN/Infinity, extreme over/underflow numeric encodings, symlink/FIFO input, oversized artifacts and misleading low-level decoder diagnostics. It also validates the types of nested `final_label`, gate status and ranked IDs *before* hash-set operations, so malformed JSON returns controlled errors rather than uncaught `TypeError`.
+
+**Regression:** `tests/test_goldset_strict_inputs.py` checks synthetic malformed inputs, still-accepted valid fixtures and unchanged P@K semantics. This is a read-only local evaluator; it does not search registries, call APIs, install dependencies, contact maintainers, mint an independent gold set or infer unobserved recall.
+
+**Meaning of scores:** P@K is a *synthetic/pool-conditional* calculation and preserves unknown labels as unknown; relative pooled recall is not total recall for all repositories. A clean JSON file and a green GitHub Actions run prove neither the authenticity of its source nor the rater's identity.
+
+**Unfinished acceptance of #19:** independently frozen real task sample/denominator, source-permission review, lexical/embedding/hybrid retrieval on identical time-stamped corpora, independent task-specific rights/security and functional tests, missing-candidate audit, cost/time budget and false-positive/false-negative error analysis. The issue remains OPEN until these can be demonstrated with valid data.
+
+**Practical Claude Code lesson:** hand the agent a frozen accepted-task rubric, ask for exact candidate versions/sources, reject unknown or untrusted search results, and keep time spent discovering, screening, reviewing and repairing alongside actual completed user outcomes.
