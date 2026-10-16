@@ -68,14 +68,14 @@ def _candidate(c, taskid, baseline):
         raise GoldsetError("candidate: unsupported gate names")
     for k in required:
         if not isinstance(gates.get(k), str) or gates[k] not in GATE_ALLOWED:
-            raise GoldsetError("candidate: gate {k} must be pass/fail/unknown")
+            raise GoldsetError(f"candidate: gate {k} must be pass/fail/unknown")
     if ("availability" in gates and
             (not isinstance(gates["availability"], str) or gates["availability"] not in GATE_ALLOWED)):
         raise GoldsetError("candidate: availability must be pass/fail/unknown")
     release_time = c.get("available_since_utc")
     if release_time is not None and _date(release_time, "available_since_utc") > baseline:
         if label == "viable" or gates.get("availability") == "pass":
-            raise GoldsetError("candidate: candidate released after task baseline cannot be available")
+            raise GoldsetError("candidate: released after task baseline cannot be available")
     reviewers = _list(c.get("reviewer_labels"), "reviewer_labels")
     if len(reviewers) != 2 or any(not isinstance(r, str) or r not in LABELS for r in reviewers):
         raise GoldsetError("candidate: exactly two reviewer labels required")
@@ -125,7 +125,7 @@ def evaluate(payload, k=5):
         specsha = _nonempty(task.get("spec_sha256"), "spec_sha256")
         accsha = _nonempty(task.get("acceptance_sha256"), "acceptance_sha256")
         if not _SHA.fullmatch(specsha) or not _SHA.fullmatch(accsha):
-            raise GoldsetError("task: task/acceptance hashes must be lowercase SHA-256")
+            raise GoldsetError("task: specification/acceptance hashes must be lowercase SHA-256")
         candidates = {}
         agree = 0
         double_reviewed = 0
