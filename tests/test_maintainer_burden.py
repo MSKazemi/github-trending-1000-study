@@ -1,9 +1,15 @@
 """Synthetic maintainer-burden accounting, never private participant data."""
 import copy
+from contextlib import redirect_stderr, redirect_stdout
+import io
 import json
 from pathlib import Path
+import tempfile
 import unittest
-from trending_study.maintainer_burden import BurdenError, summarize, FIELDS
+from unittest.mock import patch
+
+from trending_study.data_integrity import MAX_FILE_BYTES
+from trending_study.maintainer_burden import BurdenError, summarize, FIELDS, main
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "maintainer_externality.synthetic.json"
 
@@ -90,6 +96,72 @@ class BurdenTests(unittest.TestCase):
         p["observed_at_utc"] = "2026-10-12T12:00:00Z"
         with self.assertRaisesRegex(BurdenError, "cannot retain"):
             summarize([p])
+
+    def test_row_and_multi_case_float_sums_never_overflow_to_infinity(self):
+        a = card()
+        a["consent_state"] = "consented"
+        a["human_time_minutes"] = {category: 1e308 for category in FIELDS}
+        with self.assertRaisesRegex(BurdenError, "finite numeric range"):
+            summarize([a])
+        # Each individual case's partial sum is finite, but the population
+        # sum would silently overflow if not independently bounded.
+        a = card()
+        a["consent_state"] = "consented"
+        a["human_time_minutes"]["upstream_review"] = 1e308
+        b = copy.deepcopy(a)
+        b["case_id"] = "FICTIONAL-CASE-002"
+        with self.assertRaisesRegex(BurdenError, "finite numeric range"):
+            summarize([a, b])
+
+    def test_unbounded_python_integer_is_rejected_as_domain_error(self):
+        a = card()
+        a["consent_state"] = "consented"
+        a["human_time_minutes"]["upstream_review"] = 10 ** 400
+        with self.assertRaisesRegex(BurdenError, "finite, nonnegative"):
+            summarize([a])
+
+    def test_cli_uses_shared_strict_descriptor_checked_reader(self):
+        with patch("trending_study.maintainer_burden.load_research_json_file",
+                   return_value=card()) as loader:
+            stdout = io.StringIO()
+            with redirect_stdout(stdout):
+                main(["--input", "fake-local-file.json"])
+            loader.assert_called_once_with(Path("fake-local-file.json"),
+                                           max_bytes=MAX_FILE_BYTES)
+            self.assertIn('"dataset_kind": "synthetic"', stdout.getvalue())
+
+    def test_cli_rejects_unsafe_json_without_leaking_private_key_or_filename(self):
+        with tempfile.TemporaryDirectory() as folder:
+            private = "PRIVATE_FILE_OR_EMAIL_MARKER"
+            path = Path(folder) / (private + ".json")
+            for raw in ('{"PRIVATE_SECRET_KEY":1,"PRIVATE_SECRET_KEY":2}',
+                        '{"x":NaN}', '{"x":Infinity}',
+                        '{"x":1e999}', '{"x":1e-999}'):
+                with self.subTest(raw=raw):
+                    path.write_text(raw, encoding="utf-8")
+                    errors = io.StringIO()
+                    with redirect_stderr(errors), self.assertRaises(SystemExit) as caught:
+                        main(["--input", str(path)])
+                    self.assertEqual(caught.exception.code, 2)
+                    self.assertIn("invalid or unsafe research JSON input", errors.getvalue())
+                    self.assertNotIn(private, errors.getvalue())
+                    self.assertNotIn("PRIVATE_SECRET_KEY", errors.getvalue())
+
+    def test_cli_rejects_symlinked_and_nonregular_input(self):
+        with tempfile.TemporaryDirectory() as folder:
+            parent = Path(folder)
+            target = parent / "valid.json"
+            target.write_text(json.dumps(card()), encoding="utf-8")
+            symlink = parent / "PRIVATE_SYMLINK_MARKER.json"
+            symlink.symlink_to(target)
+            for path in (symlink, parent):
+                with self.subTest(path=str(path)):
+                    err = io.StringIO()
+                    with redirect_stderr(err), self.assertRaises(SystemExit) as caught:
+                        main(["--input", str(path)])
+                    self.assertEqual(caught.exception.code, 2)
+                    self.assertIn("invalid or unsafe research JSON input", err.getvalue())
+                    self.assertNotIn("PRIVATE_SYMLINK_MARKER", err.getvalue())
 
 
 if __name__ == "__main__":
