@@ -25,9 +25,9 @@
 - **CI2026-015-008 `limitation`** — old: "Customer merged-change counts and outcomes are vendor-reported; no independent verification or full cost audit." → new: "QC 2026-10-16: body says 'available for everyone to try' / Cloud customers with AI features; literal 'generally available' wording absent (GA only in slug/anchor); self-hosted promised Sep 16 but 8.0.0 release dated Sep 17. Customer merged-change counts are vendor-reported; no independent verification or full cost audit."
 - **CI2026-015-009 `limitation`** — old: "Cloud-only vendor report; functionality and quality not independently tested." → new: "QC 2026-10-16: availability column says cloud-only but page now reads 'Included in Sourcegraph Cloud and Sourcegraph self-hosted 8.1' (8.1.0 dated 2026-10-14, post-window); in-window availability is Cloud. Functionality and quality not independently tested."
 
-### Ledger-extension constraint (important)
+### Ledger extension
 
-`tests/test_sourcegraph_source_screen.py` (merged in PR #178) asserts **exactly 9 rows**, `accessed_utc == 2026-10-14`, `source_type == first_party_changelog` and only `sourcegraph.com/changelog/` URLs. The upgrade contract forbids editing tests and requires the unit suite to pass, so **no new rows were appended to the CSV in this upgrade**. The new verified leads are recorded with full ledger fields in the [report §3b](015-sourcegraph.md) and the [search log](015-sourcegraph.search-log.md) so a follow-up PR that relaxes the test can migrate them verbatim.
+The first upgrade commit kept the CSV at 9 rows because `tests/test_sourcegraph_source_screen.py` pinned it. On orchestrator authorisation a follow-up commit narrowed that test (all original strict checks now apply to the 9 listed original event_ids; added rows get schema/scope/unique-ID checks) and appended the 17 leads as CI2026-015-010 … -026. Ledger total: 26 rows, sorted by `published_utc`.
 
 ## Spot-check of new leads (6 of 17, re-read 2026-10-16)
 
@@ -40,6 +40,6 @@
 | L-024 | [releases/8.0](https://sourcegraph.com/changelog/releases/8.0) | yes | "September 17, 2026" | Register date Sep 17; `gh api` src-cli 8.0.0 `published_at` 2026-09-17T01:54:16Z; -008 promised Sep 16 → discrepancy recorded, not resolved |
 | L-022 | [sourcegraph/EnterpriseBench](https://github.com/sourcegraph/EnterpriseBench) | yes (`gh api`) | `created_at` 2026-09-14T17:09:44Z (no displayed publication date) | README banner "WORK IN PROGRESS — RESULTS NOT VALIDATED" → `reported_undetermined` ok; repo-creation date is not a publication date |
 
-All six matched the values recorded in [report §3b](015-sourcegraph.md). Spot-checks were performed by the same AI session that drafted the leads, so they are **not independent**; a human reviewer should re-open them.
+All six matched the values recorded in the [ledger](015-sourcegraph.events.csv) (rows -010, -016, -019, -021, -024, -022). Spot-checks were performed by the same AI session that drafted the leads, so they are **not independent**; a human reviewer should re-open them.
 
 **Embedded instructions:** no text aimed at AI agents was observed in any page read.

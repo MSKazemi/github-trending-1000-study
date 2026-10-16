@@ -56,7 +56,7 @@ These are **index/feed counts from a single fetch**, not a census of shipped cap
 ## E. Inclusion/exclusion summary
 
 - **Existing ledger rows kept:** 9 (all QC'd, see [source-QC](015-sourcegraph.source-qc-2026-10-16.md)).
-- **New verified leads:** 17 (L-010 … L-026), recorded in [report §3b](015-sourcegraph.md) — **not appended to the CSV** because `tests/test_sourcegraph_source_screen.py` pins the ledger at 9 first-party changelog rows and tests may not be edited in this upgrade.
+- **New verified leads:** 17 (L-010 … L-026), first recorded in the report and then added to the [ledger](015-sourcegraph.events.csv) as rows CI2026-015-010 … -026 in a follow-up commit that narrowed `tests/test_sourcegraph_source_screen.py` (strict checks kept for the original 9 rows; schema/scope checks for added rows). Ledger total: 26 rows.
 - **Deduplicated:** Jun 30 blog and Jul 2/Jul 8 wire copies → same beta launch as -004; Jul 23 Code Finder blog → same as -005; Sep 14 blog "Introducing Agentic Batch Changes" → same as -008.
 - **Excluded (out of window):** Dec 2 2025 Sourcegraph/Amp separation (context only), Mar 2026 changelog entries, Oct 13 changelog, self-hosted 8.1.0 (Oct 14), Cody Free/Pro changes (2025).
 - **Amp (watchlist 016):** no Amp Inc. product events are counted here; see [016-amp-inc.md](016-amp-inc.md).
