@@ -1,216 +1,175 @@
-# Replit — company intelligence, preliminary six-month source screen
+# Replit: provisional six-month technology intelligence screen (014)
 
-> **Provisional initial evidence screen (integration status 2026-10-15):** accepted for `main` by maintainer decision as a *provisional source-lead screen*, following the precedent of #67/#81/#86/#87/#93. It has **not** been reviewed by a qualified independent human; every event row remains an E0/E1 publisher-document lead, not a verified release, adoption or task outcome. **Pending gates:** seven-segment search with hit/screen/exclusion denominators and archived captures; independent human factual, licensing and methods review; adverse/independent reporting screen; exact artifact, licence and access checks; any prospective task trial. Issue #80 stays open. The text below is retained as drafted on 2026-10-12..15; where it conflicts with the [canonical events CSV](014-replit.events.csv), the CSV and the closing *Controlled integration review — 2026-10-15* section govern.
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report and its companion files are **provisional, AI-assisted documentary source leads**. The companion files are the [event ledger](014-replit.events.csv), the [search log](014-replit.search-log.md) and the [source-QC note](014-replit.source-qc-2026-10-16.md). A first version was merged under the maintainer's 2026-10-15 decision (precedent: PRs #67/#81/#86/#87/#93). No qualified human has reviewed any of it. Factual/link review, source-access/rights review and methods review are still pending. Merging is not scientific or security sign-off. Issue #80 was closed on maintainer instruction (2026-10-16) with these review gates still open; reopen it if review finds a defect.
 
-- **Watchlist entry:** 014
-- **Research issue:** [#80](https://github.com/MSKazemi/github-trending-1000-study/issues/80)
-- **Retrospective publication interval:** 2026-04-12 to 2026-10-12 inclusive.
-- **Prepared/source-reviewed:** 2026-10-12.
-- **Status:** INITIAL screened research DRAFT (not fully systematically collected or independently reviewed).
-- **Coverage:** vendor/official notices for agentic hosted IDEs, prompt-to-app workflows and developer deployment; [official index](https://replit.com/blog). Each event has canonical source URL in [CSV evidence ledger](014-replit.events.csv).
-- **Methods:** [company methodology](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+- **Watchlist:** 014. Research issue: [#80](https://github.com/MSKazemi/github-trending-1000-study/issues/80).
+- **Window:** 2026-04-12 to 2026-10-12 inclusive.
+- **Screens:** first screens ran 2026-10-12 to 2026-10-15. This seven-segment upgrade and source QC ran on **2026-10-16**.
+- **Not available:** search-run UTC times, full search-engine result counts, immutable page captures and an independent reviewer.
+- **Status:** **30 dated source leads**, covering all seven calendar segments:
+  - 11 pre-existing rows. All were re-opened on 2026-10-16; all were reachable and all dates matched.
+  - 19 new rows.
+  - These are documentary leads, not verified product behaviour, adoption or task outcomes.
+- **Official channels checked:**
+  - [replit.com](https://replit.com/);
+  - the [blog](https://replit.com/blog), which pages 1–2 cover completely for this window;
+  - the weekly [docs changelog](https://docs.replit.com/updates), 26 in-window pages;
+  - public code under [github.com/replit](https://github.com/replit).
+- **Methods:** [company protocol](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md). The company-watch E0–E2 grades used here are **not** the lesson-evidence grades of the [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-## 1. Discovery and inclusion audit (incomplete)
+## 1. Discovery, coverage and exclusions
 
-This is a **bounded primary-document evidence shortlist**, not a systematic seven-month search. Source discovery/review occurred on 2026-10-12; **search-engine result counts, complete query clickstream, number screened, excluded URLs and full independent source screening were not preserved**, therefore they are **unknown**, not zero. Reproducibility queries below are **next-pass suggestions, not claims that each exact expression was executed**:
+The [search log](014-replit.search-log.md) records two kinds of screen:
 
-- `"Replit" after:2026-04-11 before:2026-10-13 coding agent releases security`
-- `site:replit.com 2026 model tool changelog license agent`
-- `"Replit" 2026 API roadmap change security acquisition`
-- `"Replit" Reuters OR TechCrunch OR The Register 2026 criticism independent audit`
+- **Census of two first-party channels.** The blog index has 29 in-window posts. The weekly changelog has 113 in-window item headings.
+- **Targeted reads.** Individual posts, five general web searches, and read-only GitHub API calls.
 
-For final issue acceptance, search each full/partial month separately in primary/independent outlets, log exact run UTC/timezone, immutable query/results and reason for inclusion/exclusion; inspect releases, product docs, public source licenses and pricing; preserve zero-result screens as **search results missing/not found**, not proof of corporate inactivity. Vendor news can change after initial publication and lacks immutable full-text snapshot here. Don't deduplicate separate feature announcements into mere publicity count or count syndications as independent product confirmations.
+**Main gaps in the earlier screens:**
 
-## 2. Entity, products, availability and baseline
+- April 12–30 and May had only partial coverage. October 1–12 had **no** row, and an earlier note said it was "not documented".
+- October has **no blog posts** in the window. It is covered here only by the Oct 2 and Oct 9 weekly changelogs and one independent report.
 
-Replit Inc. provides hosted development software, including Replit Agent and project hosting. Replit Agent, package firewall and design tools have different implementation/hosting boundaries; published self-reports are not evidence of independently verified downstream use.
+The ledger is a **purposive selection** of material events. It is not a release census or a rate of innovation. Search totals, screened-hit counts and excluded-hit denominators for the web searches are **unknown**, not zero.
 
-**Rights/safety boundary:** The Package Firewall's '8,000 packages daily' is a vendor-reported screening number with unknown denominator/false-positive rate; blocked packages are neither verified security incidents nor accepted-task outcomes.
+**Out-of-window items, explicitly excluded:**
 
-**Specific correction/ambiguity to preserve:** Replit's self-evaluation claims on model routing and subagent economics are not independently reproduced; hardware/cloud energy unknown.
-
-## 3. Month-by-month dated candidate ledger
-
-| 2026 month segment | Included candidate event/source(s) | Coverage notes |
+| Date | Item | Note |
 |---|---|---|
-| Apr 12–30 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
-| May | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
-| June | [Package Firewall](https://replit.com/blog/package-firewall); [Custom skills for Replit Agent](https://replit.com/blog/custom-skills); [Evaluating and improving Agent at scale](https://replit.com/blog/evaluating-and-improving-agent-at-scale) | First-party sources screened |
-| July | [Replit Design](https://replit.com/blog/introducing-replit-design) | First-party sources screened |
-| August | [Replit Free Mode](https://replit.com/blog/replit-introduces-free-mode) | First-party sources screened |
-| September | [Agent harness subagent selection](https://replit.com/blog/free-the-models) | First-party sources screened |
-| Oct 1–12 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| Mar 11, 2026 | Agent 4 launch and the $400M round ([blog index p.3](https://replit.com/blog/category/all/3)) | Valuation seen only in secondary search results |
+| Jul 2025 | Production-database deletion incident | Pre-window |
+| Oct 13, 2026 | Solutions Partners post | Post-window |
+| 2022 | `crosis` security advisory | Pre-window |
 
-All dates are **as displayed by the source** and rendered as calendar dates; UTC publication timezone has not been independently established. Underlying launch/deployment date is **not assumed identical** to article date. If page describes a different earlier event, document discrepancy separately; follow-up source audit needed.
+## 2. Corporate/product identity and rights baseline
 
-## 4. Event and capability map with source-level confidence
+- **Company and products.** Replit operates a hosted, browser-and-desktop development platform: Replit Agent (prompt-to-app), Workspace/IDE, Deployments/publishing, databases, connectors and enterprise administration.
+- **Legal entity.** The legal parent and ownership were **not checked against filings**. The [upm LICENSE.md](https://github.com/replit/upm) names the copyright holder as "Neoreason d/b/a Repl.it". In the window, Replit acquired **Atta**, a business-analysis/charting startup ([Sep 25](https://replit.com/blog/replit-acquires-atta)); terms were not disclosed.
+- **Open-source licences (GitHub API, 2026-10-16).**
+  - Replit publishes many supporting components:
+    - MIT: [river](https://github.com/replit/river), [nixmodules](https://github.com/replit/nixmodules), [rippkgs](https://github.com/replit/rippkgs), [codemirror-vim](https://github.com/replit/codemirror-vim), [crosis](https://github.com/replit/crosis), [replit-cursor-plugin](https://github.com/replit/replit-cursor-plugin) (created 2026-09-30) and [replit-gemini-extension](https://github.com/replit/replit-gemini-extension);
+    - ISC: [replit-py](https://github.com/replit/replit-py);
+    - [upm](https://github.com/replit/upm): GitHub reports "Other"; its LICENSE.md starts "MIT License" and points to additional `LICENSES`.
+  - Some active repositories have **no detected licence**: `ruspty`, `codemirror-interact`, `replit-object-storage-python`.
+  - **The hosted Agent, Workspace, Deployments and Security products are proprietary services.** Nothing above licenses them.
+  - Rayfin, the "open-source SDK" in the Microsoft Fabric post, is published by **Microsoft** ([microsoft/rayfin](https://github.com/microsoft/rayfin), MIT), not by Replit.
+- **Portable artefacts that matter for reuse.**
+  - `SKILL.md` Skills ([Jun 10](https://replit.com/blog/custom-skills)), importable from public GitHub ([Aug 21 changelog](https://docs.replit.com/updates/2026/08/21/changelog)).
+  - A Replit MCP server ([Aug 14 changelog](https://docs.replit.com/updates/2026/08/14/changelog)).
+  - These are documented interfaces. Their behaviour was not tested.
 
-| Event ID | Published / underlying event date | Source | Claim or documented change | Reported status and restrictions | Evidence/construct |
-|---|---|---|---|---|---|
-| CI-014-01 | 2026-06-09; event date not separately verified | [Package Firewall](https://replit.com/blog/package-firewall) | Replit says it defaults a Socket-supported malicious dependency installation firewall on. | shipped; Vendor's 8k blocked/day not independent breach/vulnerability count; updated June 10. | E1; M2;M5 |
-| CI-014-02 | 2026-06-10; event date not separately verified | [Custom skills for Replit Agent](https://replit.com/blog/custom-skills) | Replit describes reusable custom instructions/skills for its hosted agent. | shipped; Tier/access and reproducibility of skill interpretation not tested. | E1; M1;M5 |
-| CI-014-03 | 2026-06-23; event date not separately verified | [Evaluating and improving Agent at scale](https://replit.com/blog/evaluating-and-improving-agent-at-scale) | Replit describes internal agent evaluation practices and benchmark process. | reported_undetermined; Methodology is vendor-reported, not independent replication. | E1; M2 |
-| CI-014-04 | 2026-07-29; event date not separately verified | [Replit Design](https://replit.com/blog/introducing-replit-design) | Replit announces integrated design-related development interface. | shipped; Service availability and external project benefits not verified. | E1; M1 |
-| CI-014-05 | 2026-08-18; event date not separately verified | [Replit Free Mode](https://replit.com/blog/replit-introduces-free-mode) | Replit announces a new access mode for building with AI. | shipped; No verified adoption or user task count; pricing/limits must be rechecked. | E1; M1;M4 |
-| CI-014-06 | 2026-09-29; event date not separately verified | [Agent harness subagent selection](https://replit.com/blog/free-the-models) | Replit describes dynamic use of specialists and resource allocation; reports own task benchmark comparisons. | shipped; Vendor performance claims lack independent replication and do not prove environmental benefit. | E1; M1;M2;M6 |
+## 3. Seven-segment dated chronology
 
-**Grade E1 for ALL 6 entries:** vendor/publication statements only. 'Shipped' means provider **reports** availability, not a tested implementation or independent adoption. The separate CSV has source type, first-seen review date, status and missingness fields. An independent assessment is needed for E3 validation; page popularity, benchmarks, stars, press coverage, merger announcements and provider security assertions do not qualify.
-
-### Product impact distinctions
-
-- **Product direction:** Replit is emphasizing workflow-level safety controls, portable/agent-readable skills, hosted design, and agent self-allocated specialist subagent effort.
-- **Integration:** pin exact dependency, API, model/version, source commit/weight checksum, task context, deployment and subscription restrictions, instead of comparing names or marketing scores.
-- **Security/licensing:** The Package Firewall's '8,000 packages daily' is a vendor-reported screening number with unknown denominator/false-positive rate; blocked packages are neither verified security incidents nor accepted-task outcomes.
-- **Economics:** compare matched **independently accepted task** output including human/review minutes, CI/runtime, hosted inference and 30/90-day upkeep. Tokens do not imply kWh or carbon savings.
-
-## 5. Attributed roadmap versus realized release
-
-**Direction is inferred from the vendor publications**, not an independently established plan: Replit is emphasizing workflow-level safety controls, portable/agent-readable skills, hosted design, and agent self-allocated specialist subagent effort.
-
-Any `preview` and `announced_only` record stays distinct from vendor-described general availability. A direction statement or claimed open-source license requires checking the exact artifact. Future intent has no guaranteed release date unless the cited official source explicitly guarantees it; the event table is not a promise calendar.
-
-## 6. Analyst 2027–2031 conditional interpretation
-
-| Hypothesis (not company commitment) | Rival explanation | Observable disconfirmation |
+| Segment | In-window source evidence (displayed publication dates) | Availability and attribution limits |
 |---|---|---|
-| Standard agent instruction files and on-by-default supply-chain checks may improve repeated task acceptance without each maintainer writing a custom harness. | A hosted integrated experience may cause lock-in and change cost distribution rather than reduce software creation waste. | Equivalent offline-first open CLI onboarding yields equal task correctness and fewer hosted/review costs. |
+| Apr 12–30 | [Apr 17 changelog](https://docs.replit.com/updates/2026/04/17/changelog): Agent as MCP listing on Google Cloud Marketplace and Opus 4.7 in Power mode. [Apr 21 Security Agent](https://replit.com/blog/meet-replit-security-agent). [Apr 22 Auto-Protect](https://replit.com/blog/auto-protect). [Apr 29 App Monitoring](https://replit.com/blog/app-monitoring) | Auto-Protect is **opt-in, off by default**; the user applies the patch and republishes. Security Agent has no GA/beta label. |
+| May | [May 6 Private Publishing + External Access Tokens](https://replit.com/blog/secure-more-apps). [May 7 Security Center 2.0](https://replit.com/blog/security-center). [May 8 independent summary of RedAccess research](https://www.freevacy.com/news/wired/study-finds-security-gaps-in-thousands-of-vibe-coded-apps/7362) (via WIRED). [May 21 Enterprise self-serve](https://replit.com/blog/enterprise-self-serve) | Enterprise self-serve already appears in the [May 15 changelog](https://docs.replit.com/updates/2026/05/15/changelog), so there is a **date discrepancy**. The RedAccess figures pool four platforms. |
+| June | [Jun 1 Microsoft Fabric/Rayfin](https://replit.com/blog/microsoft-fabric). [Jun 3 SEO Agent](https://replit.com/blog/seo-agent). [Jun 9 Package Firewall](https://replit.com/blog/package-firewall). [Jun 10 Skills & Custom Instructions](https://replit.com/blog/custom-skills). [Jun 10 Databricks public preview](https://replit.com/blog/databricksjune2026). [Jun 17 Replit in Claude](https://replit.com/blog/replit-claude). [Jun 23 Agent evaluation](https://replit.com/blog/evaluating-and-improving-agent-at-scale) | The Databricks integration is in **public preview**. The evaluation post reports no numbers. |
+| July | [Jul 16 "Self-Driving Company"](https://replit.com/blog/self-driving-company): a stated direction. [Jul 24 changelog](https://docs.replit.com/updates/2026/07/24/changelog): cloud price cut effective Aug 1. [Jul 29 Replit Design](https://replit.com/blog/introducing-replit-design) | The Jul 16 post is **announced_only** (intent). The price cut was announced with a future effective date. |
+| August | [Aug 14 changelog](https://docs.replit.com/updates/2026/08/14/changelog): MCP server. [Aug 16 governance](https://replit.com/blog/new-enterprise-governance-tools). [Aug 17 black-box pen tests](https://replit.com/blog/black-box-pen-tests). [Aug 18 Free Mode](https://replit.com/blog/replit-introduces-free-mode). [Aug 21 changelog](https://docs.replit.com/updates/2026/08/21/changelog): Skills import from GitHub and Routines. [Aug 26 Intelligent Model Routing](https://replit.com/blog/intelligent-model-routing) | The Admin API is **beta**. In the Aug 16 post the Compliance API and Workspace Settings are **announced only**. |
+| September | [Sep 10 Databricks GA](https://replit.com/blog/databricks2026). [Sep 11 changelog](https://docs.replit.com/updates/2026/09/11/changelog): Compliance API prompt text. [Sep 25 Atta acquisition](https://replit.com/blog/replit-acquires-atta). [Sep 29 "Free the models"](https://replit.com/blog/free-the-models) | The Databricks post was **updated Oct 13** (post-window) and its title changed. The Atta post was updated Oct 4. |
+| Oct 1–12 | [Oct 2 changelog](https://docs.replit.com/updates/2026/10/02/changelog): Enterprise Workspace settings and new models. [Oct 9 changelog](https://docs.replit.com/updates/2026/10/09/changelog): Replit Desktop for Windows **private preview** (event Oct 7 per [RuntimeWire](https://runtimewire.com/article/replit-windows-desktop-app-preview-local-builds)) | No blog posts in this segment. The [Oct 13 Solutions Partners post](https://replit.com/blog/introducing-replit-solutions-partners) is **excluded**. |
 
-**Confidence:** low/exploratory until independent outcome tests and representative recruitment. Research design must not treat this editorial ten-company screen as a random sample of companies, repositories or model users.
+The [CSV](014-replit.events.csv) holds the 30 rows. In it:
 
-## 7. Study implications (M1–M7)
+- `published_utc` is the displayed source date. It is not an archived UTC timestamp.
+- `event_date_utc` is filled only where a source gives a distinct date: the Aug 1 pricing change and the Oct 7 Windows preview.
+- An `independent_check_url` that points to another Replit page is **documentary corroboration**, not an independent audit.
 
-| Objective | Operational observation and validity safeguard |
-|---|---|
-| M1 workflow evolution | Pinned dated exposure to working agent workflow; release != actual user adoption |
-| M2 quality/review | Preregistered task correctness, human review minutes and failures under independent evaluation |
-| M3 discovery | Prospective cohort and comparisons controlling baseline popularity, language and publicity |
-| M4 meaningful third-party reuse | External real working downstream integration, not stars, impressions, downloads or trial signups |
-| M5 reuse-first vs rebuild | License/provenance/security checked candidate pool, matched task and no-solution cases |
-| M6 lifecycle sustainability | Complete human + inference + CI + upkeep + upstream costs, environmental meter/model boundaries and uncertainty; no carbon/token coefficient invented |
-| M7 ethical maintainer growth | Fixed low-risk intervention for organic onboarding, downstream verified use, prospective controls |
+## 4. Feature map: today vs newly delivered vs preview vs unverified
 
-None of these effects were measured in this source review. External ecosystem product announcements are **hypothesis generators only**.
-
-## 8. Concrete experiment for the maintainer's own repository
-
-**Repository:** [the existing GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study), using offline synthetic [parser fixture](../../../tests/fixtures/trending.html) and existing CLI. Avoid unauthorized GitHub Trending collection.
-
-**Candidate intervention:** Use existing Trending parser fixtures in a timed newcomer onboarding A/B test of AGENTS.md plus a tested task recipe, not a new Replit-hosted copy of the parser.
-
-**Control/treatment with frozen task:** A: current README & CLI instructions; B: revised task card/agent instructions pointing explicitly to existing reusable CLI; same frozen input, clean environment and reviewer.
-
-**Independent acceptance and actual reuse signal:** Independent first-use pass of offline parse and summarize with exact schema; verify downstream script imports accepted JSONL; include all failures and support/rework minutes.
-
-**Pre-register** all assigned tasks (including failures/no-solution), acceptance hash/schema and evaluator before any agent runs. Record exact repo commit, agent/model/versions, candidate license/security provenance, human review, token/billing if available, build/CI, attempts, 30-day support and downstream external adoption. Consent for any human participant logs and minimize personal telemetry.
-
-**Stop rule:** Do not deploy hosted workflow if it requires code/data exposure, duplicate components, or adds maintainer costs without verified accepted tasks.
-
-**Applicability:** a small offline CLI task, not evidence of representative OSS growth or positive environmental impact. The purpose is to *verify reuse of existing work*, not to maximize generated code, repo count or GitHub stars.
-
-## 9. Review status, discrepancies and limits
-
-- **Documentary output:** 6 attributed source records. Scope is source discovery, not independent validation of announced product quality or commercial uptake.
-- **Special conflicting/qualified statement:** Replit's self-evaluation claims on model routing and subagent economics are not independently reproduced; hardware/cloud energy unknown.
-- **Not established:** systematic full recall, company-wide corporate ownership auditing, third-party task acceptance, API reproducibility, real external users, long-run cost, maintenance load or kWh/CO2e.
-- **Independence:** no external researcher fact-checked this file; no E3/E4 assignment, no original observations, no actual task trial.
-- **Acceptance work outstanding:** rerun all seven monthly searches with screen logs; independent link/date/article-version check; verify artifact rights and product access/version; look for negative independent coverage, regulatory/security history and corrections; inspect exact legal parent after any merger; run tests/CSV validation in repo checkout; approve human review.
-- **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
-
-**Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
-
-## 10. Provisional source lead from older PR #196 (not a validated finding)
-
-[PR #196](https://github.com/MSKazemi/github-trending-1000-study/pull/196) supplied a differently structured JSON event-lead inventory. Its overlapping Replit evaluation and free-mode links are already represented in this report; **do not count them again as independent events**. One distinct candidate remains:
-
-- [Intelligent Model Routing on Replit](https://replit.com/blog/intelligent-model-routing) — preliminary lead `014-E03` in PR #196, with a **draft-attributed, not independently verified** publication date of 2026-08-26. The earlier draft reports a vendor-internal relative cost claim, not an independently reproduced result. Independently inspect the original article and revisions, the baseline definition, model/task mix, feature availability and actual cost measurements **before** treating its already-preserved E0 source row in `014-replit.events.csv` as validated.
-
-This is a **source-discovery handoff counted only as one provisional vendor URL lead, not an accepted finding, empirical measurement, or human-reviewed statement**. The original JSON draft and reasoning remain accessible in PR #196's preserved branch; any future inclusion needs URL/date verification, event deduplication and a reviewer-linked commit.
-
-### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
-
-- [June 9 Package Firewall post](https://replit.com/blog/package-firewall) attributes default-on install-time detection to a **Socket partnership** and reports roughly **8,000 flagged package blocks per day**. That figure is a *vendor counter* with unknown uniqueness, false-positive/negative rates and denominator; it is **not** 8,000 independently proven supply-chain attacks or distinct vulnerable packages.
-- [June 10 Skills and Custom Instructions release](https://replit.com/blog/custom-skills) describes task-specific, versionable `SKILL.md` assets and workspace-level instructions; availability depends on plan/role. The article itself notes that overly broad and conflicting descriptions can make agent outcomes worse. That is an engineering design hypothesis, not a measured local benefit.
-- [Aug 18 Free Mode](https://replit.com/blog/replit-introduces-free-mode) is indexed with publication and updated Aug 19 in the official Replit blog, although the direct reader returned an internal error; record as **partly checked** until a direct full-page audit.
-- [Sept 29 model routing/subagents](https://replit.com/blog/free-the-models) appears in the blog index; the cited full post URL did not load in this reader. Vendor claims about reduced cost must not substitute for a frozen matched-task trial.
-
-**Practical action:** Keep skills narrowly scoped, opt out when inapplicable, and test both false activation and correct task completion. Preserve human review and deny unreviewed package installs.
-
-
-## Evidence-preserving reconciliation of competing drafts (2026-10-13)
-
-This source-screened working report uses **original PR #212 as a basis for a working adaptation** and preserves its factual limitations; the provisional model-routing lead/count wording was updated. It is not a byte-identical copy of the complete original report. Later [draft PR #230](https://github.com/MSKazemi/github-trending-1000-study/pull/230) was separately prepared and includes unique source observations, caveats and a proposed experiment. Its exact original Markdown is preserved in [the dated source archive](source-archives/014-replit.2026-10-13-first-screen.md); the initial 22-column CSV (including the original evidence tiers and statuses) is preserved unchanged as [the earlier event ledger](source-archives/014-replit.2026-10-12-source-ledger.csv). Both are **provenance archives, not independent corroboration**.
-
-**Historical-copy clarification — 2026-10-14:** The separate **[draft preservation PR #300](https://github.com/MSKazemi/github-trending-1000-study/pull/300)** prepares a [byte-identical snapshot of the complete original #212 Markdown](https://github.com/MSKazemi/github-trending-1000-study/blob/4425557fbb54f8e137dfa69afbfa4cb94dbc9e48/research/company-intelligence/2026-04-12_2026-10-12/source-archives/014-replit.2026-10-12-pr-212-original-report.md) from original head `4a6b4581e90a0d648b88a21d6facd3c6bd43df2a`, Git blob `87eba24d0a013bcdccce9105e50f3df4f9b5a98a`. The archive is pinned to preservation head `4425557fbb54f8e137dfa69afbfa4cb94dbc9e48` and retains the original citations, dates, negative qualifications and prospective experiment text without promoting them to verified findings. It remains **pending accepted preservation and human source QA**; this report does not claim that #300 has merged or that branch retirement, source authentication or independent reviewer approval is authorized. The existing alternate-screen and ledger archives above remain unchanged.
-
-**Canonical working event index:** [014-replit.events.csv](014-replit.events.csv) contains **11** deduplicated *publisher URL leads*: 3 from the original later screening, 6 unique archived earlier sources, one preserved from historical PR #196, and one additional dated first-party source on 2026-10-14. Older-only candidates are conservatively marked `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` until independent URL/date/content QA, while the archived older labels remain unchanged. Event IDs and original unreviewed claims are preserved, not reset or silently backdated.
-
-| URL in both screens | Original status | Newer status | Required disposition |
+| Cluster | Newly delivered in window (vendor-stated) | Preview / announced only | Not verified / counter-evidence |
 |---|---|---|---|
-| No differing categorical labels identified | — | — | Source assertions still require human verification |
+| **Agent workflow and models** | Skills (`SKILL.md`) + Custom Instructions (Jun 10). Skills import from GitHub, Routines (Aug 21). Free Mode on GPT-5.6 Luna (Aug 18). Automatic model routing (Aug 26). Self-allocated subagents (Sep 29). New models (Apr 17, Oct 2) | none found | The 65% cost cut for routing and the DeepSWE 72% / Terminal-Bench 49% figures are **vendor-run**. Model swaps change behaviour with no user-side version pin. |
+| **Exposure for reuse/integration** | Google Cloud Marketplace MCP listing (Apr 17). Claude connector (Jun 17). Replit MCP server for ChatGPT/Claude/Slack/any MCP client (Aug 14), extended to desktop clients (Sep 11). Fabric deploy target (Jun 1/5). Databricks GA (Sep 10) | Databricks U2M public preview (Jun 10). Windows local builds private preview (Oct 9) | Counterparty statements from Anthropic, Microsoft, NVIDIA and Databricks were not checked. External agents that can **publish** apps widen the permission surface. |
+| **Security tooling** | Security Agent (Apr 21). Auto-Protect, opt-in (Apr 22). Security Center 2.0 (May 7). Package Firewall, default on, Socket (Jun 9). Black-box automated pen tests (Aug 17) | microVM migration "currently rolling out" ([Apr 20](https://replit.com/blog/defense-in-depth-how-replit-secures-every-layer-of-the-vibe-coding-stack)) | **Independent counter-evidence:** RedAccess research (May) found over 5,000 exposed vibe-coded apps across Lovable, Replit, Base44 and Netlify. The pooled figure gives no Replit-specific rate. No detection or false-negative rates have been published for any Replit scanner. |
+| **Access, governance and privacy** | Private Publishing for Core/Starter + External Access Tokens (May 6). Audit Logs to SIEM (Aug 16). Compliance API prompt retrieval (Sep 11). Workspace settings (Oct 2). Workspace region choice for Pro (Aug 14) | Admin API **beta** (Aug 16) | Retrieving prompt content from employees raises consent questions. Whether any control was enabled in a real deployment is unknown. |
+| **Operations and cost** | App Monitoring with read-only agent DB diagnosis (Apr 29). Enterprise self-serve (May 21). Scheduled DB backups (Sep 4 changelog) | Cloud price cut effective Aug 1 (announced Jul 24) | No bills observed. Prices are **not** energy or lifecycle cost. |
+| **Design and analysis** | Replit Design, the successor to Canvas (Jul 29). SEO Agent (Jun 3). Atta interactive charts (Sep 25) | none found | "Inline charts" already appear in the **Aug 14** changelog, before the acquisition post. Whether those charts used Atta is unresolved. |
 
-### Unique source material from each branch
+## 5. Publicly stated direction versus shipped functionality
 
-**Earlier screen source leads retained in the canonical CSV (archived E0 until checked):**
-- 2026-06-09: [Package Firewall](https://replit.com/blog/package-firewall), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-06-10: [Custom skills for Replit Agent](https://replit.com/blog/custom-skills), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-06-23: [Evaluating and improving Agent at scale](https://replit.com/blog/evaluating-and-improving-agent-at-scale), prior status `reported_undetermined`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-07-29: [Replit Design](https://replit.com/blog/introducing-replit-design), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-08-18: [Replit Free Mode](https://replit.com/blog/replit-introduces-free-mode), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
-- 2026-09-29: [Agent harness subagent selection](https://replit.com/blog/free-the-models), prior status `shipped`, prior tier `E1` (author's working label; not independent product proof)
+| Dated first-party source | Stated intention (quoted or paraphrased) | Later evidence in window | Classification |
+|---|---|---|---|
+| [Apr 20 Defense in Depth](https://replit.com/blog/defense-in-depth-how-replit-secures-every-layer-of-the-vibe-coding-stack) | "currently rolling out a replacement of our entire container-based infrastructure with microVMs"; a broader announcement is planned | No dated microVM GA announcement found in the window | **In-progress claim, unverified** |
+| [Aug 16 Govern Replit at scale](https://replit.com/blog/new-enterprise-governance-tools) | Workspace Settings "end of the week"; Compliance API "end of August" | Compliance API in the [Sep 11 changelog](https://docs.replit.com/updates/2026/09/11/changelog). Model controls across Workspaces in the [Aug 21 changelog](https://docs.replit.com/updates/2026/08/21/changelog). Full Workspace settings in the [Oct 2 changelog](https://docs.replit.com/updates/2026/10/02/changelog) | **Delivered later than stated** (by changelog date; rollout date unknown) |
+| [Jul 16 Self-Driving Company](https://replit.com/blog/self-driving-company) | "We want to bring this new way of working to all of our users", with "policy, permissions, security, and cost controls" | Routines (Aug 21), governance (Aug 16 to Oct 2) and Atta analysis (Sep 25) are *consistent with* this intent. No dated commitment exists. | **Aspiration** |
+| [Sep 25 Atta](https://replit.com/blog/replit-acquires-atta) | Recurring investigations feeding slides and team work (vision) | Only interactive charts shipped | **Vision, not delivered** |
+| [Sep 29 Free the models](https://replit.com/blog/free-the-models) | Less prescriptive harnesses scale better as models improve (design philosophy) | Model menu changes on Oct 2 | **Engineering position**, vendor-benchmarked |
 
-**Later screen unique links (publisher working records):**
-- 2026-04-21: [Meet Replit Security Agent](https://replit.com/blog/meet-replit-security-agent) — `shipped`; source-bound, not an independent effectiveness test
-- 2026-05-06: [Secure more apps with External Access Tokens and Private Publishing](https://replit.com/blog/secure-more-apps) — `shipped`; source-bound, not an independent effectiveness test
-- 2026-09-10: [Replit | Databricks Integration is Now Generally Available with Native Lakebase Support](https://replit.com/blog/databricks2026) — `shipped`; source-bound, not an independent effectiveness test
+No source found sets a binding 2027–2031 roadmap.
 
-**Scientific and release gate:** source QA is incomplete: query-result denominators, revisions, contradictory/independent journalism, verified first availability, exact rights/licenses and genuine independent human factual review are outstanding. The two PRs must not be represented as completed company investigations. No participant task, provider workload, environmental footprint or software adoption result was measured. Leave issue #80 open until study acceptance is satisfied.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company strategy)
 
+| Testable scenario | Rival explanation | Disconfirming observation |
+|---|---|---|
+| Portable `SKILL.md` and MCP exposure make agent practices reusable across vendors | Skills are interpreted differently per harness/model; portability is nominal | The same skill file yields materially different acceptance on two harnesses with a frozen task |
+| On-by-default supply-chain and pen-test scanning lowers exposure of generated apps | Exposure is driven by public-by-default publishing and user misconfiguration that scanners do not catch | Independent scans of comparable apps show no difference in unauthenticated-data exposure |
+| Agent-driven governance (audit/compliance APIs) is a prerequisite for enterprise agent adoption | Adoption is driven by price and bundling (Free Mode, self-serve), not governance | Uptake indicators do not track governance releases; this needs data we do not have |
 
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+## 7. M1–M7 study relevance
 
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+| Construct | What this screen offers | What it does **not** establish |
+|---|---|---|
+| **M1** workflow evolution | Dated shifts toward chat-first "Conversations", Routines, subagents and model routing | Actual user adoption |
+| **M2** accepted quality/review | Vendor evaluation methods (ViBench, A/B) and scanning tools | Independently accepted task outcomes |
+| **M3** discovery | SEO Agent and default `robots.txt`/sitemap generation | Real traffic or reuse |
+| **M4** verified external reuse | MCP server, Claude connector and Marketplace listing as integration surfaces | Any verified downstream use |
+| **M5** reuse vs rebuild | `SKILL.md` import from GitHub; Package Firewall on dependency installs; MIT-licensed components | Licence compliance of imported skills; scanner precision |
+| **M6** lifecycle cost | Price changes (Free Mode, Aug 1 cloud cut, routing cost claim) | kWh/CO2e (none invented); total human review minutes |
+| **M7** ethical maintainer growth | Governance/privacy controls; public-vs-private publishing debate | Any growth effect |
 
-- **Publisher page and source publication date:** [Replit | Databricks Integration is Now Generally Available with Native Lakebase Support](https://replit.com/blog/databricks2026) — 2026-09-10 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** The publisher's 10 September post describes GA for an enterprise Replit/Databricks integration with Lakebase, referring back to an earlier June public preview.
-- **Correction / uncertainty to retain:** GA is a vendor availability statement, not independent evidence of enterprise entitlement, secure default permissions, a successful external integration, user adoption or improvements to task outcomes. Preserve plan/region and data-rights unknowns.
-- **Falsifiable maintainer experiment (not performed):** In an authorized synthetic-data test workspace, compare an existing manual integration against a proposed assisted integration; use immutable access-control assertions, independent task acceptance and recorded human setup/review time.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+## 8. One falsifiable reuse-first maintainer experiment (proposal, not executed)
 
+**Practice tested:** reuse one **existing**, narrowly scoped `SKILL.md` that points an agent at this repository's existing CLI, instead of letting the agent write a new parser or helper.
 
-### 2026-10-14 archival reconciliation supplement (provisional)
+- **Repository:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), offline only. The task uses the committed synthetic [parser fixture](../../../tests/fixtures/trending.html) and the existing `trending_study` CLI. Live `capture` stays **disabled**, and no Replit-hosted copy is made.
+- **Comparator.**
+  - **A:** the current README/AGENTS.md only.
+  - **B:** A plus one pinned `SKILL.md` that names the existing CLI commands and the "reuse before rebuild" rule.
+  - Run both on the same agent/model version, in a clean checkout, on 8 frozen tasks. 4 tasks are solvable by reuse; 2 have no reusable solution; 2 are distractors where the skill should **not** fire.
+- **Acceptance test.** A person other than the agent author writes hidden tests before any run. Pass means:
+  - the output JSONL validates against the existing schema;
+  - no new module duplicates `trending_study` parsing (checked by diff review);
+  - the full unit suite stays green.
+- **Primary endpoint:** independently accepted tasks out of all 8 assigned, counting refusals and timeouts.
+- **Secondary endpoints:** false skill activations on distractors, new lines of code, reviewer minutes and billed tokens where available.
+- **Verified external-use signal:** one consenting outside user runs task 1 from the README with the skill and reports pass/fail on the hidden test. Stars and views do not count.
+- **Cost cap:** about 4 maintainer hours and a fixed token budget set in advance.
+- **Stop rule:**
+  - Stop early if B's accepted-task rate is not higher than A's.
+  - Stop early if B fires on either distractor.
+  - Stop early if B adds reviewer time without fewer duplicated modules.
+  - In any of these cases, keep A and record the null result. No energy or carbon claim is made.
 
-The original machine-readable `events.json` from earlier closed-unmerged PR [#196](https://github.com/MSKazemi/github-trending-1000-study/pull/196) is preserved byte-for-byte at [the first-pass JSON archive](source-archives/014-replit.2026-10-12-first-pass.events.json). Its one distinct, previously uncatalogued source URL is now carried forward in the canonical working CSV as an **E0 unreviewed lead** under its original ID (014-E03). The index now holds **10 unique vendor URL leads**, not 10 independently verified events. A published article establishes only what the publisher said; no independently audited performance, legal rights, or systematic search completeness is implied.
+## 9. Limitations
 
-The archive is separate source provenance, not another independent observation. Publication/event dates, plan availability, contrary sources, factual and methods assessment still require genuine independent review. This preservation change does **not** satisfy the pending scientific acceptance gate, and the PR remains draft until review and final-head CI succeed.
+- **Mostly first-party evidence.** 27 of 30 rows rest on Replit-controlled pages. Three have independent secondary sources (-020 TheCondia, -022 RuntimeWire, -023 Freevacy/WIRED), and these mostly relay claims. **No E3 evidence** exists: no independent test or audit of any feature.
+- **Pages change.** Several pages were updated after the window (Databricks Oct 13, Atta Oct 4), and three ledger titles differ from the live titles (see the [QC note](014-replit.source-qc-2026-10-16.md)). No archived captures exist.
+- **Weak or inaccessible sources.** The independent security row (-023) comes from an aggregator with an ambiguous date format. Axios and eWeek returned HTTP 403, and the CEO response quoted in search snippets was not verified.
+- **Not checked:** counterparty confirmations, plan/region entitlements, the Visa investment claim (aggregator only), Replit's own status-page incident history, and legal-entity filings.
+- **Not a sample.** The 100-company watchlist is an editorial list, not a random sample.
+- **Unknown and not imputed:** search hit denominators, adoption, accepted-code quality, security efficacy, cost and energy.
 
+## Earlier screen (preserved)
 
-## 2026-10-14 targeted seven-period search and provenance checkpoint (AI-assisted; review pending)
+Earlier versions of this report came from several PRs:
 
-[Source search log and scientific cautions](source-audits/014-replit.2026-10-14-qa.md) record the exact seven month-targeted queries actually submitted and selected source links, **without pretending full returned-hit counts or screen denominators exist**. **Current canonical CSV: 11 distinct publisher URL leads, not 11 independently confirmed product outcomes.**
+- closed-unmerged PR [#196](https://github.com/MSKazemi/github-trending-1000-study/pull/196), with 3 JSON leads;
+- original PR #212, with 6 leads (`CI-014-01`..`06`);
+- draft PR [#230](https://github.com/MSKazemi/github-trending-1000-study/pull/230), with 3 later-screen leads plus Auto-Protect;
+- preservation PR [#300](https://github.com/MSKazemi/github-trending-1000-study/pull/300).
 
-Preserved #196 model-routing URL as a provisional E0 lead (the vendor's relative cost claim remains unreplicated); added Apr 22 Auto-Protect opt-in dependency-repair announcement without asserting objective security or adoption effects.
+These were consolidated into an 11-row canonical CSV and merged on 2026-10-15 as a provisional screen.
 
-**Acceptance still blocked:** complete auditable source-hit and exclusion denominators with archived captures, genuine independent human factual/licensing/methods signoff, and final-head/post-integration CI. Maintain an explicit separation between AI research assistance, publisher text and independent task outcomes; no external adoption, accepted-code, API rights or carbon effects are established. The research issue remains open.
+**What that version claimed.** Every row was a vendor document (E0/E1). Apr 12–30, May and Oct 1–12 were described as "not documented in this limited screen". The Package Firewall "8,000 packages daily" figure is a vendor counter with an unknown denominator. The 65% routing cost claim is unreplicated. Search denominators were unknown. An 8-step newcomer-onboarding A/B experiment (README vs AGENTS.md + task card) was proposed. The 2026-10-15 spot-check found no date or claim mismatch, and this upgrade confirms that for all 11 rows.
 
+**Earlier full texts.** Git history holds the earlier versions. The following files keep the originals unchanged; they are provenance, not corroboration:
 
-## Controlled integration review — 2026-10-15 (provisional first-party leads only)
+- [PR #212 original report](source-archives/014-replit.2026-10-12-pr-212-original-report.md) (Git blob `87eba24d0a013bcdccce9105e50f3df4f9b5a98a`; also pinned at [preservation head 4425557](https://github.com/MSKazemi/github-trending-1000-study/blob/4425557fbb54f8e137dfa69afbfa4cb94dbc9e48/research/company-intelligence/2026-04-12_2026-10-12/source-archives/014-replit.2026-10-12-pr-212-original-report.md));
+- [PR #196 original report](source-archives/014-replit.2026-10-12-pr-196-original-report.md);
+- [#196 first-pass JSON](source-archives/014-replit.2026-10-12-first-pass.events.json);
+- [PR #230 first-screen Markdown](source-archives/014-replit.2026-10-13-first-screen.md);
+- [initial 22-column ledger](source-archives/014-replit.2026-10-12-source-ledger.csv);
+- the [2026-10-14 query checkpoint and 2026-10-15 secondary-source QA](source-audits/014-replit.2026-10-14-qa.md), which first cited the [Axios May 7 report](https://www.axios.com/2026/05/07/loveable-replit-vibe-coding-privacy).
 
-The maintainer decided on 2026-10-15 to integrate this documentary draft as a **provisional initial evidence screen**, as with #67/#81/#86/#87/#93. This is an AI-assisted maintainer pass, **not** an independent or qualified human review. The section 9 merge-gate line ("draft PR only; do not … merge to `main` …") guarded against promotion to completed research; it is superseded only to the extent of retaining this explicitly labelled, source-linked working artifact on `main`. Issue #80 remains open.
-
-**Relationship to the archived originals.** Preservation PR #300 has since merged (commit `73897ba`). Its byte-preserved originals are now on `main`: [PR #212 original report](source-archives/014-replit.2026-10-12-pr-212-original-report.md) (Git blob `87eba24d0a013bcdccce9105e50f3df4f9b5a98a`, the same blob cited in the 2026-10-14 historical-copy clarification above) and [PR #196 original report](source-archives/014-replit.2026-10-12-pr-196-original-report.md). This file is the **canonical working screen**; the archives record what those closed-unmerged PRs originally said and are not separate corroboration. #196's machine-readable ledger is additionally preserved as the [first-pass JSON archive](source-archives/014-replit.2026-10-12-first-pass.events.json). No publication date or source URL in this screen was found to contradict either archived original, and the canonical CSV contains every Replit post URL they cite. One labelling difference is kept deliberately: #196 graded `014-E03` as "E1 company-working", whereas the canonical CSV holds it at the more conservative `E0_ARCHIVED_UNREVIEWED_VENDOR_LEAD` pending human review.
-
-**Canonical event index.** [014-replit.events.csv](014-replit.events.csv) holds **11** publisher URL leads: 3 from the later screen (`CI2026-014-001`..`003`), the 2026-04-22 Auto-Protect lead (`CI2026-014-004`), 6 earlier-screen leads (`CI-014-01`..`06`) and #196's model-routing lead (`014-E03`). The "10 unique vendor URL leads" in the 2026-10-14 archival supplement predates the Auto-Protect addition; 11 is current.
-
-**Source spot-checks** (publisher pages read on 2026-10-15 with an AI web reader; not archived captures):
-
-- *Package Firewall* (`CI-014-01`): published 2026-06-09, updated 2026-06-10; built "in partnership with Socket", "on by default for every builder"; the body says it "has been blocking around 8,000 packages per day". The page title says "8,000+ malicious packages daily"; the body figure is the one used here, and it remains a vendor counter with unknown denominator and false-positive rate.
-- *Intelligent Model Routing* (`014-E03`): published 2026-08-26, updated 2026-08-27; "In our testing, Intelligent Model Routing delivered the same output quality at 65% lower cost than the previous version of Max Mode". The draft-attributed date is now confirmed against the page; the 65% figure stays an unreplicated vendor-internal claim and the E0 tier is unchanged.
-- *Replit Auto-Protect* (`CI2026-014-004`): published 2026-04-22; admin opt-in, "off by default for our initial launch"; Replit Agent prepares and tests a patch, and applying it and republishing are user actions. Matches the ledger.
-- *Replit Databricks GA* (`CI2026-014-003`): published 2026-09-10 and **updated 2026-10-13** (after the study window); states the integration "is generally available alongside … native Databricks Lakebase support" and refers to a public preview "this past June". The post-window revision means the in-window wording is not frozen.
-- *Free the models* (`CI-014-06`, published 2026-09-29) and *Free Mode* (`CI-014-05`, published 2026-08-18, updated 2026-08-19) both loaded directly on 2026-10-15, resolving the 2026-10-13 "did not load / partly checked" notes for dates and titles. The Sept 29 recheck link, which previously pointed at the blog index with a session query parameter, now points to the canonical post URL.
-
-No date or claim mismatch was found. No evidence tier was changed: these checks confirm what the publisher wrote, not product behaviour, security outcomes or cost.
-
-**Format checks:** the CSV header matches sibling event ledgers (21 columns); event IDs and source URLs are unique; all `published_utc` values fall within 2026-04-12..2026-10-12 and are date-sorted; the #196 JSON archive parses. Archived ledgers and Markdown are unchanged.
-
-**Still pending:** auditable seven-segment hit/screen/exclusion denominators with archived captures; qualified independent human factual, licensing and methods review; screening of independent/adverse reporting; plan, access and entitlement checks; any prospective task trial. No adoption, accepted-code, security, cost or environmental outcome is claimed.
+**Not done.** No [#56 news-corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs were minted.
