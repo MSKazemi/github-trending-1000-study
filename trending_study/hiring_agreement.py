@@ -168,10 +168,24 @@ def _review(frame, data):
         tid = _enum(row["item_id"], expected, "item_id")
         if tid in result:
             raise HiringError("duplicate rating")
-        _enum(row["source_access"], ("read", "unavailable"), "source_access")
-        if _time(row["source_checked_at_utc"], "source_checked_at_utc") > reviewed:
+        source_access = _enum(row["source_access"], ("read", "unavailable"), "source_access")
+        # The blank packet intentionally records missing access evidence as
+        # null. Demanding a fake check time/evidence reference for an
+        # inaccessible source would silently incentivize invented provenance.
+        # A readable source, by contrast, must have both verifiable metadata
+        # fields (though this offline tool cannot authenticate their truth).
+        checked_at = row["source_checked_at_utc"]
+        if checked_at is None:
+            if source_access == "read":
+                raise HiringError("read source requires source_checked_at_utc")
+        elif _time(checked_at, "source_checked_at_utc") > reviewed:
             raise HiringError("source check after review")
-        _identifier(row["evidence_ref"], "evidence_ref")
+        evidence = row["evidence_ref"]
+        if evidence is None:
+            if source_access == "read":
+                raise HiringError("read source requires evidence_ref")
+        else:
+            _identifier(evidence, "evidence_ref")
         _enum(row["counterinterpretation"], COUNTERINTERPRETATIONS, "counterinterpretation")
         _exact(row["themes"], THEMES, "themes")
         for label in row["themes"].values():
