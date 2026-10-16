@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 from urllib.error import HTTPError, URLError
@@ -77,6 +78,65 @@ def validate_plan(plan):
             raise CleanupError("duplicate cleanup branch")
         seen.add(name)
     return plan
+
+def _load_strict_plan(path):
+    """Read one bounded regular JSON plan without following leaf symlinks.
+
+    This privileged standalone script is executed by file path in Actions, so
+    it cannot reliably import the package-level research JSON loader. Apply
+    the same fail-closed checks here rather than trusting stat-then-read.
+    """
+    path = Path(path)
+    if path.is_symlink():
+        raise CleanupError("cleanup plan must be a non-symlink regular file")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    flags |= getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError:
+        raise CleanupError("cannot safely open cleanup plan") from None
+    try:
+        info = os.fstat(descriptor)
+        if not stat.S_ISREG(info.st_mode):
+            raise CleanupError("cleanup plan must be a regular file")
+        if info.st_size > 35000:
+            raise CleanupError("cleanup plan exceeds 35 KB")
+        with os.fdopen(descriptor, "rb", closefd=False) as stream:
+            raw = stream.read(35001)
+        if len(raw) > 35000:
+            raise CleanupError("cleanup plan exceeds 35 KB")
+    except OSError:
+        raise CleanupError("cannot safely read cleanup plan") from None
+    finally:
+        os.close(descriptor)
+
+    def unique_keys(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise CleanupError("ambiguous duplicate cleanup plan field")
+            result[key] = value
+        return result
+
+    def reject_number(_literal):
+        raise CleanupError("unsupported cleanup plan numeric literal")
+
+    def bounded_integer(literal):
+        # Only the positive, <=100,000,000 merged_pr field uses JSON numbers.
+        if len(literal.lstrip("-")) > 9:
+            raise CleanupError("cleanup plan integer exceeds bound")
+        return int(literal)
+
+    try:
+        return json.loads(
+            raw.decode("utf-8"), object_pairs_hook=unique_keys,
+            parse_constant=reject_number, parse_float=reject_number,
+            parse_int=bounded_integer,
+        )
+    except (ValueError, UnicodeError, OverflowError, RecursionError):
+        # Parser messages might contain attacker-controlled keys or paths.
+        raise CleanupError("invalid or ambiguous cleanup plan JSON") from None
+
 
 class GitHubClient:
     """Bounded GitHub REST client; never logs tokens or response bodies."""
@@ -329,9 +389,7 @@ def main(argv=None):
                         help="Exact operator confirmation for destructive mode")
     args = parser.parse_args(argv)
     try:
-        if args.plan.stat().st_size > 35000:
-            raise CleanupError("cleanup plan exceeds 35 KB")
-        plan = validate_plan(json.loads(args.plan.read_text(encoding="utf-8")))
+        plan = validate_plan(_load_strict_plan(args.plan))
         if args.execute and args.audit_live:
             raise CleanupError("choose exactly one mode")
         if args.execute and args.confirm != "RETIRE_VERIFIED_MERGED_BRANCHES":
@@ -353,8 +411,12 @@ def main(argv=None):
                                                 for r in records),
                           "needs_review": blocked}, indent=2))
         return 1 if blocked else 0
-    except (CleanupError, ValueError, OSError) as exc:
+    except CleanupError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except (ValueError, OSError):
+        # Never expose local private plan paths or embedded field names.
+        print("error: invalid cleanup input or remote operation", file=sys.stderr)
         return 2
 
 if __name__ == "__main__":
