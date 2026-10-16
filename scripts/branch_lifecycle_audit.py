@@ -74,7 +74,12 @@ def _quoted_branch(name):
 
 
 def audit(repo, base="main", get=fetch):
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
+    # Reject relative-dot segments BEFORE composing any GitHub API route.
+    # The broad repository-name alphabet alone would otherwise accept
+    # '../name' or 'owner/..' as apparent owner/repo identities.
+    if (not isinstance(repo, str) or
+            not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo) or
+            any(part in (".", "..") for part in repo.split("/"))):
         raise ValueError("Expected owner/repo")
     # The base comes from a CLI argument and must never alter API URL routes.
     if (not isinstance(base, str) or not re.fullmatch(
