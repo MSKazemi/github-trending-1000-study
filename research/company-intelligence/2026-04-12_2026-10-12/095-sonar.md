@@ -177,3 +177,39 @@ Stop immediately if any tool transmits repository content off the machine withou
   - (h) Hacker News shows no meaningful in-window discussion; no critical independent article was found.
 - **#56 candidates (not minted):** SiliconANGLE 2026-05-21 (Gitar), Straits Times 2026-05-21 (Remediation Agent), SiliconANGLE 2026-08-27 (Hunter), Jenkins advisory 2026-09-02. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Raw sources were re-fetched with a generic `Mozilla/5.0` User-Agent after checking robots.txt for `*` and for ClaudeBot / Claude-User / anthropic-ai / Claude-SearchBot / Claude-Web (RFC 9309 longest-match). Every cited path is permitted on www.sonarsource.com (`Disallow: /*?` and `/*/tag/` only; no query-string URL is cited), community.sonarsource.com (the Discourse `/t/<id>.json` and `/c/.../latest.json` endpoints are not disallowed), siliconangle.com, straitstimes.com, edb.gov.sg, registry.npmjs.org and github.com. www.jenkins.io, services.nvd.nist.gov and api.github.com return 404 for robots.txt, meaning no rules. The screen's robots-based skips of The Statesman and The New Stack are consistent with its log. No ledger row relies on a robots-disallowed source, and none was marked `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+| Row | Outcome | Note |
+|---|---|---|
+| Entity claim | confirmed | Footer: "© 2026 SonarSource Sàrl". About page: Olivier Gaudin, Founder & Chairman, and Tariq Shaukat, CEO. Investor and ownership data remain unverified, as the report says |
+| CI2026-095-001 | confirmed | CLI 0.9.0.977 was published 2026-04-13T10:00:40Z. The LICENSE text is GNU Lesser GPL v3, while the API reports NOASSERTION |
+| CI2026-095-003 | confirmed | `datePublished` 2026-04-16. "over 450 secret patterns" and the 44% outage reduction are vendor claims |
+| CI2026-095-004 | confirmed | `datePublished` 2026-04-30. Trust-dialog bypass; "As of December 16, 2025, Anthropic has patched"; fixed in v2.0.71 |
+| CI2026-095-005 | confirmed | agent-plugins 2.0.0 was published 2026-05-07T15:02:32Z. LICENSE: SONAR Source-Available License v1.0 |
+| CI2026-095-007 | confirmed | Blog 2026-05-20: MCP, 70+ Python rules, Groovy Jenkins pipelines, PowerShell, CycloneDX 1.6 VEX. Docker 2026.3.0 tag 2026-05-19T07:54Z |
+| CI2026-095-009 | confirmed | "SINGAPORE — May 21, 2026"; 3.2% false positive rate; AutoCodeRover acquired in 2025; paid offering "this month" with roll-out complete "by the end of June". The SWE-bench #1 claim refers to the Sonar Foundation Agent |
+| CI2026-095-010 | confirmed | "AUSTIN — May 21, 2026"; standalone availability retained; founders join Sonar; "75% of the Fortune 100". SiliconANGLE (2026-05-21T14:00Z) says "75% of the Fortune 500". No terms stated |
+| CI2026-095-011 | confirmed | ~323 packages, compromised maintainer account, SessionStart hook in `.claude/settings.json` |
+| CI2026-095-012 | confirmed | Discourse topic created 2026-05-26T12:37Z: "discovered 200 new security flaws (zero-days)" |
+| CI2026-095-013 | confirmed | CLI 1.0.0.2628 was published 2026-06-10T14:47:08Z |
+| CI2026-095-014 | confirmed | MCP 1.20.0.2929 (2026-06-23T11:27Z) notes: list_branches, tsx/jsx silent-zero fix, CORS decoupled from 0.0.0.0, new `sonarsource/sonarqube-mcp` namespace, Java SDK 2.0 |
+| CI2026-095-018 | confirmed | PR "June 30, 2026": up to 36% fewer tokens on Claude Opus 4.8, ARR above $430 million. Blog: defects and issues reduced by 92% |
+| CI2026-095-019 | confirmed | Topic created 2026-07-07 (edited to v3 on 07-10): fails "between 1:00 PM GMT and 2:00 PM GMT every day"; end of support revised from July 13 to July 20 |
+| CI2026-095-020 | confirmed | Topic 2026-07-10: alpha to open beta, "will run for 4 weeks", Enterprise plan, GitHub/GitLab/Azure DevOps |
+| CI2026-095-021 | confirmed | Node.js 22.12.0+, ES module, `sonar`/`sonar-scanner` aliases removed. npm 5.0.0 published 2026-07-20T08:56:59Z, LGPL-3.0-only, engines `>=22.12.0` |
+| CI2026-095-022 | confirmed | Architecture management "at no additional cost"; "large taint graphs now see up to 90% faster scans"; Agentic AI quality gate |
+| CI2026-095-023 | confirmed | Migration tool v1.0.0.25 was published 2026-08-04T06:16:48Z. The repository has no detected licence |
+| CI2026-095-024 | confirmed | Inaugural partner with NVIDIA; SonarQube and Gitar free for OSS; "over 600 OSS maintainers" including Tidelift |
+| CI2026-095-026 | confirmed | Topic 2026-08-27: "From the beginning of May, an upstream dependency-retrieval limitation may have reduced analysis completeness" |
+| CI2026-095-028 | confirmed | Jenkins SECURITY-3989 / CVE-2026-84665: 2.18.3 and earlier, `javascript:` scheme, Item/Configure, fixed in 2.19.0. NVD lists a Secondary CVSS 3.1 score of 8.0 |
+| CI2026-095-030 | confirmed | 82 R rules in Sonar way; lintr and covr import |
+| CI2026-095-031 | confirmed | Cargo scanner repo created 2026-08-05, LGPL-3.0. 1.0.0-105 was published 2026-09-11T11:17:30Z. The Rust blog says "122 curated Clippy rules" |
+| CI2026-095-032 | confirmed | PR "September 29, 2026": air-gapped; "available for purchase with" Enterprise and Data Center; open-weight models "coming soon". Docker 2026.5.0 tag 2026-09-25T17:56Z |
+| CI2026-095-035 | confirmed | Six Community Build releases in window (26.5–26.10). The 26.10 body is the "Release notes are being prepared" placeholder |
+
+Totals: 24 ledger rows plus the entity claim checked. All 25 were confirmed; none were corrected, wrong or unverifiable. The search log's "every number … confirmed" statement held for every figure re-checked here. That is a sample, not an exhaustive re-verification.
+
+*This is an AI-assisted spot-check, not qualified human review.*
