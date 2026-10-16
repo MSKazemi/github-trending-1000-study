@@ -98,6 +98,44 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
+    def test_raw_percent_encoded_selector_variants_are_not_false_duplicates(self):
+        # parse_qsl would decode these to identical (key, value) tuples,
+        # although a server may route raw encodings to distinct documents.
+        for query_a, query_b in (
+            ("id=alpha%2Fbeta", "id=alpha/beta"),
+            ("term=hello+world", "term=hello%20world"),
+            ("ref=%2e", "ref=."),
+        ):
+            first = copy.deepcopy(self.item)
+            second = copy.deepcopy(self.item)
+            first["canonical_url"] = "https://example.org/report?" + query_a
+            second["id"] = "NEWS-2026-0099"
+            second["canonical_url"] = "https://example.org/report?" + query_b
+            with self.subTest(first=query_a, second=query_b):
+                result = validate_records([(first["id"] + ".json", first),
+                                           (second["id"] + ".json", second)])
+                self.assertEqual(result["distinct_urls"], 2)
+
+    def test_decoded_duplicate_query_keys_preserve_raw_order(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?id=one&%69d=two"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?%69d=two&id=one"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_encoded_tracker_key_is_not_removed_without_source_review(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?id=1"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?id=1&utm%5Fsource=email"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
     def test_trailing_slash_can_select_distinct_source_documents(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)

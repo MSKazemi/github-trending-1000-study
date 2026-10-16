@@ -24,6 +24,10 @@ while treating an empty path as the root request path. One additional synthetic
 regression preserves both sources. This does not claim the two URLs actually
 carry different articles, nor does it authenticate their event-level identity.
 
+## Follow-up: raw query encoding is not source identity
+
+`parse_qsl` decodes query values before comparison, so `?id=alpha%2Fbeta` and `?id=alpha/beta` were incorrectly given one key. The underlying HTTP origin may distinguish their original encoded spellings. The offline source-lead gate now retains raw meaningful query fields, only drops **literal** known marketing-tracker keys, detects repeated keys even after decoding their names, and avoids sorting encoded key names. Unique ordinary parameter keys can still be reordered for deterministic deduplication. Three synthetic tests cover raw selector values, percent-aliased repeated keys and encoded tracking-key ambiguity. More retained leads can increase screening workload; only a human source/content review can adjudicate true duplicates. The original news evidence ledger is not rewritten.
+
 ## Evidence boundary
 
 Three new **fictional, offline** regressions exercise reversed repeated selectors, tracker variants of identical repeated selectors, and ordinary unique query reordering. Passing synthetic tests does not establish that any actual web resource interprets its own query order this way. False negatives (same content with different query order) remain possible; only an independently reviewed event/content-level crosswalk can decide actual duplicates. This is a conservative anti-loss default.

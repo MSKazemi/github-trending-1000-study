@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 import re
 import stat
-from urllib.parse import parse_qsl, urlsplit
+from urllib.parse import unquote_plus, urlsplit
 
 # Reuse the canonical offline research decoder instead of interpreting
 # duplicate keys, NaN/Infinity, or extreme numeric literals differently.
@@ -31,19 +31,24 @@ def _canonical_url_key(parts):
     not merely marketing attribution. This is syntactic screening, not a claim
     that different URLs describe different underlying events.
     """
-    query_items = [(key, value)
-                   for key, value in parse_qsl(parts.query, keep_blank_values=True)
-                   if not key.lower().startswith("utm_")
-                   and key.lower() not in TRACKING_PARAMS]
-    # For unique parameter names, order is immaterial and normalizing it
-    # catches common marketing/query-order duplicates. Repeated parameter
-    # names are different: e.g. ?step=first&step=second can represent an
-    # ORDERED instruction and reversing the values may select another
-    # document. Keeping their order avoids false duplicate suppression.
-    # This is conservative URL-level identity, not a content/event audit.
-    names = [key for key, _ in query_items]
-    query = tuple(query_items if len(names) != len(set(names))
-                  else sorted(query_items))
+    # Keep the RAW spelling of meaningful selectors. parse_qsl() decodes
+    # %2F to "/" and "+" to a space; some origin servers inspect raw query
+    # bytes, so collapsing either form could silently discard a source lead.
+    # Only remove literal, known marketing keys; an encoded key is ambiguous.
+    query_items = []
+    for item in parts.query.split("&") if parts.query else []:
+        key = item.partition("=")[0]
+        if key.lower().startswith("utm_") or key.lower() in TRACKING_PARAMS:
+            continue
+        query_items.append((key, item))
+    # Detect keys that become equal only after decoding, but preserve their
+    # original spelling and sequence. Encoded keys are not safely sortable.
+    decoded_names = [unquote_plus(key) for key, _ in query_items]
+    order_sensitive = (len(decoded_names) != len(set(decoded_names))
+                       or any("%" in key or "+" in key for key, _ in query_items))
+    query = tuple(item for _, item in (
+        query_items if order_sensitive else sorted(query_items)
+    ))
     # A trailing slash can identify a different resource on the same host:
     # /report and /report/ must not be silently conflated as source evidence.
     # Empty path and explicit root slash share the HTTP root request path.
