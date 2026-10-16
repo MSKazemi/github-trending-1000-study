@@ -132,3 +132,9 @@ presented as completed scientific progress. To reduce the real remaining
 number, a **separate provenance-verified, qualified human review workflow**
 will need a new audited schema and signed/traceable source records. This tool
 cannot authenticate that external process or certify issue #15's 50-pair gate.
+
+## 2026-10-16 exact Cargo release guard
+
+A nominated `version` is now either `null` (unknown) or a bounded **concrete Cargo `X.Y.Z` release identifier**, optionally containing standard prerelease/build suffixes. Range/moving selectors such as `latest`, `main`, `1.*`, `^1.0.0`, `>=1.0.0`, whitespace and path-like versions are rejected. The audit repeats the validation on the submitted packet **after** the user-controlled fingerprint is recomputed; forging a new packet hash cannot turn a moving version into a provisional passing pair. The release identity is still *self-declared*: syntax does not prove crates.io availability, version-specific license, repository identity, source rights, historical availability or real tested task fit.
+
+Two synthetic regression methods exercise both nomination and packet-audit boundaries, including legitimate prerelease/build syntax. The issue #15 50-pair genuinely independent human screening and external source checks remain pending. A recorded `concordant_provisional_fit` is **not** a validated human task outcome.
