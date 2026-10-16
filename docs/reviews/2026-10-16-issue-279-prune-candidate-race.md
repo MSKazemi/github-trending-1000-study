@@ -60,3 +60,9 @@ To avoid confusing Git divergence with actual missing content, the following **f
 ## Historical review addendum rescued without replacing canonical main
 
 An additional [archived original review addendum](2026-10-16-preserved-2026-10-13-pr-merge-gate-addendum.md) retains the **7,590-character original 2026-10-13 PR merge-review section** from the exact historical branch `audit/pr-merge-gate-log-20261013` commit `2b460c8e15819afd54e62bed1d7334d0e6a78a8e`, source file blob `d90c7b906aa85b33c0c1f7bbf6216e60d5a2295e`. Directly reading `docs/PR_REVIEW_2026_10_13.md` from historical head versus current main showed that this section was not fully on main: original length 25,823 characters versus main length 18,840. The archive preserves the complete section with an added source/limitations header, *without changing original or canonical files*. Historical accounts may be AI-assisted and require verification; no new human-authenticated review is implied.
+
+## 2026-10-16 complete namespace re-list safeguard
+
+The read-only `audit` now additionally re-fetches the **whole paginated branch list** after candidate SHA/protection and open PR rechecks. It validates shape, 40-character SHAs, distinct branch rows and protection booleans, then compares name/SHA/protection tuples with the first listing. The report exposes `branch_inventory_stable_at_second_read`; any intervening branch addition, deletion, ref move or protection change causes still-advisory prune candidates to become `hold-branch-inventory-moved-rerun`. Malformed/duplicated refresh data aborts the run. Two synthetic regressions demonstrate a newly created branch and a duplicated refresh entry.
+
+The second REST read remains non-atomic. It **cannot** replace an independently approved last-moment Git server lease, protected recovery tags or live administrator policy. In particular, the 33-ref 2026-10-16 JSON checkpoint above is historical and should never be replayed as a deletion allowlist.
