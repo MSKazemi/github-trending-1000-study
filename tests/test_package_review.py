@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 from unittest.mock import patch
 from trending_study.package_review import FIELDS, PackageReviewError, evaluate, evaluate_file, main
@@ -25,6 +26,27 @@ class PackageReviewTests(unittest.TestCase):
         r = evaluate(candidate())
         self.assertEqual(r["decision"], "defer")
         self.assertFalse(r["automatic_install_approved"])
+
+    def test_private_invalid_timestamps_do_not_leak_from_exception_chains(self):
+        # The caller-controlled value is a runtime variable: on Python 3.11+
+        # a formatted traceback otherwise includes literal source arguments.
+        marker = "PRIVATE_PACKAGE_TIMESTAMP_20261017"
+        for field in ("task_frozen_at_utc", "first_available_at_utc"):
+            record = candidate()
+            if field == "task_frozen_at_utc":
+                record[field] = marker
+            else:
+                record["candidate"][field] = marker
+            with self.subTest(field=field):
+                try:
+                    evaluate(record)
+                except PackageReviewError as exc:
+                    self.assertEqual(str(exc), "invalid timestamp")
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("private malformed timestamp must be rejected")
 
     def test_temporally_impossible_release(self):
         p = candidate()
