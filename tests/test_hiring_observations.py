@@ -213,6 +213,13 @@ class ObservationLedgerTests(unittest.TestCase):
                     instrument.HiringObservationError):
                 instrument._url(f"https://{host}/jobs/J1")
 
+    def test_source_urls_reject_ascii_del_control_character(self):
+        # DEL (0x7f) is invisible control content even though ord > 32.
+        with self.assertRaises(instrument.HiringObservationError):
+            instrument._url("https://careers.example.invalid/jobs/A" + chr(127))
+        with self.assertRaises(instrument.HiringObservationError):
+            instrument._url("https://careers.example.invalid/jobs/" + chr(127) + "A")
+
     def test_clean_urls_deny_credentials_tracking_percent_alias_and_traversal(self):
         for url in ("http://careers.example.invalid/jobs/A", "https://user:token@careers.example.invalid/jobs/A",
                     "https://careers.example.invalid/jobs/%41", "https://careers.example.invalid/jobs/../A",
