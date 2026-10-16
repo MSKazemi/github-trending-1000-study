@@ -228,3 +228,46 @@ Count Cognition once. Windsurf and Devin Desktop are the same product line.
 ### Status
 
 Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Related corpus: [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56). The arXiv study (`026`), the Dioxus Labs post (`038`) and NVD CVE-2026-81376 (`040`) are new independent items that #56 could link to after human review.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources on 2026-10-16 (raw HTML via `curl` with a generic `Mozilla/5.0` User-Agent, Wayback `id_` captures, `gh api`, the NVD CVE API and the HN Algolia API) after checking robots.txt for cognition.com, docs.devin.ai, devin.ai, arxiv.org, dioxuslabs.com, catalins.tech and windsurf.com. None of these disallows the fetched paths for a generic agent or for Claude agents; hn.algolia.com, web.archive.org and services.nvd.nist.gov return no robots file. Bloomberg and TechCrunch were **not** fetched (robots.txt disallows Claude agents), and the search log shows the original screen did not fetch them either. No personal identifier was sent in any request.
+
+| Row | Outcome | Note |
+|---|---|---|
+| `001` plans and prices | Confirmed | $20 / $200 / $80 minimum, Core and Team retired, 2-week Review trial, open-source Review stays free, every-commit reviews migrated to first-open; JSON-LD 2026-04-14. |
+| `002` SWE-check | Confirmed | "delta F1 to Opus 4.6 goes from 0.09 to 0"; OOD 0.49 → 0.29; Desktop v2.3.9 (May 16) "Fixed availability issues with swe-check model". |
+| `003` Devin in Windsurf | Confirmed | v2.0.44 (Apr 15): "up to 50 USD in extra usage", gradual rollout, disabled by default for enterprise. |
+| `005` Devin for Terminal | Confirmed | v2.1.29 dated April 29 in the Desktop changelog. |
+| `006` Mercedes-Benz | Confirmed | Four-week pilot, "over 200,000 lines of COBOL", eight months → eight days; vendor claim only. |
+| `008` Review for Windsurf users | Confirmed | v2.2.17 (May 6): all Windsurf IDE users get Devin Review and Quick Review; enterprise only with a Cognition platform agreement. |
+| `010` Auto-Triage | Confirmed | JSON-LD 2026-05-18; Slack, Linear, GitHub checks, Sentry, Datadog and webhooks; sub-Devins; can open a PR. |
+| `011` Series D | Confirmed | Over $1B at $26B, Lux / General Catalyst / 8VC, >10x, $492M, 89%. The Wayback capture of 2026-05-27 reads "Windsurf" where the live page reads "Devin Desktop", so the undisclosed-edit finding holds. |
+| `013` Devin Desktop rename | Confirmed | v3.0.12 dated June 2; ACP and backwards compatibility on the Cognition post; "plan, pricing, extensions … remain the same" and Devin Local as Cascade successor on the devin.ai post. |
+| `014` AI Productivity Guarantee | Confirmed | Credits "up to $10M"; agent-based estimator validated against enterprise users' time estimates. |
+| `015` FrontierCode / 1.1 | Confirmed | 2026-06-08 post with leaderboard link; 1.1 (2026-07-07) relaxed 75 of 1000+ blocker criteria. |
+| `017` Terraform provider | Confirmed | Created 2026-06-16, Apache-2.0; v0.1.0 06-16, v0.1.1 06-23, v0.2.0 08-13, v0.3.0 09-30 (v0.4.0 on 10-15 is post-window). GitHub release bodies are empty; the `devin_automation` statement comes from the Aug 7 Devin release notes, not from a provider release note. |
+| `019` / `030` Fusion revision | Confirmed | Wayback 2026-06-30 capture: "35% Lower Cost"; live page: "60% Lower Cost†", footnote "We initially reported a 35% cost reduction at publication", "Data last updated 8/7/2026". |
+| `020` Security Swarm | Confirmed | 72% recall, 50 GHSA-linked vulnerabilities, 14 languages; "roughly two-thirds the cost" is on the devin.ai eval post. The launch post phrases it as "30% lower cost" ($90.23 vs $131.87 per run), which is consistent. |
+| `021` SWE-1.7 | Confirmed | Kimi K2.7 base, Cerebras at 1000 TPS, 42.3% FrontierCode 1.1 Main. |
+| `022` FedRAMP | Confirmed | "FedRAMP Class D (High) In-Process"; extends status beyond Devin Desktop (formerly Windsurf). |
+| `025` acquisitions | Confirmed | Interaction (Poke) 2026-07-23; TierZero JSON-LD 2026-07-20. |
+| `026` arXiv 2607.21832 | Confirmed | Submitted 23 Jul 2026; 220,612 closed PRs from 489 repositories, 539 in the filtering section; GLMM EMMs 84.3 / 73.5 / 63.9 / 59.6 / 43.0%; "less popular repositories" wording present. |
+| `035` Series E | Confirmed | Over $2B at $48B, a16z and Accel; $492M → almost $900M; "independent agent lab". |
+| `036` Cascade removed | Confirmed | v3.9.19, September 8. |
+| `037` SWE-2 | Confirmed | 50.0%, within one point of Fable 5.1 (50.9%), 64% cheaper; Sep 21 release notes call it a research preview. |
+| `038` Dioxus | Confirmed | Both posts dated 2026-09-10 and both state continued work on Dioxus, Blitz, Taffy and Subsecond. |
+| `039` AWS SCA | Confirmed | Multi-year SCA; AWS Marketplace; Agent Toolkit for AWS. |
+| `040` CVE-2026-81376 | Confirmed | NVD: published 2026-09-08T18:20Z, Visual Studio Code before 1.136.2, CVSS 3.1 9.6 (Microsoft CNA); fix listed in Desktop v3.10.31 on September 16 (8-day lag). |
+| `041` npx devin-review retired | Confirmed | Sep 21 release notes. |
+| `042` user review | Confirmed | Published 2026-09-22; "approximately 1 week", app "feels crowded", Windsurf chats not deletable from the full list, used the CLI more. |
+| `043` $1B run rate | Confirmed | Vendor claim, 2026-09-25. |
+| `044`, `048` Desktop changelog | Confirmed | Sign in with ChatGPT (v3.10.48, Sep 29); MCP 2026-07-28, enterprise extension-marketplace URL and private-preview remote MCPs (v3.10.67, Oct 12). |
+| Release-note rows `004`, `007`, `009`, `012`, `016`, `018`, `023`, `024`, `027`, `028`, `029`, `033`, `046`, `047` | Confirmed | Each statement found under the stated date heading; the page has 71 dated headings, 52 of them in the window. |
+| `031`, `034` funding-talk titles | Unverifiable (relabelled) | HN titles and dates confirmed, but the claims rest only on Bloomberg articles that robots.txt disallows for Claude agents. Confidence changed to `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`. |
+| `032` SpaceX report and denial | Corrected and unverifiable (relabelled) | The TechCrunch denial article is URL-dated 2026-08-19, but its HN submission is 2026-08-20 00:31 UTC, so "the same day" now states both dates. Both underlying articles are robots-disallowed for Claude agents, so confidence is now `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`. |
+| `045` Factory allegation | Unverifiable (relabelled) | HN title confirmed; the TechCrunch article is robots-disallowed for Claude agents. Confidence is now `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`. |
+
+**Totals:** all 48 rows checked: 44 confirmed, 1 corrected (and relabelled unverifiable), 3 more relabelled unverifiable, 0 wrong. The upgrade's statement that every ledger number, date and version was confirmed against raw text holds for every row checked here. The only exceptions are the four E0 rows, whose substance could not be confirmed by anyone at robots-compliant access.
+
+*This is an AI-assisted spot-check, not qualified human review.*
