@@ -131,6 +131,22 @@ class LiteratureLedgerTests(unittest.TestCase):
         payload["records"][0]["source_url"] = "https://doi.org/10.1000/XYZ"
         self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
+    def test_included_source_url_rejects_ambiguous_numeric_ip_aliases(self):
+        # URL clients may interpret these as loopback/private IPv4 even though
+        # ipaddress.ip_address(host) rejects their noncanonical syntax.
+        for host in ("127.1", "2130706433", "0x7f000001",
+                     "0177.0.0.1", "0x7f.0.0.1", "192.168.1"):
+            payload = source()
+            payload["records"][0]["source_url"] = f"https://{host}/paper"
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    LiteratureError, "public host"):
+                audit(payload)
+        # Do not accidentally block an ordinary publisher domain or an
+        # unambiguous public IPv4 address (format check, not source proof).
+        payload = source()
+        payload["records"][0]["source_url"] = "https://publisher.example.org/paper"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
     def test_included_source_url_requires_unambiguous_item_path(self):
         for link in ("https://doi.org", "https://doi.org/",
                      "https://example.org/paper%ZZ",
