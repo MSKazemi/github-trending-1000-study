@@ -129,3 +129,32 @@ Company adoption claims (accounts, "330 capabilities to GA", customer names) are
 - **Important contradictory or null evidence:** (a) CoCo Desktop and the CoCo VS Code extension are listed as GA at Summit (Flexera, Jun 8) but the dated docs record GA on 2026-07-21 and 2026-08-27; (b) Flexera calls Datastream "now in preview" in prose and "Private preview" in its table, and its page was modified 2026-10-01; (c) the HN headline for the Wiz post calls the change "AI-Generated", but Wiz's 2026-08-17 19:57 UTC update says it is unclear whether the change was AI-assisted; (d) the OIDC release-note page is headed July 20 while its URL slug says 07-17; (e) CVE-2026-86597 has an NVD date of 2026-09-08 and a canonical GHSA date of 2026-10-05, after a duplicate advisory was withdrawn; (f) `snowflake-connector-python` 4.7.0 is yanked on PyPI with no reason stated in the sources read; (g) data-eng-bench's first commit is timestamped before the repo creation time.
 - **#56 candidates (not minted):** Wiz 2026-08-17; KrebsOnSecurity 2026-08-06; The Build 2026-05-12; Futurum 2026-06-04; CIO Dive (via Yahoo) 2026-05-28; ITdaily 2026-05-29 / No Jitter 2026-06-02 (one event). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned; syndicated copies must not be counted twice.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Rows were re-fetched on 2026-10-16: raw HTML from the AWS press center, ITdaily, No Jitter, Futurum, Flexera, KrebsOnSecurity, Wiz and StorageNewsletter; Snowflake docs release notes (`.md`); the status-page API; the NVD API; and GitHub advisory, repository and PyPI JSON. Each date, figure and quote was matched against the raw text.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-072-001 | confirmed | Apr 13 note: `cortex_analyst_text_to_sql` replaced by `system_execute_sql`; usage reported under `cortex_agents` |
+| CI2026-072-008 | confirmed | commit e05e0a9343 at 2026-05-15T12:56:50Z; README "deprecated and no longer maintained"; 1.4.2 on PyPI 2026-05-15T16:31Z; the bump commit says "11 CVEs across 3 packages" and carries a Cortex Code co-author trailer; 300 stars |
+| CI2026-072-009 | confirmed | 2026-05-27; "$6 billion multi-year infrastructure commitment to AWS, its largest to date"; "over five years". The release names Graviton compute and AI spend, and has no Trainium mention |
+| CI2026-072-010 | confirmed | ITdaily 2026-05-29 "signed a definitive agreement"; No Jitter (2026-06-02) says "last week" and "Terms of the deal were not disclosed". The CIO Dive "Wednesday" source is unverifiable here because its URL is not recorded (noted in the row) |
+| CI2026-072-011 | confirmed | Futurum 2026-06-04; rebrands CoCo/CoWork; "more than 7,100 customer accounts in roughly six months"; "stay tuned", which the analyst presumes refers to Natoma |
+| CI2026-072-012 | confirmed | Flexera: June 1 to June 4; Desktop, VS Code and CoCo in Claude Code GA; Managed Agents and Horizon Context "Announced"; AI Agent Identity GA; Cortex Sense "Private preview"; Datastream "now in preview" vs "Private preview"; dateModified 2026-10-01 |
+| CI2026-072-013 | confirmed | INC20000034, critical, 2026-06-15T14:30:57Z to 2026-06-16T21:15:16Z; "network connectivity issue affecting infrastructure components used by Snowsight's backend"; postmortem 2026-07-02; 50 incidents back to 2026-01-27, 40 in window |
+| CI2026-072-015 | confirmed | GHSA-5cc2-282f-jjq2 / CVE-2026-15925, critical, fixed in 4.7.1 and 3.18.1 (PyPI 2026-07-15); NVD published 2026-07-16, Awaiting Analysis, one CVSS 4.0 9.2 score; 4.7.0 is yanked |
+| CI2026-072-017 | confirmed | "Jul 21, 2026: CoCo Desktop - General availability"; Mac and Windows; pass-through terms notice |
+| CI2026-072-022 | confirmed | Apache-2.0; 103 tasks; hidden `pytest` verifier; DuckDB "fully hermetic"; repo created 2026-07-29T20:29Z after the first commit at 05:31Z |
+| CI2026-072-024 | confirmed | Krebs 2026-08-06; "more than 165 organizations"; no-MFA accounts; Snowflake increased password complexity and enforced MFA |
+| CI2026-072-026 | corrected | Wiz 2026-08-17: PR #1218 merged 2026-06-18 and fix PR #1402 merged 2026-06-23 (both confirmed via `gh api`); GHAS did not flag it; "1957 UTC update" on Copilot co-authorship confirmed. The Wiz timeline lists "June 24, 2026 - Jira token rotated", so the row's "rotated the token the same day" is reworded |
+| CI2026-072-029 | confirmed | Aug 27 GA; version 1.39 or later; "Ask CoCo" / "Fix with CoCo"; no separate install |
+| CI2026-072-032 | confirmed | v3.5.0 published 2026-09-03; Apache-2.0; 18 releases from v3.3.0 (2026-04-13) to v3.5.7 (2026-10-12) in window |
+| CI2026-072-033 | confirmed | NVD published 2026-09-08, Awaiting Analysis, 6.5; fixed in Python 4.7.3 (PyPI 2026-09-03), Go 2.2.0, JDBC 4.3.4, Node.js 3.3.0, PHP PDO 4.2.0, ODBC 3.20.0; GHSA-qqj6-54q6-cxv6 published 2026-10-05; Go v1 module `<= 1.19.1` has no patched version |
+| CI2026-072-034 | unverifiable (event date) | $1.49B, 37%, 9,100, 2,000+, 5,800, over 330 and the "average of the last 4 weeks" footnote are all confirmed. The 2026-09-02 event date is not stated in the StorageNewsletter reproduction; this is noted in the row |
+| CI2026-072-035 | confirmed | Sep 15 preview; OpenAI Chat Completions and Anthropic Messages formats; trace table; AI_GATEWAY_USAGE_HISTORY; USAGE granted to PUBLIC by default |
+| CI2026-072-037 | confirmed | Oct 12 preview; 18 sources including those named; APPLY COMMENT privilege |
+
+Outcome counts: 16 confirmed, 1 corrected, 1 unverifiable (one event date), 0 wrong. No serious error was found. The search log's "figures confirmed" list is qualified there.
+
+This is an AI-assisted spot-check, not a qualified human review.
