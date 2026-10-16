@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import traceback
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -219,6 +220,27 @@ class ObservationLedgerTests(unittest.TestCase):
             instrument._url("https://careers.example.invalid/jobs/A" + chr(127))
         with self.assertRaises(instrument.HiringObservationError):
             instrument._url("https://careers.example.invalid/jobs/" + chr(127) + "A")
+
+    def test_validation_tracebacks_never_echo_private_invalid_timestamp_or_query(self):
+        # A safe error message is insufficient if a chained ValueError embeds
+        # the original untrusted URL or time in full CI/telemetry tracebacks.
+        samples = (
+            (lambda: instrument._stamp("PRIVATE_TIMESTAMP_20261017", "observed_at_utc"),
+             "PRIVATE_TIMESTAMP_20261017"),
+            (lambda: instrument._url(
+                "https://careers.example.invalid/jobs/A?PRIVATE_QUERY_20261017=secret"),
+             "PRIVATE_QUERY_20261017"),
+        )
+        for call, marker in samples:
+            with self.subTest(marker=marker):
+                try:
+                    call()
+                except instrument.HiringObservationError as error:
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("invalid input must be rejected")
 
     def test_clean_urls_deny_credentials_tracking_percent_alias_and_traversal(self):
         for url in ("http://careers.example.invalid/jobs/A", "https://user:token@careers.example.invalid/jobs/A",
