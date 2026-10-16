@@ -184,6 +184,30 @@ class ChronologicalProxyTests(unittest.TestCase):
         self.assertEqual(null["heldout_excess_over_constant_baseline"], 0)
         self.assertFalse(null["independent_verification"])
 
+    def test_repeated_source_digest_is_flagged_not_declared_independent(self):
+        data = proxy()
+        # Two distinct UTC capture records may contain the same source bytes.
+        # This is not by itself proof of fraud, but neither is it a validated
+        # independent time-series observation.
+        repeated = data["pages"][0]["capture"]["source_sha256"]
+        data["pages"][1]["capture"]["source_sha256"] = repeated
+        out = evaluate_proxy(data)
+        self.assertEqual(out["distinct_capture_source_digests"], 3)
+        self.assertEqual(out["repeated_capture_source_digest_groups"], {
+            repeated: ["synthetic-proxy-1", "synthetic-proxy-2"]
+        })
+        self.assertFalse(out["independent_verification"])
+        self.assertFalse(out["eligible_for_confirmatory_cohort"])
+        # This is descriptive, so a repeat-hash flag must not silently
+        # alter selected predictor, heldout scores or the declared pages.
+        clean = evaluate_proxy(proxy())
+        self.assertEqual(out["selected_predictor_train_only"],
+                         clean["selected_predictor_train_only"])
+        self.assertEqual(out["heldout_macro_pairwise_accuracy"],
+                         clean["heldout_macro_pairwise_accuracy"])
+        self.assertEqual(clean["repeated_capture_source_digest_groups"], {})
+        self.assertEqual(clean["distinct_capture_source_digests"], 4)
+
     def test_holdout_cannot_change_training_selected_feature(self):
         original = proxy()
         control = evaluate_proxy(original)
