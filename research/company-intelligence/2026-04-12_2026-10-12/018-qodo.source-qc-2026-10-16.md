@@ -1,0 +1,47 @@
+# Qodo (018) — source QC of the existing ledger rows (2026-10-16)
+
+> **Provisional source-lead screen (upgraded 2026-10-16):** this QC note, the [report](018-qodo.md), the [event ledger](018-qodo.events.csv) and the [search log](018-qodo.search-log.md) are **provisional, AI-assisted documentary source leads**, unreviewed by a qualified human; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue [#85](https://github.com/MSKazemi/github-trending-1000-study/issues/85) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
+
+**Scope and method.** On 2026-10-16 every `source_url` of the 13 ledger rows that existed on `main` before this upgrade was re-opened with a public web reader (WebFetch, no login) and compared with the row's `published_utc`, `claim_summary` and `status`. GitHub facts were re-read with the read-only `gh api`. This checks **what the publisher displays today**, not historical page versions, actual product availability, security or adoption. Event IDs are unchanged and no row was deleted; for existing rows only `status` and `limitation` were edited (no `confidence` change, because the offline [crosswalk test](../../../tests/test_qodo_event_id_crosswalk.py) pins the confidence labels of the archived IDs).
+
+A second official dated source was used for cross-checking: the [Qodo docs changelog](https://docs.qodo.ai/changelog) (read 2026-10-16), which lists versioned platform releases with explicit Alpha/Beta/Research Preview/GA labels. Its dates sometimes **precede** the matching blog post (e.g. Qodo 2.4: changelog 16 Jun 26, blog 23 Jun 26). Both are publisher-controlled; a changelog date is still not an independently verified rollout date.
+
+## Existing rows
+
+| event_id | URL | Reachable? | Displayed date matches `published_utc`? | Claim/status supported? | Action |
+|---|---|---|---|---|---|
+| CI-018-01 | https://www.qodo.ai/blog/an-update-on-code-generation-at-qodo/ | yes | yes (Apr 23, 2026; author Itamar Friedman, CEO) | yes — post says Qodo plans "to deprecate Qodo's existing code generation features" (IDE autocomplete and code-generation chat); IDE plugin and review products continue; **no shutdown date** given | ok; limitation appended (no shutdown date; "may re-enter" code generation) |
+| CI-018-02 | https://www.qodo.ai/blog/qodo-is-handing-pr-agent-over-to-the-community/ | yes | yes (Apr 23, 2026) | yes — move from `qodo-ai/pr-agent` to community org The-PR-Agent; "The project's license is returning to the Apache 2.0 license"; governance committee named. Re-read `gh api repos/The-PR-Agent/pr-agent/commits?path=LICENSE`: AGPL-3.0→Apache-2.0 at `fdbcecc` (Git date 2026-05-20), Apache-2.0→MIT at `d7e94bc` (Git date 2026-07-09); repo `license.spdx_id` = MIT on 2026-10-16 | ok; status `announced_only` kept (it describes the announcement); limitation appended noting the re-check. The licence history is preserved unchanged |
+| CI2026-018-005 | https://www.qodo.ai/blog/introducing-findings-page/ | yes | yes (May 13, 2026); changelog "Qodo 2.3" also 13 May 26 | yes — v2.3, "available in beta for all Gits (GitHub, GitLab, BitBucket and Azure DevOps)" | ok; no change |
+| CI2026-018-001 | https://www.qodo.ai/blog/the-anatomy-of-a-breaking-change/ | yes | yes (Jun 23, 2026) | yes — "Today Qodo is releasing cross repo review in beta" | ok; limitation appended: same Cross Repo Review beta as `CI-018-03` (Qodo 2.4) and as changelog Qodo 2.4 dated 16 Jun 26 — one feature event, not two |
+| CI-018-03 | https://www.qodo.ai/blog/introducing-qodo-2-4-the-next-layer-of-code-quality-governance/ | yes | yes (Jun 23, 2026); title displayed as "New Features: Qodo v2.4 and the next layer of code quality governance"; changelog dates Qodo 2.4 to 16 Jun 26 | **partly** — features exist, but the page says "All three are available now in Beta" (Cross Repo Review, Rules Miner, Skill Review Standards); the row said `shipped` | **corrected: `status` shipped → preview**; limitation appended with the exact quote and the 16 Jun changelog date |
+| 018-E01 | https://www.qodo.ai/blog/why-your-ai-coding-agent-shouldnt-review-its-own-code-the-case-for-an-independent-verification-layer/ | yes | yes (Jun 30, 2026; author Nastasha Casale) | yes — vendor opinion/advocacy closing with a Qodo recommendation; no product release | ok; no change |
+| CI2026-018-002 | https://www.qodo.ai/blog/the-right-depth-for-every-pr-introducing-review-effort-modes/ | yes | yes (Jul 28, 2026); changelog Qodo 2.7 (29 Jul 26) lists review effort mode under Research Preview | yes — "now in research preview"; Fast/Balanced/Deep/Auto | ok; limitation appended: changelog Qodo 2.9 (7 Sep 26) moves it "from Public Preview to Beta" — still not GA |
+| CI2026-018-006 | https://www.qodo.ai/blog/how-do-you-efficiently-steer-ai-coding-agents/ | yes | yes (Aug 27, 2026; author Nnenna Ndukwe) | yes — editorial; cites arXiv 2602.14690, 2601.20404, 2602.11988, 2606.20512 with mixed findings; discusses Software Standards Bootstrap v0.2.0 without stated licence | ok; no change |
+| CI2026-018-003 | https://www.qodo.ai/blog/introducing-qodos-agentic-toolbox/ | yes | yes (Sep 9, 2026) | yes — four skills plus admin skill; plugins for Claude Code, Codex and Kiro; "available now" (no GA/beta label on the page) | ok; `shipped` kept; limitation appended: changelog Qodo 2.8 (16 Aug 26) "Beta", Qodo 2.9 (7 Sep 26) "generally available (GA)" |
+| CI2026-018-007 | https://www.qodo.ai/blog/introducing-qodo-for-codex/ | yes | yes (Sep 9, 2026) | yes — "available in the Codex plugin marketplace for the desktop app and Codex CLI"; five skills | ok; no change |
+| CI-018-05 | https://www.qodo.ai/blog/introducing-qodos-software-map/ | yes | yes (Sep 15, 2026); changelog Qodo 2.10 also 15 Sep 26 "Beta" | yes — "available in beta starting today" | ok; no change |
+| CI2026-018-004 | https://www.qodo.ai/blog/state-of-ai-code-quality-report-2026/ | yes | yes (Sep 23, 2026) | yes — "a Censuswide survey of 500 U.S. software developers and 300 U.S. engineering leaders" | ok; no change (headline percentages not admitted as evidence) |
+| CI-018-06 | https://www.qodo.ai/blog/introducing-qodo-3-0/ | yes | yes (Oct 1, 2026); changelog Qodo 3.0 also 1 Oct 26 | yes at platform level — PR Triage "available today in Research Preview"; blog gives no label for other components; changelog labels analytics dashboard and dismissing findings "Beta" | ok; `shipped` kept as platform-level; limitation appended with the changelog Beta labels |
+
+**Outcome for the 13 existing rows:** 13 reachable, 13 displayed dates match, 12 claims/statuses supported as recorded, **1 status corrected** (`CI-018-03` shipped → preview). Zero unreachable. The old `CI-018-06` URL `https://www.qodo.ai/blog/introducing-qodo-3.0/` (preserved in the archive and crosswalk) was not re-tested here; the working URL is the corrected `-3-0/` slug.
+
+**Duplicate-event caution (not a column change):** `CI2026-018-001` (Cross Repo Review blog) and `CI-018-03` (Qodo 2.4 blog) describe the **same** cross-repo review beta released on the same day; they keep separate IDs because both are archived/tested identifiers, but they must not be counted as two releases.
+
+## Spot-check of new rows (second read, 2026-10-16)
+
+| event_id | Source re-read | Date matches? | Claim supported? | Result |
+|---|---|---|---|---|
+| CI2026-018-015 | `gh api repos/The-PR-Agent/pr-agent/commits/d7e94bc…` | yes — committer date 2026-07-09T07:13:19Z | yes — message "From Apache-2.0 to MIT"; only file changed `LICENSE` | ok |
+| CI2026-018-011 | `gh api …/commits/fdbcecc…` | yes — 2026-05-20T12:28:55Z (author = committer date) | yes — message "From GNU AGPL v3.0 to Apache License 2.0" | ok |
+| CI2026-018-012 | `gh api …/releases/tags/v0.36.1` | yes — 2026-06-16T19:03:52Z | yes — body describes `/help_docs` disablement for credential exposure | ok |
+| CI2026-018-018 | `gh api …/releases/tags/v0.44.0` | yes — 2026-08-30T20:43:24Z | yes — body requires `WEBHOOK_SECRET`, unsigned webhooks rejected with 403 | ok |
+| CI2026-018-020 | `gh api repos/qodo-ai/qodo-skills/releases/tags/v2.0.0` + `/license` | yes — 2026-09-08T16:06:59Z | yes — removes `qodo-pr-resolver`, requires Qodo CLI 0.1.0-next.37+; repo licence MIT | ok |
+| CI2026-018-019 | [docs changelog](https://docs.qodo.ai/changelog), second narrow read | yes — "7 Sep 26" | yes — "will be permanently removed on October 1, 2026"; "Agentic Toolbox is now generally available (GA)…" | ok |
+| CI2026-018-009 / -013 / -016 | same changelog read | yes — 28 Apr 26 / 30 Jun 26 / 16 Aug 26 | yes — wizards; cross-repo discovery (Beta); Agentic Toolbox (Beta), Web search (Research Preview) | ok |
+
+**Spot-check outcome:** 9 of 17 new rows re-read; 9 ok, 0 corrected. The remaining 8 new rows were read once (Futurum, v0.34.1, v0.39.0, v0.43.0, v0.47.0, Oct 1 editorial, Oct 5 Jev, Oct 12 benchmark).
+
+## Additional contradictory evidence found (no row)
+
+The undated docs page [Code completion](https://docs.qodo.ai/qodo-ide/code-intelligence/code-completion) (read 2026-10-16) states "The Qodo IDE plugin is being retired on October 30, 2026." The Apr 23 post (CI-018-01) said the IDE plugin "still remains part of the platform". Because the docs notice has no displayed date, it cannot be placed inside the window and is recorded only in the CI-018-01 limitation and the report. A reviewer should establish when the notice first appeared.
