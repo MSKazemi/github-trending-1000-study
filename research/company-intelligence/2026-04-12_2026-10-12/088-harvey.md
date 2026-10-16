@@ -127,5 +127,37 @@ Company adoption claims (80% of Am Law 100, 3,000+ customers, 700,000 tasks/day)
 - **Conjectures and unknowns:** H1–H4 in §6. Also unknown: whether Tenet weights will be released, the rights status of the documents embedded in LAB tasks, the first two acquisitions of 2026, and status history before July 2026.
 - **Important contradictory or null evidence:** (a) valuation $15.5B (Harvey, TechCrunch) vs "$15.6 billion" (Bloomberg syndication; HN headline); (b) the Guardrails acquisition is dated Sep 8 on Guardrails' site but Sep 9 (`datePublished` 12:23Z) on Harvey's; (c) the Boston office post `datePublished` is 2026-10-01 but the newsroom list shows October 2; (d) LAB task count reads "more than 1,200" and "1,250" in the same post, while the README badge showed 2,010 on access (the extensions may explain this); (e) Opus 4.8 scores 10.4% on Harvey's LAB vs 7.5% (max) on Artificial Analysis LAB-AA, from different task sets, harnesses and judges, so they are not comparable; (f) the margin collapse is reported only from anonymous sources, and Harvey declined to give specifics; (g) a web-search summary claimed Sullivan & Cromwell apologized for AI errors in filings. That claim was **not** verified, it is not linked to Harvey in any source read, and it was not used.
 - **#56 candidates (not minted):** LawSites 2026-05-19; Artificial Analysis 2026-07-07; TechCrunch 2026-09-09; Bloomberg via Yahoo Finance 2026-09-21; Vals AI leaderboard (mutable). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned, and syndicated copies must not be counted twice.
-- **Figures confirmed against raw text:** every number, date and quote in the ledger was matched by `grep` against saved page text or GitHub/PyPI API output, except where a row says "not inspected". See the search log.
+- **Figures confirmed against raw text:** the screening agent reports that it matched every number, date and quote in the ledger by `grep` against saved page text or GitHub/PyPI API output, except where a row says "not inspected". See the search log. This is the screening agent's own statement; the independent spot-check below re-verified 21 of 43 rows, not the whole ledger.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Rows were re-fetched on 2026-10-16 (raw HTML from harvey.ai, Artificial Analysis, Vals AI, TechCrunch, Yahoo Finance syndication of Bloomberg and the status page; `gh api` for `harveyai/harvey-labs` and `guardrails-ai/guardrails`). Each date, figure and quote was matched against the raw text.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-088-001 | confirmed | `datePublished` 2026-04-14; "700,000+ tasks are executed daily, over 50 million terms are extracted weekly" |
+| CI2026-088-002 | confirmed | 2026-04-16; 90.9% BigLaw Bench, 45% perfect; tone mismatch, overshoot on detail, non-standard citations |
+| CI2026-088-005 | confirmed | 2026-05-06; "more than 1,200" and "1,250" tasks, 24 practice areas, over 75,000 criteria, no leaderboard at launch; first commit 2026-05-06T15:02:28Z; MIT |
+| CI2026-088-008 | confirmed | 2026-05-26; 7.1/5.4/4.2/2.1/0.8%; ~$50.90 and ~22 min per task; "less than 10%"; no single model leads every area |
+| CI2026-088-010 | confirmed | 2026-05-28; 10.4% LAB, 91.1% BigLaw Bench; AA 7.5% for Opus 4.8 (max) confirmed on the AA page |
+| CI2026-088-014 | confirmed | 2026-06-09; 13.3% LAB, 93.4% BigLaw Bench; deletion "generally" after 30 days; processing in the United States |
+| CI2026-088-015 | confirmed | PR #76 opened 2026-06-09T22:23Z, merged 2026-06-11T00:49Z, author association CONTRIBUTOR; Vals page says "We fixed that bug and merged it upstream" |
+| CI2026-088-018 | confirmed | 2026-06-22; rubric pass 0.913, all-pass 0.126 (the "above GPT-5.5 xhigh and Opus 4.8 Max" applies to rubric pass rate, as the row says) |
+| CI2026-088-019 | confirmed | 2026-07-07; 14.2%, 7.5% tie, 13 of 28 at zero, 120 private tasks, single Gemini 3.1 Pro judge, ~$1.3 vs ~$8.2 |
+| CI2026-088-020 | confirmed | 2026-07-09; 92.7% BigLaw Bench, 2.5% LAB, EU/AU to be announced |
+| CI2026-088-021 | confirmed | issue #106 opened 2026-07-11, closed 2026-08-24; `claude-sonnet-4-6`, temperature 0, three runs per arm |
+| CI2026-088-022 | confirmed | 2026-07-16; "third acquisition of 2026", more than $100 million net-new ARR, more than 125 asset-management firms |
+| CI2026-088-026 | confirmed | incident timestamps 2026-08-14T05:44:02Z and 06:04:29Z; "Full outage"; Assistant, Vault and Microsoft Add-ins (AU) |
+| CI2026-088-030 | confirmed | 2026-08-20; GSPO, rank-64 LoRA, ~1,750 environments, ~150 B300 GPUs, 2 months; "almost twice", +9 and +2 percentage points |
+| CI2026-088-031 | confirmed | issue #149 opened 2026-08-24, closed 2026-10-03; passed 0 times in 17 scored runs |
+| CI2026-088-034 | corrected | Apache-2.0 (GitHub API), 250,000+ monthly downloads, Snowglobe and "fourth acquisition" confirmed; 0 commits from 2026-09-08 vs 77 from Jun 1 to Sep 8 reproduced. The post says the team joins Harvey's product and engineering organization and starts on its "Applied AI initiatives", not a unit named "Harvey Applied AI". The claim text is reworded |
+| CI2026-088-035 | confirmed | 2026-09-09; $550M at $15.5B co-led by Diffusion and Lightspeed; 80% of Am Law 100; five of the Fortune 10; TechCrunch confirms $200M at $11B (March) and $8B (December) |
+| CI2026-088-037 | confirmed | `datePublished` 2026-09-21; "$15.6 billion"; ~50% to -50% by June from "a person familiar"; positive again; twenty-fold token use; buys expertise from Mercor; still needs Opus for its hardest tasks |
+| CI2026-088-038 | confirmed | 2026-09-28; more than 3,000 customers, 200,000 lawyers, 70 countries |
+| CI2026-088-042 | confirmed | published 2026-10-08, effective September 22, 2026. The source says "public institutions of higher education", which the row paraphrases as "public universities" |
+| CI2026-088-043 | confirmed | "Updated 10/12/2026"; Muse Spark 1.2 at 25.42%; internet disabled; final score is the average of the two judge task-pass rates |
+
+Outcome counts: 20 confirmed, 1 corrected, 0 unverifiable, 0 wrong. No serious error was found. The Yahoo copy was used for the Bloomberg row because the Bloomberg original returned 403 to the screening agent; it was not re-requested here.
+
+This is an AI-assisted spot-check, not a qualified human review.
