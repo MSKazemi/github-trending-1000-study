@@ -10,6 +10,12 @@ One deterministic synthetic regression checks six alternative numeric aliases an
 
 **Reuse-first choice:** augment `trending_study.package_review._clean_https_url` rather than building another package gate; no dependencies or live package calls.
 
+## Follow-up: malformed and intranet-only evidence hostnames
+
+The original lexical checks could accept syntactically invalid DNS hostnames (`example..org`, `-example.org`, labels longer than 63 ASCII characters, underscore hostnames) or a bare single-label name such as `intranet`, even when a reviewer was shown a `pass` evidence URL. The existing offline `_clean_https_url` gate now requires valid ASCII DNS label syntax, an overall host length of at most 253 characters and at least two labels for DNS names, while preserving global literal-IP handling and valid interior-hyphen / IDNA ASCII (punycode) names. Malformed negative cases and valid-domain controls are synthetic and independent of network availability.
+
+**Limits:** `example.invalid` can be structurally valid without resolving; a domain under someone else's control may resolve to a private address. This is *not* an SSRF filter, verified provenance, an authenticated source, or permission to fetch. Source-rights and connection-time origin/DNS/redirect checks require separate qualified review. Existing registry identity, package digests and review states remain unchanged.
+
 ## Unfinished scientific and safety gates
 
 #22 requires official pinned registry identity/version/digest/license, genuine advisory/provenance evidence, controlled execution, task-first acceptance and qualified external human security/source review. A `review_ready` result only means that supplied fields are structurally complete, not trustworthy. **Do not close #22 from this regression or green CI alone.**

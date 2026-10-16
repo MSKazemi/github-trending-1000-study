@@ -85,6 +85,16 @@ def _clean_https_url(url, field):
     if (address is None and
             re.fullmatch(ipv4_piece + r"(?:\." + ipv4_piece + r"){0,3}", host)):
         raise PackageReviewError(f"{field} requires a canonical public evidence host")
+    if address is None:
+        # A syntactically valid HTTPS evidence host needs ordinary ASCII DNS
+        # labels and at least two labels, not a bare intranet single-label
+        # name. This is NOT DNS resolution, an allowlist, or SSRF protection.
+        labels = host.split(".")
+        dns_label = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+        if (len(host) > 253 or len(labels) < 2 or any(
+                len(label) > 63 or re.fullmatch(dns_label, label) is None
+                for label in labels)):
+            raise PackageReviewError(f"{field} requires a canonical public evidence host")
     return parsed
 
 

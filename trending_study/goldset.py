@@ -43,8 +43,13 @@ def _date(x, name):
     text = _nonempty(x, name)
     try:
         value = datetime.fromisoformat(text.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise GoldsetError(f"{name} must be an ISO8601 date-time") from exc
+    except ValueError:
+        # Finish exception handling before raising our public error. Keeping
+        # the original exception as a cause can expose a private raw timestamp
+        # in full CI/telemetry tracebacks despite a safe top-level message.
+        value = None
+    if value is None:
+        raise GoldsetError(f"{name} must be an ISO8601 date-time")
     if value.tzinfo is None or value.utcoffset() is None:
         raise GoldsetError(f"{name} must have a timezone")
     return value.astimezone(timezone.utc)
