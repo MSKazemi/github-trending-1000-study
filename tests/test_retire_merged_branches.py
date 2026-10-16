@@ -1,6 +1,10 @@
 """Offline negative tests for fail-closed, non-loss branch retirement."""
 import copy
+from contextlib import redirect_stderr, redirect_stdout
+import io
+import json
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -376,6 +380,51 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertEqual(fake.tag_sha, SHA)
         self.assertEqual(len(fake.posts), 1)
         self.assertFalse(fake.deleted)
+
+    def test_privileged_plan_loader_rejects_duplicate_keys_and_nonstandard_numbers(self):
+        baseline = json.dumps(plan())
+        invalid = (
+            baseline.replace('"schema_version": ', '"schema_version": "1.0", "schema_version": ', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": NaN', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": Infinity', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": 1.0', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": 999999999999999999999', 1),
+            baseline.replace('"repository": ', '"PRIVATE_SECRET_MARKER": 1, "repository": ', 1),
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "PRIVATE_PLAN_FILENAME_MARKER.json"
+            for raw in invalid:
+                with self.subTest(raw=raw[:36]):
+                    source.write_text(raw, encoding="utf-8")
+                    stderr = io.StringIO()
+                    with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                        with redirect_stderr(stderr):
+                            self.assertEqual(main(["--plan", str(source), "--audit-live"]), 2)
+                    client.assert_not_called()
+                    self.assertNotIn("PRIVATE_PLAN_FILENAME_MARKER", stderr.getvalue())
+                    self.assertNotIn("PRIVATE_SECRET_MARKER", stderr.getvalue())
+
+    def test_privileged_plan_loader_rejects_symlinks_nonregular_and_grown_files(self):
+        with tempfile.TemporaryDirectory() as folder:
+            parent = Path(folder)
+            valid = parent / "safe-plan.json"
+            valid.write_text(json.dumps(plan()), encoding="utf-8")
+            symlink = parent / "PRIVATE_SYMLINK_MARKER.json"
+            symlink.symlink_to(valid)
+            oversized = parent / "oversized.json"
+            oversized.write_text(" " * 35001, encoding="utf-8")
+            for source in (symlink, parent, oversized):
+                with self.subTest(kind=source.name):
+                    stderr = io.StringIO()
+                    with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                        with redirect_stderr(stderr):
+                            self.assertEqual(main(["--plan", str(source), "--audit-live"]), 2)
+                    client.assert_not_called()
+                    self.assertNotIn("PRIVATE_SYMLINK_MARKER", stderr.getvalue())
+            with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(main(["--plan", str(valid)]), 0)
+            client.assert_not_called()
 
     def test_repo_mismatch_stops_before_actions(self):
         fake = FakeClient()
