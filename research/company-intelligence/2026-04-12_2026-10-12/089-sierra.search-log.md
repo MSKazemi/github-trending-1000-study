@@ -6,7 +6,7 @@
 
 **Method:**
 - Official pages were retrieved as raw HTML with `curl` using a generic `Mozilla/5.0` User-Agent. No personal identifier, email or credential was sent to any site.
-- robots.txt was checked before fetching from each site. Text was extracted from the HTML, and every number, date and quote used in the ledger was confirmed by exact-phrase matching against the extracted raw text. 156 phrases were checked and 0 were missing.
+- robots.txt was checked before fetching from each site. Text was extracted from the HTML, and every number, date and quote used in the ledger was confirmed by exact-phrase matching against the extracted raw text. 156 phrases were checked and 0 were missing (author's claim; the 2026-10-16 spot-check re-matched about 70 non-TechCrunch phrases with no miss, and the TechCrunch phrases were not re-checked because that site disallows Claude agents).
 - `gh api` supplied repository, release, tag, commit and licence metadata. The Hacker News Algolia API and a small number of web searches were used for discovery.
 - **This is not exhaustive retrieval.** Search-engine result totals were not exposed and are recorded as unknown, not zero. No page snapshots or hashes were archived in the repository, and pages may change after access.
 
@@ -68,7 +68,7 @@
   - PAP founding partners: NiCE appears on Oct 9 but not on Oct 6.
 - **Figures confirmed against raw text** (exact-phrase match on extracted page text; 156 phrases, 0 missing):
   - μ-Bench: 4,270 / 250 / 8 kHz / 5×5 / 79 locales / ~8× latency.
-  - Fragment and TechCrunch: third acquisition, Opera Tech, Receptive AI, ~$2M, $10B.
+  - Fragment and TechCrunch: third acquisition, Opera Tech, Receptive AI, ~$2M, $10B. (TechCrunch figures are unverifiable: the fetch breached the site's Claude-agent disallow and was not repeated.)
   - tau-voice: 30%→67%, ~79%, ~45%, 91 sampled simulations.
   - Funding: $950M, Tiger Global and GV, over $15B, >$1B; SiliconANGLE $15B, $150M ARR, >15 models.
   - tau-knowledge: 698 / 21 / ~195K / 25.5 / 9.3 / 37.4 / 20.6 / 18.6 / 9.5 / 11 variants / 19.4→9.1.
