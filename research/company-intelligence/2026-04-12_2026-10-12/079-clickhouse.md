@@ -36,7 +36,7 @@ Pre-window baseline (context only): the $400M Series D in January 2026, referenc
 | Month | Announcements/changes | Primary URLs | Independent reporting | Notes or no-result limitations |
 |---|---|---|---|---|
 | 2026-04-12..30 | Agentic-coding demo (Apr 14); mcp-clickhouse 0.3.0 write-mode guard (Apr 14); clickhousectl tutorial (Apr 16) | [blog](https://clickhouse.com/blog/agentic-coding-app), [release](https://github.com/ClickHouse/mcp-clickhouse/releases/tag/v0.3.0), [blog](https://clickhouse.com/blog/getting-started-clickhousectl) | none found | Google Cloud collaboration (Apr 21, BYOC, Axion, MCP + Antigravity) and Grafana plugin "not a committed roadmap" vision (Apr 15) read, not ledgered (§5) |
-| 2026-05 | 26.4 release (May 8); CTO sponsored post on AI coding (May 24); Open House: $250M ARR claim, ClickHouse Agents, CostBench, ClickStack MCP/Cloud (May 27) | [26.4](https://clickhouse.com/blog/clickhouse-release-26-04), [TNS](https://thenewstack.io/clickhouse-ai-coding-agents/), [press](https://clickhouse.com/blog/clickhouse-tops-250m-arr-and-4000-customers) | The New Stack item is **sponsored** (first-party) | Managed Postgres beta and executable UDF beta (May 27/30) not ledgered separately |
+| 2026-05 | 26.4 release (May 8); CTO sponsored post on AI coding (May 24); Open House: $250M ARR claim (attributed to the serverless cloud offering), ClickHouse Agents, CostBench, ClickStack MCP/Cloud (May 27) | [26.4](https://clickhouse.com/blog/clickhouse-release-26-04), [TNS](https://thenewstack.io/clickhouse-ai-coding-agents/), [press](https://clickhouse.com/blog/clickhouse-tops-250m-arr-and-4000-customers) | The New Stack item is **sponsored** (first-party) | Managed Postgres beta and executable UDF beta (May 27/30) not ledgered separately |
 | 2026-06 | 26.5 (Jun 1); ClickHouse Agents public beta (Jun 9); Stripe Projects agent provisioning (Jun 10); AI-assisted bug-bounty guest post (Jun 26); Databricks benchmark dispute (Jun 29); PostHog moves warehouse to DuckDB (Jun 29) | [agents](https://clickhouse.com/blog/clickhouse-agents-beta), [stripe](https://clickhouse.com/blog/stripe-projects), [dispute](https://clickhouse.com/blog/databricks-reyden-benchmark-transparency-clickhouse) | [PostHog](https://posthog.com/blog/why-we-rebuilt-our-data-warehouse) | 10-year open-source post (Jun 15) used as baseline/context |
 | 2026-07 | 26.6 (Jul 3); tokenomics-viewer repo (Jul 6); Docker Hardened Images (Jul 10); WalShadow AGPL-3.0 licence commit (Jul 14); mcp-clickhouse 0.4.1 server-level agent instructions (Jul 17); HyperDX SSRF CVE (Jul 20); hdx-evals MCP benchmark (Jul 22); docs relaunch (Jul 27); rejected CVE (Jul 29); Open Secure AI Alliance (Jul 30); clickhousectl 0.4.0 telemetry (Jul 31) | see CSV | [NVD](https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-63731), [VulnCheck](https://www.vulncheck.com/advisories/hyperdx-ssrf-via-clickhouse-proxy-test-endpoint) | Status page: Jul 22 CDC ClickPipes stuck, Jul 24 ap-southeast-1 monitoring/billing impact (not ledgered) |
 | 2026-08 | 26.7 (Aug 6); ClickGap autonomous QA disclosure (Aug 25); Grafana ClickHouse plugin TLS CVE (Aug 27) | [ClickGap](https://clickhouse.com/blog/clickgap-autonomous-qa-for-clickhouse), [Grafana](https://grafana.com/security/security-advisories/cve-2026-19854) | Grafana Labs advisory; GitHub issue search for the bot account | ClickHouse Labs with Andy Pavlo (Aug 3) read, not ledgered (§5). Status: Aug 2 Azure eastus2, Aug 14 AWS us-east-1 connectivity, Aug 17, Aug 23 |
@@ -112,7 +112,7 @@ These are hypotheses for testing, not company strategy or fact.
 | M6 lifecycle cost and environment | CostBench and per-question $ costs; AI Functions and token-pricing UDFs | Record invoices/API spend only where actually billed | Dollar cost ≠ energy; vendor benchmark design bias | No kWh/CO2e inferred |
 | M7 maintainer interventions | Agent-oriented CLI defaults, skills files and MCP servers as onboarding | See §8 for a small telemetry-storage test | Agent-facing docs may not change human first-use success | Synthetic tasks only until approval |
 
-Company adoption claims ($250M ARR, 4,000 customers, 100M+ Docker pulls, ~48k stars) are **not** independent task outcomes or verified reuse.
+Company adoption claims ($250M ARR and 4,000 customers, both stated for the serverless cloud offering; 100M+ Docker pulls, ~48k stars) are **not** independent task outcomes or verified reuse.
 
 ## 8. One practical, falsifiable change for the maintainer's own repositories
 
@@ -142,3 +142,37 @@ Company adoption claims ($250M ARR, 4,000 customers, 100M+ Docker pulls, ~48k st
   - (h) The NVD keyword search found 17 in-window CVEs in **third-party** applications that build ClickHouse SQL unsafely (SigNoz, OpenPanel, OpenMeter, Aptabase and others). These are not ClickHouse defects, but they are a reuse-security pattern.
 - **#56 candidates (not minted):** The New Stack 2026-05-24 (sponsored, so not independent); PostHog 2026-06-29; Let's Encrypt 2026-09-17; Grafana advisory 2026-08-27; RunReveal blog 2026-09-01. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+An independent reviewer re-fetched the cited sources on 2026-10-16. Pages were retrieved as raw HTML with a generic browser User-Agent after checking each host's robots.txt. GitHub, PyPI and NVD were queried through their APIs. No personal identifier was sent to any site.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-079-002 | confirmed | Release notes list `CLICKHOUSE_WRITE_ACCESS` with DROP/TRUNCATE protection, `CLICKHOUSE_SNI` and lazy-loaded/optional chDB. GitHub release 2026-04-14T17:26:46Z; PyPI upload 2026-04-14T17:28:40Z; PyPI `license_expression` Apache-2.0. |
+| CI2026-079-004 | confirmed | 39 / 45 / 238 and the new-contributor names "ClickGap AI Bot" and "Groene AI" appear in the raw text. Displayed date May 8, 2026; GitHub release v26.4.1.1141-stable 2026-05-05T18:25:17Z. |
+| CI2026-079-005 | confirmed | `datePublished` 2026-05-24T14:00Z. The page says "ClickHouse sponsored this post" and names Insight Partners as a shared investor. The text also has "Since Opus 4.5", ~700 PRs, ~200 findings a day to 3–5 per 10 million test runs, a bot that "invokes Copilot CLI", and two autonomous agents. |
+| CI2026-079-006 | **corrected** | The press text reads "ClickHouse's serverless cloud offering has crossed over $250 million in annual run-rate revenue … bringing its total to 4,000". The row and report §3/§7 now attribute both figures to the serverless cloud offering rather than to the company as a whole. "Full-text search is generally available" is confirmed. |
+| CI2026-079-014 | confirmed | Displayed Jun 29, 2026. Raw text has "about 420 QPS", one 30 vCPU node, 15,000 QPS and "roughly 30 to 40 untuned nodes". |
+| CI2026-079-017 | confirmed | Displayed Jul 10, 2026. Raw text has "100M+ pulls" and the Ubuntu 22.04 base. |
+| CI2026-079-018 | confirmed | Commit 4225a9b87f dated 2026-07-14T16:11Z. Its message reads "AGPLv3 / clickhouse-c-rs stays Apache v2" and it touches LICENSE. GitHub API spdx is AGPL-3.0. |
+| CI2026-079-020 | confirmed | NVD: published 2026-07-20, VulnCheck CVSS 3.1 7.7 HIGH and 4.0 6.3 MEDIUM (status Deferred). `@hyperdx/app@2.31.0` was released 2026-07-17T22:31:31Z; issue #2588 was opened 2026-07-03; PR #2593 was merged 2026-07-17T18:14:58Z. |
+| CI2026-079-021 | confirmed | Displayed Jul 22, 2026. Raw text has 18% / 26% / 2.4x, seeded synthetic telemetry, Claude agents and blind scoring. |
+| CI2026-079-022 | confirmed | Displayed Jul 27, 2026. The quote "more than half of developer docs traffic comes from coding agents" is verbatim. |
+| CI2026-079-023 | confirmed | NVD: published 2026-07-29, last modified 2026-08-06, status Rejected. The CNA text matches the summary; the permission it names is `pg_execute_server_program`. |
+| CI2026-079-027 | confirmed | Displayed Aug 25, 2026. The vendor text has "roughly 500 issues", "around 200 pull requests" and "more than half … closed". A fresh GitHub search (author `clickgapai`, created ≤ 2026-08-25) gives 506 issues, 244 PRs and 333 closed issues. The account was created 2026-03-26. |
+| CI2026-079-028 | confirmed | Advisory published 2026-08-27; CVSS 3.1 6.1; fixed >=4.21.1. The library "talks to ClickHouse in the clear". |
+| CI2026-079-030 | confirmed | Displayed Sep 1, 2026. Raw text has 201 questions, 29 models, 76.6% and $1 vs $52. The repo is Apache-2.0 and was created 2026-08-24. |
+| CI2026-079-032 | confirmed | 98 / 128 / 556, LTS. GitHub release v26.8.1.2041-lts 2026-08-30T13:47:42Z. |
+| CI2026-079-034 | confirmed | Displayed Sep 10, 2026. Raw text has ~200 ms and 289K rows/sec. The post never mentions "AGPL", which confirms note (g). |
+| CI2026-079-036 | confirmed | Dated September 17, 2026. Three PowerEdge R7715 servers, a "log search SaaS product" and "open source" all appear. |
+| CI2026-079-037 | confirmed | 56 / 135 / 464 and CREATE TOKEN appear. GitHub release v26.9.1.1629-stable 2026-09-21T21:25:45Z. |
+| CI2026-079-007 (licence check) | confirmed | The CostBench repo was created 2026-05-25. GitHub spdx is NOASSERTION, and LICENSE is CC BY-NC-SA 4.0. |
+
+**Counts:** 19 rows checked: 18 confirmed, 1 corrected, 0 wrong, 0 unverifiable.
+
+**Robots.txt audit:** the search log fetched no path that robots.txt disallows for a generic User-Agent. clickhouse.com, thenewstack.io, posthog.com, letsencrypt.org, grafana.com, blog.runreveal.com and the Substack `/p/` path are all allowed. NVD, HN Algolia and status.clickhouse.com serve no robots.txt.
+
+**Qualification of the search log's "every number … confirmed with grep" statement:** every number re-checked here matched its source. Row 006, however, attributed a figure scoped to one product (the cloud offering) to the whole company. So "confirmed" in the log means the numerals matched, not that their scope was reviewed.
+
+*This is an AI-assisted spot-check, not qualified human review.*
