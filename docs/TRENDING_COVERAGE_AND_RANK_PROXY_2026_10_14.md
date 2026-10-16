@@ -142,3 +142,9 @@ predictors were chosen on pre-lock data, and the study has neither
 independently authenticated source snapshots nor a valid null sampling
 distribution. **Do not** interpret the excess as a p-value, confidence
 interval, causal effect, ranking-algorithm recovery, or deployed model utility.
+
+## 2026-10-16 repeated raw-capture hash diagnostic
+
+The rank-proxy summary now reports `distinct_capture_source_digests` and `repeated_capture_source_digest_groups` by capture ID. Two chronologically distinct entries with an identical claimed raw source SHA-256 may represent legitimately unchanged page content or accidental reuse of a saved page. The instrument **flags that ambiguity**, without labeling either capture invalid, granting independent authentication, or counting the two as independent field-observed exposures.
+
+One fictional regression checks a repeated digest across training pages while preserving the original predictor and heldout score computation. Repeated content hashes require human source/capture/UTC/HTTP audit before a real study can infer independent measurements. An absence of repeats does not establish authentic capture, nor are these data available under the current live Trending source-access prohibition. The issue #6 prospective real-page and qualified methods gates remain open.
