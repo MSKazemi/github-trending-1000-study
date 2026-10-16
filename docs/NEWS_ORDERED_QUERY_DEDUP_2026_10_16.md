@@ -13,6 +13,17 @@ The modified behavior is intentionally conservative:
 - When any meaningful query key repeats, **retain the original order** of all remaining key/value pairs; reversed repeated selectors no longer collapse.
 - Continue retaining source URL, original publication/access dates, provisional statuses and no-authenticated-review restrictions. Do not rewrite existing source records.
 
+## Follow-up: preserve trailing path slash (same-day review)
+
+The same conservative source-identity rule applies to path spelling. An earlier
+normalizer used `parts.path.rstrip("/")` and therefore collapsed `/report`
+and `/report/`. HTTP servers may route these paths to different content;
+without independent source inspection it is not justified to discard either
+provisional evidence lead. Keep the supplied path including its trailing slash,
+while treating an empty path as the root request path. One additional synthetic
+regression preserves both sources. This does not claim the two URLs actually
+carry different articles, nor does it authenticate their event-level identity.
+
 ## Evidence boundary
 
 Three new **fictional, offline** regressions exercise reversed repeated selectors, tracker variants of identical repeated selectors, and ordinary unique query reordering. Passing synthetic tests does not establish that any actual web resource interprets its own query order this way. False negatives (same content with different query order) remain possible; only an independently reviewed event/content-level crosswalk can decide actual duplicates. This is a conservative anti-loss default.

@@ -44,8 +44,11 @@ def _canonical_url_key(parts):
     names = [key for key, _ in query_items]
     query = tuple(query_items if len(names) != len(set(names))
                   else sorted(query_items))
+    # A trailing slash can identify a different resource on the same host:
+    # /report and /report/ must not be silently conflated as source evidence.
+    # Empty path and explicit root slash share the HTTP root request path.
     return (parts.hostname.lower(), parts.port if parts.port is not None else 443,
-            parts.path.rstrip("/") or "/", query)
+            parts.path or "/", query)
 
 REQUIRED = {
     "schema_version", "id", "title", "publisher", "author",
