@@ -228,3 +228,42 @@ This check was also done with an Anthropic model (Claude), so it is AI-assisted.
 | all others | confirmed | Includes the SDK window count (64), the migration PRs and SHAs, the 821 replayed commits, eight releases in each monthly recap, and the Enterprise release dates. |
 
 The spot-check did not re-review the earlier text above the *Standardisation upgrade* heading or the appended interpretation. A human factual/link review is still required.
+
+## Independent source spot-check (2026-10-16, coordinator-arranged second review)
+
+This check is separate from the author-commissioned check above. A different agent re-fetched sources on 2026-10-16 without relying on that check's results. It used `gh api` for GitHub, raw HTML via `curl` with a generic `Mozilla/5.0` User-Agent for openhands.dev and docs.openhands.dev, the PyPI release RSS feed (not the JSON API), the NVD CVE API and the HN Algolia API. It first checked robots.txt for www/hub.openhands.dev (`Allow: /`), docs.openhands.dev (only `/cdn-cgi/` and `/_next/` disallowed), news.ycombinator.com (item pages allowed), www.swebench.com (no Disallow lines), pypi.org and github.com (no Claude/Anthropic rule covers `/releases`, `/issues` or `/commit/` paths). None of the screen's cited or logged fetches hits a robots.txt-disallowed path, for a generic agent or for Claude agents. No personal identifier was sent.
+
+| Row | Outcome | Note |
+|---|---|---|
+| `001` SDK v1.17.0 | Confirmed | Published 2026-04-13T19:04Z; defense-in-depth analyzers, DelegateTool → TaskToolSet deprecation and ACP fixes. The API lists 64 SDK releases from v1.17.0 to v1.54.0 (2026-10-09) in the window. |
+| `002` SDK v1.18.1 | Confirmed | First-message WebSocket auth, "Fix CVE-2026-34444: Update lupa to 2.8", pinned ACP npm versions. |
+| `004` SDK v1.19.0 | Confirmed | ACPAgent on RemoteRuntime via ACP conversation endpoints, Gemini CLI ACP server, REST deprecation runway. |
+| `005` app 1.7.0 | Confirmed | `SANDBOX_KVM_ENABLED`; "Resolved multiple CVEs through dependency updates"; GitHub 2026-05-01T14:52Z and PyPI RSS 2026-05-01 13:28 GMT. |
+| `006` Agent Control Plane | Confirmed | May 06, 2026; orchestration, plugins and skills, sandboxing, per-user logging, cost attribution, budgets; "OpenHands Automations is now available in OpenHands Enterprise". |
+| `008`, `033` CLI README commits | Confirmed | 2026-05-18 "feature-complete"; 2026-08-11 "This project is no longer actively maintained"; last CLI release 1.16.0 on 2026-05-08. |
+| `009` May product update | Confirmed | LiteLLM 1.83.14 (GHSA-xqmj-j6mv-4862) and lxml 6.1.0 (CVE-2026-41066) under "Enterprise Enhancements and Fixes"; `/model` command; TaskToolSet; inline critic display. |
+| `010` LLM profiles | Confirmed | MiniMax M2.7 free "for a limited time on the OpenHands Cloud". |
+| `011` app 1.8.0 | Confirmed | Sandbox grouping strategy; App tab removed; PyPI 2026-06-10. |
+| `012` agent-canvas v1.0.0 | **Corrected** | Repository created 2026-04-24 and v1.0.0 on 2026-06-15 are confirmed. However, the releases API also lists an unversioned `live-e2e-media` pre-release on 2026-05-09, before the first versioned pre-release (`v1.0.0-alpha.8`, 2026-05-28). Claim, limitation and search-log line were narrowed to "versioned pre-releases". |
+| `013` Agent Canvas launch | Confirmed | JSON-LD 2026-06-16; "the new interface for OpenHands"; local to Kubernetes/VPC backends; Claude Code and Codex via ACP; "OpenHands is MIT licensed". |
+| `015` command-injection issue | Confirmed | Created 2026-06-19T06:54Z; "Private Security Advisory open for 6-7 months, no answer"; `<0.62.0`; `shell=True`; transferred 2026-07-27T13:57Z; one bot comment on 2026-09-15; still open. |
+| `016` verification stack | Confirmed | JSON-LD 2026-06-22 (slug says 20260506); "achieves a high accuracy" with no denominator; review and QA agents as Extensions plugins. |
+| `017` cloud-1.39.0 | Confirmed | 16 lines naming a CVE or GHSA ID, including pyjwt, tornado, aiohttp, starlette, dompurify, jupyter-server and pypdf. |
+| `019` app 1.11.0 | Confirmed | Budgets and usage dashboards and Agent Profiles; PyPI RSS 2026-07-09 19:38:13 GMT; no later openhands-ai release in the feed. |
+| `020` Enterprise 0.24.0 | Confirmed | "Released July 16, 2026"; 80/90/100% budget alerts; "ACP (Agent Canvas Protocol)". |
+| `024` repository migration | Confirmed | Issue #15396 (2026-07-27) names `enterprise` as a "private repository for proprietary development". PR #15397 was merged 13:09Z and PR #15413 (821 commits) 13:43Z. `OpenHands/legacy` is archived and public at `ee9e78b7`. The repo has 91,020 stars and an MIT licence; `OpenHands/enterprise` is now public under PolyForm Free Trial 1.0.0. |
+| `025` technical-debt analysis | Confirmed | OpenHands (4 repos) 5,679 merged PRs, 1,778 (31%) bug-fix, ~2.4M changed, ~1.05M lines; Codex, OpenCode and Hermes compared. |
+| `026` Canvas v1.7.0 | Confirmed | "fix(security): authenticate WebSockets outside URLs"; human-tested checkbox removed; 2026-07-29. |
+| `028` CVE-2026-19022 | Confirmed | NVD published 2026-08-06, status Deferred, CNA VulDB, CWE-74 and CWE-77, CVSS v4.0 5.3 / v3.1 6.3 / v2 6.5 (all Secondary); "vendor deleted the original GitHub issue report", removed in 1.7.0. The transfer conflict stands. |
+| `032` Enterprise 0.45.0 | Confirmed | "Released August 11, 2026"; MiniMax M2.7 → GLM 5.2 migration; S3/MinIO silent-truncation fix; standalone frontend retired. |
+| `036` HN analysis | Confirmed | Posted 2026-08-26T22:25Z: v1.18.1 with GPT-5.5, 391/500, outlier of 16,180 lines, 390/499 = 78.2%, 5,077 LOC, about 2.1×, repriced at GPT-5.6 Sol promotional prices. |
+| `037` Canvas v1.16.0 | Confirmed | "land the Canvas Extensions frontend (load pages, sidebar, customize)", 2026-08-27. |
+| `038` August recap | Confirmed | JSON-LD 2026-09-02; v1.9.0–v1.16.0; Apps "in the same browser context … not isolated in an iframe or worker"; installed disabled. |
+| `041` Enterprise 0.74.0 | Confirmed | "Released September 29, 2026"; the six providers "now route correctly … Previously, selecting one of these providers fell back to Anthropic routes"; auto-disable and sandbox cleanup are off by default. |
+| `043` Canvas v1.25.0 | Confirmed | Model Router direct-prompt settings and run-at-start toggle; bulk-add LLM profiles; Canvas Apps Update action; 2026-10-06. |
+| `044` September recap | Confirmed | JSON-LD 2026-10-07; v1.17.0–v1.24.0; exact-head-commit check; 49 contributors, nearly 600 merged PRs, 94 features, 165 closed bugs, 39 releases. |
+| `045` Canvas v1.27.0 | Confirmed | OpenCode and Pi ACP agents, ACP model lists from the agent, DigitalOcean Managed Agents, verify-openhands; 2026-10-12T15:06Z. |
+
+**Totals:** 29 rows checked independently: 28 confirmed, 1 corrected (`012`, minor), 0 unverifiable, 0 wrong. No row depends on a robots-disallowed source. The search log's statement that every number, version, date and quote was confirmed against saved text or API JSON holds for every row checked here, except for the `012` pre-release date nuance.
+
+*This is an AI-assisted spot-check, not qualified human review.*
