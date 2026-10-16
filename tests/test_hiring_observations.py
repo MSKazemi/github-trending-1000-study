@@ -206,8 +206,9 @@ class ObservationLedgerTests(unittest.TestCase):
             with self.subTest(rejected=host), self.assertRaises(
                     instrument.HiringObservationError):
                 instrument._url(f"https://{host}/jobs/J1")
-        for host in ("127.0.0.1", "192.168.1.1", "localhost",
-                     "metadata.google.internal"):
+        for host in ("127.0.0.1", "192.168.1.1", "127.1", "2130706433",
+                     "0x7f000001", "0177.0.0.1", "0x7f.0.0.1",
+                     "192.168.1", "localhost", "metadata.google.internal"):
             with self.subTest(private_host=host), self.assertRaises(
                     instrument.HiringObservationError):
                 instrument._url(f"https://{host}/jobs/J1")
