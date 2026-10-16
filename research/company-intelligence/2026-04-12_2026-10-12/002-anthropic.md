@@ -127,7 +127,7 @@ No earlier claim turned out to be unverifiable.
    - forced `tool_choice` returning 400;
    - restrictions on disabling thinking;
    - thinking blocks bound to a model or account;
-   - tokenizer changes of roughly 1.0–1.35x (Sonnet 5) and about 30% (Fable 5 notes).
+   - tokenizer changes of roughly 1.0–1.35x (Sonnet 5 page; the Sonnet 5 release notes say about 30%) and about 30% (Fable 5 notes).
 
    Per-token price comparisons in §9 therefore understate migration and token-count effects.
 
@@ -209,3 +209,50 @@ None of these is a binding commitment, and no 2027–2031 product plan was found
 - Robots-blocked mainstream reporting is missing, which limits the independent counter-evidence available.
 
 A PyPI JSON request made before its robots rule was checked is disclosed in the search log. Its data was deleted unused.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the sources cited by the 49 new ledger rows and the *Standardisation upgrade* section, and compared each figure, date and quote with the raw text or API response. Text above the *Standardisation upgrade* heading was not reviewed or edited. Robots.txt was checked first for every host. No host fetched has a rule blocking Claude/Anthropic agents for the paths used. The upgrade's disclosed `pypi.org/pypi/*/json` fetches (robots-disallowed) support no ledger row; the SDK 1.0 date was re-confirmed from the GitHub release. No row needed `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+**Conflict of interest applies here too.** This spot-check was also done with an Anthropic model (Claude). It reduces, but does not remove, the risk described under *Conflict of interest* above.
+
+| Row(s) | Outcome | Note |
+|---|---|---|
+| 003, 004, 006, 009, 017, 020, 021, 041, 043, 045, 049 (advisories) | **corrected** | IDs, severities, version ranges, publication times and npm patch times all match; 35 total and 12 in window confirmed; disclosure gaps of 9 days to about 5 months confirmed. But "no CVSS score in the API response" was **wrong**: the repository-advisory API gives a CVSS v4 base score for every one (2.0 to 8.5; only the v3 field is empty), and 11 of the 12 carry CVE IDs. Limitations now give the score and CVE |
+| 001, 007 | confirmed | Issue #46829 closed 2026-04-12T10:15Z with the listed labels; collaborator reply on 04-13 ("nuanced"). #53262: "overactive anti-abuse system. Fixed." (04-25) and the refund-plus-credits reply (04-30) |
+| 002, 014, 027 | confirmed | Prices, Cyber Verification Program, xhigh, task budgets, 2576 px, Bedrock self-serve (Apr 16); dynamic workflows research preview, default effort high, fast-mode default for Max (May 28); $5/$25, thinking-disable restriction, fast mode removed for Opus 4.7 (Jul 24) |
+| 005 | confirmed | Mar 4 / Mar 26 / Apr 7 / Apr 16 / Apr 20 / v2.1.116 / "The API was not impacted" / usage-limit reset as of Apr 23 are verbatim |
+| 008 | confirmed | Three changes "all effective today" (May 6); help-center promotion May 13–Sep 13, 2026, 50% higher weekly limit |
+| 010, 032, 033, 036, 044 | confirmed | Release-note entries on May 6, Aug 19, Aug 20, Sep 3 and Sep 30 match. Retirements Haiku 3 (Apr 20), Sonnet 4/Opus 4 (Jun 15), Opus 4.1 (Aug 5); Sonnet 4.5 scheduled for Nov 30. SDK v1.0.0 released 2026-08-20T19:58Z, MIT |
+| 011, 012, 018, 019, 028, 048 | confirmed | Stainless "every official Anthropic SDK"; "approximately 50 partners", "more than ten thousand"; ~400,000 sessions / ~235,000 people / debugging "fell by nearly half"; Claude Tag beta for Enterprise and Team, 65%; open-weights statement; Usage Policy effective November 12 |
+| 013 | confirmed | created 2026-05-22T16:00Z, pushed 2026-08-06, Apache-2.0 LICENSE text, API licence NOASSERTION |
+| 015 | corrected (minor) | Launch facts and release notes (1M context, adaptive thinking, refusals not billed, 30-day retention, ~30% tokenizer) confirmed. The page now carries both the Jun 12 suspension notice and a Jul 1 redeployment update, not only a suspension banner |
+| 016, 024 | confirmed | "5:21pm (ET)", "any foreign national … including foreign national Anthropic employees", jailbreak understanding; June 30 lifting, July 1 global availability, June 26 US approval |
+| 022 | corrected (omission) | datePublished 2026-06-26T22:06:03Z, "more than 100 US institutions", "significant progress", silent on Fable 5 confirmed. Added Semafor's statement that the original controls followed "warnings from Amazon and other companies" about jailbreaks |
+| 023 | corrected (conflict added) | $2/$10 permanent, $3/$15 from Sep 1 dropped, Aug 10 and Jun 30 edits and 1.0–1.35× confirmed on the page. The Jun 30 release notes instead say "approximately 30% more tokens"; the conflict is now recorded. The Jun 30 correction, per the vendor, had *underestimated* Sonnet 5 |
+| 025 | corrected (framing) | Signing timestamp Jun 29, ANTHROPIC_BASE_URL trigger, Asia/Shanghai and Asia/Urumqi, apostrophe code points and XOR key confirmed. The summary now also carries the author's line that hiding the signal "makes every other privacy claim harder to believe", not only "not malicious" |
+| 026 | confirmed | ~33,000 vs ~7,000, up to 54×, 3.3× vs 4.7× verbatim (datePublished 2026-07-12) |
+| 029, 030, 031 | confirmed | Auto mode post dated 2026-08-07, default from Aug 14 for Pro/Max/Team, opt-in elsewhere, "in the coming month"; watermark "to comply with the EU AI Act", "no practical impact on the quality"; Daring Fireball 16 August 2026 quotes "imperceptible watermark directly into the text" |
+| 034 | **wrong → corrected** | 60–80% (3/5, 3/5, 4/5) and 0.00% confirmed. "No vendor response located" was wrong: the post reports that Anthropic closed the report as "Informative", working as designed, and described auto mode as "a convenience feature backed by a best-effort classifier, not a security guarantee" |
+| 035 | confirmed | Same model with different safeguards; 25% cheaper for typical workloads; $0.25 cache reads; page shows only "September 2026"; Sep 1 notes cover tool_choice 400, preserved thinking blocks, C2PA and 30-day retention; EFS described as equivalent to zero data retention |
+| 037 | confirmed | 16,893 runs, 5,292 sessions, 51 codebases; "Disclaimer: Armature sells growth services to dev tools" |
+| 038, 040 | confirmed | 2.1.277 (Sep 18) adds AGENTS.md; Szypowicz (2026-09-23) describes the `tengu_agents_md_mod` flag with a false fallback, measured on 2.1.280; 2.1.281 (Sep 23) "also work[s] … in sessions with telemetry disabled" |
+| 039 | **wrong → corrected** | $4/$20, 40%, METR, thinking cannot be disabled and tool_choice 400 confirmed. The clause "preserved-thinking anti-distillation for API accounts created on or after Aug 31" is not in the cited Sep 22 entry; the Aug 31 cutoff is a Fable 5.1 thinking-block prefix check in the Sep 1 notes. Replaced with the page's own safeguards statement |
+| 042, 046 | confirmed | 30%+ faster, up to 30% cheaper, 70.6% / 10.3% / 66.4%, five breaking changes, account-bound thinking blocks; Haiku 5.5 "around 75% less", subagent quote, Oct 7 cache-read cut to $0.10 and web_fetch limited to URLs already seen in the session |
+| 047 | corrected (omission) | 29,000 / ~6,000 / nearly 5,000 and no-cost opt-in confirmed. Added the vendor's own statement that scanner outputs are "fully model-generated, without human review or triage" |
+| Upgrade-section counts | confirmed | 49 rows; per segment 7/7/11/3/6/10/5; status mix 28/10/5/3/2/1; date order correct |
+
+**Vendor-favourable framing flagged.** No evidence was found of deliberately left-out events: all 12 in-window advisories and several critical independent sources are in the ledger. However, every material error found leaned the same way, softening or leaving out information unfavourable to Anthropic:
+
+- the advisories were described as having no CVSS score although scores up to 8.5 exist;
+- Anthropic's "not a security guarantee" response, which undercuts its auto-mode safety messaging, was recorded as not located;
+- the lower tokenizer range was used without the release notes' ~30%;
+- the steganography finding led with "not malicious";
+- Semafor's attribution of the export controls to jailbreak warnings from Amazon and others was left out;
+- the OSS Scanner row omitted the absence of human triage.
+
+All six are corrected above. A human reviewer should still re-read the claim summaries for tone, and should check the upgrade's choice to exclude corporate-finance events (Series H, draft S-1).
+
+**Counts:** 49 of 49 new ledger rows checked, plus the upgrade-section counts. 31 confirmed, 16 corrected (11 advisory CVSS limitations, and 015, 022, 023, 025, 047), 2 wrong and corrected (034, 039); 0 unverifiable. One upgrade-section bullet (tokenizer) was amended in place. The search log's "figures confirmed against raw saved text" statement is now qualified. No personal identifier was sent in any request (generic `Mozilla/5.0` User-Agent only; no sec.gov access).
+
+*This is an AI-assisted spot-check, not qualified human review.*
