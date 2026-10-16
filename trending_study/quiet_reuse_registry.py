@@ -19,8 +19,12 @@ HEX64 = re.compile(r"^[0-9a-f]{64}$")
 # Cargo releases use concrete X.Y.Z semantic versions; range selectors,
 # moving tags, whitespace and semver operators cannot be cited as a pinned
 # historical artifact. This syntactic check never proves release availability.
+# SemVer core numbers must not have leading zeroes. Prerelease numeric
+# identifiers have the same restriction; build identifiers may contain zeroes.
+_SEMVER_NUMBER = r"(?:0|[1-9][0-9]*)"
 CARGO_RELEASE = re.compile(
-    r"[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?"
+    _SEMVER_NUMBER + r"\." + _SEMVER_NUMBER + r"\." + _SEMVER_NUMBER +
+    r"(?:-[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?"
     r"(?:\+[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?\Z"
 )
 NAME = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
@@ -78,6 +82,12 @@ def _pinned_cargo_release(value):
     if (not isinstance(value, str) or len(value) > 128 or
             CARGO_RELEASE.fullmatch(value) is None):
         raise RegistryFrameError("version requires a concrete pinned Cargo release X.Y.Z")
+    core_and_prerelease = value.split("+", 1)[0]
+    if "-" in core_and_prerelease:
+        prerelease = core_and_prerelease.split("-", 1)[1]
+        if any(part.isdigit() and len(part) > 1 and part.startswith("0")
+               for part in prerelease.split(".")):
+            raise RegistryFrameError("version requires a concrete pinned Cargo release X.Y.Z")
     return value
 
 
