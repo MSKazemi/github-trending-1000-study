@@ -143,3 +143,37 @@ Construct labels follow the [mission M1–M7 table](../../../docs/AI_ERA_CODING_
 - The independent-reporting share is low (3 independent documents). No product was run or benchmarked.
 
 Related: [#69](https://github.com/MSKazemi/github-trending-1000-study/issues/69) · news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56). None of these events were added to the news corpus in this upgrade.
+
+## Independent source spot-check (2026-10-16)
+
+A second AI-assisted reviewer re-fetched the cited sources on 2026-10-16 and compared 23 of the 39 new ledger rows with the raw page text, API JSON or RSS. `robots.txt` was checked first for every host. deepmind.google, ai.google.dev, blog.google, developers.googleblog.com, antigravity.google and huggingface.co allow the paths used. The Register disallows `*` and ClaudeBot but **explicitly allows `Claude-User`**, so its two articles were fetched while identifying as `Claude-User`, as the screen did. hn.algolia.com and 0xsid.com serve no robots file. The PyPI JSON API (disallowed) was not used; the release RSS was. No ledger row depends only on a robots-disallowed source. Reuters, NYT, TechCrunch and The Verge were not fetched by the screen or by this review.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-003-004 | confirmed | `gh api` advisory: CVE-2026-12537, critical, CVSS 3.1 10.0, published 2026-04-24, updated 2026-09-24; patched `@google/gemini-cli` 0.39.1 and run-gemini-cli 0.1.22; text names the headless folder-trust breaking change, `.env` and `--yolo` allowlists. The advisory also lists 0.40.0-preview.3 as the patch for 0.40.0-preview.2 (not in the row; not an error) |
+| CI2026-003-006 | confirmed | `datePublished` 2026-05-07T16:00Z, `dateModified` 2026-07-10; 20% write amplification (Spanner LSM compaction), TPU silicon, FM Logistic 10.4%, ~9% storage footprint all in text |
+| CI2026-003-007 | confirmed | Terminal-Bench 2.1 76.2%, GDPval-AA 1656 Elo, MCP Atlas 83.6% in the 2026-05-19 post |
+| CI2026-003-008 | confirmed | "look forward to rolling it out next month" (2026-05-19); Register 2026-09-02 says "failure to release Gemini 3.5 Pro in June as promised" |
+| CI2026-003-010 | confirmed | Post dated 2026-05-19: scheduled tasks (crons), JSON hooks, multi-folder projects, `/goal` and `/grill-me`. `gh api`: antigravity-cli repo has no licence; contents are `.github`, CHANGELOG.md, README.md, a GIF and examples |
+| CI2026-003-011 | confirmed | Post: Apache 2.0, `confirm_run_command()`, stdio/SSE/Streamable HTTP, `skills_paths`. PyPI RSS: 23 releases, 0.1.0 at 2026-05-19T18:17Z, 0.1.21 at 2026-10-07 |
+| CI2026-003-012 | confirmed | $100/month Ultra, $250 → $200, shared quota pool, 5X / 20X versus the $20 Pro plan, Gemini Enterprise Agent Platform |
+| CI2026-003-013 | confirmed | Post dated 2026-05-19; 2026-06-18 cutoff for Google AI Pro/Ultra and free Code Assist for individuals; no new GitHub installs; Standard/Enterprise and paid API keys continue; "won't be 1:1 feature parity". `gh api`: v0.63.0 published 2026-10-06. Register 2026-05-20 confirms the open-source complaint |
+| CI2026-003-015 | confirmed | Blog dated May 21, 2026; auto-update, legacy installer conflict, purge and subreddit all in text; HN Algolia story shows 771 points |
+| CI2026-003-017 | confirmed | 16GB VRAM/unified memory, Apache 2.0, Hugging Face and Kaggle; HF API: apache-2.0, not gated, createdAt 2026-05-23 |
+| CI2026-003-018 | confirmed (HF part) | HF API: apache-2.0, not gated, createdAt 2026-06-09; post text not re-read |
+| CI2026-003-019 | confirmed | Up to $10M; deadline August 8, 2026; awardees expected Autumn 2026; partners as stated |
+| CI2026-003-023 | confirmed | Card "Published 21 July 2026"; 1M input, 64K output; $1.50/$7.50; "not directly comparable"; GDPVal-AA v2 1349 is in the 3.5 Flash column; sitemap lastmod 2026-09-01. Changelog GA on 2026-07-21 |
+| CI2026-003-024 | confirmed | Changelog 2026-07-21: temperature, top_p, top_k deprecated |
+| CI2026-003-027 | confirmed | Memo 2026-08-05: Hassabis Chair of GDM and Chief Scientist of Alphabet, still leading Isomorphic; Kavukcuoglu SVP overseeing "Gemini model development, Frontier AI research, and the Gemini app and developer teams"; Dean and Ghemawat launching an independent public benefit corporation; 950M+ monthly users; 900M+ Gemma downloads |
+| CI2026-003-028 | confirmed | $0.75/$3.75 through December 31, 2026, then $1.50/$7.50 from January 1, 2027; "thinks more diligently" |
+| CI2026-003-030 | confirmed | Changelog 2026-09-01: "up to 88% fewer tokens for long-form content"; blog: costs up to 66%, accuracy up to 7% |
+| CI2026-003-031 | confirmed | Card "Published 2 September 2026"; "customizable effort levels"; $0.75 ($1.50 regular) / $3.75 ($7.50 regular); sitemap lastmod 2026-09-08; Register: Intelligence Index 59, $0.58 per task |
+| CI2026-003-033 | confirmed | Changelog 2026-09-17: PascalCase, `replace_file_content` line ranges, `find_by_name`, `grep_search`; 05-2026 agent shuts down October 5, 2026 |
+| CI2026-003-036 | confirmed | `datePublished` 2026-09-30, modified 2026-10-14; Fairwind; "without cyber guardrails"; 1M output, up from 64K; $2/$10 introductory price; DeepSWE v1.1 77.9%; 300 TiB; C/C++ to Rust. Not in the row: after the introductory period the post states $4/$20 |
+| CI2026-003-037 | confirmed (repo part) | `gh api`: google-deepmind/synthidbio created 2026-09-29, Apache-2.0 |
+| CI2026-003-038 | confirmed | 740 million parameters, Apache 2.0, Model Garden "coming soon"; HF API: apache-2.0, not gated, createdAt 2026-09-14 |
+| CI2026-003-039 | confirmed | Changelog 2026-10-08: 3.7 → 3.8 Flash and 3.5 → 3.6 Flash automatic routing; deep-research-pro-preview-12-2025 shuts down October 23, 2026 |
+
+**Counts:** 23 rows checked (21 in full, 2 partially); 23 confirmed, 0 corrected, 0 unverifiable, 0 wrong. The search log's count of 32 in-window changelog dates was also confirmed. The search log's "figures confirmed against raw text" list matched every figure re-checked here. It does not claim that every number on the source pages was checked, so it needs no qualification. Rows 001–003, 005, 009, 014, 016, 020–022, 025, 026, 029, 032, 034 and 035 were not re-checked. No CSV or report text was changed.
+
+*This is an AI-assisted spot-check, not qualified human review.*
