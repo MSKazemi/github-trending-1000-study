@@ -157,6 +157,24 @@ class GoldSetTests(unittest.TestCase):
 
 
 
+    def test_rejects_unrecognized_private_data_fields_at_every_level(self):
+        for level in ("payload", "task", "candidate", "system"):
+            d = copy.deepcopy(DATA)
+            if level == "payload":
+                destination = d
+            elif level == "task":
+                destination = d["tasks"][0]
+            elif level == "candidate":
+                destination = d["tasks"][0]["candidates"][0]
+            else:
+                destination = d["tasks"][0]["systems"][0]
+            destination["PRIVATE_PROMPT_OR_EMAIL_MARKER"] = "confidential content"
+            with self.subTest(level=level), self.assertRaises(GoldsetError) as ctx:
+                evaluate(d)
+            self.assertIn(level, str(ctx.exception))
+            self.assertNotIn("PRIVATE_PROMPT_OR_EMAIL_MARKER", str(ctx.exception))
+            self.assertNotIn("confidential content", str(ctx.exception))
+
     def test_private_task_candidate_and_system_ids_not_in_error(self):
         d = copy.deepcopy(DATA)
         task = d["tasks"][0]
