@@ -31,8 +31,12 @@ def _date(raw, *, allow_future=False):
         raise PackageReviewError("UTC timestamp required")
     try:
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise PackageReviewError("invalid timestamp") from exc
+    except ValueError:
+        # Python's datetime parser can embed caller-provided timestamp text
+        # in the chained ValueError. Do not expose it in complete diagnostics.
+        dt = None
+    if dt is None:
+        raise PackageReviewError("invalid timestamp")
     if dt.utcoffset() is None or dt.utcoffset().total_seconds() != 0:
         raise PackageReviewError("timestamps require explicit UTC")
     if not allow_future and dt > datetime.now(timezone.utc) + timedelta(minutes=5):
