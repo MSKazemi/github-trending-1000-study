@@ -13,3 +13,7 @@ Synthetic tests check valid hyphenated hosts, edge-hyphen and overlong labels, a
 ## Additional numeric-host hardening (same-day merge preparation)
 
 A follow-up review found that strict `ipaddress.ip_address` parsing does not recognize legacy numeric IPv4 aliases such as `127.1`, decimal integer `2130706433`, octal `0177.0.0.1`, or hexadecimal `0x7f000001`. Some URL/network stacks interpret them as loopback destinations. The offline URL validator now rejects fully numeric/hex/octal dotted host forms as ambiguous before considering them acceptable public-source metadata. Synthetic negative tests cover six examples. This remains a lexical check only: DNS rebinding, redirects, and connection-time network restrictions are not addressed; the instrument performs no network access. Human security review and successful CI on the *new* head are still required.
+
+## Canonical control-character boundary
+
+The review additionally found that the prior URL gate rejected code points below ASCII 33 but not the nonprinting DEL character (ASCII 127). The offline validator now rejects DEL throughout a candidate source URL; a synthetic test covers both a trailing and embedded DEL path byte. This is deterministic lexical hardening only, not approval to fetch the supplied URL or a substitute for transport-level origin checks.
