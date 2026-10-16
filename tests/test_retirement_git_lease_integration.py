@@ -99,6 +99,12 @@ class RetirementLeaseIntegrationTests(unittest.TestCase):
                 "GIT_CONFIG_COUNT": "1",
                 "GIT_CONFIG_KEY_0": "core.hooksPath",
                 "GIT_CONFIG_VALUE_0": str(root / "untrusted-hooks"),
+                "GIT_SSL_NO_VERIFY": "1",
+                "GIT_ASKPASS": str(root / "untrusted-askpass"),
+                "SSH_ASKPASS": str(root / "untrusted-ssh-askpass"),
+                "SSH_ASKPASS_REQUIRE": "force",
+                "GIT_EXEC_PATH": str(root / "untrusted-git-exec"),
+                "GIT_HTTP_PROXY_AUTHMETHOD": "basic",
             }):
                 def inspect(command, **kwargs):
                     env = kwargs["env"]
@@ -109,6 +115,10 @@ class RetirementLeaseIntegrationTests(unittest.TestCase):
                     self.assertEqual(env["GIT_CONFIG_KEY_0"],
                                      "http.https://github.com/.extraheader")
                     self.assertNotIn("GIT_CONFIG_PARAMETERS", env)
+                    for hostile in ("GIT_SSL_NO_VERIFY", "GIT_ASKPASS",
+                                    "SSH_ASKPASS", "SSH_ASKPASS_REQUIRE",
+                                    "GIT_EXEC_PATH", "GIT_HTTP_PROXY_AUTHMETHOD"):
+                        self.assertNotIn(hostile, env)
                     self.assertEqual(command[command.index("core.hooksPath=" + os.devnull)],
                                      "core.hooksPath=" + os.devnull)
                     self.assertIn("credential.helper=", command)
