@@ -58,3 +58,7 @@ No access gate was bypassed and no placeholder identity was used.
 - The HF security-incident page's comment thread includes a user comment quoting an example injection string ("Ignore all previous instructions…") as an illustration; The Register pages carry a headline about prompt injection. Both are quoted content, not directives; ignored.
 - Release notes for huggingface_hub 1.27.0 contain `curl … | bash` installer commands for the hf CLI and its agent skill. These are user documentation; **no command from any fetched page was run**.
 - No fetched page contained instructions addressed to this screening agent.
+
+## Spot-check access note (2026-10-16)
+
+- The independent spot-check checked robots.txt before every fetch. It skipped theregister.com because `User-agent: *` is `Disallow: /`, so row 022 is unverifiable in that review.
