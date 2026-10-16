@@ -43,9 +43,14 @@ def _id(value, label):
 
 def _stamp(value, label):
     try:
-        return utc(value)
-    except IntakeError as exc:
-        raise HiringObservationError(f"{label}: explicit UTC timestamp required") from exc
+        stamp = utc(value)
+    except IntakeError:
+        # datetime.fromisoformat can echo a private malformed timestamp in its
+        # chained ValueError. Raise only after leaving the except block.
+        stamp = None
+    if stamp is None:
+        raise HiringObservationError(f"{label}: explicit UTC timestamp required")
+    return stamp
 
 
 # RFC-style DNS labels allow interior hyphens, but not labels beginning or
@@ -100,8 +105,11 @@ def _url(value):
                 or p.geturl() != value):
             raise ValueError
         return p
-    except ValueError as exc:
-        raise HiringObservationError("source URL: canonical HTTPS without credentials required") from exc
+    except ValueError:
+        # parse_qsl and URL parsing may include raw query fields in exception
+        # details. A public validation failure must not chain those values.
+        pass
+    raise HiringObservationError("source URL: canonical HTTPS without credentials required")
 
 
 def _optional_id(value, label):
