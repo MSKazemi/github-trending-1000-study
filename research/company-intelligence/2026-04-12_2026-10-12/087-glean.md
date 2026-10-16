@@ -130,3 +130,36 @@ Company adoption claims ($300M ARR, customer counts, preference rates) are **not
 - **Important contradictory or null evidence:** (a) ANZ release shows "Published May 03, 2026" but the dateline reads "May 4, 2026"; (b) Aug 26 press release lists interactive-dashboard refresh as beta/coming soon, while the companion blog lists interactive dashboards as GA and refresh as beta; (c) the AI Gateway was "entering private beta" on Jul 8 and listed as "Beta" on Aug 26; (d) the Cowork benchmark is "per query" in the press release and "per task" in the blog, and SiliconANGLE re-expresses 81%/78% as "5.2-times" and "3.6 times"; (e) TechCrunch's `datePublished` is 2026-05-29T00:44Z for a May 28 PDT article; (f) no in-window Glean security advisory was found; the only NVD "Glean" CVE (CVE-2026-54339) concerns an unrelated self-hosted RSS reader of the same name and was excluded; (g) web search found no reported layoffs, lawsuits, outages or incidents, a null result from snippets only (E0).
 - **#56 candidates (not minted):** TechCrunch 2026-05-28; The Register 2026-06-10; IT Brief UK 2026-05-15; SiliconANGLE 2026-08-26; ITPro 2026-08-27. Each restates vendor claims; a human must read each before a `NEWS-YYYY-NNNN` ID is assigned, and syndicated copies must not be counted twice.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources (raw HTML via `curl`, GitHub REST API, PyPI and npm registry JSON) and compared dates, figures and quotes with the raw text. 24 ledger rows checked: 24 confirmed, 0 corrected, 0 unverifiable, 0 wrong. No CSV or report change was needed.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-087-001 | confirmed | "Last updated Apr 28, 2026"; "reinforcement-learned agentic search model that runs before a frontier model"; Nemotron 3 Nano base; ~250 ms vs ~3s; ~50% lower latency, ~25% fewer tokens, "no quality regression" |
+| CI2026-087-002 | confirmed | "Last updated Apr 29, 2026"; "reduced our own system prompt by 45%+" |
+| CI2026-087-003 | confirmed | GitHub release 2026-05-02T23:44Z; "drop local MCP path; add cliVersion pin support"; repo MIT |
+| CI2026-087-004 | confirmed | "Published May 03, 2026" with dateline "May 4, 2026"; >$200M ARR in December 2025; ANZ customer base "more than 60 percent"; "nearly double its in-market team" |
+| CI2026-087-007 | confirmed | GitHub release 2026-05-05T18:40Z; "consolidate 17 Agent Skills into one skill with reference files" |
+| CI2026-087-009 | confirmed | Changelog May 12 2026 breaking change replaces `/actions/{actionPackId}/auth`; the old path is listed as added on May 7 2026 |
+| CI2026-087-010 | confirmed | "Last updated May 13, 2026"; Claude Cowork harness with Claude Sonnet 4.6; ~175 queries; ~2.5x preference; ~30% more tokens |
+| CI2026-087-011 | confirmed | Changelog May 18 2026: Custom Metadata API generally available |
+| CI2026-087-012 | confirmed | "Published May 28, 2026"; $300M ARR 15 months after $100M; >250 features; Fortune 500 nearly doubled; 85%+ in 5+ departments; 45% wDAU/wMAU; Canada and Australia entities; TechCrunch `datePublished` 2026-05-29T00:44Z, $7.2B at $150M Series F |
+| CI2026-087-014 | confirmed | Repo created 2026-05-30, MIT; npm first version 0.5.0 at 2026-06-02T00:15Z |
+| CI2026-087-016 | confirmed | "Published Jun 04, 2026"; 30+ models; Waldo 50%/25%; "91% of frontier LLM completeness" |
+| CI2026-087-017 | confirmed | "Published Jun 10, 2026"; 6,000 workers (US/UK/Australia); 87%, 13%, ~11 hours, 6.4 hours botsitting; The Register reports UK subset of 1,500 and attributes the institute to Glean |
+| CI2026-087-018 | confirmed | Repo created 2026-06-11, Apache-2.0; latest default-branch commit 2026-08-20 |
+| CI2026-087-021 | confirmed | Archive README commit authored 2026-06-29, merge 2026-06-30; repo archived; npm `modified` 2026-06-30T15:09Z; latest version carries a deprecation message |
+| CI2026-087-022 | confirmed | GitHub release 2026-07-02T19:19Z; PyPI 0.15.0 2026-07-02T19:19Z; 31 GitHub releases of api-client-python in the window |
+| CI2026-087-024 | confirmed | "Last updated Jul 09, 2026"; 100% programmatic tool calling; 24% fewer tokens |
+| CI2026-087-029 | confirmed | "Published Aug 25, 2026"; "more than 2,000 Glean accreditations" |
+| CI2026-087-030 | confirmed | Deprecation list: Client API agent endpoints "Deprecation introduced on 2026-08-25", removal date 2027-04-15 |
+| CI2026-087-031 | confirmed | "Published Aug 26, 2026"; Tau "built on an open-source harness"; GA/Beta/Coming soon lists match; SiliconANGLE "Tau is not out yet", $7.2B Series F |
+| CI2026-087-032 | confirmed | "Last updated Aug 26, 2026"; 180+ synthetic queries on Glean's own production data; 78% preference; $0.58 vs $2.98; 81%; SiliconANGLE 5.2x and 3.6x. The comparison model named in the post is Claude Sonnet 5 |
+| CI2026-087-034 | confirmed | GitHub release 2026-08-27T19:07Z; PyPI 1.0.0 2026-08-27T19:07Z; MIT |
+| CI2026-087-035 | confirmed (dates) | GitHub release 2026-09-02T19:22Z; PyPI 0.17.0 2026-09-02T19:23Z; release body not re-read |
+| CI2026-087-037 | confirmed | Changelog October 2 2026: Skills API GA, no X-Glean-Include-Experimental header; TypeScript v0.20.16 (Oct 3) and Java v0.17.17 (Oct 5) remove the text/event-stream response from `skills.previewsource()` |
+| CI2026-087-038 | confirmed (upload and licence) | PyPI 0.9.0 2026-10-07T01:09Z; licence MIT; developer-changelog wording not re-read |
+
+This is an AI-assisted source spot-check, not qualified human factual review; the human review gates listed above remain open.
