@@ -21,3 +21,9 @@ Two new standard-library-only regression methods use distinctive synthetic secre
 ## Practical maintainer lesson
 
 A privacy-safe JSON reader is not enough if higher-level validators echo user-controlled identifiers after successful parsing. Include **CLI stderr** and exception content in regression testing, and preserve stable error *classes* rather than leaking invalid user data. Report success with independently accepted tasks, not stars, lines of code or apparent pool relative recall.
+
+## 2026-10-16 strict field-level data minimization
+
+The pooled goldset validator additionally fails closed on undeclared fields at its root, task, candidate and retrieval-system boundaries. An unknown key may contain raw private prompts, email addresses, credentials or otherwise unconstrained material; silently ignoring it can make the record appear to conform to the audited schema. The error deliberately prints the fixed structural level only, never an unknown caller-provided key or value. The existing optional candidate `adjudicator_ref` is retained.
+
+One synthetic negative regression inserts a private-marker field at each nesting level and verifies refusal with redacted diagnostics. This is a **data-minimization and integrity guard**, not a guarantee that the original permitted text fields contain no sensitive material and not independent verification of the pooled candidate labels, external users or software fitness. #19 remains open for its controlled real-task benchmark.
