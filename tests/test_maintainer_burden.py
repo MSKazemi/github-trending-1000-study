@@ -5,6 +5,7 @@ import io
 import json
 from pathlib import Path
 import tempfile
+import traceback
 import unittest
 from unittest.mock import patch
 
@@ -173,6 +174,40 @@ class BurdenTests(unittest.TestCase):
             self.assertNotIn("PRIVATE_PARTICIPANT_MARKER", stderr.getvalue())
             self.assertNotIn("PRIVATE_INTERVIEW_CONTENT", stderr.getvalue())
             self.assertNotIn("raw_private_interview", stderr.getvalue())
+
+    def test_malformed_private_time_avoids_full_exception_chain_disclosure(self):
+        from trending_study.maintainer_burden import _utc
+        marker = "PRIVATE_HUMAN_TIMESTAMP_20261017"
+        try:
+            _utc(marker)
+        except BurdenError as exc:
+            self.assertEqual(str(exc), "invalid timestamp")
+            self.assertIsNone(exc.__cause__)
+            self.assertIsNone(exc.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+        else:
+            self.fail("invalid timestamp should not be accepted")
+
+    def test_cli_systemexit_does_not_chain_raw_json_private_identifiers(self):
+        with tempfile.TemporaryDirectory() as folder:
+            marker = "PRIVATE_RESEARCH_JSON_KEY_20261017"
+            path = Path(folder) / "private-data.json"
+            # Even if stderr itself was already sanitized, argparse.error
+            # inside an except block chained the underlying decoder error.
+            payload = json.dumps({marker: 1})[:-1] + "," + json.dumps(marker) + ": 2}"
+            path.write_text(payload, encoding="utf-8")
+            errors = io.StringIO()
+            with redirect_stderr(errors):
+                try:
+                    main(["--input", str(path)])
+                except SystemExit as exc:
+                    self.assertEqual(exc.code, 2)
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(marker, errors.getvalue())
+                    self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("ambiguous research input must not be accepted")
 
     def test_row_and_multi_case_float_sums_never_overflow_to_infinity(self):
         a = card()
