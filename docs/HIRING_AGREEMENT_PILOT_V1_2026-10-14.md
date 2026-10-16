@@ -177,3 +177,11 @@ because chance agreement is one), and a zero-overlap regression confirms
 disjoint A/B submissions yield `n=0`, null kappa and `incomplete_reviews`,
 never agreement. This is an AI-assisted maintainer review, not independent
 human approval.
+
+## 2026-10-16 missing-source provenance correction
+
+The machine-generated `pack` card correctly represents an **inaccessible source** with `source_access=unavailable`, `source_checked_at_utc=null`, `evidence_ref=null`, all themes `not_reviewable` and primary task `not_reviewable`. Earlier `analyze` logic mistakenly rejected these nulls regardless of source access, which could encourage fabricated dates or references to satisfy validation.
+
+The review validator now accepts *null provenance only for explicitly unavailable sources*, while continuing to exclude these votes from joint rated-item denominators. A `source_access=read` rating strictly requires a validated UTC source-check time not after the submitted review, plus a bounded nonempty evidence reference; an unavailable rating that supplies a timestamp must also pass chronology checks. Three fictional offline regression tests cover a fully blank but syntactically completed packet, read-source requirements and inaccessible timestamp chronology. A synthetic pack must never be passed off as an independent human review.
+
+This is a **software contract repair**, not new or verified hiring evidence. Actual source permission, genuine blind human coders, independent provenance, adjudication and qualified methodological signoff remain required before issue #223 can close.
