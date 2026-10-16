@@ -52,7 +52,7 @@ def _stamp(value, label):
 # ending with '-' or empty labels. This is a lexical check, not DNS lookup or
 # source permission. Undotted internal-test fixtures remain structurally valid.
 _DNS_LABEL = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
-DNS_HOST = re.compile(rf"{_DNS_LABEL}(?:\\.{_DNS_LABEL})*\\Z")
+DNS_HOST = re.compile(rf"{_DNS_LABEL}(?:\.{_DNS_LABEL})*\Z")
 
 
 def _url(value):
