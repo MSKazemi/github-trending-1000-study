@@ -16,6 +16,13 @@ from .safe_io import publish_json
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+# Cargo releases use concrete X.Y.Z semantic versions; range selectors,
+# moving tags, whitespace and semver operators cannot be cited as a pinned
+# historical artifact. This syntactic check never proves release availability.
+CARGO_RELEASE = re.compile(
+    r"[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?"
+    r"(?:\+[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?\Z"
+)
 NAME = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 IDENT = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
 INDEX = "rust-lang/crates.io-index"
@@ -64,6 +71,13 @@ def _digest(value):
 def _sha(value, pattern, label):
     if not isinstance(value, str) or pattern.fullmatch(value) is None:
         raise RegistryFrameError(f"{label}: invalid SHA")
+    return value
+
+
+def _pinned_cargo_release(value):
+    if (not isinstance(value, str) or len(value) > 128 or
+            CARGO_RELEASE.fullmatch(value) is None):
+        raise RegistryFrameError("version requires a concrete pinned Cargo release X.Y.Z")
     return value
 
 
@@ -260,7 +274,7 @@ def prepare_pair_packet(selection, tasks, nominations, manifest, plan):
         seen_combination.add((tid, pkg))
         version = n["version"]
         if version is not None:
-            _string(version, "version")
+            _pinned_cargo_release(version)
         rid = n["repository_id"]
         if rid is not None and (type(rid) is not int or rid <= 0):
             raise RegistryFrameError("repository_id must be stable positive GitHub ID or null")
@@ -369,7 +383,9 @@ def audit_pair_reviews(packet, review_a, review_b, manifest, plan):
         rid = pair["repository_id"]
         if rid is not None and (type(rid) is not int or rid <= 0):
             raise RegistryFrameError("repository_id must be stable positive GitHub ID or null")
-        for field in ("version", "release_evidence_ref", "identity_evidence_ref"):
+        if pair["version"] is not None:
+            _pinned_cargo_release(pair["version"])
+        for field in ("release_evidence_ref", "identity_evidence_ref"):
             if pair[field] is not None:
                 _string(pair[field], field)
     if (packet.get("dataset_kind") != "unreviewed_task_component_pairs" or
