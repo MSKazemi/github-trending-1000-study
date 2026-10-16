@@ -180,9 +180,9 @@ PY
 ## Apply only after explicit owner/security review
 
 Do not continue after a failed preflight or with an unset/guessed
-`RULESET_EXPECTED_MAIN_SHA`. Immediately before each separate privileged POST,
-confirm the inspected main SHA and absence of ruleset changes. This short
-readback narrows (but cannot eliminate) concurrent repository mutations:
+`RULESET_EXPECTED_MAIN_SHA`. Directly before the **first** privileged POST,
+recheck that main is unchanged and that no other ruleset appeared. Both checks
+must fail closed; this narrows (but cannot eliminate) concurrent changes:
 
 ```bash
 actual_main_sha=$(gh api --method GET "repos/$ruleset_repo/branches/main" --jq '.commit.sha')
@@ -190,8 +190,19 @@ test "$actual_main_sha" = "$RULESET_EXPECTED_MAIN_SHA" || {
   printf '%s\n' 'main changed since qualified review: stop' >&2
   exit 1
 }
-# If any ruleset was created or modified since the read-only inspection,
-# stop for a new independently approved preflight; never blindly POST again.
+gh api --method GET "repos/$ruleset_repo/rulesets?includes_parents=true&per_page=100" \
+  --paginate > "$ruleset_audit/rulesets-before-apply.json-stream"
+python - "$ruleset_audit/rulesets-before-apply.json-stream" <<'PY'
+import json, pathlib, sys
+raw = pathlib.Path(sys.argv[1]).read_text()
+decoder, pages = json.JSONDecoder(), []
+while raw.strip():
+    page, n = decoder.raw_decode(raw.lstrip())
+    assert isinstance(page, list), "Unexpected ruleset page shape"
+    pages.append(page)
+    raw = raw.lstrip()[n:]
+assert pages and not any(pages), "Ruleset state changed: stop for independent re-review"
+PY
 ```
 
 
@@ -211,6 +222,33 @@ duplicate rulesets. Use complete response files to capture newly allocated IDs:
 gh api --method POST -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo/rulesets" --input ops/rulesets/branch-archive-tags.json \
   > "$ruleset_audit/archive-created.json"
+# Separate pre-main gate: confirm the same reviewed main and only the archive
+# ruleset just created in this recorded transaction. Do not create main if
+# the archive response is missing/invalid or if another ruleset appeared.
+actual_main_sha=$(gh api --method GET "repos/$ruleset_repo/branches/main" --jq '.commit.sha')
+test "$actual_main_sha" = "$RULESET_EXPECTED_MAIN_SHA" || {
+  printf '%s\n' 'main changed after archive protection: stop' >&2
+  exit 1
+}
+gh api --method GET "repos/$ruleset_repo/rulesets?includes_parents=true&per_page=100" \
+  --paginate > "$ruleset_audit/rulesets-after-archive.json-stream"
+python - "$ruleset_audit/rulesets-after-archive.json-stream" "$ruleset_audit/archive-created.json" <<'PY'
+import json, pathlib, sys
+raw = pathlib.Path(sys.argv[1]).read_text()
+created = json.loads(pathlib.Path(sys.argv[2]).read_text())
+assert type(created.get("id")) is int and created["id"] > 0
+decoder, pages = json.JSONDecoder(), []
+while raw.strip():
+    page, n = decoder.raw_decode(raw.lstrip())
+    assert isinstance(page, list), "Unexpected ruleset page shape"
+    pages.append(page)
+    raw = raw.lstrip()[n:]
+assert pages
+found = [item for page in pages for item in page]
+assert len(found) == 1 and found[0]["id"] == created["id"], (
+    "Archive ruleset state changed: stop before main POST"
+)
+PY
 gh api --method POST -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo/rulesets" --input ops/rulesets/main.json \
   > "$ruleset_audit/main-created.json"
