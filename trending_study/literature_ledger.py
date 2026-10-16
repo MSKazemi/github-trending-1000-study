@@ -136,6 +136,14 @@ def audit(data):
                 literal_address = None
             if literal_address is not None and not literal_address.is_global:
                 raise LiteratureError("included source_url must use a public host")
+            # ipaddress deliberately refuses shortened/octal/hex and integer
+            # IPv4 aliases, while some URL clients still resolve 127.1,
+            # 2130706433 or 0x7f000001 to loopback. This validator never
+            # fetches evidence, but must not recommend ambiguous hosts.
+            ipv4_part = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+            if (literal_address is None and
+                    re.fullmatch(ipv4_part + r"(?:\." + ipv4_part + r"){0,3}", host)):
+                raise LiteratureError("included source_url must use a public host")
             extract = row.get("study_extract")
             if not isinstance(extract, dict) or any(
                 not isinstance(extract.get(k), str) or not extract[k].strip()
