@@ -42,3 +42,17 @@ This shows why an operator must **not** select retirement candidates by PR closu
 The contemporaneous published API results here did not include a verified UTC clock time, HTTP response hash, or complete GitHub data-export replay. Accordingly this is a **dated operational checkpoint**, not a cryptographically frozen global GitHub transaction or external scientific evidence. New PR #417 itself adds one working branch and is held for real review.
 
 **Owner-facing result:** prioritize file-level preservation for the 21 ahead/diverged branches; schedule genuinely independent code/security review of PR #417 and the separately drafted ruleset PR #302, not deletion of any of these 21 from an ancestry-only table.
+
+## Bounded file-level no-loss spot check (2026-10-16)
+
+To avoid confusing Git divergence with actual missing content, the following **five** branch-versus-current-main file pairs were fetched by explicit refs and compared by full file contents plus Git blob SHA. This is a *selected diagnostic check*, not a complete preservation audit of the 21 held divergent branches:
+
+| Branch and path | Historical blob SHA | Main blob SHA | Equality / action |
+|---|---|---|---|
+| `audit/branch-merge-readiness-20261016`: `docs/reviews/2026-10-16-branch-merge-readiness.md` | `93ad9de61d74b52677b9568fab1fa9c7cde33881` | same | Exact file already on main; **not** overall branch retirement approval |
+| `audit/pr-merge-gate-log-20261013`: `docs/PR_REVIEW_2026_10_13.md` | `d90c7b906aa85b33c0c1f7bbf6216e60d5a2295e` | `a11802ff43535c705e6fb1a7db2fe047a63f2091` | Different versions; inspect unique review evidence before archival |
+| `chore/enterprise-pr-merge-guardrails-20261013`: `.github/pull_request_template.md` | `299a94d1bb5cd79b213721cb7cd275f836791b45` | `60d8103709d6e59366a07878b0580831a815acb2` | Different versions; current main has expanded template, but semantic/source equality not established |
+| `ci/enterprise-pr-qa-gates-issue-240`: `docs/BRANCH_RECONCILIATION_2026_10_14.md` | `1486cf06d1eded32c7c22e7a36347c6f51610295` | `d36a5422ce5f346a7b456927167b18b5a5019319` | Different versions; retain historical audit rather than rewriting the original |
+| `ci/enterprise-pr-qa-gates-issue-240`: `ops/branch-retirement/review-only-2026-10-14.json` | `bec93d96de57e02431966c36e7950a0bb40631f4` | same | Historical snapshot byte-identical on main; still no branch-level no-loss certification |
+
+**What this adds:** two exact preserved file artifacts and three explicit nonidentical files requiring content/claim review. It is not evidence of the correctness of either version, identity of human reviewers, source rights or full retention of all commits. Do not discard source branches until every material file, changed test and cited source is reconciled and approved.
