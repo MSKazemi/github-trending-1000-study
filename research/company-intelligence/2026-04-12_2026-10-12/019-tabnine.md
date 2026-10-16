@@ -1,160 +1,119 @@
-# Tabnine — company intelligence, preliminary six-month source screen
+# Tabnine — provisional six-month technology intelligence screen (019)
 
-- **Watchlist entry:** 019
-- **Research issue:** [#86](https://github.com/MSKazemi/github-trending-1000-study/issues/86)
-- **Retrospective publication interval:** 2026-04-12 to 2026-10-12 inclusive.
-- **Prepared/source-reviewed:** 2026-10-12.
-- **Status:** INITIAL screened research DRAFT (not fully systematically collected or independently reviewed).
-- **Coverage:** vendor/official notices for enterprise code assistance, provenance and governance; [official index](https://www.tabnine.com/blog/). Each event has canonical source URL in [CSV evidence ledger](019-tabnine.events.csv).
-- **Methods:** [company methodology](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) and [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](019-tabnine.events.csv), [search log](019-tabnine.search-log.md) and [source-QC note](019-tabnine.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review are **pending**. Merging is not scientific or security sign-off; issue [#86](https://github.com/MSKazemi/github-trending-1000-study/issues/86) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-## 1. Discovery and inclusion audit (incomplete)
+- **Watchlist:** 019; [issue #86](https://github.com/MSKazemi/github-trending-1000-study/issues/86). Sector: AI coding agents, IDEs and code search; study relevance: enterprise privacy and assistant governance.
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened 2026-10-16**. Exact per-query UTC times, search result counts, hashed page captures and an independent reviewer are unavailable.
+- **Status:** **19 dated source leads covering all seven calendar segments** (3 pre-existing + 16 added 2026-10-16); purposive, not exhaustive; not independently verified task outcomes. [Method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md), [M1–M7 mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md).
+- **Official channels checked:** [release notes](https://docs.tabnine.com/main/administering-tabnine/release-notes) (reachable), former [Tabnine blog](https://www.tabnine.com/blog/) and [product-news index](https://www.tabnine.com/blog/category/product-news/) (now redirecting; read via Internet Archive), public GitHub org [codota](https://github.com/codota), and the buyer's [Tricentis newsroom release](https://www.tricentis.com/news/tricentis-acquires-tabnine). Claim grading is company-watch E0–E4, not the separate [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-This is a **bounded primary-document evidence shortlist**, not a systematic seven-month search. Source discovery/review occurred on 2026-10-12; **search-engine result counts, complete query clickstream, number screened, excluded URLs and full independent source screening were not preserved**, therefore they are **unknown**, not zero. Reproducibility queries below are **next-pass suggestions, not claims that each exact expression was executed**:
+## 1. Discovery, coverage and exclusions
 
-- `"Tabnine" after:2026-04-11 before:2026-10-13 coding agent releases security`
-- `site:tabnine.com 2026 model tool changelog license agent`
-- `"Tabnine" 2026 API roadmap change security acquisition`
-- `"Tabnine" Reuters OR TechCrunch OR The Register 2026 criticism independent audit`
+The [search log](019-tabnine.search-log.md) records 5 executed web queries, 10 direct fetch groups (official docs, Wayback captures, `gh api`), per-segment inclusion/exclusion decisions and the queries that were planned but not run. Result counts are **unknown**, not zero. The earlier screens marked April, August, September and October as "not documented"; dated evidence now exists for every segment, which reflects a fuller search, **not** a change in Tabnine's activity.
 
-For final issue acceptance, search each full/partial month separately in primary/independent outlets, log exact run UTC/timezone, immutable query/results and reason for inclusion/exclusion; inspect releases, product docs, public source licenses and pricing; preserve zero-result screens as **search results missing/not found**, not proof of corporate inactivity. Vendor news can change after initial publication and lacks immutable full-text snapshot here. Don't deduplicate separate feature announcements into mere publicity count or count syndications as independent product confirmations.
+**Access condition (2026-10-16, outside the window but material):** every tested `www.tabnine.com` URL — homepage, blog, pricing and all article pages — now returns HTTP 301 to a generic tricentis.com page. Tabnine-domain articles were checked only through Wayback captures; `docs.tabnine.com` still serves current release notes. The [source-QC note](019-tabnine.source-qc-2026-10-16.md) records the details.
 
-## 2. Entity, products, availability and baseline
+**Exclusions:** "Governance You Can Trust: What's New in Tabnine 6.1" (displayed Apr 9, before the window); the Gartner "Visionary" post (a 2026 capture shows a conflicting displayed date of "May 28, 2025"); syndicated copies of the Tricentis release (Business Wire, SD Times, GovConWire, Intelligent CIO, 01net, Pulse2, IT Brief); an AI-bylined Futurum note; an aggregator's unopened "$500M" headline; v6.6.11 (Oct 14), which falls outside the window.
 
-Tabnine announced on July 30, 2026 that it **has been acquired by Tricentis**; treat it as a product/business within that ownership context, not automatically an independent 2026 company. Verify buyer's corporate filing/announcement separately and avoid double-counting vendors.
+## 2. Corporate/product identity and rights baseline (as of 2026-10-12)
 
-**Rights/safety boundary:** Vendor architectural essays and annual analyst acknowledgements are not proof of an actual new feature release; distinguish May CLI safety descriptions from June opinions.
+- **Entity:** Tabnine is an enterprise AI coding assistant; its public GitHub organisation is `codota`. Founding history and legal-entity details were not checked to filing level. On **2026-07-30** both [Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) and the buyer [Tricentis](https://www.tricentis.com/news/tricentis-acquires-tabnine) stated that **Tricentis has acquired Tabnine**. They disclosed no terms. [Calcalist](https://www.calcalistech.com/ctechnews/article/1o1nf7vd3) reports an estimate of "tens of millions of dollars". No filing-level closing evidence was found. From 2026-07-30 onward, treat Tabnine as a **product line inside Tricentis**, not an independent company.
+- **Products in window:** Tabnine Enterprise Agent and Chat (IDE plugins for VS Code/Cursor, JetBrains, Eclipse and Visual Studio); Tabnine CLI; the Enterprise Context Engine; the PR review agent; Code Review/Coaching (private beta at v6.1.0); and a "Tabnine CLI, powered by OpenCode" distribution. The products are offered as SaaS and as private/self-hosted or air-gapped installations (the v6.4.0 notes bundle offline docs for air-gapped installs).
+- **OSS licences:** Tabnine's commercial platform is **closed source**. Public repos found: [tabnine-pr-agent](https://github.com/codota/tabnine-pr-agent) (**no licence detected** by the GitHub API) and [tabnine-opencode-public](https://github.com/codota/tabnine-opencode-public) (releases and issues only, **no licence detected**). The release notes cite PRs in `codota/opencode`, which is **not public** (404). The upstream agent [OpenCode](https://github.com/anomalyco/opencode) is **MIT**. The older IDE client repos `tabnine-vscode` (MIT) and `tabnine-nvim` are **archived**; the GitHub API does not expose when they were archived, so no event is dated.
+- **Rights implication:** you can study Tabnine's reusable building blocks (OpenCode, MCP governance, hooks), but you cannot fork Tabnine's own wrapper code without a licence.
 
-**Specific correction/ambiguity to preserve:** Tabnine's Tricentis acquisition was reported by the company July 30, 2026; closing/legal details still need independent buyer confirmation. June design commentary is not a shipped multiagent memory product.
+## 3. Seven-segment dated chronology
 
-## 3. Month-by-month dated candidate ledger
-
-| 2026 month segment | Included candidate event/source(s) | Coverage notes |
+| Segment | In-window source evidence (displayed source dates) | Availability and attribution limits |
 |---|---|---|
-| Apr 12–30 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
-| May | [Tabnine April agent trust recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | First-party sources screened |
-| June | [Shared memory for multiagent development](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) | First-party sources screened |
-| July | [A new chapter for Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | First-party sources screened |
-| August | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
-| September | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
-| Oct 1–12 | Not documented in this limited screen | Missing source coverage; not a finding of no releases |
+| Apr 12–30 | [Apr 15 v6.1.0](https://docs.tabnine.com/main/administering-tabnine/release-notes): CLI Plan mode, sandboxing, extensions, Generalist Agent, BYOAI, cost API; [Apr 29 PR agent v2](https://github.com/codota/tabnine-pr-agent/releases/tag/v2); Apr 29 "May 2026 Product Update" (index listing only) | Code Review/Coaching is a private beta; the Apr 29 article body is unavailable |
+| May | [May 6 April recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) (a recap of v6.1.0); May 12 v6.2.0: Cursor plugin, admin governance of CLI tools/MCP/guidelines | The vendor corrected its own v6.2.0 notes (feature "not ready yet"; CLI version 0.20.3→0.20.2) |
+| June | Jun 7 v6.3.0: Eclipse agent, accepted-code logging, CLI hooks/skills/subagents, local indexing removed; [Jun 18 shared-memory essay](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/); [Jun 26 Context-Readiness essay](https://www.tabnine.com/blog/context-readiness-ai-coding-benchmark/) | The two essays are commentary, not releases |
+| July | Jul 7 v6.4.0: service accounts, 1B-token/month fair-use limit, "Restrict YOLO mode"; Jul 30 acquisition ([Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/), [Tricentis](https://www.tricentis.com/news/tricentis-acquires-tabnine)); [Jul 31 Calcalist](https://www.calcalistech.com/ctechnews/article/1o1nf7vd3) | Two transaction-party statements describe **one** event; deal value is an estimate |
+| August | [Aug 2 independent critique](https://www.beri.net/article/tricentis-tabnine-acquisition-air-gapped-coding-assistant-roadmap-risk); Aug 5 v6.5.0: fine-grained PATs, OIDC keyless model auth; [Aug 5 tabnine-opencode v0.4.1](https://github.com/codota/tabnine-opencode-public/releases/tag/tabnine-v0.4.1) | The Wayback `/blog/` index of 2026-09-09 shows **no Tabnine blog post after Jul 30** |
+| September | Sep 15 v6.6.0: "Tabnine CLI, powered by OpenCode: Now available to all customers", a beta IDE agent, and a fix for CVE-2026-64642 ([GHSA](https://github.com/advisories/GHSA-6gpp-xcg3-4w24)); [Sep 24 tabnine-opencode v1.0.0](https://github.com/codota/tabnine-opencode-public/releases/tag/tabnine-v1.0.0) | The notes flag 6.6.0/6.6.1 as **"unstable"** |
+| Oct 1–12 | Oct 4 v6.6.8: Gemini usage/cost double-count fixed and history restated; Oct 8 v6.6.9: read-only Jira access in the CLI, code-signed Windows installer | v6.6.11 (Oct 14) and the site redirect (observed Oct 16) are outside the window |
 
-All dates are **as displayed by the source** and rendered as calendar dates; UTC publication timezone has not been independently established. Underlying launch/deployment date is **not assumed identical** to article date. If page describes a different earlier event, document discrepancy separately; follow-up source audit needed.
+Per-segment row counts: Apr 3, May 2, Jun 3, Jul 4, Aug 3, Sep 2, Oct 2 (total 19). Most release-notes rows share one living docs URL. The version number and displayed date identify each row, but no hash pins them.
 
-## 4. Event and capability map with source-level confidence
+## 4. Feature map (shipped / preview / announced / unverified)
 
-| Event ID | Published / underlying event date | Source | Claim or documented change | Reported status and restrictions | Evidence/construct |
-|---|---|---|---|---|---|
-| CI-019-01 | 2026-05-06; event date not separately verified | [Tabnine April agent trust recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | Company describes CLI agent plan/approval and sandbox capabilities. | shipped; Availability/security claims not independently assessed. | E1; M1;M2 |
-| CI-019-02 | 2026-06-18; event date not separately verified | [Shared memory for multiagent development](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) | Vendor publishes architecture perspective on cross-agent shared context. | reported_undetermined; Commentary is not evidence of a publicly shipped memory feature. | E1; M1;M5 |
-| CI-019-03 | 2026-07-30; event date not separately verified | [A new chapter for Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) | Tabnine reports acquisition by Tricentis and integration with agentic quality engineering. | reported_undetermined; First-party corporate deal statement; independently verify closing/terms. | E1; M1;M2 |
+| Capability cluster | Status in window (vendor-reported) | Reuse/integration surface | Caveat |
+|---|---|---|---|
+| CLI agent safety: Plan mode, sandbox, tool-scope restriction, granular approvals, YOLO restriction, PAT-scoped YOLO | **Shipped** (v6.1.0 → v6.4.0 → v6.5.0) | admin console, `settings.json`, PAT scopes | Not exercised; no third-party security test |
+| Governance: admin MCP allow-lists (wildcards), org/team guidelines, tool permissions, Run-Command/Web-Fetch policy | **Shipped** (v6.2.0, v6.3.0, v6.5.0) | MCP, guideline files | Policy enforcement only as vendor states |
+| Cost/usage: token/cost API, per-team quotas, fair-use limit, analytics pages | **Shipped**; a cost-data **error** was corrected in v6.6.8 | REST usage APIs, CSV | Vendor telemetry was demonstrably wrong once; tokens ≠ energy |
+| Provenance: accepted-code logging (off by default) | **Shipped** (v6.3.0) | CSV export | Logs acceptance, not correctness or reuse |
+| Model freedom: self-managed models/BYOAI, OIDC keyless auth, team model assignment | **Shipped** (v6.1.0 → v6.5.0) | provider endpoints | Customer bears model choice/risk |
+| Review: PR agent v2, agent-driven review replacing IDE Review/Test tabs | **Shipped** (PR agent); Code Review/Coaching **private beta** | GitHub/GitLab/Bitbucket CI templates | PR-agent repo has no licence |
+| OpenCode-based CLI and IDE agent | CLI: **preview** in Aug, GA claim Sep 15. IDE agent: **beta** | `tabnine-opencode` launcher; upstream MIT | Wrapper source not public; versions flagged unstable |
+| Enterprise Context Engine | Pre-existing: introduced in a Mar 5, 2026 post (before the window; seen only as an index listing; GA status not verified). Post-acquisition to be integrated into Tricentis QE platform (**announced_only** direction) | connected repos, Azure DevOps/TFVC indexer | Vendor outcome claims (2× accuracy, −80% tokens) are unaudited |
+| Shared multi-agent memory | **Commentary only** (Jun 18) | — | Not a release |
 
-**Grade E1 for ALL 3 entries:** vendor/publication statements only. 'Shipped' means provider **reports** availability, not a tested implementation or independent adoption. The separate CSV has source type, first-seen review date, status and missingness fields. An independent assessment is needed for E3 validation; page popularity, benchmarks, stars, press coverage, merger announcements and provider security assertions do not qualify.
+## 5. Publicly stated direction versus shipped functionality
 
-### Product impact distinctions
-
-- **Product direction:** Tabnine stresses code-context-aware enterprise agent operation, provenance and quality-engineering combination following its public Tricentis transaction statement.
-- **Integration:** pin exact dependency, API, model/version, source commit/weight checksum, task context, deployment and subscription restrictions, instead of comparing names or marketing scores.
-- **Security/licensing:** Vendor architectural essays and annual analyst acknowledgements are not proof of an actual new feature release; distinguish May CLI safety descriptions from June opinions.
-- **Economics:** compare matched **independently accepted task** output including human/review minutes, CI/runtime, hosted inference and 30/90-day upkeep. Tokens do not imply kWh or carbon savings.
-
-## 5. Attributed roadmap versus realized release
-
-**Direction is inferred from the vendor publications**, not an independently established plan: Tabnine stresses code-context-aware enterprise agent operation, provenance and quality-engineering combination following its public Tricentis transaction statement.
-
-Any `preview` and `announced_only` record stays distinct from vendor-described general availability. A direction statement or claimed open-source license requires checking the exact artifact. Future intent has no guaranteed release date unless the cited official source explicitly guarantees it; the event table is not a promise calendar.
-
-## 6. Analyst 2027–2031 conditional interpretation
-
-| Hypothesis (not company commitment) | Rival explanation | Observable disconfirmation |
+| Dated source | Stated intention | Classification |
 |---|---|---|
-| Tightly scoped context sharing and change-review may allow teams to reuse reliable existing project logic without leaking private code. | Aggregating context across repositories can add privacy, governance and vendor-integration burdens without better correctness. | Isolated locally documented workflow has at least equal accepted-task performance with less data exposure. |
+| [May 6 recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) | "We've got some (really) bigger things coming next." | Vague teaser; **announced_only** with no scope |
+| [Jul 30 Tabnine](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) / [Tricentis](https://www.tricentis.com/news/tricentis-acquires-tabnine) | The Context Engine "becomes part of the Tricentis Agentic Quality Engineering Platform"; "Existing customers will continue to receive support for the products they use today." | Integration is **announced**. "Support" is **not** a development or roadmap commitment for the coding assistant |
+| [Aug 2 critique](https://www.beri.net/article/tricentis-tabnine-acquisition-air-gapped-coding-assistant-roadmap-risk) | Argues the standalone assistant and air-gapped roadmap are unaddressed | Independent opinion. **Partly contradicted** by continued releases (v6.5.0–v6.6.9 through Oct 8) and **partly consistent** with the blog going silent and the 2026-10-16 site redirect |
+| Sep 15 v6.6.0 | Moved the CLI onto OpenCode for all customers | **Shipped** pivot from an in-house CLI to a wrapped OSS agent |
 
-**Confidence:** low/exploratory until independent outcome tests and representative recruitment. Research design must not treat this editorial ten-company screen as a random sample of companies, repositories or model users.
+The data support two rival readings. (a) Tabnine is being kept as a maintained enterprise coding product under Tricentis. (b) Tricentis is harvesting the Context Engine and moving the assistant onto commodity OSS (OpenCode) with minimal investment. **Falsification signals:** an end-of-sale or end-of-life notice, release-notes cadence dropping below one feature release per quarter, or the air-gapped installer disappearing would support (b). A new major version with roadmap commitments would support (a).
 
-## 7. Study implications (M1–M7)
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company strategy)
 
-| Objective | Operational observation and validity safeguard |
+| Hypothesis | Rival cause | Disconfirming observation |
+|---|---|---|
+| Enterprise coding assistants converge on wrapping an OSS agent core (OpenCode) and differentiating through governance/context | Wrapping is a cost cut by the acquirer, not an industry pattern | Other vendors keep proprietary agent cores while Tabnine's wrapper stalls |
+| Admin-side agent governance (MCP allow-lists, PAT-scoped autonomy) becomes a procurement requirement | Customers use generic CI/IAM controls instead | Independent buyers' RFPs do not ask for agent-level governance |
+| Acquisition by a testing vendor moves "context" from code generation toward verification | Marketing reframing only | No measurable QE-agent features that use the Context Engine by 2027 |
+
+## 7. M1–M7 study relevance
+
+| Construct | Prospective measurement, not an inferred conclusion |
 |---|---|
-| M1 workflow evolution | Pinned dated exposure to working agent workflow; release != actual user adoption |
-| M2 quality/review | Preregistered task correctness, human review minutes and failures under independent evaluation |
-| M3 discovery | Prospective cohort and comparisons controlling baseline popularity, language and publicity |
-| M4 meaningful third-party reuse | External real working downstream integration, not stars, impressions, downloads or trial signups |
-| M5 reuse-first vs rebuild | License/provenance/security checked candidate pool, matched task and no-solution cases |
-| M6 lifecycle sustainability | Complete human + inference + CI + upkeep + upstream costs, environmental meter/model boundaries and uncertainty; no carbon/token coefficient invented |
-| M7 ethical maintainer growth | Fixed low-risk intervention for organic onboarding, downstream verified use, prospective controls |
+| **M1** coding practice | Opt-in comparison of Plan-mode/approval workflows against unrestricted agent runs on frozen tasks |
+| **M2** accepted quality | Independently authored acceptance tests; count refusals and failures; do not use accepted-code logs as a quality measure |
+| **M3** discovery | Context Engine claims are not discovery evidence; measure retrieval of the correct existing module on seeded tasks |
+| **M4** verified third-party reuse | The OpenCode wrapping is a concrete **reuse of an MIT upstream** by a commercial vendor; trace whether fixes flow upstream (unknown) |
+| **M5** reuse-first | Compare OpenCode as-is, Tabnine's OpenCode wrapper and an in-house CLI for the same governance tasks |
+| **M6** lifecycle cost | Vendor token/cost data needed a retroactive correction (v6.6.8). Meter independently; **no token→CO2e conversion** |
+| **M7** maintainer actions | Contract-level continuity safeguards (EOL notice, escrow) as a tested procurement checklist, not a growth tactic |
 
-None of these effects were measured in this source review. External ecosystem product announcements are **hypothesis generators only**.
+## 8. One falsifiable reuse-first maintainer experiment
 
-## 8. Concrete experiment for the maintainer's own repository
+**Target:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), offline only, using the synthetic [parser fixture](../../../tests/fixtures/trending.html). Live Trending capture stays **disabled**.
 
-**Repository:** [the existing GitHub Trending 1000 Study](https://github.com/MSKazemi/github-trending-1000-study), using offline synthetic [parser fixture](../../../tests/fixtures/trending.html) and existing CLI. Avoid unauthorized GitHub Trending collection.
+**Practice under test:** reuse an existing MIT agent (OpenCode, pinned version) plus a **repository-level, version-controlled permission policy** (an allow-list of tools/commands and a "plan-then-approve" step) instead of building or buying a bespoke governed agent.
 
-**Candidate intervention:** In this study repository, compare two consented external users attempting to reuse an existing CLI output format: with and without a read-only context navigation guide.
+- **Comparator A:** an unmodified pinned OpenCode release with default permissions.
+- **Comparator B:** the same build with the checked-in policy (deny network, deny writes outside `trending_study/` and `tests/`, plan approval required).
+- **Frozen tasks (preregistered):** 10 synthetic maintenance tasks on the parser and CLI (5 legitimate fixes, 3 that tempt out-of-scope writes, 2 with no valid solution). Hidden acceptance is a human-authored set of tests plus `python3 -m unittest discover -s tests`. The full denominator includes refused, failed and timed-out runs.
+- **Endpoints:** primary is tasks accepted without any policy violation divided by all tasks. Secondary: violations attempted vs blocked, reviewer minutes, wall-clock time, metered CI minutes. Record tokens only as vendor-reported, provenance-tagged figures.
+- **External-use signal:** publish the policy file. Count only consented external repos that adopt it **and** report a passing run; stars do not count.
+- **Cost bound:** ≤ 4 human hours, ≤ 1 model/provider, no paid API added to project scripts.
+- **Stop rule:** stop if B blocks a legitimate fix more than once, if any out-of-scope write passes in B, or if policy upkeep exceeds 30 minutes per month. If B is not better, keep A and record the null result.
 
-**Control/treatment with frozen task:** A: pinned README and CLI; B: the same CLI plus a scoped architecture map and explicit privacy boundaries; independent evaluators freeze expected tasks.
+**No trial executed; no effect estimated.**
 
-**Independent acceptance and actual reuse signal:** Both arms must build a working outsider import from known synthetic JSONL and pass existing unit tests; record completion, help, reviewer minutes, 30-day reports.
+## 9. Limitations
 
-**Pre-register** all assigned tasks (including failures/no-solution), acceptance hash/schema and evaluator before any agent runs. Record exact repo commit, agent/model/versions, candidate license/security provenance, human review, token/billing if available, build/CI, attempts, 30-day support and downstream external adoption. Consent for any human participant logs and minimize personal telemetry.
+- All feature claims are **vendor-reported** (E1/E2). The only independent sources are one news estimate, one critical blog and one GitHub advisory record. None tests product behaviour.
+- Tabnine blog content is now reachable only through third-party archive captures. Two rows rest on index listings only.
+- Release notes are a living page that has corrected itself at least twice. Rows carry no immutable snapshot.
+- Deal value, closing mechanics and post-acquisition headcount are unverified. The "$500M" figure was not used.
+- No customer adoption, accepted-task quality, security effectiveness or energy effect was measured.
+- Five web queries under a shared budget. Reuters/TechCrunch/The Register targeted searches were not run (see the [search log](019-tabnine.search-log.md)).
 
-**Stop rule:** Reject context enrichment if any data boundary leak, more hallucinated interfaces or greater maintainer burden without task benefit.
+## 10. Earlier screen (preserved)
 
-**Applicability:** a small offline CLI task, not evidence of representative OSS growth or positive environmental impact. The purpose is to *verify reuse of existing work*, not to maximize generated code, repo count or GitHub stars.
+Earlier versions came from commits `dc2aec7`, `7ba740d`, `40ca8e0` and `5063d05` and PRs [#215](https://github.com/MSKazemi/github-trending-1000-study/pull/215) and [#233](https://github.com/MSKazemi/github-trending-1000-study/pull/233) (consolidated in `b90cecc`), with leads from [PR #199](https://github.com/MSKazemi/github-trending-1000-study/pull/199). Those versions were a **3-row "bounded primary-document evidence shortlist"**. They claimed:
 
-## 9. Review status, discrepancies and limits
+- a May 6 recap describing "CLI agent plan/approval and sandbox capabilities" (`shipped`, E1);
+- a June 18 shared-memory essay that is "commentary, not a software release" (`reported_undetermined`);
+- the July 30 statement that "Tabnine has been acquired by Tricentis", with "closing/legal details still need independent buyer confirmation".
 
-- **Documentary output:** 3 attributed source records. Scope is source discovery, not independent validation of announced product quality or commercial uptake.
-- **Special conflicting/qualified statement:** Tabnine's Tricentis acquisition was reported by the company July 30, 2026; closing/legal details still need independent buyer confirmation. June design commentary is not a shipped multiagent memory product.
-- **Not established:** systematic full recall, company-wide corporate ownership auditing, third-party task acceptance, API reproducibility, real external users, long-run cost, maintenance load or kWh/CO2e.
-- **Independence:** no external researcher fact-checked this file; no E3/E4 assignment, no original observations, no actual task trial.
-- **Acceptance work outstanding:** rerun all seven monthly searches with screen logs; independent link/date/article-version check; verify artifact rights and product access/version; look for negative independent coverage, regulatory/security history and corrections; inspect exact legal parent after any merger; run tests/CSV validation in repo checkout; approve human review.
-- **Merge gate:** **draft PR only**; do not close issue, merge to `main`, treat as final evidence or create false [#56 news](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs until reviewers sign off.
+They listed Apr 12–30, August, September and Oct 1–12 as "Not documented in this limited screen". PR #199's two extra leads — the [Context-Readiness post](https://www.tabnine.com/blog/context-readiness-ai-coding-benchmark/) (labelled 2026-06-26) and the [Tricentis release](https://www.tricentis.com/news/tricentis-acquires-tabnine) — were held as uncounted leads. Both are now verified and counted (CI2026-019-008, -010). The 2026-10-14 desk check of the [product-news archive](https://www.tabnine.com/blog/category/product-news/) recorded that the July 30 article already redirected to Tricentis. That redirect now covers the whole site.
 
-**Actionable but UNTESTED lesson:** provide a single verified first-use task and reusable, permissioned interface to the component you already maintain; measure *outsider accepted reuse and total lifecycle burden* before adding an agent or duplicating a repository.
-
-## 10. Provisional source leads preserved from overlapping first-pass PR #199 (not counted)
-
-[PR #199](https://github.com/MSKazemi/github-trending-1000-study/pull/199) proposed four JSON source leads; its April agents recap and Tabnine company acquisition statement overlap with this report's existing three rows. **Do not double-count those.** Two distinct leads need source/version inspection:
-
-- [Context Readiness Is the New AI Coding Benchmark](https://www.tabnine.com/blog/context-readiness-ai-coding-benchmark/) — unverified first-pass `019-E02` from #199, originally labeled 2026-06-26; vendor **perspective/benchmark framing**, not independent evidence of measured quality or a shipped feature.
-- [Tricentis Acquires Tabnine](https://www.tricentis.com/news/tricentis-acquires-tabnine) — unverified `019-E04` from #199, labeled 2026-07-30. The URL belongs to the **prospective/announced buyer Tricentis**, not to Tabnine (the earlier JSON's `source_publisher` field was inconsistent with this domain). Check the actual issuing entity, legal event status/date and any updates; treat buyer and seller's own announcements as **transaction-party sources about one event**, not two independent merger observations.
-
-These are **candidate leads, not additional event counts or independently corroborated findings**. No NEWS corpus IDs or verified ownership conclusions are created; retain the source branch for its original records and require independent review before adding any row to `019-tabnine.events.csv`.
-
-### Documentary recheck — 2026-10-13 (analyst pass, not independent reviewer)
-
-- [May 6 Tabnine recap](https://www.tabnine.com/blog/april-recap-agents-you-can-trust/) explicitly describes CLI plan review, sandbox restrictions and command approvals. These are **provider claims about controls**, not a third-party security evaluation.
-- [June 18 shared-memory essay](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/) is **architectural commentary**. It does *not* independently demonstrate the release of a shared-memory feature or quantify cross-agent correctness benefits; retain `reported_undetermined` rather than assigning shipped.
-- [July 30 company announcement](https://www.tabnine.com/blog/a-new-chapter-for-tabnine/) states **'Tabnine has been acquired by Tricentis'** and discusses integration of the Enterprise Context Engine. The Tabnine website also displays an acquisition banner. These are consistent first-party statements from **Tabnine**, but an independently dated *buyer announcement/legal filing* was **not found** in this screen; exact closing terms and legal entity change remain **unverified**.
-- Distinguish continuing platform operations from ownership statements and announcements of future integration. Neither acquisition nor new design proposals establish externally accepted software-task outcomes.
-
-**Practical action:** In agentic review/design, align agents to a single **versioned repository API contract**, compare output with frozen independent tests, and use explicit data-access scopes so cross-repo context does not leak private code.
-
-## No-loss consolidation of Tabnine evidence (2026-10-13)
-
-The original [PR #215](https://github.com/MSKazemi/github-trending-1000-study/pull/215) report is retained verbatim above. The original 22-column [source ledger](source-archives/019-tabnine.2026-10-12-source-ledger.csv) preserves its exact evidence grades and identifiers, and the alternative [PR #233](https://github.com/MSKazemi/github-trending-1000-study/pull/233) is preserved in the [dated alternate screen](source-archives/019-tabnine.2026-10-13-first-screen.md).
-
-The [canonical working vendor-lead index](019-tabnine.events.csv) has 3 distinct URLs (2 newer-source rows and 1 additional prior-only E0 lead). These are **not** independent scientific findings, and vendor-published acquisition or performance statements require factual/rights verification before further claims. The duplicated source URL is a single event; preserve differing original annotations for factual adjudication rather than counting as independent confirmations.
-
-**Older-only lead requiring recheck:** [Shared memory for multiagent development](https://www.tabnine.com/blog/shared-memory-for-multi-agent-development/), published 2026-06-18.
-
-**Differing duplicate-source statuses:** 0 (retain both original ledgers; choose only after source-level review).
-
-**Remaining gates:** dated ownership and product continuity, full seven-segment screen, independent critical reporting, exact package/license and enterprise deployment scope, human factual reviewer, and independent user tasks before claiming measurable benefit. Keep issue #86 open.
-
-
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
-
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
-
-- **Publisher page and source publication date:** [Tabnine Product News archive](https://www.tabnine.com/blog/category/product-news/) — 2026-07-30 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** The Tabnine publisher's product-news index lists 'A new chapter for Tabnine' on 30 July and states the company was acquired by Tricentis. Opening the original article URL currently redirects to Tricentis's learning site, so the original article could not be re-read in this check.
-- **Correction / uncertainty to retain:** Archive-index discovery plus a redirect are not an independently verified corporate filing or evidence of preserved product behavior after acquisition. Retain the original event URL for provenance and explicitly mark direct full-article access unresolved.
-- **Falsifiable maintainer experiment (not performed):** Test a stable, permission-approved IDE assistance workflow under pinned versions before/after any ownership-linked product change; separately verify service availability, licenses, code-upload policy and actual human review burden.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
-
-
-## Controlled integration review — 2026-10-14 (provisional source provenance)
-
-The earlier #215 report is an exact prefix of this consolidated working report. Its 2026-10-12 CSV evidence ledger is preserved **byte-for-byte** in `source-archives/`, while the current working CSV retains three unique first-party source URLs. The older alternative screen also remains archived. Live publisher product-news indexing dates 'A new chapter for Tabnine' to July 30, 2026; the original blog link redirects, so original full-text preservation and corporate registry confirmation are still missing. Tricentis issued a dated acquisition announcement and independent news also reported the acquisition, but none of these validates post-acquisition availability, maintainability or agent task performance. The archive sources and current CSV are alternate views, not independent replications. This integration only retains E1 provider-attributed working leads; verified license/rights, discontinuity risks, systematic seven-segment screening, second-human QA and independently accepted reuse-first task experiments remain open in #86. No empirical energy savings inferred.
+The earlier version also asked that no [#56 news-corpus](https://github.com/MSKazemi/github-trending-1000-study/issues/56) IDs be created before review. This upgrade creates none. The earlier experiment compared external users reusing the study CLI with and without a read-only context navigation guide. It is superseded here by §8, and its text remains in git history. The original ledgers and the alternative screen are archived at [source-archives/019-tabnine.2026-10-12-source-ledger.csv](source-archives/019-tabnine.2026-10-12-source-ledger.csv) and [source-archives/019-tabnine.2026-10-13-first-screen.md](source-archives/019-tabnine.2026-10-13-first-screen.md).
