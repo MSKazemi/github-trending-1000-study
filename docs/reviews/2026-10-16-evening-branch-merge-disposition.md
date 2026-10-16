@@ -36,3 +36,27 @@ At review start the above six heads were all behind the moving main by five comm
 3. Separate software-validating CI from human methods, legal/source, security, scientific and participant approvals.
 4. Do not equate ahead-commit count, branch age, or checkmarks with no-loss equivalence, deletion safety, or reusable task value.
 5. Enable tested server-side main protection so that a future agent/Claude Code workflow cannot bypass the documented gates simply because GitHub reports mergeable.
+
+## 2026-10-16 later audit: all eleven open PRs and safe merge holds
+
+**Snapshot:** the GitHub branch search returned 41 named refs including `main`. The live PR search returned eleven open PRs (#290, #293, #298, #302, #417, #418, #425, #426, #427, #428, #429), all targeting main at `1e656cfcbceb4995467280b796e77e870c6c5f39` at inspection. Every PR reported `mergeable=true`; #302 remains a draft. The submitted GitHub review list for all eleven was empty. The inline review thread lists checked for #290, #293, #302, #417, #418 and #429 were empty. **Empty reviews do not constitute human signoff.**
+
+| PR | Exact head inspected | Five-job PR Actions run (successful at inspection) | Current disposition |
+| --- | --- | --- | --- |
+| #290 | `8853ff5da8da63468a11a3b80d9c2cd44ba892d1` | [38931512003](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931512003) | HOLD: denominators/rank-proxy methods approval |
+| #293 | `0c520b7fadb9cb952b1d73214d66d903e88587bf` | [38931125246](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931125246) | HOLD: registry/source and methods approval |
+| #298 | `4aa3ccce7e9431369973a41abda6a846c6c5d238` | [38931060295](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931060295) | HOLD: genuine blinded reviewer evidence and methods approval |
+| #302 | `80a2fdd1fd7940d87befc6613d2dc71147505a46` | [38932139921](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38932139921) | DRAFT/HOLD: security and administrator enforcement (rulesets endpoint returned `[]`) |
+| #417 | `a6f23bba1db3b3f3859aff69d1fbb4d7f3baab3e` | [38931707439](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931707439) | HOLD: human maintainer inspection of destructive-prune advice boundary |
+| #418 | `cbd70f0e46e4321c17c9542ec2dcf8c264283498` | [38931180599](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931180599) | HOLD: bibliographic/source-rights review |
+| #425 | `69d02f95664fafd74d85b640036bbb7c4074bd86` | [38930766286](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930766286) | HOLD: privacy/security maintainer review |
+| #426 | `477141bc4c246a203901e3b7514cf990c2052b64` | [38930663841](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930663841) | HOLD: news-source identity and methods review |
+| #427 | `eede47a1daa408182a7fbbe42a97724307e5cf87` | [38929707071](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38929707071) | This audit-documentation PR: updated after this run; **new exact-head CI and human review required** |
+| #428 | `bf67a94a267c0107fc2c3d933ef267e501e12ebc` | [38930904561](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930904561) | Additional lexical numeric-host hardening committed later to head `114d76b02c401bcec27b7bf2b84da9c1eb04254c`; previous CI is **stale**. New CI and security review required |
+| #429 | `865f0d1b2047e94059a41d29476cc464df3ed226` | [38931239853](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931239853) | HOLD: source-security review and explicit URL validator's no-network-safety limit |
+
+The job API was inspected for all eleven listed runs: each then reported completed success for `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, and `research-artifacts`. This is technical evidence, not an independent code/methods or security review. #428 received three direct branch commits for source, tests and documentation after the run cited above; update its check record before merge consideration. The #427 head changes by this documentation update too. No claims of successful new-head CI on either are made.
+
+The current open-PR changed paths show no immediate same-file overlap across the small URL/privacy/news patches (#425, #426, #428, #429), but PR #298 changes shared JSON integrity code and #290 alters CI/README/data dictionary; take current-base integration and full-diff preservation checks before any future merge. No branch or tag deletion, force push, source promotion, human approval, or research issue closure is authorized. Rulesets list was empty, while detailed main protection read was denied (403), so server enforcement could not be established.
+
+**Practical maintainer takeaway:** one successful PR run is pinned to one head SHA. A single follow-up security fix invalidates that merge-ready claim until a new run passes, and an automated agent cannot approve its own changes. Protect main through actual server settings and have a separate reviewer inspect the full, final patch.
