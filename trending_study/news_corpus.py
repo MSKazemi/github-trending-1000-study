@@ -6,6 +6,7 @@ source, rights, publication date, claim, actual human review, or research value.
 """
 import argparse
 from datetime import date, datetime, timezone
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -22,6 +23,32 @@ from trending_study.data_integrity import (
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
 TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
+_DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\Z")
+_NUMERIC_IPV4_PART = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+
+
+def _public_source_host(host):
+    """Conservative lexical URL evidence screening, NOT DNS/SSRF protection."""
+    if not isinstance(host, str) or not host or len(host) > 253:
+        return False
+    if host == "localhost" or host.endswith((".localhost", ".local", ".internal")):
+        return False
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None:
+        return address.is_global
+    # Legacy network stacks may resolve numeric spellings rejected by
+    # ipaddress (127.1, 2130706433, 0x7f000001) to special IPv4 addresses.
+    if re.fullmatch(_NUMERIC_IPV4_PART + r"(?:\\." + _NUMERIC_IPV4_PART + r"){0,3}",
+                    host, flags=re.IGNORECASE):
+        return False
+    labels = host.split(".")
+    return len(labels) >= 2 and all(
+        len(label) <= 63 and _DNS_LABEL.fullmatch(label) is not None
+        for label in labels
+    )
 
 
 def _canonical_url_key(parts):
@@ -135,6 +162,8 @@ def validate_records(records):
                 or parsed.username is not None or parsed.password is not None
                 or parsed.netloc.endswith(":") or port == 0 or parsed.fragment):
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
+        if not _public_source_host(parsed.hostname):
+            raise ValueError(f"{name}: canonical URL requires a public source host")
         if "\\" in url or re.search(r"%(?![0-9A-Fa-f]{2})", url):
             raise ValueError(f"{name}: malformed or ambiguous canonical URL")
         # Strip known marketing trackers, not meaningful ?id=... or ?ref=...
