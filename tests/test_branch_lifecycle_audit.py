@@ -197,6 +197,56 @@ class BranchAuditTest(unittest.TestCase):
         self.assertEqual(report["branches"][1]["decision"],
                          "hold-open-pr-inventory-moved-rerun")
 
+    def test_new_branch_during_pagination_holds_manual_prune_advice(self):
+        a, b, c = "a" * 40, "b" * 40, "c" * 40
+        listing_reads = [0]
+        def fetch(path):
+            if "/branches?per_page" in path:
+                listing_reads[0] += 1
+                entries = [{"name": "main", "commit": {"sha": a}, "protected": False},
+                           {"name": "old", "commit": {"sha": b}, "protected": False}]
+                if listing_reads[0] > 1:
+                    entries.append({"name": "new", "commit": {"sha": c}, "protected": False})
+                return entries
+            if "/pulls?state" in path:
+                return []
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            if "/branches/old" in path:
+                return {"name": "old", "commit": {"sha": b}, "protected": False}
+            if "/compare/" in path:
+                return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+            self.fail(path)
+        report = audit("o/r", get=fetch)
+        self.assertEqual(listing_reads[0], 2)
+        self.assertFalse(report["branch_inventory_stable_at_second_read"])
+        self.assertEqual(report["branches"][1]["decision"],
+                         "hold-branch-inventory-moved-rerun")
+        self.assertEqual(report["branches"][1]["sha"], b)
+
+    def test_duplicate_second_page_branch_is_not_silently_collapsed(self):
+        a, b = "a" * 40, "b" * 40
+        listing_reads = [0]
+        def fetch(path):
+            if "/branches?per_page" in path:
+                listing_reads[0] += 1
+                result = [{"name": "main", "commit": {"sha": a}, "protected": False},
+                          {"name": "old", "commit": {"sha": b}, "protected": False}]
+                if listing_reads[0] > 1:
+                    result.append(dict(result[1]))
+                return result
+            if "/pulls?state" in path:
+                return []
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            if "/branches/old" in path:
+                return {"name": "old", "commit": {"sha": b}, "protected": False}
+            if "/compare/" in path:
+                return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+            self.fail(path)
+        with self.assertRaisesRegex(ValueError, "Duplicate refreshed"):
+            audit("o/r", get=fetch)
+
     def test_missing_or_malformed_tip_recheck_fails_closed(self):
         a, b = "a" * 40, "b" * 40
         for detail in (None, {}, {"name": "old", "commit": {"sha": "wrong"},
