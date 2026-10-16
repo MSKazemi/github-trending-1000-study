@@ -32,3 +32,13 @@ HTTP listing, branch re-read and PR re-read are **not an atomic GitHub snapshot*
 - SHA-pin both the *observation* and the final mutation lease. A Git SHA recorded earlier is not a lock on a moving branch name.
 - Treat changes in PR membership or branch protection as safety signals, not inconveniences to silently ignore.
 - Count *retained evidence and independently accepted improvements*, not issue closure, branch reduction or green synthetic tests, as research success.
+
+## 2026-10-16 exact-head branch ancestry crosswalk (new, read-only)
+
+A new [JSON checkpoint](2026-10-16-branch-ancestry-33refs.json) freezes **33** exact branch names and 40-character SHA values against inspected `main` `639054a0b98fe29c8bd0d6d72fb16b19fc26bff9`, with directly observed `protected=false`, **11** open PR branches (all held) and **21** other branches without an open PR. Branch-list SHA values were unchanged in the second read, but REST inventory is not atomic. Every one of these **21** non-PR branches returned GitHub `compare/main...<exact-head>` status `diverged`, with **ahead_by between 1 and 24** and **behind_by between 1 and 496**. None was `behind` or `identical`; **zero branches were classified as immediately ancestry-safe for deletion**, and no delete/merge was performed by the audit.
+
+This shows why an operator must **not** select retirement candidates by PR closure, branch age or naming alone. An old branch can have divergent commit history even if the canonical implementation was incorporated via a squash/semantic replacement. The converse also holds: divergent commits do not necessarily contain still-unique, valuable changes. Check exact file SHA, original tests, provenance citations and negative outcomes, preserve them on current main or write-once archive tags, then obtain the #277 and #248 security/admin approvals. The JSON's `compare_file_count` is a Git history/file-change statistic, not a count of validated unique research artifacts.
+
+The contemporaneous published API results here did not include a verified UTC clock time, HTTP response hash, or complete GitHub data-export replay. Accordingly this is a **dated operational checkpoint**, not a cryptographically frozen global GitHub transaction or external scientific evidence. New PR #417 itself adds one working branch and is held for real review.
+
+**Owner-facing result:** prioritize file-level preservation for the 21 ahead/diverged branches; schedule genuinely independent code/security review of PR #417 and the separately drafted ruleset PR #302, not deletion of any of these 21 from an ancestry-only table.
