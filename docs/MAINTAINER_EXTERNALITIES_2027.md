@@ -48,3 +48,25 @@ The v0.1 input also rejects self-reported `human_review_state=approved` or `data
 Seven synthetic adversarial test methods cover unknown sensitive top-level and nested fields, missing required fields, mismatched provenance flags, self-asserted approvals, unsuitable free text, unhashable status values, unbounded case counts, and privacy-safe CLI diagnostics. No real participants were contacted, no scraping/telemetry was enabled, and this patch is not evidence of project usefulness, avoided maintainer work, or net climate benefit. **Issue #24 remains open** for genuine opt-in study, ethics/source rights and independent human methods review.
 
 **Practical lesson for your repositories:** reject *unexpected* fields at privacy-sensitive JSON boundaries, not just malformed values of the fields you happen to use. Cross-check redundant dataset-status flags and require out-of-band, auditable human signoff instead of trusting self-reported approval strings.
+
+## 2026-10-17 private diagnostics across the CLI error boundary
+
+The offline proposed maintainer-burden CLI previously invoked
+`ArgumentParser.error()` **inside** the `except ResearchJSONError` handler.
+That catches and redacts ordinary stderr, but the resulting `SystemExit`
+still carries an exception context that can expose a private JSON object key
+or source filename to a full traceback collector. The CLI now saves one
+fixed diagnostic value and invokes `p.error` **after** all handlers exit.
+Malformed `observed_at_utc` likewise produces a fixed domain error without
+chaining the original `datetime.fromisoformat` failure. Synthetic tests
+check `SystemExit.__context__`, `BurdenError.__cause__` and formatted full
+tracebacks rather than stderr alone.
+
+This is data-minimization engineering for an offline instrument, not a
+guarantee about sensitive values in process memory, arbitrary caller logging
+or already-permitted output fields. No participant observation, reviewer
+approval, meaningful environmental total or real maintainer burden estimate
+is introduced. **Issue #24 stays open** until the real opt-in study gates.
+
+**Practical lesson:** privacy/error boundaries include the exception object
+and its causal history, not just the string printed at the terminal.
