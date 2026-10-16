@@ -21,3 +21,18 @@ The original lexical checks could accept syntactically invalid DNS hostnames (`e
 #22 requires official pinned registry identity/version/digest/license, genuine advisory/provenance evidence, controlled execution, task-first acceptance and qualified external human security/source review. A `review_ready` result only means that supplied fields are structurally complete, not trustworthy. **Do not close #22 from this regression or green CI alone.**
 
 **Practical maintainer lesson:** a validator should reject confusing host spellings as data-integrity risks, but only an independently vetted network client can enforce actual transport safety.
+
+## 2026-10-17 malformed-timestamp traceback privacy fix
+
+An additional offline regression covers malformed caller-supplied
+`task_frozen_at_utc` and `first_available_at_utc`. The underlying
+`datetime.fromisoformat` exception can embed the supplied text in a full
+exception-chain traceback even when a command-line error is generic. The
+validator now raises its stable `PackageReviewError("invalid timestamp")`
+outside the low-level exception handler; tests assert that private synthetic
+markers are absent from error causes, contexts and formatted tracebacks.
+This changes neither package eligibility nor independent evidence status.
+Caller logs and accepted metadata exports remain separate operator concerns.
+
+**Lesson for maintainers:** audit *complete* exception traces when processing
+untrusted research input, not only visible `str(error)` messages.
