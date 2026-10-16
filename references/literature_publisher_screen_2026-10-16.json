@@ -1,0 +1,197 @@
+{
+  "search_runs": [
+    {
+      "run_id": "IEEE_WEB",
+      "database": "IEEE Xplore public publisher landing pages via web search",
+      "query": "site:ieeexplore.ieee.org/document github repository popularity star growth mining software repositories",
+      "searched_at_utc": "2026-10-16T00:00:00Z"
+    },
+    {
+      "run_id": "ACM_WEB",
+      "database": "ACM Digital Library DOI landing pages via public search",
+      "query": "site:dl.acm.org/doi/10.1145/3715907 Beyond Dependencies Role of Copy Based Reuse in Open Source Software Development",
+      "searched_at_utc": "2026-10-16T00:00:00Z"
+    },
+    {
+      "run_id": "ARXIV_WEB",
+      "database": "arXiv public abstract/versioned records via search",
+      "query": "site:arxiv.org coding agent adoption GitHub 2026 129134 128018",
+      "searched_at_utc": "2026-10-16T00:00:00Z"
+    },
+    {
+      "run_id": "METR_WEB",
+      "database": "METR original reports through public web search",
+      "query": "site:metr.org measuring impact AI experienced open-source developer productivity randomized July 2025 February 2026 update",
+      "searched_at_utc": "2026-10-16T00:00:00Z"
+    },
+    {
+      "run_id": "SUPP_WEB",
+      "database": "Public cross-reference search (not a structured database export)",
+      "query": "site:doi.org/10.1145/2597073.2597074 Promises Perils Mining GitHub",
+      "searched_at_utc": "2026-10-16T00:00:00Z"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "LS20261016-01",
+      "run_id": "IEEE_WEB",
+      "title": "What Do Users Ask in Open-Source AI Repositories? An Empirical Study of GitHub Issues",
+      "publication_year": 2023,
+      "doi": "10.1109/MSR59073.2023.00024",
+      "source_url": "https://ieeexplore.ieee.org/document/10174191",
+      "source_type": "peer_reviewed",
+      "decision": "include",
+      "study_extract": {
+        "design": "Empirical mixed categorization and issue-management analysis described in the IEEE MSR conference abstract.",
+        "population": "576 PapersWithCode-selected AI GitHub repositories and 24,953 issue records, according to publisher abstract.",
+        "outcome": "Publisher reports runtime errors and unclear instructions among frequent issue types; this is a sampled developer-support construct, not user-task success.",
+        "limitations": "Selection from PapersWithCode, categorization reproducibility and external validity require methods/full-text appraisal."
+      }
+    },
+    {
+      "record_id": "LS20261016-02",
+      "run_id": "IEEE_WEB",
+      "title": "How Do Software Developers Use GitHub Actions to Automate Their Workflows?",
+      "publication_year": 2021,
+      "doi": "10.1109/MSR52588.2021.00054",
+      "source_url": "https://ieeexplore.ieee.org/document/9463074",
+      "source_type": "peer_reviewed",
+      "decision": "include",
+      "study_extract": {
+        "design": "Publisher-described observational study of GitHub Actions adoption and project activity trends.",
+        "population": "GitHub repositories studied for workflows; exact eligible N was not available from the abstract inspected.",
+        "outcome": "Publisher reports changes in rejected PR and commits on merged PRs; no randomized AI-agent productivity effect.",
+        "limitations": "Confounding by adoption timing, project lifecycle, activity-based outcomes and incomplete denominator."
+      }
+    },
+    {
+      "record_id": "LS20261016-03",
+      "run_id": "IEEE_WEB",
+      "title": "Analyzing the Growth Patterns of GitHub Projects to Construct Best Practices for Project Managements",
+      "publication_year": 2023,
+      "doi": "10.1109/BCD57833.2023.10466327",
+      "source_url": "https://ieeexplore.ieee.org/document/10466327",
+      "source_type": "peer_reviewed",
+      "decision": "exclude",
+      "reason": "10-repository case study with normative star-growth interpretations; not sufficiently matched to our independent verified reuse or agent task-endpoint constructs; retain as screened exclusion."
+    },
+    {
+      "record_id": "LS20261016-04",
+      "run_id": "ACM_WEB",
+      "title": "Beyond Dependencies: The Role of Copy-Based Reuse in Open Source Software Development",
+      "publication_year": 2025,
+      "doi": "10.1145/3715907",
+      "source_url": "https://doi.org/10.1145/3715907",
+      "source_type": "peer_reviewed",
+      "decision": "include",
+      "study_extract": {
+        "design": "ACM TOSEM observational World of Code blob-origin and copy-based reuse tracing with developer survey.",
+        "population": "Publisher describes broad World of Code historical project/blob frame and 374 complete survey responses.",
+        "outcome": "Publisher reports many reused artifacts originate in small and medium projects; copy does not imply validated license compatibility or avoided labor/carbon.",
+        "limitations": "Exact byte-for-byte blob matches omit modified copies, origin can be misattributed and survey response/selection biases remain."
+      }
+    },
+    {
+      "record_id": "LS20261016-05",
+      "run_id": "SUPP_WEB",
+      "title": "The Promises and Perils of Mining GitHub",
+      "publication_year": 2014,
+      "doi": "10.1145/2597073.2597074",
+      "source_url": "https://doi.org/10.1145/2597073.2597074",
+      "source_type": "peer_reviewed",
+      "decision": "include",
+      "study_extract": {
+        "design": "Methodological survey and empirical warning on GitHub mining selection and project metadata.",
+        "population": "GitHub repository mining research; no trial cohort or reuse-correctness denominator assessed in this abstract-level screen.",
+        "outcome": "Documents that repository metadata and selection mechanisms can mislead observational inference.",
+        "limitations": "Historical practices and API behavior evolved; use as validity guidance rather than estimate of current outcome."
+      }
+    },
+    {
+      "record_id": "LS20261016-06",
+      "run_id": "ARXIV_WEB",
+      "title": "Agentic Much? Adoption of Coding Agents on GitHub",
+      "publication_year": 2026,
+      "doi": "10.48550/arXiv.2601.18341",
+      "source_url": "https://arxiv.org/abs/2601.18341v1",
+      "source_type": "preprint",
+      "decision": "pending",
+      "reason": "2026-01-26 v1 precursor of v2 and 2026 ACM journal; version-level sample and estimate differ, not a separate independent study."
+    },
+    {
+      "record_id": "LS20261016-07",
+      "run_id": "ARXIV_WEB",
+      "title": "Agentic Much? Adoption of Coding Agents on GitHub",
+      "publication_year": 2026,
+      "doi": "10.48550/arXiv.2601.18341",
+      "source_url": "https://arxiv.org/abs/2601.18341v2",
+      "source_type": "preprint",
+      "decision": "pending",
+      "reason": "2026-04-08 v2 precursor to accepted ACM journal version; preserve numerical drift and one-study identity."
+    },
+    {
+      "record_id": "LS20261016-08",
+      "run_id": "ARXIV_WEB",
+      "title": "Agentic Very Much! Adoption of Coding Agent in New GitHub Projects",
+      "publication_year": 2026,
+      "doi": "10.48550/arXiv.2606.07448",
+      "source_url": "https://arxiv.org/abs/2606.07448",
+      "source_type": "preprint",
+      "decision": "include",
+      "study_extract": {
+        "design": "Authors' preprint comparison of coding-agent traces in a cohort of new GitHub projects.",
+        "population": "Projects created after a previous coding-agent adoption study; abstract does not fully specify observed eligible denominator.",
+        "outcome": "Preprint reports a larger estimated agent-use signal in its new-project frame; it is not a causal quality/productivity study.",
+        "limitations": "Preprint, differing time/sample frame, trace-based sensitivity and reuse of authors' earlier methodology; no independent replication."
+      }
+    },
+    {
+      "record_id": "LS20261016-09",
+      "run_id": "METR_WEB",
+      "title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "publication_year": 2025,
+      "doi": null,
+      "source_url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "source_type": "other",
+      "decision": "include",
+      "study_extract": {
+        "design": "METR-reported randomized within-developer AI-allowed/disallowed task comparison.",
+        "population": "16 experienced OSS developers completed 246 mature-project tasks in February–June 2025; original paper site.",
+        "outcome": "Publisher reports 19% longer task time under AI-allowed assignment in this specific experienced-maintainer sample.",
+        "limitations": "Preprint/research nonprofit report, participant/task selection and tool vintage limit transport to other settings; not a universal AI slowdown."
+      }
+    },
+    {
+      "record_id": "LS20261016-10",
+      "run_id": "METR_WEB",
+      "title": "We are Changing our Developer Productivity Experiment Design",
+      "publication_year": 2026,
+      "doi": null,
+      "source_url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "source_type": "other",
+      "decision": "include",
+      "study_extract": {
+        "design": "Research-group methods update identifying task-submission refusal and parallel-agent time measurement biases.",
+        "population": "Later 2025 follow-up involved 10 original and 47 new developers; self-selection affects reported later effect.",
+        "outcome": "Authors explicitly warn the later AI effect estimate is unreliable due to nonparticipation and concurrent work measurement.",
+        "limitations": "Not peer-reviewed efficacy replication; do not contrast point estimates from selected populations as a clean longitudinal causal trend."
+      }
+    },
+    {
+      "record_id": "LS20261016-11",
+      "run_id": "ACM_WEB",
+      "title": "The SPACE of Developer Productivity: There's more to it than you think.",
+      "publication_year": 2021,
+      "doi": "10.1145/3454122.3454124",
+      "source_url": "https://doi.org/10.1145/3454122.3454124",
+      "source_type": "other",
+      "decision": "include",
+      "study_extract": {
+        "design": "Conceptual ACM Queue multidimensional developer-productivity measurement framework.",
+        "population": "Practice-oriented conceptual framework rather than randomized task sample.",
+        "outcome": "Defines satisfaction, performance, activity, communication and efficiency dimensions to operationalize before measurement.",
+        "limitations": "No estimate of AI effects, security quality, lifecycle energy or externally verified OSS use."
+      }
+    }
+  ]
+}
