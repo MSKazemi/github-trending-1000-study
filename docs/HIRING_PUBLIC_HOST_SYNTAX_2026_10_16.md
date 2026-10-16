@@ -17,3 +17,23 @@ A follow-up review found that strict `ipaddress.ip_address` parsing does not rec
 ## Canonical control-character boundary
 
 The review additionally found that the prior URL gate rejected code points below ASCII 33 but not the nonprinting DEL character (ASCII 127). The offline validator now rejects DEL throughout a candidate source URL; a synthetic test covers both a trailing and embedded DEL path byte. This is deterministic lexical hardening only, not approval to fetch the supplied URL or a substitute for transport-level origin checks.
+
+## 2026-10-17 validation traceback data minimization
+
+The standalone proposed hiring-observation instrument previously translated
+`IntakeError` and URL parser `ValueError` *inside* exception handlers using
+`raise HiringObservationError(...) from exc`. A malformed timestamp parsed by
+`datetime.fromisoformat`, or a rejected query parser field, can persist in the
+chained exception traceback even if the top-level error message is safe.
+The instrument now raises stable public `HiringObservationError` messages
+**after** the underlying exception handler has exited. New synthetic tests
+inspect complete formatted tracebacks, causes and contexts for private marker
+strings. No real employer or participant data are required.
+
+This prevents the specified **error-chain** disclosure pathway only; input
+may still be held in memory, explicitly logged by a caller, or deliberately
+written in a valid operator-controlled result. No automatic collection or
+permission to observe people is introduced.
+
+**Maintainer lesson:** audit nested exception causes, not just the final
+CLI error text, when research tooling may process sensitive identifiers.
