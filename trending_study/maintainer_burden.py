@@ -45,8 +45,11 @@ def _utc(value):
         raise BurdenError("observation requires explicit UTC timestamp")
     try:
         dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise BurdenError("invalid timestamp") from exc
+    except ValueError:
+        # The lower-level datetime ValueError can echo caller-controlled text.
+        dt = None
+    if dt is None:
+        raise BurdenError("invalid timestamp")
     if dt.utcoffset() is None or dt.utcoffset().total_seconds() != 0:
         raise BurdenError("observation must use explicit UTC")
     if dt > datetime.now(timezone.utc) + timedelta(minutes=5):
@@ -182,6 +185,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--input", required=True, type=Path)
     a = p.parse_args(argv)
+    diagnostic = None
     try:
         # The same bounded, descriptor-checked, duplicate-key-rejecting reader
         # used by the repository's other offline research instruments.
@@ -189,12 +193,16 @@ def main(argv=None):
         result = summarize(doc["cases"] if isinstance(doc, dict) and "cases" in doc else [doc])
     except ResearchJSONError:
         # Decoder errors may contain private object keys or local filenames.
-        p.error("invalid or unsafe research JSON input")
+        diagnostic = "invalid or unsafe research JSON input"
     except BurdenError as exc:
         # Domain errors are fixed messages, never respondent values or IDs.
-        p.error(str(exc))
+        diagnostic = str(exc)
     except (ValueError, TypeError, OSError, KeyError, OverflowError, RecursionError):
-        p.error("invalid maintainer burden input")
+        diagnostic = "invalid maintainer burden input"
+    # argparse.error() raises SystemExit. Calling it inside the above except
+    # blocks chains raw JSON/source errors into a full formatted traceback.
+    if diagnostic is not None:
+        p.error(diagnostic)
     print(json.dumps(result, indent=2, sort_keys=True))
 
 if __name__ == "__main__":
