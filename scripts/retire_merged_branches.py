@@ -26,6 +26,15 @@ class CleanupError(ValueError):
 class ApiNotFound(CleanupError):
     """Explicit 404, not a passed permission check."""
 
+
+def _safe_repo(repository):
+    """Reject dot-segment API paths before using the approved repo identity."""
+    if (not isinstance(repository, str) or not REPO.fullmatch(repository)
+            or any(part in (".", "..") for part in repository.split("/"))):
+        raise CleanupError("invalid repository")
+    return repository
+
+
 def _safe_name(s):
     if (not isinstance(s, str) or not BRANCH.fullmatch(s)
             or s in {"main", "master", "HEAD"} or s.startswith("refs/")
@@ -46,8 +55,7 @@ def validate_plan(plan):
         raise CleanupError("unexpected cleanup plan schema")
     if plan["schema_version"] != "1.0":
         raise CleanupError("unsupported plan version")
-    if not isinstance(plan["repository"], str) or not REPO.fullmatch(plan["repository"]):
-        raise CleanupError("invalid repository")
+    _safe_repo(plan["repository"])
     _sha(plan["source_main_sha"])
     if plan["archive_prefix"] != ARCHIVE_PREFIX:
         raise CleanupError("unapproved archive namespace")
@@ -76,7 +84,7 @@ class GitHubClient:
     def __init__(self, repository, token):
         if not token:
             raise CleanupError("GITHUB_TOKEN required for mutation")
-        self.repository = repository
+        self.repository = _safe_repo(repository)
         self.token = token
 
     def request(self, method, path, payload=None):
@@ -176,7 +184,7 @@ def _open_prs(repo, owner, branch):
                        "per_page": 100})
     return f"/repos/{repo}/pulls?{query}"
 
-def retire_one(client, repo, item, *, audit_only=False):
+def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
     name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
     ref_path = _git_ref(repo, name)
@@ -217,6 +225,10 @@ def retire_one(client, repo, item, *, audit_only=False):
     main_sha = (main or {}).get("commit", {}).get("sha")
     if not isinstance(main_sha, str) or not SHA.fullmatch(main_sha):
         return "blocked_unverifiable_main"
+    # The approval plan pins a specific observed main. A later fast-forward
+    # must not silently enlarge the originally reviewed deletion scope.
+    if expected_main_sha is not None and main_sha != expected_main_sha:
+        return "blocked_main_moved"
     ancestry = client.get(
         f"/repos/{repo}/compare/{item['merge_commit_sha']}...{main_sha}"
     )
@@ -266,6 +278,14 @@ def retire_one(client, repo, item, *, audit_only=False):
     if (not isinstance(late_archive, dict)
             or late_archive.get("object", {}).get("sha") != sha):
         return "blocked_archive_changed_before_delete"
+    if expected_main_sha is not None:
+        # The main ref can move while tags are being prepared. This extra
+        # check reduces stale-plan risk; it is not an atomic multi-ref lease.
+        fresh_main = client.get(f"/repos/{repo}/branches/main")
+        if (not isinstance(fresh_main, dict)
+                or not isinstance(fresh_main.get("commit"), dict)
+                or fresh_main["commit"].get("sha") != expected_main_sha):
+            return "blocked_main_moved_before_delete"
     client.delete_with_lease(name, sha)
     try:
         client.get(ref_path)
@@ -278,12 +298,21 @@ def execute(plan, client, *, audit_only=False):
     if client.repository != plan["repository"]:
         raise CleanupError("GITHUB_REPOSITORY disagrees with approved cleanup plan")
     repo = plan["repository"]
-    if client.get(f"/repos/{repo}").get("default_branch") != "main":
+    metadata = client.get(f"/repos/{repo}")
+    if not isinstance(metadata, dict) or metadata.get("default_branch") != "main":
         raise CleanupError("default branch changed; abort cleanup")
+    # source_main_sha must be an enforcement precondition, not decorative
+    # manifest metadata. Abort before creating even a recovery tag.
+    main = client.get(f"/repos/{repo}/branches/main")
+    if (not isinstance(main, dict)
+            or not isinstance(main.get("commit"), dict)
+            or main["commit"].get("sha") != plan["source_main_sha"]):
+        raise CleanupError("approved main SHA moved; freeze and re-review plan")
     results = []
     for item in plan["branches"]:
         try:
-            status = retire_one(client, repo, item, audit_only=audit_only)
+            status = retire_one(client, repo, item, audit_only=audit_only,
+                                expected_main_sha=plan["source_main_sha"])
         except CleanupError as exc:
             status = "error_" + type(exc).__name__
         print(f"#{item['merged_pr']} {item['branch']}: {status}", flush=True)
