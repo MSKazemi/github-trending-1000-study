@@ -58,7 +58,7 @@
   - The migration tracking issue (2026-07-27) calls `OpenHands/enterprise` a private repository for proprietary development; on 2026-10-16 the API reports it as public, with a PolyForm Free Trial License 1.0.0 (Copyright 2026 All Hands AI), not MIT.
   - "ACP" is expanded as "Agent Client Protocol" in the Jun 18 post and as "ACP (Agent Canvas Protocol)" in the Enterprise 0.24.0 notes.
   - The Aug 27 release calls the feature "Canvas Extensions"; the Sep 2 recap calls it "Canvas Apps Beta".
-  - The Jira Cloud post's title says "OpenHands Enterprise", its body says "OpenHands Cloud".
+  - The Jira Cloud post's title and a later paragraph say "OpenHands Enterprise"; its opening says "OpenHands Cloud".
   - The verification-stack URL slug starts `20260506` but the page and metadata date it 2026-06-22.
   - The Aug 7 "Open Models" post says Kimi K3 weights are due "July 27" and "as of this writing … not downloadable", which suggests it was written before its stated publication date (excluded row; noted for date reliability).
   - Canvas Apps: the vendor states enabled Apps run JavaScript "in the same browser context as Agent Canvas and are not isolated in an iframe or worker"; v1.15.0 also removed the `sandbox` attribute from the PDF preview iframe. Both are stated trust-boundary choices, not observed exploits.

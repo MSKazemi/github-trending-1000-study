@@ -209,3 +209,22 @@ None of these is a binding commitment, and no 2027–2031 product plan was found
 - Mainstream independent coverage is almost absent from this screen.
 - The PolyForm licence terms were identified but not legally assessed.
 - The reporter's claims in 015 are unverified.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent, working separately from the one that built the ledger, re-fetched the source_url and independent_check_url of all 45 rows. It compared every date, number, version and quote with the raw text or API response. It used the same robots.txt limits, a generic User-Agent and no personal identifiers, and did not edit any file.
+
+This check was also done with an Anthropic model (Claude), so it is AI-assisted. It is not a human review.
+
+**Result:** 41 rows confirmed, 2 corrected, 2 partly unverifiable. All four have been fixed in the ledger.
+
+| Row(s) | Outcome | Change made |
+|---|---|---|
+| 008 | corrected | The README diff does say what support continues: the V1 CLI is "primarily maintained for stability. Expect only major bug fixes and compatibility updates". The limitation now quotes this and notes that security fixes are not mentioned. |
+| 009 | corrected | The LiteLLM and lxml security updates are listed under "Enterprise Enhancements and Fixes", not under the Local GUI. The "future release" note for Cloud sits under the LLM-profile heading and may not cover everything in the post. Claim and availability reworded. |
+| 036 | partly unverifiable | All the numbers are confirmed. The swebench.com remark was moved out of this row (it is this screen's own check, recorded in the search log). Added that the model cost is repriced at GPT-5.6 Sol promotional prices, not the run's actual spend. |
+| 045 | partly unverifiable | The date of the DigitalOcean post is now tied to the vendor page fetched for this screen (2026-10-13, outside the window). |
+| 018, 028, 034 | confirmed, with minor additions | 018: the post says the alert was gone as of 2026-05-05. 028: NVD also lists CWE-77 and a CVSS v2 score of 6.5. 034: the post itself uses both edition names. |
+| all others | confirmed | Includes the SDK window count (64), the migration PRs and SHAs, the 821 replayed commits, eight releases in each monthly recap, and the Enterprise release dates. |
+
+The spot-check did not re-review the earlier text above the *Standardisation upgrade* heading or the appended interpretation. A human factual/link review is still required.
