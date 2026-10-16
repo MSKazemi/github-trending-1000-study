@@ -303,6 +303,63 @@ loosening a field silently. GET metadata or `protected=true` alone does not
 prove enforcement. Save both IDs, payload/commit hashes, GET responses,
 effective main rules, verification actors and test results as the admin audit.
 
+## 2026-10-17 read-only live configuration verifier (proposed)
+
+The proposed policy JSON tests alone cannot confirm whether GitHub actually installed
+or modified a ruleset. The standard-library
+[`scripts/audit_github_rulesets.py`](../scripts/audit_github_rulesets.py)
+now checks **live GitHub GET responses**, without any write request, against both
+reviewed payloads and hard-coded minimum safety invariants. It validates
+the independently pinned main SHA, `main.protected`, complete paginated
+repository/inherited ruleset inventory, IDs, ownership, active target/scope,
+absence of bypass actors, review and stale-push safeguards, required five
+GitHub Actions contexts and their integration IDs, plus archive-tag update
+and deletion restrictions. It treats rule/check *order* as insignificant, but
+rejects missing, duplicated, ambiguous or weakened rules and fails closed
+on malformed/truncated API data.
+
+This is a **non-mutating observation of configuration**, not proof the server
+actually rejected any merge, unauthorized push, tag mutation or admin bypass.
+Even a successful report explicitly sets both
+`negative_enforcement_tests_verified=false` and
+`independent_review_verified=false`. Issue #248 remains open until
+the negative and positive tests in the next section are independently
+performed and documented.
+
+Run from the approved checkout using the exact main commit SHA reviewed by
+the administrator; do **not** infer it from a moving branch ref:
+
+```bash
+: "${RULESET_EXPECTED_MAIN_SHA:?independently reviewed exact main SHA required}"
+python -m scripts.audit_github_rulesets \
+  --repo MSKazemi/github-trending-1000-study \
+  --expected-main-sha "$RULESET_EXPECTED_MAIN_SHA" \
+  --payload-dir ops/rulesets
+```
+
+The command returns **exit code 2** for missing/partial rules or a changed
+main SHA; code 0 only means the observed JSON structure matches the
+reviewed configuration, **not** verified server enforcement. No administrator
+credential is necessary if the public GETs are accessible; if authentication
+is required, provide a limited-scope read credential via the normal
+`GH_TOKEN` or `GITHUB_TOKEN` environment *outside* repo files or logs.
+Unreadable policy details must fail the audit rather than be assumed safe.
+
+Synthetic tests in `tests/test_audit_github_rulesets.py` cover a healthy
+readback, the actual missing/partial state, main movement, weakened approvals,
+disabled enforcement, bypass actors, missing/wrong-app checks, archive-tag
+scope reductions, duplicate rule IDs/types and unrelated changes in rule
+ordering. Passing these tests is deterministic engineering evidence only.
+At the 2026-10-17 readback, `main@1e656cfcbceb4995467280b796e77e870c6c5f39`
+reported `protected=false` and repository rulesets `[]`; no administrator
+installation occurred in this repair.
+
+**Practical lesson:** distinguish three verifiable layers: (1) proposed
+policy fixtures pass tests, (2) GitHub's live policy readback matches the
+proposal, and (3) actual unauthorized operations are denied in controlled
+negative tests. Completion requires all three, plus qualified human review;
+none can be inferred from green CI alone.
+
 ## Manual negative verification — do not execute during preparation
 
 An authorized administrator must choose disposable verification refs/PRs,
