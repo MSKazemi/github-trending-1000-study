@@ -28,6 +28,28 @@ carry different articles, nor does it authenticate their event-level identity.
 
 `parse_qsl` decodes query values before comparison, so `?id=alpha%2Fbeta` and `?id=alpha/beta` were incorrectly given one key. The underlying HTTP origin may distinguish their original encoded spellings. The offline source-lead gate now retains raw meaningful query fields, only drops **literal** known marketing-tracker keys, detects repeated keys even after decoding their names, and avoids sorting encoded key names. Unique ordinary parameter keys can still be reordered for deterministic deduplication. Three synthetic tests cover raw selector values, percent-aliased repeated keys and encoded tracking-key ambiguity. More retained leads can increase screening workload; only a human source/content review can adjudicate true duplicates. The original news evidence ledger is not rewritten.
 
+## Follow-up: source URL host safety and raw-control rejection (2026-10-17)
+
+The offline provisional source-ledger validator now rejects lexically unsafe HTTPS
+hosts: single-label/local/internal names, non-global IP literals, legacy
+numeric IPv4 aliases (e.g., `127.1` and `2130706433`), malformed DNS
+labels, and hostnames exceeding the DNS label/total limits. Ordinary
+hyphenated/punycode ASCII public-domain syntax remains permitted. It also
+rejects whitespace and DEL/control bytes **before** `urlsplit` can normalize
+some of those bytes away. Synthetic negative and positive unit tests cover
+these boundaries; original source records remain unchanged.
+
+**Important limitation:** This verifies only supplied URL *syntax*. It does
+not resolve DNS, detect rebinding or redirects, authenticate source publishers,
+authorize scraping, or establish that any URL is independently verified.
+A future authorized network client still requires qualified source-access and
+connection-time security review. This is a candidate engineering hardening
+patch on the existing #56 PR, not a completed scientific corpus or closure.
+
+**Practical repository lesson:** validate raw provenance identifiers and
+host spellings before normalization; never upgrade offline lexical checks into
+claims of transport safety or trusted research sources.
+
 ## Evidence boundary
 
 Three new **fictional, offline** regressions exercise reversed repeated selectors, tracker variants of identical repeated selectors, and ordinary unique query reordering. Passing synthetic tests does not establish that any actual web resource interprets its own query order this way. False negatives (same content with different query order) remain possible; only an independently reviewed event/content-level crosswalk can decide actual duplicates. This is a conservative anti-loss default.
