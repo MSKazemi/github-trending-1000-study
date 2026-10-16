@@ -212,3 +212,34 @@ Do **not** enable the LLM Advisor, ApexGuru or any linter that sends code to an 
   - WorkOS 2026-09-29 (vendor commentary; restates OX numbers).
   Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned. The PR Newswire releases are single first-party sources and must not be counted as independent.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources on 2026-10-16 and compared each figure, date and quote with the raw text or API response. Robots.txt was checked first for every host. The Register disallows `*` but explicitly allows `Claude-User`, so the original screen's truthful `Claude-User` fetch falls under the contract exception, and this check repeated it the same way. VentureBeat (HTTP 429), BleepingComputer (robots 403) and the Cloudflare-challenged www.ox.security pages were correctly left unread and not bypassed. No other disallowed path was fetched, so no row needed `E0_UNVERIFIABLE_ROBOTS_DISALLOWED_SOURCE`.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-100-001 | confirmed | Repo advisory 2026-04-15T13:36:44Z, global 2026-04-16T21:18:17Z, critical, patched 3.1.0; NVD 9.9 from the GitHub CNA; NVD references cite two OX posts |
+| CI2026-100-002 | confirmed | NVD published 2026-04-15T16:16Z, status Deferred, ADP CVSS 8.0, Windsurf 1.9544.26; only reference is the OX advisory URL |
+| CI2026-100-003 | confirmed | "as many as 200,000 servers", "more than 150 million downloads", "10 (so far) high- and critical-severity CVEs", "This change didn't fix anything", "Anthropic did not respond". JSON-LD 22:45Z vs byline 23:45 UTC confirmed |
+| CI2026-100-004 | confirmed | CSA note (Published 2026-04-20): nine days, 150 million / 7,000-plus / up to 200,000, "lower bound than a ceiling", allowlist advice, four SDK languages |
+| CI2026-100-005 | confirmed | datePublished 2026-04-21; "On April 15, 2026, OX Security published", v1.83.6-nightly, commit 7b7f304, PR #25343, v1.83.7-stable, "not exploitable by unauthenticated users" |
+| CI2026-100-006 | confirmed | GitHub API: created and pushed 2026-04-23T09:28:47Z, size 0, no licence, description verbatim |
+| CI2026-100-007 | confirmed | 13 in-window versions, 0.47.0 (2026-05-04) to 0.70.0 (2026-10-05); 0.72.0 on 2026-10-14; "SEE LICENSE IN LICENSE"; single `bundle.js` bin, no dependencies |
+| CI2026-100-008 / 013 / 016 / 019 | confirmed | GitHub release and npm upload times match (9.6.0 gap 06-28 → 07-08 confirmed). v9.5.0 ghcr-only and Docker Hub frozen at v9.4.0; v10.0.0 "Removed 14", REPOSITORY_BETTERLEAKS, 300 s timeout, prerun, payload v2, 4.55 GB → 4.13 GB (-9%); v10.1.0 OrcaRouter, Biome, OpenTofu, ApexGuru, three sub-agents. MegaLinter repo AGPL-3.0, runner MIT |
+| CI2026-100-009 | confirmed | OSV MAL-2026-4196 published 2026-05-20T08:33Z, credits OX Security, pinno-loggers → terminal-logger-utils postinstall dropper |
+| CI2026-100-010 | confirmed | Decrypt: "On Sunday", wallet/SSH/env theft, DDoS botnets, "almost exact copy of the leaked source code", TeamPCP. The page text says "chalk-template". `datePublished` 2026-05-20T23:00:04 carries no timezone, so the UTC date is as displayed |
+| CI2026-100-011 / 023 | confirmed | MAL-2026-4519 (2026-05-25, Amazon Inspector + OX, "100+ identified as of September 2026", modified 2026-09-30) and MAL-2026-17381 (2026-10-12, OX). Re-running the code search gave 119 hits; the OSV API gave 104 OX-credited records (May 5, Aug 19, Sep 35, Oct 45), 76 citing the PhantomSub post from 2026-05-25 to 2026-10-12 — identical to the screen |
+| CI2026-100-012 | confirmed | PR Newswire 2026-06-18 12:11 ET; report dated June 17, 2026, ID G00843814; Gartner disclaimer present; three principles verbatim |
+| CI2026-100-014 | confirmed | NVD published 2026-07-15T22:16Z, Awaiting Analysis, ADP 9.8 with PR:N, LiteLLM 1.18.10; references the LiteLLM blog and the OX advisory |
+| CI2026-100-015 | confirmed | "70–90% reduction" in "benchmark testing", Copilot/Cursor/Claude Code, "available now to customers", "$94 million … $60 million Series B led by DTCP" |
+| CI2026-100-017 | confirmed | npm 1.0.0 at 2026-08-11T07:30:59Z, MIT, description verbatim |
+| CI2026-100-018 | confirmed | MAL-2026-15607 published 2026-08-26, index.html only, no lifecycle script; GHSA-4vx3-9fv9-qg2m (malware) published 2026-09-23T02:44Z |
+| CI2026-100-020 | confirmed | AIDR, AASM, CSPM/KSPM/DSPM, reachability prioritisation, "available now"; docs GPL page gives "earliest request date is October 15, 2025" |
+| CI2026-100-021 | confirmed | 15,465 / 5,095 / 15.6% (796) / 19 China / 18 Russia / 0.45% / 2.3% / six domains / $4–$12 / Always-Allow with Haiku 3.5, blocked by Opus 4.6 and 4.7 — all verbatim |
+| CI2026-100-022 | confirmed | WorkOS post dated 2026-09-29; restates "15,465 MCP Servers, 0 Governance" across three registries |
+| Entity baseline | confirmed | Globes (2025-05-07): $60M Series B led by DTCP, $94M total, founded about three and a half years earlier by Check Point veterans; GitHub org `megalinter` description verbatim |
+
+**Counts:** 23 of 23 ledger rows checked, plus the entity baseline. 23 confirmed, 0 corrected, 0 wrong, 0 unverifiable. The search log's statement that ledger figures were checked against raw text held for every row checked here. No personal identifier was sent in any request (generic `Mozilla/5.0`, or truthful `Claude-User` for The Register only; no sec.gov access).
+
+*This is an AI-assisted spot-check, not qualified human review.*
