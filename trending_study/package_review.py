@@ -3,6 +3,7 @@
 All provenance, licence and security statuses are *supplied* and unverified.
 """
 import argparse
+import ipaddress
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
@@ -62,6 +63,20 @@ def _clean_https_url(url, field):
         raise PackageReviewError(
             f"{field} requires clean HTTPS URL without credentials/parameters/query/fragment"
         )
+    # Public evidence must not silently point reviewers or a future verifier at
+    # a loopback, private or cloud-metadata endpoint. This is format-only:
+    # DNS-based hosts are NOT resolved, allowlisted or safe to auto-fetch.
+    host = parsed.hostname
+    if (not host.isascii() or "%" in parsed.netloc or host.endswith(".")
+            or host in ("localhost", "metadata.google.internal")
+            or host.endswith((".localhost", ".local", ".internal"))):
+        raise PackageReviewError(f"{field} requires a public evidence host")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None  # A domain, not a proof of public DNS resolution.
+    if address is not None and not address.is_global:
+        raise PackageReviewError(f"{field} requires a public evidence host")
     return parsed
 
 
@@ -85,8 +100,10 @@ def evaluate(data):
             or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._+!-]{0,127}", version) is None):
         raise PackageReviewError("candidate.version must be a pinned exact release")
     spdx = candidate.get("spdx_expression")
-    if spdx is not None and (not isinstance(spdx, str) or not spdx.strip()):
-        raise PackageReviewError("spdx_expression must be nonempty text or null if unknown")
+    if spdx is not None and (
+            not isinstance(spdx, str) or not spdx.strip() or len(spdx) > 512
+            or any((ord(ch) < 32 and ch != " ") or ord(ch) == 127 for ch in spdx)):
+        raise PackageReviewError("spdx_expression must be bounded single-line text or null")
     parsed = _clean_https_url(candidate.get("registry_url"), "registry_url")
     is_pypi = candidate["ecosystem"].casefold() == "pypi"
     if is_pypi:
@@ -154,7 +171,11 @@ def evaluate(data):
             raise PackageReviewError(f"{key} pass requires an evidence_url")
         if cell["status"] == "pass":
             if key == "license_compatibility" and (
-                    not spdx or spdx.strip().upper() in {"NONE", "NOASSERTION"}):
+                    not spdx or re.search(
+                        r"(?<![A-Za-z0-9_.-])(?:NONE|NOASSERTION)(?![A-Za-z0-9_.-])",
+                        spdx, re.I)):
+                # SPDX 3.0.1 forbids NONE/NOASSERTION in compound license
+                # expressions. A sentinel anywhere is not a license grant.
                 raise PackageReviewError("license pass requires an actual SPDX license expression, not NONE/NOASSERTION")
         if cell["status"] == "fail":
             failed.append(key)
