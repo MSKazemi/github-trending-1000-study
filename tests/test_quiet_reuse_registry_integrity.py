@@ -102,6 +102,40 @@ class RegistryPairIntegrityTests(unittest.TestCase):
         with self.assertRaises(registry.RegistryFrameError):
             registry.audit_pair_reviews(packet, *self.reports(packet), *self.manifest_and_plan())
 
+    def test_floating_or_malformed_cargo_version_not_nominated(self):
+        manifest, plan = self.manifest_and_plan()
+        selection = registry.select_registry(manifest, plan)
+        original = self.packet()
+        invalid = ("latest", "main", "1", "1.0", "1.*", "^1.0.0",
+                   ">=1.0.0", "1.0.0 || 2.0.0", "1.0.0/evil",
+                   "1.0.0\\n2.0.0", "1.0.0-", "1.0.0+", "a"*129)
+        for version in invalid:
+            nominations = copy.deepcopy(original["pairs"])
+            nominations[0]["version"] = version
+            with self.subTest(version=version), self.assertRaisesRegex(
+                    registry.RegistryFrameError, "concrete pinned Cargo"):
+                registry.prepare_pair_packet(selection, original["tasks"],
+                                             nominations, manifest, plan)
+        for version in ("1.0.0", "0.2.0-alpha.3", "2.1.4+build.5",
+                        "2.1.4-rc.1+meta.7"):
+            nominations = copy.deepcopy(original["pairs"])
+            nominations[0]["version"] = version
+            with self.subTest(valid_version=version):
+                packet = registry.prepare_pair_packet(
+                    selection, original["tasks"], nominations, manifest, plan)
+                self.assertEqual(packet["pairs"][0]["version"], version)
+
+    def test_forged_packet_hash_cannot_promote_floating_version(self):
+        manifest, plan = self.manifest_and_plan()
+        for version in ("latest", "^1.0.0", "1.*"):
+            packet = self.packet()
+            packet["pairs"][0]["version"] = version
+            self.fingerprint(packet)  # attacker can recompute a plain hash
+            a, b = self.reports(packet)
+            with self.subTest(version=version), self.assertRaisesRegex(
+                    registry.RegistryFrameError, "concrete pinned Cargo"):
+                registry.audit_pair_reviews(packet, a, b, manifest, plan)
+
     def test_valid_pair_is_counted_once_but_never_authenticates_humans(self):
         packet = self.packet()
         audit = registry.audit_pair_reviews(packet, *self.reports(packet), *self.manifest_and_plan())
