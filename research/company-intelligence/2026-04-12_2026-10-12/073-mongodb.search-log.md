@@ -6,7 +6,7 @@
 
 **Method:**
 - Official pages were retrieved as raw HTML with `curl` and a generic `Mozilla/5.0` User-Agent. No personal identifier, email or credential was sent to any site.
-- Publication dates were taken from each page's JSON-LD `datePublished` or, for press releases, the dateline. Every number, version, date and quote used in a ledger row was confirmed with `grep` against the saved text.
+- Publication dates were taken from each page's JSON-LD `datePublished` or, for press releases, the dateline. Every number, version, date and quote used in a ledger row was confirmed with `grep` against the saved text. (Screening agent's statement; the 2026-10-16 independent spot-check re-verified 20 of 35 rows, not every row.)
 - Machine sources: the NVD CVE API 2.0, the Atlas Statuspage API, `gh api` (releases, tags, licences, commits), the PyPI JSON and npm registry/download APIs, and the Hacker News Algolia API.
 - Web search was used once.
 - SEC/EDGAR was **not** contacted, and EDGAR-derived mirrors returned by search were not used.

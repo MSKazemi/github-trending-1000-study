@@ -136,3 +136,34 @@ Company adoption claims (e.g., "more than 70,000 customers", "30,000 installs a 
   - (h) The FerretDB analysis notes FerretDB's counterclaims of disparagement and exclusion from a Linux Foundation collaboration. These are allegations only.
 - **#56 candidates (not minted):** InfoWorld 2026-06-30; Shuji Sado 2026-07-15; RECON 2026-08-12; TechTarget 2026-08-13; Silicon Republic 2026-09-29. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned. Syndicated copies (the PR Newswire Q1 release) must not be counted twice.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Rows were re-fetched on 2026-10-16: raw HTML of MongoDB press releases and blogs, the Q2 FY2027 PDF, the Placera syndication, shujisado.org and hellorecon.com; the NVD API (single-CVE and keyword/date queries); the status-page API; the npm downloads API; and `gh api` tag lookups on mongodb/mongo. Each date, figure and quote was matched against the raw text.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-073-001 | confirmed | hlhym701zs9m: Atlas for Government BI Connector, 2026-04-17T17:03Z to 2026-04-21T13:45Z, "No workaround has been identified"; API lists 50 incidents back to 2026-02-26 |
+| CI2026-073-002 | confirmed | CVE-2026-6914 published 2026-04-29; MD5/BSON; 8.2, 8.1, 8.0 < 8.0.21, 7.0 < 7.0.32; CNA 6.5 (v3.1) and 7.1 (v4) vs NVD 7.5 |
+| CI2026-073-003 | confirmed | "LONDON, 7 May 2026"; up to 45% reads, 35% writes, 15% ACID transactions; LangGraph.js store and PrivateLink GA; r8.3.0 tag dated 2026-06-03T20:05Z |
+| CI2026-073-005 | confirmed | CVE-2026-8431 published 2026-05-12; FreeMarker webhooks; Ops Manager 7.0 and ≤ 8.0.22; 9.4 (v4) / 7.2 (v3.1) |
+| CI2026-073-007 | confirmed | "May 28, 2026"; $687.6M, up 25%; Atlas up more than 29%; quarter ended April 30; Clarity Business Solutions acquisition |
+| CI2026-073-008 | confirmed | CVE-2026-9740 published 2026-06-09; unauthenticated crash via nested binary mutual recursion; 8.7 / 7.5 |
+| CI2026-073-011 | confirmed (MongoDB side) | `datePublished` 2026-06-30; Bengaluru; voyage-context-4, Hybrid Search, Native Reranking; "up to 30%". The InfoWorld report was not re-opened |
+| CI2026-073-013 | confirmed | July 7, 2026; AWS and GCP; ARM-based processors; "15–20% reduction in CPU utilization" in an internal pilot |
+| CI2026-073-014 | confirmed | July 15, 2026; four of six counts allege patent infringement; April 28, 2026 oral order on a scheduling order; no decision on the motion to dismiss as of July 2026; LLM-translation note |
+| CI2026-073-016 | confirmed | 2zp8gbb9dtf7: "elevated 5xx errors", 18:47Z to 21:18Z; j9qrqtwlq8jg on 2026-07-27, 23:37Z to 23:48Z (11 min) |
+| CI2026-073-018 | confirmed | CVE-2026-18705 text and scores 7.1 / 6.5; NVD keyword query for 2026-08-11 returns 26 results, 24 naming "MongoDB Server" |
+| CI2026-073-019 | confirmed | `datePublished` 2026-08-12; reproduced on 8.0.28, fix verified on 8.0.29; "On August 11, 2026 MongoDB disclosed four Server vulnerabilities"; no in-the-wild evidence |
+| CI2026-073-020 | confirmed | "SAN FRANCISCO—Aug. 13, 2026" at .local Build Fest; ChatGPT, Claude, Grok, Claude Code, Codex, Grok Build, Devin, Cursor; "more than 30,000 installs a week" (the "npm" qualifier comes from the blog, as §9(f) records); npm weekly downloads 54,761 to 97,555 for the four weeks from 2026-07-06 to 2026-08-02 |
+| CI2026-073-023 | confirmed | September 1, 2026; $771.8M, up 30%; Atlas up about 29%; quarter ended July 31; guidance $2.99B to $3.03B, raised; four retrieval GAs |
+| CI2026-073-024 | confirmed | CVE-2026-82067 published 2026-09-08; 9.2 / 8.1; NVD keyword query for September returns 60, of which 56 have MongoDB as CNA |
+| CI2026-073-025 | confirmed | CVE-2026-88029 (Python GridFS) published 2026-09-10; nine GridFS driver CVEs that day (PHP, Rust, C#, Python, Ruby, Go, Java, C++, C); CVE-2026-88022 (Laravel) the same day |
+| CI2026-073-028 | confirmed | "Sept. 28, 2026"; effective immediately; senior role at Meta; Ittycheria interim; search firm retained; Q3/FY guidance reaffirmed. TIKR and Reuters were not re-opened |
+| CI2026-073-029 | confirmed | September 29, 2026; up to 35% faster find-one, 30% faster update-one, 2x throughput on large instances; prefix/suffix/substring QE; Atlas Infinite in public preview; tags r9.0.2 and r9.0.4 created 2026-10-14; no r9.0.0 or r9.0.1 tag found |
+| CI2026-073-032 | confirmed | `datePublished` 2026-09-30; rerank-3-lite "at 40% of the price"; Europe data residency GA; Ephemeral Clusters preview; Hibernate GA |
+| CI2026-073-035 | confirmed | 279h4bcrcrlr: "mongot crashes, potential search and vector search outage, impacting a subset", 16:29Z to 18:17Z on 2026-10-09 |
+
+Outcome counts: 20 confirmed, 0 corrected, 0 unverifiable, 0 wrong. Two sub-claims (InfoWorld in row 011; TIKR/Reuters in row 028) were not re-opened. No serious error was found. The search log's statement that every ledger figure was confirmed is the screening agent's own; this spot-check re-verified 20 of 35 rows and found no counter-example.
+
+This is an AI-assisted spot-check, not a qualified human review.
