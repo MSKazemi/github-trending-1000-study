@@ -1,141 +1,109 @@
-# Cline: 2026 six-month AI software intelligence (source-screened working report)
+# Cline — provisional six-month technology intelligence screen (023)
 
-**Issue:** [#90](https://github.com/MSKazemi/github-trending-1000-study/issues/90) · **Watchlist ID:** 023 · **Window:** 2026-04-12–2026-10-12 inclusive (UTC) · **First research pass:** 2026-10-12 · **Status:** partially screened; independent/human review outstanding.
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](023-cline.events.csv), [search log](023-cline.search-log.md) and [source-QC note](023-cline.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**. They are **unreviewed by a qualified human**; factual/link review, source-access/rights review and methods review remain **pending**. Merging is not scientific or security sign-off; issue [#90](https://github.com/MSKazemi/github-trending-1000-study/issues/90) was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-> **Methodological status:** This report offers directly attributed, dated primary materials and one preregisterable repo experiment. It does **not** complete the issue's systematic seven-segment literature/media search, prove vendor claims, document actual user adoption, or establish benefits of any tool. Independent product/ownership due diligence and second-person factual review remain required.
+- **Watchlist:** 023; [issue #90](https://github.com/MSKazemi/github-trending-1000-study/issues/90).
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened 2026-10-16** (first passes 2026-10-12/13/14, preserved below). Exact UTC search-run times, search-engine result totals, immutable page snapshots and an independent reviewer are unavailable.
+- **Status:** provisional dated documentary screen — **23 ledger rows** (4 pre-existing, 19 added) covering all seven calendar segments; not reviewed by a qualified human. Not independently verified task outcomes, exhaustive retrieval or human-approved scientific completion.
+- **Official sources checked:** [cline.bot](https://cline.bot/), [blog](https://cline.bot/blog), [cline/cline releases](https://github.com/cline/cline/releases), [repository security advisories](https://github.com/cline/cline/security/advisories), [repository licence](https://github.com/cline/cline/blob/main/LICENSE). Claim grading is company-watch E0–E4, not the separate [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-## 1. Reproducible scope and search audit
+## 1. Discovery, coverage and exclusions
 
-**Search expressions used as a targeted discovery strategy (2026-10-12, public web and the publisher sites):** `site:cline.bot/blog 2026 "SDK" "plugins" "Desktop"; site:cline.ghost.io September 2026 "Desktop"`. The vendor blog/chronicle/product directory and in-window individual results were checked. The retrieval interface did not preserve reliable search-result totals or a complete excluded-URL set: **found/screened/excluded counts beyond the 3 selected leads are not available**. This is *not* a systematic-review search log. Re-run dated queries per each month and save the underlying result list before claiming coverage.
+The [search log](023-cline.search-log.md) records every query and fetch actually run, per segment, with inclusion/exclusion reasons. The main enumeration was read-only `gh api` over the public `cline/cline` releases (**209** release tags between 2026-03-25 and 2026-10-13 across four product lines) and repository security advisories (3, of which 2 in-window), plus WebFetch of dated blog posts and 4 web searches. The previous version's statement that April, July (beyond the benchmark post), August and early October had no verified events was a coverage gap, now filled; this is a dated correction, not evidence inflation. Release counts measure publishing activity, **not** innovation rate, quality or adoption. Search-engine totals are **unknown, not zero**.
 
-**Eligibility:** publication date 2026-04-12–2026-10-12 and a material product, incident, governance or architectural event. For an event reported on one day that occurred earlier, the first release/effective date remains **unknown** until independently established. Do not count news repetitions as separate innovations. Search-page returns are not an unbiased denominator.
+## 2. Identity and rights baseline
 
-| Calendar segment | In-window lead found in this pass | Primary source | Missingness |
-|---|---|---|---|
-| 2026-04-12..30 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-05 | Introducing Cline SDK: the upgraded agent runtime (2026-05-13) | [source](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) | Source-read leads only; supplementary events possible. |
-| 2026-06 | Extending the Cline loop with plugins and hooks (2026-06-15) | [source](https://cline.bot/blog/extend-cline-with-plugins-and-hooks) | Source-read leads only; supplementary events possible. |
-| 2026-07 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-08 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-09 | Cline Desktop: An open-source app for open-weight models (2026-09-14) | [source](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/) | Source-read leads only; supplementary events possible. |
-| 2026-10-01..12 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
+- **Entity:** the public GitHub organisation [cline](https://github.com/cline) (homepage https://cline.bot) publishes the product. The legal entity name ("Cline Bot Inc." in the task prompt) was **not verified** against a corporate registry. Late-January 2026 secondary reports (search snippets only, not opened) say OpenAI hired several Cline staff and that this was "not an acquisition"; this is **pre-window baseline and unverified**, and no change of ownership is asserted here.
+- **Products in window:** VS Code extension (3.79 → 4.1.23; JetBrains shares the core), Cline CLI (3.0.0 → 3.0.70, rebuilt on the SDK), the open-source agent runtime `@cline/sdk`, Cline Desktop / "Cline Code" (macOS from Jul 22; Windows beta per Sep 14 post), the Kanban board server, and the paid ClinePass subscription.
+- **Licences:** repository [cline/cline](https://github.com/cline/cline) declares **Apache-2.0** (GitHub licence metadata, 2026-10-16). The SDK blog post itself names no licence; the Desktop post says the Mac app is "fully open source" without stating the Windows build's licence. Hosted services (Cline provider, ClinePass, connectors) are **not** covered by the code licence; plan terms were not reviewed. Third-party models/providers have their own terms.
+- **Security baseline (pre-window):** [GHSA-9ppg-jx86-fqw7](https://github.com/cline/cline/security/advisories/GHSA-9ppg-jx86-fqw7) (2026-02-17) — unauthorized npm publish of `cline@2.3.0` with a modified postinstall script — predates the window and is excluded from the ledger.
 
-## 2. Identity, ownership and baseline separation
+## 3. Seven-segment dated chronology
 
-Cline is an open-source coding-agent harness that spans IDE, CLI and SDK; product/install-base statements in Cline marketing should not be treated as independently verified unique developers. The Cline SDK and model weights have separate licenses and security properties.
-
-**Official starting point:** https://cline.bot/. Homepage content alone is not dated release evidence; where ownership is inferred from a company announcement, independent legal registry verification remains a separate step. Pre-April announcements are historical baseline, not in-window events.
-
-## 3. Individual dated primary-source events and feature map
-
-| ID | Publication date / underlying actual event | What is directly documented | Availability status | Original link and source class | Independent audit | Working tier |
-|---|---|---|---|---|---|---|
-| 023-E01 | 2026-05-13; **actual first-shipment date not independently established** | Introducing Cline SDK: the upgraded agent runtime: Announces reusable TypeScript @cline/sdk harness and layered provider/runtime stack; indicates IDE extensions still migrating, so full migration not already shipped on May 13 | shipped (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) | No independent functional replication | E2 company-working |
-| 023-E02 | 2026-06-15; **actual first-shipment date not independently established** | Extending the Cline loop with plugins and hooks: Vendor illustrates extensible hooks/plugins and policy/agent integrations; exact default safety requires inspecting specific package version | reported_undetermined (vendor-reported; version/plan limits not independently tested) | [engineering-method](https://cline.bot/blog/extend-cline-with-plugins-and-hooks) | No independent functional replication | E1 company-working |
-| 023-E03 | 2026-09-14; **actual first-shipment date not independently established** | Cline Desktop: An open-source app for open-weight models: Vendor describes early desktop agent harness with parallel sessions and extensibility; article accessible in indexed excerpts but full text read for this source was incomplete | preview (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/) | No independent functional replication | E0 company-working |
-
-**Availability semantics:** `shipped` means the *publisher reports release*, not that our team installed/tested it. `preview` denotes an expressly preview/beta or other constrained offering. `reported_undetermined` denotes engineering analysis or vendor result whose real-world deployment is not verified. `corrected` denotes incident/disclosed mitigation. `announced_only` is not a delivered feature. Do not treat a product benchmark, download/install count, funding announcement, star rank or a vendor-created survey as independently established task value.
-
-**Evidence grades:** the company-watch E0/E1/E2 grades here are **not equivalent** to the study's causal/practical E0–E5 lesson evidence. E1 is first-party traceable announcement/argument; E2 is documentary multi-page corroboration or technical artifact *without* reproduced function. **No E3 independent performance replication, no E4 external multi-context impact evidence**. Where a source is only indexed rather than read completely, its E0 lead remains awaiting full verification.
-
-## 4. Public strategy vs hypothetical outlook (2027–2031)
-
-**Company-attributed public direction:** Cline's May release explicitly separates a reusable agent runtime from IDE UI, and September material signals desktop/parallel workflows. Open source only means inspectable/licensed code for exact packages, not that hosted plans, data or weights are libre.
-
-**Confirmed binding future releases:** none established by this pass. Announced intentions do not amount to delivery schedules.
-
-**Analyst hypothesis, not a company promise (E0):** Reusing a stable open harness may reduce project-specific integration work and enable provider switching, but upkeep and plug-in attack surface may outweigh early gains.
-
-**Confounding / alternative mechanism:** SDK migration and version churn can create compatibility breaks; self-generated acceptance tests can overstate correctness. A disconfirming result is a randomized or matched test showing no added independently accepted task value, or higher lifetime cost and security incidents despite more generated work.
-
-## 5. Connection to study constructs M1–M7
-
-- **M1 workflow chronology:** preserve date and exact feature availability; do not equate tool release with verified developer adoption.
-- **M2 accepted code quality/effort:** independently judge fixed tasks and failures/abstentions, rather than patch counts or anecdotes.
-- **M3 visibility:** stars and promotion are *attention*, never sufficient for actual reuse.
-- **M4 externally reproducible adoption:** require clean external first-use and downstream integration with an eligible denominator.
-- **M5 reuse versus new build:** compare package discovery + license/security/version checks against bounded new build.
-- **M6 lifecycle sustainability:** include planning, reviews, inference, CI, runtime, upgrades and upstream maintenance; **no token-to-kWh or carbon conversion**.
-- **M7 ethical adoption:** only organic, task-verified contributor/user onboarding evidence—not purchased stars or low-value PR activity.
-
-## 6. One practical falsifiable repository experiment
-
-**Repository for initial pilot:** `MSKazemi/github-trending-1000-study`, with only its existing offline code/docs/fixture surfaces. **Proposed—not executed:**
-
-Freeze one external user task to run existing parser using a reusable harness with pinned @cline/sdk commit versus a minimal standard-library CLI workflow. Independently test correctness, successful clean setup, permission boundaries, maintenance/reviewer hours and exact upstream license; do not install third-party agent code into credentialed CI.
-
-**Acceptance design:** before assignment, a person other than the implementing agent must freeze the task description, user success conditions and hidden tests. Use fixed versions, identical safe fixtures and matched task difficulty; record the sampling frame and every refusal, timeout, unsuccessful run or abstention. **Primary endpoint:** fraction of independently accepted tasks with an explicit denominator and uncertainty. **Secondary:** downstream clean-install success, matching legal package identity/license, reviewer-repair minutes, money actually billed or clearly modeled and version drift at 30/90 days. Report kWh/CO2e only if instrumented with a documented system boundary and sensitivity analysis.
-
-**Stop / rollback rule:** Avoid an SDK dependency for this Python-only repo when benefits do not exceed migration, security and future maintenance costs.
-
-**Expected null/negative scenario:** no difference in accepted-task results, higher maintainer or review costs, poorer security, portability or upstream rights, or inability to obtain externally valid task ratings. Do not turn a null result into a fabricated positive lesson.
-
-## 7. Scientific and security limitations
-
-- The sources above are primarily vendor-operated. Independent investigative reporting, complete month searches, detailed feature/version license audits and disagreement resolution remain uncompleted.
-- Distinguish **date a report was published** from actual launch or customer-availability; these are unknown where not explicitly documented.
-- No vendor installation, benchmark run, respondent sampling, source-code security assessment, trial enrollment, verified third-party reuse, power calculation or environmental measurement was carried out.
-- An AI assistant drafting its own report is **not** an independent scientific reviewer. Date and link spot checks are preliminary, not full blind confirmation.
-- Vendor prices/savings, context benefits and release claims require same-task external replication and lifecycle boundaries before becoming recommendations.
-- Do not automatically ingest untrusted code, post to upstream communities or grant tools network/secret access to gather evidence.
-
-## 8. Conditional practical maintainer lesson
-
-**Low-risk practice to test:** inspect existing tools, record their exact versions/rights, freeze user acceptance, measure agent/maintainer costs and keep human-governed review; promote only evidence-backed, type-specific conclusions, including failures. This is an **experiment suggestion** rather than a demonstrated method of increasing repository popularity or reducing energy.
-
-**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #90. A draft report alone is not issue completion.
-
-**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
-
-## Branch reconciliation and no-loss audit (2026-10-13)
-
-The source-screened report above from [PR #202](https://github.com/MSKazemi/github-trending-1000-study/pull/202) is preserved verbatim, including its methodological caveats and first experiment. Its dated source-log `.events.json` is also copied unchanged. The later [PR #237](https://github.com/MSKazemi/github-trending-1000-study/pull/237) provided additional publisher evidence and a separate candidate experiment; these are retained below and in the CSV. Repeated URLs in JSON and CSV are **the same vendor announcement**, not two independent confirmations. The published dates and statuses were spot-checked against linked first-party pages by an AI reviewer, **not a qualified independent human**.
-
-| Published date | Additional source not in original CSV | Caveat |
+| Segment | In-window source evidence (displayed publication dates) | Availability and attribution limits |
 |---|---|---|
-| 2026-06-15 | [Extending the Cline loop with plugins and hooks](https://cline.bot/blog/extend-cline-with-plugins-and-hooks): Publisher shows plugin hooks for agent tool calls and lifecycle event handlers. | Regex examples are not a security sandbox; exact SDK package/version needed. |
-| 2026-09-14 | [Cline Desktop: An open-source app for open-weight models](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/): Publisher describes early Desktop app with parallel agent sessions and optional open-weight models. | Vendor benchmarks are not independently reproduced; installation/compatibility unknown. |
+| Apr 12–30 | [Apr 15 Cline mobile how-to](https://cline.bot/blog/cline-mobile-how-to-vibe-code-from-your-phone) (Kanban board reachable from a phone via Tailscale); [Apr 16 v3.79.0](https://github.com/cline/cline/releases/tag/v3.79.0) (Opus 4.7, remote-config `globalSkills`, "action injection security risk" fix) | How-to exposes a local agent server beyond loopback — relevant to the May advisory; security fix has no advisory/CVE |
+| May | [May 8 GHSA-5c57 / CVE-2026-44211](https://github.com/cline/cline/security/advisories/GHSA-5c57-rqjx-35g2) critical Kanban WebSocket hijack; [May 12 CLI v3.0.0 on the SDK](https://github.com/cline/cline/releases/tag/cli-v3.0.0); [May 13 SDK announcement](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) | No patched version named for CVE-2026-44211 in GitHub/GitLab records; SDK post says IDE extensions still migrating |
+| June | [Jun 15 plugins/hooks](https://cline.bot/blog/extend-cline-with-plugins-and-hooks); [Jun 23 GHSA-3cj3 / CVE-2026-59723](https://github.com/cline/cline/security/advisories/GHSA-3cj3-hqcr-g934) Hub dashboard hijack; [Jun 26 v4.0.0 SDK-backed extension](https://github.com/cline/cline/releases/tag/v4.0.0); [Jun 28 v4.0.1 rollback](https://github.com/cline/cline/releases/tag/v4.0.1); [Jun 29 ClinePass $9.99/month](https://cline.bot/blog/clinepass-best-of-value-for-open-weight-models) | **Shipped then reversed within two days** — explicit negative result; Hub fix version range differs between advisory records |
+| July | [Jul 22 Desktop v0.0.2 — first public macOS release](https://github.com/cline/cline/releases/tag/desktop-v0.0.2); [Jul 24 recursive self-improvement benchmark](https://cline.bot/blog/recursive-self-improvement-for-coding-agents); [Jul 31 v4.1.0 A/B loader, staged rollout from 1%](https://github.com/cline/cline/releases/tag/v4.1.0) | Benchmark is vendor-run (Terminal-Bench 2.1, Kimi K3, 88.8%); rollout share is vendor-controlled |
+| August | [Aug 5 v4.1.4 plan-mode hard block](https://github.com/cline/cline/releases/tag/v4.1.4); [Aug 18 eval traces published](https://cline.bot/blog/open-sourcing-evals-for-open-weight-agents); [Aug 26 code-review agent on the SDK](https://cline.bot/blog/building-a-code-review-agent-with-cline-sdk); [Aug 26 v4.1.16 credential redaction/hook fixes](https://github.com/cline/cline/releases/tag/v4.1.16) | Vendor-stated 100% SDK rollout reached **Aug 23** (reported Sep 2); eval data has no stated licence |
+| September | [Sep 2 migration retrospective](https://cline.bot/blog/how-we-migrated-11-million-users-to-clines-biggest-harness-upgrade); [Sep 14 Desktop announcement](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/); [Sep 17 v4.1.19 Windows executable-hijack fix](https://github.com/cline/cline/releases/tag/v4.1.19); [Sep 22 v4.1.20 parallel sub-agents, hook-context regression fix](https://github.com/cline/cline/releases/tag/v4.1.20) | "11 million users" (Sep) vs "over 7m developers" (May) are vendor figures, not verified adoption; Desktop "announcement" post-dates first macOS release by ~8 weeks |
+| Oct 1–12 | [Oct 2 Desktop v0.0.42 connectors (beta-gated)](https://github.com/cline/cline/releases/tag/desktop-v0.0.42); [Oct 7 v4.1.23](https://github.com/cline/cline/releases/tag/v4.1.23) (MCP output paging, approval race fix, fix of a 4.1.22 regression) | Oct 13 releases and the Oct 15 NVIDIA Nemotron post are **excluded** (out of window) |
 
-**Consolidated sources:** 4 distinct URLs in the CSV, 2 preserved from the newer screen and 2 added. The original JSON retains 3 individually attributed working observations and does not represent a second independent source pool.
+`published_utc` is the displayed source date (GitHub `published_at` date for releases); `event_date_utc` is filled only where the source states a distinct underlying date (Aug 23 rollout completion). Blog-sitemap `lastmod` values show several posts were edited after publication.
 
-**2026-10-13 incremental source note:**
+## 4. Feature, rights and security cross-check
 
-## Incremental source recheck (2026-10-13; first-party documentary audit)
+| Evidence cluster | What the cited documents support | Non-equivalence / counter-evidence |
+|---|---|---|
+| SDK as reusable runtime: [SDK post](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) → [CLI 3.0.0](https://github.com/cline/cline/releases/tag/cli-v3.0.0) → [v4.0.0](https://github.com/cline/cline/releases/tag/v4.0.0) → [v4.0.1 rollback](https://github.com/cline/cline/releases/tag/v4.0.1) → [v4.1.0 A/B loader](https://github.com/cline/cline/releases/tag/v4.1.0) → [Sep 2 retrospective](https://cline.bot/blog/how-we-migrated-11-million-users-to-clines-biggest-harness-upgrade) | One harness now backs CLI, extension and Desktop; vendor reports staged rollout with automatic legacy fallback | First big-bang migration **regressed and was reverted**; user issue reports (e.g. [#11944](https://github.com/cline/cline/issues/11944), plugin sandbox not bundled) are individual reports. A reusable SDK is not evidence of third-party reuse |
+| Extensibility: [plugins/hooks](https://cline.bot/blog/extend-cline-with-plugins-and-hooks), Customize marketplace (v4.0.0), Agent Plugins in Desktop, [code-review agent tutorial](https://cline.bot/blog/building-a-code-review-agent-with-cline-sdk) | Hooks before/after run, tool and model calls; plugins bundle tools/skills/MCP servers | Hook regressions recurred: `PreToolUse` context dropped (fixed v4.1.11), hook workspace mis-resolution (v4.1.16), `UserPromptSubmit`/`TaskStart` context dropped (v4.1.20). A regex deny-list is not a sandbox |
+| Local agent servers: [CVE-2026-44211](https://github.com/cline/cline/security/advisories/GHSA-5c57-rqjx-35g2) (Kanban, CVSS 9.6), [CVE-2026-59723](https://github.com/cline/cline/security/advisories/GHSA-3cj3-hqcr-g934) (Hub, CVSS 8.8) | Two in-window cross-origin WebSocket flaws in localhost servers, the second compounded by auto-approve defaults | Kanban advisory lists **no fixed version** ([GitLab record](https://advisories.gitlab.com/npm/cline/CVE-2026-44211/)); Hub fix range disagrees between [repo advisory](https://github.com/cline/cline/security/advisories/GHSA-3cj3-hqcr-g934) (≤3.0.24) and [GitHub global record](https://github.com/advisories/GHSA-3cj3-hqcr-g934) (<3.0.30) |
+| Approval/safety defaults: v4.0.0 command auto-approval off by default; [v4.1.4 plan-mode hard block](https://github.com/cline/cline/releases/tag/v4.1.4); [v4.1.16](https://github.com/cline/cline/releases/tag/v4.1.16) per-tool MCP auto-approve boxes hidden as no-ops; [v4.1.19](https://github.com/cline/cline/releases/tag/v4.1.19) Windows planted-executable fix; v4.1.17 checkpoint restore refuses to drop later commits | Vendor moved several controls from prompting to enforcement | The vendor's own note that per-tool MCP approval boxes "were no-ops" means users had a false sense of granularity before Aug 26. Planted-executable fix has no advisory/CVE |
+| Model portability: hundreds of providers; v4.1.20 / v4.1.22 / v4.1.23 change default models for many unpinned providers | Provider switching is a core product property | Silent default-model changes undermine reproducibility unless a model is pinned |
+| Benchmarks: [Jul 24 Terminal-Bench 2.1 88.8%](https://cline.bot/blog/recursive-self-improvement-for-coding-agents), May 13 Terminal-Bench 2.0 figures, Sep 14 Desktop post | Vendor-run results with some disclosed caveats (invalidated reruns, human babysitting) | Not independently replicated; harness tuned against the benchmark it reports |
 
-This adds 2 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](023-cline.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+**Independent coverage screened:** [TestingCatalog (May 13, labelled Sponsored)](https://www.testingcatalog.com/cline-releases-open-source-agent-runtime-sdk-for-coding-agents.md) and [RuntimeWire (Sep 14)](https://runtimewire.com/article/cline-launches-desktop-coding-agent-open-weight-models) restate vendor material — **not** independent confirmation. The GitHub-reviewed and GitLab advisory records are third-party *databases* of the vendor's disclosure, not independent reproductions. No critical investigative reporting was found within the search budget (absence ≠ none).
 
-| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
-|---|---|---|---|
-| 2026-05-13 | [Introducing Cline SDK: the upgraded agent runtime, and we rebuilt Cline upon it](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) | Cline announced an embeddable agent runtime extracted from its IDE product. | `shipped`; No tested pin/license/provenance for a specific install in this study. |
-| 2026-07-24 | [Recursive Self Improvement for Coding Agents](https://cline.bot/blog/recursive-self-improvement-for-coding-agents) | Cline reported optimizing a coding-agent harness and a Terminal-Bench score. | `reported_undetermined`; Task selection, contamination, model/provider and energy boundaries not independently audited. |
+## 5. Publicly stated direction versus shipped functionality
 
-**Correction to first pass / interpretation:** The Cline SDK has a concrete public repository and Apache-2.0 declaration, but the observed GitHub main branch is mutable. Record exact dependency/package versions and commit before any actual integration; do NOT infer that a blog announcement verifies a reproducible package build. Cline's benchmark discussion is a vendor optimization report, not an independent ranking.
+| Dated first-party statement | Stated intention | Classification on 2026-10-12 |
+|---|---|---|
+| [May 13 SDK post](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime): "We are in the process of migrating our VS Code and Jetbrains extensions." | Rebuild all surfaces on one SDK | VS Code: **shipped after one rollback**, 100% per vendor as of Aug 23. JetBrains: not separately verified |
+| [Jun 15 plugins post](https://cline.bot/blog/extend-cline-with-plugins-and-hooks): plugins reusable "across the CLI, VS Code, JetBrains, and the SDK" | One plugin format across surfaces | Partly shipped (extension marketplace in v4.0.0/4.1.x; Desktop Agent Plugins Sep 3); JetBrains parity unverified |
+| [Sep 14 Desktop post](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/) | Dedicated open-source workspace for open-weight models, scheduled tasks, marketplace | **Preview/beta** (pre-1.0, Windows beta, connectors beta-gated) |
+| [Jun 29 ClinePass](https://cline.bot/blog/clinepass-best-of-value-for-open-weight-models) | Low-cost subscription for open-weight models | Shipped (paid service); value/rate-limit claims unverified |
 
-**Negative/independent evidence needed:** Cline's historical February 2026 unauthorized npm publish predates this study window; it is a supply-chain risk baseline, not an April–October in-window release. Check version-pinned SDK dependencies and sandbox boundaries.
+No dated 2027+ roadmap commitment was found. Stated intentions are not delivery schedules.
 
-**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company strategy)
 
-**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #90 must remain under review until acceptance gates pass.
+| Hypothesis | Rival explanation | Disconfirming observation |
+|---|---|---|
+| A shared open runtime (SDK) lowers the cost of building task-specific agents (e.g. review agents) versus bespoke loops | Frequent SDK releases (32 tags Jul 15–Oct 8, still 0.0.x) make pinning and upgrades costlier than a small custom loop | Pinned-SDK prototype needs more maintenance minutes over 90 days than a minimal custom loop for the same accepted tasks |
+| Moving controls from prompts to enforced hooks/plan-mode blocks reduces unsafe agent actions | Repeated hook regressions and localhost-server CVEs show enforcement layers add their own attack surface | Adversarial fixture suite shows equal or higher policy-violation rate with hooks enabled |
+| Model portability helps reproducibility across changing providers | Unpinned default-model churn makes results drift | Same pinned task replay differs materially across catalog refreshes even with model pinned |
 
+## 7. M1–M7 study relevance
 
-**Outstanding review gate:** complete seven-segment discovery/search denominators, source revisions, identity/terms checks and genuine independent reviewer approval before labeling company analysis complete. No product installed, no experiment executed, no observed adoption or environmental benefit. Issue #90 remains open.
+| Construct | Prospective measurement (not an inferred conclusion) |
+|---|---|
+| **M1** coding-practice change | Record which surface (IDE/CLI/SDK/Desktop) and approval mode opt-in maintainers actually use; releases ≠ usage |
+| **M2** accepted task quality | Independently authored hidden acceptance tests; count failures, refusals, rollbacks (cf. 4.0.0 → 4.0.1) |
+| **M3** discovery | Vendor user counts (7m → 11m) and stars are attention, not reuse |
+| **M4** verified third-party reuse | Trace a consented downstream project actually embedding `@cline/sdk` at a pinned version |
+| **M5** reuse-first | Compare pinned `@cline/sdk` against a minimal standard-library loop and existing CI tools for one frozen task |
+| **M6** lifecycle cost | Upgrade/rollback/review minutes and CI time; **no token-to-kWh/CO2e conversion** |
+| **M7** safe adoption | Local-server exposure, auto-approve defaults and secret redaction tested before any opt-in pilot |
 
-### Preserved later working draft
+## 8. One falsifiable reuse-first maintainer experiment (proposed, not executed)
 
-The complete 2026-10-13 alternate source-screen text, including its initial search description, limitations and separate proposed repository experiment, is preserved **verbatim** in [the alternate report archive](source-archives/023-cline.2026-10-13-first-screen.md). It is documentary draft provenance, not independent validation of publisher claims or a completed study.
+**Target:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study) offline surfaces only (synthetic fixtures; live Trending `capture` stays disabled under the source-access decision).
 
+**Frozen task (set by a person other than the implementer, before assignment):** "Given a PR diff touching `trending_study/`, produce review findings that a hidden, independently written checklist of 10 seeded defects (plus 10 clean diffs) can score." All 20 diffs stay in the denominator, including timeouts and refusals.
 
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+**Comparator A (reuse):** a review agent built on a **pinned** `@cline/sdk` release (exact version + commit + Apache-2.0 licence recorded), run in a throwaway container with no network secrets, no credentialed CI, and command auto-approval off. **Comparator B (minimal build):** the repo's existing `python3 -m unittest` suite and validators plus a ≤150-line standard-library script, no agent. Same model/provider budget cap for A if a model is used; B uses none.
 
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+**Primary endpoint:** seeded defects found ÷ 10 and false-positive flags ÷ 10 clean diffs, scored by the hidden checklist. **Secondary:** setup + review + repair minutes (measured), dependency count added, licence/provenance check pass, and 30-day upgrade effort given SDK release cadence. Energy only if metered, with system boundary.
 
-- **Publisher page and source publication date:** [Introducing Cline SDK: the upgraded agent runtime, and we rebuilt Cline upon it](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime) — 2026-05-13 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** Cline's article describes an agent runtime extracted from its editor extension, named `@cline/sdk`, for reuse across CLI/editor surfaces and third-party embedding. The article includes self-run Terminal-Bench numbers, which are not independent evidence.
-- **Correction / uncertainty to retain:** No exact package digest, Node/runtime compatibility, license, supply-chain security or successful consumer installation was verified. A documentation page or benchmark chart cannot serve as an independent first-use acceptance test.
-- **Falsifiable maintainer experiment (not performed):** Before implementing a duplicate agent loop, evaluate a pinned SDK release in an isolated throwaway environment against fixed tool-call, cancellation, safety and restart tests; log integration effort and package provenance.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+**Guardrails/stop rule:** stop A immediately on any write outside the container, any secret read, or any local server listening beyond loopback (cf. CVE-2026-44211/59723). **Do not adopt A** unless it detects ≥3 more seeded defects than B *and* total maintainer minutes (including upgrade/review) are not higher; otherwise keep B. A null or negative result is reported as such.
 
+## 9. Evidence quality, limitations and review checklist (2026-10-16)
 
-## Controlled integration review — 2026-10-14 (provisional first-party leads only)
+- **Inventory:** 23 CSV rows — 12 GitHub release notes (E2 documentary), 2 security advisories (E2), 9 first-party blog posts (E1). No E3/E4 evidence: nothing was installed, run or independently replicated.
+- **Negative/contrary results retained:** v4.0.0 regression and rollback; two in-window localhost WebSocket CVEs (one with no named fix); repeated hook regressions; MCP per-tool approval boxes were no-ops; Desktop "announcement" lags first release; inconsistent vendor user figures.
+- **Unknowns:** legal entity and ownership at filing level; Marketplace/Open VSX/npm publish dates and provenance; JetBrains parity; Windows Desktop licence; actual user adoption; real-world exploitation of the CVEs (none claimed).
+- **Pending:** qualified human factual/link review, source-access/rights review, methods review, archived snapshots, and any controlled task trial. AI-assisted drafting is not independent review.
 
-The older #202 report is retained as a verbatim prefix, its three-event original JSON remains byte-for-byte, and the alternate source screen is archived. The supplemental CSV has four distinct vendor URLs, with overlapping events retained as a single underlying source family rather than independent replications. Publisher pages/index confirm May 13 SDK architecture announcement, June 15 plugins/hooks documentation, July 24 self-improvement benchmark account, and September 14 Desktop announcement. The SDK account's working E2 is a **publisher technical-description grade**, not confirmation of SDK package license/version or independently tested portability. The July benchmark 88.8% score and cost figures are author-selected vendor-reported results, NOT independently replicated, and E0 Desktop availability/rights remain provisional pending original-page verification. This integration supports a future **reuse-first versus rebuilding an agent harness** experiment in this study repo: pin exact dependency and license, freeze tasks and independent tests, and include full review/maintenance and measured environmental boundaries. No user adoption, task-quality gain or physical energy outcome is established; scientific issue #90 and qualified second-human research review remain open.
+**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md) · [news intake #56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+
+## Earlier screen (preserved)
+
+Full prior texts remain in git history, the unchanged [`023-cline.events.json`](023-cline.events.json) (3 working observations, review date 2026-10-12) and the [archived 2026-10-13 alternate screen](source-archives/023-cline.2026-10-13-first-screen.md). Summary of what the previous version of this file claimed:
+
+- **Origin:** first-pass report from [PR #202](https://github.com/MSKazemi/github-trending-1000-study/pull/202) (2026-10-12), reconciled with the alternate screen from [PR #237](https://github.com/MSKazemi/github-trending-1000-study/pull/237) (2026-10-13), plus a 2026-10-14 desk check of the SDK page and a 2026-10-14 "controlled integration review". Official starting point cited: https://cline.bot/.
+- **Claimed events (4 CSV rows, 3 JSON rows):** May 13 SDK announcement (`shipped`, E1/E2) — [source](https://cline.bot/blog/introducing-cline-sdk-the-upgraded-agent-runtime); Jun 15 plugins/hooks (`reported_undetermined`) — [source](https://cline.bot/blog/extend-cline-with-plugins-and-hooks); Jul 24 recursive self-improvement benchmark, "88.8% score and cost figures … NOT independently replicated" — [source](https://cline.bot/blog/recursive-self-improvement-for-coding-agents); Sep 14 Desktop (`preview`) — [source](https://cline.ghost.io/cline-desktop-an-open-source-app-for-open-weight-models/). Searches logged then: `site:cline.bot/blog 2026 "SDK" "plugins" "Desktop"; site:cline.ghost.io September 2026 "Desktop"`.
+- **Claimed gaps:** April, July (other than the benchmark), August and Oct 1–12 had "no verified event in this bounded source screen" — explicitly *not* a zero-event assertion. This upgrade fills those segments.
+- **Claimed caveats (still valid):** SDK repository is Apache-2.0 but main is mutable, so pin exact versions/commits; February 2026 unauthorized npm publish is pre-window supply-chain baseline; empty `event_date_utc` means unverified, not equal to publication date; no installation, adoption or energy outcome measured.
+- **Prior experiment:** freeze a user task to run the existing parser via a pinned `@cline/sdk` harness vs a minimal standard-library CLI, with independent tests, permission boundaries and maintenance hours; stop if benefits do not exceed migration/security/maintenance costs. Section 8 refines this into a review-agent task with seeded defects.
+- **QC outcome of the preserved rows (2026-10-16):** all 4 reachable, dates match, claims supported; limitation text clarified for 001/003/004 — see [source QC](023-cline.source-qc-2026-10-16.md). The archived alternate screen linked the Desktop item to the blog index https://cline.bot/blog rather than the article; the ledger uses the article URL.

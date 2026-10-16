@@ -1,0 +1,42 @@
+# Cline (023) — dated source-query and inclusion audit (2026-10-16)
+
+> **Provisional source-lead screen (upgraded 2026-10-16):** this log, the [report](023-cline.md), [event ledger](023-cline.events.csv) and [source-QC note](023-cline.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads**, unreviewed by a qualified human; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue #90 was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
+
+**Window:** 2026-04-12…2026-10-12 inclusive. **Screened:** 2026-10-16 (exact UTC run times not recorded). **Tools:** read-only `gh api` against public GitHub endpoints (no auth scopes used beyond the default CLI token; no writes), WebFetch of public pages, and 4 WebSearch calls (shared budget). No login, paywall, `github.com/trending` access, bulk crawl, or personal identifier in any request. Earlier logs: the first screen's queries are recorded inside the [archived 2026-10-13 alternate screen](source-archives/023-cline.2026-10-13-first-screen.md) and the [`.events.json`](023-cline.events.json) (`search_query_logged`), both left untouched. **Search-engine hit counts are unknown, not zero.** Not exhaustive.
+
+## 1. Enumerations (whole window)
+
+| Query / fetch actually run | What it returned | Use |
+|---|---|---|
+| `gh api --paginate repos/cline/cline/releases` filtered to 2026-03-25…2026-10-13 | **209** releases in that span (ext `vX.Y.Z` 55, `cli-v*` 70, `sdk/sdk/v*` 32, `desktop-v*` 52); per month Apr 5, May 21, Jun 33, Jul 38, Aug 58, Sep 41, Oct 12 (incl. Oct 13 tags and 1 March tag) | Release bodies of 31 tags read; **12 included** as rows (material capability, security or rollback); others excluded as routine model-catalog/bugfix releases. Release counts are activity, not innovation or adoption. |
+| `gh api repos/cline/cline/security-advisories` | 3 advisories: GHSA-9ppg-jx86-fqw7 (2026-02-17, low), GHSA-5c57-rqjx-35g2 (2026-05-08, critical), GHSA-3cj3-hqcr-g934 (2026-06-23, high) | 2 in-window included; Feb npm incident **excluded** (pre-window baseline) |
+| `gh api /advisories/GHSA-5c57-rqjx-35g2`, `/advisories/GHSA-3cj3-hqcr-g934` | GitHub-reviewed records: CVSS 9.6 / 8.8, NVD-published 2026-06-01 / 2026-07-08, first patched none / 3.0.30 | Independent-check fields and version-range discrepancy |
+| `gh api repos/cline/cline`, `gh api orgs/cline` | repo licence Apache-2.0, created 2024-07-06, org "Cline", homepage https://cline.bot | Identity/rights baseline |
+| WebFetch https://cline.bot/blog | Index shows dated posts Oct 15, Sep 14, Sep 2 and 6 undated posts | Lead list |
+| WebFetch https://cline.bot/sitemap.xml | ~100 blog URLs with `lastmod` | Lead list only; **`lastmod` is an edit timestamp, not publication** (e.g. plugins post lastmod 07-29 vs displayed 06-15) |
+
+## 2. Per-segment log
+
+| Segment | Queries / fetches | Pages opened | Included rows | Excluded / why | Search counts |
+|---|---|---|---|---|---|
+| Apr 12–30 | release enumeration; sitemap; WebFetch `/blog/cline-mobile-how-to-vibe-code-from-your-phone` | v3.79.0, v3.80.0, v3.81.0 bodies; Cline mobile post (Apr 15) | 005 (v3.79.0), 006 (Cline mobile) | v3.80.0/v3.81.0 routine (model support, OOM diagnostics); `what-a-sigkill-race-reveals-about-inference-speed` (lastmod Apr 14) **not opened** (date unverified); `architects-or-tenants…` lastmod Apr 7 pre-window | unknown |
+| May | release enumeration; advisories; WebFetch SDK post; WebSearch "Cline coding agent 2026 SDK OR Desktop OR ClinePass news"; WebSearch "CVE-2026-44211 Cline kanban WebSocket hijack"; WebFetch GitLab advisory; WebFetch testingcatalog SDK article | cli-v3.0.0, v3.82.0, v3.83.0, v3.84.0, v3.86.0 bodies; GHSA-5c57; SDK post; GitLab advisory; TestingCatalog (labelled **Sponsored**, restates vendor) | 007 (CVE-2026-44211), 008 (CLI 3.0), existing 001 | TestingCatalog not counted as independent (sponsored restatement) — used only as `independent_check_url` pointer with that caveat; v3.84.0 removed Kanban launch modal (minor) | WebSearch results: 10 + 9 links shown; totals unknown |
+| June | release enumeration; WebFetch plugins/hooks post; WebFetch ClinePass post; `gh api search/issues` `repo:cline/cline is:issue created:2026-06-26..2026-06-28 4.0` | v3.87.0, v3.89.0, v4.0.0, v4.0.1, v4.0.5 bodies; GHSA-3cj3; ClinePass post (Jun 29); issue list | 009 (v4.0.0), 010 (v4.0.1 rollback), 012 (CVE-2026-59723), 013 (ClinePass), existing 003 | v3.87.0 dependency CVE bumps and model additions (routine); issue search returned **17** issues — individual user reports, not verified regressions; only #11944 cited | issue search 17 |
+| July | release enumeration; WebFetch recursive-self-improvement post | v4.0.7, v4.0.9, v4.0.12, v4.1.0, sdk v0.0.61, desktop-v0.0.2 bodies | 011 (Desktop first macOS release), 014 (v4.1.0 A/B rollout), existing 002 | sdk/sdk/v0.0.61 is merely the first SDK tag in the GitHub release list (earlier SDK versions exist), excluded as not a launch; `how-to-save-millions-by-self-hosting-llms` (lastmod Jul 16) not opened; v4.0.9 note about a GitHub API outage excluded (operational) | unknown |
+| August | release enumeration; WebFetch evals post; WebFetch code-review-agent post | v4.1.4, v4.1.10, v4.1.11, v4.1.16, cli-v3.0.60 bodies; evals post (Aug 18); review-agent post (Aug 26) | 015, 016, 017, 018 | v4.1.10 web search / v4.1.11 image generation (capability adds, noted in report but not separate rows); `best-open-weight-models…`, `nvidia-nemotron-3-5-lightning…`, `deepseek-wins-imo-gold…` not opened (model/marketing posts; dates unverified) | unknown |
+| September | WebFetch migration retrospective; WebFetch Desktop post (ghost); WebFetch runtimewire Desktop article | v4.1.17, v4.1.19, v4.1.20, v4.1.22, desktop-v0.0.23 bodies; migration post (Sep 2); Desktop post (Sep 14); RuntimeWire (Sep 14, restates vendor) | 019, 020, 021, existing 004 | RuntimeWire not counted as independent confirmation (relies on vendor X post/blog); v4.1.17 checkpoint-safety and hub-memory fixes and v4.1.22 provider changes noted in report only | unknown |
+| Oct 1–12 | release enumeration | desktop-v0.0.42, v4.1.23 bodies | 022, 023 | **Out of window, excluded:** v4.1.24 / cli-v3.0.71 / sdk v0.0.93 / desktop-v0.0.46 (all 2026-10-13); blog "Cline Agents Harness Unlocks Benchmark-Leading Performance from NVIDIA Nemotron 3.5 Super VL" (2026-10-15) | unknown |
+| Identity / baseline | WebSearch `"Cline Bot" Inc 2026 funding OR acquisition OR raises`; WebSearch `Cline OpenAI January 2026 acqui-hire team joins` | search result snippets only (CB Insights, aggregator sites) — **not opened** | none | Late-January 2026 reports that OpenAI hired several Cline staff, described by OpenAI as "not an acquisition" (per result snippets), are **pre-window and unverified** here; CB Insights "reverse acqui-hire" label unverified (data-vendor page). No individual is named in this study. | 10 + 10 links shown; totals unknown |
+
+## 3. Not executed (budget or policy)
+
+- `"Cline" after:2026-04-11 before:2026-10-13 AI agents software development` (issue's suggested query) — **not executed**; replaced by GitHub release/advisory enumeration and the general news query above.
+- `"Cline" 2026 open source developer ecosystem` — **not executed** (WebSearch budget).
+- `site:theregister.com OR site:techcrunch.com Cline 2026` — **not executed**.
+- Direct NVD pages — attempted, returned a JS shell only (counted as unavailable, not as absence).
+- VS Code Marketplace / Open VSX version histories and npm `cline`/`@cline/sdk` registry metadata — **not queried** (would verify publish dates/provenance; pending).
+- Corporate registry for the legal entity (task prompt says "Cline Bot Inc.") — **not queried**; entity name unverified here.
+
+## 4. Inclusion rules applied
+
+Included: dated in-window first-party release notes/advisories/blog posts describing a material capability, security disclosure, rollback or plan/pricing change; independent pages only as cross-checks. Excluded: routine model-catalog refreshes, pre/post-window items, undated posts whose date could not be confirmed, syndications/sponsored restatements as separate events. Rows sharing `duplicate_event_group` (`023-2026-05-13-clinesdk`, `023-sdk-extension-migration`, `023-reconciled-4`) describe one event family, not independent confirmations.
