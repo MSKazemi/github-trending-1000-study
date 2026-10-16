@@ -220,6 +220,41 @@ class NewsCorpusTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "whitespace or controls"):
                     validate_records([(bad["id"] + ".json", bad)])
 
+    def test_public_source_hosts_refuse_private_numeric_and_invalid_dns(self):
+        # URL strings are evidence leads, never network-fetch authorization.
+        invalid_hosts = (
+            "localhost", "build-server", "metadata.google.internal",
+            "internal.example.local", "127.0.0.1", "10.0.0.1",
+            "192.168.0.1", "127.1", "2130706433", "0x7f000001",
+            "0177.0.0.1", "0x7f.0.0.1", "192.168.1",
+            "example..org", "-example.org", "example-.org",
+            "foo_bar.org", "a" * 64 + ".org",
+        )
+        for host in invalid_hosts:
+            with self.subTest(host=host):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = "https://" + host + "/article"
+                with self.assertRaisesRegex(ValueError, "public source host"):
+                    validate_records([(bad["id"] + ".json", bad)])
+        for host in ("research.example.org", "journals-research.example.org",
+                     "xn--bcher-kva.example.org"):
+            with self.subTest(public_syntax=host):
+                valid = copy.deepcopy(self.item)
+                valid["canonical_url"] = "https://" + host + "/article"
+                self.assertEqual(
+                    validate_records([(valid["id"] + ".json", valid)])["records"], 1
+                )
+
+    def test_source_url_rejects_controls_before_urlsplit_normalizes_them(self):
+        for url in ("https://example.org/article" + chr(127),
+                    "https://example.org/ar" + chr(10) + "ticle",
+                    "https://bad host.example/article"):
+            with self.subTest(url=repr(url)):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = url
+                with self.assertRaisesRegex(ValueError, "whitespace or controls"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
     def test_reject_malformed_canonical_authority_and_empty_userinfo(self):
         for source_url in (
             "https://@example.org/report",
