@@ -51,6 +51,55 @@ class HiringAgreementTests(unittest.TestCase):
         self.assertTrue(all(r["primary_task"]=="not_reviewable" for r in packet["ratings"]))
         with self.assertRaises(ValueError):self.analyze(a=packet)
 
+    def test_unavailable_packet_null_provenance_remains_valid_missingness(self):
+        # The generated blank review card must be usable after labeling it
+        # clearly as fictional synthetic work without fabricating a timestamp
+        # or source evidence for an inaccessible job advertisement.
+        a = h.prepare(self.frame, "fictional_A", ROOT)
+        b = h.prepare(self.frame, "fictional_B", ROOT)
+        for review in (a, b):
+            review["dataset_kind"] = "synthetic"
+            review["reviewed_at_utc"] = "2026-10-14T12:00:00Z"
+        report = self.analyze(a=a, b=b)
+        self.assertEqual(report["selected_n"], 9)
+        self.assertEqual(report["per_theme"]["agent_runtime"]["n"], 0)
+        self.assertEqual(report["per_theme"]["agent_runtime"]["excluded_n"], 9)
+        self.assertIsNone(report["per_theme"]["agent_runtime"]["cohens_kappa"])
+        self.assertEqual(report["per_theme"]["agent_runtime"]["rater_a_exclusions"]["not_reviewable"], 9)
+        self.assertFalse(report["human_independence_verified"])
+        self.assertEqual(report["research_enrollment"], "blocked")
+        self.assertEqual(report["adjudication"]["status"], "complete")
+
+    def test_read_source_requires_real_timestamp_and_evidence_reference(self):
+        a = h.prepare(self.frame, "fictional_A", ROOT)
+        b = h.prepare(self.frame, "fictional_B", ROOT)
+        for review in (a, b):
+            review["dataset_kind"] = "synthetic"
+            review["reviewed_at_utc"] = "2026-10-14T12:00:00Z"
+        row = a["ratings"][0]
+        row["source_access"] = "read"
+        row["primary_task"] = "uncertain"
+        row["themes"] = dict.fromkeys(h.THEMES, "uncertain")
+        with self.assertRaisesRegex(ValueError, "source_checked_at_utc"):
+            self.analyze(a=a, b=b)
+        row["source_checked_at_utc"] = "2026-10-14T11:00:00Z"
+        with self.assertRaisesRegex(ValueError, "evidence_ref"):
+            self.analyze(a=a, b=b)
+        row["evidence_ref"] = "fictional_checked_reference"
+        report = self.analyze(a=a, b=b)
+        self.assertEqual(report["per_theme"]["agent_runtime"]["n"], 0)
+        self.assertEqual(report["review_submission"]["paired_selected_n"], 9)
+
+    def test_unavailable_optional_timestamp_still_cannot_follow_review(self):
+        a = h.prepare(self.frame, "fictional_A", ROOT)
+        b = h.prepare(self.frame, "fictional_B", ROOT)
+        for review in (a, b):
+            review["dataset_kind"] = "synthetic"
+            review["reviewed_at_utc"] = "2026-10-14T12:00:00Z"
+        a["ratings"][0]["source_checked_at_utc"] = "2026-10-14T12:01:00Z"
+        with self.assertRaisesRegex(ValueError, "source check after review"):
+            self.analyze(a=a, b=b)
+
     def test_binary_math_and_missingness_denominators(self):
         result=self.analyze()
         self.assertEqual(len(result["records"]),24)
