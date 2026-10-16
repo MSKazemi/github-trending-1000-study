@@ -98,6 +98,18 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
+    def test_trailing_slash_can_select_distinct_source_documents(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report/"
+        # Paths may be distinct resources: dedup should not discard either
+        # provisional source lead without a content-level human review.
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
     def test_ref_is_preserved_when_it_may_select_source_version(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)
