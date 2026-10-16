@@ -1,0 +1,134 @@
+# Offline registry pair-packet integrity
+
+Issue #15's registry pilot is an offline, source-bounded package-name lead
+frame. It neither installs packages nor validates a human research cohort.
+
+The `audit-pairs` command validates the complete packet's schema before
+counting submitted reviewer decisions. A valid content fingerprint is necessary
+but does not replace schema validation. `nominated_pair_count` must equal the
+number of pair records; pair IDs, task IDs and task/component combinations
+must be unique, and every nominated task must appear in the packet's task frame.
+Malformed identities, unsupported schema versions, inconsistent uncertainty
+flags and undeclared fields are rejected. One submitted decision cannot be
+multiplied by repeating a pair record.
+
+All three subcommands read every input through the shared
+`data_integrity.load_research_json_file` reader (see the 2026-10-15
+maintainer-review correction below). Duplicate object keys, nonstandard or non-finite numeric values,
+overflow, underflow and invalid UTF-8 fail before publishing a result.
+Outputs retain the existing write-once publication contract.
+
+**2026-10-15 input-safety correction.** The first draft passed `Path.read_bytes()`
+to that strict parser; this silently followed leaf symlinks and read an unbounded
+input before parsing. All three CLI modes now open each input nonblocking and
+without following its final symlink (on platforms with the required OS flags),
+verify the opened descriptor is an ordinary file, cap the actual read at
+`MAX_FILE_BYTES + 1`, and sanitize malformed JSON diagnostics so sensitive
+object keys and local file paths are not echoed. The same bound applies to each
+input separately, not to the sum of the several input files. On platforms
+without these safe-open flags, the CLI fails closed. This is not a guarantee
+against hostile ancestor-directory replacement. Offline synthetic tests cover
+oversized sparse files, directories, symlinks, FIFOs, private duplicate keys,
+and no-output-on-failure behavior. This corrects a code safety defect, not
+scientific sample validation.
+
+**2026-10-15 maintainer-review correction (supersedes the bespoke reader
+described above).** The module-local `_read` duplicated the repository's
+shared bounded reader. It now delegates to
+`data_integrity.load_research_json_file`, the house pattern also used by
+`package_review`, `literature_ledger` and other strict CLIs, and maps its
+fixed diagnostics to `RegistryFrameError` without echoing paths or keys. The
+oversized/symlink/FIFO/directory/duplicate-key/no-output regressions are kept
+unchanged and still pass. On platforms without `O_NOFOLLOW`, the shared
+reader's pre-open symlink check applies instead of failing closed.
+
+Run the offline regression checks with:
+
+```bash
+python -m unittest discover -s tests -p test_quiet_reuse_registry_integrity.py -v
+python -m unittest discover -s tests -v
+```
+
+Every new reviewer, task and package fixture is synthetic. Reviewer identity,
+independence, source rights, source authenticity, task correctness, release
+availability, license and security still require actual external verification.
+Neither a content fingerprint nor a successful structural audit establishes
+scientific acceptance. The output flags for authenticated human reviewers and
+issue #15 scientific acceptance remain false.
+
+The `prepare-pairs` command now requires the original `--manifest` and `--plan`
+alongside `--selection`. It deterministically derives `select_registry(manifest,
+plan)` and compares the complete selection before admitting any nominations.
+Changing selected package IDs, source records, seed, quotas or provenance/count
+fields requires deriving a new selection from those inputs; an edited list
+cannot nominate an off-frame package while retaining the original hashes.
+This checks consistency of submitted artifacts, not source authenticity: an
+invented source manifest/plan cannot become independently verified evidence by
+passing the comparison.
+
+`audit-pairs` likewise requires `--manifest` and `--plan`. A packet's
+`packet_sha256` is computed by whoever wrote the packet, so before counting any
+review the audit re-derives `select_registry(manifest, plan)` and requires the
+packet's `selection_plan_sha256` and `selection_source_sha256` to equal the
+fresh selection's hashes and every pair's `package_id` to be a selected lead.
+An off-frame package or a re-bound plan/source hash can no longer be counted
+by recomputing the packet fingerprint.
+
+The manifest reader also recomputes each segment's Git tree-object SHA-1 from
+its entries (mode `100644`, name, blob SHA, byte-sorted names) and requires it
+to equal the declared `directory_tree_sha`. Dropping, adding, renaming or
+re-hashing an entry while adjusting `declared_count` therefore fails. This
+binds the listing to a content address; it does not prove that the upstream
+repository actually served that tree.
+
+This is a compatibility correction to a new, unmerged pilot interface with no
+existing repository consumers. Python callers must supply the original inputs
+as `prepare_pair_packet(selection, tasks, nominations, manifest, plan)` and
+`audit_pair_reviews(packet, review_a, review_b, manifest, plan)`.
+Existing selection/result output fields are preserved. For example:
+
+```bash
+python -m trending_study.quiet_reuse_registry prepare-pairs \
+  --manifest /path/to/original-manifest.json --plan /path/to/original-plan.json \
+  --selection /path/to/selection.json --tasks /path/to/frozen-tasks.json \
+  --nominations /path/to/nominations.json --output /path/to/new-pair-packet.json
+```
+
+Reuse review: the existing standard-library-only public strict JSON helper and
+write-once publisher satisfy this task without another dependency or JSON
+parser. The MIT-licensed repository's existing validators and tests were
+inspected. Python's official JSON documentation describes duplicate-key and
+nonstandard-number defaults: <https://docs.python.org/3/library/json.html>.
+No public-package installation or external code execution was needed.
+
+
+## 2026-10-15 task/reviewer chronology guard
+
+The pair-audit verifier now rejects any submitted reviewer timestamp earlier
+than any task's recorded frozen baseline. Previously an otherwise internally
+consistent fictitious review could be dated **before** its task existed while
+still increasing the provisional-fit numerator. This rule applies even if the
+coder's report has no decisions; an empty but pre-task report is not a valid
+post-baseline review event. Regression tests cover a pre-task report and a
+re-fingerprinted packet with its task date moved after both reviewers' dates.
+At/after-baseline timestamps only establish internal chronology: task-freeze
+independence, release availability, package rights, reviewer identities and
+actual functional tests all still require a qualified external audit. This
+is not evidence that the issue's 50 human-adjudicated pairs have been obtained.
+
+
+## 2026-10-15 distinguish synthetic concordance from the 50-human acceptance target
+
+Earlier reports computed `still_needed_for_50_provisional = 50 -
+concordant_provisional_fit`. That number describes the remaining **candidate
+matching-label** count only: even perfect synthetic A/B concordance supplies
+**zero externally authenticated independent human reviews**. The output now
+also returns `externally_authenticated_human_pairs: 0` and
+`still_needed_for_50_authenticated_human_pairs: 50`, without allowing
+self-supplied rater IDs, invented test links or labels to decrement the true
+scientific review requirement. The original provisional counter is preserved
+for backward-compatible offline feasibility diagnostics, but should never be
+presented as completed scientific progress. To reduce the real remaining
+number, a **separate provenance-verified, qualified human review workflow**
+will need a new audited schema and signed/traceable source records. This tool
+cannot authenticate that external process or certify issue #15's 50-pair gate.

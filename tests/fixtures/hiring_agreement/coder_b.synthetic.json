@@ -1,0 +1,200 @@
+{
+  "dataset_kind": "synthetic",
+  "frame_sha256": "f1fb2ef19148fa566c97d2cd2f9323a3a48ee1a29959793b2bb753dc5b6badfd",
+  "human_attested": false,
+  "ratings": [
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S01",
+      "item_id": "S01",
+      "primary_task": "agent_harness",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "present",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S02",
+      "item_id": "S02",
+      "primary_task": "evaluations",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "absent",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S03",
+      "item_id": "S03",
+      "primary_task": "agent_harness",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "present",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S04",
+      "item_id": "S04",
+      "primary_task": "evaluations",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "absent",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S05",
+      "item_id": "S05",
+      "primary_task": "agent_harness",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "present",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "access_failure",
+      "evidence_ref": "fictional_evidence_S06",
+      "item_id": "S06",
+      "primary_task": "not_reviewable",
+      "source_access": "unavailable",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "not_reviewable",
+        "agent_runtime": "not_reviewable",
+        "context_memory": "not_reviewable",
+        "developer_reuse": "not_reviewable",
+        "enterprise_integrations": "not_reviewable",
+        "evaluation_quality": "not_reviewable",
+        "inference_efficiency": "not_reviewable",
+        "other": "not_reviewable",
+        "platform_infrastructure": "not_reviewable",
+        "rl_training": "not_reviewable",
+        "sandbox_security": "not_reviewable"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S09",
+      "item_id": "S09",
+      "primary_task": "evaluations",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "absent",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S10",
+      "item_id": "S10",
+      "primary_task": "agent_harness",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "present",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    },
+    {
+      "counterinterpretation": "none",
+      "evidence_ref": "fictional_evidence_S12",
+      "item_id": "S12",
+      "primary_task": "evaluations",
+      "source_access": "read",
+      "source_checked_at_utc": "2026-10-14T00:00:00Z",
+      "themes": {
+        "agent_operations": "absent",
+        "agent_runtime": "absent",
+        "context_memory": "absent",
+        "developer_reuse": "absent",
+        "enterprise_integrations": "absent",
+        "evaluation_quality": "present",
+        "inference_efficiency": "absent",
+        "other": "absent",
+        "platform_infrastructure": "absent",
+        "rl_training": "absent",
+        "sandbox_security": "absent"
+      }
+    }
+  ],
+  "reviewed_at_utc": "2026-10-14T01:00:00Z",
+  "reviewer_id": "fictional_B",
+  "sample_id": "hiring-223-direct-read-candidates-2026-10-14",
+  "schema_version": "hiring-223-v1"
+}

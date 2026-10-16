@@ -27,3 +27,7 @@ GitHub exposes [Trending](https://github.com/trending), with daily/weekly/monthl
 
 ## Validation procedure
 Use saved, timestamped HTML plus a manually reviewed page annotation. For each analyzed period, preserve n listed, capture-time interval, exact filter, data availability and parsing failures. Avoid an API-based claim that an 'official Trending API' exists without documenting the interface (metadata API is not the Trending list).
+
+## Offline implementation checkpoint (2026-10-14, not real data)
+
+The stage-1 Jaccard/Kendall/RBO implementation remains at [Trending overlap pilot](TRENDING_OVERLAP_PILOT_2026_10_12.md). Two more **synthetic offline** issue #6 instruments are documented at [explicit-frame coverage and chronological rank-proxy runbook](TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md). The coverage ratio has a finite, predeclared supplied frame denominator, **not** an all-GitHub population. The ranking baseline selects one of three already-fixed *pre-capture* features using older pages only and scores later pages, with no shared repository IDs across the split. This evaluates **order conditional on appearance**, not the probability of appearing. It does not supersede the proposal for future independently reviewed page captures, prospective feature validation, audited frame sampling, or more ambitious heldout/replicated analyses.

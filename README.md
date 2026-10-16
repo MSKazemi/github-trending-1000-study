@@ -22,6 +22,7 @@
 - [Ethics and limitations](docs/ETHICS.md) — privacy, API etiquette and validity.
 - [Contributing](CONTRIBUTING.md) — human and AI-agent contributions.
 - [Roadmap](docs/ROADMAP.md) — staged milestones and acceptance criteria.
+- [**Trending stability, explicit language frames and chronological rank-proxy audit**](docs/TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md) — reproducible offline issue #6 instruments with declared denominators, synthetic fixtures, strict temporal leakage gates and **no real algorithm or adoption claims**.
 - [**Ten-issue parallel scientific methods audit (2026-10-13)**](docs/TEN_ISSUE_METHODS_INTEGRATION_2026_10_13.md) — ten reproducible research workstreams, per-PR Python 3.10/3.12 CI evidence, shared task/denominator design, remaining human/permission/metering gates and practical lessons; **not empirical findings or approved enrollment**.
 - [**Repository checkpoint (2026-10-13)**](docs/REPOSITORY_CHECKPOINT_2026-10-13.md) — 152 tracked files, source-access stop gate, scientific blockers and next priority; risk-based audit, not empirical findings.
 - [**Full repository audit (2026-10-12)**](docs/REPOSITORY_AUDIT_2026-10-12.md) — code integrity, data/methods readiness, CI, scientific blockers, open PRs and practical remediation priorities; **inspection, not research findings**.
@@ -231,6 +232,14 @@ python -m trending_study.blind_review audit --pool examples/review_pool.syntheti
 ```
 
 See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for the evidence status and open scientific gates. No real AI/reuse productivity or sustainability findings are claimed.
+
+### Hiring-signal double-coding agreement instrument (#223, synthetic only)
+
+The [offline hiring agreement instrument](docs/HIRING_AGREEMENT_PILOT_V1_2026-10-14.md) verifies the 24-lead candidate frame against the preserved source ledgers, emits blank coder packets and computes per-theme binary and primary-task nominal Cohen's kappa with missing/abstained ratings kept outside the jointly rated denominator (never imputed as agreement). Committed coder A/B/C files are **fictional**; pseudonyms and attestation fields do not establish real, blind or independent human raters, and no real hiring agreement result exists.
+
+```bash
+python -m trending_study.hiring_agreement verify-frame --frame references/hiring_agreement/pilot_frame_v1.json
+```
 
 ## October 2026: prospective task-candidate intake pilot
 

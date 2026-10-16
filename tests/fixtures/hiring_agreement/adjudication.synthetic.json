@@ -1,0 +1,25 @@
+{
+  "adjudicated_at_utc": "2026-10-14T02:00:00Z",
+  "adjudicator_id": "fictional_C",
+  "dataset_kind": "synthetic",
+  "decisions": [
+    {
+      "code": "agent_runtime",
+      "decision": "present",
+      "evidence_ref": "fictional_decision_1",
+      "item_id": "S02"
+    },
+    {
+      "code": "primary_task",
+      "decision": "agent_harness",
+      "evidence_ref": "fictional_decision_2",
+      "item_id": "S02"
+    }
+  ],
+  "frame_sha256": "f1fb2ef19148fa566c97d2cd2f9323a3a48ee1a29959793b2bb753dc5b6badfd",
+  "predictions_unseen_attested": true,
+  "review_a_sha256": "0e042204b752094c9852b8db73d925532c3c3cc09925fec3ff712a89947ab87e",
+  "review_b_sha256": "ea98b92814a718889156489671cb0a48fdb65252835cc0cc1bae1b5194545a04",
+  "sample_id": "hiring-223-direct-read-candidates-2026-10-14",
+  "schema_version": "hiring-223-v1"
+}
