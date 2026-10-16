@@ -57,3 +57,7 @@ The combined workflow includes Python compilation, full offline unittests, CLI s
 - Count versioned review artifacts and tests as **verification infrastructure**, never as a positive field-study finding.
 
 **Disposition:** combined engineering rehearsal passed (5/5 GitHub Actions jobs). All original five PRs remain individually held under their human/security/methods gates; the draft rehearsal is not a merge candidate.
+
+## 2026-10-16 current-base refresh after concurrent merge
+
+A concurrent authorized workflow merged the independent offline issue #19 change into `main@2308ab27883f3d722f1bf5d9096a68c0aab31cd9` (three paths: `docs/TASK_FIRST_OSS_RETRIEVAL_COMPARISON_2026_10.md`, `tests/test_goldset_strict_inputs.py`, `trending_study/goldset.py`). Those three paths are disjoint from this rehearsal's 38 changed files. The rehearsal tree was therefore refreshed from the exact new main tree while preserving all 38 prior changed files; no force update, source replacement, research enrollment, or approval was performed. This refresh is an **engineering test candidate**, not review clearance. Verify the new exact-head pull_request run before making any combined-CI claim against this newer base.
