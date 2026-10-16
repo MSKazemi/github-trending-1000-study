@@ -191,9 +191,14 @@ class GitHubClient:
         # Inherited Git config can change transport behavior, enable helpers,
         # or expose our ephemeral HTTP header. A privileged cleanup job must not
         # trust the runner's system/global config or GIT_CONFIG_PARAMETERS.
+        # Drop every inherited Git control variable, not only trace/config:
+        # GIT_SSL_NO_VERIFY can disable TLS verification and GIT_ASKPASS or
+        # GIT_EXEC_PATH can invoke untrusted local programs with the ephemeral
+        # Authorization header available in their inherited environment.
+        # Re-introduce only deliberately chosen GIT_* controls below.
         env = {key: value for key, value in os.environ.items()
-               if not key.startswith(("GIT_TRACE", "GIT_CONFIG_"))
-               and key != "GIT_CURL_VERBOSE"}
+               if not key.startswith("GIT_")
+               and key not in ("SSH_ASKPASS", "SSH_ASKPASS_REQUIRE")}
         env.update({
             "GIT_CONFIG_NOSYSTEM": "1",
             "GIT_CONFIG_GLOBAL": os.devnull,
