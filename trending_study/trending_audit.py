@@ -244,6 +244,7 @@ def evaluate_proxy(data):
     if not isinstance(pages, list) or not 4 <= len(pages) <= MAX_PAGES:
         raise TrendingAuditError("proxy needs 4..64 chronological pages")
     seen_ids = set()
+    capture_digest_ids = {}
     train, heldout = [], []
     train_repos, heldout_repos = set(), set()
     previous_time = None
@@ -265,6 +266,7 @@ def evaluate_proxy(data):
         if ident in seen_ids:
             raise TrendingAuditError("duplicate capture_id")
         seen_ids.add(ident)
+        capture_digest_ids.setdefault(cap["source_sha256"], []).append(ident)
         key = (cap["page_url"], cap["window"], cap["language_filter"])
         if surface_key is None:
             surface_key = key
@@ -320,6 +322,14 @@ def evaluate_proxy(data):
         "train_selected_macro_accuracy": candidate_scores[selected],
         "heldout_page_scores": heldout_scores,
         "heldout_macro_pairwise_accuracy": heldout_macro,
+        # Identical raw-source digests can be genuine unchanged snapshots, or
+        # a reused file mislabeled as multiple captures. This is a diagnostic
+        # for independent source review, never automatic fraud inference.
+        "repeated_capture_source_digest_groups": {
+            digest: sorted(ids) for digest, ids in sorted(capture_digest_ids.items())
+            if len(ids) > 1
+        },
+        "distinct_capture_source_digests": len(capture_digest_ids),
         "constant_predictor_baseline_accuracy": constant_baseline,
         "heldout_excess_over_constant_baseline": heldout_macro - constant_baseline,
         "holdout_frozen_by_external_review": False,
