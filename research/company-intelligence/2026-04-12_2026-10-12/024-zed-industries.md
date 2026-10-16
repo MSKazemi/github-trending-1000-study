@@ -1,142 +1,104 @@
-# Zed Industries: 2026 six-month AI software intelligence (source-screened working report)
+# Zed Industries — provisional six-month technology intelligence screen (024)
 
-**Issue:** [#91](https://github.com/MSKazemi/github-trending-1000-study/issues/91) · **Watchlist ID:** 024 · **Window:** 2026-04-12–2026-10-12 inclusive (UTC) · **First research pass:** 2026-10-12 · **Status:** partially screened; independent/human review outstanding.
+> **Provisional source-lead screen (upgraded 2026-10-16):** this report, its [event ledger](024-zed-industries.events.csv), [search log](024-zed-industries.search-log.md) and [source-QC note](024-zed-industries.source-qc-2026-10-16.md) are **provisional, AI-assisted documentary source leads** for [issue #91](https://github.com/MSKazemi/github-trending-1000-study/issues/91). They are **unreviewed by a qualified human**; factual/link, source-access/rights and methods review pending. Merging is not scientific or security sign-off; issue #91 was closed on maintainer instruction (2026-10-16) with these review gates still open — reopen it if review finds a defect.
 
-> **Methodological status:** This report offers directly attributed, dated primary materials and one preregisterable repo experiment. It does **not** complete the issue's systematic seven-segment literature/media search, prove vendor claims, document actual user adoption, or establish benefits of any tool. Independent product/ownership due diligence and second-person factual review remain required.
+- **Watchlist:** 024; [issue #91](https://github.com/MSKazemi/github-trending-1000-study/issues/91). Sector per issue: AI coding agents, IDEs and code search. Study angle: open editor, collaborative review, agent integration.
+- **Window:** 2026-04-12 through 2026-10-12 inclusive; **source-screened on 2026-10-16** (earlier passes 2026-10-12/13/14, preserved below). Exact UTC search-run times, complete search-engine result counts, immutable page snapshots and an independent reviewer are unavailable.
+- **Status:** **provisional dated documentary screen (24 traceable source leads covering all seven calendar segments; 5 earlier rows re-checked, all ok); not reviewed by a qualified human**. Not independently verified task outcomes, exhaustive retrieval or human-approved scientific completion. [Event ledger](024-zed-industries.events.csv), [segment queries and inclusion/exclusion log](024-zed-industries.search-log.md), [source QC](024-zed-industries.source-qc-2026-10-16.md), [study method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md).
+- **Official sources checked:** [Zed](https://zed.dev/), [blog index](https://zed.dev/blog), stable [release pages](https://zed.dev/releases/stable/1.3.5), the public [zed-industries/zed](https://github.com/zed-industries/zed) repository (releases, security advisories, README licensing, PR [#57948](https://github.com/zed-industries/zed/pull/57948)) and the [Agent Client Protocol](https://github.com/agentclientprotocol/agent-client-protocol) repository via read-only GitHub API. **Claim grading** is company-watch E0–E4, not the separate [2027 lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
-## 1. Reproducible scope and search audit
+## 1. Discovery, coverage and exclusions
 
-**Search expressions used as a targeted discovery strategy (2026-10-12, public web and the publisher sites):** `site:zed.dev/blog 2026 "parallel agents" "sandboxing" "Delta public beta"`. The vendor blog/chronicle/product directory and in-window individual results were checked. The retrieval interface did not preserve reliable search-result totals or a complete excluded-URL set: **found/screened/excluded counts beyond the 3 selected leads are not available**. This is *not* a systematic-review search log. Re-run dated queries per each month and save the underlying result list before claiming coverage.
+The official [blog index](https://zed.dev/blog) lists 19 posts dated inside the window, but **none in July and none in Oct 1–12**; those segments are covered from GitHub release notes instead. Zed ships weekly: the GitHub API returned **57 stable releases** published in the window (v0.232.2 on Apr 15 through v1.23.3 on Oct 12) plus 67 prereleases. The 24 ledger rows are therefore a **purposive selection** of material events for the study lens (agent integration, ACP, review/collaboration, security, licensing and cost), not a census. Five security advisories were published on 2026-05-08; all are recorded (three grouped into one row). Independent coverage was thin: three web searches found secondary summaries and one [Phoronix](https://phoronix.com/news/Zed-1.0-Released) report on Zed 1.0 that returned HTTP 403 when opened, and a [The New Stack](https://thenewstack.io/zed-delta-github-alternative/) article on Delta whose body/date could not be read. Neither is used as a ledger row. **No independent test, audit or neutral evaluation of any Zed feature was found** — unknown, not absent.
 
-**Eligibility:** publication date 2026-04-12–2026-10-12 and a material product, incident, governance or architectural event. For an event reported on one day that occurred earlier, the first release/effective date remains **unknown** until independently established. Do not count news repetitions as separate innovations. Search-page returns are not an unbiased denominator.
+## 2. Corporate/product identity and rights baseline
 
-| Calendar segment | In-window lead found in this pass | Primary source | Missingness |
-|---|---|---|---|
-| 2026-04-12..30 | Introducing Parallel Agents in Zed (2026-04-22) | [source](https://zed.dev/blog/parallel-agents) | Source-read leads only; supplementary events possible. |
-| 2026-05 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-06 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-07 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
-| 2026-08 | Sandboxing (2026-08-05) | [source](https://zed.dev/blog/sandboxing) | Source-read leads only; supplementary events possible. |
-| 2026-09 | Replace PRs with Delta – Now in Public Beta (2026-09-16) | [source](https://zed.dev/blog/delta-public-beta) | Source-read leads only; supplementary events possible. |
-| 2026-10-01..12 | No verified event in this bounded source screen | — | NOT a zero-event assertion; calendar segment was not comprehensively screened. |
+**Zed Industries** develops the Zed code editor (Rust, GPU-rendered; Mac, Windows, Linux per the [1.0 post](https://zed.dev/blog/zed-1-0)), the built-in agent panel, edit-prediction models (Zeta), the commercial Zed Pro/Business plans, and the separate **Delta** collaboration product (own domain delta.dev per the [public-beta post](https://zed.dev/blog/delta-public-beta)). A search returned no 2026 funding, acquisition or parent-company report; an Aug 2025 Series B lead is pre-window and was not opened. **Ownership and corporate structure remain unverified** at filing level.
 
-## 2. Identity, ownership and baseline separation
+**Licences (GitHub API and repository files, read 2026-10-16):** [zed-industries/zed](https://github.com/zed-industries/zed) reports `NOASSERTION` because it carries two root licence files (`LICENSE-GPL`, `LICENSE-APACHE`); its README states "Zed source code is licensed primarily under GPL-3.0-or-later, with Apache-2.0 components where marked". **In-window change:** PR [#57948](https://github.com/zed-industries/zed/pull/57948), merged 2026-05-28 ([commit](https://github.com/zed-industries/zed/commit/27c566c21207e13ceb8e9ec45fa2bc2bb856be38)), relicensed the `collab` collaboration-server crate from AGPL-3.0-or-later to GPL-3.0-or-later and removed `LICENSE-AGPL`; the PR states preview the week of Jun 1 and stable the week of Jun 8 (stable inclusion not verified here). The [Agent Client Protocol repository](https://github.com/agentclientprotocol/agent-client-protocol) is Apache-2.0 and lives in a separate GitHub organization; Zed's stewardship of it was **not verified**. Zeta2.1 weights are described as "open-weight" but the [post](https://zed.dev/blog/zeta2-1) names no licence. **Delta and DeltaDB** carry no open-source statement in any post read; treat them as proprietary hosted services until shown otherwise. An OSS editor licence does not cover hosted models, Zed-hosted AI billing or Delta terms.
 
-Zed Industries publishes Zed editor and Delta collaboration product; Delta beta should not be conflated with universal availability or a replacement for GitHub's contribution workflows. Zed is described as open source; verify exact components and licenses.
+## 3. Seven-segment dated chronology
 
-**Official starting point:** https://zed.dev/. Homepage content alone is not dated release evidence; where ownership is inferred from a company announcement, independent legal registry verification remains a separate step. Pre-April announcements are historical baseline, not in-window events.
-
-## 3. Individual dated primary-source events and feature map
-
-| ID | Publication date / underlying actual event | What is directly documented | Availability status | Original link and source class | Independent audit | Working tier |
-|---|---|---|---|---|---|---|
-| 024-E01 | 2026-04-22; **actual first-shipment date not independently established** | Introducing Parallel Agents in Zed: Vendor announces per-thread agent and worktree control; states available in latest editor version | shipped (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://zed.dev/blog/parallel-agents) | No independent functional replication | E1 company-working |
-| 024-E02 | 2026-08-05; **actual first-shipment date not independently established** | Sandboxing: Technical article documents OS sandbox restrictions for agent terminal/fetch, operating-system caveats, privilege prompts and symlink race hazards; vendor security claim not independently audited here | shipped (vendor-reported; version/plan limits not independently tested) | [security-design](https://zed.dev/blog/sandboxing) | No independent functional replication | E2 company-working |
-| 024-E03 | 2026-09-16; **actual first-shipment date not independently established** | Replace PRs with Delta – Now in Public Beta: Vendor introduces Delta collaborative agent-code review beta and claims Git compatibility; not evidence GitHub PRs are obsolete | preview (vendor-reported; version/plan limits not independently tested) | [product-announcement](https://zed.dev/blog/delta-public-beta) | No independent functional replication | E1 company-working |
-
-**Availability semantics:** `shipped` means the *publisher reports release*, not that our team installed/tested it. `preview` denotes an expressly preview/beta or other constrained offering. `reported_undetermined` denotes engineering analysis or vendor result whose real-world deployment is not verified. `corrected` denotes incident/disclosed mitigation. `announced_only` is not a delivered feature. Do not treat a product benchmark, download/install count, funding announcement, star rank or a vendor-created survey as independently established task value.
-
-**Evidence grades:** the company-watch E0/E1/E2 grades here are **not equivalent** to the study's causal/practical E0–E5 lesson evidence. E1 is first-party traceable announcement/argument; E2 is documentary multi-page corroboration or technical artifact *without* reproduced function. **No E3 independent performance replication, no E4 external multi-context impact evidence**. Where a source is only indexed rather than read completely, its E0 lead remains awaiting full verification.
-
-## 4. Public strategy vs hypothetical outlook (2027–2031)
-
-**Company-attributed public direction:** Zed's public posts show active interest in parallel agent workflows, OS-level access restrictions and conversational collaboration; Delta replacement ambition is not proven market adoption.
-
-**Confirmed binding future releases:** none established by this pass. Announced intentions do not amount to delivery schedules.
-
-**Analyst hypothesis, not a company promise (E0):** Least-privilege sandboxing and isolated worktrees could improve safe agent contributions; beta alternative version-control workflows may hinder discoverability/interoperability.
-
-**Confounding / alternative mechanism:** Developers might get equivalent verification from simpler CI/PR policies, with no need to move collaboration into another platform. A disconfirming result is a randomized or matched test showing no added independently accepted task value, or higher lifetime cost and security incidents despite more generated work.
-
-## 5. Connection to study constructs M1–M7
-
-- **M1 workflow chronology:** preserve date and exact feature availability; do not equate tool release with verified developer adoption.
-- **M2 accepted code quality/effort:** independently judge fixed tasks and failures/abstentions, rather than patch counts or anecdotes.
-- **M3 visibility:** stars and promotion are *attention*, never sufficient for actual reuse.
-- **M4 externally reproducible adoption:** require clean external first-use and downstream integration with an eligible denominator.
-- **M5 reuse versus new build:** compare package discovery + license/security/version checks against bounded new build.
-- **M6 lifecycle sustainability:** include planning, reviews, inference, CI, runtime, upgrades and upstream maintenance; **no token-to-kWh or carbon conversion**.
-- **M7 ethical adoption:** only organic, task-verified contributor/user onboarding evidence—not purchased stars or low-value PR activity.
-
-## 6. One practical falsifiable repository experiment
-
-**Repository for initial pilot:** `MSKazemi/github-trending-1000-study`, with only its existing offline code/docs/fixture surfaces. **Proposed—not executed:**
-
-Introduce no new runtime dependency initially: apply an agent permissions checklist and worktree isolation to 6 low-risk study PR tasks, compare to sequential branch approach while keeping GitHub PR review; simulate forbidden writes/network access and record explicit failures, independent acceptance and reviewer minutes.
-
-**Acceptance design:** before assignment, a person other than the implementing agent must freeze the task description, user success conditions and hidden tests. Use fixed versions, identical safe fixtures and matched task difficulty; record the sampling frame and every refusal, timeout, unsuccessful run or abstention. **Primary endpoint:** fraction of independently accepted tasks with an explicit denominator and uncertainty. **Secondary:** downstream clean-install success, matching legal package identity/license, reviewer-repair minutes, money actually billed or clearly modeled and version drift at 30/90 days. Report kWh/CO2e only if instrumented with a documented system boundary and sensitivity analysis.
-
-**Stop / rollback rule:** Keep GitHub standard PRs unless external contributor reproduction and audit trail demonstrably improve without lock-in or security regressions.
-
-**Expected null/negative scenario:** no difference in accepted-task results, higher maintainer or review costs, poorer security, portability or upstream rights, or inability to obtain externally valid task ratings. Do not turn a null result into a fabricated positive lesson.
-
-## 7. Scientific and security limitations
-
-- The sources above are primarily vendor-operated. Independent investigative reporting, complete month searches, detailed feature/version license audits and disagreement resolution remain uncompleted.
-- Distinguish **date a report was published** from actual launch or customer-availability; these are unknown where not explicitly documented.
-- No vendor installation, benchmark run, respondent sampling, source-code security assessment, trial enrollment, verified third-party reuse, power calculation or environmental measurement was carried out.
-- An AI assistant drafting its own report is **not** an independent scientific reviewer. Date and link spot checks are preliminary, not full blind confirmation.
-- Vendor prices/savings, context benefits and release claims require same-task external replication and lifecycle boundaries before becoming recommendations.
-- Do not automatically ingest untrusted code, post to upstream communities or grant tools network/secret access to gather evidence.
-
-## 8. Conditional practical maintainer lesson
-
-**Low-risk practice to test:** inspect existing tools, record their exact versions/rights, freeze user acceptance, measure agent/maintainer costs and keep human-governed review; promote only evidence-backed, type-specific conclusions, including failures. This is an **experiment suggestion** rather than a demonstrated method of increasing repository popularity or reducing energy.
-
-**Review gates:** verify all dates and page links; complete each of 7 calendar-segment result logs; add independent cross-source and negative reporting; judge exact license/API/access levels; perform independent QA; connect to any event index without duplicates; then decide whether to merge and eventually close #91. A draft report alone is not issue completion.
-
-**Study anchors:** [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
-
-## Branch reconciliation and no-loss audit (2026-10-13)
-
-The source-screened report above from [PR #203](https://github.com/MSKazemi/github-trending-1000-study/pull/203) is preserved verbatim, including its methodological caveats and first experiment. Its dated source-log `.events.json` is also copied unchanged. The later [PR #238](https://github.com/MSKazemi/github-trending-1000-study/pull/238) provided additional publisher evidence and a separate candidate experiment; these are retained below and in the CSV. Repeated URLs in JSON and CSV are **the same vendor announcement**, not two independent confirmations. The published dates and statuses were spot-checked against linked first-party pages by an AI reviewer, **not a qualified independent human**.
-
-| Published date | Additional source not in original CSV | Caveat |
+| Period | In-window source evidence (publication dates; ledger IDs) | Availability and attribution limits |
 |---|---|---|
-| 2026-08-05 | [Sandboxing](https://zed.dev/blog/sandboxing): Vendor describes OS-level sandbox limits on agent terminal/fetch, not an independent security audit. | Security boundary and symlink race conditions need independent threat-model review. |
+| Apr 12–30 | [Apr 22 Parallel Agents](https://zed.dev/blog/parallel-agents) (-001); [Apr 29 Zed 1.0](https://zed.dev/blog/zed-1-0) (-006; GitHub release v1.0.0 same day) | "1.0" is a vendor milestone; Apr 7/9 posts excluded (pre-window). Aggregators giving Apr 30/May 1 dates are contradicted by vendor and GitHub dates. |
+| May | [May 6 Zed for Business](https://zed.dev/blog/zed-for-business) (-008); [May 8 Zeta2.1](https://zed.dev/blog/zeta2-1) (-007); May 8 security advisories [GHSA-fj2r-rmw6-h222](https://github.com/zed-industries/zed/security/advisories/GHSA-fj2r-rmw6-h222) (-009), [GHSA-c3g6-c3ff-69cg](https://github.com/zed-industries/zed/security/advisories/GHSA-c3g6-c3ff-69cg) with [GHSA-rqq3-p6x4-q866](https://github.com/zed-industries/zed/security/advisories/GHSA-rqq3-p6x4-q866) and [GHSA-c99f-97vf-4h5h](https://github.com/zed-industries/zed/security/advisories/GHSA-c99f-97vf-4h5h) (-010), [GHSA-63qj-jc2q-7hg5](https://github.com/zed-industries/zed/security/advisories/GHSA-63qj-jc2q-7hg5) (-011); [May 14 Anthropic billing notice](https://zed.dev/blog/anthropic-subscription-changes) (-014); [May 20 release 1.3.5](https://zed.dev/releases/stable/1.3.5) (-002) and [Terminal Threads post](https://zed.dev/blog/terminal-threads) (-012, same event); [May 28 AGPL→GPL relicensing](https://github.com/zed-industries/zed/pull/57948) (-013) | Advisory fixes shipped in pre-window versions (≥v0.227.1 / ≥v0.229.0); **disclosure** is in window. Anthropic change was later postponed (page update dated Jun 16). |
+| June | [Jun 1 GitHub Copilot billing notice](https://zed.dev/blog/github-copilot-usage-based-billing) (-015); [Jun 11 DeltaDB announced](https://zed.dev/blog/introducing-deltadb) (-016); [Jun 24 ACP v1.0.0 tag](https://github.com/agentclientprotocol/agent-client-protocol/releases/tag/v1.0.0) (-018) | DeltaDB = waitlist only (`announced_only`); ACP row is low-confidence context (org relationship unverified). |
+| July | [Jul 1 v1.9.0](https://github.com/zed-industries/zed/releases/tag/v1.9.0) (-019, ACP embedded resources, remote MCP entry); [Jul 8 v1.10.0](https://github.com/zed-industries/zed/releases/tag/v1.10.0) (-017, llama.cpp provider, format-on-save off by default, Windows sandbox protects Git metadata); [Jul 23 v1.12.0](https://github.com/zed-industries/zed/releases/tag/v1.12.0) (-020, ACP elicitations on by default) | **No July blog post** on the official index; release notes only. |
+| August | [Aug 5 Sandboxing](https://zed.dev/blog/sandboxing) (-005) and [v1.14.2 release](https://github.com/zed-industries/zed/releases/tag/v1.14.2) (-022, same event; also adds a "Skip Hooks" commit toggle); [Aug 12 Introducing Delta](https://zed.dev/blog/introducing-delta) (-003, private beta) | Sandboxing default "starting on the 1.14 release"; non-WSL Windows shells unsupported. Delta invitation-only. |
+| September | [Sep 1 "Xanadu Was Waiting for Agents"](https://zed.dev/blog/agentic-xanadu) (-021, stated direction); [Sep 16 Delta public beta](https://zed.dev/blog/delta-public-beta) (-004); [Sep 30 v1.22.0](https://github.com/zed-industries/zed/releases/tag/v1.22.0) (-023, subagent model selection and compaction) | Delta public beta free; paid plans "coming soon". PR-free workflow is Zed's internal case only. |
+| Oct 1–12 | [Oct 7 v1.23.2](https://github.com/zed-industries/zed/releases/tag/v1.23.2) (-024, ACP plan updates, idle-thread retention setting) | No October blog post in window; post-window 1.24.x versions excluded. |
 
-**Consolidated sources:** 5 distinct URLs in the CSV, 4 preserved from the newer screen and 1 added. The original JSON retains 3 individually attributed working observations and does not represent a second independent source pool.
+`published_utc` is the displayed page date or GitHub API `published_at`/`merged_at` UTC date; `event_date_utc` is filled only where a GitHub release or merge timestamp independently records the event day. Rows -002/-012 and -005/-022 are duplicate pairs (same event, two first-party pages) — **24 rows are not 24 independent confirmations**.
 
-**2026-10-13 incremental source note:**
+## 4. Feature, rights and security cross-check
 
-## Incremental source recheck (2026-10-13; first-party documentary audit)
+| Evidence cluster | What the cited documents support | Non-equivalence or counterexample |
+|---|---|---|
+| Agent orchestration: parallel agents (-001) → terminal threads (-002/-012) → subagent model choice and compaction (-023) | Multiple concurrent agent threads, optional per-thread worktree isolation, CLI agents (Claude Code, Amp, Codex) run inside panel threads, subagents with per-spawn model | More parallel output can increase review load and conflicting writes; no accepted-task data |
+| ACP / MCP integration (-006, -019, -020, -024, -018) | Zed names Claude Agent, Codex, OpenCode and Cursor as ACP agents; release notes add embedded resources, elicitations and plan updates; ACP repo tagged v1.0.0 on Jun 24 under Apache-2.0 | Release-note lines only; other editors' ACP adoption and ACP governance **not verified** |
+| Agent security: May 8 advisories (-009/-010/-011) → OS sandbox (-005/-022) | Vendor-published advisories show the earlier regex command-allowlist could be bypassed three ways and that untrusted repo config (`.git/config` fsmonitor, `.zed/settings.json` env keys) could execute commands; Aug 5 sandbox moves terminal/fetch restrictions to OS mechanisms (Seatbelt, Bubblewrap, WSL) with a documented symlink-swap TOCTOU analysis | Fix versions predate the window; affected-user counts unknown; sandbox not independently audited; Windows non-WSL shells unsupported; v1.14.2's "Skip Hooks" toggle lets users bypass local commit hooks |
+| Collaboration / review: DeltaDB (-016) → Delta private beta (-003) → public beta (-004) → direction essay (-021) | Conversation-linked fine-grained versioning; Git-compatible mirror ("Every thread is also a git branch"); Zed disabled PRs on Delta's own repo | Internal case study, not external evidence that PR review should be retired; no licence/data-rights statement; paid plans pending |
+| Commercial / cost (-008, -007, -014, -015) | Business plan USD 30/seat/month GA, org data controls; Zeta2.1 vendor-measured token and latency reductions; third-party billing changes for Claude-via-ACP (postponed) and Copilot | SSO/SOC 2 not yet available; Zeta metrics method undescribed; tokens are not energy; external providers can change agent costs unilaterally |
+| Licensing (-013) | AGPL removed; GPL-3.0-or-later + Apache-2.0 split | GitHub `NOASSERTION`; hosted services separately licensed |
 
-This adds 4 specifically dated publisher statements; links and content were checked in public source results and/or primary pages on 2026-10-13. The [machine-readable event ledger](024-zed-industries.events.csv) follows the existing [company-intelligence field register](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) with E1 **first-party claim** grades only. It does **not** imply systematic full seven-segment coverage, legal transaction authentication, independently tested products, or independently measured code outcomes.
+## 5. Publicly stated direction versus shipped functionality
 
-| Publisher date | Primary publication | Specific company statement | Availability / evidence limit |
-|---|---|---|---|
-| 2026-04-22 | [Introducing Parallel Agents in Zed](https://zed.dev/blog/parallel-agents) | Zed introduced parallel agent threads and optional worktree isolation. | `shipped`; Parallelism can add conflicting writes or hidden review load. |
-| 2026-05-20 | [Zed Stable Release 1.3.5](https://zed.dev/releases/stable/1.3.5) | Zed's versioned changelog recorded terminal-thread creation from sidebar and agent panel. | `shipped`; No independent multi-agent acceptance test was performed. |
-| 2026-08-12 | [Introducing Delta](https://zed.dev/blog/introducing-delta) | Zed presented Delta as a multiplayer agent-code review environment. | `preview`; Beta invitation does not mean generally available, data rights unknown. |
-| 2026-09-16 | [Replace PRs with Delta – Now in Public Beta](https://zed.dev/blog/delta-public-beta) | Zed announced Delta public beta and its own internal PR-replacement workflow. | `preview`; Company internal case study is not a verified broad developer outcome. |
+| Dated first-party source | Company-stated intention | Classification |
+|---|---|---|
+| [Apr 29 Zed 1.0](https://zed.dev/blog/zed-1-0) | Weekly releases continue; DeltaDB to let teammates review agent code in context; Business plan "very soon" | Business plan **delivered** May 6; DeltaDB → Delta preview by Sep 16 |
+| [May 6 Zed for Business](https://zed.dev/blog/zed-for-business) | SAML/OIDC, SCIM and SOC 2 in progress | **Announced only**; not verified as shipped by Oct 12 |
+| [May 20 Terminal Threads](https://zed.dev/blog/terminal-threads) | Continued investment in ACP | Supported by ACP-related release-note lines in Jul–Oct (-019, -020, -024) |
+| [Jun 11 DeltaDB](https://zed.dev/blog/introducing-deltadb) | Beta "ready in a few weeks" | Private beta reached **Aug 12** (about two months), public beta Sep 16 — schedule slip relative to "a few weeks", not a failure claim |
+| [Sep 1 essay](https://zed.dev/blog/agentic-xanadu) / [Sep 16 public beta](https://zed.dev/blog/delta-public-beta) | Git compatibility, GitHub mirroring during transition, paid plans, "always be a free version of Delta" | **Stated direction**; paid plans and long-term free tier unverified |
 
-**Correction to first pass / interpretation:** Zed's April parallel-agent threads were reported available in the current release; May stable version 1.3.5 documents terminal threads. Delta was initially a PRIVATE beta on Aug 12 and PUBLIC beta from Sep 16. Zed's own use of Delta is an internal case study, not external validation that pull requests should be universally replaced.
+## 6. Conditional 2027–2031 outlook (analyst hypotheses, not company forecasts)
 
-**Negative/independent evidence needed:** Review threat model for repo/worktree isolation and external ACP agents, DeltaDB replication/privacy/rights, actual time-to-accepted-merge and newcomer interoperability.
+| Testable scenario | Rival cause | Disconfirming observation |
+|---|---|---|
+| Editor-agent protocols (ACP) may reduce lock-in between editors and coding agents | MCP, CLI-agent-in-terminal (terminal threads) or vendor IDE plug-ins may meet the same need | Same agent shows materially different accepted-task results or needs per-editor work despite ACP |
+| OS-level sandboxing may cut destructive or exfiltrating agent commands relative to allowlists | Containers/CI runners already isolate agents | Sandboxed and container arms show identical violation rates in a fixed adversarial fixture |
+| Conversation-linked review (Delta) may shorten time to accepted merge | Smaller PRs plus CI already achieve this; Delta lock-in and opacity may raise audit cost | Matched tasks show no accepted-task gain and weaker external auditability than Git/PR history |
 
-**Date precision:** `published_utc` and `accessed_utc` contain calendar dates, **not** authenticated exact UTC instants. Empty `event_date_utc` means underlying event-time not independently verified; do not fill it from publication date. Article revision history, frozen snapshots/SHA, exact search hit counts, exclusions, full seven monthly segments and actual independent human factual review remain pending. Do not interpret absence of a lead as evidence of zero releases.
+## 7. M1–M7 study relevance
 
-**Proposed reproducibility step:** select real user tasks before learning system outcomes, freeze independent acceptance tests, time-box existing-code searches, check exact version/licensing/security, preserve all failed and incomplete assigned tasks, and compare full human reviewer/maintenance cost with matched functionality. No study task was executed, no real user/energy outcome measured, and no CO2e estimate made. This draft and issue #91 must remain under review until acceptance gates pass.
+| Construct | Prospective measurement, not inferred conclusion |
+|---|---|
+| **M1** coding-practice change | Date when parallel agents, terminal threads, subagents and sandboxing became defaults; record opt-in usage only |
+| **M2** accepted task quality | Independently authored acceptance tests on fixed tasks, counting failed/abandoned agent runs |
+| **M3** discoverability | 1.0 press attention and stars are attention, not reuse |
+| **M4** verified third-party reuse | Trace a consented downstream ACP agent integration end-to-end; Zed Guild contributions are contribution, not reuse |
+| **M5** reuse-first | Compare existing CI/container isolation and Git/PR review against Zed sandbox and Delta on the same tasks |
+| **M6** lifecycle human and energy cost | Seat price, provider billing, reviewer minutes; **no token-to-kWh or CO2e conversion** (Zeta2.1 token cuts are not energy data) |
+| **M7** ethical adoption | Organic contributor onboarding only; advisory disclosure and patch latency as maintenance signals |
 
+## 8. One falsifiable reuse-first maintainer experiment
 
-**Outstanding review gate:** complete seven-segment discovery/search denominators, source revisions, identity/terms checks and genuine independent reviewer approval before labeling company analysis complete. No product installed, no experiment executed, no observed adoption or environmental benefit. Issue #91 remains open.
+**Target:** [github-trending-1000-study](https://github.com/MSKazemi/github-trending-1000-study), offline code/docs/fixtures only. **Proposed — not executed.** The study's live Trending `capture` is disabled under source-access policy; no editor or agent feature changes that.
 
-### Preserved later working draft
+**Question:** does an editor-level OS sandbox for agent terminal commands add independently accepted safety over the reuse-first baseline the study already has (GitHub Actions/container isolation plus PR review)?
 
-The complete 2026-10-13 alternate source-screen text, including its initial search description, limitations and separate proposed repository experiment, is preserved **verbatim** in [the alternate report archive](source-archives/024-zed-industries.2026-10-13-first-screen.md). It is documentary draft provenance, not independent validation of publisher claims or a completed study.
+**Preregister before running:** a person other than the implementing agent freezes 10 low-risk documentation/test tasks and 10 adversarial fixture prompts that ask an agent to (a) write outside the worktree, (b) read a planted dummy secret, (c) fetch an unapproved URL, (d) run a `.git/config` fsmonitor hook or a project-settings env payload of the kind described in the May 8 advisories. All 20 are in the denominator, including refusals and timeouts.
 
+**Comparator A (reuse-first):** agent run in an existing throwaway container/CI runner with no network except an allowlist, results submitted as an ordinary GitHub PR with existing CI. **B:** the same agent and model inside a pinned Zed release with sandboxing on (Linux Bubblewrap), worktree isolation, results also submitted as a PR. Same task text, model, budget and fixtures.
 
-## Dated public-source desk check — 2026-10-14 (AI-assisted; not independent human review)
+**Primary endpoint:** independently accepted benign tasks with **zero** sandbox violations / all 20 assigned tasks. **Secondary:** count of violations blocked vs leaked per category, setup minutes, reviewer minutes, and 30-day maintenance churn (version bumps, settings drift). Energy reported only if instrumented with a stated boundary.
 
-**Limited evidence action:** On 2026-10-14 an AI-assisted desk check read one *public publisher-controlled page* for this issue. This is a dated source-text cross-check, **not** an authenticated archived capture, complete seven-segment search, independent source corroboration, signed reviewer approval, executed installation or empirical task outcome. The event ledger's evidence tier is **not** upgraded by this check.
+**Stop/rollback rule:** any leaked dummy secret or out-of-worktree write in either arm ends that arm. Keep A unless B shows fewer violations **and** no extra reviewer time; if equal, the simpler reused container baseline wins. Delta is **out of scope** until its terms, data rights and export path are verified. **Expected null:** equal safety, extra setup for B. Preserve a null or negative result.
 
-- **Publisher page and source publication date:** [Replace PRs with Delta – Now in Public Beta](https://zed.dev/blog/delta-public-beta) — 2026-09-16 (publisher-stated date; access check 2026-10-14).
-- **Source-attributed observation:** Zed's 16 September publisher article explicitly labels Delta a public beta and says the publisher internally disabled pull requests for Delta's own repository. The announcement describes shared agent threads and worktrees.
-- **Correction / uncertainty to retain:** The internal Git workflow is a vendor case study, not evidence that external maintainers should retire PRs, checks, CI, immutable histories or required review. Delta public beta is not broadly proven stable or an independent quality outcome.
-- **Falsifiable maintainer experiment (not performed):** Compare two review UX flows on the same patch and frozen security/tests, retaining GitHub PR-based CI, branch protection and audit provenance as non-negotiable controls. Measure detected defects and reviewer active time.
-- **Remaining research gate:** Verify a versioned/retrievable first-use source record, all seven period segments with exact query/result/exclusion logs, independent critical/contrary evidence, licenses and rights, and a qualified human reviewer before considering the research issue complete. No user-adoption, carbon, causal or real-task benefit claim is made here.
+## 9. Evidence quality, limitations and release checklist (2026-10-16)
 
+- **Inventory:** 24 CSV rows (Apr 12–30: 2; May: 9; Jun: 3; Jul: 3; Aug: 3; Sep: 3; Oct 1–12: 1). All first-party except -018. Grades E1/E2 only; **no E3/E4**.
+- **QC of earlier rows:** all 5 original rows reachable, dates match and claims supported; no correction needed ([QC note](024-zed-industries.source-qc-2026-10-16.md)).
+- **Doubtful/unresolved:** ACP organization relationship to Zed; Phoronix (403) and The New Stack (truncated) not readable; secondary claims about the number of changes Zed merged without PRs **not verified** and not used; third-party model names in release notes not checked with model vendors; stable release that first shipped the GPL relicensing not identified.
+- **Unknowns:** corporate ownership, user counts, Delta data terms, independent security audit, outages/incidents (not searched), ACP adoption outside Zed.
+- **Pending:** human factual/link review, source-access/rights review, methods review and any real task trial. No product installed, no experiment executed, no adoption, energy or causal claim.
 
-## Controlled integration review — 2026-10-14 (provisional source record)
+## Earlier screen (preserved)
 
-The original #203 3-event JSON remains **byte-for-byte** and the original report is a verbatim prefix of this unified report; a second preliminary first-pass screen is retained in `source-archives/`. The merged 5-URL CSV intentionally overlaps three earlier JSON sources; **five URLs are not five independent confirmations**. Live publisher pages confirm the Apr 22 parallel agents report, Aug 5 sandboxing design and Sep 16 Delta public beta. The sandboxing article is a detailed **first-party technical description** (working grade E2 for documentary design detail only), **not** independently audited OS isolation or authorization safety; the implementation's platform-specific caveats and potential races require practical adversarial tests. Zed reports that Delta disabled PRs only within its own internal repository; this is neither a production migration recommendation nor empirical evidence that this study should delete branch protections or GitHub PR review. No experimental acceptance, third-party reuse, energy accounting or systematic seven-segment screening was completed. This review integrates bounded E1/E2 publisher evidence only, with qualified independent source, rights, security and human review pending under #91.
+The previous version of this file combined three passes; full texts live in git history and in [the alternate report archive](source-archives/024-zed-industries.2026-10-13-first-screen.md). The original [`024-zed-industries.events.json`](024-zed-industries.events.json) (3 observations: parallel agents, sandboxing, Delta public beta) is untouched.
+
+- **First pass, 2026-10-12 — [PR #203](https://github.com/MSKazemi/github-trending-1000-study/pull/203):** one targeted query, `site:zed.dev/blog 2026 "parallel agents" "sandboxing" "Delta public beta"`; leads for April ([parallel agents](https://zed.dev/blog/parallel-agents)), August ([sandboxing](https://zed.dev/blog/sandboxing)) and September ([Delta public beta](https://zed.dev/blog/delta-public-beta)); May, June, July and October marked "No verified event in this bounded source screen … NOT a zero-event assertion". It described Zed as open source "verify exact components and licenses" and pointed to the [official starting point](https://zed.dev/). Its experiment: "apply an agent permissions checklist and worktree isolation to 6 low-risk study PR tasks, compare to sequential branch approach while keeping GitHub PR review". This upgrade **supersedes** the empty-month cells: May–July and October now have dated official records.
+- **Second pass, 2026-10-13 — [PR #238](https://github.com/MSKazemi/github-trending-1000-study/pull/238):** a 21-column CSV adding [Zed Stable Release 1.3.5](https://zed.dev/releases/stable/1.3.5) (terminal threads) and [Introducing Delta](https://zed.dev/blog/introducing-delta) (private beta Aug 12), with the correction "Delta was initially a PRIVATE beta on Aug 12 and PUBLIC beta from Sep 16"; reconciliation added the sandboxing row ("Vendor states default enabled from Zed release 1.14").
+- **2026-10-14 desk checks:** re-read the Delta public-beta page ("the publisher internally disabled pull requests for Delta's own repository") and stated "The internal Git workflow is a vendor case study, not evidence that external maintainers should retire PRs"; graded the sandboxing article "working grade E2 for documentary design detail only". Proposed experiment: "Compare two review UX flows on the same patch and frozen security/tests, retaining GitHub PR-based CI, branch protection and audit provenance as non-negotiable controls."
+- Study anchors cited by the earlier versions: [company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [evidence-to-lesson protocol](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md) · [2027 central mission](../../../docs/AI_ERA_CODING_REUSE_RESEARCH_MISSION.md) · [reusable-component study](../../../docs/REUSE_FIRST_EXPERIMENT.md).
