@@ -108,7 +108,9 @@ class RegistryPairIntegrityTests(unittest.TestCase):
         original = self.packet()
         invalid = ("latest", "main", "1", "1.0", "1.*", "^1.0.0",
                    ">=1.0.0", "1.0.0 || 2.0.0", "1.0.0/evil",
-                   "1.0.0\\n2.0.0", "1.0.0-", "1.0.0+", "a"*129)
+                   "1.0.0\\n2.0.0", "1.0.0-", "1.0.0+", "a"*129,
+                   "01.2.3", "1.02.3", "1.2.03",
+                   "1.2.3-alpha.01", "1.2.3-001", "1.2.3-rc.00+build.01")
         for version in invalid:
             nominations = copy.deepcopy(original["pairs"])
             nominations[0]["version"] = version
