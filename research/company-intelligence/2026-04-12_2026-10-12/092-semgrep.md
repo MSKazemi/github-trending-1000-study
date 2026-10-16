@@ -91,7 +91,7 @@ Full row detail is in the [CSV](092-semgrep.events.csv): 39 rows, IDs `CI2026-09
 | CI2026-092-022 | 2026-07-28 | Nine Agentic Workflows (public beta), 70+ CWEs, on AI credits | Proprietary; trade press restates the release | [blog](https://semgrep.dev/blog/2026/introducing-semgrep-agentic-workflows-automate-deep-vulnerability-hunting-at-scale) | [weekly notes](https://docs.semgrep.dev/release-notes/2026-07-27) | E2 |
 | CI2026-092-030 | 2026-09-04 | Incomplete 1.176.1 PyPI release could not use the Pro Engine; pin advice issued | Resolved same day | [status](https://status.semgrep.dev/incidents/4p36pmnqykdq) | PyPI 2026-09-04T20:28Z | E2 |
 | CI2026-092-035 | week of Sep 28 | Guardian binaries signed and verified ("SLSA Level 3"); auto-update; AI actions need triage permission | SLSA level self-declared | [notes](https://docs.semgrep.dev/release-notes/2026-09-28) | none | E2 (documentary) |
-| CI2026-092-036 | 2026-09-29 | Opus 5.5 on SusVibes: 93.5% working, 54.8% working and secure; 53% near-identical to real code (memorization) | Single vendor run | [blog](https://semgrep.dev/blog/2026/claude-opus-5-5-susvibes-benchmark) | none | E1 |
+| CI2026-092-036 | 2026-09-29 | Opus 5.5 on SusVibes: 93.5% working, 54.8% working and secure; 53% (93 of 176 judgeable) near-identical to real code (memorization) | Single vendor run | [blog](https://semgrep.dev/blog/2026/claude-opus-5-5-susvibes-benchmark) | none | E1 |
 | CI2026-092-031 | 2026-09-05 | Opengrep fork: Python-free 2.0 alpha; `OPENGREP_*` env alongside `SEMGREP_*` | Prerelease, testing only | [GitHub](https://github.com/opengrep/opengrep/releases/tag/v2.0.0-nopython.alpha.1) | v1.30.0 release | E2 |
 
 **Feature inventory (vendor-documented, not exercised by us):**
@@ -199,8 +199,40 @@ Company claims such as "3 million scans every week", "95% user agreement" and "h
   - The vendor's own multiplier fell from "up to 8x" (Apr 17) to 3.5x (Jun 12) against a stronger baseline.
   - A competitor benchmark (Trent.ai, conflict of interest, n=28) puts Semgrep's file-level detection at 3.6%.
   - HN commenters criticized the GLM 5.2 post as advertising and IDORs as an easy class.
+  - The GLM 5.2 post's headline "Claude Code (32%)" does not match its own results table, which lists 37% (Opus 4.6) and 28% (Opus 4.8/4.7). This was found by the 2026-10-16 spot-check.
   - Several security and privacy defects in AI features were disclosed only in release notes, with no advisory. The GitHub advisory and NVD queries returned nothing in-window.
   - The April 2026 release notes list CE 1.157.0 as released in April, but GitHub and PyPI date it 2026-03-31T22:51Z (minor dating inconsistency).
   - Aggregator snippets about a "September outage" and a "co-CTO hire" were not confirmed (E0, unused).
 - **#56 candidates (not minted):** Trent.ai 2026-05-25 (competitor benchmark); DEVOPSdigest 2026-08-11 (press-release reprint); Enterprise AI World 2026-08-05 (press restatement). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned. Syndicated copies of one press release must not be counted twice.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent, who did not write this screen, re-checked robots.txt for every cited domain on 2026-10-16, including Claude/Anthropic-specific groups. semgrep.dev, docs.semgrep.dev, status.semgrep.dev, www.devopsdigest.com, enterpriseaiworld.com, trent.ai and news.ycombinator.com have no Claude-specific rules and do not disallow the cited paths. The log's statement that "No robots rule naming ClaudeBot, Claude-User or anthropic-ai was found" was **confirmed**, and no row relies on a robots-disallowed source. Pages were re-fetched as raw HTML (`curl -sL`, generic UA, no personal identifier). Release, repository and licence data came from `gh api` and PyPI JSON; the HN thread came from the HN Algolia item API. Pages were not archived.
+
+| Row(s) checked | Outcome | Note |
+|---|---|---|
+| 001 | confirmed | April 17th, 2026: "one of four initial recipients"; "$10 million in API credits"; "up to 8x more true positives with 50% fewer false positives"; "more than six million findings"; "95% of the time" |
+| 002 | confirmed | April 17th: "none of three flagship or two open-source models". `semgrep/mythos-bench` was created 2026-04-16T17:26Z with no licence |
+| 005 | confirmed | April 30th: lightning 2.6.2 and 2.6.3 "execute credential-stealing malware on import". PyPI has files for 2.6.1 and 2.6.4 and none for 2.6.2 or 2.6.3 |
+| 007 | confirmed | GitHub release 2026-05-07T16:03Z; PyPI 16:04Z; LGPL-2.1-or-later. The notes say "no longer transmits SCM tokens", redaction, log level, jsonnet import confinement, and "roughly 5x faster" JSON rule parsing (~134s → ~28s) |
+| 008 | confirmed | April notes dated May 12, 2026: read-only users could upload CLI scan results via `SEMGREP_REPO_DISPLAY_NAME`; Rust reachability; Bedrock BYOK IAM role |
+| 009 | confirmed | Trent `datePublished` 2026-05-25T12:49Z; 28 CVEs; Semgrep 3.6% (category 42.9%); CodeQL 3.7%; Claude Code 8.7%; Trent 25%; "Trent and Semgrep returned identical recalls" across three runs |
+| 011, 012 | confirmed | June 5th: Pro Engine 1.158.0; "up to 75%"; P95 "10 minutes to 7:30". June 10th: 1.162.0; P99 "~60 minutes to under 12"; "7.5 hours to under 2 minutes" |
+| 013 | confirmed | June 12th: "3.5x more true positives than a tuned guided prompt"; "Earlier benchmarking results ... around 7-8x" |
+| 014 | **corrected (limitation)** | June 22nd: 39% F1, Claude Code (32%), ~$0.17 and 53–61% all appear. The "Editor's note, July 17, 2026" is present. The post's own results table lists Claude Code (Opus 4.6) at **37%** and Claude Code (Opus 4.8/4.7) at **28%**, and 32% does not appear in it. That internal inconsistency was added to the limitation. HN 48709670: 2026-06-28, 1113 points, 516 comments, with a comment calling it "an ad" and IDORs "arguably the easiest class" |
+| 015 | confirmed | June 23rd: "over 3 million scans every week, with 95% completing in under 5 seconds"; "official partner of Cursor and Claude Code" |
+| 016, 026, 030 | confirmed | Status pages: Jun 25, Identified 21:32, rule removed 22:14, Resolved 22:27 UTC (exit code 7; `skills.behavioral.skill-destructive-commands`). Aug 25: 19:21, rolled back 19:28, resolved 22:01 UTC. Sep 4: 1.176.1 incomplete; pin 1.175.1 or 1.176.0; resolved 23:38 UTC. PyPI 1.176.1 was first uploaded 2026-09-04T20:28Z |
+| 017, 023, 029 | confirmed | The July 6 week covers the Bedrock opt-out bypass and secrets that could "appear verbatim" in saved AI remediation guidance. The August 3 week gives migration from "August 24, 2026" and sunset "November 1, 2026". The August 31 week covers the read-only token updating tags, the allowed provider catalog, and webhook signatures. Note: the weekly rows put `event_date_utc` at the week end, which is later than `published_utc` (the week start). This is disclosed, not an error |
+| 022 | confirmed | July 28th: "nine pre-built Agentic Workflows (in public beta) covering 70+ CWEs"; "run on your existing pool of AI credits" |
+| 024 | confirmed | www.devopsdigest.com (HTTP 406 with a readable body), August 11, 2026: "since 2025"; "up to 93.3%"; "available immediately to all users inside Replit Security Center" |
+| 027, 038 | confirmed | v1.175.0 GitHub release 2026-08-26T17:08Z (PyPI 17:10Z) covers Homebrew Intel and OCaml 5.4. v1.180.0 GitHub release 2026-10-07T23:17Z (PyPI 23:22Z): "Removed support for the QL language"; no deprecation wording found |
+| 028 | confirmed | August 27th: 63 IDORs Mythos missed; four repositories; 275 labels. The companion post (August 25th) covers "22 other configurations" |
+| 031 | confirmed | Opengrep v2.0.0-nopython.alpha.1 is a prerelease (2026-09-05T19:28Z); v1.30.0 (2026-09-07); v1.27.0 (2026-08-12); LGPL-2.1. Window counts: 20 Opengrep releases (6 prereleases) and 21 Semgrep releases |
+| 034 | confirmed | September 24th: "estimated ... 1.8 million malicious packages" in Q2 2026; malware firewall "in private beta"; detection "within minutes" |
+| 036 | confirmed, detail added | September 29th; 186 tasks; 93.5%; 54.8%; runs as of 26 September 2026. The 53% is "93 of the 176 we could judge", and that denominator was added to the CSV and the section 4 table |
+| 010, 021, 037 | confirmed | pyro-caml v1.0.0 2026-05-13T22:32Z, MIT (the repo itself was created 2025-10-15). defending-code-harness is a fork of anthropics/defending-code-reference-harness, created 2026-06-04, NOASSERTION. semgrep-grok-bot was created 2026-09-09 with no licence |
+
+**Totals:** 28 ledger rows were checked (001, 002, 005, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 021, 022, 023, 024, 026, 027, 028, 029, 030, 031, 034, 036, 037, 038), plus the robots rules for every cited domain. Outcome: 26 confirmed, 1 confirmed with a denominator added (036), and 1 corrected limitation (014, an internal inconsistency in the vendor's post). No figure was misquoted. The log's statement that "every number, version, date and quote" was grep-checked holds for the sampled rows. However, the 014 headline-versus-table conflict had not been noticed.
+
+*This is an AI-assisted source spot-check, not qualified human factual, rights or methods review. Every pending gate above still applies.*
