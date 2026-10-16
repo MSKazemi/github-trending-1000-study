@@ -98,3 +98,7 @@
   - the licence rows (CI2026-076-025, 029, 031, 032, 036);
   - the security rows (013, 020, 026, 033, 035);
   - the MCP label conflict (002, 012, 018).
+
+## Spot-check access note (2026-10-16)
+
+- weaviate.io robots.txt (`User-agent: *`) disallows `/blog/rss.xml`, `/*?*` and feed paths. The independent spot-check therefore did not fetch the RSS feed and used individual post pages only. The original RSS request above was made against that rule.
