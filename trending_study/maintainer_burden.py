@@ -10,6 +10,9 @@ import math
 from pathlib import Path
 import re
 
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
+
+
 class BurdenError(ValueError):
     pass
 
@@ -82,21 +85,38 @@ def summarize(cards):
             t = times[name]
             if t is None:
                 absent.append(name)
-            elif type(t) not in (int, float) or not math.isfinite(t) or t < 0:
+            elif type(t) not in (int, float) or t < 0:
                 raise BurdenError("human active minutes must be finite, nonnegative or null")
             else:
-                known.append(float(t))
+                try:
+                    numeric = float(t)
+                except (OverflowError, ValueError) as exc:
+                    raise BurdenError(
+                        "human active minutes must be finite, nonnegative or null"
+                    ) from exc
+                if not math.isfinite(numeric):
+                    raise BurdenError("human active minutes must be finite, nonnegative or null")
+                known.append(numeric)
         if consent != "consented" and known:
             raise BurdenError("unconsented/withdrawn case may not publish human work minutes")
         if synthetic and known and card.get("observed_at_utc") is not None:
             raise BurdenError("synthetic case may not claim actual observed timing")
         if not synthetic and consent == "consented" and known and card.get("observed_at_utc") is None:
             raise BurdenError("consented observed time needs source UTC timestamp")
-        known_partial_minutes += sum(known)
+        # Each input may be finite while summing multiple very large values
+        # overflows IEEE-754 and silently produces Infinity in JSON output.
+        row_minutes = sum(known)
+        if not math.isfinite(row_minutes):
+            raise BurdenError("human minute total exceeds finite numeric range")
+        known_partial_minutes += row_minutes
+        if not math.isfinite(known_partial_minutes):
+            raise BurdenError("human minute total exceeds finite numeric range")
         unknown_total += len(absent)
         if not absent:
             complete += 1
-            total_complete_minutes += sum(known)
+            total_complete_minutes += row_minutes
+            if not math.isfinite(total_complete_minutes):
+                raise BurdenError("human minute total exceeds finite numeric range")
             if card["task_accepted_by_independent_reviewer"] == "pass":
                 accepted_complete += 1
     if len(study_kinds) != 1:
@@ -123,10 +143,18 @@ def main(argv=None):
     p.add_argument("--input", required=True, type=Path)
     a = p.parse_args(argv)
     try:
-        doc = json.loads(a.input.read_text(encoding="utf-8"))
+        # The same bounded, descriptor-checked, duplicate-key-rejecting reader
+        # used by the repository's other offline research instruments.
+        doc = load_research_json_file(a.input, max_bytes=MAX_FILE_BYTES)
         result = summarize(doc["cases"] if isinstance(doc, dict) and "cases" in doc else [doc])
-    except (ValueError, TypeError, OSError, KeyError) as exc:
+    except ResearchJSONError:
+        # Decoder errors may contain private object keys or local filenames.
+        p.error("invalid or unsafe research JSON input")
+    except BurdenError as exc:
+        # Domain errors are fixed messages, never respondent values or IDs.
         p.error(str(exc))
+    except (ValueError, TypeError, OSError, KeyError, OverflowError, RecursionError):
+        p.error("invalid maintainer burden input")
     print(json.dumps(result, indent=2, sort_keys=True))
 
 if __name__ == "__main__":
