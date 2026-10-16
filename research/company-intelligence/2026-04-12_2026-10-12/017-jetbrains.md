@@ -254,3 +254,35 @@ A second agent re-fetched the sources of all ledger rows that existed at the fir
 | all other rows | confirmed | Junie release tags and wording, Koog, Kotlin, Hugging Face, Aikido, Techstrong, marimo, ThinkRail, Roer, benjamin-plus, annual highlights, user blog |
 
 The checker also found three errors in the first version of the search log (number of rows citing the bulletin page, number of bulletin rows, and a row cross-reference); they are fixed there. No host refused the checker, and it sent no personal identifier.
+
+## Independent source spot-check (2026-10-16, coordinator-arranged second review)
+
+This check is separate from the author-commissioned check above. It was done by a different agent and gave priority to rows that check did not cover: `041`–`044` and the blog.jetbrains.com rows `013`, `023` and `034`.
+
+**Access rules.** Robots.txt was checked first for blog.jetbrains.com (only `/wp-admin/` disallowed), junie.jetbrains.com, www.jetbrains.com, resources.jetbrains.com, huggingface.co (`Allow: /`), www.aikido.dev, techstrong.ai and swe-rebench.com. None has a rule naming Claude/Anthropic agents that covers the paths used.
+
+- The search log's two Claude-User fetches (The Register and DevClass tag pages) fall under those sites' explicit `Claude-User` allow. The hosts it disallowed for Claude agents (helgilibrary.com, sethmlarson.dev, infoworld.com) were not fetched, and no ledger row depends on them.
+- blog.jetbrains.com did not challenge this review's five spaced requests: all returned HTTP 200 with no `x-amzn-waf-action` header. The original screen's repeated fetches after AWS WAF challenges were not a robots.txt violation, but a human reviewer may want to confirm that waiting and retrying fits JetBrains' terms.
+
+Fetches used a generic `Mozilla/5.0` User-Agent, `gh api`, the Hugging Face API, the NVD API and the bulletin JSON feed. No personal identifier was sent.
+
+| Row | Outcome | Note |
+|---|---|---|
+| `002`, `019`, `025`, `031`, `042` bulletins | Confirmed | `data.json` publication dates 04-17, 06-26, 07-27 (plus 07-23 for CVE-2026-65907), 08-17 and 09-30. Severities, fixed-in versions and the Mindgard credit match. NVD gives CVE-2026-100265 a CNA score of 4.8 and an NVD primary score of 6.5; CVE-2026-63077 was published 2026-07-27. |
+| `013` Mellum2 | **Corrected (precision)** | Post: Apache 2.0, 12B MoE with 2.5B active, "trained from scratch", "not multimodal", "less than half" inference time. Model card: 64 experts / 8 active, 131,072 context. The Base, Instruct, Thinking and SFT repos were created 2026-05-26, but the Hugging Face API also lists a `Mellum2-12B-A2.5B-Base-Pretrain` repo with createdAt 2026-04-07; the limitation now says so. |
+| `017` Aikido | Confirmed | Jun 16: at least 15 plugins from seven vendor accounts; key sent to an `http://` endpoint; earliest versions end of October 2025; manual-review remark. |
+| `023` JetBrains Context | Confirmed | 205 / 175 / 1,953 tasks; up to 68% turns, 59% latency, 48% cost; "no additional cost" with a JetBrains AI subscription; "not stored on JetBrains Context servers". `JetBrains/context` has no licence field. |
+| `026` local MLX models | Confirmed | `models-1.0` is a prerelease of 2026-07-28; `Qwen3.6-27B-4bit` 14.98 GiB plus an MTP head. |
+| `029` benjamin-plus-skill | Confirmed | MIT, created 2026-08-17; README "up to −18 % cost and −22 % tokens", "~745 tokens", five habits; description "−17.9% cost median". |
+| `030` Gemini defaults | Confirmed | Aug 17 post "70% Off Base Pricing"; Sep 9 post "75% Off". |
+| `032` Junie Local launch | Confirmed | ~20 GB download, M5 Mac with 64 GB, Sonnet 4.5 parity, GPT-5 medium slightly higher, DGX Spark and RTX 5090 prototypes, no registration. |
+| `033` Techstrong | Confirmed | $4,499 MacBook Pro; no timeline for Linux, Windows or lower-memory Macs. |
+| `034` Cadence incident | Confirmed | First entry 2026-08-28 11:50 CEST; sunset announced March 31, shutdown August 31; CVE-2026-63077; IoCs "from August 8, 2026"; updates on Aug 31, Sep 1 and Sep 3; the Sep 3 update widens the stated exposure to email addresses, source code and credentials; rotate secrets; treat executions as untrusted. |
+| `040` Junie Local blend | Confirmed | 100-task benchmark 37 vs 34 vs 39; 71% fewer output tokens; LiveCodeBench 85.47% vs 83.29%; RTX Ampere+ with 24 GB in nightly; blend repos created 2026-09-15. |
+| `041` JetBrains Air | Confirmed | URL dated 2026-09-22. Air in IDEs, Air Teams, "Air Governance (formerly JetBrains Central)"; Junie "will be supported across all Air surfaces"; ACP Registry; "cheaper to generate but more expensive to verify"; "much harder to prove"; mobile/remote and event-triggered work undated; "rolling series of releases". |
+| `043` Junie Lite | Confirmed | `published_time` 2026-10-02. "Qwen 3.6 27B today", "virtually unlimited", "isn't a trial … no countdown*", "Offer is valid until 31 Dec 2026", not shared with the provider or used for training. CLI release 26.9.22 (3419.26) was published 2026-10-01 with "Added Junie Lite". |
+| `044` Mellum2.1 | Confirmed | RL "in real environments" with sandboxed runs; 12B / 2.5B active, Apache 2.0; GGUF "coming soon". Model card, self-reported: SWE-bench Verified 47.0 vs 2.0 (Mellum2 Thinking) vs 50.0 (Qwen3.5 9B); Terminal-Bench 2.1 17.4 vs 21.7. The GGUF repo was created 2026-10-07T18:43Z. The Thinking repo has createdAt 2026-09-20, before the post. |
+
+**Totals:** 18 rows checked: 17 confirmed, 1 corrected (`013`, precision only), 0 unverifiable, 0 wrong. No row depends only on a robots-disallowed source.
+
+*This is an AI-assisted spot-check, not qualified human review.*
