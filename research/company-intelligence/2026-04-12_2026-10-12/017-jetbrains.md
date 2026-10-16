@@ -97,13 +97,13 @@ Spot checks: [Aug 24 Junie Local announcement](https://junie.jetbrains.com/blog/
 
 ### What the ledger adds
 
-- **42 dated rows** (`CI2026-017-001`…`042`), screened 2026-10-16. Per segment: Apr 12–30: 6 · May: 6 · Jun: 8 · Jul: 5 · Aug: 10 · Sep: 6 · Oct 1–12: 1. No segment is empty. The earlier "no dated item selected" for April, May and July was a gap in coverage, not a quiet period.
-- **Status mix:** 32 shipped, 5 reported_undetermined, 3 preview, 1 corrected, 1 announced_only.
+- **44 dated rows** (`CI2026-017-001`…`044`), screened 2026-10-16. Per segment: Apr 12–30: 6 · May: 6 · Jun: 8 · Jul: 6 · Aug: 10 · Sep: 6 · Oct 1–12: 2. No segment is empty. The earlier "no dated item selected" for April, May and July was a gap in coverage, not a quiet period.
+- **Status mix:** 33 shipped, 5 reported_undetermined, 4 preview, 1 corrected, 1 announced_only.
 - **Source mix:**
   - Junie CLI release notes from the GitHub releases API (`JetBrains/junie`). These date when a feature reached the Release channel, which is often earlier than the blog announcement.
   - JetBrains security bulletins, read from the JSON feed behind the client-rendered bulletin page and cross-checked against NVD CVE records.
   - JetBrains GitHub releases for Koog, Kotlin, Kotlin toolchain, ThinkRail and Roer; Hugging Face model cards.
-  - Independent or third-party sources: the SWE-rebench leaderboard (003), Aikido Security (017), Techstrong.ai (032), a user's blog (010) and marimo (023).
+  - Independent or third-party sources: the SWE-rebench leaderboard (003), Aikido Security (017), Techstrong.ai (033), a user's blog (010) and marimo (024).
   - The remaining rows are JetBrains blog and product pages.
 - **Pages not fetched:** blog.jetbrains.com answers bursts of requests with an AWS WAF challenge. Posts were fetched slowly and the challenge was never bypassed, so several in-window posts are leads only (see *Blog posts not retrieved*). Some outlets were blocked by robots.txt or by a challenge; see the search log.
 
@@ -116,14 +116,14 @@ Spot checks: [Aug 24 Junie Local announcement](https://junie.jetbrains.com/blog/
 | May: no dated item selected | 007–012 | **corrected.** Six rows, including `/review`, the Debug Agent, remote access, Koog 1.0 and Extensions. |
 | Jun 17: Junie GA, no independent functional assessment | 018, 003 | **confirmed and extended.** The post quotes a third-party SWE-rebench result. The leaderboard (default window May 15–Jul 1, read Oct 16) shows similar but not identical figures. |
 | "The June 17 post … does not automatically establish that every separate IDE integration was GA" (*Boundary spot check*) | 018 | **partly corrected.** The GA post says the IDE integration was "rebuilt … on top of ACP" as part of GA. Feature availability still varies: debugger control works "end to end in JetBrains IDEs with an AI subscription". |
-| Jul: no dated item selected | 021–025 | **corrected.** Five rows. |
-| Aug 24: Junie Local; M5 Mac with 64 GB RAM; model download is an access constraint | 031, 032 | **confirmed.** The raw text says Qwen3.6-27B at 4-bit, "about 20 GB to download", M5 with 64 GB, free. The `/local` product page lists "~40 GB (for the model download)" under disk requirements next to "About 20 GB of model weights", so it is a disk requirement, not a conflicting download size. |
-| Sep 17: demo agent (*addendum*) | 038, 035 | **corrected (date).** The post is dated Sep 17, but `/demo` shipped in CLI release 26.8.31 on **Aug 31**. |
-| Sep 18: Junie Local updates, company-reported performance | 039 | **confirmed.** Vendor figures checked against the raw text: 37/34/39 of 100 internal tasks, "71% fewer output tokens", LiveCodeBench 85.47% vs 83.29%, experimental RTX support on Windows (≥24 GB VRAM). |
-| Oct 2: Junie Lite free tier; check limits, pricing and cloud processing | 042 | **confirmed and extended.** Runs Qwen 3.6 27B on JetBrains infrastructure. The CLI added it on Oct 1, a day before the post. |
-| "Junie Lite … footer states the offer is valid only through Dec 31, 2026" (*spot check*) | 042 | **confirmed.** The exact footnote reads "Offer is valid until 31 Dec 2026", and the body says "It isn't a trial, and there's no countdown*". |
-| "Junie Local is not equivalent to a cloud-powered Junie Lite account" | 031, 042 | **confirmed.** Local inference runs on the device. Lite inference runs "only on JetBrains infrastructure". |
-| Claimed future roadmap: no binding 2027–2031 commitments verified | 040 | **still none.** The Air post states direction without dates (see below). |
+| Jul: no dated item selected | 021–026 | **corrected.** Five rows. |
+| Aug 24: Junie Local; M5 Mac with 64 GB RAM; model download is an access constraint | 032, 033 | **confirmed.** The raw text says Qwen3.6-27B at 4-bit, "about 20 GB to download", M5 with 64 GB, free. The `/local` product page lists "~40 GB (for the model download)" under disk requirements next to "About 20 GB of model weights", so it is a disk requirement, not a conflicting download size. |
+| Sep 17: demo agent (*addendum*) | 039, 036 | **corrected (date).** The post is dated Sep 17, but `/demo` shipped in CLI release 26.8.31 on **Aug 31**. |
+| Sep 18: Junie Local updates, company-reported performance | 040 | **confirmed.** Vendor figures checked against the raw text: 37/34/39 of 100 internal tasks, "71% fewer output tokens", LiveCodeBench 85.47% vs 83.29%, experimental RTX support on Windows (≥24 GB VRAM). |
+| Oct 2: Junie Lite free tier; check limits, pricing and cloud processing | 043 | **confirmed and extended.** Runs Qwen 3.6 27B on JetBrains infrastructure. The CLI added it on Oct 1, a day before the post. |
+| "Junie Lite … footer states the offer is valid only through Dec 31, 2026" (*spot check*) | 043 | **confirmed.** The exact footnote reads "Offer is valid until 31 Dec 2026", and the body says "It isn't a trial, and there's no countdown*". |
+| "Junie Local is not equivalent to a cloud-powered Junie Lite account" | 032, 043 | **confirmed.** Local inference runs on the device. Lite inference runs "only on JetBrains infrastructure". |
+| Claimed future roadmap: no binding 2027–2031 commitments verified | 041 | **still none.** The Air post states direction without dates (see below). |
 | Study constructs labelled M1 workflow, M2 acceptance/review, M4 external integration, M5 reuse, M6 lifecycle cost (*Provisional direction*) | all | **corrected (labels).** The ledger uses the issue #84 ordering: M1 agent workflow, M2 code discovery, M3 verified reuse, M4 accepted quality, M5 review/maintenance, M6 rights/security, M7 human and lifecycle costs. |
 
 **Apr 8 IDE-integration post** (`blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/`, titled "Junie CLI Now Connects to Your JetBrains IDE"): **confirmed** as pre-window baseline. The `publish-date` element is 2026-04-08 13:44, and the text says "This integration is currently in Beta". It has no ledger row because it falls outside the window.
@@ -139,41 +139,41 @@ Spot checks: [Aug 24 Junie Local announcement](https://junie.jetbrains.com/blog/
 
 - **Agent security boundary.**
   - A Junie CVE for command execution via a malicious project file (002). JetBrains scores it 5.8; NVD scores it 9.8.
-  - About 3.5 months later, project trust verification before loading MCP servers, skills and configuration (026). A bulletin published just after the window (Oct 15, High) shows that release also fixed code execution via an untrusted project's MCP server configuration.
-  - Three more AI/MCP bulletins: YouTrack MCP disclosure (019), PyCharm Jupyter MCP code execution (030) and Rider AI Assistant skill auto-update (041).
+  - About 3.5 months later, project trust verification before loading MCP servers, skills and configuration (027). A bulletin published just after the window (Oct 15, High) shows that release also fixed code execution via an untrusted project's MCP server configuration.
+  - Three more AI/MCP bulletins: YouTrack MCP disclosure (019), PyCharm Jupyter MCP code execution (031) and Rider AI Assistant skill auto-update (042).
   - Independent report of 15 Marketplace plugins stealing users' AI API keys (017).
-  - Context: 151 JetBrains security bulletins were published in the window, 13 of them Critical. They include a TeamCity unauthenticated RCE (024). JetBrains later confirmed that its own Cadence service, a PyCharm cloud-execution add-on being shut down, was exploited through that CVE. The Sep 3 update says the attacker could have reached users' source code and credentials (033).
-- **Autonomy.** Auto Mode, in which Junie approves commands itself (020); subagents (021); `/goal` for very large projects (027); remote access from a browser (009).
-- **Review and verification aids.** Plan Mode 2.0 (004), `/review` (007) and `/demo` evidence videos (035, 038). The Air post says code "becomes cheaper to generate but more expensive to verify" (040).
+  - Context: 151 JetBrains security bulletins were published in the window, 13 of them Critical. They include a TeamCity unauthenticated RCE (025). JetBrains later confirmed that its own Cadence service, a PyCharm cloud-execution add-on being shut down, was exploited through that CVE. The Sep 3 update says the attacker could have reached users' source code and credentials (034).
+- **Autonomy.** Auto Mode, in which Junie approves commands itself (020); subagents (021); `/goal` for very large projects (028); remote access from a browser (009).
+- **Review and verification aids.** Plan Mode 2.0 (004), `/review` (007) and `/demo` evidence videos (036, 039). The Air post says code "becomes cheaper to generate but more expensive to verify" (041).
 - **Cost levers.**
-  - Per-model effort (005) and limited-time model discounts (029).
-  - Live session cost (036).
-  - Junie Local: free, but needs an M5 Mac with 64 GB; Techstrong found a $4,499 entry configuration (032).
-  - Junie Lite: free until 31 Dec 2026 (042).
-  - A vendor-measured token-saving skill (028).
+  - Per-model effort (005) and limited-time model discounts (030).
+  - Live session cost (037).
+  - Junie Local: free, but needs an M5 Mac with 64 GB; Techstrong found a $4,499 entry configuration (033).
+  - Junie Lite: free until 31 Dec 2026 (043).
+  - A vendor-measured token-saving skill (029) and vendor-measured retrieval savings of "up to" 48% execution cost (023).
 - **Reuse surface.**
-  - Mellum2 open weights under Apache 2.0 (013).
-  - Koog 1.0 with a stable/beta API split (011) and Agent Skills specification support (034).
+  - Mellum2 open weights under Apache 2.0 (013), and Mellum2.1 retrained for agentic coding (044). In JetBrains' own table, a similar-size open model (Qwen3.5 9B) still scores higher on both agentic benchmarks.
+  - Koog 1.0 with a stable/beta API split (011) and Agent Skills specification support (035).
   - Kotlin 2.4.0 (015); Amper folded into Kotlin toolchain (016).
-  - Agent-agnostic tools: ThinkRail (022) and Roer (037).
-  - A third-party PyCharm plugin (023).
+  - Agent-agnostic tools: ThinkRail (022) and Roer (038).
+  - A third-party PyCharm plugin (024).
 
 ### M1–M7 notes for new events (issue #84 ordering)
 
 | Construct | What the new events show | What they cannot show |
 |---|---|---|
 | M1 agent workflow | Plan Mode 2.0, Debug Agent, remote access, worktrees, Auto Mode, subagents, `/goal`, Air multi-agent orchestration | Adoption or effect on accepted work |
-| M2 code discovery | IDE-semantic tools for agents (GA post; Air in IDEs page: "deterministic tools" so agents "use fewer tokens") | Any independent retrieval-quality measurement |
+| M2 code discovery | JetBrains Context early access: semantic and multi-repo retrieval for third-party agents (023); IDE-semantic tools for agents (GA post; Air in IDEs page: "deterministic tools" so agents "use fewer tokens") | Any independent retrieval-quality measurement |
 | M3 verified reuse | Apache-2.0 Mellum2 weights, Koog, ThinkRail, Roer, Kotlin toolchain; Agent Skills support; a third-party plugin | Downstream reuse; no import was traced |
-| M4 accepted quality | SWE-rebench third-party leaderboard; vendor-run Junie Local benchmarks; `/demo` reports | Accepted-task rates on real repositories |
+| M4 accepted quality | SWE-rebench third-party leaderboard; vendor-run Junie Local, Context and Mellum2.1 benchmarks; `/demo` reports | Accepted-task rates on real repositories |
 | M5 review/maintenance | `/review`, plan documents, `/demo`; Amper→Kotlin toolchain migration; ~1,770 nightly Junie builds in six months | Reviewer minutes; migration cost |
 | M6 rights/security | Junie CVE with conflicting CVSS; vendor's own hosted service breached via its CI product (Cadence); trust gate; MCP bulletins; skill auto-update; malicious Marketplace plugins; proprietary Junie licence vs open components; Auto Mode | Exploitation in the wild; legal assessment |
 | M7 human/lifecycle cost | Effort control, discounts, session cost, free local and Lite tiers, $4,499 hardware entry point, vendor token-saving skill, a user's performance complaint | Energy or emissions. Tokens are not kWh, and no energy figure is given. |
 
 ### Vendor-stated near-term plans (dated, not a roadmap)
 
-- **Air (Sep 22, 040).** A "rolling series of releases" with stated intent to say "what customers can use now, what is entering preview, and what remains part of our longer-term direction". Mobile and remote experiences, richer context and event-triggered workflows are announced without dates.
-- **Junie Local hardware (Aug 24).** "Working prototypes for DGX Spark and RTX 5090", "looking at 24 GB cards". Partly delivered on Sep 18 as experimental Windows RTX support (039). No timeline was given for Linux or lower-memory Macs.
+- **Air (Sep 22, 041).** A "rolling series of releases" with stated intent to say "what customers can use now, what is entering preview, and what remains part of our longer-term direction". Mobile and remote experiences, richer context and event-triggered workflows are announced without dates.
+- **Junie Local hardware (Aug 24).** "Working prototypes for DGX Spark and RTX 5090", "looking at 24 GB cards". Partly delivered on Sep 18 as experimental Windows RTX support (040). No timeline was given for Linux or lower-memory Macs.
 - **Junie Lite terms (Oct 2).** "We may switch to a different model over time. Terms and available models may change"; the offer ends 31 Dec 2026.
 
 None of these is a binding commitment, and no 2027–2031 product plan was found.
@@ -216,8 +216,6 @@ None of these is a binding commitment, and no 2027–2031 product plan was found
 
 These blog.jetbrains.com posts are in the window and relevant. They were found through Hacker News titles or the blog sitemaps but were not read in this pass because of the WAF rate limit, so they support no claim here:
 
-- <https://blog.jetbrains.com/ai/2026/07/introducing-jetbrains-context-repository-intelligence-for-coding-agents/>
-- <https://blog.jetbrains.com/ai/2026/10/mellum2-1-gets-to-work-a-fast-open-model-for-coding-agents/>
 - <https://blog.jetbrains.com/blog/2026/07/07/jetbrains-ai-for-teams-and-organizations-from-fragmented-ai-usage-to-coordinated-software-development/>
 - <https://blog.jetbrains.com/blog/2026/10/06/jetbrains-joins-the-open-source-security-foundation/>
 - <https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/>
@@ -231,6 +229,10 @@ These blog.jetbrains.com posts are in the window and relevant. They were found t
 - <https://blog.jetbrains.com/research/2026/07/kotlinllm-open-source/>
 - <https://blog.jetbrains.com/ai/2026/05/stop-sending-ide-catchable-ai-code-errors-to-review/>
 - <https://blog.jetbrains.com/team/2026/04/27/jetbrains-annual-highlights-2026-are-here/>
+- <https://blog.jetbrains.com/ai/2026/06/codex-is-now-the-recommended-agent-in-jetbrains-ai/>
+- <https://blog.jetbrains.com/ai/2026/06/agentic-ai-governance-designing-for-accountability-and-control/>
+- <https://blog.jetbrains.com/ai/2026/10/air-in-ides-eap/>
+- <https://blog.jetbrains.com/teamcity/2026/07/cve-2026-63077/>
 
 ## Independent source spot-check (2026-10-16)
 
@@ -238,15 +240,15 @@ A second agent re-fetched the sources of all ledger rows that existed at the fir
 
 | Row(s) | Outcome | Note |
 |---|---|---|
-| bulletin rows 002, 019, 024, 030, 041 | confirmed | Dates, severities, fixed-in versions, CWE and the CNA vs NVD CVSS scores match the bulletin feed and NVD |
+| bulletin rows 002, 019, 025, 031, 042 | confirmed | Dates, severities, fixed-in versions, CWE and the CNA vs NVD CVSS scores match the bulletin feed and NVD |
 | 003, 018 | confirmed | Leaderboard window, ranks and figures; GA-post quote, `.junie/plans`, "Agent Communication Protocol" |
 | 001 | corrected (omission) | Five model additions were missing from the list (Grok 4.3, Gemini 3.6 Flash, Gemini 3.5 Flash Lite, Grok 4.6, GPT 6.1 Sol); now added |
 | 016 | corrected | The row first cited tag v0.1.0. That tag is a historical Amper tag (created 2023-11-06) re-published on Jun 4. The first Kotlin Toolchain release is v0.11.0 (Jun 4, 20:52 UTC); the row now cites it |
-| 025 | corrected (status) | GitHub marks the release as a prerelease; status changed from shipped to preview |
-| 026 | extended | A bulletin published Oct 15 (after the window; High; JUNIE-3056) lists 26.8.3 as the fix for code execution via an untrusted project's MCP server configuration |
-| 031 | corrected (my conflict claim) | "~40 GB" on the product page is a disk requirement, not a second download figure |
-| 029 | corrected (source) | The Aug 17 post was available on junie.jetbrains.com; the row now cites it instead of the blog index summary |
-| 040 | partly checked | Product-page claims confirmed; the blog post itself was not re-fetched by the checker |
+| 026 | corrected (status) | GitHub marks the release as a prerelease; status changed from shipped to preview |
+| 027 | extended | A bulletin published Oct 15 (after the window; High; JUNIE-3056) lists 26.8.3 as the fix for code execution via an untrusted project's MCP server configuration |
+| 032 | corrected (my conflict claim) | "~40 GB" on the product page is a disk requirement, not a second download figure |
+| 030 | corrected (source) | The Aug 17 post was available on junie.jetbrains.com; the row now cites it instead of the blog index summary |
+| 041 | partly checked | Product-page claims confirmed; the blog post itself was not re-fetched by the checker |
 | all other rows | confirmed | Junie release tags and wording, Koog, Kotlin, Hugging Face, Aikido, Techstrong, marimo, ThinkRail, Roer, benjamin-plus, annual highlights, user blog |
 
 The checker also found three errors in the first version of the search log (number of rows citing the bulletin page, number of bulletin rows, and a row cross-reference); they are fixed there. No host refused the checker, and it sent no personal identifier.
