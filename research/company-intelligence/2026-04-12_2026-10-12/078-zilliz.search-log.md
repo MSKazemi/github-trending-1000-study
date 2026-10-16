@@ -105,3 +105,7 @@ All of these remain **vendor or press statements**, not verified measurements.
 - the Vector Lakebase date cluster (007, 012);
 
 before any evidence is promoted beyond provisional status.
+
+## Spot-check access note (2026-10-16)
+
+- status.zilliz.com robots.txt (`User-agent: *`) disallows `/api/`. The status API request above was made against that rule. The independent spot-check used only the incident HTML page and `/history.rss`, which show 2026-07-22 timestamps. The 2026-07-24T20:11Z posting time is therefore unverified (row 022).
