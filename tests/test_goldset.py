@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import traceback
 from trending_study.goldset import GoldsetError, evaluate, main
 
 
@@ -207,6 +208,28 @@ class GoldSetTests(unittest.TestCase):
         bad = copy.deepcopy(d)
         bad["tasks"][0]["systems"][0]["ranked_candidate_ids"][0] = "UNPOOLED_PRIVATE_ID"
         check(bad)
+
+    def test_invalid_timestamp_not_in_exception_chain_or_traceback(self):
+        # datetime.fromisoformat's own ValueError can include its argument.
+        # A caller collecting a FULL exception traceback must not receive
+        # the malformed private timestamp from an underlying exception.
+        for where in ("baseline", "release"):
+            d = copy.deepcopy(DATA)
+            marker = "PRIVATE_TIMESTAMP_MARKER_" + where.upper()
+            if where == "baseline":
+                d["tasks"][0]["baseline_utc"] = marker
+            else:
+                d["tasks"][0]["candidates"][0]["available_since_utc"] = marker
+            with self.subTest(where=where):
+                try:
+                    evaluate(d)
+                except GoldsetError as exc:
+                    self.assertIn("date-time", str(exc))
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("malformed timestamp must be refused")
 
     def test_cli_redacts_private_ids_even_on_invalid_gate(self):
         d = copy.deepcopy(DATA)
