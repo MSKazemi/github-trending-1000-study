@@ -49,7 +49,7 @@ Freeze tasks, licenses and hidden independent acceptance criteria in advance, ke
 - [ ] Build deduplicated dated event ledger (publication date distinct from shipping date), license/API constraints and any corrections.
 - [ ] Screen independent reporting and contradictory evidence; preserve unknown rather than reporting zero events.
 - [ ] Run or clearly defer a task-based independently judged comparison.
-- [ ] Complete human factual/link review; only then consider closing #84.
+- [ ] Complete human factual/link review. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
 
 **2027 maintainer lesson (E0):** test whether an existing tool adds independently accepted reuse value before adopting it on reputation alone. [Company method](../../../docs/COMPANY_INTELLIGENCE_METHOD_2026_10.md) · [research grading](../../../docs/EVIDENCE_TO_LESSON_PROTOCOL.md).
 
@@ -77,7 +77,7 @@ This follows the initial 2026-10-12 E0 lead, which is preserved above. Selected 
 
 Use 8–12 prespecified Python bugfix tasks with pinned repositories, hidden functional tests and license/security gates. Compare IDE-context Junie assistance with CLI-only assistance, holding model/budget constant **only if technically possible**. Record every assigned task (including failures and abstentions), accepted repair rate, upstream code actually reused, human review/repair minutes, tool+hardware setup, billed cost and CI outcomes; only quantify energy with actual measurements. Prespecify rejection for any secret/license escape or meaningful deterioration in accepted results or total human cost. Address M1–M7 without claiming empirical findings.
 
-**Open blockers:** direct source-link and date QA, complete each month, validate company/entity/availability, independently screen criticism, confirm product license and actual terms, obtain non-author human factual signoff and fresh merge-candidate CI. **Issue #84 remains open; this versioned partial evidence screen may be published without treating the research as completed.**
+**Open blockers:** direct source-link and date QA, complete each month, validate company/entity/availability, independently screen criticism, confirm product license and actual terms, obtain non-author human factual signoff and fresh merge-candidate CI. **Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.**
 
 **Practical lesson:** freeze task fixtures and require independent acceptance before adding an IDE-specific agent dependency to other repositories.
 
@@ -88,3 +88,147 @@ Use 8–12 prespecified Python bugfix tasks with pinned repositories, hidden fun
 Spot checks: [Aug 24 Junie Local announcement](https://junie.jetbrains.com/blog/junie-local-launch/), [official Local hardware constraints](https://junie.jetbrains.com/local), [Sep 18 vendor internal-model evaluation](https://junie.jetbrains.com/blog/junie-local-smarter-faster/), and [Oct 2 Junie Lite announcement](https://junie.jetbrains.com/blog/junie-lite/). **Caution:** the Junie Lite marketing post calls the tier free, but its footer states the offer is valid only through **Dec 31, 2026**; do not extrapolate indefinite future free access from promotional descriptions or documentation. Vendor evaluations are not independent task acceptance or energy measurements.
 
 **Merge scope:** these selected links and unexecuted experiment sketch are preliminary first-party intelligence, not issue #84 completion. Independent review, exact search census across every month, corporate identity/availability/licensing verification and task testing remain outstanding.
+
+## Standardisation upgrade (2026-10-16)
+
+> **PROVISIONAL, AI-ASSISTED, NOT HUMAN-REVIEWED.** This section adds a standard 21-column ledger, [`017-jetbrains.events.csv`](017-jetbrains.events.csv), a [search log](017-jetbrains.search-log.md) and a source check of the earlier text above. Text above this heading is unchanged except for two closure sentences reworded to the standard form. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open. Related: [#84](https://github.com/MSKazemi/github-trending-1000-study/issues/84), news corpus [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56).
+>
+> **Conflict of interest.** This upgrade was prepared with an Anthropic model (Claude). JetBrains' Junie competes with Anthropic's Claude Code (row 003 compares them on one benchmark), and JetBrains Air also runs Claude Code and Claude models. Selection and wording may be biased in either direction. A human reviewer should check both.
+
+### What the ledger adds
+
+- **40 dated rows** (`CI2026-017-001`…`040`), screened 2026-10-16. Per segment: Apr 12–30: 6 · May: 6 · Jun: 7 · Jul: 5 · Aug: 9 · Sep: 6 · Oct 1–12: 1. No segment is empty. The earlier "no dated item selected" for April, May and July was a gap in coverage, not a quiet period.
+- **Status mix:** 32 shipped, 5 reported_undetermined, 2 preview, 1 announced_only.
+- **Source mix:**
+  - Junie CLI release notes from the GitHub releases API (`JetBrains/junie`). These date when a feature reached the Release channel, which is often earlier than the blog announcement.
+  - JetBrains security bulletins, read from the JSON feed behind the client-rendered bulletin page and cross-checked against NVD CVE records.
+  - JetBrains GitHub releases for Koog, Kotlin, Kotlin toolchain, ThinkRail and Roer; Hugging Face model cards.
+  - Independent or third-party sources: the SWE-rebench leaderboard (003), Aikido Security (016), Techstrong.ai (031), a user's blog (010) and marimo (022).
+  - The remaining rows are JetBrains blog and product pages.
+- **Pages not fetched:** blog.jetbrains.com answers bursts of requests with an AWS WAF challenge. Posts were fetched slowly and the challenge was never bypassed, so several in-window posts are leads only (see *Blog posts not retrieved*). Some outlets were blocked by robots.txt or by a challenge; see the search log.
+
+### Crosswalk: earlier report → ledger
+
+| Earlier claim (section) | Ledger event_id | Status after source check |
+|---|---|---|
+| Initial lead: Junie coding agent out of beta; date not archived (*Product scope*) | CI2026-017-017 | **confirmed.** The post's `publish-date` element is 2026-06-17 10:07; the Junie blog index also lists June 17. |
+| Apr 12–30: no eligible launch; Apr 8 IDE integration is pre-window baseline and Beta (*Source-review addendum*; *Boundary spot check*) | 001–006 | **confirmed (Apr 8 date and Beta label) and corrected (coverage).** In-window April items exist: model-support and Plan Mode 2.0 releases, the Junie CVE, the SWE-rebench re-run and the annual highlights. The Apr 8 post stays out of the ledger as pre-window baseline (see note below the table). |
+| May: no dated item selected | 007–012 | **corrected.** Six rows, including `/review`, the Debug Agent, remote access, Koog 1.0 and Extensions. |
+| Jun 17: Junie GA, no independent functional assessment | 017, 003 | **confirmed and extended.** The post quotes a third-party SWE-rebench result. The leaderboard (default window May 15–Jul 1, read Oct 16) shows similar but not identical figures. |
+| "The June 17 post … does not automatically establish that every separate IDE integration was GA" (*Boundary spot check*) | 017 | **partly corrected.** The GA post says the IDE integration was "rebuilt … on top of ACP" as part of GA. Feature availability still varies: debugger control works "end to end in JetBrains IDEs with an AI subscription". |
+| Jul: no dated item selected | 020–024 | **corrected.** Five rows. |
+| Aug 24: Junie Local; M5 Mac with 64 GB RAM; model download is an access constraint | 030, 031 | **confirmed.** The raw text says Qwen3.6-27B at 4-bit, "about 20 GB to download", M5 with 64 GB, free. **Conflict:** the `/local` product page lists "~40 GB (for the model download)" and also "About 20 GB of model weights". |
+| Sep 17: demo agent (*addendum*) | 036, 033 | **corrected (date).** The post is dated Sep 17, but `/demo` shipped in CLI release 26.8.31 on **Aug 31**. |
+| Sep 18: Junie Local updates, company-reported performance | 037 | **confirmed.** Vendor figures checked against the raw text: 37/34/39 of 100 internal tasks, "71% fewer output tokens", LiveCodeBench 85.47% vs 83.29%, experimental RTX support on Windows (≥24 GB VRAM). |
+| Oct 2: Junie Lite free tier; check limits, pricing and cloud processing | 040 | **confirmed and extended.** Runs Qwen 3.6 27B on JetBrains infrastructure. The CLI added it on Oct 1, a day before the post. |
+| "Junie Lite … footer states the offer is valid only through Dec 31, 2026" (*spot check*) | 040 | **confirmed.** The exact footnote reads "Offer is valid until 31 Dec 2026", and the body says "It isn't a trial, and there's no countdown*". |
+| "Junie Local is not equivalent to a cloud-powered Junie Lite account" | 030, 040 | **confirmed.** Local inference runs on the device. Lite inference runs "only on JetBrains infrastructure". |
+| Claimed future roadmap: no binding 2027–2031 commitments verified | 038 | **still none.** The Air post states direction without dates (see below). |
+| Study constructs labelled M1 workflow, M2 acceptance/review, M4 external integration, M5 reuse, M6 lifecycle cost (*Provisional direction*) | all | **corrected (labels).** The ledger uses the issue #84 ordering: M1 agent workflow, M2 code discovery, M3 verified reuse, M4 accepted quality, M5 review/maintenance, M6 rights/security, M7 human and lifecycle costs. |
+
+**Apr 8 IDE-integration post** (`blog.jetbrains.com/junie/2026/04/junie-cli-inside-your-jb-ide/`, titled "Junie CLI Now Connects to Your JetBrains IDE"): **confirmed** as pre-window baseline. The `publish-date` element is 2026-04-08 13:44, and the text says "This integration is currently in Beta". It has no ledger row because it falls outside the window.
+
+### Corrections to the earlier report (stated here; earlier text left as written)
+
+1. **Coverage.** The earlier report covered six Junie announcements. This pass finds dated, in-window material in every segment. Much of it bears more directly on the study than the launch posts do: an agent CVE and the later project-trust gate, MCP-related bulletins, a malicious-plugin campaign on the Marketplace, the Auto Mode default, and the vendor's own statement that verification, not generation, is now the bottleneck.
+2. **Publication vs shipping dates.** For Junie, the GitHub Release channel is the better shipping-date source. `/demo` shipped 17 days before its post, and Junie Lite one day before. Plan Mode 2.0 (Apr 20), `/review` (May 6) and the Debug Agent (May 11) all shipped before the Jun 17 GA post that presents them as GA features.
+3. **Licensing boundary.** Junie binaries are distributed through a public GitHub repository, but its `LICENSE.md` reads "All rights reserved" and points to the JetBrains AI Service terms. Koog, ThinkRail, Roer, Kotlin toolchain and the Mellum2 weights are Apache-2.0, and benjamin-plus is MIT. The earlier report did not separate the open components from the proprietary agent.
+4. **Benchmark claims.** The SWE-rebench claim in the GA post can be partly checked. In the default window (read Oct 16), Junie is the top agent row (61.8% resolved). Claude Code has the higher pass@5 (75.7% vs 73.9%) at about four times the cost per problem, and five raw models rank above both. All other performance figures in the ledger are vendor-run.
+
+### New events found (themes)
+
+- **Agent security boundary.**
+  - A Junie CVE for command execution via a malicious project file (002). JetBrains scores it 5.8; NVD scores it 9.8.
+  - About 3.5 months later, project trust verification before loading MCP servers, skills and configuration (025).
+  - Three more AI/MCP bulletins: YouTrack MCP disclosure (018), PyCharm Jupyter MCP code execution (029) and Rider AI Assistant skill auto-update (039).
+  - Independent report of 15 Marketplace plugins stealing users' AI API keys (016).
+  - Context: 151 JetBrains security bulletins were published in the window, 13 of them Critical. They include a TeamCity unauthenticated RCE (023).
+- **Autonomy.** Auto Mode, in which Junie approves commands itself (019); subagents (020); `/goal` for very large projects (026); remote access from a browser (009).
+- **Review and verification aids.** Plan Mode 2.0 (004), `/review` (007) and `/demo` evidence videos (033, 036). The Air post says code "becomes cheaper to generate but more expensive to verify" (038).
+- **Cost levers.**
+  - Per-model effort (005) and limited-time model discounts (028).
+  - Live session cost (034).
+  - Junie Local: free, but needs an M5 Mac with 64 GB; Techstrong found a $4,499 entry configuration (031).
+  - Junie Lite: free until 31 Dec 2026 (040).
+  - A vendor-measured token-saving skill (027).
+- **Reuse surface.**
+  - Koog 1.0 with a stable/beta API split (011) and Agent Skills specification support (032).
+  - Kotlin 2.4.0 (014); Amper folded into Kotlin toolchain (015).
+  - Agent-agnostic tools: ThinkRail (021) and Roer (035).
+  - A third-party PyCharm plugin (022).
+
+### M1–M7 notes for new events (issue #84 ordering)
+
+| Construct | What the new events show | What they cannot show |
+|---|---|---|
+| M1 agent workflow | Plan Mode 2.0, Debug Agent, remote access, worktrees, Auto Mode, subagents, `/goal`, Air multi-agent orchestration | Adoption or effect on accepted work |
+| M2 code discovery | IDE-semantic tools for agents (GA post; Air in IDEs page: "deterministic tools" so agents "use fewer tokens") | Any independent retrieval-quality measurement |
+| M3 verified reuse | Apache-2.0 Koog, ThinkRail, Roer, Kotlin toolchain; Agent Skills support; a third-party plugin | Downstream reuse; no import was traced |
+| M4 accepted quality | SWE-rebench third-party leaderboard; vendor-run Junie Local benchmarks; `/demo` reports | Accepted-task rates on real repositories |
+| M5 review/maintenance | `/review`, plan documents, `/demo`; Amper→Kotlin toolchain migration; ~1,770 nightly Junie builds in six months | Reviewer minutes; migration cost |
+| M6 rights/security | Junie CVE with conflicting CVSS; trust gate; MCP bulletins; skill auto-update; malicious Marketplace plugins; proprietary Junie licence vs open components; Auto Mode | Exploitation in the wild; legal assessment |
+| M7 human/lifecycle cost | Effort control, discounts, session cost, free local and Lite tiers, $4,499 hardware entry point, vendor token-saving skill, a user's performance complaint | Energy or emissions. Tokens are not kWh, and no energy figure is given. |
+
+### Vendor-stated near-term plans (dated, not a roadmap)
+
+- **Air (Sep 22, 038).** A "rolling series of releases" with stated intent to say "what customers can use now, what is entering preview, and what remains part of our longer-term direction". Mobile and remote experiences, richer context and event-triggered workflows are announced without dates.
+- **Junie Local hardware (Aug 24).** "Working prototypes for DGX Spark and RTX 5090", "looking at 24 GB cards". Partly delivered on Sep 18 as experimental Windows RTX support (037). No timeline was given for Linux or lower-memory Macs.
+- **Junie Lite terms (Oct 2).** "We may switch to a different model over time. Terms and available models may change"; the offer ends 31 Dec 2026.
+
+None of these is a binding commitment, and no 2027–2031 product plan was found.
+
+**Researcher's conditional interpretation (E0 hypothesis).** If IDE vendors keep moving the coding agent toward higher autonomy (Auto Mode, `/goal`, remote and cloud runs) while the configuration surface keeps growing (MCP servers, skills, extensions, marketplaces), then maintainers will spend a growing share of agent-related effort on trust and verification (M5/M6), not on generation. JetBrains says the same in its own Air post.
+
+- **Falsifiers:**
+  - agent/MCP-related bulletins per IDE release fall over two or more quarters;
+  - independent replications show agent-reviewed changes need no more reviewer minutes than human-written ones;
+  - the trust gate is shown to block the malicious-project-file class.
+- **Rival explanation:** the bulletin count reflects JetBrains' disclosure practice and a larger attack-research community, not a riskier product.
+
+### Revised small experiment for this repository (proposed, not performed)
+
+**Plan-then-review gate with a free, pinned agent tier.** This replaces nothing above; it narrows the earlier IDE-vs-CLI sketch to something this repository can run without paid spend.
+
+- **Tasks:** freeze 5 offline issues from this repository with independently written acceptance tests, including one with no viable solution.
+- **Arms:**
+  - (a) Junie CLI ≥ 26.10.5 with Junie Lite, Plan mode on, the plan document committed for review, and `/review` run before any commit;
+  - (b) the same CLI and model with plan mode and `/review` off.
+- **Comparator:** the same tasks done by hand by the maintainer, with time recorded.
+- **Accepted-task unit:** the hidden acceptance tests pass, `python3 -m unittest discover -s tests` passes, and an independent human reviewer confirms the repository rules were followed (no network capture, no backfilled timestamps).
+- **Guardrails:**
+  - disposable, network-restricted container; no secrets;
+  - Auto Mode off; project trust prompt kept;
+  - pin and record the CLI version;
+  - read the JetBrains AI terms before sending code to JetBrains infrastructure (this repository is public);
+  - no paid credits or API spend without approval.
+- **Measurement:** human review and repair minutes per accepted task. Tokens and energy are not inferred.
+- **Stop rule:** stop if either agent arm breaks a repository rule or loads project configuration without the trust prompt. Also stop if the arm's review minutes exceed the manual comparator on 3 of the 5 tasks, or if the free tier's terms change before the run (the offer ends 31 Dec 2026).
+
+### Remaining limits
+
+- No product was run, and no benchmark was replicated.
+- Several blog posts were not retrieved because of the WAF challenge (see *Blog posts not retrieved*). Coverage of JetBrains AI blog research posts, IDE 2026.2 release notes and AI Assistant changes is therefore thin.
+- Mutable vendor pages and the SWE-rebench leaderboard were not archived.
+- The selection bias described under *Conflict of interest* is unresolved.
+
+### Blog posts not retrieved (E0 leads, not ledgered)
+
+These blog.jetbrains.com posts are in the window and relevant. They were found through Hacker News titles or the blog sitemaps but were not read in this pass because of the WAF rate limit, so they support no claim here:
+
+- <https://blog.jetbrains.com/ai/2026/06/mellum2-goes-open-source-a-fast-model-for-ai-workflows/>
+- <https://blog.jetbrains.com/pycharm/2026/08/cadence-security-incident-august-2026/>
+- <https://blog.jetbrains.com/ai/2026/07/introducing-jetbrains-context-repository-intelligence-for-coding-agents/>
+- <https://blog.jetbrains.com/ai/2026/10/mellum2-1-gets-to-work-a-fast-open-model-for-coding-agents/>
+- <https://blog.jetbrains.com/blog/2026/07/07/jetbrains-ai-for-teams-and-organizations-from-fragmented-ai-usage-to-coordinated-software-development/>
+- <https://blog.jetbrains.com/blog/2026/10/06/jetbrains-joins-the-open-source-security-foundation/>
+- <https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/>
+- <https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/>
+- <https://blog.jetbrains.com/kotlin/2026/05/official-kotlin-support-for-visual-studio-code-is-now-available-in-alpha/>
+- <https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/>
+- <https://blog.jetbrains.com/research/2026/07/benchmark-meaning-gap/>
+- <https://blog.jetbrains.com/dataspell/2026/05/the-upcoming-sunset-of-dataspell/>
+- <https://blog.jetbrains.com/dotnet/2026/06/08/rider-2026-2-code-quality-check-hooks-for-ai-agents/>
+- <https://blog.jetbrains.com/dotnet/2026/05/11/the-resharper-2026-2-eap-any-ai-agent-in-visual-studio/>
+- <https://blog.jetbrains.com/research/2026/07/kotlinllm-open-source/>
+- <https://blog.jetbrains.com/ai/2026/05/stop-sending-ide-catchable-ai-code-errors-to-review/>
+- <https://blog.jetbrains.com/team/2026/04/27/jetbrains-annual-highlights-2026-are-here/>
