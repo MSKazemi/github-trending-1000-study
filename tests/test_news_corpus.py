@@ -62,6 +62,42 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
+    def test_repeated_query_parameter_order_selects_distinct_sources(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?step=first&step=second"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?step=second&step=first"
+        # Sorting (key,value) pairs would falsely collapse these two ordered
+        # selectors. The validator may not discard either source lead.
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_repeated_query_with_trackers_still_deduplicates(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = (
+            "https://example.org/report?step=first&utm_source=email&step=second"
+        )
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = (
+            "https://EXAMPLE.org/report?step=first&step=second&gclid=abc"
+        )
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([(first["id"] + ".json", first),
+                              (second["id"] + ".json", second)])
+
+    def test_unique_query_parameter_order_remains_normalized(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?a=1&b=2"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?b=2&a=1"
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([(first["id"] + ".json", first),
+                              (second["id"] + ".json", second)])
+
     def test_ref_is_preserved_when_it_may_select_source_version(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)

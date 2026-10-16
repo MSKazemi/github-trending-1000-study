@@ -77,6 +77,14 @@ def _clean_https_url(url, field):
         address = None  # A domain, not a proof of public DNS resolution.
     if address is not None and not address.is_global:
         raise PackageReviewError(f"{field} requires a public evidence host")
+    # libc / legacy URL clients can interpret 127.1, 2130706433,
+    # 0x7f000001 or 0177.0.0.1 as IPv4 addresses even though
+    # ipaddress.ip_address rejects these spellings. They are not
+    # trustworthy DNS names for a reviewer-facing evidence ledger.
+    ipv4_piece = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+    if (address is None and
+            re.fullmatch(ipv4_piece + r"(?:\." + ipv4_piece + r"){0,3}", host)):
+        raise PackageReviewError(f"{field} requires a canonical public evidence host")
     return parsed
 
 
