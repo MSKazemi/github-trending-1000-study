@@ -28,6 +28,8 @@ class BranchAuditTest(unittest.TestCase):
             if "/branches/main" in path:
                 calls[0] += 1
                 return {"commit": {"sha": a if calls[0] == 1 else c}}
+            if "/branches/old" in path:
+                return {"name": "old", "commit": {"sha": b}, "protected": False}
             if "/compare/" in path:
                 self.assertIn(a + "..." + b, path)
                 return {"status": "behind", "ahead_by": 0, "behind_by": 11}
@@ -121,6 +123,133 @@ class BranchAuditTest(unittest.TestCase):
         report = audit("o/r", get=fetch)
         self.assertEqual(report["branches"][1]["decision"], "keep-open-pr")
         self.assertEqual(report["branches"][1]["open_prs"], [9])
+
+
+    def test_unchanged_tip_is_rechecked_and_remains_advisory_candidate(self):
+        a, b = "a" * 40, "b" * 40
+        detail_requests = []
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "old", "commit": {"sha": b}, "protected": False}]
+            if "/pulls?state" in path:
+                return []
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            if "/branches/old" in path:
+                detail_requests.append(path)
+                return {"name": "old", "commit": {"sha": b}, "protected": False}
+            if "/compare/" in path:
+                return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+            self.fail(path)
+        result = audit("o/r", get=fetch)
+        self.assertEqual(detail_requests, ["/repos/o/r/branches/old"])
+        self.assertEqual(result["branches"][1]["decision"], "manual-prune-candidate")
+        self.assertEqual(result["branches"][1]["sha"], b)
+        self.assertTrue(result["read_only"])
+
+    def test_moved_or_newly_protected_tip_is_never_prune_candidate(self):
+        a, b, c = "a" * 40, "b" * 40, "c" * 40
+        for live_sha, protected in ((c, False), (b, True), (c, True)):
+            with self.subTest(live_sha=live_sha, protected=protected):
+                def fetch(path):
+                    if "/branches?per_page" in path:
+                        return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                                {"name": "old", "commit": {"sha": b}, "protected": False}]
+                    if "/pulls?state" in path:
+                        return []
+                    if "/branches/main" in path:
+                        return {"commit": {"sha": a}}
+                    if "/branches/old" in path:
+                        return {"name": "old", "commit": {"sha": live_sha},
+                                "protected": protected}
+                    if "/compare/" in path:
+                        return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+                    self.fail(path)
+                result = audit("o/r", get=fetch)
+                self.assertEqual(result["branches"][1]["decision"],
+                                 "hold-ref-or-protection-moved-rerun")
+                # Never rewrite the original SHA to match a moved branch.
+                self.assertEqual(result["branches"][1]["sha"], b)
+
+    def test_new_open_pr_during_audit_blocks_candidate(self):
+        a, b = "a" * 40, "b" * 40
+        reads = [0]
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "old", "commit": {"sha": b}, "protected": False}]
+            if "/pulls?state" in path:
+                reads[0] += 1
+                if reads[0] == 1:
+                    return []
+                return [{"number": 10, "head": {"ref": "old",
+                                               "repo": {"full_name": "o/r"}}}]
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            if "/branches/old" in path:
+                return {"name": "old", "commit": {"sha": b}, "protected": False}
+            if "/compare/" in path:
+                return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+            self.fail(path)
+        report = audit("o/r", get=fetch)
+        self.assertEqual(reads[0], 2)
+        self.assertEqual(report["branches"][1]["decision"],
+                         "hold-open-pr-inventory-moved-rerun")
+
+    def test_missing_or_malformed_tip_recheck_fails_closed(self):
+        a, b = "a" * 40, "b" * 40
+        for detail in (None, {}, {"name": "old", "commit": {"sha": "wrong"},
+                                   "protected": False}):
+            with self.subTest(detail=detail):
+                def fetch(path):
+                    if "/branches?per_page" in path:
+                        return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                                {"name": "old", "commit": {"sha": b}, "protected": False}]
+                    if "/pulls?state" in path:
+                        return []
+                    if "/branches/main" in path:
+                        return {"commit": {"sha": a}}
+                    if "/branches/old" in path:
+                        return detail
+                    if "/compare/" in path:
+                        return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+                    self.fail(path)
+                with self.assertRaisesRegex(ValueError, "Cannot safely recheck"):
+                    audit("o/r", get=fetch)
+
+    def test_untrusted_branch_name_cannot_inject_query_into_detail_request(self):
+        a, b = "a" * 40, "b" * 40
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False},
+                        {"name": "bad?per_page=1", "commit": {"sha": b},
+                         "protected": False}]
+            if "/pulls?state" in path:
+                return []
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            if "/compare/" in path:
+                return {"status": "behind", "ahead_by": 0, "behind_by": 9}
+            self.fail("untrusted branch was sent in a network request: " + path)
+        with self.assertRaisesRegex(ValueError, "Unsafe Git branch name"):
+            audit("o/r", get=fetch)
+
+    def test_duplicate_pr_numbers_are_rejected_not_silently_merged(self):
+        a = "a" * 40
+        def fetch(path):
+            if "/branches?per_page" in path:
+                return [{"name": "main", "commit": {"sha": a}, "protected": False}]
+            if "/pulls?state" in path:
+                return [{"number": 10, "head": {"ref": "a",
+                         "repo": {"full_name": "o/r"}}},
+                        {"number": 10, "head": {"ref": "b",
+                         "repo": {"full_name": "o/r"}}}]
+            if "/branches/main" in path:
+                return {"commit": {"sha": a}}
+            self.fail(path)
+        with self.assertRaisesRegex(ValueError, "Duplicate open PR"):
+            audit("o/r", get=fetch)
 
 
 if __name__ == "__main__":
