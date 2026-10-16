@@ -120,6 +120,31 @@ class PackageReviewTests(unittest.TestCase):
         self.assertEqual(evaluate(p)["decision"], "defer")
         self.assertFalse(evaluate(p)["automatic_install_approved"])
 
+    def test_evidence_hosts_require_dns_label_syntax_and_no_single_label_intranet(self):
+        # A public-looking HTTPS scheme cannot turn malformed or private
+        # host spelling into structurally credible review evidence.
+        for host in ("intranet", "build-server", "example..org",
+                     "-example.org", "example-.org", "foo.-bar.org",
+                     "foo.bar-.org", "foo_bar.org",
+                     "a" * 64 + ".org", "host." + "a" * 64,
+                     "x" * 251 + ".org"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "pass", "evidence_url": f"https://{host}/security"
+            }
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    PackageReviewError, "canonical public evidence host"):
+                evaluate(p)
+        for host in ("security.example.org", "security-site.example.org",
+                     "xn--bcher-kva.example.org"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "unknown", "evidence_url": f"https://{host}/security"
+            }
+            with self.subTest(host=host):
+                self.assertEqual(evaluate(p)["decision"], "defer")
+                self.assertFalse(evaluate(p)["automatic_install_approved"])
+
     def test_unexpected_root_candidate_and_gate_fields_fail_closed(self):
         for level in ("root", "candidate", "gate"):
             p = candidate()
