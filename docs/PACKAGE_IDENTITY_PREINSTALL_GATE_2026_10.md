@@ -135,3 +135,15 @@ malformed authority. `evaluate_file` now reuses the shared
 `data_integrity.load_research_json_file` bounded reader instead of a local
 copy; errors remain `PackageReviewError` with fixed diagnostics that do not
 echo the input path or private object keys.
+
+
+## 2026-10-16 defensive offline URL and license-expression patch (pending review)
+
+- **Fix:** the evidence URL parser now rejects literal localhost, `.localhost`, `.local`, `.internal`, IPv4/IPv6 addresses classified as non-global, trailing-dot domains and non-ASCII hosts, including when a check reports `fail` or `unknown`. This avoids publishing internal-only source URLs as public evidence and reduces accidental future click/fetch exposure. It does **not** perform DNS resolution, contact any host or prove that an externally named host resolves to a public IP. Any future network verifier **must** use a strict reviewed host allowlist and pinned connection-time IP policy; DNS rebinding is not solved by syntax validation.
+- **Fix:** the existing `license_compatibility: pass` gate no longer accepts an SPDX `NONE` or `NOASSERTION` token embedded in a compound expression (e.g. `MIT OR NOASSERTION`). SPDX v3.0.1 requires valid license IDs/expressions; sentinel values are not a grant of permissions. Single-line bounded license metadata is required. No full license-list or compatibility solver has been added: an otherwise plausible `MIT`, `LicenseRef-...` or compound is still a **self-declaration**, not legal vetting.
+- **Tests:** `tests/test_package_public_evidence.py` supplies synthetic URL and license attack cases, including IPv6, loopback, link-local, metadata host, unbounded text and valid public links. No external packages installed, network lookups or real package safety assessments performed.
+- **Source specification:** [SPDX license-expression grammar](https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/) and [OWASP SSRF prevention](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html). These references constrain **format**, not empirical evidence that any software release is secure or licensed.
+
+**Issue #22 remains open:** independent official registry/version/artifact SHA matching, source rights, OSV/SLSA/OSPS checks, human independent gold review and sandboxed task acceptance still need separately obtained authentic evidence. The output `automatic_install_approved` remains `false` in every case. Do not promote green synthetic CI to permission to install a dependency.
+
+**Practical repository lesson:** Claude Code may recommend packages, but require a human-reviewed, pinned version, official publisher/license evidence and adversarial URL review *before* any installation. If ownership or provenance is uncertain, defer instead of silently approving.

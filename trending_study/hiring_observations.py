@@ -2,6 +2,7 @@
 import argparse
 from datetime import datetime, timedelta, timezone
 import hashlib
+import ipaddress
 import json
 from pathlib import Path
 import re
@@ -57,6 +58,18 @@ def _url(value):
         if (p.scheme != "https" or not host or p.netloc != host or
                 re.fullmatch(r"[a-z0-9]+(?:[.-][a-z0-9]+)*", host) is None or
                 p.fragment or not p.path.startswith("/")):
+            raise ValueError
+        # This is a public-source metadata protocol, not a DNS verifier.
+        # Reject literal local/metadata hosts; future automated collection
+        # needs an explicit allowlist and connection-time source review.
+        if (host == "localhost" or host.endswith((".localhost", ".local", ".internal"))
+                or host.endswith(".")):
+            raise ValueError
+        try:
+            address = ipaddress.ip_address(host)
+        except ValueError:
+            address = None
+        if address is not None and not address.is_global:
             raise ValueError
         # Decode then canonicalize: percent-escaped aliases and traversal are rejected.
         if unquote(p.path) != p.path or any(x in (".", "..") for x in p.path.split("/")):
@@ -211,7 +224,29 @@ def audit(data):
     for (employer, req), rows in sorted(histories.items()):
         live = [r for r in rows if r["source_status"] == "listed_live"]
         informative = [r for r in rows if r["source_status"] in ("listed_live", "explicitly_closed")]
-        closed = informative and informative[-1]["source_status"] == "explicitly_closed"
+        closed = bool(informative and informative[-1]["source_status"] == "explicitly_closed")
+        # A disappearance or 404 is NOT a closure event. Even when an
+        # employer explicitly marks a requisition closed, its actual closure
+        # timestamp remains unknown. Report at most the observed interval:
+        # last definitely listed before this closure, first explicitly closed.
+        closure_lower = closure_upper = None
+        if closed:
+            final_closed_at = _stamp(informative[-1]["observed_at_utc"], "closure")
+            earlier_live = [
+                r for r in informative
+                if r["source_status"] == "listed_live"
+                and _stamp(r["observed_at_utc"], "listed") < final_closed_at
+            ]
+            if earlier_live:
+                closure_lower = earlier_live[-1]["observed_at_utc"]
+            prior = (_stamp(closure_lower, "closure_lower")
+                     if closure_lower is not None else None)
+            closure_upper = next(
+                r["observed_at_utc"] for r in informative
+                if r["source_status"] == "explicitly_closed"
+                and (prior is None or
+                     _stamp(r["observed_at_utc"], "explicitly_closed") > prior)
+            )
         variant_states, revisions = {}, 0
         for row in rows:
             variant = row["location_variant_id"]
@@ -233,6 +268,8 @@ def audit(data):
             "censoring_at_utc": informative[-1]["observed_at_utc"] if informative and not closed else None,
             "observation_window_end_utc": min(end, asof).isoformat(),
             "actual_closure_at_utc": None, "filled_positions": None,
+            "closure_interval_last_listed_at_utc": closure_lower,
+            "closure_interval_first_explicitly_closed_at_utc": closure_upper,
             "status_or_content_revision_count": revisions,
             "observations": rows,
         })
