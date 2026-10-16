@@ -5,6 +5,7 @@ No database is queried; possible duplicates are flagged, never deleted.
 import argparse
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
+import ipaddress
 import json
 from pathlib import Path
 import re
@@ -119,6 +120,22 @@ def audit(data):
                 raise LiteratureError("invalid included source_url") from exc
             if not clean_source:
                 raise LiteratureError("included source_url must be canonical clean HTTPS")
+            # This offline report never follows links, but publisher evidence
+            # should not point a human reviewer or a future verification job
+            # at localhost, RFC1918, loopback or cloud-metadata hosts.
+            # Hostnames are NOT DNS-resolved; this is format triage only.
+            host = parsed_source.hostname
+            if (not host.isascii() or "%" in parsed_source.netloc
+                    or host.endswith(".") or host in (
+                        "localhost", "metadata.google.internal")
+                    or host.endswith((".localhost", ".local", ".internal"))):
+                raise LiteratureError("included source_url must use a public host")
+            try:
+                literal_address = ipaddress.ip_address(host)
+            except ValueError:
+                literal_address = None
+            if literal_address is not None and not literal_address.is_global:
+                raise LiteratureError("included source_url must use a public host")
             extract = row.get("study_extract")
             if not isinstance(extract, dict) or any(
                 not isinstance(extract.get(k), str) or not extract[k].strip()
