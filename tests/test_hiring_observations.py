@@ -192,6 +192,26 @@ class ObservationLedgerTests(unittest.TestCase):
             with self.subTest(query=query), self.assertRaises(instrument.HiringObservationError):
                 instrument._url("https://careers.example.invalid/jobs" + query)
 
+    def test_public_dns_host_labels_accept_interior_hyphen_but_not_edge(self):
+        # DNS labels may contain interior '-' characters. Rejecting all such
+        # sites before screening would bias the proposed employer-source frame.
+        for host in ("example-careers.invalid", "careers.jobs-board.invalid",
+                     "xn--valid-name.invalid"):
+            with self.subTest(accepted=host):
+                parsed = instrument._url(f"https://{host}/jobs/J1")
+                self.assertEqual(parsed.hostname, host)
+        for host in ("-jobs.invalid", "jobs-.invalid", "foo.-bar.invalid",
+                     "foo.bar-.invalid", "foo..bar.invalid",
+                     "a"*64 + ".invalid"):
+            with self.subTest(rejected=host), self.assertRaises(
+                    instrument.HiringObservationError):
+                instrument._url(f"https://{host}/jobs/J1")
+        for host in ("127.0.0.1", "192.168.1.1", "localhost",
+                     "metadata.google.internal"):
+            with self.subTest(private_host=host), self.assertRaises(
+                    instrument.HiringObservationError):
+                instrument._url(f"https://{host}/jobs/J1")
+
     def test_clean_urls_deny_credentials_tracking_percent_alias_and_traversal(self):
         for url in ("http://careers.example.invalid/jobs/A", "https://user:token@careers.example.invalid/jobs/A",
                     "https://careers.example.invalid/jobs/%41", "https://careers.example.invalid/jobs/../A",
