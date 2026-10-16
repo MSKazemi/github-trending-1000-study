@@ -23,6 +23,22 @@ FIELDS = UPSTREAM + DOWNSTREAM
 APPROVED_CONSENT = {"not_consented", "consented", "withdrawn"}
 STATUS = {"pass", "fail", "unknown"}
 _SHA = re.compile(r"[0-9a-f]{40,64}\Z")
+# The input schema is provisional and intentionally restricted to declared,
+# non-free-text metadata. Raw prompts, names and logs are not accepted.
+_OPAQUE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,79}\Z")
+_STATE = re.compile(r"[a-z][a-z0-9_:-]{0,79}\Z")
+CASE_FIELDS = frozenset((
+    "schema_version", "synthetic", "case_id", "frame_commit",
+    "opt_in_project_id", "consent_state", "human_review_state",
+    "observed_at_utc", "task_type", "task_accepted_by_independent_reviewer",
+    "declared_workflow", "human_time_minutes", "outcomes",
+    "data_release_approval", "not_empirical_data",
+))
+OUTCOME_FIELDS = frozenset((
+    "actionability", "newcomer_comprehension_pass", "followup_30_day",
+    "followup_90_day", "security_or_privacy_incident",
+))
+
 
 def _utc(value):
     if not isinstance(value, str):
@@ -37,8 +53,8 @@ def _utc(value):
         raise BurdenError("future observation invalid")
 
 def summarize(cards):
-    if not isinstance(cards, list) or not cards:
-        raise BurdenError("nonempty cases array required")
+    if not isinstance(cards, list) or not 1 <= len(cards) <= 10000:
+        raise BurdenError("cases must be a bounded nonempty array")
     seen = set()
     complete = 0
     accepted_complete = 0
@@ -48,29 +64,53 @@ def summarize(cards):
     synthetic_count = 0
     study_kinds = set()
     for card in cards:
-        if not isinstance(card, dict) or card.get("schema_version") != "proposed-maintainer-externality-0.1":
-            raise BurdenError("invalid maintainer case schema")
-        key = card.get("case_id")
-        if not isinstance(key, str) or not key.strip() or key in seen:
-            raise BurdenError("unique nonempty case_id required")
+        if (not isinstance(card, dict)
+                or set(card) != CASE_FIELDS
+                or card.get("schema_version") != "proposed-maintainer-externality-0.1"):
+            raise BurdenError("invalid maintainer case schema or fields")
+        key = card["case_id"]
+        if not isinstance(key, str) or not _OPAQUE.fullmatch(key) or key in seen:
+            raise BurdenError("unique bounded opaque case_id required")
         seen.add(key)
         if type(card.get("not_empirical_data")) is not bool:
             raise BurdenError("explicit not_empirical_data required")
         synthetic = card["not_empirical_data"]
+        if type(card["synthetic"]) is not bool or card["synthetic"] != synthetic:
+            raise BurdenError("conflicting synthetic dataset indicators")
+        for field in ("opt_in_project_id", "task_type", "declared_workflow"):
+            value = card[field]
+            if not isinstance(value, str) or not _OPAQUE.fullmatch(value):
+                raise BurdenError("metadata must use bounded opaque identifiers")
+        for field in ("human_review_state", "data_release_approval"):
+            value = card[field]
+            if not isinstance(value, str) or not _STATE.fullmatch(value):
+                raise BurdenError("invalid bounded review or release status")
+        if (card["human_review_state"] != "pending"
+                or card["data_release_approval"] != "pending"):
+            # The proposed v0.1 schema must not self-certify a human signoff.
+            raise BurdenError("v0.1 case cannot self-certify review or release")
+        outcomes = card["outcomes"]
+        if (not isinstance(outcomes, dict)
+                or set(outcomes) != OUTCOME_FIELDS
+                or any(not isinstance(v, str) or not _STATE.fullmatch(v)
+                       for v in outcomes.values())):
+            raise BurdenError("invalid bounded outcome schema")
         synthetic_count += synthetic
         study_kinds.add(synthetic)
-        if not synthetic and (
-                not isinstance(card.get("frame_commit"), str)
-                or not _SHA.fullmatch(card["frame_commit"])):
+        frame = card["frame_commit"]
+        if not isinstance(frame, str) or not _OPAQUE.fullmatch(frame):
+            raise BurdenError("invalid bounded frame commitment")
+        if not synthetic and not _SHA.fullmatch(frame):
             raise BurdenError("real case requires a frozen 40/64-hex frame_commit")
-        consent = card.get("consent_state")
-        if consent not in APPROVED_CONSENT:
+        consent = card["consent_state"]
+        if not isinstance(consent, str) or consent not in APPROVED_CONSENT:
             raise BurdenError("explicit consent_state required")
         if not synthetic and consent != "consented":
             # A withdrawn/no-consent case may be counted for denominator only,
             # never carry participant work timing data in exported JSON.
             pass
-        if card.get("task_accepted_by_independent_reviewer") not in STATUS:
+        if (not isinstance(card["task_accepted_by_independent_reviewer"], str)
+                or card["task_accepted_by_independent_reviewer"] not in STATUS):
             raise BurdenError("accepted-task status must be pass/fail/unknown")
         if card.get("observed_at_utc") is not None:
             if consent != "consented":
