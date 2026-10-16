@@ -29,7 +29,7 @@
 | 2026-10-16 | all | Hugging Face API `models?author=ServiceNow-AI`, `datasets?author=ServiceNow-AI` | **No model created in window** (latest SuperApriel-15B, 2026-04-07, pre-window). Datasets `eva-bench`, `cascade_bench` (06-04), `AgentJudgeBench`, `asr_codeswitched` (04-27) logged and not ledgered | null finding recorded |
 | 2026-10-16 | Apr–Oct | NVD CVE API 2.0 `keywordSearch=ServiceNow` (Apr 12–Aug 9 range; the second range returned **HTTP 429**), then `sourceIdentifier` set to the ServiceNow PSIRT CNA identifier (an address-form ID, omitted here) for Apr 12–Aug 9 and Aug 10–Oct 12; `cveId=` for CVE-2026-6875, -18885 and -13016 | 1 + 9 CVEs, grouped by bulletin: KB3137947 (07-13), KB3152242 (08-27), KB3159623 (09-24). NVD detail HTML pages are JS shells, so the API URLs are cited | 10 / 10 / 0 |
 | 2026-10-16 | all | HN Algolia `search_by_date` stories: `ServiceNow`, `Apriel`, `Moveworks`, `Armis ServiceNow`, `Now Assist`, `ServiceNow AI`, `ServiceNow vulnerability`, `ServiceNow breach`; stories and comments: `ServiceNow security incident`, `ServiceNow customer data`, `ServiceNow layoffs`, `ServiceNow Knowledge 2026`, `Build Agent ServiceNow`, `ServiceNow MCP` | Main query 16 stories. `Apriel` and `Now Assist` returned fuzzy, irrelevant matches. Leads opened below | — |
-| 2026-10-16 | Apr | The Register 04-13 (`servicenow_ai_everywhere`); CNBC 04-23 (`software-stocks-plunge...`) | both read raw and included. The Register 04-11 Salesforce-vs-ServiceNow piece is **pre-window** (excluded) | 2 / 2 / 0 |
+| 2026-10-16 | Apr | The Register 04-13 (`servicenow_ai_everywhere`); CNBC 04-23 (`software-stocks-plunge...`) | both read raw and included (**2026-10-16 spot-check: theregister.com robots.txt disallows all paths for generic user agents, so that fetch was against the rule; row 001 is marked unverifiable**). The Register 04-11 Salesforce-vs-ServiceNow piece is **pre-window** (excluded) | 2 / 2 / 0 |
 | 2026-10-16 | May | TechTarget 05-05; SiliconANGLE 05-05; The New Stack 05-06; Fortune 05-06 | TechTarget included as a row; SiliconANGLE and The New Stack used as independent check URLs. Fortune is paywalled (`isAccessibleForFree:false`), not used. Fortune 05-05 and the vendor-curated list (CRN, Constellation, Diginomica, Futurum, No Jitter, CIO, etc.) were not opened | ~25 / 4 / 1 |
 | 2026-10-16 | Jun | BleepingComputer 06-09 (`servicenow-discloses-security-incident-exposing-customer-data`, and `/amp/`) | **HTTP 403** to curl; WebFetch returned a model summary (published June 9, 2026). It was **not** used as a row source; its figures were cross-checked in raw text below | inaccessible |
 | 2026-10-16 | Jun | CPO Magazine 06-17 | **HTTP 403**; inaccessible | 0 |
@@ -71,7 +71,7 @@ No month was empty.
 - Autonomous Security December 2026 items.
 - Flow GA "Q4 2026"; AI Workflow Factory "globally available today".
 - CNBC "about 18%" and "more than 30%".
-- Register "three levels" of AI pricing.
+- Register "three levels" of AI pricing (from a robots.txt-disallowed fetch; not re-confirmable, see the report's spot-check).
 - TechTarget "preview this month and ship in August".
 - Triskele "5 June 2026", "2-3 June 2026", KB3067321.
 - TechInformed "April 22", "June 2", KB3067372.
