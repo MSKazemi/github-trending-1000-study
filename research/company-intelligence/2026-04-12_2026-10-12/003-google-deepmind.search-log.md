@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | 2026-10-16 | all | `robots.txt` for deepmind.google, ai.google.dev, blog.google, developers.googleblog.com, antigravity.google, huggingface.co, discuss.ai.google.dev | all allow the paths fetched | — |
 | 2026-10-16 | all | `GET https://deepmind.google/sitemap.xml` | 743 URLs; `lastmod` values are bulk-updated (hundreds of archive posts show 2026-07-03..07-08), so not used as publication dates | — |
-| 2026-10-16 | all | `GET https://deepmind.google/blog/` and `/blog/page/2/`..`/page/4/` | listing items with month labels, from Oct 2026 back to Nov 2025; each candidate opened to read `datePublished` | ~75 in-window items listed / ~35 opened / see exclusions |
+| 2026-10-16 | all | `GET https://deepmind.google/blog/` and `/blog/page/2/`..`/page/4/` | listing items with month labels, from Oct 2026 back to Nov 2025; each candidate opened to read `datePublished` | 68 items labelled April–October 2026 (some pre- or post-window) / 30 DeepMind or Keyword posts opened / see exclusions |
 | 2026-10-16 | all | `GET https://ai.google.dev/gemini-api/docs/changelog` | dated entries Apr 14 to Oct 13, 2026 read in full | 32 in-window dated entries / 32 / 16 dates not used in any row (minor or media-model items) |
 | 2026-10-16 | all | `GET https://ai.google.dev/gemma/terms` | Gemma Terms of Use "Last modified: April 1, 2026" (pre-window); page points Gemma 4 to a separate Gemma 4 licence | baseline only |
 | 2026-10-16 | all | `gh api orgs/google-gemini/repos`, `orgs/google-deepmind/repos` | 50 google-gemini repos; 26 google-deepmind repos created in window (mostly Apache-2.0 research code) | only `synthidbio` ledgered |
@@ -36,6 +36,8 @@
 | 2026-10-16 | September | The Register `2026/09/02/with-gemini-38-flash-...` (as Claude-User) | used as independent check (Artificial Analysis score and 3.5 Pro slip) | — |
 | 2026-10-16 | Oct 1–12 | blog.google `embeddinggemma-2`; changelog Oct 6–8; Hugging Face `api/models/google/embeddinggemma-2` | 2 rows; Nano Banana 2.1 GA excluded as outside scope | 3 / 3 / 1 |
 | 2026-10-16 | post-window | blog.google `introducing-gemini-4-argon` (2026-10-13), `gemini-4-model-safety-security` (2026-10-13); deepmind.google `accelerating-antimicrobial-discovery` (2026-10-15), `on-device-ai-scam-detection-mddi` (2026-10-14); changelog 2026-10-13 Argon GA | **excluded** as out of window; Argon GA noted only as context in CI2026-003-036 | — |
+
+Per-segment found/screened/excluded figures marked `~` are approximate tallies of index-listing items made during screening, not archived result sets.
 
 ## Inclusion, deduplication and conflicts
 
