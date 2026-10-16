@@ -103,9 +103,22 @@ The following commands are a reviewable future operator procedure. They were
 a checkout containing the reviewed payloads. Use existing secure `gh`
 authentication; never print tokens or save credentials in these files.
 
+**2026-10-16 correction:** The dated `9dc35ea...` SHA in the original
+evidence above is a historical snapshot, **not** an executable pin for future
+operations. Before each administrator session, independently inspect current
+`main`, the exact workflow/check integration IDs, inherited rules and the two
+unchanged payload blobs. Only after qualified security/owner review, export
+`RULESET_EXPECTED_MAIN_SHA` to the **40-character commit SHA the administrator
+actually reviewed**. Do not populate this variable automatically from a new
+live GET: a moving value would defeat the stale-state stop gate. A new main
+commit requires a new approval/readback decision; no secret or token belongs
+in this document.
+
 ```bash
 set -euo pipefail
 ruleset_repo=MSKazemi/github-trending-1000-study
+: "${RULESET_EXPECTED_MAIN_SHA:?export the independently reviewed 40-hex main SHA before preflight}"
+export RULESET_EXPECTED_MAIN_SHA
 ruleset_audit=$(mktemp -d /tmp/github-ruleset-review.XXXXXX)
 gh api --method GET -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo" > "$ruleset_audit/repository-before.json"
@@ -115,7 +128,7 @@ gh api --method GET -H 'X-GitHub-Api-Version: 2022-11-28' \
   "repos/$ruleset_repo/rulesets?includes_parents=true&per_page=100" \
   --paginate > "$ruleset_audit/rulesets-before.json-stream"
 python - "$ruleset_audit" <<'PY'
-import json, pathlib, sys
+import json, os, pathlib, re, sys
 root = pathlib.Path(sys.argv[1])
 repo = json.loads((root / 'repository-before.json').read_text())
 main = json.loads((root / 'main-before.json').read_text())
@@ -134,35 +147,53 @@ assert repo['permissions']['admin'] is True, 'Administrator access required'
 assert repo['default_branch'] == 'main', 'Review changed default-branch scope'
 assert main['protected'] is False, 'Review existing/composed protection first'
 assert not any(pages), 'Review existing/inherited rules; never replace them blindly'
-assert main['commit']['sha'] == '9dc35ea8784c909dcc397dee1dcfc1278793abcb', 'Refresh the payload review against current main'
+expected_sha = os.environ["RULESET_EXPECTED_MAIN_SHA"]
+assert re.fullmatch(r"[0-9a-f]{40}", expected_sha), "Expected main SHA must be 40 lowercase hex characters"
+assert main['commit']['sha'] == expected_sha, 'Reviewed main moved; re-review before application'
 print(main['commit']['sha'])
 PY
 ```
 
 If any assertion fails, stop and refresh the review rather than overwrite a
 changed state. Save the current main workflow, checks, reviews, permission and
-ruleset evidence. With the inspected main SHA printed above, inspect fresh
-checks and the exact workflow:
+ruleset evidence. With the independently pinned and verified main SHA
+printed above, inspect fresh checks and the exact workflow:
 
 ```bash
 gh api --method GET \
-  "repos/$ruleset_repo/commits/9dc35ea8784c909dcc397dee1dcfc1278793abcb/check-runs?per_page=100" \
+  "repos/$ruleset_repo/commits/$RULESET_EXPECTED_MAIN_SHA/check-runs?per_page=100" \
   > "$ruleset_audit/checks-before.json"
 gh api --method GET \
-  "repos/$ruleset_repo/contents/.github/workflows/ci.yml?ref=9dc35ea8784c909dcc397dee1dcfc1278793abcb" \
+  "repos/$ruleset_repo/contents/.github/workflows/ci.yml?ref=$RULESET_EXPECTED_MAIN_SHA" \
   > "$ruleset_audit/workflow-before.json"
 python - "$ruleset_audit/checks-before.json" <<'PY'
-import json, sys
+import json, os, sys
 checks = json.load(open(sys.argv[1]))['check_runs']
 expected = {'test (3.10)', 'test (3.12)', 'test (3.13)', 'test (3.14)', 'research-artifacts'}
 assert len(checks) == 5 and {c['name'] for c in checks} == expected
-assert all(c['head_sha'] == '9dc35ea8784c909dcc397dee1dcfc1278793abcb' and
+assert all(c['head_sha'] == os.environ["RULESET_EXPECTED_MAIN_SHA"] and
            c['app']['id'] == 15368 and c['app']['slug'] == 'github-actions' and
            c['status'] == 'completed' and c['conclusion'] == 'success' for c in checks)
 PY
 ```
 
 ## Apply only after explicit owner/security review
+
+Do not continue after a failed preflight or with an unset/guessed
+`RULESET_EXPECTED_MAIN_SHA`. Immediately before each separate privileged POST,
+confirm the inspected main SHA and absence of ruleset changes. This short
+readback narrows (but cannot eliminate) concurrent repository mutations:
+
+```bash
+actual_main_sha=$(gh api --method GET "repos/$ruleset_repo/branches/main" --jq '.commit.sha')
+test "$actual_main_sha" = "$RULESET_EXPECTED_MAIN_SHA" || {
+  printf '%s\n' 'main changed since qualified review: stop' >&2
+  exit 1
+}
+# If any ruleset was created or modified since the read-only inspection,
+# stop for a new independently approved preflight; never blindly POST again.
+```
+
 
 Record the approved payload commit, reviewer, change/incident reference,
 planned review window and recovery plan outside this public repository.
