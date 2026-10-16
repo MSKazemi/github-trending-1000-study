@@ -133,3 +133,36 @@ Company adoption claims (e.g., "nearly 10 million developers", "over one million
 - **Important contradictory or null evidence:** (a) Series F dated Thursday 2026-06-04 by Supabase and CNBC vs "announced Friday" by TechCrunch (2026-06-05); CNBC and Supabase name different subsets of investors; (b) `@supabase/server` called "public beta" while npm published 1.0.0 the same day; (c) Multigres GitHub release 2026-05-30 vs blog 2026-06-04; (d) agent-friendly docs post `datePublished` 2026-08-01 but cites data "through August 16"; (e) UpGuard JSON-LD date 2026-09-24 vs displayed "Publish date October 14, 2026"; (f) typosquat removal "a few hours later" (Supabase) vs ~17 h between npm creation and unpublish; (g) UpGuard says programmatically created tables lack RLS by default while Supabase's grant change (a different control) is staged to existing projects only on 2026-10-30; (h) Realtime advisory GHSA-pfwq metadata "low" vs body "Medium, CVSS 5.3"; GHSA-9vjf lists no patched version; (i) Supabase CISO: projects are "secure by default" (TechCrunch) vs UpGuard's 16,326 exposing databases — both can be true under shared responsibility; not resolved here.
 - **#56 candidates (not minted):** CNBC 2026-06-04; TechCrunch 2026-06-05; UpGuard 2026-09-24; TechCrunch 2026-09-25 (same finding as UpGuard; count once); Turso 2026-10-02; Mehmet Ince 2026-08-14. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+An independent reviewer re-fetched the cited sources on 2026-10-16. Pages were retrieved as raw HTML with a generic browser User-Agent after checking each host's robots.txt. GitHub and npm were queried through their APIs. No personal identifier was sent to any site.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-080-008 | confirmed | The raw text has "public beta" and "25,000 deployed Edge Functions". npm `@supabase/server` is MIT; 1.0.0 was published 2026-05-06T09:27:37Z and 1.9.2 on 2026-10-12. |
+| CI2026-080-009 | confirmed | Commit cad0957187 renames `LICENSE` to `apps/cli-go/LICENSE`. Its committer date is 2026-05-06T08:38:33Z and its author date 2026-05-05T09:43:31Z. The GitHub API reports no repository licence, and npm `supabase` declares MIT. |
+| CI2026-080-012 | confirmed | `datePublished` 2026-05-26. The page has "supabase-javascript", "a few hours later", pnpm 11 `minimumReleaseAge` and `pull_request_target`. The npm registry shows the package created 2026-05-12T17:49:45Z and unpublished 2026-05-13T10:50:54Z, so the ~17 h conflict the log records is confirmed. |
+| CI2026-080-014 | confirmed | Raw text has $500M Series F, $10B pre-money, GIC, Stripe second investment, Georgian and Salesforce Ventures, 600%, "More than 60%", "Nearly 10 million" and OrioleDB production-readiness "this year". `datePublished` 2026-06-04. |
+| CI2026-080-015 | confirmed | `datePublished` 2026-06-04T16:09Z. Raw text has "$10.5 billion, including the fresh capital", "roughly doubled since … October", over 250,000 customers, 350 employees and the Claude Code / Codex attribution to Copplestone. |
+| CI2026-080-017 | confirmed | GHSA API: CVE-2026-54238, low (CVSS 3.1 score 3.1), published 2026-06-16, affected <= 2.102.2, patched >= 2.103.1. |
+| CI2026-080-018 | confirmed | GHSA API: CVE-2026-62247, medium (6.5), published 2026-06-25, affected <= 2.111.1, patched >= 2.111.2. The description matches (presence.write vs presence.read). |
+| CI2026-080-020 | confirmed | Incident timestamps run from 2026-06-30T02:38:13Z to resolution at 2026-07-13T16:00:12Z. The page states capacity was "still … limited" in ap-northeast-2, ap-south-1 and eu-north-1. |
+| CI2026-080-026 | confirmed | `datePublished` 2026-07-31. The page has Sonnet 5 78%→100%, GPT-5.6 Sol 89%→100% and "under 40% of scenarios". |
+| CI2026-080-027 | confirmed | 56,974 pageviews / 90 days, 31% unhelpful, 26% of support tickets, and the finding that anon write grants remained. |
+| CI2026-080-029 | confirmed | GHSA API: severity low, no CVE, published 2026-08-17, affected <= 2.128.2, patched 2.128.3. The body says "Severity: Medium, CVSS: 5.3", which confirms the recorded label conflict. |
+| CI2026-080-032 | confirmed | Incident timestamps are 2026-09-16T07:17:12Z to 09:33:34Z, Auth partial outage. |
+| CI2026-080-033 | confirmed | GHSA API: high (8.2), published 2026-09-24, affected <= 2.137.14, patched field empty. The reporter reproduced it on `supabase/realtime:v2.137.14`. |
+| CI2026-080-034 | confirmed | `datePublished` 2026-09-24T14:47 -07:00. The displayed "Publish date October 14, 2026" matches `dateModified`. Raw text has ~300,000 domains, 16,326 databases, "Over half … PII" and the observation that programmatically created tables do not enable RLS by default. |
+| CI2026-080-035 | confirmed | `datePublished` 2026-09-25T17:29Z. Raw text has "around 16,000", Bil Harmer, "secure by default" and shared responsibility. TechCrunch describes the ~16,000 as databases with "some degree of personal data" exposed, whereas UpGuard says over half had PII indicators. This is a framing difference between the sources, not a ledger error. |
+| CI2026-080-036 | confirmed | Raw text has 15.19/17.11 from 15.14/17.6, five security cycles, 44 CVEs, CVE-2026-14663 and CVE-2026-2004. |
+| CI2026-080-038 | confirmed | The changelog has beta18 on Postgres 17.11, no SLA, no PITR and "about 1.8x". The "up to 1.8x … dbarena.com" wording comes from the Select "scale without limits" post, as the row attributes. orioledb beta19 GitHub release is dated 2026-10-01T04:58Z. |
+| CI2026-080-039 | confirmed | `datePublished` 2026-10-02. Raw text has "over one million databases per week" and "Glauber will lead this agentic infrastructure effort". |
+
+**Counts:** 18 rows checked: 18 confirmed, 0 corrected, 0 wrong, 0 unverifiable.
+
+**Robots.txt audit:** the search log fetched no path that robots.txt disallows for a generic User-Agent. supabase.com, cnbc.com, techcrunch.com (article path), upguard.com, mehmetince.net, turso.tech, blog.val.town and blog.simbastack.com are all allowed for the paths used. status.supabase.com, HN Algolia and the npm registry serve no robots.txt that restricts them.
+
+The search log's statement that every number was string-confirmed held for every figure re-checked here.
+
+*This is an AI-assisted spot-check, not qualified human review.*
