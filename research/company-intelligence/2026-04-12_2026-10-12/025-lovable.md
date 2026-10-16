@@ -274,3 +274,52 @@ Creating a Lovable account is a human decision and is not done by this upgrade.
 - The AIUC-1 whitepaper PDF and the Lovable terms and privacy policy were not read.
 - The selection bias described under *Possible conflicts of interest* is unresolved.
 - Every number in the ledger was checked against saved raw text of the cited page or its check URL. Interpretations and the choice of which events to include were not independently reviewed.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched cited sources on 2026-10-16. It first checked robots.txt for lovable.dev, docs.lovable.dev, status.lovable.dev (404, no rules), securityscanner.dev, www.manager.dev, www.aiuc-1.com and www.theregister.com.
+
+- On lovable.dev, the `/blog/` paths are allowed for `*` and for every Claude group; only `/projects/`, `/auth` and similar paths are disallowed.
+- The Register defaults to deny (`User-agent: *` / `Disallow: /`) but explicitly allows `Claude-User`. The screen's search log records that its single article fetch identified truthfully as `Claude-User`, and this review re-fetched that one article the same way, as the contract allows.
+- No cited or logged fetch hit a disallowed path, so no row needed the unverifiable label.
+
+Other access: GitHub through `gh api`; all other pages as raw HTML via `curl` with a generic `Mozilla/5.0` User-Agent. No personal identifier was sent.
+
+| Row | Outcome | Note |
+|---|---|---|
+| `001` RLS scan | Confirmed | `published_time` 2026-04-16; Lovable 476 scanned / 34 CRIT / 7.1%; YC 200 / 0; "Updated April 24"; every CRIT is RLS disabled. The page is inconsistent: its headline says 53 CRITs and its table total says 64. |
+| `002` Opus 4.7 | Confirmed | Published April 17; credits "up to 2x further", ends April 30; 40% fewer turns, 10–20% fewer tokens, 15% faster, 2–3% higher. The changelog lists Opus 4.7 under Apr 24. |
+| `003` The Register | Confirmed | datePublished 2026-04-20T23:26Z; free account, BOLA, "We did not suffer a data breach", "intentional behavior", HackerOne, December 2025, 48 days, March 3 screenshot. |
+| `004` incident post | Confirmed | Published April 22; "Between February 3, 2026 and April 20, 2026"; fix "within two hours"; HackerOne report on February 22; "dismissive"; templates excepted; "dates incorrectly stated in original communications". |
+| `005` Apr 24 changelog | Confirmed | macOS app with local MCP, Windows "coming soon"; Paddle or Stripe payments; SAML 2.0 SSO. |
+| `007` AIUC-1 research | Confirmed | datePublished 2026-05-12; 75 risks in 13 categories; "Lovable is set to become the first …", with a third-party audit scheduled for summer 2026. |
+| `008` discoverability | Confirmed | Published May 13; "40 million apps already built"; Semrush built in. |
+| `009` TanStack default | Confirmed | May 18 entry: apps "created from May 13, 2026", Enterprise excepted; Jun 22 entry adds Enterprise. |
+| `011` MCP server | Confirmed | May 18: research preview for Pro and Business at mcp.lovable.dev; Jun 3: all plans; `lovablelabs/mcp` is public (Apache-2.0). |
+| `013`, `017`, `018`, `019` changelog | Confirmed | PII scanning (May 27), managed npm registry (Jun 18), monitoring beta (Jun 30), zip-download control (Jul 1). |
+| `014` pre-publish scan | Confirmed | Published June 1; "about 10 to 15 seconds"; checks RLS and authorization gaps. |
+| `015` build economy | Confirmed | Published June 9; usage data Jan 2025–May 2026 plus a May 2026 survey; 720 million visits per month; "Over half of survey respondents said they're building a business". |
+| `016` billing | Confirmed | Published June 13; purchased balance converted at the plan's credit price; 20 Cloud credits a month, plus 4 AI credits on Free; plan price unchanged. |
+| `020` token spend | Confirmed | Published July 3; ~$600 a month before, ~$25K in May, ~$85K since January; 20–30 merged PRs a week. |
+| `021` manager.dev | Confirmed | datePublished 2026-07-14; chose Lovable so recruiters could maintain it; 90% on day one; trouble on day two. |
+| `023` AIUC-1 certification | Confirmed | Published July 22; 51 requirements across six principles; quarterly third-party red-teaming; "independently verified, not self-attested". |
+| `025`, `026`, `027` changelog | Confirmed | Leaked keys revoked (Jul 25); "Migrate to TanStack Start" uses credits and the site is unchanged until publish (Jul 28); build-time-only critical vulnerabilities no longer raised (Jul 29). |
+| `029` training opt-out | Confirmed | Jul 31: "starting September 9, 2026"; Free and Pro opt-out; Business and Enterprise excluded by default; settings renamed Aug 7; workspace toggle removed Sep 15. |
+| `030` status outage | Confirmed | "Full outage"; ISO timestamps 2026-08-04T00:27:37Z to 01:52:40Z (85 min, UTC); editor, preview links and published sites affected. |
+| `032` Cerebras | Confirmed | Published August 5; "by 2027"; more than 50 million projects. |
+| `034`, `036`, `037`, `038`, `039`, `040` changelog | Confirmed | 10 free fixes returning after 24 hours (Aug 11); one-time .zip (Aug 14); Trust center off by default (Aug 17, 12 days after the Aug 5 post); 10-hour messages (Aug 26); member email in commits, disabled by default (Aug 26); custom REST connectors on any plan (Aug 31). |
+| `035` Series C | Confirmed | Published August 12; $400 million at $13.3 billion; Menlo lead; Scaleup Europe Fund (EQT) co-lead; over 60 million projects; over 900 million monthly visits; ~450 team members. |
+| `041` Fable 5.1 | Confirmed | Published September 1; up to 17%, 31% lower cost, 3.5% design lift. |
+| `043`, `045`, `046` changelog | Confirmed | Bitbucket Cloud two-way sync (Sep 10); Skip no longer approves extra work (Sep 15); Lovable API keys need Business or Enterprise plus an owner or admin role (Sep 17). |
+| `044` OJ | Confirmed | Published September 15; ~4x cold start; a third to an eighth of Vite's memory; p90 15.8s → 9.6s; ~6.5x less memory; ~1 million sandboxes a day; `lovablelabs/oj` is MIT, created 2026-08-08, first release 2026-09-25. |
+| `047` Sutro | Confirmed | Published September 18; "For five years … a language, compiler, and backend platform". |
+| `048` Opus 5.5 | Confirmed | Published September 22; "a third to half fewer steps"; verification-discipline benchmark. |
+| `049` Microsoft | Confirmed | Published September 28; "More than 70 million projects"; Copilot Managed Runtime. |
+| `050` TanStack CVE | Confirmed | Published September 30; reported September 14; firewall rules; "not found evidence of exploitation"; Security-page fix at no credit cost; hosts elsewhere must patch themselves. GHSA-qx66-fv34-fjm8: published 2026-09-30T17:57Z, critical, CVSS 9.3, `@tanstack/react-start` >= 1.143.12 < 1.168.60, credits list empty. |
+| `051`, `052`, `053` changelog | Confirmed | EU inference and IP allowlists (Oct 1); backup and `lovable-sync` restore (Oct 5); Drizzle migrations under `drizzle/migrations/`, refusing drop or rename (Oct 7). |
+| `054` Gemini deprecation | Confirmed | Oct 7: Gemini 3.7 Flash stops on January 28, 2027, switch to 3.8 Flash; default since Aug 18. Oct 6: Gemini 3.6 Flash deprecated (its default was from Jul 22). |
+| `055` drafts incident | Confirmed | "Degraded performance"; 2026-10-07T22:19:49Z to 23:46:55Z (UTC); drafts-only impact. |
+
+**Totals:** 46 rows checked: 46 confirmed, 0 corrected, 0 unverifiable, 0 wrong. Not re-checked: `006`, `010`, `012`, `022`, `024`, `028`, `031`, `033`, `042`. The upgrade's statement that every ledger number was checked against saved raw text held for every row checked here.
+
+*This is an AI-assisted spot-check, not qualified human review.*
