@@ -140,3 +140,38 @@ Company adoption claims ("1M developers", "10,000 customers", ">90% task complet
   - (k) No in-window independent evaluation of Nexus or FTS relevance was found. The only independent measurement found is a small single-author cost/latency comparison.
 - **#56 candidates (not minted):** SiliconANGLE 2026-07-02 (Nexus public preview); darryl-ruggles.cloud 2026-06-01 (independent cost comparison). Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+A second agent re-fetched the cited sources (raw HTML and the `release-notes.md` Markdown changelog via `curl`, GitHub REST API, PyPI and npm registry JSON, the Statuspage incidents JSON) and compared dates, figures and quotes with the raw text. 31 ledger rows checked: 27 confirmed, 4 corrected (wording completed or clarified; no figure was wrong), 0 unverifiable, 0 wrong.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-075-001 | confirmed | `datePublished` 2026-04-15; "77-97% cost reduction on real production workloads"; changelog GA 2026-04-15 |
+| CI2026-075-002 | confirmed | Changelog 2026-04-28 GA; `paginationToken`, "larger than 10,000 records per response" |
+| CI2026-075-003 | confirmed (changelog and Nexus-post parts) | Changelog 2026-05-01 eu-central-1/ap-southeast-1 on Standard and Enterprise; Nexus post lists regions under May 8. Singapore/Frankfurt press-release timestamps not re-checked |
+| CI2026-075-004 | confirmed | `datePublished` 2026-05-04; six KnowQL primitives; "Roughly 85%", "above 90%", "30x", "up to 90%" token reduction |
+| CI2026-075-005 | confirmed | Changelog: $20/month flat, 10 indexes, 10 GB, "100 namespaces per index (up from 20)"; Builder blog (2026-05-06): "1,000 namespaces per index" — conflict confirmed; all-regions extension 2026-06-03 |
+| CI2026-075-006 | confirmed | Changelog 2026-05-04 public preview; Nexus post "May 7: Full-Text Search is now generally available" |
+| CI2026-075-007 | confirmed | PyPI 9.0.0 2026-05-04T11:05Z; GitHub 12:03Z; httpx/msgspec/orjson; "up to 7 more" extras, 14 total; 3.3x, ~17x, ~210 ms→~45 ms; mypy --strict; Python 3.10+; "automated optimization loop" |
+| CI2026-075-009 | corrected | Rates ($1→$0.25/GB, $250/1 TB) confirmed; added that the 2026-06-01 entry said "valid through July 31, 2026" while the 2026-09-01 entry gives 60-day expiry with last balances by 2026-11-01 |
+| CI2026-075-010 | confirmed | `datePublished` 2026-06-01; ~300k–4M q/mo band; p50 61 ms, p99 672 ms "one outlier in 200 samples"; Starter tier; 50K × 1024-dim |
+| CI2026-075-011 | confirmed | `datePublished` 2026-06-03; "95%+ reduction in frontier LLM token usage" |
+| CI2026-075-012 | corrected | No licence confirmed via GitHub API; added that the repository was created 2026-03-26 (pre-window), so the in-window event is the 2026-06-09 announcement |
+| CI2026-075-013 | confirmed | npm 8.0.0 2026-06-16T18:51Z; GitHub release 21:29Z |
+| CI2026-075-014 | confirmed (date only) | GitHub release 2026-06-17T19:59Z; release-body wording not re-read |
+| CI2026-075-015 | confirmed | Statuspage incident 0trwz267s120: display times 2026-06-18 10:00 and 18:23 UTC; update records created 2026-06-22T15:29/15:30Z |
+| CI2026-075-016 | corrected | Box/OneLake/local upload live; Q2 F1 95% on 20 questions, vendor says Q2 ran it "without Pinecone team in the loop"; added Google Drive to the "close behind" connector list |
+| CI2026-075-018 | confirmed | SiliconANGLE, Kyt Dotson, published 2026-07-02T15:55Z; 95% accuracy attributed to Q2's Barbour |
+| CI2026-075-019 | confirmed | Changelog 2026-07-13 roles; User renamed Manager; SAML/SCIM entry 2026-07-20 |
+| CI2026-075-020 | confirmed | `datePublished` 2026-08-06; 97-task domain; $1.45→$0.53; 24.6%→55.1% from July 17; "as of Aug 4, 2026"; GPT-5.5 "77% less cost"; tau2-bench fork MIT, created 2026-08-01 |
+| CI2026-075-021 | corrected | 47.4% vs 46.4% and 74% confirmed; clarified that "top score" refers to the 47.4% Nexus result and 46.4% is the best frontier model alone; IDC "promising direction" quote confirmed |
+| CI2026-075-022 | confirmed | Working Draft 0.1.0 dated August 6, 2026; OWFa 1.0; `pinecone-io/knowql-spec` returned HTTP 404 to an anonymous request on re-check |
+| CI2026-075-024 | confirmed | cultivar MIT, created 2026-06-17; earliest release v0.3.0 2026-08-10, latest v0.5.2 2026-10-09 |
+| CI2026-075-026 | confirmed | Changelog 2026-08-25 BYOC GA, Enterprise, AWS/GCP/Azure, no inbound access |
+| CI2026-075-027 | confirmed | `datePublished` 2026-08-26; Edo Liberty "stepping back", "shareholder and board member"; retention "above 130%"; annual commitments "roughly 40%"; Marketplace listed as part of the platform |
+| CI2026-075-029 | confirmed | Changelog 2026-09-01: 1 GB / 10 GB / 100 GB allowances; Starter and Builder reads blocked |
+| CI2026-075-031 / 032 / 036 | confirmed (dates) | PyPI 10.0.0 2026-09-03T14:31Z, GitHub 14:49Z; npm 9.0.0 2026-09-09T12:30Z, GitHub 12:41Z; Terraform v5.0.0 2026-10-12T19:49Z |
+| CI2026-075-017 / 028 / 033 / 035 | confirmed | Changelog: rerank redirect 2026-08-31, $2.00 per 1,000 units, possible non-US processing; Marketplace EOL 2026-08-31; Gemini 2.5 Pro→Gemini 3.5 Flash, o4-mini→GPT-5 (2026-09-15); Pinecone Local EOL 2026-10-07 |
+
+This is an AI-assisted source spot-check, not qualified human factual review; the human review gates listed above remain open.
