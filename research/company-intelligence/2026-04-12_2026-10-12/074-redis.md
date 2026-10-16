@@ -53,7 +53,7 @@ Full detail is in the [CSV](074-redis.events.csv) (35 rows, `CI2026-074-001`…`
 | CI2026-074-012 | 2026-05-28 | redis-py 8.0.0: RESP3 default, breaking type hints, new timeouts/retries | PyPI 2026-05-28T12:45Z | [release](https://github.com/redis/redis-py/releases/tag/v8.0.0) | PyPI | E2 |
 | CI2026-074-016 | 2026-07-09 | Open-source agent-memory-server moved to `V0/`; root points to managed Agent Memory | Apache-2.0 kept per PR text | [PR #319](https://github.com/redis/agent-memory-server/pull/319) | PyPI: no in-window release | E2 |
 | CI2026-074-017/018/019 | 2026-07-13 / 07-13 / 07-15 | ~200 roles cut globally; Israel figures 80 (Globes) vs ~70 (Calcalist) | company post vs anonymous-source reports | [CEO post](https://redis.io/blog/ceo-rowan-trollopes-organizational-announcement-to-redis-employees/) | Globes, Calcalist | E1 |
-| CI2026-074-020/021/022 | 2026-07-22 / 07-23 / 07-27 | Public RCE PoCs (claimed found with Kimi K3); fixes in 7 branches; Redis says the 3 documented issues were duplicates of bug-bounty reports | post-authentication; TopK fix later | [PoC repo](https://github.com/berabuddies/redis-poc), [8.8.1](https://github.com/redis/redis/releases/tag/8.8.1), [response](https://redis.io/blog/security-update-redis-response-to-the-kimi-k3-vulnerability-claims/) | cross-entity | E2 (documentary), not E3 |
+| CI2026-074-020/021/022 | 2026-07-22 / 07-23 / 07-27 | Public RCE PoCs for the same three issues that public posts attribute to Kimi K3 (the PoC README does not mention Kimi K3); fixes in 7 branches; Redis says the 3 documented issues were duplicates of bug-bounty reports | post-authentication; TopK fix later | [PoC repo](https://github.com/berabuddies/redis-poc), [8.8.1](https://github.com/redis/redis/releases/tag/8.8.1), [response](https://redis.io/blog/security-update-redis-response-to-the-kimi-k3-vulnerability-claims/) | cross-entity | E2 (documentary), not E3 |
 | CI2026-074-026 | 2026-08-28 | CVE-2026-81934: initial 9.8 vs Redis 7.5 (v4) | NVD now 7.5/7.1 but description still says unauthenticated | [advisory](https://redis.io/blog/security-advisory-cve-2026-81934/) | [NVD API](https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-81934) | E2 |
 | CI2026-074-035 | 2026-10-09 | Public Docs MCP at redis.io/mcp; 135 of 374 commits had an agent as author | self-report | [blog](https://redis.io/blog/how-we-built-the-redis-docs-mcp-for-agents/) | none | E1 |
 
@@ -127,3 +127,34 @@ Company adoption claims (e.g., "43% of enterprise AI agent stacks", "$300M" run 
 - **Important contradictory or null evidence:** (a) Israel layoffs 80 (Globes) vs ~70 (Calcalist) vs company total ~200 without a regional figure; (b) CVE-2026-81934 initial 9.8 vs Redis 7.5, and NVD's description ("remote, unauthenticated") vs Redis ("authenticated"); (c) CVE-2026-23479 GitHub CNA 7.7 (v4) vs NVD 8.8 (v3.1); (d) CVE-2026-62356 named in 8.10.1 notes but absent from NVD on 2026-10-16; (e) Kimi K3 PoC "patch bypass" framing vs Redis "duplicates of known findings"; (f) blog dates lag GitHub GA (8.8: Jun 2 vs May 25; 8.10: Sep 14 vs Jul 29); (g) Array called GA in 8.8 notes but "preview" in redis-py 8.0.0; (h) OpenTelemetry "metrics" (Apr 24 post) vs "tracing" (May 8 recap); (i) Shopify's migration away from Redis and a critical independent essay.
 - **#56 candidates (not minted):** Globes 2026-07-13; Calcalist 2026-07-13; Shopify Engineering 2026-05-12; charlesleifer.com 2026-05-12. Each needs human reading before a `NEWS-YYYY-NNNN` ID is assigned.
 - **Reviewer links and audit date:** none yet. Provisional screen; the issue may be closed with this status recorded, and human factual/link, rights and methods review gates remain open.
+
+## Independent source spot-check (2026-10-16)
+
+Rows were re-fetched on 2026-10-16: raw HTML from redis.io, antirez.com, Globes and Calcalist; `gh api` for redis/redis releases and PRs, redis/agent-memory-server and berabuddies/redis-poc; the NVD API; and the HN Algolia API. Each date, figure and quote was matched against the raw text.
+
+| Row | Outcome | Note |
+|---|---|---|
+| CI2026-074-001 | confirmed | 8.8-m02 prerelease 2026-04-16T11:32Z, Docker image; GCRA "based on the redis-cell module" |
+| CI2026-074-005 | confirmed | "cooked for four months"; Opus, then GPT 5.3 with Codex; "read all the code, line by line"; page shows "164 days ago", which is consistent with 2026-05-04/05 |
+| CI2026-074-006 | confirmed | displayed date May 05, 2026; five CVEs at 7.7 or 6.1; fixed in 6.2.22, 7.2.14, 7.4.9, 8.2.6, 8.4.3, 8.6.3; NVD CVE-2026-23479 shows 7.7 (v4, GitHub CNA) and 8.8 (v3.1, NVD) |
+| CI2026-074-009 | confirmed | PR #15191 merged 2026-05-14T13:31Z |
+| CI2026-074-010 | confirmed | displayed May 18 vs `datePublished` 2026-05-15; "43% of enterprise AI agent stacks"; "up to 90 percent on token costs"; Context Retriever and Agent Memory "Now available in preview" |
+| CI2026-074-011 | confirmed | 8.8.0 published 2026-05-25T09:29Z |
+| CI2026-074-013 | confirmed | displayed June 02, 2026; MGET up to 68% (pipelined, I/O threads), XREADGROUP up to 83%, full sync up to 60% faster |
+| CI2026-074-017 | confirmed | Globes 2026-07-13: about 80 of 300 (about 27%); "does not respond to rumors and speculation" |
+| CI2026-074-018 | corrected | about 70; about 1,300 worldwide; about 300 in Tel Aviv; no plan to close the centre; the `<title>` is a different headline. The source says Redis "does not comment on rumors or speculation", not that it "declined to comment"; the limitation is reworded |
+| CI2026-074-019 | confirmed | 2026-07-15; "approximately 200 roles globally"; "designed, written, tested, shipped" quote |
+| CI2026-074-020 | corrected | repo created 2026-07-22T22:26Z; versions 6.2.22, 7.4.9, 8.6.4, 8.8.0 and 8.8.1; two patch-bypass claims (CVE-2026-25243, CVE-2026-25589) confirmed. The README and description do not mention Kimi K3, and the HN item links an X post rather than the repo, so the row now says the link rests on issue overlap and timing |
+| CI2026-074-021 | confirmed | 2026-07-23 releases; the NACK use-after-free appears in 8.6.5, 8.4.5, 8.2.8, 7.4.10, 7.2.15 and 6.2.23 notes; the 8.8.1 notes list only the RedisBloom/TDigest fix |
+| CI2026-074-022 | confirmed | 2026-07-27; "19 zero day vulnerabilities"; three issues; duplicates; 8.8.1 plus six older branches; TopK pending |
+| CI2026-074-025 | confirmed | 2026-08-17 releases; CMSketch CVE-2026-62356, TLS pending-data UAF, CN NUL-byte bypass, SLOT_INFO, Vector Sets in 8.10.1; ACL key-permission bypass (#15478) in 8.8.2 and older branches; NVD has no record for CVE-2026-62356 |
+| CI2026-074-026 | confirmed | displayed August 28 (event Aug 27); initial 9.8; Redis v4 7.5; "Update 9/1/2026"; not aware of active exploitation as of Aug 27; NVD 7.5 (v4), 7.1 (v3.1), "remote, unauthenticated" description |
+| CI2026-074-028 | confirmed | September 14; "Up to 104% higher throughput" on wide, fresh hashes; "Up to 50% lower memory usage" |
+| CI2026-074-029 | confirmed | commit "Add agent memory benchmark (#362)" 2026-09-15T14:17Z; README "Validated independently" heading; 86.5% research configuration "not" in the product; could not reproduce some vendors' scores |
+| CI2026-074-030 | confirmed | 8.10.2 published 2026-09-17T15:06Z; PR #15722 merged 2026-09-15T11:57Z |
+| CI2026-074-034 | confirmed | displayed October 08 (`datePublished` 2026-10-01); 8.2 is the latest release eligible for extended support, "up to five years" |
+| CI2026-074-035 | confirmed | displayed October 09; 135 of 374 commits; "Four of us built it over one quarter, from April to July 2026"; unauthenticated; MRR table |
+
+Outcome counts: 18 confirmed, 2 corrected, 0 unverifiable, 0 wrong. No serious error was found. The search log's "figures confirmed" list is the screening agent's own statement; this spot-check re-verified 20 of 35 rows.
+
+This is an AI-assisted spot-check, not a qualified human review.
