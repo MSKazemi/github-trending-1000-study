@@ -88,15 +88,27 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
-    def test_unique_query_parameter_order_remains_normalized(self):
+    def test_unique_query_parameter_order_may_select_distinct_sources(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)
         first["canonical_url"] = "https://example.org/report?a=1&b=2"
         second["id"] = "NEWS-2026-0099"
         second["canonical_url"] = "https://example.org/report?b=2&a=1"
-        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
-            validate_records([(first["id"] + ".json", first),
-                              (second["id"] + ".json", second)])
+        # Signed/ordered query routes can distinguish unique-key order too;
+        # both provisional leads must survive without content-level review.
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_unique_query_order_with_different_trackers_is_still_preserved(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?a=1&utm_source=mail&b=2"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?b=2&gclid=abc&a=1"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
 
     def test_raw_percent_encoded_selector_variants_are_not_false_duplicates(self):
         # parse_qsl would decode these to identical (key, value) tuples,
