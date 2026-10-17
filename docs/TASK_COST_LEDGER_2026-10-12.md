@@ -59,7 +59,7 @@ Exact allowed-key validation rejects accidental prompt, identity, source code, c
 - `input_tokens`, `output_tokens`, and `cached_input_tokens` are totals only if all model-call events were covered and each relevant count was known. Otherwise, null. Provider token accounting varies.
 - `observed_event_cost_usd` is complete only if events and monetary coverage are complete and all chargeable amounts are known. The result is a **bounded scoped event cost**, *not* full task spending. Human wages, subscription allocation, unrecorded CI, equipment, energy, and maintenance are **outside this amount** unless separately represented by authorized instrumented event costs. `cost_by_basis_usd` explains whether values were billed, estimated or synthetic; it is not an invoice verifier.
 - The overall and per-arm summaries retain every assigned task and the audited acceptance status. A missing task cost makes the relevant cohort total **null**, preserving missingness rather than using only successful cases. Zero accepted means cost-per-accepted-task is undefined (null); pending tasks prevent a final accepted-per-hour ratio.
-- UTC timestamps, strict decimal amounts, duplicate event IDs, **duplicate JSON object keys**, nonstandard numeric constants, malformed trial hashes, rights/security gate failures, and post-hoc budget timestamps fail closed. The CLI rejects JSON inputs over 64 MiB per file. Some temporal inconsistencies cannot be excluded without verified task-start markers.
+- UTC timestamps, strict decimal amounts, duplicate event IDs, **duplicate JSON object keys**, nonstandard numeric constants, malformed trial hashes, rights/security gate failures, and post-hoc budget timestamps fail closed. The CLI rejects JSON inputs over the shared 16 MiB per-file research limit; this 2026-10-17 safety reduction supersedes the earlier bespoke 64 MiB allowance. Some temporal inconsistencies cannot be excluded without verified task-start markers.
 
 ### Post-release maintenance is NOT in this ledger
 
@@ -92,3 +92,52 @@ This contribution deliberately **reuses** the repository's existing `trial.assig
 For any **later**, separately authorized live instrumentation, first evaluate established [OpenTelemetry Python tracing](https://opentelemetry.io/docs/languages/python/instrumentation/) and [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/) rather than implementing vendor-specific tracing from scratch. The [GenAI span convention](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md) cautions that full instructions, messages and outputs can be sensitive and should not be captured by default. An [OpenTelemetry instrumentation reference](https://opentelemetry-python-contrib.readthedocs.io/en/latest/instrumentation-genai/openai.html) documents optional content capture controls; **never enable prompt, tool-argument, code or completion capture for this study**. Review the actual pinned SDK/semantic-convention version before mapping provider token counters.
 
 **Why no OpenTelemetry dependency now?** This PR is an offline validator over hand-prepared, fully synthetic accounting records, and the existing test suite requires only the Python standard library. Running a live collector would expand permissions, privacy, networking, retention, export, API-compatibility and legal-review scope without answering the presently bounded issue. Any future adapter needs its own permission-gated issue, provider accounting mapping, realistic calibration, approved data flow, and separate human scientific review. The research should compare established tracing semantics before adopting a new schema as an interoperability standard.
+
+## 2026-10-17 engineering acceptance and separate research go/no-go decision
+
+Issue #10's four **original engineering acceptance bullets** (versioned
+schema/synthetic examples, preservation of unknown values, all-assigned
+accepted/failure denominators, and no committed raw private content) have an
+offline implementation and tests. The historical text above accurately
+recorded that its earlier state was only partial. A follow-up patch now:
+
+- replaces the task-cost module's bespoke unrestricted
+  `Path.read_text`/stat/decoder with the **shared descriptor-checked,
+  regular-file-only, symlink-refusing, bounded 16 MiB strict JSON reader**
+  used by the other offline instruments;
+- rejects private duplicate-key diagnostics, nonfinite and underflowing JSON
+  numbers, symlink/special/oversized inputs without ever writing output;
+- raises domain and CLI failures *after leaving* private decoder and
+  `datetime` handlers, preventing sensitive keys/paths from remaining in
+  Python `SystemExit.__context__` and formatted exception traces; and
+- handles huge direct Python integer budget inputs as bounded validation
+  errors instead of leaking an unhandled `OverflowError`.
+
+Adversarial synthetic tests cover all four boundaries. Existing full-trial
+outcome counts, missing-vs-zero reporting, provider-billed/estimated/synthetic
+price provenance, concurrency union and write-once outputs remain in place.
+
+**Decision about scope:** issue #10 closes **only the offline
+instrumentation engineering milestone after merged exact-head and integrated
+main CI**. There is intentionally **no** live opt-in collector, human
+enrolment, authentic consent, independently verified cost baseline or causal
+study here. The *unfulfilled empirical work* is carried forward and must
+remain open under: [#17](https://github.com/MSKazemi/github-trending-1000-study/issues/17)
+(randomized task trial, privacy/consent, human and tool/event reconciliation,
+independent functional acceptance, 30/90-day outcome follow-up),
+[#24](https://github.com/MSKazemi/github-trending-1000-study/issues/24)
+(upstream maintainer/participant human effort and retention),
+[#18](https://github.com/MSKazemi/github-trending-1000-study/issues/18)
+(calibrated energy/provider uncertainty), and
+[#23](https://github.com/MSKazemi/github-trending-1000-study/issues/23)
+(lifecycle/rebound and post-closure accounting).
+
+Do not turn `complete` fields or sample provider costs into authentic
+measurements. A separate **approved, consented and independently calibrated**
+adapter design is a future study decision, not part of this delivered offline
+tool. No confidential prompts, code, identities or raw logs belong in Git.
+
+**Practical repository lesson:** security tests must inspect *both* stderr
+and full exception cause/context graphs; reusing a canonical bounded reader
+reduces divergent security behavior across scripts. Only close the bounded
+engineering item; keep the human-study evidence gate explicit elsewhere.
