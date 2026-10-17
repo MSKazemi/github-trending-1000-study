@@ -176,6 +176,44 @@ class BranchCleanupTests(unittest.TestCase):
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
 
+    def test_direct_retirement_rejects_unvalidated_items_before_api(self):
+        # The helper is public to in-process callers, not only execute().
+        # No malformed source ref should reach authenticated REST operations,
+        # even through the lower-risk read-only audit path.
+        bad = []
+        for value in ("../main", "feature/../../main", "refs/heads/main",
+                      "feature/", "x\\nprivate", "", "a" * 201):
+            bad.append(dict(item(), branch=value))
+        bad.extend((
+            dict(item(), expected_sha="f"),
+            dict(item(), merge_commit_sha="PUBLIC_BAD_SHA"),
+            dict(item(), merged_pr=True),
+            dict(item(), merged_pr="123"),
+            dict(item(), merged_pr=100000001),
+            dict(item(), extra_private_field="PRIVATE_MARKER"),
+            None,
+            [],
+        ))
+        for obj in bad:
+            for audit_only in (True, False):
+                fake = FakeClient()
+                with self.subTest(value=str(type(obj)), audit_only=audit_only):
+                    with patch.object(fake, "get") as get:
+                        with self.assertRaises(CleanupError):
+                            retire_one(fake, REPO, obj,
+                                       audit_only=audit_only,
+                                       expected_main_sha="c" * 40)
+                        get.assert_not_called()
+                    self.assertFalse(fake.posts)
+                    self.assertFalse(fake.deleted)
+
+    def test_direct_read_only_retirement_rejects_wrong_repository(self):
+        fake = FakeClient()
+        with patch.object(fake, "get") as get:
+            with self.assertRaisesRegex(CleanupError, "repository differs"):
+                retire_one(fake, "attacker/unrelated", item(), audit_only=True)
+            get.assert_not_called()
+
     def test_changed_head_is_never_archived_or_deleted(self):
         fake = FakeClient()
         fake.sha = "f" * 40
