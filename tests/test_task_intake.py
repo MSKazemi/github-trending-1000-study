@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import traceback
 import re
 import tempfile
 import unittest
@@ -161,6 +162,52 @@ class IntakeTests(unittest.TestCase):
                           error.getvalue())
             self.assertNotIn("PRIVATE_OUTPUT_MARKER", error.getvalue())
             self.assertNotIn("PRIVATE_DISK_DETAIL", error.getvalue())
+            self.assertFalse(output.exists())
+            self.assertEqual(list(root.glob(".capture-pending-*")), [])
+
+    def test_canonical_cli_errors_do_not_chain_private_exceptions(self):
+        # Both visible stderr and full Python traceback context must be safe.
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            missing = root / "PRIVATE_SOURCE_NOT_FOUND.json"
+            malformed = root / "PRIVATE_DUPLICATE_KEYS.json"
+            malformed.write_text('{"PRIVATE_KEY":1,"PRIVATE_KEY":2}', encoding="utf-8")
+            existing = root / "PRIVATE_EXISTING_OUTPUT.json"
+            existing.write_text("PRESERVE_ME", encoding="utf-8")
+            for input_path, output_path in (
+                (missing, root / "missing-output.json"),
+                (malformed, root / "malformed-output.json"),
+                (FRAME, existing),
+            ):
+                with self.subTest(source=input_path.name):
+                    captured = io.StringIO()
+                    with redirect_stderr(captured), self.assertRaises(SystemExit) as caught:
+                        main(["--input", str(input_path), "--output", str(output_path)])
+                    err = caught.exception
+                    self.assertEqual(err.code, 2)
+                    self.assertIsNone(err.__cause__)
+                    self.assertIsNone(err.__context__)
+                    self.assertNotIn("PRIVATE_", captured.getvalue() +
+                                     "".join(traceback.format_exception(err)))
+            self.assertEqual(existing.read_text(encoding="utf-8"), "PRESERVE_ME")
+
+    def test_canonical_atomic_writer_failure_has_no_private_error_chain(self):
+        # A chained OSError from the safe writer leaks in full-stack telemetry
+        # even when the argparse stderr message is neutral.
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root / "PRIVATE_ATOMIC_OUTPUT.json"
+            captured = io.StringIO()
+            with patch("trending_study.safe_io.os.link",
+                       side_effect=OSError("PRIVATE_LINK_CAUSE")):
+                with redirect_stderr(captured), self.assertRaises(SystemExit) as caught:
+                    main(["--input", str(FRAME), "--output", str(output)])
+            err = caught.exception
+            self.assertEqual(err.code, 2)
+            self.assertIsNone(err.__cause__)
+            self.assertIsNone(err.__context__)
+            self.assertNotIn("PRIVATE_", captured.getvalue() +
+                             "".join(traceback.format_exception(err)))
             self.assertFalse(output.exists())
             self.assertEqual(list(root.glob(".capture-pending-*")), [])
 
