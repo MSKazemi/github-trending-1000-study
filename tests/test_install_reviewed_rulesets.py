@@ -3,6 +3,7 @@ import copy
 import io
 import json
 from pathlib import Path
+import tempfile
 from unittest.mock import MagicMock, patch
 import unittest
 
@@ -104,10 +105,31 @@ class ReviewedRulesetInstallerTests(unittest.TestCase):
         self.assertEqual(set(POLICIES), set(installer.PINNED_POLICY_BLOBS))
         self.assertEqual(POLICIES["main.json"]["bypass_actors"], [])
         self.assertEqual(POLICIES["branch-archive-tags.json"]["bypass_actors"], [])
-        with patch.object(installer, "load_research_json_file",
+        with patch.object(installer, "decode_research_json",
                           side_effect=AssertionError("unchanged payload still needs parsing")):
             with self.assertRaises(AssertionError):
                 installer.load_policies(ROOT / "ops" / "rulesets")
+
+    def test_policies_are_read_once_and_reject_leaf_symlinks_tampering_oversize(self):
+        source = ROOT / "ops" / "rulesets"
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            for name in installer.PINNED_POLICY_BLOBS:
+                (target / name).write_bytes((source / name).read_bytes())
+            self.assertEqual(installer.load_policies(target), POLICIES)
+            policy_file = target / "main.json"
+            old = policy_file.read_bytes()
+            policy_file.unlink()
+            policy_file.symlink_to(source / "main.json")
+            with self.assertRaises(ValueError):
+                installer.load_policies(target)
+            policy_file.unlink()
+            policy_file.write_bytes(old + b" ")
+            with self.assertRaisesRegex(installer.InstallationError, "differs"):
+                installer.load_policies(target)
+            policy_file.write_bytes(b"x" * 131073)
+            with self.assertRaises(ValueError):
+                installer.load_policies(target)
 
     def test_default_preflight_performs_no_mutation(self):
         fake = Fake()

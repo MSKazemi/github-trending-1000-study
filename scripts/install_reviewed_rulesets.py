@@ -14,7 +14,7 @@ import sys
 from urllib.request import Request, HTTPRedirectHandler, build_opener
 
 from scripts import audit_github_rulesets as policy
-from trending_study.data_integrity import decode_research_json, load_research_json_file
+from trending_study.data_integrity import decode_research_json, read_research_input_bytes
 
 
 REPOSITORY = "MSKazemi/github-trending-1000-study"
@@ -39,11 +39,12 @@ def load_policies(directory):
     out = {}
     for filename, git_sha in PINNED_POLICY_BLOBS.items():
         path = Path(directory) / filename
-        raw = path.read_bytes()
-        require(len(raw) <= 131072, "policy input is too large")
+        # One race-safe, bounded read for BOTH digest pinning and strict JSON
+        # parsing. A second path-open could swap bytes between the two checks.
+        raw = read_research_input_bytes(path, max_bytes=131072)
         digest = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
         require(digest == git_sha, "policy content differs from reviewed Git blob")
-        out[filename] = load_research_json_file(path, max_bytes=131072)
+        out[filename] = decode_research_json(raw, "reviewed ruleset policy")
     policy._check_reviewed_intent(out["main.json"], out["branch-archive-tags.json"])
     return out
 
