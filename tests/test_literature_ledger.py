@@ -140,7 +140,7 @@ class LiteratureLedgerTests(unittest.TestCase):
             payload = source()
             payload["records"][0]["source_url"] = "https://" + host + "/paper"
             with self.subTest(host=host), self.assertRaisesRegex(
-                    LiteratureError, "canonical public DNS host"):
+                    LiteratureError, "canonical public host"):
                 audit(payload)
         for host in ("publisher.example.org", "publisher-site.example.org",
                      "xn--bcher-kva.example.org"):

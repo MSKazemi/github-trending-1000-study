@@ -152,7 +152,7 @@ def audit(data):
                 if (len(host) > 253 or len(labels) < 2 or any(
                         len(label) > 63 or re.fullmatch(dns_label, label) is None
                         for label in labels)):
-                    raise LiteratureError("included source_url requires canonical public DNS host")
+                    raise LiteratureError("included source_url requires canonical public host")
             # ipaddress deliberately refuses shortened/octal/hex and integer
             # IPv4 aliases, while some URL clients still resolve 127.1,
             # 2130706433 or 0x7f000001 to loopback. This validator never
