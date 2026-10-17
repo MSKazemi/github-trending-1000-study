@@ -14,7 +14,7 @@ import subprocess
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 SHA = re.compile(r"[a-f0-9]{40}\Z")
 BRANCH = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}\Z")
@@ -138,6 +138,16 @@ def _load_strict_plan(path):
         raise CleanupError("invalid or ambiguous cleanup plan JSON") from None
 
 
+class _RejectAuthenticatedRedirect(HTTPRedirectHandler):
+    """Fail closed on HTTP 30x rather than forwarding GitHub bearer tokens."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        # urllib's default redirect handler copies Authorization to a newly
+        # constructed Request, including when Location names another host.
+        # GitHub API operations must never authorize such a redirect.
+        return None
+
+
 class GitHubClient:
     """Bounded GitHub REST client; never logs tokens or response bodies."""
 
@@ -151,13 +161,19 @@ class GitHubClient:
         data = None if payload is None else json.dumps(payload).encode("utf-8")
         req = Request("https://api.github.com" + path, data=data,
                       method=method, headers={
-            "Authorization": "Bearer " + self.token,
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
             "User-Agent": "research-branch-retirement/1.0",
         })
+        # Defense in depth: even if redirect policy changes, never copy the
+        # bearer token onto an automatically constructed redirected request.
+        req.add_unredirected_header("Authorization", "Bearer " + self.token)
         try:
-            with urlopen(req, timeout=20) as response:
+            # urllib's default HTTPRedirectHandler retains Authorization on
+            # off-host redirects. Reject all redirects for this privileged
+            # API client, including same-host aliases and renamed repos.
+            with build_opener(_RejectAuthenticatedRedirect()).open(
+                    req, timeout=20) as response:
                 raw = response.read(2_000_000)
                 return json.loads(raw) if raw else None
         except HTTPError as exc:
