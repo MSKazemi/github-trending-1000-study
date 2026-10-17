@@ -102,3 +102,16 @@ human time records, sample/power approval, uncertainty and ethics gates are met.
 **Practical lesson:** removing names and timing is insufficient if derived
 success/failure labels remain in a withdrawn person's row; minimize *all*
 person-linked outcomes according to the consent state.
+
+## 2026-10-17 issue #24 feasibility report, rubric and consent-review handoff
+
+The latest bounded instrument update codes task actionability, independent newcomer comprehension, 30/90-day follow-up completion/missingness and safety-incident indicators using **exact allowed labels**. It reports conservative `outcome_counts_self_reported_not_authenticated`, task acceptance, consent-status denominators, separate **known partial** upstream/downstream human minutes, and explicit missing/not-due counts. It does **not** calculate effect sizes, authenticated independent-review rates or a per-accepted-task burden, and never includes original case IDs in its summary.
+
+- [Prospective nonrandomized opt-in feasibility protocol](MAINTAINER_FEASIBILITY_PILOT_PROTOCOL_2026_10_17.md), including ethical/privacy gates, a blinded actionability/newcomer rubric, a measurement boundary, consented timing calibration, missingness, 30/90-day windows and scientific limitations.
+- [Researcher task/rating card](../templates/maintainer_pilot_task_and_rating_card.md) and [participant-information draft](../templates/maintainer_opt_in_information_draft.md) are **unapproved blank templates**, not obtained consent or named reviewer signoff.
+- [Dated no-empirical-evidence report](reviews/2026-10-17-issue-24-feasibility-evidence-and-open-gates.md) distinguishes missing source material from a genuine zero or a null/negative measured outcome; it preserves the still-open issue closure gates.
+- [Fictional three-case batch](../examples/maintainer_feasibility_batch.synthetic.json) shows one coded positive, one coded negative, one withdrawn denominator-only case and unknown/missing follow-ups. Reproduce only synthetic behavior via `python -m trending_study.maintainer_burden --input examples/maintainer_feasibility_batch.synthetic.json`.
+
+**Issue #24 stays open.** No live consented opt-in pilot, time-diary calibration, verified human/newcomer ratings or actual 30/90-day longitudinal observations was performed here. A green CI run validates software—not human study approval, legal authority, genuine outcomes or downstream impact. With a small convenience sample, rates and estimates may be highly imprecise; future power and design approval must be obtained before an efficacy study.
+
+**Practical owner lesson:** do not equate a code-only issue closure with completing the external study. Preserve negative/unknown outcomes, conditional scientific claims and withdrawn participants' rights even after merging useful software.
