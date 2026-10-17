@@ -52,3 +52,16 @@ Independent clean install + relevant task pass, security controls appropriate to
 - 'This avoids 1M tokens so it saves X CO2' → not without provider/measurement model, location, workload and boundary.
 
 **Documentation:** [experiment](REUSE_FIRST_EXPERIMENT.md) · [metrics](REUSE_SUSTAINABILITY_METRICS.md) · [green science standard](../references/green_reuse_sources_2026.json) · [project decision guide](DEVELOPER_DECISION_PLAYBOOK.md).
+
+## 2026-10-18 offline reuse-assessment input-integrity fix (#458)
+
+The CLI `python -m trending_study.reuse_gate --input examples/reuse_check.example.json` now uses the repository's canonical **strict, descriptor-checked and 16 MiB-bounded** research JSON reader. Repeated JSON keys, including duplicate `functional_test` or `license_compatibility` labels, must never silently replace an earlier failed/unknown result. Nonstandard and overflowing/underflowing numeric literals, symlinks, directories and oversized input are rejected; input/OS failures use path-neutral diagnostics. The existing fictional example's decision is unchanged. Tests run the **actual CLI**, not just the in-memory evaluator.
+
+**Limit:** This verifies input structure and error safety only; the evaluator still describes *self-reported* evidence rather than independently authenticated licenses, security advisories, candidate provenance or task success. No package was downloaded, installed or tested against third-party systems. The parent [package review tracker #22](https://github.com/MSKazemi/github-trending-1000-study/issues/22) remains open.
+
+**Practical lesson:** guard untrusted assessment bytes before generating any reuse recommendation. A convenient JSON parser that silently takes the last duplicate key can turn a declared failed gate into a claimed passing gate.
+
+
+### 2026-10-18 full-traceback privacy regression
+
+Input-parser and evaluator failures now produce `SystemExit` **after** the original exception handlers end, preserving the canonical strict bounded reader while keeping full tracebacks free of private source path/key and evaluator exception chains. New direct in-process tests verify `__cause__`, `__context__` and formatted exception stacks, not only subprocess stderr. Synthetic tests do not authenticate external licenses, source identity, safe dependency installation, or real research outcomes. Keep issue #22 open.

@@ -5,7 +5,8 @@ carbon reductions, true code equivalence, or popularity.
 """
 import argparse
 import json
-from pathlib import Path
+
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 
 
 class InvalidReuseAssessment(ValueError):
@@ -97,10 +98,28 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="Offline reuse-first evidence gate")
     p.add_argument("--input", required=True, help="JSON assessment file")
     args = p.parse_args(argv)
+    # Decode the actual, bounded input bytes before classifying a candidate.
+    # Duplicate JSON keys could otherwise overwrite a failed security gate.
+    input_failure = False
     try:
-        result = evaluate(json.loads(Path(args.input).read_text(encoding="utf-8")))
-    except (ValueError, OSError) as exc:
-        p.exit(2, f"error: {exc}\n")
+        assessment = load_research_json_file(args.input, max_bytes=MAX_FILE_BYTES)
+    except (ResearchJSONError, OSError, RecursionError, OverflowError):
+        # Reader/OS exceptions may contain private source paths or JSON keys.
+        input_failure = True
+    if input_failure:
+        # Raising SystemExit inside except can leak the original exception
+        # via __context__, even when stderr shows a neutral fixed message.
+        p.exit(2, "error: invalid or unsafe reuse assessment JSON input\n")
+    evaluation_failure = None
+    try:
+        result = evaluate(assessment)
+    except InvalidReuseAssessment as exc:
+        # Evaluator messages are fixed nonidentifying schema diagnostics.
+        evaluation_failure = str(exc)
+    except (ValueError, OSError, TypeError, OverflowError, RecursionError):
+        evaluation_failure = "invalid reuse assessment fields"
+    if evaluation_failure is not None:
+        p.exit(2, "error: " + evaluation_failure + "\n")
     print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
 
 
