@@ -89,7 +89,9 @@ class ReadonlyRulesetReadbackTests(unittest.TestCase):
         with self.assertRaisesRegex(verifier.RulesetAuditError, "main or protection changed"):
             self.audit(changing)
         self.assertEqual(state["main_reads"], 2)
-        self.assertEqual(len(calls), 3)
+        # The wrapped second main GET is intercepted; the initial main, list,
+        # and two detail reads are still recorded by the mock provider.
+        self.assertEqual(len(calls), 4)
 
     def test_ruleset_list_movement_during_readback_is_detected(self):
         getter, _, calls = fake_get(self.expected_main, self.expected_archive)
