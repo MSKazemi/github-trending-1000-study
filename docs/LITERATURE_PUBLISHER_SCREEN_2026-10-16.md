@@ -59,3 +59,26 @@ One synthetic regression covers several private address classes and the unchange
 ## 2026-10-16 numeric-host evidence guard follow-up
 
 Offline `literature_ledger.audit` now rejects ambiguous numeric IPv4 URL aliases such as `127.1`, `2130706433` and `0x7f000001`. Python's strict IP parser does not recognize these representations, whereas some older network clients resolve them to loopback. Six synthetic rejection cases and one ordinary-domain control were added to the existing test module. The parser still makes **no network requests**, does **not** resolve DNS or follow redirects, and cannot verify that any source is public, authentic, licensed or safe for future crawling. This is structural evidence hygiene, not SSRF protection for a future client or independent scientific source review. The real multi-database literature search, denominator and qualified methods review still block issue #7 closure.
+
+## 2026-10-17 offline diagnostic privacy correction
+
+A technical review found that malformed user-supplied search timestamps could
+survive as raw `datetime.fromisoformat` exception causes. Likewise, a strict
+JSON decoder's original private key/filename could remain in
+`LiteratureError.__context__`, and invoking `argparse.error` inside that
+handler could carry it further into `SystemExit.__context__`. The existing
+offline validator now exits the low-level handlers before emitting fixed
+public domain and command-line errors, preserving its established bounded
+byte-limit, non-symlink and strict-JSON diagnostic classes. Synthetic tests
+inspect complete formatted exceptions and cause/context fields, not only
+the visible stderr.
+
+**Limits:** permitted successful output remains operator-controlled; none of
+these changes verifies bibliographic data, live URL destinations, copyright,
+search coverage, human screening or research claims. Original eleven records
+remain self-reported leads. Keep issue #7 open until its independently
+reproduced comprehensive review requirements are met.
+
+**Practical lesson:** protect human-supplied research identifiers across the
+*whole* exception chain. A generic top-level error alone does not remove
+private content stored in its underlying exception objects.
