@@ -96,3 +96,9 @@ The earlier input reader fix and stronger atomic/privacy-safe output fix (issues
 ## 2026-10-18 preserve atomic publisher and prevent private traceback chains
 
 The previous standalone output-redaction draft (#452) was closed without merge because merged #450 provides a stronger canonical `safe_io.disjoint` + atomic hard-linked `safe_io.publish_json` write-once publisher. Its useful exception-chain protection was integrated separately, **without restoring the older `open("x")` writer**. The entrypoint now exits only after source-decoder, schema-validation, or safe-publication exception handlers have finished; tests check in-process `SystemExit.__cause__`, `__context__`, complete tracebacks, prior-output bytes and cleanup of staged files. These offline cases do not authenticate real task screening, source access, participants or human approvals. Parent scientific #65 remains open.
+
+## 2026-10-18 canonical issue URL type and identity guard (#462)
+
+The offline intake now treats each preserved GitHub `html_url` as an **exact, bounded canonical string** matching the documented `https://github.com/{owner}/{repo}/issues/{number}` or `/pull/{number}` frame convention. The old `.lower()` comparison could crash on null, list or object values and silently allow noncanonical URL path casing. Those now fail with the fixed, privacy-safe `IntakeError("issue URL mismatch")` before a candidate is classified or a result is published. The existing 15-row and 90-row fixtures already have matching exact URLs and their selected lead IDs remain unchanged. The gate does not fetch or authenticate a GitHub source, judge real task feasibility, or imply human consent; parent research #65 remains open.
+
+**Practical lesson:** never call string methods on untyped external metadata or normalize away distinctions without explaining the required identity contract.
