@@ -167,3 +167,37 @@ cohort or 50 independently human-reviewed task/package pairs.
 
 **Maintainer lesson:** use complete exception and CLI failure traces in
 negative-input tests. A safe-looking string may hide private nested causes.
+
+## 2026-10-17 pinned public registry listing cross-check
+
+A separate **read-only GitHub Contents API** retrieval compared the precise
+upstream `rust-lang/crates.io-index` commit
+`9b349b77adb46425be15e386ef38f31061be3ca9` against both committed
+bounded source-manifest segments:
+
+- `contents/2?ref=<pinned-sha>`: 725 upstream entries; all 725 manifest
+  package names **and individual Git blob SHAs** matched; no extra entries
+- `contents/3/a?ref=<pinned-sha>`: 282 upstream entries; all 282 manifest
+  package names **and individual Git blob SHAs** matched; no extra entries
+
+This independently re-queries *those two exact paths* and establishes a
+**1,007/1,007 snapshot-name/blob match**, rather than relying solely on a
+self-reported manifest. The bytewise SHA bound and Git tree-object SHA
+reproduction checks remain in the code. It does **not** authenticate the
+human sampler, make two handpicked paths representative of all crates.io or
+GitHub repositories, validate any software version/license/security, prove
+source crawl permissions, or establish genuine independent task-component
+review. Accordingly `source_listings_independently_authenticated` in the
+synthetic/audit CLI remains deliberately **false**, since the CLI itself makes
+no authenticated upstream requests and cannot carry this chat-level check
+as an attested input. Issue #15 still needs authentic human review.
+
+**Reproduction:** read the exact two GitHub API URLs stored as `source_url`
+in `research-notes/issue-15-crates-index-bounded-listing-2026-10-14.json`,
+compare the complete returned (name, blob SHA) maps against every
+`entries[].package_name`/`entries[].blob_sha`, and reject any omissions or
+extras. No registry packages were fetched, installed or executed.
+
+**Practical lesson:** a self-consistent hash should be checked against an
+external, version-pinned source whenever available, and conclusions must
+remain limited to the actually inspected sampling frame.
