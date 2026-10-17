@@ -178,3 +178,26 @@ sampling are still required before #6 can be closed.
 **Repository lesson:** validate evidence references across the *entire
 experimental split*, not just within individual records. A heldout set
 should stay held out in data provenance as well as code-level model selection.
+
+## 2026-10-17 malformed-source traceback hardening
+
+The offline Trending audit previously translated low-level time, page URL
+and duplicate-JSON errors *inside* their exception handlers using chained
+exceptions, then called `argparse.error` within another handler. A generic
+visible diagnostic could still retain raw private timestamps, decoded JSON
+keys or filenames in a full Python traceback's `__context__` or `__cause__`.
+
+The validator now emits fixed public errors **after** the original handlers
+have exited. New synthetic tests inspect complete traceback formatting,
+explicit causes/contexts and CLI stderr for sensitive markers. The source
+input is still bounded and read-only; no data ingestion or unpublished
+Trending algorithm claims are introduced.
+
+This narrows one privacy/diagnostic pathway. It does **not** authenticate
+the declared source hashes, dates, source rights, historical page contents,
+feature chronology or independent holdout. The original issue #6 remains
+open pending source approval and empirical replication.
+
+**Maintainer lesson:** benchmark data leakage includes both future-feature
+source reuse and inadvertent exposure of private records in validation
+telemetry. Test cross-record provenance and error chains separately.
