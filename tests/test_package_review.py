@@ -1,6 +1,8 @@
 """Strict synthetic self-declared supply-chain tests, no package execution."""
 import json
 import os
+import io
+from contextlib import redirect_stderr
 from pathlib import Path
 import subprocess
 import sys
@@ -517,7 +519,73 @@ class PackageReviewInputTests(unittest.TestCase):
                 evaluate_file(self.path)
             self.assertIn("strict UTF-8 JSON", str(raised.exception))
             self.assertNotIn("PRIVATE", str(raised.exception))
+            self.assertIsNone(raised.exception.__cause__)
+            self.assertIsNone(raised.exception.__context__)
             self.assertTrue(raised.exception.__suppress_context__)
+
+    def test_private_decoder_error_has_no_underlying_exception_chain(self):
+        marker = "PRIVATE_PACKAGE_DUPLICATE_KEY_20261018"
+        # Suppressing context in the top-level message is insufficient:
+        # telemetry often records traceback.format_exception(error).
+        self.path.write_text(json.dumps({marker: 1})[:-1] +
+                             "," + json.dumps(marker) + ": 2}")
+        try:
+            evaluate_file(self.path)
+        except PackageReviewError as exc:
+            self.assertIn("strict UTF-8 JSON", str(exc))
+            self.assertIsNone(exc.__cause__)
+            self.assertIsNone(exc.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+        else:
+            self.fail("duplicate private key must not be accepted")
+
+    def test_read_error_never_repeats_untrusted_reader_diagnostics(self):
+        from trending_study.data_integrity import ResearchJSONError
+        marker = "PRIVATE_READER_EXCEPTION_MARKER"
+        with patch("trending_study.package_review.load_research_json_file",
+                   side_effect=ResearchJSONError(marker)):
+            try:
+                evaluate_file(self.path)
+            except PackageReviewError as exc:
+                self.assertEqual(str(exc), "invalid or unsafe package review input")
+                self.assertIsNone(exc.__cause__)
+                self.assertIsNone(exc.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+            else:
+                self.fail("reader failure must not be accepted")
+
+    def test_malformed_authority_cannot_leak_private_parser_value(self):
+        marker = "PRIVATE_HTTPS_AUTHORITY_MARKER"
+        with patch("trending_study.package_review.urlparse",
+                   side_effect=ValueError(marker)):
+            try:
+                evaluate(candidate())
+            except PackageReviewError as exc:
+                self.assertIn("malformed HTTPS authority", str(exc))
+                self.assertIsNone(exc.__cause__)
+                self.assertIsNone(exc.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+            else:
+                self.fail("malformed authority must not be accepted")
+
+    def test_cli_systemexit_has_no_raw_input_exception_context(self):
+        marker = "PRIVATE_PACKAGE_INPUT_MARKER"
+        self.path = self.path.with_name(marker + ".json")
+        self.path.write_text(json.dumps({marker: 1})[:-1] +
+                             "," + json.dumps(marker) + ": 2}")
+        errors = io.StringIO()
+        with redirect_stderr(errors):
+            try:
+                main(["--input", str(self.path)])
+            except SystemExit as exc:
+                self.assertEqual(exc.code, 2)
+                self.assertIsNone(exc.__cause__)
+                self.assertIsNone(exc.__context__)
+                self.assertIn("strict UTF-8 JSON", errors.getvalue())
+                self.assertNotIn(marker, errors.getvalue())
+                self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+            else:
+                self.fail("invalid private input must not pass")
 
     def test_symlink_input_is_rejected(self):
         target = Path(self.temp.name) / "target.json"
