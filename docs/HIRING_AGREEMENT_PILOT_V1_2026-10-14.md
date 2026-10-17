@@ -185,3 +185,24 @@ The machine-generated `pack` card correctly represents an **inaccessible source*
 The review validator now accepts *null provenance only for explicitly unavailable sources*, while continuing to exclude these votes from joint rated-item denominators. A `source_access=read` rating strictly requires a validated UTC source-check time not after the submitted review, plus a bounded nonempty evidence reference; an unavailable rating that supplies a timestamp must also pass chronology checks. Three fictional offline regression tests cover a fully blank but syntactically completed packet, read-source requirements and inaccessible timestamp chronology. A synthetic pack must never be passed off as an independent human review.
 
 This is a **software contract repair**, not new or verified hiring evidence. Actual source permission, genuine blind human coders, independent provenance, adjudication and qualified methodological signoff remain required before issue #223 can close.
+
+## 2026-10-17 privacy correction for malformed input tracebacks
+
+A targeted code review found that the shared UTC parser can retain a malformed
+private timestamp as a chained Python `ValueError`, and that invoking
+`argparse.exit` within a file/JSON exception handler retains that original
+exception in `SystemExit.__context__`. The offline agreement instrument now
+converts malformed review times to fixed public domain errors **after** leaving
+the underlying handler, and exits the CLI only after the input/parse handler
+is complete. Synthetic regression checks inspect complete formatted exception
+traces, cause/context fields and stderr for intentionally private markers.
+
+The unchanged raw-input hash and write-once output contracts remain structural
+provenance checks only. The 24 candidate job leads and nine selected slots are
+not verified employer observations, and fictional coder A/B/C packets provide
+no independent human ratings or scientific acceptance. Qualified source
+permission, blinded coding and external methods review are still necessary.
+
+**Practical lesson:** sanitizing `str(error)` does not sanitize the entire
+exception graph. Keep secrets and private identifiers out of chained causes
+and CI diagnostics, even when the main CLI message looks harmless.
