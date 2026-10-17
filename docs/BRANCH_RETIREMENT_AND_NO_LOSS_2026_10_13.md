@@ -185,3 +185,29 @@ requests, check redirect handling and test no-credential-forwarding directly.
 Synthetic tests cover absent protection, inactive/enforcement-only policy, permissive bypasses, partial archive namespaces, absent update/deletion rules, direct function calls and policy movement between archive publication and deletion. No tag/branch has been created or deleted. **This is a safety precondition, not proof of real server enforcement.** GitHub main/tag rules remain uninstalled at the checked readback; #248 and #277 still require owner/admin application, independent qualified security review, a source-preserving plan and controlled real negative-enforcement tests before any destructive work or issue closure.
 
 **Practical lesson:** for no-loss branch cleanup, secure *both ends* of the transfer: an atomic SHA-leased delete protects the source, but a mutable archive tag undermines recovery. Inspect live tag policy as late as possible, and never equate configuration readback with verified denial of unauthorized operations.
+
+## 2026-10-17 malformed merged-PR metadata must fail closed
+
+The read-only/privileged branch retirement verifier previously assumed that a
+merged PR's nested `head.repo` and `base` fields were always objects.
+A deleted fork or partially returned API payload can contain `null` there;
+the resulting `AttributeError` interrupted the audit rather than producing
+a determinate **blocked** row. The verifier now requires complete nested
+object shapes and returns `blocked_pr_not_identical_and_merged` before
+creating an archive or calling a deletion lease. Offline adversarial tests
+cover missing/null/non-object PR and nested repository/base data and confirm
+**zero archive writes and zero deletions**.
+
+**Non-negotiable operational hold:** As verified on 2026-10-17,
+`main.protected=false` and repository rulesets were empty. The cleanup
+workflow's destructive job remains unconditionally disabled; this merge
+must not remove that hold. The original 2026-10-13 branch manifest's frozen
+`source_main_sha` remains stale and must not be silently refreshed. Actual
+cleanup needs enforced immutable archive tags, a new independently reviewed
+SHA-pinned plan, a live authorized preflight, and a separately approved manual
+execution with readback and recovery. This branch's engineering tests are
+**not** security review or authorization to delete any refs.
+
+**Practical lesson:** missing or malformed remote metadata is not evidence
+that a destructive condition succeeded. Require complete verified nested
+objects before any archive write or SHA-leased mutation.
