@@ -132,6 +132,38 @@ class LiteratureLedgerTests(unittest.TestCase):
         payload["records"][0]["source_url"] = "https://doi.org/10.1000/XYZ"
         self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
+    def test_included_source_requires_structural_public_dns_host(self):
+        for host in ("intranet", "publisher", "example..org",
+                     "-publisher.org", "publisher-.org",
+                     "publisher._jobs.org", "publisher.bad-.org",
+                     "a" * 64 + ".org", "a" * 250 + ".org"):
+            payload = source()
+            payload["records"][0]["source_url"] = "https://" + host + "/paper"
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    LiteratureError, "canonical public host"):
+                audit(payload)
+        for host in ("publisher.example.org", "publisher-site.example.org",
+                     "xn--bcher-kva.example.org"):
+            payload = source()
+            payload["records"][0]["source_url"] = "https://" + host + "/paper"
+            with self.subTest(host=host):
+                self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
+    def test_url_parser_private_error_does_not_escape_in_full_traceback(self):
+        marker = "PRIVATE_LITERATURE_SOURCE_URL_20261018"
+        payload = source()
+        with patch("trending_study.literature_ledger.urlsplit",
+                   side_effect=ValueError(marker)):
+            try:
+                audit(payload)
+            except LiteratureError as error:
+                self.assertEqual(str(error), "invalid included source_url")
+                self.assertIsNone(error.__cause__)
+                self.assertIsNone(error.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+            else:
+                self.fail("malformed source URL must fail closed")
+
     def test_included_source_url_rejects_ambiguous_numeric_ip_aliases(self):
         # URL clients may interpret these as loopback/private IPv4 even though
         # ipaddress.ip_address(host) rejects their noncanonical syntax.
