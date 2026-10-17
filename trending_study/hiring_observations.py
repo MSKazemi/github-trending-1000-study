@@ -149,6 +149,7 @@ def audit(data):
         source_map[sid] = source
         source_urls.add(source["index_url"])
     seen, attempts, url_owner, histories, source_times = set(), set(), {}, {}, {}
+    requisition_source = {}
     previous = None
     last_informative, instant_closures = {}, {}
     for obs in observations:
@@ -172,6 +173,15 @@ def audit(data):
             raise HiringObservationError("observations must be chronologically ordered")
         previous = source_times[sid] = stamp
         key = (employer, req)
+        # A requisition ID is scoped by an employer's *source* until an
+        # independently adjudicated cross-source linkage contract exists.
+        # Never silently pool observations from different ATS/source ledgers.
+        owner = requisition_source.get(key)
+        if owner is not None and owner != sid:
+            raise HiringObservationError(
+                "cross-source requisition identity requires independent adjudication"
+            )
+        requisition_source[key] = sid
         attempt = (key, variant, stamp)
         if attempt in attempts:
             raise HiringObservationError("duplicate requisition/location attempt at same instant")
