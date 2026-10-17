@@ -26,3 +26,79 @@ Reuse may reduce downstream coding effort while shifting review, support, compat
 Do not run uncontrolled agent PR or issue-submission experiments on uninvolved maintainers. Use sandboxes or explicit maintainer permission. Count downstream and upstream effort separately where only partial observation is possible, and mark missing upstream time unknown. Do not rank or disparage individual maintainers. Preserve correct source credits and license terms. Different project types have different public-good/learning values.
 
 References: [Census III](https://www.linuxfoundation.org/press/open-source-usage-trends-and-security-challenges-revealed-in-new-study), [maintainer perspectives](https://www.linuxfoundation.org/blog/maintainer-motivations-challenges-and-best-practices-on-open-source-software-security), [CHAOSS Starter Health](https://www.chaoss.community/kb/metrics-model-starter-project-health/).
+
+## 2026-10-16 bounded offline input and aggregate safety patch (issue #24)
+
+**Proposed engineering correction, not real participant research:** The existing `trending_study.maintainer_burden` CLI previously read JSON using plain `json.loads(path.read_text())`, which could silently accept duplicate keys/nonstandard NaN, follow input symlinks or read unbounded nonregular files. It now reuses the **canonical strict, bounded, descriptor-checked read-only JSON loader** in `trending_study.data_integrity`, without a new parser or dependency. CLI errors do not echo private path names, JSON keys or participant identifiers.
+
+A second check rejects cases where individually finite human-minute entries (`1e308` in an adversarial synthetic test) would sum to an `Infinity` aggregate. Both per-case and cross-case totals must remain finite, and overlarge direct Python integers fail with a controlled `BurdenError`. This prevents invalid nonstandard JSON output and fictitious infinite burden summaries without changing the formula, consent rule, or treating unknown as zero.
+
+The additional tests use only temporary **fictional** data and exercise duplicate keys, NaN/Infinity, overflowing/underflowing numeric literals, symlinks, directories, and finite-input aggregate overflow. They cannot demonstrate real opt-in consent, authentic active-human time, independent task quality, source rights, sampling power, longitudinal causality or downstream/upstream net benefit. The accepted schema remains provisional; source-independent human/ethics/methods review is still required before any human study or public empirical claims.
+
+**Practical maintainer lesson:** validate raw source bytes and arithmetic outputs, not only individual field values. A legitimate-looking finite input does not imply that a sum is representable or that research evidence was actually measured. Prefer the existing shared safe loader to inconsistent one-off JSON readers.
+
+## 2026-10-17 privacy-schema integrity follow-up (issue #24)
+
+A follow-up review of the same offline instrument found two additional **structural** fail-open cases: records with undeclared fields such as raw interview text or participant email were silently accepted, and two contradictory provenance flags (`synthetic` versus `not_empirical_data`) could produce misleading dataset classifications. That combination must not pass an instrument advertised as privacy-minimized or support a reproducible synthetic/empirical denominator.
+
+The proposed v0.1 validator now requires **exact declared top-level case fields and five named outcome fields**, bounded opaque case/project/task/workflow identifiers, bounded status tokens, an explicit matching pair of synthetic indicators, and a bounded maximum case count. Embedded raw private notes, extra object fields, newline-bearing identity strings, nonsensical unhashable consent values and inconsistent synthetic flags fail with fixed messages. This does not establish true pseudonymity: a valid opaque token can still encode a person's identity, and raw input files must remain outside public Git unless independently approved.
+
+The v0.1 input also rejects self-reported `human_review_state=approved` or `data_release_approval=approved`: **no ordinary input value or green test may mint qualified human approval**. Real signed methods/ethics verification and release authorization require an independently designed, versioned process. Existing real, consented-but-unverified pilot records can remain pending under the provisional schema, but must never be called approved for public release. The aggregate continues to return `independent_review_authenticated=false` and `approved_for_public_release=false`.
+
+Seven synthetic adversarial test methods cover unknown sensitive top-level and nested fields, missing required fields, mismatched provenance flags, self-asserted approvals, unsuitable free text, unhashable status values, unbounded case counts, and privacy-safe CLI diagnostics. No real participants were contacted, no scraping/telemetry was enabled, and this patch is not evidence of project usefulness, avoided maintainer work, or net climate benefit. **Issue #24 remains open** for genuine opt-in study, ethics/source rights and independent human methods review.
+
+**Practical lesson for your repositories:** reject *unexpected* fields at privacy-sensitive JSON boundaries, not just malformed values of the fields you happen to use. Cross-check redundant dataset-status flags and require out-of-band, auditable human signoff instead of trusting self-reported approval strings.
+
+## 2026-10-17 private diagnostics across the CLI error boundary
+
+The offline proposed maintainer-burden CLI previously invoked
+`ArgumentParser.error()` **inside** the `except ResearchJSONError` handler.
+That catches and redacts ordinary stderr, but the resulting `SystemExit`
+still carries an exception context that can expose a private JSON object key
+or source filename to a full traceback collector. The CLI now saves one
+fixed diagnostic value and invokes `p.error` **after** all handlers exit.
+Malformed `observed_at_utc` likewise produces a fixed domain error without
+chaining the original `datetime.fromisoformat` failure. Synthetic tests
+check `SystemExit.__context__`, `BurdenError.__cause__` and formatted full
+tracebacks rather than stderr alone.
+
+This is data-minimization engineering for an offline instrument, not a
+guarantee about sensitive values in process memory, arbitrary caller logging
+or already-permitted output fields. No participant observation, reviewer
+approval, meaningful environmental total or real maintainer burden estimate
+is introduced. **Issue #24 stays open** until the real opt-in study gates.
+
+**Practical lesson:** privacy/error boundaries include the exception object
+and its causal history, not just the string printed at the terminal.
+
+## 2026-10-17 strict batch envelope privacy boundary
+
+The CLI accepted both single-case input and a `{"cases": [...]}` batch wrapper. Its old wrapper path ignored arbitrary additional top-level fields, even though individual case and outcome objects were already exact-schema checked. An input with `{"cases": [...], "raw_interview": "..."}` could therefore pass silently and misleadingly appear privacy-minimized. The read-only CLI now requires the wrapper to have **exactly the `cases` key**, passes its value through the same bounded nonempty case-array check, and reports only a fixed category on rejection. An offline regression tests an ordinary multi-case wrapper, forbidden sidecar fields, redacted stderr and malformed arrays. It does not collect, store, transform or approve any human data, and does not authenticate the independent reviewer or missing effort measurements. **#24 remains open** for opt-in ethics and real-methods validation.
+
+**Maintainer lesson:** strict nested schemas do not secure a container if its outer envelope silently ignores undeclared fields. Test envelopes, batches and successful/failed CLI paths, not only individual records.
+
+## 2026-10-17 final privacy follow-up: consent-aware output minimization
+
+During expedited PR review, two additional offline safeguards were necessary:
+
+1. An unrepresentably large Python integer could throw from `float(value)`
+   with a chained low-level exception. Converting that to a public
+   `BurdenError` now happens after leaving the handler, so the original
+   private value is not retained in formatted exception context.
+2. A case with `withdrawn` or `not_consented` could have no observed timing
+   but still carry explicit task acceptance `pass`/`fail` or a non-null
+   downstream success status. A nonconsented row now allows **only unknown
+   acceptance** and bounded `unknown`/`not_started` outcome states, retaining
+   denominator counts without retaining post-withdrawal result judgments.
+
+Synthetic regression tests check both consent states, positive denominator
+continuity, huge integer handling and complete exception traceback privacy.
+
+These changes do not prove an authentic withdrawal, erase external records,
+verify independent reviewer identity, authorize retention or supply real
+participant measurements. Issue #24 remains OPEN until actual opt-in methods,
+human time records, sample/power approval, uncertainty and ethics gates are met.
+
+**Practical lesson:** removing names and timing is insufficient if derived
+success/failure labels remain in a withdrawn person's row; minimize *all*
+person-linked outcomes according to the consent state.
