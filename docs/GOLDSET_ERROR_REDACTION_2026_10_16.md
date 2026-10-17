@@ -31,3 +31,15 @@ One synthetic negative regression inserts a private-marker field at each nesting
 ## Follow-up: underlying datetime exception tracebacks
 
 A further static audit found that `datetime.fromisoformat` may include the malformed caller-provided timestamp in its own `ValueError`. The original `raise GoldsetError(...) from exc` retained that raw exception as a chained cause. The top-level CLI displayed only a fixed category, but a system that recorded complete exceptions could expose submitted timestamp text. The parser now records failure, leaves the `except` block, and raises a generic `GoldsetError` **without** a raw cause or exception context. Synthetic tests inspect `traceback.format_exception`, `__cause__` and `__context__` for both task baseline and candidate release timestamps. Successful output is unchanged, and intentionally submitted identity fields can still appear in successful summaries; this is not a guarantee for arbitrary telemetry or log processors.
+
+## 2026-10-17 CLI chained-exception correction
+
+The prior command-line wrapper used `ArgumentParser.exit()` within
+`except ResearchJSONError`. Even though the printed error text was generic,
+a traceback-capturing caller could inspect the underlying decoder exception
+through `SystemExit.__context__`. The wrapper now captures a bounded fixed
+error category, exits **after** the exception handler, and only surfaces
+controlled `GoldsetError` diagnostics. Synthetic tests inspect the complete
+formatted `SystemExit` traceback, cause/context and stderr for a private
+duplicate JSON key. This does not protect intentional successful output or
+arbitrary caller instrumentation; data and human review remain unverified.
