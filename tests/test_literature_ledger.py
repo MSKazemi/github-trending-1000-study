@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 from unittest.mock import patch
 from trending_study.literature_ledger import LiteratureError, audit, audit_file, main
@@ -111,6 +112,42 @@ class LiteratureLedgerTests(unittest.TestCase):
         payload["records"][0]["source_url"] = "https://example.org:8443/article"
         self.assertEqual(audit(payload)["decisions"]["include"], 1)
 
+    def test_included_source_requires_public_not_local_host(self):
+        for link in (
+            "https://localhost/paper", "https://metadata.google.internal/paper",
+            "https://search.internal/paper", "https://archive.local/paper",
+            "https://127.0.0.1/paper", "https://10.0.0.1/paper",
+            "https://169.254.169.254/latest/meta-data",
+            "https://192.168.1.5/paper", "https://[::1]/paper",
+            "https://[fd00::1]/paper",
+        ):
+            payload = source()
+            payload["records"][0]["source_url"] = link
+            with self.subTest(link=link), self.assertRaisesRegex(
+                    LiteratureError, "public host"):
+                audit(payload)
+        # The check only protects against literal/local origins and cannot
+        # verify actual DNS responses or the authenticity of a real article.
+        payload = source()
+        payload["records"][0]["source_url"] = "https://doi.org/10.1000/XYZ"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
+    def test_included_source_url_rejects_ambiguous_numeric_ip_aliases(self):
+        # URL clients may interpret these as loopback/private IPv4 even though
+        # ipaddress.ip_address(host) rejects their noncanonical syntax.
+        for host in ("127.1", "2130706433", "0x7f000001",
+                     "0177.0.0.1", "0x7f.0.0.1", "192.168.1"):
+            payload = source()
+            payload["records"][0]["source_url"] = f"https://{host}/paper"
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    LiteratureError, "public host"):
+                audit(payload)
+        # Do not accidentally block an ordinary publisher domain or an
+        # unambiguous public IPv4 address (format check, not source proof).
+        payload = source()
+        payload["records"][0]["source_url"] = "https://publisher.example.org/paper"
+        self.assertEqual(audit(payload)["decisions"]["include"], 1)
+
     def test_included_source_url_requires_unambiguous_item_path(self):
         for link in ("https://doi.org", "https://doi.org/",
                      "https://example.org/paper%ZZ",
@@ -186,6 +223,20 @@ class LiteratureLedgerTests(unittest.TestCase):
         self.assertIn("129,134", ids["AM_ARXIV_V1"]["study_extract"]["population"])
         self.assertIn("128,018", ids["AM_ACM_JOURNAL"]["study_extract"]["population"])
         self.assertEqual(ids["SPACE_QUEUE_2021"]["source_type"], "other")
+
+    def test_private_malformed_timestamp_does_not_survive_full_traceback(self):
+        marker = "PRIVATE_LITERATURE_TIMESTAMP_20261017"
+        record = source()
+        record["search_runs"][0]["searched_at_utc"] = marker
+        try:
+            audit(record)
+        except LiteratureError as error:
+            self.assertEqual(str(error), "invalid searched_at_utc")
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+        else:
+            self.fail("invalid timestamp must be rejected")
 
     def test_future_search_timestamp_is_not_historical_evidence(self):
         p = source()
@@ -268,6 +319,33 @@ class LiteratureFileIntegrityTests(unittest.TestCase):
             self.assertNotIn("private_credential_key", stderr.getvalue())
             self.assertNotIn(path.name, stderr.getvalue())
             self.assertNotIn("Traceback", stderr.getvalue())
+
+    def test_private_duplicate_json_key_has_no_chained_cli_or_domain_context(self):
+        marker = "PRIVATE_LITERATURE_SOURCE_IDENTIFIER_20261017"
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "private-filename.json"
+            payload = json.dumps({marker: 1})[:-1] + "," + json.dumps(marker) + ":2}"
+            path.write_text(payload, encoding="utf-8")
+            try:
+                audit_file(path)
+            except LiteratureError as error:
+                self.assertIsNone(error.__cause__)
+                self.assertIsNone(error.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+            else:
+                self.fail("duplicate field must be rejected")
+            errors = io.StringIO()
+            with redirect_stderr(errors):
+                try:
+                    main(["--input", str(path)])
+                except SystemExit as error:
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, errors.getvalue())
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("duplicate field must fail CLI")
 
     def test_oversized_regular_file_rejected_before_decoding(self):
         with tempfile.TemporaryDirectory() as tmp:
