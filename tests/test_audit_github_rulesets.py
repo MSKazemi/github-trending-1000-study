@@ -4,6 +4,7 @@ import io
 import json
 from pathlib import Path
 import tempfile
+import traceback
 import unittest
 from unittest.mock import patch
 
@@ -204,6 +205,35 @@ class ReadonlyRulesetReadbackTests(unittest.TestCase):
         details[23]["rules"].append(copy.deepcopy(details[23]["rules"][0]))
         with self.assertRaisesRegex(verifier.RulesetAuditError, "duplicate rule"):
             self.audit(get)
+
+    def test_private_invalid_payload_or_live_error_does_not_chain_system_exit(self):
+        # This audit can be run in a privileged admin session. Diagnostics
+        # must not leak local payload paths or raw remote response text even
+        # through in-process SystemExit.__context__.
+        marker = "PRIVATE_RULESET_PAYLOAD_OR_TOKEN_20261017"
+        for failing_input in ("payload", "live"):
+            with self.subTest(failing_input=failing_input):
+                main_payload, archive_payload = payloads()
+                with patch.object(verifier, "load_research_json_file") as load, \
+                     patch.object(verifier, "_get") as remote, \
+                     patch("sys.stderr", new_callable=io.StringIO) as errors:
+                    if failing_input == "payload":
+                        load.side_effect = ValueError(marker)
+                    else:
+                        load.side_effect = [main_payload, archive_payload]
+                        remote.side_effect = ValueError(marker)
+                    try:
+                        verifier.main([
+                            "--repo", REPO, "--expected-main-sha", BASE,
+                            "--payload-dir", str(OPS)])
+                    except SystemExit as exc:
+                        self.assertEqual(exc.code, 2)
+                        self.assertIsNone(exc.__cause__)
+                        self.assertIsNone(exc.__context__)
+                        self.assertNotIn(marker, errors.getvalue())
+                        self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                    else:
+                        self.fail("unsafe audit input must fail closed")
 
     def test_cli_returns_nonzero_for_missing_protection_without_claiming_approval(self):
         get, _, _ = fake_get(self.expected_main, self.expected_archive,
