@@ -245,6 +245,7 @@ def evaluate_proxy(data):
         raise TrendingAuditError("proxy needs 4..64 chronological pages")
     seen_ids = set()
     capture_digest_ids = {}
+    feature_source_digests = set()
     train, heldout = [], []
     train_repos, heldout_repos = set(), set()
     previous_time = None
@@ -273,6 +274,9 @@ def evaluate_proxy(data):
         elif key != surface_key:
             raise TrendingAuditError("all proxy pages must target one matched surface")
         feats = _feature_rows(page["features"], cap, timestamp)
+        feature_source_digests.update(
+            feature["feature_source_sha256"] for feature in feats.values()
+        )
         if timestamp == locked:
             raise TrendingAuditError("no target capture may equal the protocol lock time")
         if timestamp < locked:
@@ -281,6 +285,15 @@ def evaluate_proxy(data):
         else:
             heldout.append((cap, feats))
             heldout_repos.update(ranks)
+    # Validate provenance over the WHOLE cohort: per-page checks alone do not
+    # detect a feature artifact re-used from a DIFFERENT target page, including
+    # a later heldout snapshot relabeled as an earlier feature source.
+    # SHA equality means equal supplied bytes, not independently proven fraud.
+    if feature_source_digests.intersection(capture_digest_ids):
+        raise TrendingAuditError(
+            "rank feature source reuses another target page artifact; "
+            "cross-page source leakage is not permitted"
+        )
     if len(train) < 2 or len(heldout) < 2:
         raise TrendingAuditError("need at least two pre-lock and two post-lock pages")
     if train_repos & heldout_repos:
