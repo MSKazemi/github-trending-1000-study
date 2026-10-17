@@ -435,5 +435,25 @@ class BurdenTests(unittest.TestCase):
 
 
 
+    def test_fictional_three_case_batch_fixture_has_null_and_negative_outcomes(self):
+        fixture = Path(__file__).resolve().parents[1] / (
+            "examples/maintainer_feasibility_batch.synthetic.json")
+        data = json.loads(fixture.read_text(encoding="utf-8"))
+        result = summarize(data["cases"])
+        self.assertEqual(result["case_count"], 3)
+        self.assertEqual(result["dataset_kind"], "synthetic")
+        self.assertEqual(result["consent_state_counts"]["withdrawn"], 1)
+        self.assertEqual(
+            result["outcome_counts_self_reported_not_authenticated"]
+                  ["actionability"]["fail"], 1)
+        self.assertEqual(result["missing_component_entries"], 11)
+        self.assertEqual(result["missing_or_not_due_outcome_entries"], 9)
+        self.assertIsNone(result["overall_human_minutes"])
+        self.assertIsNone(result["per_accepted_task_minutes"])
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertNotIn("FICTIONAL-CASE-", json.dumps(result))
+
+
+
 if __name__ == "__main__":
     unittest.main()
