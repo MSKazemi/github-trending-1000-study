@@ -291,6 +291,29 @@ class ChronologicalProxyTests(unittest.TestCase):
         with self.assertRaisesRegex(TrendingAuditError, "share source digest"):
             evaluate_proxy(data)
 
+    def test_feature_source_cannot_reuse_a_different_target_page_digest(self):
+        # The old per-page check only compared a feature SHA against its OWN
+        # target. Reusing a later heldout page artifact as an earlier feature
+        # could silently pass and undermine the training/holdout provenance.
+        for feature_page, target_page in ((0, 3), (3, 0), (1, 2), (2, 1)):
+            data = proxy()
+            copied = data["pages"][target_page]["capture"]["source_sha256"]
+            data["pages"][feature_page]["features"][0]["feature_source_sha256"] = copied
+            with self.subTest(feature_page=feature_page, target_page=target_page):
+                with self.assertRaisesRegex(
+                        TrendingAuditError, "cross-page source leakage"):
+                    evaluate_proxy(data)
+
+    def test_shared_same_page_feature_digest_is_valid_when_not_target_evidence(self):
+        # A single immutable metadata snapshot can legitimately cover all
+        # repositories observed in its page. Do not reject that sharing.
+        data = proxy()
+        self.assertEqual(
+            len({f["feature_source_sha256"] for f in data["pages"][0]["features"]}),
+            1,
+        )
+        self.assertEqual(evaluate_proxy(data)["train_pages"], 2)
+
     def test_bounded_pairwise_work_rejects_large_input(self):
         data = proxy()
         for index, page in enumerate(data["pages"]):
