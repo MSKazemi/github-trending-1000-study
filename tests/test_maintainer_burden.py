@@ -444,6 +444,23 @@ class BurdenTests(unittest.TestCase):
         self.assertIsNone(result["per_accepted_task_minutes"])
         self.assertNotIn("FICTIONAL-CASE", json.dumps(result))
 
+    def test_followup_chronology_rejects_90_day_before_30_day_is_due(self):
+        for later in ("completed", "missing"):
+            record = card()
+            record["consent_state"] = "consented"
+            record["outcomes"]["followup_30_day"] = "not_started"
+            record["outcomes"]["followup_90_day"] = later
+            with self.subTest(later=later), self.assertRaisesRegex(
+                    BurdenError, "follow-up order"):
+                summarize([record])
+        # Missing due 30-day review and not-yet-due 90-day is legitimate.
+        record["outcomes"]["followup_30_day"] = "missing"
+        record["outcomes"]["followup_90_day"] = "not_started"
+        result = summarize([record])
+        self.assertEqual(
+            result["outcome_counts_self_reported_not_authenticated"]
+                  ["followup_30_day"]["missing"], 1)
+
     def test_unknown_coded_outcome_values_are_rejected_without_echo(self):
         for name, value in (
                 ("actionability", "wins"),
