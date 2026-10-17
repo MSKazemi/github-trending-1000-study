@@ -43,20 +43,32 @@ def _id(value, label):
 
 def _stamp(value, label):
     try:
-        return utc(value)
-    except IntakeError as exc:
-        raise HiringObservationError(f"{label}: explicit UTC timestamp required") from exc
+        stamp = utc(value)
+    except IntakeError:
+        # datetime.fromisoformat can echo a private malformed timestamp in its
+        # chained ValueError. Raise only after leaving the except block.
+        stamp = None
+    if stamp is None:
+        raise HiringObservationError(f"{label}: explicit UTC timestamp required")
+    return stamp
+
+
+# RFC-style DNS labels allow interior hyphens, but not labels beginning or
+# ending with '-' or empty labels. This is a lexical check, not DNS lookup or
+# source permission. Undotted internal-test fixtures remain structurally valid.
+_DNS_LABEL = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+DNS_HOST = re.compile(rf"{_DNS_LABEL}(?:\.{_DNS_LABEL})*\Z")
 
 
 def _url(value):
     if (not isinstance(value, str) or len(value) > 1500 or
-            any(ord(c) < 33 for c in value) or "\\" in value):
+            any(ord(c) < 33 or ord(c) == 127 for c in value) or "\\" in value):
         raise HiringObservationError("source URL: invalid bounded HTTPS URL")
     try:
         p = urlsplit(value)
         host = p.hostname
         if (p.scheme != "https" or not host or p.netloc != host or
-                re.fullmatch(r"[a-z0-9]+(?:[.-][a-z0-9]+)*", host) is None or
+                (len(host) > 253 or DNS_HOST.fullmatch(host) is None) or
                 p.fragment or not p.path.startswith("/")):
             raise ValueError
         # This is a public-source metadata protocol, not a DNS verifier.
@@ -71,6 +83,13 @@ def _url(value):
             address = None
         if address is not None and not address.is_global:
             raise ValueError
+        if address is None:
+            # Some HTTP stacks interpret numeric IPv4 aliases (127.1, decimal,
+            # octal, hex) as IPs even though ipaddress rejects that spelling.
+            # Do not label such ambiguous strings as ordinary public DNS hosts.
+            ipv4_part = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+            if re.fullmatch(ipv4_part + r"(?:\." + ipv4_part + r"){0,3}", host):
+                raise ValueError
         # Decode then canonicalize: percent-escaped aliases and traversal are rejected.
         if unquote(p.path) != p.path or any(x in (".", "..") for x in p.path.split("/")):
             raise ValueError
@@ -86,8 +105,11 @@ def _url(value):
                 or p.geturl() != value):
             raise ValueError
         return p
-    except ValueError as exc:
-        raise HiringObservationError("source URL: canonical HTTPS without credentials required") from exc
+    except ValueError:
+        # parse_qsl and URL parsing may include raw query fields in exception
+        # details. A public validation failure must not chain those values.
+        pass
+    raise HiringObservationError("source URL: canonical HTTPS without credentials required")
 
 
 def _optional_id(value, label):

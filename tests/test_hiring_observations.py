@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import traceback
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -191,6 +192,56 @@ class ObservationLedgerTests(unittest.TestCase):
         for query in ("?", "?gh_jid=", "?&gh_jid=J1", "?gh_jid=J1&", "?gh_jid=J1&&job_id=J2"):
             with self.subTest(query=query), self.assertRaises(instrument.HiringObservationError):
                 instrument._url("https://careers.example.invalid/jobs" + query)
+
+    def test_public_dns_host_labels_accept_interior_hyphen_but_not_edge(self):
+        # DNS labels may contain interior '-' characters. Rejecting all such
+        # sites before screening would bias the proposed employer-source frame.
+        for host in ("example-careers.invalid", "careers.jobs-board.invalid",
+                     "xn--valid-name.invalid"):
+            with self.subTest(accepted=host):
+                parsed = instrument._url(f"https://{host}/jobs/J1")
+                self.assertEqual(parsed.hostname, host)
+        for host in ("-jobs.invalid", "jobs-.invalid", "foo.-bar.invalid",
+                     "foo.bar-.invalid", "foo..bar.invalid",
+                     "a"*64 + ".invalid"):
+            with self.subTest(rejected=host), self.assertRaises(
+                    instrument.HiringObservationError):
+                instrument._url(f"https://{host}/jobs/J1")
+        for host in ("127.0.0.1", "192.168.1.1", "127.1", "2130706433",
+                     "0x7f000001", "0177.0.0.1", "0x7f.0.0.1",
+                     "192.168.1", "localhost", "metadata.google.internal"):
+            with self.subTest(private_host=host), self.assertRaises(
+                    instrument.HiringObservationError):
+                instrument._url(f"https://{host}/jobs/J1")
+
+    def test_source_urls_reject_ascii_del_control_character(self):
+        # DEL (0x7f) is invisible control content even though ord > 32.
+        with self.assertRaises(instrument.HiringObservationError):
+            instrument._url("https://careers.example.invalid/jobs/A" + chr(127))
+        with self.assertRaises(instrument.HiringObservationError):
+            instrument._url("https://careers.example.invalid/jobs/" + chr(127) + "A")
+
+    def test_validation_tracebacks_never_echo_private_invalid_timestamp_or_query(self):
+        # The source line in a Python 3.11+ formatted traceback must NOT
+        # embed a literal private marker, even in the synthetic test itself.
+        # Exercise values bound to runtime variables, not source-code literals.
+        stamp_marker = "PRIVATE_TIMESTAMP_20261017"
+        query_marker = "PRIVATE_QUERY_20261017"
+        checks = (
+            (lambda value: instrument._stamp(value, "observed_at_utc"), stamp_marker),
+            (lambda value: instrument._url(
+                "https://careers.example.invalid/jobs/A?" + value + "=secret"), query_marker),
+        )
+        for invoke, marker in checks:
+            with self.subTest(case="timestamp" if marker == stamp_marker else "query"):
+                try:
+                    invoke(marker)
+                except instrument.HiringObservationError as error:
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("invalid input must be rejected")
 
     def test_clean_urls_deny_credentials_tracking_percent_alias_and_traversal(self):
         for url in ("http://careers.example.invalid/jobs/A", "https://user:token@careers.example.invalid/jobs/A",

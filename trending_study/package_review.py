@@ -31,8 +31,12 @@ def _date(raw, *, allow_future=False):
         raise PackageReviewError("UTC timestamp required")
     try:
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise PackageReviewError("invalid timestamp") from exc
+    except ValueError:
+        # Python's datetime parser can embed caller-provided timestamp text
+        # in the chained ValueError. Do not expose it in complete diagnostics.
+        dt = None
+    if dt is None:
+        raise PackageReviewError("invalid timestamp")
     if dt.utcoffset() is None or dt.utcoffset().total_seconds() != 0:
         raise PackageReviewError("timestamps require explicit UTC")
     if not allow_future and dt > datetime.now(timezone.utc) + timedelta(minutes=5):
@@ -77,6 +81,24 @@ def _clean_https_url(url, field):
         address = None  # A domain, not a proof of public DNS resolution.
     if address is not None and not address.is_global:
         raise PackageReviewError(f"{field} requires a public evidence host")
+    # libc / legacy URL clients can interpret 127.1, 2130706433,
+    # 0x7f000001 or 0177.0.0.1 as IPv4 addresses even though
+    # ipaddress.ip_address rejects these spellings. They are not
+    # trustworthy DNS names for a reviewer-facing evidence ledger.
+    ipv4_piece = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+    if (address is None and
+            re.fullmatch(ipv4_piece + r"(?:\." + ipv4_piece + r"){0,3}", host)):
+        raise PackageReviewError(f"{field} requires a canonical public evidence host")
+    if address is None:
+        # A syntactically valid HTTPS evidence host needs ordinary ASCII DNS
+        # labels and at least two labels, not a bare intranet single-label
+        # name. This is NOT DNS resolution, an allowlist, or SSRF protection.
+        labels = host.split(".")
+        dns_label = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+        if (len(host) > 253 or len(labels) < 2 or any(
+                len(label) > 63 or re.fullmatch(dns_label, label) is None
+                for label in labels)):
+            raise PackageReviewError(f"{field} requires a canonical public evidence host")
     return parsed
 
 

@@ -6,12 +6,13 @@ source, rights, publication date, claim, actual human review, or research value.
 """
 import argparse
 from datetime import date, datetime, timezone
+import ipaddress
 import json
 import os
 from pathlib import Path
 import re
 import stat
-from urllib.parse import parse_qsl, urlsplit
+from urllib.parse import unquote_plus, urlsplit
 
 # Reuse the canonical offline research decoder instead of interpreting
 # duplicate keys, NaN/Infinity, or extreme numeric literals differently.
@@ -22,6 +23,32 @@ from trending_study.data_integrity import (
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
 TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
+_DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\Z")
+_NUMERIC_IPV4_PART = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
+
+
+def _public_source_host(host):
+    """Conservative lexical URL evidence screening, NOT DNS/SSRF protection."""
+    if not isinstance(host, str) or not host or len(host) > 253:
+        return False
+    if host == "localhost" or host.endswith((".localhost", ".local", ".internal")):
+        return False
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None:
+        return address.is_global
+    # Legacy network stacks may resolve numeric spellings rejected by
+    # ipaddress (127.1, 2130706433, 0x7f000001) to special IPv4 addresses.
+    if re.fullmatch(_NUMERIC_IPV4_PART + r"(?:\." + _NUMERIC_IPV4_PART + r"){0,3}",
+                    host, flags=re.IGNORECASE):
+        return False
+    labels = host.split(".")
+    return len(labels) >= 2 and all(
+        len(label) <= 63 and _DNS_LABEL.fullmatch(label) is not None
+        for label in labels
+    )
 
 
 def _canonical_url_key(parts):
@@ -31,10 +58,29 @@ def _canonical_url_key(parts):
     not merely marketing attribution. This is syntactic screening, not a claim
     that different URLs describe different underlying events.
     """
-    query = tuple(sorted((key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
-                         if not key.lower().startswith("utm_") and key.lower() not in TRACKING_PARAMS))
+    # Keep the RAW spelling of meaningful selectors. parse_qsl() decodes
+    # %2F to "/" and "+" to a space; some origin servers inspect raw query
+    # bytes, so collapsing either form could silently discard a source lead.
+    # Only remove literal, known marketing keys; an encoded key is ambiguous.
+    query_items = []
+    for item in parts.query.split("&") if parts.query else []:
+        key = item.partition("=")[0]
+        if key.lower().startswith("utm_") or key.lower() in TRACKING_PARAMS:
+            continue
+        query_items.append((key, item))
+    # Detect keys that become equal only after decoding, but preserve their
+    # original spelling and sequence. Encoded keys are not safely sortable.
+    decoded_names = [unquote_plus(key) for key, _ in query_items]
+    order_sensitive = (len(decoded_names) != len(set(decoded_names))
+                       or any("%" in key or "+" in key for key, _ in query_items))
+    query = tuple(item for _, item in (
+        query_items if order_sensitive else sorted(query_items)
+    ))
+    # A trailing slash can identify a different resource on the same host:
+    # /report and /report/ must not be silently conflated as source evidence.
+    # Empty path and explicit root slash share the HTTP root request path.
     return (parts.hostname.lower(), parts.port if parts.port is not None else 443,
-            parts.path.rstrip("/") or "/", query)
+            parts.path or "/", query)
 
 REQUIRED = {
     "schema_version", "id", "title", "publisher", "author",
@@ -105,6 +151,10 @@ def validate_records(records):
         url = record["canonical_url"]
         if not isinstance(url, str) or len(url) > 2048 or url != url.strip():
             raise ValueError(f"{name}: invalid canonical URL")
+        # urlsplit may silently strip certain ASCII control characters.
+        # Reject the raw submitted spelling before any parsing or filtering.
+        if any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in url):
+            raise ValueError(f"{name}: canonical URL cannot contain whitespace or controls")
         try:
             parsed = urlsplit(url)
             # Force malformed/overflowing ports and broken IPv6 authority to
@@ -116,6 +166,8 @@ def validate_records(records):
                 or parsed.username is not None or parsed.password is not None
                 or parsed.netloc.endswith(":") or port == 0 or parsed.fragment):
             raise ValueError(f"{name}: canonical URL must be clean HTTPS")
+        if not _public_source_host(parsed.hostname):
+            raise ValueError(f"{name}: canonical URL requires a public source host")
         if "\\" in url or re.search(r"%(?![0-9A-Fa-f]{2})", url):
             raise ValueError(f"{name}: malformed or ambiguous canonical URL")
         # Strip known marketing trackers, not meaningful ?id=... or ?ref=...

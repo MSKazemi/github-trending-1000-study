@@ -1,0 +1,257 @@
+# Branch and PR integration checkpoint — 2026-10-16 (evening)
+
+**Scope:** AI-assisted, time-bound GitHub API review of 35 branch refs (main plus 34 others), seven open PRs, file-level ancestry comparisons, CI, review threads and recorded scientific/security holds. This checkpoint is not independent human methodological review or a waiver of the canonical [merge gate](../PR_MERGE_QUALITY_GATE_2026_10_13.md).
+
+## Verified engineering integration
+
+- **PR #416 (issue #100)**: integrated the then-current `main@8461a3ab7ffa1dff7e91dade0069922d43c7b3a9` with the archival PR head `9e8f97478f456f1c6b0ba83dd2fd7a5e04e4682f`. New head `f67990a82fdf15629bba926a7dc6a08cbb145d6b` has both as parents and retained exactly three new paths.
+- Historical candidate CSV under `docs/reviews/2026-10-16-issue-100-provisional-changelog-ledger.csv` was confirmed to have original Git blob SHA `0e12d6d668423379f4aaf72d4c5da6938ca4c98c` (19 candidate rows). Canonical 63-row `033-github.events.csv` remained at blob `a93f703f16fc30ed5e1b2759848b4532ef1ef686` before integration; no canonical ledger edit in the three-file compare.
+- Exact integrated PR-head `pull_request` Actions run [38919149179](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38919149179) completed with five successful jobs: Python 3.10, 3.12, 3.13, 3.14, research-artifacts. Merge with expected head returned commit **`1e656cfcbceb4995467280b796e77e870c6c5f39`**; GitHub readback confirmed PR merged and main at that SHA.
+- Post-merge [push run 38929509754](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38929509754) reported all five jobs completed **success** on inspection; verify full run conclusion again for release decisions. Issue #100 remains open: archived candidate vendor announcements are not independently authenticated scientific results.
+
+## Six open PR holds (observed at audit start)
+
+| PR | Branch | Decision and required independent gate |
+| --- | --- | --- |
+| [#417](https://github.com/MSKazemi/github-trending-1000-study/pull/417) | `fix/279-branch-tip-recheck-20261016` | Keep open for independent maintainer review of branch-tip race safety and recovery; no destructive prune authorization. |
+| [#293](https://github.com/MSKazemi/github-trending-1000-study/pull/293) | `research/issue-15-registry-cohort-pilot-20261014` | Hold for registry-rights, provenance, real task–package independent judgments, qualified methods review. |
+| [#298](https://github.com/MSKazemi/github-trending-1000-study/pull/298) | `research/issue-223-hiring-blind-agreement` | Hold for genuine two-human blinded rating, employer-source rights and codebook methods signoff. Synthetic labels do not establish independent agreement. |
+| [#418](https://github.com/MSKazemi/github-trending-1000-study/pull/418) | `research/issue-7-literature-source-screen-20261016` | Hold for independent bibliography/rights/protocol and full reproducible screening audit; 11 leads are not a systematic review. |
+| [#302](https://github.com/MSKazemi/github-trending-1000-study/pull/302) | `chore/248-reviewable-ruleset-payloads-20261014` | **Draft; do not merge.** Owner/security approval and administrator-enforced rulesets plus negative enforcement tests outstanding. |
+| [#290](https://github.com/MSKazemi/github-trending-1000-study/pull/290) | `research/issue-6-coverage-chronological-proxy-20261014` | Hold for qualified scientific review of denominators/ranking proxy, source-access policy and holdout design. |
+
+At review start the above six heads were all behind the moving main by five commits despite successful older head CI, and every inspected GitHub PR review list and inline thread list was empty. A clean automatic mergeability flag alone is insufficient. Fresh checks and current-base reconciliation are mandatory after any change. The separate branch `integration/five-pr-no-loss-20261016` also contained overlapping proposed work; do not mass-merge it over reviewed issue-scoped PRs.
+
+## Branch-only reconciliation notes
+
+- The GitHub first-page branch list returned 35 refs. Of 27 non-PR/non-main branches, many old CI, quality, and issue branches had large behind counts but nonzero ahead commits; **ahead counts are not evidence of unique changes after squash merges**. Do not delete them or resurrect outdated files without bytewise equivalence checks.
+- Historical `research/issue-100-github-changelog-ledger-20261016` remains distinct from the quarantined documentation archive; the archival merge deliberately did not replace the canonical source ledger.
+- Main branch reported `protected=false` and repository ruleset list `[]`. GitHub enforcement is not installed; this operational gap remains P0, regardless of green checks. The branch-protection REST endpoint was inaccessible to the GitHub App (403), but independent branch/ruleset readbacks were available.
+- Do not force-push, delete branches/tags, claim source permission, mark scientific issues complete, or substitute automated review for a qualified independent reviewer.
+
+## Practical lessons for repository maintenance
+
+1. Preserve uniquely authored historical candidate data in a **noncanonical archive** when row identifiers collide; require reviewed source-event reconciliation before promotion.
+2. Merge against the actual moving base, use expected-head SHA, and require a **new five-job PR run and separate successful main push run**.
+3. Separate software-validating CI from human methods, legal/source, security, scientific and participant approvals.
+4. Do not equate ahead-commit count, branch age, or checkmarks with no-loss equivalence, deletion safety, or reusable task value.
+5. Enable tested server-side main protection so that a future agent/Claude Code workflow cannot bypass the documented gates simply because GitHub reports mergeable.
+
+## 2026-10-16 later audit: all eleven open PRs and safe merge holds
+
+**Snapshot:** the GitHub branch search returned 41 named refs including `main`. The live PR search returned eleven open PRs (#290, #293, #298, #302, #417, #418, #425, #426, #427, #428, #429), all targeting main at `1e656cfcbceb4995467280b796e77e870c6c5f39` at inspection. Every PR reported `mergeable=true`; #302 remains a draft. The submitted GitHub review list for all eleven was empty. The inline review thread lists checked for #290, #293, #302, #417, #418 and #429 were empty. **Empty reviews do not constitute human signoff.**
+
+| PR | Exact head inspected | Five-job PR Actions run (successful at inspection) | Current disposition |
+| --- | --- | --- | --- |
+| #290 | `8853ff5da8da63468a11a3b80d9c2cd44ba892d1` | [38931512003](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931512003) | HOLD: denominators/rank-proxy methods approval |
+| #293 | `0c520b7fadb9cb952b1d73214d66d903e88587bf` | [38931125246](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931125246) | HOLD: registry/source and methods approval |
+| #298 | `4aa3ccce7e9431369973a41abda6a846c6c5d238` | [38931060295](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931060295) | HOLD: genuine blinded reviewer evidence and methods approval |
+| #302 | `80a2fdd1fd7940d87befc6613d2dc71147505a46` | [38932139921](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38932139921) | DRAFT/HOLD: security and administrator enforcement (rulesets endpoint returned `[]`) |
+| #417 | `a6f23bba1db3b3f3859aff69d1fbb4d7f3baab3e` | [38931707439](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931707439) | HOLD: human maintainer inspection of destructive-prune advice boundary |
+| #418 | `cbd70f0e46e4321c17c9542ec2dcf8c264283498` | [38931180599](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931180599) | HOLD: bibliographic/source-rights review |
+| #425 | `69d02f95664fafd74d85b640036bbb7c4074bd86` | [38930766286](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930766286) | HOLD: privacy/security maintainer review |
+| #426 | `477141bc4c246a203901e3b7514cf990c2052b64` | [38930663841](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930663841) | HOLD: news-source identity and methods review |
+| #427 | `eede47a1daa408182a7fbbe42a97724307e5cf87` | [38929707071](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38929707071) | This audit-documentation PR: updated after this run; **new exact-head CI and human review required** |
+| #428 | `bf67a94a267c0107fc2c3d933ef267e501e12ebc` | [38930904561](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930904561) | Additional lexical numeric-host hardening committed later to head `114d76b02c401bcec27b7bf2b84da9c1eb04254c`; previous CI is **stale**. New CI and security review required |
+| #429 | `865f0d1b2047e94059a41d29476cc464df3ed226` | [38931239853](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931239853) | HOLD: source-security review and explicit URL validator's no-network-safety limit |
+
+The job API was inspected for all eleven listed runs: each then reported completed success for `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, and `research-artifacts`. This is technical evidence, not an independent code/methods or security review. #428 received three direct branch commits for source, tests and documentation after the run cited above; update its check record before merge consideration. The #427 head changes by this documentation update too. No claims of successful new-head CI on either are made.
+
+The current open-PR changed paths show no immediate same-file overlap across the small URL/privacy/news patches (#425, #426, #428, #429), but PR #298 changes shared JSON integrity code and #290 alters CI/README/data dictionary; take current-base integration and full-diff preservation checks before any future merge. No branch or tag deletion, force push, source promotion, human approval, or research issue closure is authorized. Rulesets list was empty, while detailed main protection read was denied (403), so server enforcement could not be established.
+
+**Practical maintainer takeaway:** one successful PR run is pinned to one head SHA. A single follow-up security fix invalidates that merge-ready claim until a new run passes, and an automated agent cannot approve its own changes. Protect main through actual server settings and have a separate reviewer inspect the full, final patch.
+
+## 2026-10-16 ten-issue complete-and-merge request: exact-head disposition (later checkpoint)
+
+**Read-only inventory checkpoint:** `main` at `1e656cfcbceb4995467280b796e77e870c6c5f39` reported `protected=false`, and the GitHub repository rulesets API returned `[]`. Across the ten issue PRs below, all **50/50 GitHub Actions jobs** succeeded on the listed exact heads (test 3.10/3.12/3.13/3.14 + research-artifacts). Submitted review records and unresolved threads were independently queried: **zero submitted reviews and zero review threads** on these ten PRs. The owner/author and these AI-generated gate notes are not qualified independent human review. Passing CI cannot prove source authenticity, license rights, independent methods signoff or a complete experiment.
+
+| Original issue | Active implementation PR | Exact head at checkpoint | Five-job Actions run | Blocker to *full issue closure* |
+|---|---|---|---|---|
+| [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248) | [#302](https://github.com/MSKazemi/github-trending-1000-study/pull/302) | `80a2fdd1fd7940d87befc6613d2dc71147505a46` | [38932139921](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38932139921) | Draft; security/admin review, real main/archive rulesets and negative enforcement tests |
+| [#279](https://github.com/MSKazemi/github-trending-1000-study/issues/279) | [#417](https://github.com/MSKazemi/github-trending-1000-study/pull/417) | `85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a` | [38953185528](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953185528) | Read-only instrumentation; remaining diverged branches need no-loss review, archived recovery and separately authorized SHA-leased retirement |
+| [#6](https://github.com/MSKazemi/github-trending-1000-study/issues/6) | [#290](https://github.com/MSKazemi/github-trending-1000-study/pull/290) | `8853ff5da8da63468a11a3b80d9c2cd44ba892d1` | [38931512003](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931512003) | Authorized real Trending capture and independent page QA (#2), prospective heldout data, methods review |
+| [#22](https://github.com/MSKazemi/github-trending-1000-study/issues/22) | [#429](https://github.com/MSKazemi/github-trending-1000-study/pull/429) | `865f0d1b2047e94059a41d29476cc464df3ed226` | [38931239853](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931239853) | Official package/version/digest/license/advisory provenance, independent gold evaluation and security review |
+| [#7](https://github.com/MSKazemi/github-trending-1000-study/issues/7) | [#418](https://github.com/MSKazemi/github-trending-1000-study/pull/418) | `7aa40f766a1c5dbc4356da0306533aafc927d5a6` | [38953056870](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953056870) | Full database search/exclusion denominator, two actual screeners and independent bibliographic/rights verification |
+| [#15](https://github.com/MSKazemi/github-trending-1000-study/issues/15) | [#293](https://github.com/MSKazemi/github-trending-1000-study/pull/293) | `705273e0a1bec1f0206fdf170a612e7aa21977d8` | [38953393959](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953393959) | Independent package/GitHub identity and at least 50 real two-human task-component acceptance pairs |
+| [#223](https://github.com/MSKazemi/github-trending-1000-study/issues/223) | [#298](https://github.com/MSKazemi/github-trending-1000-study/pull/298) | `4aa3ccce7e9431369973a41abda6a846c6c5d238` | [38931060295](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931060295) | Source eligibility (#220), two genuinely independent blinded coders, actual agreement and independent adjudication |
+| [#222](https://github.com/MSKazemi/github-trending-1000-study/issues/222) | [#428](https://github.com/MSKazemi/github-trending-1000-study/pull/428) | `114d76b02c401bcec27b7bf2b84da9c1eb04254c` | [38953357172](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953357172) | Permission-reviewed employer observations, true source changes, privacy/methods review |
+| [#19](https://github.com/MSKazemi/github-trending-1000-study/issues/19) | [#425](https://github.com/MSKazemi/github-trending-1000-study/pull/425) | `69d02f95664fafd74d85b640036bbb7c4074bd86` | [38930766286](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930766286) | Real task pool, independently accepted functionality/license/security, search comparators and time/token/maintenance costs |
+| [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) | [#426](https://github.com/MSKazemi/github-trending-1000-study/pull/426) | `477141bc4c246a203901e3b7514cf990c2052b64` | [38930663841](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930663841) | Full source discovery and attrition, independently authenticated factual/rights QA, event dedup, real dual-rater screening |
+
+### Additional engineering corrections committed during this ten-issue audit
+
+- **#279 / PR #417:** validated owner/repo path components before network access: `../name`, `./name`, `owner/..` and other malformed forms fail closed; a synthetic aborting-fetch test confirms zero requests. Existing ref/PR-movement and write-disabled bounds preserved.
+- **#7 / PR #418:** added rejection of ambiguous numeric IPv4 aliases (`127.1`, decimal/octal/hex loopback spellings) in offline literature-source URLs, with six negative URL cases and an ordinary-domain control. This is not future network SSRF certification.
+- **#15 / PR #293:** corrected pinned Cargo SemVer numeric core and prerelease grammar to refuse leading-zero numeric identifiers; six negative version fixtures and limitations note. This does not authenticate real releases or human pair reviews.
+- **#222 / PR #428:** a concurrent repository contributor added equivalent noncanonical numeric-host rejection to the existing URL gate. Its latest head was re-read and all five CI jobs were green; do not overwrite that work or credit this audit with its authorship.
+- The other six PRs were reviewed for exact changed-path scope, check completeness, caveats and review status. No new live data were generated and no source/paper/license facts were independently established by this code audit.
+
+### Integration and closure decision
+
+**NOT approved to merge/close by this audit:** All ten PRs remain unreviewed by a qualified independent human and/or incomplete on their original scientific/admin acceptance. PR #302 is still Draft. In particular, the *absence of server-side rules* is an actual governance defect, **not** permission to bypass human review. No `merge_pull_request`, forced ref movement, branch deletion, privileged retirement activation, fabricated coder/participant data or artificial issue closure was performed.
+
+**Reviewer handoff:** first obtain security/admin review of #302 and separately install/test the proposed rulesets, including negative unauthorized/failing/stale merge cases. Assign genuine domain-appropriate reviewer(s) to each bounded code/scientific PR. For a code PR whose instrument is acceptable but the study remains incomplete, state that explicitly and continue tracking the original issue instead of marking it closed. Integrate one PR at a time with latest-main conflict/source review, fresh current-base CI and `expected_head_sha`; #290 and #298 both edit `README.md`, requiring reconciliation after either moves main. Verify five post-merge main jobs. Do not claim ten issue closures until real evidence appears.
+
+**Practical maintainer lesson:** maintain a two-level state: (a) executable software validated on an exact SHA and (b) independently validated real-world scientific outcome. Human source access, method approval, licensed data, accepted user tasks, kWh/CO₂ boundaries and long-term maintenance cannot be inferred from a passing synthetic CI suite.
+
+
+## 2026-10-16 focused five-branch requested merge checkpoint
+
+**Method / limits:** live GitHub connector readback during a further owner-requested five-branch merge assessment, no authenticated human approval and no empirical research findings. The repository's current `main` was `1e656cfcbceb4995467280b796e77e870c6c5f39` with `protected=false`; the ruleset GET returned `[]`. Five non-draft PRs had `mergeable=true` at readback. All five GitHub submitted-review lists and review-thread lists were **empty**. A reported mergeable flag and successful Actions are **not** qualified methods/security/maintainer review. None of these five was merged here.
+
+| PR / branch | Exact PR head | Successful exact-head PR workflow, five jobs | Focused risk / reviewer decision |
+| --- | --- | --- | --- |
+| [#417](https://github.com/MSKazemi/github-trending-1000-study/pull/417) `fix/279-branch-tip-recheck-20261016` | `85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a` | [38953185528](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953185528) | Branch deletion advice now rechecks tip/protection, PR membership and namespace; an HTTP snapshot is still non-atomic and cannot authorize deletion. Independent safety/maintainer review pending. |
+| [#425](https://github.com/MSKazemi/github-trending-1000-study/pull/425) `fix/19-goldset-redacted-errors-20261016` | `69d02f95664fafd74d85b640036bbb7c4074bd86` | [38930766286](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930766286) | Goldset error messages suppress untrusted identifiers and unexpected fields; validate diagnostics and downstream compatibility in independent privacy/security review. |
+| [#426](https://github.com/MSKazemi/github-trending-1000-study/pull/426) `fix/56-news-query-order-20261016` | `477141bc4c246a203901e3b7514cf990c2052b64` | [38930663841](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38930663841) | Repeated URL query selectors preserve ordering; URL-level distinctness is not scientific event/content distinctness. Source/methods review pending. |
+| [#428](https://github.com/MSKazemi/github-trending-1000-study/pull/428) `fix/222-dns-label-syntax-20261016` | `114d76b02c401bcec27b7bf2b84da9c1eb04254c` | [38953357172](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38953357172) | Accept interior DNS hyphens, reject invalid labels and legacy numeric IPv4 aliases. Lexical acceptance is not DNS/source authorization or connection-time SSRF prevention; independent review pending. |
+| [#429](https://github.com/MSKazemi/github-trending-1000-study/pull/429) `fix/22-noncanonical-ipv4-urls-20261016` | `865f0d1b2047e94059a41d29476cc464df3ed226` | [38931239853](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38931239853) | Reject numeric alias evidence hosts for offline package review; no transport hardening or official package source authentication. Independent security/source review pending. |
+
+All **25/25 jobs** shown by the corresponding GitHub Actions job endpoints completed successfully (for each PR: `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, `research-artifacts`). The five full changed-file inventories total **17 changed-file entries** (five on #417; three on each other PR). The filenames are pairwise disjoint, and there are no identical changed paths with any of the other six currently open PRs. This is a **filename check only**, not proof of semantic independence after combining patches. Code, regression-test and methods-note patches were examined; the local combined tree was **not executed**, because this review used the GitHub connector without a combined local checkout. Individual GitHub Actions are the current executable evidence, not a joint integration test.
+
+**Merge disposition:** **0/5 merged**, **5/5 independently reviewed = false**. Even though the repository lacks enforced protection, the canonical [merge gate](../PR_MERGE_QUALITY_GATE_2026_10_13.md) and [contribution rules](../../CONTRIBUTING.md) require genuine human maintainer/security/source or methods decisions. The owner's delegation to an AI agent and the agent's own patch inspection do not establish an independent review. Keep the five PRs open; do not force-merge, self-approve, fabricate external reviewer evidence, close related research issues, change rulesets or delete branches.
+
+**Next authorized path:** a qualified reviewer checks the full final diff and documents approval or requested fixes for each issue. After any changes or an advance of `main`, rebase/integrate non-destructively, run all five jobs on the exact candidate, and recheck both reviews and branch status before **separate expected-head merges**. Verify the main push CI and that distinctive tests/sources survive each merge. Reconcile any new collisions without choosing one whole source file. If real scientific/source criteria remain unmet, keep those issues open even after an engineering merge.
+
+**Practical repository lessons:** preserve potentially distinct URL/source leads instead of silently deduplicating; treat schema validators as input-format gates, not source certification; redact potentially sensitive IDs in all error surfaces; distinguish a branch-list audit from safe deletion authority; require actual non-author reviews and install/test main protection instead of optimizing for merge counts.
+
+## 2026-10-16 late-night PR technical preflight and follow-up fix
+
+**Live connector snapshot:** Eleven open PRs (#290, #293, #298, #302, #417, #418, #425, #426, #427, #428, #429), all targeting `main` with common observed base `1e656cfcbceb4995467280b796e77e870c6c5f39`. GitHub returned `mergeable=true` for every PR; #302 remained Draft. All eleven submitted GitHub review collections and all eleven inline-thread collections were empty. No qualified human approval was represented or inferred. The documented merge policy (`docs/PR_MERGE_QUALITY_GATE_2026_10_13.md`, `CONTRIBUTING.md`) requires maintainer and domain-specific review and final integrated CI; no PR was authorized to bypass it merely because main is not server-protected.
+
+**Exact-head test checkpoint before new work:** All eleven observed heads had one completed-success PR Actions workflow containing successful `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)` and `research-artifacts` jobs. Verified run IDs: #290=38931512003; #293=38953393959; #298=38931060295; #302=38932139921; #417=38953185528; #418=38953056870; #425=38930766286; #426=38930663841; #427=38953959000; #428=38953357172; #429=38931239853. Success proves only these automatic checks, not real source eligibility, independent people, license rights, scientific quality or full production safety. Final branch SHA changes invalidate previous exact-head readiness.
+
+**Changed paths / no-loss:** The sole direct path intersection across all eleven PR file lists was `README.md` in #290 and #298. This is not a semantic independence certificate: #298 also changes shared JSON input handling, #290 changes the CI workflow and protocol docs, and future sequential merges need fresh integration checks. All open PRs were inspected at the changed-path level, with focused patch/code review of #290, #293, #298 and #425/#426/#428/#429 and existing source/policy documents. No local checkout or unobserved end-to-end tests are claimed; the sandbox's HTTPS Git remote was not reachable.
+
+**Concrete regression fixed on PR #426:** Follow-up code inspection found `trending_study.news_corpus._canonical_url_key` called `parts.path.rstrip('/')`, conflating `/report` with `/report/` despite potentially distinct HTTP resource routes. The risk is false duplicate suppression of research source leads. The narrow correction preserves the path spelling except for empty-root normalization; a synthetic negative regression and methods-boundary note were appended on the existing branch (commit sequence `ef790e2`, `503c314`, `2aeca316`). New exact head: `2aeca31613db3e64ed08c585e5dcf79fd543439b`. GitHub Actions run [38967290918](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38967290918) was **pending at this checkpoint**, therefore the prior #426 green run is explicitly stale and #426 remains blocked for new-head CI and real independent source/method review. The fix is a conservative syntactic identity rule, not evidence that real webpages differ or a permission to fetch them.
+
+**Disposition:** No PR merged, no issue closed, no branch deleted, no approval forged, no ruleset installed, no empirical evidence promoted. #302 remains draft. Qualified non-author review must be submitted for each risk domain; #302 additionally requires security/admin validation and actual ruleset enforcement. After reviewer signoff, reconcile one PR at a time with current main, verify exact-head/current-base five-job tests, merge with `expected_head_sha`, then verify main push CI. Do not silently remove source, null, negative or conflicting evidence. Practical lesson: a green check and mergeable flag are necessary engineering observations, not authorization to merge research code or to discard potentially distinct URLs.
+
+
+## 2026-10-16 five-PR combined-code CI rehearsal (verified)
+
+**Continued engineering work, not new science or approval.** On a fresh GitHub connector readback, the five original PRs remained open, non-draft and mergeable; current `main` remained at `1e656cfcbceb4995467280b796e77e870c6c5f39`. Submitted-review and inline review-thread inventories for each selected PR remained empty. PR #428 advanced to `bc6bc58e19060b47196ccc49eff3bf551b2f2c07`, adding rejection of ASCII DEL (127) in offline hiring-source URLs and two synthetic negative tests; [its new exact-head run 38964259002](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38964259002) succeeded.
+
+### Safe combined-tree construction and verification
+
+A distinct test-only integration branch `integration/five-fix-pr-ci-rehearsal-20261016` was assembled atop the unchanged `main` tree `74f3eefdcf37136b62e176b1627444f6122cc020`, using the **exact existing Git blob SHA**, mode `100644`, and path from the source PR commit tree for each changed file. Each source commit was verified ahead of the pinned main by GitHub compare with zero behind commits, and each changed-file status was added or modified. The 17 paths were pairwise disjoint and every file in the assembled tree was rechecked against its source head; **17/17 exact blob/mode matches**, zero deletions in the combined diff, and `ahead_by=1; behind_by=0` for the composed integration commit against pinned main.
+
+| Source PR | Source HEAD | Files copied and verified |
+| --- | --- | ---: |
+| [#417](https://github.com/MSKazemi/github-trending-1000-study/pull/417) | `85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a` | 5 |
+| [#425](https://github.com/MSKazemi/github-trending-1000-study/pull/425) | `69d02f95664fafd74d85b640036bbb7c4074bd86` | 3 |
+| [#426](https://github.com/MSKazemi/github-trending-1000-study/pull/426) | `477141bc4c246a203901e3b7514cf990c2052b64` | 3 |
+| [#428](https://github.com/MSKazemi/github-trending-1000-study/pull/428) | `bc6bc58e19060b47196ccc49eff3bf551b2f2c07` | 3 |
+| [#429](https://github.com/MSKazemi/github-trending-1000-study/pull/429) | `865f0d1b2047e94059a41d29476cc464df3ed226` | 3 |
+
+**Test-only draft PR:** [#430](https://github.com/MSKazemi/github-trending-1000-study/pull/430), titled **DO NOT MERGE**. The combined commit is `8a462953fa886cb00053a3e3e5c2fced6de80102`; composite Git tree is `36d4963705e598b82cb1def90b0ac001b23e024a`. Unlike the previously existing `integration/five-pr-no-loss-20261016` branch, which contains unrelated issue work, this is a purpose-built rehearsal for these exact five source heads. No original branch, tag, main ref, protocol, authenticated study evidence or prior integration branch was rewritten.
+
+**Real combined-tree CI:** GitHub Actions [pull_request run 38967220844](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38967220844) reported overall `completed/success` at the above integrated commit; the separately queried job endpoint returned five successful jobs: `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, and `research-artifacts`. This is an actual shared-tree test beyond the earlier independent source-PR runs, **not** a complete security/rights/scientific review and not main post-merge CI.
+
+**Review and merge disposition:** **all five original PRs remain unmerged / independent review missing**; no user-delegated AI inspection, tool success, or checked-in memo may replace an authenticated qualified non-author approval. Do not merge draft #430 (it duplicates all five patches); after recording evidence, the rehearsal PR may be closed without deleting its branch or overwriting evidence. Source PRs must be individually reviewed, then merged in sequence at exact heads with a new integrated CI check if main changes, and separately verified post-merge. Keep the underlying empirical/source-rights issue acceptance gates open.
+
+**Practical maintainer lessons:** a Git *blob-hash exact union* protects against accidentally dropping tests/docs better than a filename-only overlap check; integration CI on a single shared candidate catches interactions that individual green PRs cannot; a successful test-only PR should not itself be merged or create a second canonical implementation; missing human review should be visible as a blocker even on an unprotected repository; automated safety checks must not be mistaken for proof of licensed, authentic, consented or representative research observations.
+
+
+### Latest integrated-tree retest after #426 moved
+
+**Race discovered by final live SHA readback:** Following successful combined run 38967220844, source [PR #426](https://github.com/MSKazemi/github-trending-1000-study/pull/426) independently advanced to `2aeca31613db3e64ed08c585e5dcf79fd543439b`, adding a cautious path-trailing-slash rule to the offline news URL key. It keeps `/report` and `/report/` as different provisional leads until content/source adjudication rather than silently deduplicating them. No assertion of actual article distinctness or news-source rights is made. Source [exact-head run 38967290918](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38967290918) passed.
+
+The original draft test [PR #430](https://github.com/MSKazemi/github-trending-1000-study/pull/430) had been closed after the initial rehearsal. Its isolated branch was then **fast-forwarded only**: from `8a462953fa886cb00053a3e3e5c2fced6de80102` to `2d3a8fa98e7cc6c2dd77bebc2229e1cbc49b6303` by copying the three updated #426 blobs. Its original 14 other source file versions were retained unchanged. Reopening draft #430 triggered a new complete pull-request Actions run, [38967645460](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38967645460), which reported **completed/success with all five jobs successful**, including four Python versions and research-artifacts. Git tree readback reverified **17/17 exact source blob SHA/mode matches**, no file deletions, pinned main `1e656cfcbceb4995467280b796e77e870c6c5f39` still unchanged. The new integration tree is `f90fdc6a989ac2910cb02a4c2d48bfa9daa69517`. This proves that this **new exact combination** passes the available offline CI, not that the change has external human approval or real-source scientific validation.
+
+**Source heads included in the second joint run:** #417 `85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a`; #425 `69d02f95664fafd74d85b640036bbb7c4074bd86`; #426 `2aeca31613db3e64ed08c585e5dcf79fd543439b`; #428 `bc6bc58e19060b47196ccc49eff3bf551b2f2c07`; #429 `865f0d1b2047e94059a41d29476cc464df3ed226`.
+
+**Disposition unchanged:** zero source PRs merged, human independent reviews still absent at the recorded readback, and main protection is not established. Draft #430 is a temporary CI instrument only: close it without merging after evidence capture, keep its branch/history for reference, and later merge each independently reviewed source PR using the documented SHA-locked gate and post-merge CI. No research issue completion or branch deletion is claimed.
+
+**Practical lesson from actual concurrent motion:** even a complete five-job integrated run can become stale between reading a green check and merging when a source PR changes. Pin and verify the **entire vector of source SHAs** immediately before each merge, not merely the integration head; rerun joint CI if any vector element moves. Keep an auditable time-ordered trail rather than rewriting old evidence as though it tested the newest code.
+
+
+## 2026-10-16 three further corrections and third five-PR CI integration
+
+**Scope:** Further author-delegated *AI-assisted engineering repair*, not a scientific finding, security certification, consent/source authorization or independently submitted human review. Current `main` at inspection remained `1e656cfcbceb4995467280b796e77e870c6c5f39`; branch protection was not enabled at the earlier verified readback. All five original PRs are still open and were based on that main SHA. Do **not** merge the draft CI rehearsal as a replacement for issue-scoped PRs.
+
+### Three real code corrections in original PRs
+
+1. **#426 / issue #56 — source URL dedup:** previous `parse_qsl` decoding falsely equated `id=alpha%2Fbeta` with `id=alpha/beta`, plus `+` with percent-escaped whitespace. The offline source lead canonicalizer now retains **raw meaningful query token spellings**, removes only literal well-known marketing keys, preserves order when decoded keys collide and remains deterministic for reorderings of ordinary unique keys. Added three synthetic regressions and limitations text; no source records changed. Exact new head `567f957a97b6e8c0d612ca9a34d3c51cf297c229`, [individual run 38969948387](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38969948387), five successful jobs. Distinct raw encodings do **not** prove distinct articles; a future human event/content crosswalk is still necessary.
+2. **#429 / issue #22 — package evidence URLs:** previously some malformed hostnames (empty/interior-invalid labels, leading/trailing hyphens, overlong labels) and a bare intranet hostname could pass the lexical public evidence URL gate. The existing function now rejects invalid ASCII DNS label forms and single-label DNS hostnames while maintaining syntactically valid hyphens/punycode and its prior global-IP logic. Added synthetic invalid and valid control cases and source/transport limitations; no network resolution was performed. Exact head `157fcf42e9f9b3df795e42d769665d21e4413a13`, [individual run 38970024599](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38970024599), five successful jobs. **Lexical format is not SSRF safety, DNS ownership, license provenance or source-rights approval.**
+3. **#425 / issue #19 — goldset privacy:** `datetime.fromisoformat` raises raw `ValueError` that may contain the submitted malformed timestamp. A chained `raise GoldsetError(...) from exc` retained that potentially private string for full-exception tracebacks even when top-level CLI stderr was generic. Now raise the fixed `GoldsetError` after leaving the except scope, without cause/context; synthetic tests check the exception chain and formatted traceback for task baselines and candidate release dates. Exact head `37965c72d8bdbda7ee03ec95b9a39a1ca75b0690`, [individual run 38970119837](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38970119837), five successful jobs. Successful outputs may still intentionally contain identifiers; this is not general telemetry anonymization.
+
+No unrelated code, research schema, dataset, citation, sample-size denominator, third-party package or credential was modified by these bounded patches. Previous tests and data remain retained. The unchanged other source heads are #417 `85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a` and #428 `bc6bc58e19060b47196ccc49eff3bf551b2f2c07`, whose prior exact-head CI was successful.
+
+### Rebuilt, verified five-PR composite
+
+The earlier draft-only integration branch `integration/five-fix-pr-ci-rehearsal-20261016` was advanced without force from `2d3a8fa98e7cc6c2dd77bebc2229e1cbc49b6303` to `9b9e781b80305ac614fb53208df26472dfbfbe32`. Composite Git tree SHA `99c87fda0ffd3e06f64e874ed67c572542f79f1f` was created over the **unchanged** main tree by selecting **exact Git blobs** from all five current source PR heads. Live Git tree readbacks independently confirmed **17/17** matching source paths, blob SHAs, file modes and ordinary blob types: #417 (5), #425 (3), #426 (3), #428 (3), #429 (3). GitHub comparison against pinned main had 17 changed paths, no deleted files, merge base exactly main, zero behind commits. This is **no-loss file-level equivalence**, not an assertion of identical real-world semantics or rights.
+
+**Third integrated [GitHub Actions run 38970317165](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/38970317165)** ran on `9b9e781b80305ac614fb53208df26472dfbfbe32`, completed **success** with all five jobs passing: `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, `research-artifacts`. This is an actual combined-tree offline regression, not human signoff or post-merge main CI. The reopened draft [#430](https://github.com/MSKazemi/github-trending-1000-study/pull/430) is marked **DO NOT MERGE**; close it after logging this checkpoint, without deleting its source branch/history.
+
+### Remaining gates and actionable lessons
+
+**0/5 source PRs merged at this checkpoint.** There was no submitted independent qualified security/methods/maintainer review on the previous inspection, and that remains a mandatory live recheck before any final merge. The main ruleset/admin protection is also a distinct unfinished issue (#248). None of the related research issues #19, #22, #56, #222 or #279 is complete: synthetic offline CI does not authenticate external users, source rights, package provenance, study sampling/labels, or trial success. Preserve every PR and later require current-head independent review, sequential `expected_head_sha` merges, current-base retests and successful **main push** CI. Do not merge #430 as a duplicate.
+
+**Practical maintainer lessons:** (a) compare original raw URLs before deduplicating scientific evidence, not just decoded query tuples; (b) require realistic negative source/hostname test cases without interpreting a plausible-looking URL as verified; (c) test privacy at full-exception tracebacks as well as stderr; (d) use a hash-exact *combined* CI rehearsal that cannot silently overwrite another branch's distinctive tests, while keeping human acceptance independent from AI-generated checklists; and (e) a successful suite must be pinned to an immutable five-source SHA vector, not to a moving branch label.
+
+## 2026-10-17 authenticated-redirect security checkpoint
+
+**Read-only GitHub checkpoint (2026-10-17):** Thirteen open PRs were found:
+#290, #293, #298, #302, #417, #418, #425, #426, #427, #428, #429,
+#431 and #432. All inspected PRs were still based on
+`main@1e656cfcbceb4995467280b796e77e870c6c5f39`. The original
+security/administrative draft #431 had no submitted GitHub review; #432 was
+also Draft. No qualified independent review or main merge is inferred from
+CI. Keep the explicit human approval, exact-current-base checks and
+post-merge main-CI gates. In particular do not activate privileged branch
+retirement or overwrite protected scientific evidence.
+
+**Concrete #277 security fix on original PR #431:** Python's default urllib
+redirect handler may copy a normal HTTP Authorization header onto a
+redirected request even if Location names another host. The offline,
+previously dormant authenticated GitHub REST client now rejects 30x
+redirects, sends the bearer credential as an *unredirected* header, and
+has synthetic cross-host/same-host negative tests and an explicit threat
+model. The final reviewed patch was recorded at
+`a1e17f4e2753373b90e32b92d11473c9a902fb27` with complete-success
+[run 39056042451](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056042451):
+test 3.10, 3.12, 3.13, 3.14 and research-artifacts (5/5).
+This is a **technical CI pass, not independent qualified security approval**
+or permission to merge/delete branches. PR #431 remains Draft and
+`retire` remains hard-disabled.
+
+**Concurrent #24 input privacy fix:** PR #432 gained a separate contributor's
+exact-schema envelope safeguard: `{"cases": [...]}` is accepted, while
+undeclared top-level private interview/email sidecars are rejected
+with fixed, redacted diagnostics. Its exact head
+`6f7d482b94903efdb1954b99eb28f848636cb290` completed all five CI
+jobs successfully in [run 39056074118](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056074118).
+Do not claim independent consent, source review or participant enrollment;
+issue #24 remains open. The concurrent authorship is distinct from
+the #431 authenticated-redirect correction.
+
+**Useful lessons for maintainers:** Test *off-host redirects* as well as the
+initial HTTPS origin when handling credentials. For sensitive research
+records, enforce strict schemas at the **outer batch envelope** as well as
+the case level. Hash- and CI-bound engineering progress is not a substitute
+for an actually independent security or methods reviewer, server-side
+branch protection, or verification of the final merge tree.
+
+
+## 2026-10-17 maintainer, retirement and ruleset readback safeguards
+
+**Evidence class:** user-delegated AI-assisted, narrowly scoped offline engineering repairs; **not** an independent human review, empirical result, user consent, source-rights approval, security certification or authorization to mutate protected GitHub refs. The checked live main branch was `1e656cfcbceb4995467280b796e77e870c6c5f39` with `protected=false`, and repository rulesets `[]`. No privileged configuration was installed, and no original study datasets, source claims, archival tags, existing branches or main content were changed in this work.
+
+| Issue / existing draft PR | Verified repair on source branch | Successful exact-head GitHub Actions (five jobs each) | Outstanding substantive gate |
+| --- | --- | --- | --- |
+| [#24](https://github.com/MSKazemi/github-trending-1000-study/issues/24) / [#432](https://github.com/MSKazemi/github-trending-1000-study/pull/432) | `6f7d482b94903efdb1954b99eb28f848636cb290`: main CLI already rejected extra privacy-sensitive fields in individual cases, but silently accepted unknown keys in the surrounding `{"cases": [...]}` batch envelope. Require exact envelope key, preserve valid single/batch inputs, redact errors and reject malformed arrays in new synthetic tests. | [Run 39056074118](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056074118) succeeded | Opt-in participant consent, ethics/retention review, independent outcome adjudication and actual measured burden remain absent. |
+| [#277](https://github.com/MSKazemi/github-trending-1000-study/issues/277) / [#431](https://github.com/MSKazemi/github-trending-1000-study/pull/431) | `f4be5f732123c37884803e86bdd351009e0a3d14`: SHA-leased branch retirement now fails closed unless GitHub reports an active, uniquely scoped, no-bypass immutable **recovery-tag ruleset** protecting updates and deletions under `refs/tags/branch-archive/**/*`; check before mutating and recheck after archiving just before deletion. Synthetic tests cover absent/weakened/moving policy and direct invocation. The existing write-capable workflow remains deliberately disabled. | [Run 39056264601](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056264601) succeeded | Independently reviewed current no-loss retirement plan, administrator-installed tag and main protection, observed negative enforcement tests, approved destructive session and recovery verification remain outstanding. |
+| [#248](https://github.com/MSKazemi/github-trending-1000-study/issues/248) / [#302](https://github.com/MSKazemi/github-trending-1000-study/pull/302) | `cb4ab8d75929857f97229ab787042518d58258b3`: read-only ruleset audit rechecks main SHA/protection and paginated ruleset inventory after inspecting individual rules; missing/changing policy fails closed. Optional API token uses an **unredirected** header and explicit HTTP redirect denial to avoid leaking credentials through a `Location` change. Negative mocks cover movement and redirect boundaries. | [Run 39056423373](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056423373) succeeded | Main still unprotected, rulesets `[]`; administrator application, authentic qualified review, observed denied stale/unreviewed/failing merges, archive-tag refusal tests and main post-merge CI are unperformed. |
+
+Each linked run was read through its **job list** and had `test (3.10)`, `test (3.12)`, `test (3.13)`, `test (3.14)`, and `research-artifacts` all `completed/success` on the exact recorded source head. These changes were added to existing **draft** PRs rather than creating duplicate proposals or a sixth integration branch. The fixes are not merged into `main`; each PR still needs a real qualified non-author reviewer and separate SHA-locked merge with subsequent main CI. The retirement job must remain disabled until independent security approval and observable enforcement, even if its synthetic tests pass.
+
+### Practical repository lessons
+
+1. Enforce privacy at **every JSON nesting layer**; an exact record validator cannot compensate for an outer envelope that ignores arbitrary participant data.
+2. A correct SHA-lease on a branch deletion protects the **source** but not the **backup**. Require actual immutable recovery-tag server configuration at the destructive boundary and stop on any loss of protection.
+3. Ruleset evidence has three distinct layers: tested policy intent, readback of live configuration, and **observed server refusal** of prohibited operations. Do not conflate them; multiple GET requests form a non-atomic snapshot.
+4. Use redirect-denying HTTP clients and non-forwardable token headers even for **read-only** authenticated administration checks.
+5. Never claim a scientific success, human consent/review or issue closure from an AI-authored patch or green synthetic CI. Record unresolved human and empirical gates with links to exact commits and Actions attempts.
+
+**Status: 3 additional engineering defects fixed, 15/15 source-head CI jobs passed, 0 source PRs merged, 0 issues closed by this checkpoint.** A second contributor advanced #431 while this audit was being prepared; the repair was applied on its **new** head with an expected-SHA non-force update, preserving intervening edits. Future merges must recheck that their actual final heads still equal the recorded hashes.
