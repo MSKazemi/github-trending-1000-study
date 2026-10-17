@@ -280,6 +280,30 @@ class PackageReviewTests(unittest.TestCase):
             with self.subTest(url=url), self.assertRaises(PackageReviewError):
                 evaluate(p)
 
+    def test_pypi_registry_path_rejects_duplicate_slashes(self):
+        # Do not silently turn a different submitted URL path into the
+        # same official registry identity using .strip("/").
+        for path in (
+            "//project/fictionalpkg/1.0/",
+            "/project//fictionalpkg/1.0/",
+            "/project/fictionalpkg//1.0/",
+            "/project/fictionalpkg/1.0//",
+            "///project/fictionalpkg/1.0///",
+        ):
+            p = candidate()
+            p["candidate"]["registry_url"] = "https://pypi.org" + path
+            with self.subTest(path=path), self.assertRaisesRegex(
+                    PackageReviewError, "repeated slashes"):
+                evaluate(p)
+
+        # Keep the official slash/no-trailing-slash spellings available
+        # for an independently verified pinned release.
+        for path in ("/project/fictionalpkg/1.0/",
+                     "/project/fictionalpkg/1.0"):
+            p = candidate()
+            p["candidate"]["registry_url"] = "https://pypi.org" + path
+            self.assertFalse(evaluate(p)["automatic_install_approved"])
+
     def test_pypi_url_rejects_escaped_or_unicode_name_aliases(self):
         # urllib.parse.unquote plus Unicode casefold can otherwise turn the
         # long-s character into ASCII 's', falsely binding another URL path.

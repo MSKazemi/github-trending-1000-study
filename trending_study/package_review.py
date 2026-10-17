@@ -136,6 +136,11 @@ def evaluate(data):
         # so decoded-name equality alone is not safe identity binding.
         if not parsed.path.isascii() or "%" in parsed.path:
             raise PackageReviewError("PyPI registry URL requires literal ASCII path segments")
+        # strip("/") would silently accept //project/name/version// as the
+        # official PyPI identity despite a different submitted request path.
+        # This gate binds exact source spelling, not a redirect assumption.
+        if not parsed.path.startswith("/") or "//" in parsed.path:
+            raise PackageReviewError("PyPI registry URL forbids repeated slashes")
         parts = parsed.path.strip("/").split("/")
         if (parsed.hostname != "pypi.org" or parsed.port not in (None, 443)
                 or len(parts) != 3 or parts[0] != "project"

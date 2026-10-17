@@ -36,3 +36,24 @@ Caller logs and accepted metadata exports remain separate operator concerns.
 
 **Lesson for maintainers:** audit *complete* exception traces when processing
 untrusted research input, not only visible `str(error)` messages.
+
+## 2026-10-17 registry-path normalization false identity hold
+
+The offline PyPI binding previously used `parsed.path.strip("/")` before
+matching `/project/<name>/<version>/`. That discards arbitrary leading
+and trailing slashes, accepting `//project/name/version//` as if it were
+the same official request path despite potentially different reverse-proxy
+routing. The guard now rejects any **repeated path slash** for an asserted
+PyPI registry identity, while retaining the ordinary single-slash path with
+or without one trailing slash. A synthetic regression tests multiple leading,
+internal and trailing slash aliases as well as both ordinary controls.
+
+This is only lexical identity binding. The candidate's `review_ready`
+result remains self-declared; it is **not** proof of a real distribution,
+registry integrity, artifact digest, license grant, SLSA provenance, lack of
+OSV advisories, or permission to install or fetch anything. Human and
+transport checks remain independent mandatory gates for issue #22.
+
+**Lesson:** preserve and check the exact registry path spelling before
+normalizing it into a package name/version key. A URL string that happens
+to be redirectable is not an authenticated artifact identity.
