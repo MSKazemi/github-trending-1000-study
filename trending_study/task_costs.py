@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 import re
 
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 from .safe_io import disjoint, publish_json
 from .trial import ARMS, TrialError, assign as trial_assign, audit as trial_audit
 
@@ -63,8 +64,11 @@ def _timestamp(value, name):
         raise CostAuditError(f"{name} must be a UTC ISO8601 timestamp")
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise CostAuditError(f"{name} must be a UTC ISO8601 timestamp") from exc
+    except ValueError:
+        # The underlying ValueError may retain user-controlled private text.
+        parsed = None
+    if parsed is None:
+        raise CostAuditError(f"{name} must be a UTC ISO8601 timestamp")
     if parsed.tzinfo is None or parsed.utcoffset() != timedelta(0):
         raise CostAuditError(f"{name} must explicitly use UTC")
     return parsed.astimezone(timezone.utc)
@@ -85,12 +89,16 @@ def _count(value, name):
 
 
 def _minutes(value, name):
-    if value is not None and (
-        isinstance(value, bool)
-        or not isinstance(value, (float, int))
-        or not math.isfinite(value)
-        or value < 0
-    ):
+    if value is None:
+        return None
+    if type(value) not in (int, float) or value < 0:
+        raise CostAuditError(f"{name} must be a nonnegative finite number or null")
+    try:
+        finite = math.isfinite(value)
+    except (OverflowError, ValueError):
+        # Very large direct Python integers are not representable as float.
+        finite = False
+    if not finite:
         raise CostAuditError(f"{name} must be a nonnegative finite number or null")
     return value
 
@@ -103,29 +111,20 @@ def _money(value, name):
     return Decimal(value)
 
 
-def _unique_json_fields(pairs):
-    """Reject duplicate object keys rather than silently losing evidence."""
-    result = {}
-    for key, value in pairs:
-        if key in result:
-            raise CostAuditError(f"duplicate JSON key {key!r}")
-        result[key] = value
-    return result
-
-
-def _bad_json_constant(value):
-    raise CostAuditError(f"nonfinite/nonstandard JSON constant {value!r}")
-
-
 def _read_json(path):
-    # Bound offline memory use; never transmit files or make network requests.
-    if path.stat().st_size > 64 * 1024 * 1024:
-        raise CostAuditError(f"input file exceeds 64 MiB limit: {path}")
-    return json.loads(
-        path.read_text(encoding="utf-8"),
-        object_pairs_hook=_unique_json_fields,
-        parse_constant=_bad_json_constant,
-    )
+    """Reuse the shared bounded, strict, no-symlink research input reader.
+
+    A duplicated/private JSON key can appear in a lower-level decoder's
+    exception chain. Translate to a fixed message after leaving that handler.
+    """
+    failure = False
+    try:
+        result = load_research_json_file(path, max_bytes=MAX_FILE_BYTES)
+    except ResearchJSONError:
+        failure = True
+    if failure:
+        raise CostAuditError("invalid or unsafe research JSON input")
+    return result
 
 
 def _canonical_hash(value):
@@ -461,8 +460,16 @@ def main(argv=None):
             publish_json(args.output, report)
         else:
             print(json.dumps(report, sort_keys=True, indent=2))
-    except (ValueError, OSError) as exc:
-        parser.exit(2, f"task cost audit rejected: {exc}\n")
+    except (ValueError, OSError, TypeError, KeyError, RecursionError, OverflowError):
+        # Caller-provided task IDs, filenames and decoder keys must never be
+        # repeated in CLI diagnostics or a SystemExit exception context.
+        failure = "invalid or unsafe task cost research input"
+    else:
+        failure = None
+    # Do not exit while handling an untrusted exception: that would chain raw
+    # decoder/fs errors through SystemExit.__context__ in in-process callers.
+    if failure is not None:
+        parser.exit(2, f"task cost audit rejected: {failure}\n")
 
 
 if __name__ == "__main__":
