@@ -62,6 +62,44 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
+    def test_nonstandard_utm_prefixed_document_selectors_are_preserved(self):
+        # An origin may use its own UTM-looking key to select a document.
+        # A blanket startswith("utm_") would silently discard both values.
+        for selector in ("utm_document", "utm_release", "UTM_edition"):
+            first = copy.deepcopy(self.item)
+            second = copy.deepcopy(self.item)
+            first["canonical_url"] = (
+                "https://example.org/report?" + selector +
+                "=article-a&utm_source=mail"
+            )
+            second["id"] = "NEWS-2026-0099"
+            second["canonical_url"] = (
+                "https://example.org/report?" + selector +
+                "=article-b&utm_medium=ad"
+            )
+            with self.subTest(selector=selector):
+                result = validate_records([
+                    (first["id"] + ".json", first),
+                    (second["id"] + ".json", second),
+                ])
+                self.assertEqual(result["distinct_urls"], 2)
+
+    def test_standard_trackers_are_stripped_while_unknown_selector_remains(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = (
+            "https://example.org/report?utm_document=a&utm_id=one"
+        )
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = (
+            "https://example.org/report?utm_source_platform=ads&utm_document=a"
+        )
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([
+                (first["id"] + ".json", first),
+                (second["id"] + ".json", second),
+            ])
+
     def test_repeated_query_parameter_order_selects_distinct_sources(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)

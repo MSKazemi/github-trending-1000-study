@@ -80,3 +80,11 @@ leads for manual review, explicitly preferable to silent source loss.
 
 **Practical lesson:** URL normalization can reduce review workload but it
 cannot replace a separately adjudicated content/event duplicate decision.
+
+## 2026-10-18 correction: do not strip unknown `utm_*` source selectors (#453)
+
+The previous blanket `key.lower().startswith("utm_")` rule was **overbroad**: a publisher can use a custom `utm_document`, `utm_release` or `UTM_edition` parameter as a meaningful selector, even though its name resembles campaign metadata. Removing its value before duplicate screening could collapse two genuinely different *candidate source URLs* without checking the origin or its document identity. The dedup canonicalizer now drops only a **finite explicit list** of conventional UTM marketing fields (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`, `utm_id`, `utm_source_platform`, `utm_creative_format`, `utm_marketing_tactic`) plus its preexisting exact named tracking parameters. Every **unknown** UTM-like raw key/value survives, in original order and spelling. Existing known-tracker heuristic collisions remain possible and need independent source/event adjudication.
+
+Synthetic negative tests verify three nonstandard selectors survive and two ordinary marketing variants of the same retained source selector remain duplicates. **No existing NEWS-YYYY-NNNN.json record is rewritten or upgraded**, no original articles were fetched, no new publisher permission was implied, and the 1,000-item corpus and independent fact-checking requirements of [#56](https://github.com/MSKazemi/github-trending-1000-study/issues/56) remain outstanding.
+
+**Practical lesson for repository researchers:** never infer that a source selector is irrelevant solely from a shared prefix. When document identity cannot be authenticated, preserve possible contradictory evidence for later reviewer adjudication rather than deleting it during normalization.
