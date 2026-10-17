@@ -59,8 +59,11 @@ def _string(value, label):
 def _utc(value, label):
     try:
         out = datetime.fromisoformat(_string(value, label).replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise RegistryFrameError(f"{label}: invalid UTC time") from exc
+    except ValueError:
+        # Source text can appear in datetime's original ValueError.
+        out = None
+    if out is None:
+        raise RegistryFrameError(f"{label}: invalid UTC time")
     if out.tzinfo is None or out.utcoffset() != timedelta(0):
         raise RegistryFrameError(f"{label}: explicit UTC required")
     return out
@@ -468,14 +471,28 @@ def _read(path):
     ``load_research_json_file`` refuses leaf symlinks, FIFOs/special files and
     oversized or grown inputs, and its diagnostics never echo paths or keys.
     """
+    failure = None
     try:
-        return load_research_json_file(path)
+        result = load_research_json_file(path)
     except ResearchJSONError as exc:
-        if str(exc) == "invalid or ambiguous JSON input":
-            raise RegistryFrameError(
-                "registry input must be unambiguous strict UTF-8 JSON") from None
-        # Remaining shared-reader messages are fixed and contain no path.
-        raise RegistryFrameError(f"registry {exc}") from None
+        # Leave the exception handler before raising; 'from None' alone does
+        # not clear a private decoder exception from __context__.
+        reason = str(exc)
+        if reason == "invalid or ambiguous JSON input":
+            failure = "registry input must be unambiguous strict UTF-8 JSON"
+        elif reason in {
+                "invalid bounded JSON input byte limit",
+                "input must be a regular non-symlink file",
+                "input must be a readable regular non-symlink file",
+                "input exceeds configured JSON byte limit",
+                "cannot safely read input file",
+        }:
+            failure = f"registry {reason}"
+        else:
+            failure = "invalid or unsafe registry input"
+    if failure is not None:
+        raise RegistryFrameError(failure)
+    return result
 
 
 def main(argv=None):
@@ -512,8 +529,17 @@ def main(argv=None):
                                         _read(args.review_a), _read(args.review_b),
                                         _read(args.manifest), _read(args.plan))
         publish_json(args.output, result)
-    except (OSError, ValueError, TypeError, KeyError) as exc:
-        parser.error(str(exc))
+    except RegistryFrameError as exc:
+        failure = str(exc)
+    except (OSError, ValueError, TypeError, KeyError, RecursionError):
+        # Raw filesystem exceptions can include local paths or secret values.
+        failure = "invalid or unsafe registry operation"
+    else:
+        failure = None
+    # argparse.error raises SystemExit; outside the handler there is no
+    # underlying untrusted exception context for telemetry to expose.
+    if failure is not None:
+        parser.error(failure)
     print(json.dumps({
         "output": args.output, "dataset_kind": result["dataset_kind"],
         "scientific_acceptance": False}, sort_keys=True))
