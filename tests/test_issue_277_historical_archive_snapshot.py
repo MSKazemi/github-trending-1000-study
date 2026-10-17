@@ -132,7 +132,7 @@ def validate_historical_snapshot(plan, crosswalk, manifest_blob_sha):
             held += 1
         else:
             raise ValueError("unexpected historical disposition")
-    if (matched, held) != (59, 1) or
+    if ((matched, held) != (59, 1) or
             crosswalk["summary"] != {
                 "absent_exact_commit_tag_observed": matched,
                 "present_moved_hold": held}):
