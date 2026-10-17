@@ -27,8 +27,11 @@ def _utc(s):
         raise LiteratureError("searched_at_utc must be string")
     try:
         d = datetime.fromisoformat(s.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise LiteratureError("invalid searched_at_utc") from exc
+    except ValueError:
+        # The datetime parser can place caller-provided text in ValueError.
+        d = None
+    if d is None:
+        raise LiteratureError("invalid searched_at_utc")
     if d.tzinfo is None or d.utcoffset().total_seconds() != 0:
         raise LiteratureError("search timestamp must be UTC")
     if d > datetime.now(timezone.utc) + timedelta(minutes=5):
@@ -170,15 +173,28 @@ def audit_file(path):
     ``load_research_json_file`` refuses symlinks, special files, oversized or
     grown inputs and ambiguous JSON with fixed, non-path diagnostics.
     """
+    failure = None
     try:
         data = load_research_json_file(path)
     except ResearchJSONError as exc:
-        if str(exc) == "invalid or ambiguous JSON input":
-            # The shared reader already hides duplicate keys and filenames;
-            # keep this tool's established decoder diagnostic.
-            raise LiteratureError("input must be strict UTF-8 JSON without duplicate "
-                                  "keys or invalid numbers") from None
-        raise LiteratureError(str(exc)) from exc
+        # Exit this handler before raising a public error: the shared reader's
+        # full exception chain can contain private decoder text or paths.
+        reason = str(exc)
+        if reason == "invalid or ambiguous JSON input":
+            failure = ("input must be strict UTF-8 JSON without duplicate "
+                       "keys or invalid numbers")
+        elif reason in {
+                "invalid bounded JSON input byte limit",
+                "input must be a regular non-symlink file",
+                "input must be a readable regular non-symlink file",
+                "input exceeds configured JSON byte limit",
+                "cannot safely read input file",
+        }:
+            failure = reason
+        else:
+            failure = "invalid or unsafe research JSON input"
+    if failure is not None:
+        raise LiteratureError(failure)
     return audit(data)
 
 
@@ -186,10 +202,18 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
+    failure = None
     try:
         out = audit_file(args.input)
-    except (OSError, ValueError, RecursionError) as exc:
-        ap.error(str(exc))
+    except LiteratureError as exc:
+        # Domain errors above use bounded public messages only.
+        failure = str(exc)
+    except (OSError, ValueError, RecursionError):
+        failure = "invalid or unsafe literature input"
+    # argparse.error raises SystemExit. Outside the except block, its
+    # __context__ cannot retain the original private source exception.
+    if failure is not None:
+        ap.error(failure)
     print(json.dumps(out, indent=2, sort_keys=True))
 
 
