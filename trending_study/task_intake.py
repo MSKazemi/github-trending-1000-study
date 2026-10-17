@@ -78,7 +78,14 @@ def sample(frame):
                 raise IntakeError("invalid open issue metadata")
             suffix="pull" if issue["is_pull_request"] else "issues"
             expected=f"https://github.com/{repo}/{suffix}/{n}"
-            if issue["html_url"].lower()!=expected.lower():
+            # The reduced frame records the *exact* source URL. A loose
+            # .lower() comparison accepts noncanonical paths, while a list,
+            # null or object raises AttributeError before the CLI can produce
+            # a controlled, privacy-safe input diagnostic.
+            supplied_url = issue["html_url"]
+            if (not isinstance(supplied_url, str)
+                    or len(supplied_url) > 512
+                    or supplied_url != expected):
                 raise IntakeError("issue URL mismatch")
             created=utc(issue["created_at_utc"])
             updated=utc(issue["updated_at_utc"])
