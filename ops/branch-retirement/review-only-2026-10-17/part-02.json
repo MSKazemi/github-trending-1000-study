@@ -1,0 +1,201 @@
+{
+  "batch_index": 2,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "fix/issue-22-license-evidence-public-url-20261016",
+      "sha": "9675bb6e36e7f6352ba323f8ca7a559b1f4e965c",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 295,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/PACKAGE_IDENTITY_PREINSTALL_GATE_2026_10.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "595f23707742078617ee90c5220277be78158694",
+          "main_blob_sha": "595f23707742078617ee90c5220277be78158694",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_package_public_evidence.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "9aee87276dffb0948bdbb90561217e91d4981277",
+          "main_blob_sha": "9aee87276dffb0948bdbb90561217e91d4981277",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/package_review.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "03fc49b6c75da7a6e6810af8eb54974a9bbb092f",
+          "main_blob_sha": "fb98707cc69bdeae1fed15f5aa19df03ad149af4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/issue-222-requisition-closure-interval-20261016",
+      "sha": "b7f0359a1fbe49178ac032133985eefbc1112185",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 295,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/HIRING_LONGITUDINAL_PROTOCOL_2026-10-13.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "921288fe99c7884cc7f2a69f1b1c6f8f3ccdb4fe",
+          "main_blob_sha": "921288fe99c7884cc7f2a69f1b1c6f8f3ccdb4fe",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_hiring_closure_interval.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "a1f4ce1ff9a42d15a222150f90c6a7c160643df3",
+          "main_blob_sha": "a1f4ce1ff9a42d15a222150f90c6a7c160643df3",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/hiring_observations.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "b511bcce635eb1fa1c015404d44b1b876a6fd117",
+          "main_blob_sha": "b9611d465a27d373cbfb37faa32e94609a01bb58",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/10-cost-ledger-and-study-tracker-consolidation-20261017",
+      "sha": "c990eefdb2922d47f8f4bddd61047b016f85c3be",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 60,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/10-cost-ledger-safe-file-reader-20261016",
+      "sha": "1e656cfcbceb4995467280b796e77e870c6c5f39",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 284,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/19-goldset-redacted-errors-20261016",
+      "sha": "fc21f35a9d51e9ad2f8d9362f26cd9d89a388ecf",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 272,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/22-noncanonical-ipv4-urls-20261016",
+      "sha": "db8db8077560f8c90a5ddcdd38569999735af5a6",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 276,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/22-pypi-duplicate-slash-20261017",
+      "sha": "643c43066a8da200e7b89edf0ba8a79fb2a2ace6",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 439,
+          "draft": true,
+          "head_sha": "643c43066a8da200e7b89edf0ba8a79fb2a2ace6"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/PACKAGE_REVIEW_NUMERIC_HOST_ALIASES_2026_10_16.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "de082b1dad1de4b148f892a28180bca61b5a399a",
+          "main_blob_sha": "7edd57183f8057c7cc7ba6d6043fd33ca57b3bfe",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_package_review.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "dc2af5b9e977972a4dfecbe039e6ffe47d56a114",
+          "main_blob_sha": "b19cefe52444d021dff98ee7917202980eab6e50",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/package_review.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "f5d0342f1ec66482b44dba52cdad82ad35f01965",
+          "main_blob_sha": "fb98707cc69bdeae1fed15f5aa19df03ad149af4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    }
+  ]
+}
