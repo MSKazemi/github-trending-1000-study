@@ -283,11 +283,14 @@ The same readback observed **229 archive refs matching the dated prefix**, **0 r
 
 ## 2026-10-17 proposed immutable tag protection (ADMIN ACTION NOT PERFORMED)
 
-An explicitly **uninstalled** ruleset payload is saved as
-[`ops/branch-retirement/immutable-branch-archive-tags.proposed.json`](../ops/branch-retirement/immutable-branch-archive-tags.proposed.json).
-It matches the dormant retirement verifier's *required* name, repository-tag
-scope and active update/deletion restrictions. It is a **reviewable candidate
-configuration**, not an observed effective GitHub policy. The read-only
+Reuse the already versioned **uninstalled** canonical ruleset proposal:
+[`ops/rulesets/branch-archive-tags.json`](../ops/rulesets/branch-archive-tags.json).
+An overlapping proposed JSON copy had the **identical Git blob SHA**
+`fbb632904a4badccfe5e0b69601c6347078d95b0` and was intentionally omitted to prevent two
+configurations drifting apart. The canonical payload matches the dormant
+retirement verifier's required name, repository-tag scope and update/deletion
+restrictions. This is a reviewable **candidate configuration**, not an
+observed effective GitHub policy. The read-only
 ruleset endpoint returned `[]` and `main.protected=false` during this
 audit.
 
