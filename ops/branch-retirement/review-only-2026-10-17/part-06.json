@@ -1,0 +1,225 @@
+{
+  "batch_index": 6,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "research/issue-6-rank-drift-oct2026",
+      "sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 764,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/TRENDING_DRIFT_OFFLINE_2026_10.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "4208dc955a111b81e2995e1407b56c74a7e8a637",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_trending_drift.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "787a4975c5501c37db3c8270f5ee63d975c7e119",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/trending_drift.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "837195677d4be06742a53a4ddd9519bd15db2c23",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-7-literature-ledger-oct2026",
+      "sha": "4172d37e77415ca6eff49266e27a2073b750cee4",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 15,
+        "behind_by": 750,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/LITERATURE_SCREENING_LEDGER_2026_10.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "9b925038e59a46d5721c7d24bb54ad9a9b701893",
+          "main_blob_sha": "a748e49574a473502e577e51434cc8aac2762fc7",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_literature_ledger.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "e250e5d0d0d49ed4f10b96352c4794cbda850dd3",
+          "main_blob_sha": "cabd9e7246ffb4ab3a7188f248b18617041f7d46",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/literature_ledger.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "8c4530d9b77c078ca988975953756cad09b9674c",
+          "main_blob_sha": "66a9ee58b56267041d61db9a9bc75bcde3067b6b",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-7-literature-source-screen-20261016",
+      "sha": "fcd28b373073c1a9ee9fdc164561eee7585c05ea",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 271,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-15-registry-cohort-pilot-20261014",
+      "sha": "1f02a5c58fc854c26892122b6697173fb6b95437",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 248,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-22-supply-chain-gate-oct2026",
+      "sha": "9e0ea7654defaf196202739a11e95a349bef0fd1",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 24,
+        "behind_by": 764,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/PACKAGE_IDENTITY_PREINSTALL_GATE_2026_10.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "bb674a088e6caad2daa92d6dcff483b7107a7e09",
+          "main_blob_sha": "595f23707742078617ee90c5220277be78158694",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_package_review.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "385475abca788d7468b1fa73c15992c303c125b4",
+          "main_blob_sha": "b19cefe52444d021dff98ee7917202980eab6e50",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/package_review.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "f48559884c786b7899bb432264b0eee126d0a76b",
+          "main_blob_sha": "fb98707cc69bdeae1fed15f5aa19df03ad149af4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-100-github-changelog-ledger-20261016",
+      "sha": "4ffbb5c953cf8d4dd477e9b7a13983845e76867d",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 4,
+        "behind_by": 297,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "research/company-intelligence/2026-04-12_2026-10-12/033-github.events.csv",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "0e12d6d668423379f4aaf72d4c5da6938ca4c98c",
+          "main_blob_sha": "a93f703f16fc30ed5e1b2759848b4532ef1ef686",
+          "same_path_blob": false,
+          "alternate_main_paths": [
+            "docs/reviews/2026-10-16-issue-100-provisional-changelog-ledger.csv"
+          ]
+        },
+        {
+          "path": "research/company-intelligence/2026-04-12_2026-10-12/033-github.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "55bfd1fbc52157445beca89787197df25b31ceea",
+          "main_blob_sha": "d53c603b117de1690aebffde96491367c021ce48",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "research/company-intelligence/2026-04-12_2026-10-12/033-github.search-log.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "4d237225ec142388dc4ae90c4529e70b6578e007",
+          "main_blob_sha": "e73fff35fc695470a2811bd7ce1b43514a8229ee",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-223-hiring-blind-agreement",
+      "sha": "397f76044c62c92eb2427d36660255b7c9198cf0",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 260,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    }
+  ]
+}
