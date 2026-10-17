@@ -81,3 +81,8 @@ The synthetic regression checks include a duplicate PR key, nonfinite/overflow/u
 **Practical lesson:** reject duplicate raw keys and unsafe file types *before* assigning research eligibility. Checking the validated Python dictionary alone cannot recover a silently overwritten key.
 
 **2026-10-18 read/write privacy follow-up (#446):** In addition to strict **input** decoding, the offline CLI now uses path-neutral **output** exception messages while preserving the exclusive-create no-overwrite guarantee. An actual subprocess smoke regression runs the original reduced six-source frame through the CLI, confirms the unchanged **90 rows, 46 excluded PRs, 16 selected unreviewed leads**, original reduced-frame digest, and verifies no task is falsely marked independently accepted. Negative cases prove a missing input and an already-existing private output filename cannot appear in stderr. These are offline software checks only, not source authentication, human task screening, consent or study preregistration.
+
+
+## 2026-10-18 direct-call traceback safety follow-up
+
+The offline CLI now leaves both input-decoding and output-write `except` blocks before raising `SystemExit`. Merely showing a neutral `stderr` message does not prevent full exception telemetry from exposing a raw `FileExistsError` filename or strict-decoder private JSON key through `SystemExit.__context__`. A synthetic direct-call regression checks the full formatted traceback, empty cause/context, missing and duplicate-key private inputs, pre-existing private output, and preserved prior output bytes. **This is software error hygiene only**, not observed participant/source approval or a license to collect new data.

@@ -1,4 +1,7 @@
 import copy
+from contextlib import redirect_stderr
+import io
+import traceback
 import json
 from pathlib import Path
 import subprocess
@@ -6,7 +9,7 @@ import sys
 import re
 import tempfile
 import unittest
-from trending_study.task_intake import sample, IntakeError
+from trending_study.task_intake import sample, IntakeError, main
 
 FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.public_2026-10-12.json"
 CROSS_ECOSYSTEM_FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.cross_ecosystem_2026-10-12.json"
@@ -160,6 +163,34 @@ class IntakeTests(unittest.TestCase):
                     self.assertFalse((root / "not_written.json").exists())
             self.assertEqual(private_dest.read_text(encoding="utf-8"),
                              "PRESERVE_THIS")
+
+    def test_direct_cli_exit_has_no_private_exception_context(self):
+        # stderr-only subprocess checks miss the chained FileExistsError/JSON
+        # decoder exception attached to an in-process SystemExit.
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            missing = root / "PRIVATE_SOURCE_MISSING.json"
+            private_out = root / "PRIVATE_OUTPUT_ALREADY_EXISTS.json"
+            private_out.write_text("PRESERVE_EXISTING", encoding="utf-8")
+            malformed = root / "PRIVATE_INPUT_DUPLICATE_KEY.json"
+            malformed.write_text('{"PRIVATE_RAW_FIELD":1,"PRIVATE_RAW_FIELD":2}',encoding="utf-8")
+            for input_path, output_path in (
+                (missing, root / "new.json"),
+                (malformed, root / "fresh.json"),
+                (FRAME, private_out),
+            ):
+                with self.subTest(case=input_path.name):
+                    stderr = io.StringIO()
+                    with redirect_stderr(stderr):
+                        with self.assertRaises(SystemExit) as raised:
+                            main(["--input", str(input_path), "--output", str(output_path)])
+                    error = raised.exception
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    trace = "".join(traceback.format_exception(error))
+                    self.assertNotIn("PRIVATE_", trace + stderr.getvalue())
+            self.assertEqual(private_out.read_text(encoding="utf-8"), "PRESERVE_EXISTING")
 
     def test_reject_future_labeled_capture(self):
         x = self.frame()

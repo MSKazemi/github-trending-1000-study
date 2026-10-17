@@ -115,10 +115,17 @@ def main(argv=None):
     # Classify only strictly decoded, descriptor-checked bounded source bytes.
     # Duplicate keys can otherwise change PR-vs-issue eligibility silently.
     # The parser handles malformed input without echoing source names/keys.
+    input_error = False
     try:
         frame=load_research_json_file(a.input,max_bytes=MAX_FILE_BYTES)
     except ResearchJSONError:
+        # A strict decoder's raw exception may retain private keys/paths.
+        input_error = True
+    # Exit outside the handler: otherwise SystemExit.__context__ still contains
+    # the raw exception and a full traceback can leak sensitive input.
+    if input_error:
         p.exit(2,"error: invalid or unsafe task-intake JSON input\n")
+    output_error = None
     try:
         result=sample(frame)
         out=Path(a.output)
@@ -127,12 +134,12 @@ def main(argv=None):
             json.dump(result,f,indent=2)
             f.write("\n")
     except FileExistsError:
-        # Preserve the no-clobber signal without echoing a private output path.
-        p.exit(2,"error: File exists: task-intake output already exists\n")
+        output_error = "File exists: task-intake output already exists"
     except (OSError,ValueError,TypeError):
-        # Neither source object keys nor output path components belong in
-        # stderr. Distinguish observed user-facing failure from hidden details.
-        p.exit(2,"error: invalid task-intake frame or unsafe output\n")
+        output_error = "invalid task-intake frame or unsafe output"
+    if output_error is not None:
+        # Keep the exception chain empty for direct callers and full-trace logs.
+        p.exit(2,"error: "+output_error+"\n")
     print(json.dumps({"total_rows":result["total_rows"],"selected_issue_candidates":result["selected_issue_candidates"]}))
 
 if __name__=="__main__":
