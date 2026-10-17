@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "synthetic",
+  "candidates": [
+    {
+      "purl": "pkg:pypi/synthetic-example@1.0.0",
+      "version": "1.0.0",
+      "ecosystem": "pypi",
+      "registry_url": "https://pypi.org/project/synthetic-example/",
+      "release_url": "https://example.invalid/release/1.0.0",
+      "source_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "captured_at_utc": "2026-10-12T20:00:00Z",
+      "gates": {
+        "identity": "unknown",
+        "license": "unknown",
+        "security": "unknown",
+        "provenance": "unknown",
+        "maintenance": "unknown",
+        "functional": "unknown"
+      },
+      "evidence": {}
+    }
+  ]
+}
