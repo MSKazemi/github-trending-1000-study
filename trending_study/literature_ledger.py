@@ -104,6 +104,7 @@ def audit(data):
                     or source_url != source_url.strip()
                     or any(ord(ch) < 33 or ord(ch) == 127 for ch in source_url)):
                 raise LiteratureError("included record requires clean source_url")
+            malformed_source = False
             try:
                 parsed_source = urlsplit(source_url)
                 # urlsplit defers malformed/out-of-range port checks until access.
@@ -119,8 +120,12 @@ def audit(data):
                                 and bool(parsed_source.path.strip("/"))
                                 and "\\" not in source_url
                                 and re.search(r"%(?![0-9A-Fa-f]{2})", source_url) is None)
-            except ValueError as exc:
-                raise LiteratureError("invalid included source_url") from exc
+            except ValueError:
+                # A URL parser error may contain submitted source URL bytes.
+                # Raise only after leaving its exception scope.
+                malformed_source = True
+            if malformed_source:
+                raise LiteratureError("invalid included source_url") from None
             if not clean_source:
                 raise LiteratureError("included source_url must be canonical clean HTTPS")
             # This offline report never follows links, but publisher evidence
@@ -139,6 +144,15 @@ def audit(data):
                 literal_address = None
             if literal_address is not None and not literal_address.is_global:
                 raise LiteratureError("included source_url must use a public host")
+            if literal_address is None:
+                # Format triage only: a plausible hostname does not imply
+                # publisher ownership, working DNS, safe resolution or rights.
+                labels = host.split(".")
+                dns_label = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+                if (len(host) > 253 or len(labels) < 2 or any(
+                        len(label) > 63 or re.fullmatch(dns_label, label) is None
+                        for label in labels)):
+                    raise LiteratureError("included source_url requires canonical public DNS host")
             # ipaddress deliberately refuses shortened/octal/hex and integer
             # IPv4 aliases, while some URL clients still resolve 127.1,
             # 2130706433 or 0x7f000001 to loopback. This validator never
