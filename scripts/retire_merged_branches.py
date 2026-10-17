@@ -347,11 +347,21 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
             or branch.get("commit", {}).get("sha") != sha):
         return "blocked_protected_or_changed"
     pr = client.get(f"/repos/{repo}/pulls/{prno}")
-    if (pr.get("merged") is not True or pr.get("state") != "closed"
-            or pr.get("head", {}).get("ref") != name
-            or pr.get("head", {}).get("sha") != sha
-            or pr.get("head", {}).get("repo", {}).get("full_name") != repo
-            or pr.get("base", {}).get("ref") != "main"
+    # GitHub can return null head.repo for a deleted repository, and APIs
+    # can return partial/malformed nested objects. These are NOT evidence
+    # of a verified merged branch; fail closed without dereferencing None.
+    if not isinstance(pr, dict):
+        return "blocked_pr_not_identical_and_merged"
+    head = pr.get("head")
+    base = pr.get("base")
+    if not isinstance(head, dict) or not isinstance(base, dict):
+        return "blocked_pr_not_identical_and_merged"
+    head_repo = head.get("repo")
+    if (not isinstance(head_repo, dict)
+            or pr.get("merged") is not True or pr.get("state") != "closed"
+            or head.get("ref") != name or head.get("sha") != sha
+            or head_repo.get("full_name") != repo
+            or base.get("ref") != "main"
             or pr.get("merge_commit_sha") != item["merge_commit_sha"]):
         return "blocked_pr_not_identical_and_merged"
     owner = repo.split("/", 1)[0]
