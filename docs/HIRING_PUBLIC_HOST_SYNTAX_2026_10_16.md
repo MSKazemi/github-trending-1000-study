@@ -37,3 +37,25 @@ permission to observe people is introduced.
 
 **Maintainer lesson:** audit nested exception causes, not just the final
 CLI error text, when research tooling may process sensitive identifiers.
+
+## 2026-10-17 single-label intranet host exclusion
+
+Follow-up engineering inspection found that `_url()` still considered
+`https://build-server/jobs/J1` and `https://intranet/jobs/J1` eligible
+public-source URL strings despite prohibiting localhost and local suffixes.
+Undotted hostnames can resolve via split-horizon, internal DNS or search
+domains; a single label is not a defensible public employer origin for the
+proposed study. The offline structural gate now requires at least two
+syntactically valid DNS labels, while preserving previously accepted ordinary
+and interior-hyphenated public hostname spellings.
+
+A synthetic regression covers single-label rejection directly and through
+the declared source index, plus valid multi-label controls. The rule neither
+resolves DNS nor fetches a source. It does **not** prove that a multi-label
+host is public, owned by an employer, safe to connect to, authorized for
+research, or historically observed. All independent source, methods,
+consent and longitudinal review requirements remain open.
+
+**Practical lesson:** consistency between validators matters: requiring
+the public HTTPS scheme is insufficient if a source validator still admits
+intranet-only hostnames through otherwise valid DNS-label syntax.
