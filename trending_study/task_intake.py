@@ -126,8 +126,13 @@ def main(argv=None):
         with out.open("x",encoding="utf-8") as f:
             json.dump(result,f,indent=2)
             f.write("\n")
-    except (OSError,ValueError,TypeError) as e:
-        p.exit(2,f"error: {e}\n")
+    except FileExistsError:
+        # Preserve the no-clobber signal without echoing a private output path.
+        p.exit(2,"error: File exists: task-intake output already exists\n")
+    except (OSError,ValueError,TypeError):
+        # Neither source object keys nor output path components belong in
+        # stderr. Distinguish observed user-facing failure from hidden details.
+        p.exit(2,"error: invalid task-intake frame or unsafe output\n")
     print(json.dumps({"total_rows":result["total_rows"],"selected_issue_candidates":result["selected_issue_candidates"]}))
 
 if __name__=="__main__":

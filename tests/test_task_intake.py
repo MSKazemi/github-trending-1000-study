@@ -113,6 +113,54 @@ class IntakeTests(unittest.TestCase):
                     self.assertNotIn("PRIVATE_", proc.stderr)
                     self.assertFalse(output.exists())
 
+    def test_cli_preserves_frozen_90_row_16_issue_intake(self):
+        # Exercise the genuine CLI, not just the deterministic sample() helper.
+        with tempfile.TemporaryDirectory() as d:
+            output = Path(d) / "source_selection.json"
+            run = subprocess.run(
+                [sys.executable, "-m", "trending_study.task_intake",
+                 "--input", str(CROSS_ECOSYSTEM_FRAME), "--output", str(output)],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual(json.loads(run.stdout), {
+                "total_rows": 90, "selected_issue_candidates": 16
+            })
+            stored = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual((stored["total_rows"], stored["selected_issue_candidates"]),
+                             (90, 16))
+            self.assertEqual(sum(row["selection_status"] == "excluded_pr_not_issue"
+                                 for row in stored["ledger"]), 46)
+            frame = json.loads(CROSS_ECOSYSTEM_FRAME.read_text(encoding="utf-8"))
+            self.assertEqual(stored["reduced_frame_sha256"],
+                             sample(frame)["reduced_frame_sha256"])
+            self.assertTrue(all(row["independent_acceptance_status"] == "not_frozen"
+                                for row in stored["ledger"]))
+
+    def test_cli_output_errors_do_not_expose_private_paths_or_clobber(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            missing = root / "PRIVATE_TASK_SOURCE.json"
+            private_dest = root / "PRIVATE_UNREVIEWED_PARTICIPANT.json"
+            private_dest.write_text("PRESERVE_THIS", encoding="utf-8")
+            cases = (
+                (missing, root / "not_written.json", "invalid or unsafe task-intake"),
+                (FRAME, private_dest, "File exists"),
+            )
+            for source, destination, error in cases:
+                with self.subTest(source=source.name, destination=destination.name):
+                    run = subprocess.run(
+                        [sys.executable, "-m", "trending_study.task_intake",
+                         "--input", str(source), "--output", str(destination)],
+                        capture_output=True, text=True,
+                    )
+                    self.assertEqual(run.returncode, 2)
+                    self.assertIn(error, run.stderr)
+                    self.assertNotIn("PRIVATE_", run.stderr)
+                    self.assertFalse((root / "not_written.json").exists())
+            self.assertEqual(private_dest.read_text(encoding="utf-8"),
+                             "PRESERVE_THIS")
+
     def test_reject_future_labeled_capture(self):
         x = self.frame()
         x["captured_at_utc"] = "2030-01-01T00:00:00Z"
