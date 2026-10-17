@@ -43,7 +43,8 @@ def _read(path):
     for candidate in (path, *path.parents):
         if candidate.is_symlink():
             _error("symlink in evidence file path")
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    flags = (os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+             | getattr(os, "O_NONBLOCK", 0))
     fd = os.open(path, flags)
     try:
         mode = os.fstat(fd).st_mode
@@ -231,9 +232,11 @@ def validate_snapshot(snapshot, manifest, manifest_bytes):
         counted[label] += 1
 
     _dict(snapshot["summary"], tuple(counted), "summary")
-    if any(type(snapshot["summary"][key]) is not int or
-           snapshot["summary"][key] != count for key, count in counted.items()):
-        _error("claimed summary disagrees with row-level observations")
+    if (any(type(snapshot["summary"][key]) is not int or
+            snapshot["summary"][key] != count for key, count in counted.items()) or
+            counted != {"absent_exact_commit_tag_observed": 59,
+                        "present_moved_hold": 1}):
+        _error("claimed summary disagrees with frozen 59/1 row-level observations")
     limitations = snapshot["provenance_limits"]
     if (type(limitations) is not list or not limitations or len(limitations) > 30 or
             any(type(x) is not str or not (1 <= len(x) <= 1024) for x in limitations)):
@@ -257,8 +260,10 @@ def main():
     args = parser.parse_args()
     try:
         outcome = check(args.root)
-    except (OSError, ValueError, UnicodeError) as exc:
-        parser.exit(1, "Archive crosswalk BLOCKED: " + str(exc) + "\n")
+    except (OSError, ValueError, UnicodeError):
+        # OSError and JSON exceptions can carry user/private path components.
+        # Never echo source bytes, paths, or original exception chains in CLI.
+        parser.exit(1, "Archive crosswalk BLOCKED: invalid or unsafe evidence\n")
     print(json.dumps(outcome, sort_keys=True))
 
 

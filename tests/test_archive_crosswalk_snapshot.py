@@ -1,5 +1,7 @@
 """Offline, synthetic adversarial tests of the historical archive evidence gate."""
 import copy
+from contextlib import redirect_stderr
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -186,6 +188,48 @@ class ArchiveCrosswalkSnapshotTests(unittest.TestCase):
             (root / SNAPSHOT).write_bytes(b" " * (128 * 1024 + 1))
             with self.assertRaises(ValueError):
                 check(root)
+
+
+    def test_original_59_1_claim_cannot_be_rewritten_even_consistently(self):
+        snapshot, manifest, raw = fixture()
+        row = snapshot["manifest_rows"][-1]
+        row["observed_branch_sha"] = None
+        row["observed_archive_sha"] = row["expected_sha"]
+        row["observed_archive_object_type"] = "commit"
+        row["classification"] = "absent_exact_commit_tag_observed"
+        snapshot["summary"] = {
+            "absent_exact_commit_tag_observed": 60,
+            "present_moved_hold": 0,
+        }
+        with self.assertRaisesRegex(ValueError, "59/1"):
+            validate_snapshot(snapshot, manifest, raw)
+
+    def test_cli_errors_redact_private_missing_root(self):
+        from scripts.check_archive_crosswalk_snapshot import main
+        with tempfile.TemporaryDirectory() as tmp:
+            secret_root = Path(tmp) / "PRIVATE_PARTICIPANT_PATH"
+            err = io.StringIO()
+            with redirect_stderr(err), self.assertRaises(SystemExit):
+                from unittest.mock import patch
+                with patch("sys.argv", ["check_archive_crosswalk_snapshot",
+                                        "--root", str(secret_root)]):
+                    main()
+            self.assertIn("BLOCKED", err.getvalue())
+            self.assertNotIn("PRIVATE_PARTICIPANT_PATH", err.getvalue())
+
+    def test_fifo_source_denied_without_reading_content(self):
+        import os
+        if not hasattr(os, "mkfifo"):
+            self.skipTest("FIFO unavailable")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / MANIFEST).parent.mkdir(parents=True)
+            os.mkfifo(root / MANIFEST)
+            (root / SNAPSHOT).parent.mkdir(parents=True)
+            (root / SNAPSHOT).write_text("{}")
+            with self.assertRaises(ValueError):
+                check(root)
+
 
 
 if __name__ == "__main__":
