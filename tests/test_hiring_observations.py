@@ -193,6 +193,28 @@ class ObservationLedgerTests(unittest.TestCase):
             with self.subTest(query=query), self.assertRaises(instrument.HiringObservationError):
                 instrument._url("https://careers.example.invalid/jobs" + query)
 
+    def test_single_label_internal_source_host_is_not_public(self):
+        # Offline source evidence must never certify an intranet hostname as
+        # a public publisher. Other modules already require >=2 DNS labels.
+        for host in ("build-server", "intranet", "jobs", "corp-portal"):
+            with self.subTest(host=host), self.assertRaises(
+                    instrument.HiringObservationError):
+                instrument._url(f"https://{host}/jobs/J1")
+
+        # Ordinary multi-label and hyphenated public syntax is preserved.
+        for host in ("careers.example.invalid", "jobs-board.example.invalid"):
+            with self.subTest(host=host):
+                parsed = instrument._url(f"https://{host}/jobs/J1")
+                self.assertEqual(parsed.hostname, host)
+
+        # A declared source index must also fail before any observation is
+        # accepted, even if its source_id and status appear well formed.
+        data = fixture()
+        data["sources"][0]["index_url"] = "https://intranet/jobs"
+        data["sources"][0]["listing_host"] = "intranet"
+        with self.assertRaises(instrument.HiringObservationError):
+            instrument.audit(data)
+
     def test_public_dns_host_labels_accept_interior_hyphen_but_not_edge(self):
         # DNS labels may contain interior '-' characters. Rejecting all such
         # sites before screening would bias the proposed employer-source frame.
