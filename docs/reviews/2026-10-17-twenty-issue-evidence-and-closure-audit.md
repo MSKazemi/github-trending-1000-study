@@ -43,6 +43,25 @@ For every row, **issue closure = HOLD** until its original acceptance criteria a
 | 19 | [#277](https://github.com/MSKazemi/github-trending-1000-study/issues/277) immutable recovery & SHA-leased branch retirement | Review draft [PR #431](https://github.com/MSKazemi/github-trending-1000-study/pull/431); verify protected archive tags, exact frozen main/ref SHA and reversible recovery before any privileged workflow | Stale historical allowlist and missing tag/main enforcement approval prohibit branch deletion; no cleanup run authorized |
 | 20 | [#279](https://github.com/MSKazemi/github-trending-1000-study/issues/279) no-loss WIP branch reconciliation | Review [PR #417](https://github.com/MSKazemi/github-trending-1000-study/pull/417); reconcile every relevant post-merge-drift and closed-unmerged head with original source provenance, preserve archives | No proven complete current crosswalk or reviewed reduction to <=10 active workstreams; deleting by branch name/PR status alone risks loss |
 
+## Follow-up engineering checkpoint — 2026-10-17
+
+Issue [#19](https://github.com/MSKazemi/github-trending-1000-study/issues/19),
+[PR #425](https://github.com/MSKazemi/github-trending-1000-study/pull/425):
+the offline pooled-goldset CLI now exits *outside* the raw decoder exception
+handler, preventing malformed submitted private keys from surviving in a
+`SystemExit.__context__` traceback. A new synthetic negative test checks the
+complete formatted exception, stderr, and absent cause/context. Documentation
+is updated on the same branch. Final head
+`fc21f35a9d51e9ad2f8d9362f26cd9d89a388ecf` passed all five
+[GitHub Actions checks](https://github.com/MSKazemi/github-trending-1000-study/commit/fc21f35a9d51e9ad2f8d9362f26cd9d89a388ecf/checks):
+Python 3.10/3.12/3.13/3.14 and research-artifacts. No real pilot tasks,
+genuine independent labels, review approval, benchmark findings, PR merge, or
+issue closure occurred. The original issue remains OPEN.
+
+**Maintainer lesson:** inspect exception causes and contexts, not just the
+CLI's stderr; exception exit outside handlers avoids exposing raw decoder
+failures. This is engineering privacy hardening, not a scientific result.
+
 ## Prioritized execution dependencies
 
 1. **Protect the repository first:** resolve #248 via an authorized administrator and deliberate negative enforcement tests; qualified security review of #277 and archival tag immutability precedes any destructive #279 operations. Preserve exact SHAs and never “refresh” a stale approval hash.
