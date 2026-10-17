@@ -22,6 +22,12 @@ class BurdenTests(unittest.TestCase):
         r = summarize([card()])
         self.assertEqual(r["case_count"], 1)
         self.assertEqual(r["missing_component_entries"], 6)
+        self.assertEqual(r["observed_component_entries"], 0)
+        self.assertEqual(r["observed_upstream_component_entries"], 0)
+        self.assertEqual(r["observed_downstream_component_entries"], 0)
+        self.assertIsNone(r["known_partial_minutes_not_a_total"])
+        self.assertIsNone(r["upstream_known_partial_minutes_not_a_total"])
+        self.assertIsNone(r["downstream_known_partial_minutes_not_a_total"])
         self.assertIsNone(r["overall_human_minutes"])
         self.assertIsNone(r["per_accepted_task_minutes"])
         self.assertFalse(r["independent_review_authenticated"])
@@ -40,6 +46,44 @@ class BurdenTests(unittest.TestCase):
         self.assertEqual(r["known_partial_minutes_not_a_total"], 11.5)
         self.assertIsNone(r["overall_human_minutes"])
         self.assertEqual(r["missing_component_entries"], 5)
+
+    def test_observed_zero_differs_from_missing_in_each_direction(self):
+        # All-null reports are null, while truly measured zeros remain 0.0.
+        for field, direction in (
+            ("upstream_review", "upstream"),
+            ("downstream_implementation", "downstream"),
+        ):
+            c = card()
+            c["consent_state"] = "consented"
+            c["human_time_minutes"][field] = 0.0
+            with self.subTest(field=field):
+                r = summarize([c])
+                self.assertEqual(r["known_partial_minutes_not_a_total"], 0.0)
+                self.assertEqual(r["observed_component_entries"], 1)
+                self.assertEqual(r[f"{direction}_known_partial_minutes_not_a_total"], 0.0)
+                opposite = "downstream" if direction == "upstream" else "upstream"
+                self.assertIsNone(r[f"{opposite}_known_partial_minutes_not_a_total"])
+                self.assertEqual(r[f"observed_{direction}_component_entries"], 1)
+                self.assertEqual(r[f"observed_{opposite}_component_entries"], 0)
+                self.assertIsNone(r["overall_human_minutes"])
+                self.assertFalse(r["independent_review_authenticated"])
+
+    def test_partial_group_sums_preserve_missingness_across_cases(self):
+        first = card()
+        first["consent_state"] = "consented"
+        first["human_time_minutes"]["upstream_support"] = 9
+        second = card()
+        second["case_id"] = "FICTIONAL-SECOND-CASE"
+        second["consent_state"] = "consented"
+        summary = summarize([first, second])
+        self.assertEqual(summary["known_partial_minutes_not_a_total"], 9)
+        self.assertEqual(summary["upstream_known_partial_minutes_not_a_total"], 9)
+        self.assertIsNone(summary["downstream_known_partial_minutes_not_a_total"])
+        self.assertEqual(summary["observed_component_entries"], 1)
+        self.assertEqual(summary["observed_upstream_component_entries"], 1)
+        self.assertEqual(summary["observed_downstream_component_entries"], 0)
+        self.assertEqual(summary["missing_component_entries"], 11)
+        self.assertIsNone(summary["overall_human_minutes"])
 
     def test_duplicate_case_does_not_inflate_independent_count(self):
         with self.assertRaisesRegex(BurdenError, "unique"):
@@ -334,6 +378,142 @@ class BurdenTests(unittest.TestCase):
                     self.assertEqual(caught.exception.code, 2)
                     self.assertIn("invalid or unsafe research JSON input", err.getvalue())
                     self.assertNotIn("PRIVATE_SYMLINK_MARKER", err.getvalue())
+
+
+    def test_coded_outcomes_and_separate_effort_missingness_are_descriptive_only(self):
+        first = card()
+        first["consent_state"] = "consented"
+        first["human_time_minutes"] = {
+            "upstream_review": 2, "upstream_support": 3,
+            "downstream_search": 4, "downstream_implementation": 5,
+            "downstream_review_repair": 6, "downstream_followup": 7,
+        }
+        first["task_accepted_by_independent_reviewer"] = "pass"
+        first["outcomes"].update({
+            "actionability": "pass",
+            "newcomer_comprehension_pass": "fail",
+            "followup_30_day": "completed",
+            "followup_90_day": "not_started",
+            "security_or_privacy_incident": "no",
+        })
+        second = copy.deepcopy(first)
+        second["case_id"] = "FICTIONAL-CASE-002"
+        second["human_time_minutes"] = {field: None for field in FIELDS}
+        second["human_time_minutes"]["downstream_search"] = 8
+        second["task_accepted_by_independent_reviewer"] = "fail"
+        second["outcomes"].update({
+            "actionability": "fail",
+            "newcomer_comprehension_pass": "unknown",
+            "followup_30_day": "missing",
+            "followup_90_day": "unknown",
+            "security_or_privacy_incident": "yes",
+        })
+        withdrawn = card()
+        withdrawn["case_id"] = "FICTIONAL-CASE-003"
+        withdrawn["consent_state"] = "withdrawn"
+        result = summarize([first, second, withdrawn])
+        self.assertEqual(result["case_count"], 3)
+        self.assertEqual(result["consent_state_counts"], {
+            "consented": 2, "not_consented": 0, "withdrawn": 1})
+        self.assertEqual(
+            result["task_acceptance_counts_self_reported_not_authenticated"],
+            {"fail": 1, "pass": 1, "unknown": 1})
+        self.assertEqual(result["upstream_known_partial_minutes_not_a_total"], 5)
+        self.assertEqual(result["downstream_known_partial_minutes_not_a_total"], 30)
+        self.assertEqual(result["known_partial_minutes_not_a_total"], 35)
+        self.assertEqual(result["missing_upstream_component_entries"], 4)
+        self.assertEqual(result["missing_downstream_component_entries"], 7)
+        self.assertEqual(result["missing_component_entries"], 11)
+        self.assertEqual(result["missing_or_not_due_outcome_entries"], 9)
+        counts = result["outcome_counts_self_reported_not_authenticated"]
+        self.assertEqual(counts["actionability"],
+                         {"fail": 1, "pass": 1, "unknown": 1})
+        self.assertEqual(counts["newcomer_comprehension_pass"],
+                         {"fail": 1, "pass": 0, "unknown": 2})
+        self.assertEqual(counts["followup_30_day"],
+                         {"completed": 1, "missing": 1,
+                          "not_started": 1, "unknown": 0})
+        self.assertEqual(counts["followup_90_day"],
+                         {"completed": 0, "missing": 0,
+                          "not_started": 2, "unknown": 1})
+        self.assertEqual(counts["security_or_privacy_incident"],
+                         {"no": 1, "unknown": 1, "yes": 1})
+        self.assertFalse(result["independent_review_authenticated"])
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertIsNone(result["overall_human_minutes"])
+        self.assertIsNone(result["per_accepted_task_minutes"])
+        self.assertNotIn("FICTIONAL-CASE", json.dumps(result))
+
+    def test_followup_chronology_rejects_90_day_before_30_day_is_due(self):
+        for later in ("completed", "missing"):
+            record = card()
+            record["consent_state"] = "consented"
+            record["outcomes"]["followup_30_day"] = "not_started"
+            record["outcomes"]["followup_90_day"] = later
+            with self.subTest(later=later), self.assertRaisesRegex(
+                    BurdenError, "follow-up order"):
+                summarize([record])
+        # Missing due 30-day review and not-yet-due 90-day is legitimate.
+        record["outcomes"]["followup_30_day"] = "missing"
+        record["outcomes"]["followup_90_day"] = "not_started"
+        result = summarize([record])
+        self.assertEqual(
+            result["outcome_counts_self_reported_not_authenticated"]
+                  ["followup_30_day"]["missing"], 1)
+
+    def test_unknown_coded_outcome_values_are_rejected_without_echo(self):
+        for name, value in (
+                ("actionability", "wins"),
+                ("newcomer_comprehension_pass", "completed"),
+                ("followup_30_day", "yes"),
+                ("followup_90_day", "approved"),
+                ("security_or_privacy_incident", "pass"),
+                ("actionability", []),
+                ("followup_30_day", {"private": "content"})):
+            record = card()
+            record["consent_state"] = "consented"
+            record["outcomes"][name] = value
+            with self.subTest(name=name, value=type(value).__name__):
+                with self.assertRaisesRegex(BurdenError, "outcome schema"):
+                    summarize([record])
+
+    def test_real_pending_pilot_coded_outcomes_are_not_authenticated(self):
+        record = card()
+        record["synthetic"] = False
+        record["not_empirical_data"] = False
+        record["frame_commit"] = "a" * 40
+        record["consent_state"] = "consented"
+        record["task_accepted_by_independent_reviewer"] = "fail"
+        record["outcomes"]["actionability"] = "fail"
+        record["outcomes"]["newcomer_comprehension_pass"] = "unknown"
+        result = summarize([record])
+        self.assertEqual(result["dataset_kind"], "self_reported_pilot")
+        self.assertEqual(
+            result["task_acceptance_counts_self_reported_not_authenticated"]["fail"], 1)
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertFalse(result["independent_review_authenticated"])
+        self.assertIsNone(result["overall_human_minutes"])
+
+
+
+    def test_fictional_three_case_batch_fixture_has_null_and_negative_outcomes(self):
+        fixture = Path(__file__).resolve().parents[1] / (
+            "examples/maintainer_feasibility_batch.synthetic.json")
+        data = json.loads(fixture.read_text(encoding="utf-8"))
+        result = summarize(data["cases"])
+        self.assertEqual(result["case_count"], 3)
+        self.assertEqual(result["dataset_kind"], "synthetic")
+        self.assertEqual(result["consent_state_counts"]["withdrawn"], 1)
+        self.assertEqual(
+            result["outcome_counts_self_reported_not_authenticated"]
+                  ["actionability"]["fail"], 1)
+        self.assertEqual(result["missing_component_entries"], 11)
+        self.assertEqual(result["missing_or_not_due_outcome_entries"], 9)
+        self.assertIsNone(result["overall_human_minutes"])
+        self.assertIsNone(result["per_accepted_task_minutes"])
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertNotIn("FICTIONAL-CASE-", json.dumps(result))
+
 
 
 if __name__ == "__main__":
