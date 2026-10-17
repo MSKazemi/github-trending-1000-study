@@ -53,12 +53,17 @@ def _clean_https_url(url, field):
             or "\\" in url
             or any(ord(char) <= 32 or ord(char) == 127 for char in url)):
         raise PackageReviewError(f"{field} requires clean HTTPS URL without whitespace")
+    malformed_authority = False
     try:
         parsed = urlparse(url)
         # Access .port to force validation of malformed/out-of-range port syntax.
         port = parsed.port
-    except ValueError as exc:
-        raise PackageReviewError(f"{field} has malformed HTTPS authority") from exc
+    except ValueError:
+        # urllib's exception may hold caller-supplied URL components. Do not
+        # chain it to public API exceptions logged in full tracebacks.
+        malformed_authority = True
+    if malformed_authority:
+        raise PackageReviewError(f"{field} has malformed HTTPS authority") from None
     if port == 0:
         raise PackageReviewError(f"{field} has malformed HTTPS authority (port 0)")
     if (parsed.scheme != "https" or not parsed.hostname or parsed.netloc.endswith(":")
@@ -225,17 +230,31 @@ def evaluate(data):
 
 def evaluate_file(path):
     """Read one bounded regular artifact via the shared strict research reader."""
+    failure = None
     try:
         data = load_research_json_file(path, max_bytes=MAX_FILE_BYTES)
     except ResearchJSONError as exc:
-        if str(exc) == "invalid or ambiguous JSON input":
-            # The shared reader already hides duplicate keys, nesting-limit
-            # context and filenames; keep this tool's established diagnostic.
-            raise PackageReviewError(
+        # The shared decoder's exception context can include private JSON
+        # keys, file paths or raw parsing errors. Defer the public raise
+        # until AFTER leaving the exception handler, and only use fixed
+        # messages that are already part of this tool's public contract.
+        message = str(exc)
+        if message == "invalid or ambiguous JSON input":
+            failure = (
                 "input must be strict UTF-8 JSON without duplicate keys or invalid numbers"
-            ) from None
-        # Remaining shared-reader messages are fixed and contain no path.
-        raise PackageReviewError(str(exc)) from exc
+            )
+        elif message in {
+                "invalid bounded JSON input byte limit",
+                "input must be a regular non-symlink file",
+                "input must be a readable regular non-symlink file",
+                "input exceeds configured JSON byte limit",
+                "cannot safely read input file",
+        }:
+            failure = message
+        else:
+            failure = "invalid or unsafe package review input"
+    if failure is not None:
+        raise PackageReviewError(failure) from None
     return evaluate(data)
 
 
@@ -243,10 +262,17 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", required=True, type=Path)
     args = ap.parse_args(argv)
+    failure = None
     try:
         out = evaluate_file(args.input)
-    except (OSError, ValueError, RecursionError) as exc:
-        ap.error(str(exc))
+    except PackageReviewError as exc:
+        failure = str(exc)
+    except (OSError, ValueError, RecursionError):
+        failure = "invalid or unsafe package review input"
+    # argparse.error raises SystemExit. Doing so inside an except would
+    # attach the exception's private traceback context to SystemExit.
+    if failure is not None:
+        ap.error(failure)
     print(json.dumps(out, indent=2, sort_keys=True))
 
 
