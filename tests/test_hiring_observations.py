@@ -104,6 +104,33 @@ class ObservationLedgerTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(instrument.HiringObservationError):
                 instrument.audit(data)
 
+    def test_cross_source_requisition_collision_requires_adjudication(self):
+        # Two declared public source indexes can reuse a requisition number.
+        # Do not pool them solely because employer_id and requisition_id match.
+        data = fixture()
+        original = data["sources"][0]
+        data["sources"].append(dict(
+            original, source_id="SOURCE2",
+            index_url="https://careers.example.invalid/archive",
+        ))
+        a = copy.deepcopy(data["observations"][0])
+        b = copy.deepcopy(data["observations"][1])
+        b["source_id"] = "SOURCE2"
+        data["observations"] = [a, b]
+        with self.assertRaisesRegex(
+                instrument.HiringObservationError, "cross-source requisition"):
+            instrument.audit(data)
+
+        # Distinct identifiers remain valid even with the same employer:
+        # rejecting an ambiguous join is not rejecting another source.
+        b["requisition_id"] = "REQ_OTHER"
+        b["canonical_url"] = "https://careers.example.invalid/jobs/REQ_OTHER/REMOTE"
+        data["observations"] = [a, b]
+        result = instrument.audit(data)
+        self.assertEqual(result["unique_requisition_keys"], 2)
+        self.assertEqual(result["observation_attempts"], 2)
+        self.assertFalse(result["independent_verification"])
+
     def test_duplicate_observation_and_source_alias_and_requisition_alias(self):
         data = fixture(); data["observations"][1]["observation_id"] = data["observations"][0]["observation_id"]
         with self.assertRaises(instrument.HiringObservationError): instrument.audit(data)
