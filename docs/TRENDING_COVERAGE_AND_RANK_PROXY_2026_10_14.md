@@ -148,3 +148,33 @@ interval, causal effect, ranking-algorithm recovery, or deployed model utility.
 The rank-proxy summary now reports `distinct_capture_source_digests` and `repeated_capture_source_digest_groups` by capture ID. Two chronologically distinct entries with an identical claimed raw source SHA-256 may represent legitimately unchanged page content or accidental reuse of a saved page. The instrument **flags that ambiguity**, without labeling either capture invalid, granting independent authentication, or counting the two as independent field-observed exposures.
 
 One fictional regression checks a repeated digest across training pages while preserving the original predictor and heldout score computation. Repeated content hashes require human source/capture/UTC/HTTP audit before a real study can infer independent measurements. An absence of repeats does not establish authentic capture, nor are these data available under the current live Trending source-access prohibition. The issue #6 prospective real-page and qualified methods gates remain open.
+
+## 2026-10-17 follow-up: cross-page ranking evidence leakage (issue #6)
+
+**Engineering correction only, not a completed Trending study.** The earlier
+offline rank-proxy input check refused a `feature_source_sha256` equal to the
+`source_sha256` of its *own* page. It did not detect that a purported feature
+snapshot might reuse the bytes of **another target page** (including an
+eventual holdout page) while declaring an earlier `recorded_at_utc`. That
+reused source could compromise the evidence separation on which the training
+and heldout ranking experiment depends.
+
+The validator now compares every validated feature-source digest against the
+entire cohort's target-page digest set **before** feature selection or scoring.
+Any match is rejected without exposing caller-provided IDs, filenames, or
+source bytes. Four adversarial synthetic tests cover train-to-holdout and
+heldout-to-train reuse across different pages. An affirmative control confirms
+that different repositories on the *same* page may share a legitimate prior
+metadata snapshot. The original synthetic example, rankings and formulas are
+unchanged.
+
+**Limits:** matching SHA-256 proves matching submitted bytes, not malicious
+intent. Nonmatching hashes cannot prove time of collection, independence,
+source permission, authenticity, or unbiased metadata. A source could still
+be mislabeled or tampered with, and the actual GitHub Trending selection
+algorithm remains opaque. Human source inspection and approved prospective
+sampling are still required before #6 can be closed.
+
+**Repository lesson:** validate evidence references across the *entire
+experimental split*, not just within individual records. A heldout set
+should stay held out in data provenance as well as code-level model selection.
