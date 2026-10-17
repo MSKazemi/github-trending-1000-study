@@ -326,6 +326,14 @@ def _require_immutable_archive_ruleset(client, repo):
 
 def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
+    # This helper is callable directly, outside execute(plan,...). Never let
+    # a direct destructive caller skip the reviewed main-SHA precondition.
+    if not audit_only:
+        if expected_main_sha is None:
+            raise CleanupError("destructive retirement requires approved main SHA")
+        _sha(expected_main_sha)
+        if _safe_repo(repo) != client.repository:
+            raise CleanupError("approved repository differs from client")
     name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
     ref_path = _git_ref(repo, name)
     try:
