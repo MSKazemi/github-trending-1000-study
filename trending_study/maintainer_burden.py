@@ -115,6 +115,14 @@ def summarize(cards):
         if (not isinstance(card["task_accepted_by_independent_reviewer"], str)
                 or card["task_accepted_by_independent_reviewer"] not in STATUS):
             raise BurdenError("accepted-task status must be pass/fail/unknown")
+        if consent != "consented":
+            # Withdrawal and non-consent permit only a denominator row. The
+            # previous validator also allowed inferred task success and
+            # downstream outcomes to survive despite the no-observation gate.
+            if (card["task_accepted_by_independent_reviewer"] != "unknown"
+                    or any(v not in ("unknown", "not_started")
+                           for v in outcomes.values())):
+                raise BurdenError("nonconsented case must not retain assessed outcomes")
         if card.get("observed_at_utc") is not None:
             if consent != "consented":
                 raise BurdenError("unconsented or withdrawn case cannot retain observation timestamp")
@@ -133,11 +141,11 @@ def summarize(cards):
             else:
                 try:
                     numeric = float(t)
-                except (OverflowError, ValueError) as exc:
-                    raise BurdenError(
-                        "human active minutes must be finite, nonnegative or null"
-                    ) from exc
-                if not math.isfinite(numeric):
+                except (OverflowError, ValueError):
+                    # Converting a huge untrusted integer can include the
+                    # input text in a chained exception traceback.
+                    numeric = None
+                if numeric is None or not math.isfinite(numeric):
                     raise BurdenError("human active minutes must be finite, nonnegative or null")
                 known.append(numeric)
         if consent != "consented" and known:
