@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "dataset_kind": "registry_slice_sampling_plan",
+  "index_commit_sha": "9b349b77adb46425be15e386ef38f31061be3ca9",
+  "declared_at_utc": "2026-10-14T19:46:00Z",
+  "seed": "issue-15-directory-slice-pilot-v1-fixed-transparent-not-random",
+  "policy": "sha256(seed|purl), first quota per directory",
+  "quotas": {
+    "length2": 25,
+    "length3_a": 25
+  }
+}
