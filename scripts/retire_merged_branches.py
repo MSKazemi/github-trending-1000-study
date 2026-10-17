@@ -65,19 +65,25 @@ def validate_plan(plan):
         raise CleanupError("cleanup plan must list 1 to 70 approved branches")
     seen = set()
     for row in items:
-        if not isinstance(row, dict) or set(row) != {
-            "branch", "expected_sha", "merged_pr", "merge_commit_sha"
-        }:
-            raise CleanupError("missing or extra branch anchoring field")
-        name = _safe_name(row["branch"])
-        _sha(row["expected_sha"])
-        _sha(row["merge_commit_sha"])
-        if type(row["merged_pr"]) is not int or not 1 <= row["merged_pr"] <= 100000000:
-            raise CleanupError("invalid merged PR number")
+        name = _validate_retirement_item(row)
         if name in seen:
             raise CleanupError("duplicate cleanup branch")
         seen.add(name)
     return plan
+
+
+def _validate_retirement_item(row):
+    """Enforce the same bounded, exact item schema at every entrypoint."""
+    if not isinstance(row, dict) or set(row) != {
+        "branch", "expected_sha", "merged_pr", "merge_commit_sha"
+    }:
+        raise CleanupError("missing or extra branch anchoring field")
+    name = _safe_name(row["branch"])
+    _sha(row["expected_sha"])
+    _sha(row["merge_commit_sha"])
+    if type(row["merged_pr"]) is not int or not 1 <= row["merged_pr"] <= 100000000:
+        raise CleanupError("invalid merged PR number")
+    return name
 
 def _load_strict_plan(path):
     """Read one bounded regular JSON plan without following leaf symlinks.
@@ -326,15 +332,20 @@ def _require_immutable_archive_ruleset(client, repo):
 
 def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
+    # Even direct audit-only callers must not send malformed branch names or
+    # inconsistent repository identities to an authenticated API client.
+    if _safe_repo(repo) != client.repository:
+        raise CleanupError("approved repository differs from client")
+    name = _validate_retirement_item(item)
+    sha, prno = item["expected_sha"], item["merged_pr"]
     # This helper is callable directly, outside execute(plan,...). Never let
     # a direct destructive caller skip the reviewed main-SHA precondition.
     if not audit_only:
         if expected_main_sha is None:
             raise CleanupError("destructive retirement requires approved main SHA")
         _sha(expected_main_sha)
-        if _safe_repo(repo) != client.repository:
-            raise CleanupError("approved repository differs from client")
-    name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
+    elif expected_main_sha is not None:
+        _sha(expected_main_sha)
     ref_path = _git_ref(repo, name)
     try:
         ref = client.get(ref_path)
