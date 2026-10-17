@@ -190,7 +190,15 @@ def main(argv=None):
         # The same bounded, descriptor-checked, duplicate-key-rejecting reader
         # used by the repository's other offline research instruments.
         doc = load_research_json_file(a.input, max_bytes=MAX_FILE_BYTES)
-        result = summarize(doc["cases"] if isinstance(doc, dict) and "cases" in doc else [doc])
+        if isinstance(doc, dict) and "cases" in doc:
+            # A batch envelope cannot silently carry raw interview material,
+            # identities, or other undeclared private sidecar fields.
+            if set(doc) != {"cases"}:
+                raise BurdenError("invalid maintainer cases envelope")
+            records = doc["cases"]
+        else:
+            records = [doc]
+        result = summarize(records)
     except ResearchJSONError:
         # Decoder errors may contain private object keys or local filenames.
         diagnostic = "invalid or unsafe research JSON input"

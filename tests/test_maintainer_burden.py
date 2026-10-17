@@ -160,6 +160,33 @@ class BurdenTests(unittest.TestCase):
         with self.assertRaisesRegex(BurdenError, "bounded nonempty"):
             summarize([card()] * 10001)
 
+    def test_batch_envelope_accepts_only_declared_cases_key(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "cases.json"
+            batch = {"cases": [card()]}
+            path.write_text(json.dumps(batch), encoding="utf-8")
+            stdout = io.StringIO()
+            with redirect_stdout(stdout):
+                main(["--input", str(path)])
+            self.assertEqual(json.loads(stdout.getvalue())["case_count"], 1)
+            for unwanted in ("raw_interview", "participant_email", "extra_sources"):
+                with self.subTest(unwanted=unwanted):
+                    bad = dict(batch)
+                    bad[unwanted] = "PRIVATE_BATCH_FIELD_MARKER"
+                    path.write_text(json.dumps(bad), encoding="utf-8")
+                    stderr = io.StringIO()
+                    with redirect_stderr(stderr), self.assertRaises(SystemExit) as result:
+                        main(["--input", str(path)])
+                    self.assertEqual(result.exception.code, 2)
+                    self.assertIn("invalid maintainer cases envelope", stderr.getvalue())
+                    self.assertNotIn("PRIVATE_BATCH_FIELD_MARKER", stderr.getvalue())
+                    self.assertNotIn(unwanted, stderr.getvalue())
+            for raw in ({"cases": {}}, {"cases": []}, {"cases": "private"}):
+                with self.subTest(invalid_shape=type(raw["cases"]).__name__):
+                    path.write_text(json.dumps(raw), encoding="utf-8")
+                    with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                        main(["--input", str(path)])
+
     def test_cli_privacy_errors_never_echo_private_input_data(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "PRIVATE_PARTICIPANT_MARKER.json"

@@ -70,3 +70,9 @@ is introduced. **Issue #24 stays open** until the real opt-in study gates.
 
 **Practical lesson:** privacy/error boundaries include the exception object
 and its causal history, not just the string printed at the terminal.
+
+## 2026-10-17 strict batch envelope privacy boundary
+
+The CLI accepted both single-case input and a `{"cases": [...]}` batch wrapper. Its old wrapper path ignored arbitrary additional top-level fields, even though individual case and outcome objects were already exact-schema checked. An input with `{"cases": [...], "raw_interview": "..."}` could therefore pass silently and misleadingly appear privacy-minimized. The read-only CLI now requires the wrapper to have **exactly the `cases` key**, passes its value through the same bounded nonempty case-array check, and reports only a fixed category on rejection. An offline regression tests an ordinary multi-case wrapper, forbidden sidecar fields, redacted stderr and malformed arrays. It does not collect, store, transform or approve any human data, and does not authenticate the independent reviewer or missing effort measurements. **#24 remains open** for opt-in ethics and real-methods validation.
+
+**Maintainer lesson:** strict nested schemas do not secure a container if its outer envelope silently ignores undeclared fields. Test envelopes, batches and successful/failed CLI paths, not only individual records.
