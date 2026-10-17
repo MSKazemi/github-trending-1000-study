@@ -116,23 +116,31 @@ def main(argv=None):
     # Classify only strictly decoded, descriptor-checked bounded source bytes.
     # Duplicate keys can otherwise change PR-vs-issue eligibility silently.
     # The parser handles malformed input without echoing source names/keys.
+    unsafe_input = False
     try:
         frame=load_research_json_file(a.input,max_bytes=MAX_FILE_BYTES)
     except ResearchJSONError:
+        unsafe_input = True
+    # Never raise SystemExit inside a private decoder exception handler:
+    # traceback printers may expose the original JSON key/path via context.
+    if unsafe_input:
         p.exit(2,"error: invalid or unsafe task-intake JSON input\n")
+    output_error = None
     try:
         result=sample(frame)
-        # The input and output must not resolve to the same artifact. Reuse
-        # canonical atomic write-once publication rather than exposing a
-        # partially serialized JSON file via open("x") and json.dump.
+        # Preserve the canonical disjoint, atomic, hard-linked write-once
+        # publisher from merged PR #450, never the obsolete open("x") writer.
         disjoint(a.input,a.output)
         publish_json(a.output,result)
     except IntakeError as exc:
-        # IntakeError messages are fixed, nonidentifying schema diagnostics.
-        p.exit(2,f"error: {exc}\n")
+        # IntakeError uses fixed, nonidentifying schema diagnostics.
+        output_error = str(exc)
     except (OSError,ValueError,TypeError):
-        # Writer/OS exceptions may include private paths or staged filenames.
-        p.exit(2,"error: could not safely publish task-intake result\n")
+        output_error = "could not safely publish task-intake result"
+    # Exit only after the original exception handler has finished. This
+    # eliminates the raw exception's __context__ in in-process telemetry.
+    if output_error is not None:
+        p.exit(2,"error: "+output_error+"\n")
     print(json.dumps({"total_rows":result["total_rows"],"selected_issue_candidates":result["selected_issue_candidates"]}))
 
 if __name__=="__main__":
