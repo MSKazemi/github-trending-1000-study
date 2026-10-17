@@ -222,15 +222,23 @@ def main(argv=None):
     p.add_argument("--input", required=True, help="JSON file containing tasks/candidates/systems")
     p.add_argument("--k", type=int, default=5)
     args = p.parse_args(argv)
+    failure = None
     try:
         result = evaluate(load_research_json_file(args.input, max_bytes=1_000_000), k=args.k)
     except ResearchJSONError:
-        # Never echo private duplicate-key text or input paths from the decoder.
-        p.exit(2, "error: invalid or unsafe research JSON input\n")
+        # Avoid keeping a raw JSON decoder exception as SystemExit context.
+        failure = "invalid or unsafe research JSON input"
     except OSError:
-        p.exit(2, "error: input filesystem operation failed\n")
-    except (ValueError, TypeError, RecursionError) as exc:
-        p.exit(2, f"error: {exc}\n")
+        failure = "input filesystem operation failed"
+    except GoldsetError as exc:
+        # Only our fixed, value-free domain diagnostics may reach the CLI.
+        failure = str(exc)
+    except (ValueError, TypeError, RecursionError):
+        failure = "invalid goldset input"
+    # argparse's exit raises SystemExit: it must not be chained to an input
+    # error that might contain private JSON keys, paths or task identifiers.
+    if failure is not None:
+        p.exit(2, f"error: {failure}\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 
 
