@@ -5,6 +5,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
+
 class IntakeError(ValueError):
     pass
 
@@ -110,8 +112,15 @@ def main(argv=None):
     p.add_argument("--input",required=True)
     p.add_argument("--output",required=True)
     a=p.parse_args(argv)
+    # Classify only strictly decoded, descriptor-checked bounded source bytes.
+    # Duplicate keys can otherwise change PR-vs-issue eligibility silently.
+    # The parser handles malformed input without echoing source names/keys.
     try:
-        result=sample(json.loads(Path(a.input).read_text(encoding="utf-8")))
+        frame=load_research_json_file(a.input,max_bytes=MAX_FILE_BYTES)
+    except ResearchJSONError:
+        p.exit(2,"error: invalid or unsafe task-intake JSON input\n")
+    try:
+        result=sample(frame)
         out=Path(a.output)
         out.parent.mkdir(parents=True,exist_ok=True)
         with out.open("x",encoding="utf-8") as f:
