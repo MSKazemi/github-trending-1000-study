@@ -17,6 +17,11 @@ GOOD = "verified"
 BAD = "failed"
 UNKNOWN = "unknown"
 STATES = {GOOD, BAD, UNKNOWN}
+CANDIDATE_FIELDS = frozenset((
+    "name", "source_url", "functional_test", "license_compatibility",
+    "security_review", "maintenance_review",
+))
+MAX_CANDIDATES = 100
 
 
 def _text(obj, key):
@@ -38,20 +43,29 @@ def evaluate(assessment):
     if not isinstance(search, list) or any(not isinstance(x, str) for x in search):
         raise InvalidReuseAssessment("search_log must be a list of documented searches")
     candidates = assessment.get("candidates")
-    if not isinstance(candidates, list):
-        raise InvalidReuseAssessment("candidates must be a list")
+    if not isinstance(candidates, list) or len(candidates) > MAX_CANDIDATES:
+        raise InvalidReuseAssessment("candidates must be a bounded list")
     audited = []
+    seen_candidates = set()
     for i, item in enumerate(candidates):
-        if not isinstance(item, dict):
-            raise InvalidReuseAssessment(f"candidates[{i}] must be an object")
+        if not isinstance(item, dict) or set(item) != CANDIDATE_FIELDS:
+            # Reject unknown free-form fields without echoing caller keys.
+            raise InvalidReuseAssessment("candidate has missing or unsupported fields")
         n = _text(item, "name")
         source = _text(item, "source_url")
-        if not n or not source:
-            raise InvalidReuseAssessment(f"candidates[{i}] needs name and source_url")
+        if (not n or not source or len(n) > 256 or len(source) > 2048
+                or any(ord(ch) < 32 or ord(ch) == 127 for ch in n + source)):
+            raise InvalidReuseAssessment("candidate name or source URL must be bounded text")
+        # Name-keyed output tables would silently overwrite conflicting rows.
+        # Distinct releases should use distinct explicit candidate names.
+        identity = n.casefold()
+        if identity in seen_candidates:
+            raise InvalidReuseAssessment("duplicate normalized candidate name")
+        seen_candidates.add(identity)
         gates = {}
         for key in ("functional_test", "license_compatibility", "security_review", "maintenance_review"):
-            state = item.get(key)
-            if state not in STATES:
+            state = item[key]
+            if type(state) is not str or state not in STATES:
                 raise InvalidReuseAssessment(f"candidates[{i}].{key} must be one of verified/failed/unknown")
             gates[key] = state
         audited.append({"name": n, "source_url": source, "gates": gates})

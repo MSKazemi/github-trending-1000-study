@@ -65,3 +65,11 @@ The CLI `python -m trending_study.reuse_gate --input examples/reuse_check.exampl
 ### 2026-10-18 full-traceback privacy regression
 
 Input-parser and evaluator failures now produce `SystemExit` **after** the original exception handlers end, preserving the canonical strict bounded reader while keeping full tracebacks free of private source path/key and evaluator exception chains. New direct in-process tests verify `__cause__`, `__context__` and formatted exception stacks, not only subprocess stderr. Synthetic tests do not authenticate external licenses, source identity, safe dependency installation, or real research outcomes. Keep issue #22 open.
+
+## 2026-10-18 reusable candidate identity and status hardening (#461)
+
+The offline reuse gate now rejects multiple candidates with the same **trimmed, case-insensitive display name**. Before this change, `failed_gates` was a name-keyed mapping and a duplicate could overwrite or contradict another candidate's negative review result. If two versions of a package must be compared, give them **distinct explicit names including versions**, and record both results; name collisions do not establish which candidate is correct. The CLI rejects arbitrary candidate fields, unhashable state objects (list/dict), and more than 100 candidate entries. Candidate name and URL strings are bounded and cannot contain control characters. The original synthetic valid example retains its decision; status labels remain `verified/failed/unknown` but are still **self-reported**, not authenticated evidence.
+
+No package resolution, third-party code execution, license verification, source rights or user-study data was introduced. Broader supply-chain approval remains blocked under [#22](https://github.com/MSKazemi/github-trending-1000-study/issues/22).
+
+**Practical lesson:** a key used to summarize review results must be unique, and malformed nested fields must produce controlled refusal—not a traceback or silently overwritten failures.

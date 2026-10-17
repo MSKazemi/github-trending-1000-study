@@ -46,6 +46,39 @@ class IntakeTests(unittest.TestCase):
         x["sources"][1]["issues"][0]["html_url"]="https://github.com/not/the-repo/issues/2"
         with self.assertRaises(IntakeError): sample(x)
 
+    def test_issue_url_requires_exact_canonical_string_not_coerced_type(self):
+        original = self.frame()
+        original_url = original["sources"][0]["issues"][0]["html_url"]
+        for invalid in (None, [], {"source": "PRIVATE_RECORD"}, 123,
+                        original_url.replace("/pull/", "/PULL/"),
+                        original_url.upper()):
+            candidate = copy.deepcopy(original)
+            candidate["sources"][0]["issues"][0]["html_url"] = invalid
+            with self.subTest(kind=type(invalid).__name__):
+                with self.assertRaisesRegex(IntakeError, "issue URL mismatch"):
+                    sample(candidate)
+
+    def test_actual_cli_handles_nonstring_urls_without_tracebacks_or_data_leak(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "PRIVATE_FRAME_URL_INPUT.json"
+            output = root / "output.json"
+            candidate = self.frame()
+            candidate["sources"][0]["issues"][0]["html_url"] = [
+                "PRIVATE_URL_LIST_MARKER"
+            ]
+            source.write_text(json.dumps(candidate), encoding="utf-8")
+            proc = subprocess.run(
+                [sys.executable, "-m", "trending_study.task_intake",
+                 "--input", str(source), "--output", str(output)],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("issue URL mismatch", proc.stderr)
+            self.assertNotIn("PRIVATE_", proc.stderr)
+            self.assertNotIn("Traceback", proc.stderr)
+            self.assertFalse(output.exists())
+
     def test_reject_duplicate_ids(self):
         x=self.frame()
         x["sources"][1]["issues"][0]["id"]=x["sources"][0]["issues"][0]["id"]
