@@ -331,6 +331,43 @@ class BranchCleanupTests(unittest.TestCase):
         with self.assertRaises(CleanupError):
             validate_plan(p)
 
+    def test_rest_client_rejects_bearer_redirects_without_network(self):
+        # Python's default HTTPRedirectHandler copies normal Authorization
+        # headers when Location changes the host. Only the initial verified
+        # api.github.com request may receive our test bearer token.
+        from urllib.error import HTTPError
+        client = GitHubClient(REPO, "OFFLINE_FIXTURE_TOKEN")
+        endpoint = f"/repos/{REPO}/branches/main"
+        for location in ("https://other.invalid/collect-token",
+                         "https://api.github.com/renamed/repository"):
+            with self.subTest(location=location):
+                response = HTTPError(
+                    "https://api.github.com" + endpoint, 302, "Found",
+                    {"Location": location}, None,
+                )
+                with patch("scripts.retire_merged_branches.build_opener") as maker:
+                    maker.return_value.open.side_effect = response
+                    with self.assertRaisesRegex(CleanupError, "HTTP 302"):
+                        client.get(endpoint)
+                    self.assertEqual(maker.call_count, 1)
+                    handler = maker.call_args.args[0]
+                    request = maker.return_value.open.call_args.args[0]
+                    self.assertEqual(
+                        request.full_url, "https://api.github.com" + endpoint
+                    )
+                    self.assertNotIn("Authorization", request.headers)
+                    self.assertEqual(
+                        request.unredirected_hdrs["Authorization"],
+                        "Bearer OFFLINE_FIXTURE_TOKEN"
+                    )
+                    # A real opener invokes this method for HTTP redirects:
+                    # returning None forces HTTPError, not a follow-up call.
+                    self.assertIsNone(handler.redirect_request(
+                        request, None, 302, "Found",
+                        {"Location": location}, location
+                    ))
+                    self.assertEqual(maker.return_value.open.call_count, 1)
+
     def test_repo_dot_segments_are_rejected_before_any_api_or_git_use(self):
         # A broad owner/repo regex previously accepted '../name' and 'owner/..'.
         # These must never enter an authenticated GitHub API path or Git URL.
