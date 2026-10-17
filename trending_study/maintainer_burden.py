@@ -120,6 +120,13 @@ def summarize(cards):
                        or outcomes[field] not in allowed
                        for field, allowed in OUTCOME_STATES.items())):
             raise BurdenError("invalid bounded outcome schema")
+        # A 90-day assessment cannot be due/completed while the same task's
+        # earlier 30-day milestone is still expressly "not_started".
+        # This is a minimal chronology consistency check, not evidence that
+        # either real follow-up date or participant identity was verified.
+        if (outcomes["followup_30_day"] == "not_started"
+                and outcomes["followup_90_day"] in ("completed", "missing")):
+            raise BurdenError("inconsistent prospective follow-up order")
         synthetic_count += synthetic
         study_kinds.add(synthetic)
         frame = card["frame_commit"]
