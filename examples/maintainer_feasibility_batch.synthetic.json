@@ -1,0 +1,94 @@
+{
+  "cases": [
+    {
+      "schema_version": "proposed-maintainer-externality-0.1",
+      "synthetic": true,
+      "case_id": "FICTIONAL-CASE-101",
+      "frame_commit": "not-frozen",
+      "opt_in_project_id": "fictional-opt-in-placeholder",
+      "consent_state": "consented",
+      "human_review_state": "pending",
+      "observed_at_utc": null,
+      "task_type": "synthetic-bugfix",
+      "task_accepted_by_independent_reviewer": "pass",
+      "declared_workflow": "not_assigned",
+      "human_time_minutes": {
+        "upstream_review": 2,
+        "upstream_support": 3,
+        "downstream_search": 4,
+        "downstream_implementation": 5,
+        "downstream_review_repair": 6,
+        "downstream_followup": 7
+      },
+      "outcomes": {
+        "actionability": "pass",
+        "newcomer_comprehension_pass": "fail",
+        "followup_30_day": "completed",
+        "followup_90_day": "not_started",
+        "security_or_privacy_incident": "no"
+      },
+      "data_release_approval": "pending",
+      "not_empirical_data": true
+    },
+    {
+      "schema_version": "proposed-maintainer-externality-0.1",
+      "synthetic": true,
+      "case_id": "FICTIONAL-CASE-102",
+      "frame_commit": "not-frozen",
+      "opt_in_project_id": "fictional-opt-in-placeholder",
+      "consent_state": "consented",
+      "human_review_state": "pending",
+      "observed_at_utc": null,
+      "task_type": "synthetic-bugfix",
+      "task_accepted_by_independent_reviewer": "fail",
+      "declared_workflow": "not_assigned",
+      "human_time_minutes": {
+        "upstream_review": null,
+        "upstream_support": null,
+        "downstream_search": 8,
+        "downstream_implementation": null,
+        "downstream_review_repair": null,
+        "downstream_followup": null
+      },
+      "outcomes": {
+        "actionability": "fail",
+        "newcomer_comprehension_pass": "unknown",
+        "followup_30_day": "missing",
+        "followup_90_day": "unknown",
+        "security_or_privacy_incident": "yes"
+      },
+      "data_release_approval": "pending",
+      "not_empirical_data": true
+    },
+    {
+      "schema_version": "proposed-maintainer-externality-0.1",
+      "synthetic": true,
+      "case_id": "FICTIONAL-CASE-103",
+      "frame_commit": "not-frozen",
+      "opt_in_project_id": "fictional-opt-in-placeholder",
+      "consent_state": "withdrawn",
+      "human_review_state": "pending",
+      "observed_at_utc": null,
+      "task_type": "synthetic-bugfix",
+      "task_accepted_by_independent_reviewer": "unknown",
+      "declared_workflow": "not_assigned",
+      "human_time_minutes": {
+        "upstream_review": null,
+        "upstream_support": null,
+        "downstream_search": null,
+        "downstream_implementation": null,
+        "downstream_review_repair": null,
+        "downstream_followup": null
+      },
+      "outcomes": {
+        "actionability": "unknown",
+        "newcomer_comprehension_pass": "unknown",
+        "followup_30_day": "not_started",
+        "followup_90_day": "not_started",
+        "security_or_privacy_incident": "unknown"
+      },
+      "data_release_approval": "pending",
+      "not_empirical_data": true
+    }
+  ]
+}
