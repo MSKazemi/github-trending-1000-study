@@ -43,67 +43,83 @@ def _date(x, name):
     text = _nonempty(x, name)
     try:
         value = datetime.fromisoformat(text.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise GoldsetError(f"{name} must be an ISO8601 date-time") from exc
+    except ValueError:
+        # Finish exception handling before raising our public error. Keeping
+        # the original exception as a cause can expose a private raw timestamp
+        # in full CI/telemetry tracebacks despite a safe top-level message.
+        value = None
+    if value is None:
+        raise GoldsetError(f"{name} must be an ISO8601 date-time")
     if value.tzinfo is None or value.utcoffset() is None:
         raise GoldsetError(f"{name} must have a timezone")
     return value.astimezone(timezone.utc)
 
 
 def _candidate(c, taskid, baseline):
+    # Caller-supplied task/candidate IDs are untrusted, possibly sensitive.
+    # Do not echo these values in errors or CLI stderr.
     _record(c, "candidate")
+    # A pooled benchmark must not quietly accept embedded prompts, contact
+    # records or undeclared fields that were never part of the reviewed schema.
+    # Reject unknown *names* without printing those potentially private keys.
+    if set(c) - {"id", "final_label", "reviewer_labels",
+                  "available_since_utc", "gates", "evidence_ref",
+                  "adjudicator_ref"}:
+        raise GoldsetError("candidate: unsupported fields")
     cid = _nonempty(c.get("id"), "candidate.id")
     label = c.get("final_label")
     if not isinstance(label, str) or label not in LABELS:
-        raise GoldsetError(f"{taskid}/{cid}: final_label must be viable/not_viable/unknown")
+        raise GoldsetError("candidate: final_label must be viable/not_viable/unknown")
     evidence = c.get("evidence_ref")
     if evidence is not None and not isinstance(evidence, str):
-        raise GoldsetError(f"{taskid}/{cid}: evidence_ref must be string or null")
+        raise GoldsetError("candidate: evidence_ref must be string or null")
     gates = _record(c.get("gates"), "gates")
     required = ("functional", "license", "security", "maintenance")
     permitted = set(required) | {"availability"}
     if set(gates) - permitted:
-        raise GoldsetError(f"{taskid}/{cid}: unsupported gate names")
+        raise GoldsetError("candidate: unsupported gate names")
     for k in required:
         if not isinstance(gates.get(k), str) or gates[k] not in GATE_ALLOWED:
-            raise GoldsetError(f"{taskid}/{cid}: gate {k} must be pass/fail/unknown")
+            raise GoldsetError(f"candidate: gate {k} must be pass/fail/unknown")
     if ("availability" in gates and
             (not isinstance(gates["availability"], str) or gates["availability"] not in GATE_ALLOWED)):
-        raise GoldsetError(f"{taskid}/{cid}: availability must be pass/fail/unknown")
+        raise GoldsetError("candidate: availability must be pass/fail/unknown")
     release_time = c.get("available_since_utc")
     if release_time is not None and _date(release_time, "available_since_utc") > baseline:
         if label == "viable" or gates.get("availability") == "pass":
-            raise GoldsetError(f"{taskid}/{cid}: candidate released after task baseline cannot be available")
+            raise GoldsetError("candidate: released after task baseline cannot be available")
     reviewers = _list(c.get("reviewer_labels"), "reviewer_labels")
     if len(reviewers) != 2 or any(not isinstance(r, str) or r not in LABELS for r in reviewers):
-        raise GoldsetError(f"{taskid}/{cid}: exactly two reviewer labels required")
+        raise GoldsetError("candidate: exactly two reviewer labels required")
     if label != "unknown" and all(r == "unknown" for r in reviewers):
-        raise GoldsetError(f"{taskid}/{cid}: two unknown reviewer labels cannot establish viability/nonviability")
+        raise GoldsetError("candidate: two unknown reviewer labels cannot establish viability/nonviability")
     # A single abstaining reviewer must instead have a declared adjudicator;
     # keep original third-reviewer structural protocol (not a human attestation).
     if label == "viable":
         if (any(gates[k] != "pass" for k in required)
                 or ("availability" in gates and gates["availability"] != "pass")):
-            raise GoldsetError(f"{taskid}/{cid}: viable without full passing gates")
+            raise GoldsetError("candidate: viable without full passing gates")
         if release_time is None or not evidence or not evidence.strip():
-            raise GoldsetError(f"{taskid}/{cid}: viable without dated availability and evidence")
+            raise GoldsetError("candidate: viable without dated availability and evidence")
     elif label == "not_viable":
         # A version first available after task baseline is not a viable historical
         # alternative, even if its functional/security/license gates pass now.
         if "fail" not in gates.values() or not evidence or not evidence.strip():
-            raise GoldsetError(f"{taskid}/{cid}: not viable requires failure evidence")
+            raise GoldsetError("candidate: not viable requires failure evidence")
     if reviewers[0] != reviewers[1] and label != "unknown":
         if not isinstance(c.get("adjudicator_ref"), str) or not c["adjudicator_ref"].strip():
-            raise GoldsetError(f"{taskid}/{cid}: disagreement needs adjudicator_ref")
+            raise GoldsetError("candidate: disagreement needs adjudicator_ref")
     if reviewers[0] == reviewers[1] and reviewers[0] != "unknown":
         if label not in (reviewers[0], "unknown"):
-            raise GoldsetError(f"{taskid}/{cid}: final label contradicts both raters")
+            raise GoldsetError("candidate: final label contradicts both raters")
     return cid, label, reviewers
 
 
 def evaluate(payload, k=5):
     """Return per-task and system retrieval summaries with explicit unjudged bounds."""
     _record(payload, "payload")
+    if set(payload) != {"schema_version", "dataset_kind", "tasks"}:
+        raise GoldsetError("payload: unexpected or missing fields")
     if payload.get("schema_version") != "1.0" or payload.get("dataset_kind") not in ("synthetic", "pilot", "observational"):
         raise GoldsetError("expected schema_version=1.0 and dataset_kind synthetic/pilot/observational")
     if isinstance(k, bool) or not isinstance(k, int) or k < 1:
@@ -112,9 +128,12 @@ def evaluate(payload, k=5):
     seen_taskids = set()
     for task in _list(payload.get("tasks"), "tasks"):
         _record(task, "task")
+        if set(task) != {"task_id", "baseline_utc", "spec_sha256",
+                         "acceptance_sha256", "candidates", "systems"}:
+            raise GoldsetError("task: unexpected or missing fields")
         taskid = _nonempty(task.get("task_id"), "task_id")
         if taskid in seen_taskids:
-            raise GoldsetError(f"duplicate task_id {taskid}")
+            raise GoldsetError("duplicate task_id")
         seen_taskids.add(taskid)
         baseline = _date(task.get("baseline_utc"), "baseline_utc")
         if (payload["dataset_kind"] != "synthetic"
@@ -123,14 +142,14 @@ def evaluate(payload, k=5):
         specsha = _nonempty(task.get("spec_sha256"), "spec_sha256")
         accsha = _nonempty(task.get("acceptance_sha256"), "acceptance_sha256")
         if not _SHA.fullmatch(specsha) or not _SHA.fullmatch(accsha):
-            raise GoldsetError(f"{taskid}: task/acceptance hashes must be lowercase SHA-256")
+            raise GoldsetError("task: specification/acceptance hashes must be lowercase SHA-256")
         candidates = {}
         agree = 0
         double_reviewed = 0
         for cand in _list(task.get("candidates"), "candidates"):
             cid, label, reviewers = _candidate(cand, taskid, baseline)
             if cid in candidates:
-                raise GoldsetError(f"{taskid}: duplicate candidate id {cid}")
+                raise GoldsetError("task: duplicate candidate id")
             candidates[cid] = label
             if reviewers[0] != "unknown" and reviewers[1] != "unknown":
                 double_reviewed += 1
@@ -148,17 +167,19 @@ def evaluate(payload, k=5):
         seen_sys = set()
         for system in _list(task.get("systems"), "systems"):
             _record(system, "system")
+            if set(system) != {"name", "ranked_candidate_ids"}:
+                raise GoldsetError("system: unexpected or missing fields")
             name = _nonempty(system.get("name"), "system.name")
             if name in seen_sys:
-                raise GoldsetError(f"{taskid}: duplicate system {name}")
+                raise GoldsetError("task: duplicate system")
             seen_sys.add(name)
             ranked = _list(system.get("ranked_candidate_ids"), "ranked_candidate_ids")
             if any(not isinstance(cid, str) or not cid.strip() for cid in ranked):
-                raise GoldsetError(f"{taskid}/{name}: ranked candidate IDs must be nonempty strings")
+                raise GoldsetError("system: ranked candidate IDs must be nonempty strings")
             if len(set(ranked)) != len(ranked):
-                raise GoldsetError(f"{taskid}/{name}: repeated candidate id")
+                raise GoldsetError("system: repeated candidate id")
             if any(cid not in candidates for cid in ranked):
-                raise GoldsetError(f"{taskid}/{name}: unknown/unpooled candidate id; add it as unjudged instead of treating as irrelevant")
+                raise GoldsetError("system: unknown/unpooled candidate id; add it as unjudged instead of treating as irrelevant")
             top = ranked[:k]
             good = sum(candidates[cid] == "viable" for cid in top)
             missing = sum(candidates[cid] == "unknown" for cid in top)
@@ -201,15 +222,23 @@ def main(argv=None):
     p.add_argument("--input", required=True, help="JSON file containing tasks/candidates/systems")
     p.add_argument("--k", type=int, default=5)
     args = p.parse_args(argv)
+    failure = None
     try:
         result = evaluate(load_research_json_file(args.input, max_bytes=1_000_000), k=args.k)
     except ResearchJSONError:
-        # Never echo private duplicate-key text or input paths from the decoder.
-        p.exit(2, "error: invalid or unsafe research JSON input\n")
+        # Avoid keeping a raw JSON decoder exception as SystemExit context.
+        failure = "invalid or unsafe research JSON input"
     except OSError:
-        p.exit(2, "error: input filesystem operation failed\n")
-    except (ValueError, TypeError, RecursionError) as exc:
-        p.exit(2, f"error: {exc}\n")
+        failure = "input filesystem operation failed"
+    except GoldsetError as exc:
+        # Only our fixed, value-free domain diagnostics may reach the CLI.
+        failure = str(exc)
+    except (ValueError, TypeError, RecursionError):
+        failure = "invalid goldset input"
+    # argparse's exit raises SystemExit: it must not be chained to an input
+    # error that might contain private JSON keys, paths or task identifiers.
+    if failure is not None:
+        p.exit(2, f"error: {failure}\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 
 

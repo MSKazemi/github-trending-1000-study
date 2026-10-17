@@ -1,6 +1,12 @@
 import copy
+from contextlib import redirect_stderr
+import io
+import json
+from pathlib import Path
+import tempfile
 import unittest
-from trending_study.goldset import GoldsetError, evaluate
+import traceback
+from trending_study.goldset import GoldsetError, evaluate, main
 
 
 DATA = {
@@ -150,6 +156,117 @@ class GoldSetTests(unittest.TestCase):
         with self.assertRaisesRegex(GoldsetError, "availability must be"):
             evaluate(d)
 
+
+
+    def test_rejects_unrecognized_private_data_fields_at_every_level(self):
+        for level in ("payload", "task", "candidate", "system"):
+            d = copy.deepcopy(DATA)
+            if level == "payload":
+                destination = d
+            elif level == "task":
+                destination = d["tasks"][0]
+            elif level == "candidate":
+                destination = d["tasks"][0]["candidates"][0]
+            else:
+                destination = d["tasks"][0]["systems"][0]
+            destination["PRIVATE_PROMPT_OR_EMAIL_MARKER"] = "confidential content"
+            with self.subTest(level=level), self.assertRaises(GoldsetError) as ctx:
+                evaluate(d)
+            self.assertIn(level, str(ctx.exception))
+            self.assertNotIn("PRIVATE_PROMPT_OR_EMAIL_MARKER", str(ctx.exception))
+            self.assertNotIn("confidential content", str(ctx.exception))
+
+    def test_private_task_candidate_and_system_ids_not_in_error(self):
+        d = copy.deepcopy(DATA)
+        task = d["tasks"][0]
+        task["task_id"] = "PRIVATE_TASK_6346"
+        task["candidates"][0]["id"] = "PRIVATE_CANDIDATE_6350"
+        task["systems"][0]["name"] = "PRIVATE_SYSTEM_6351"
+        task["systems"][0]["ranked_candidate_ids"] = [
+            "PRIVATE_CANDIDATE_6350", "z",
+        ]
+        markers = ("PRIVATE_TASK_6346", "PRIVATE_CANDIDATE_6350",
+                   "PRIVATE_SYSTEM_6351")
+        def check(candidate):
+            with self.assertRaises(GoldsetError) as captured:
+                evaluate(candidate)
+            self.assertTrue(str(captured.exception))
+            for marker in markers:
+                self.assertNotIn(marker, str(captured.exception))
+        bad = copy.deepcopy(d)
+        bad["tasks"][0]["candidates"][0]["gates"]["security"] = "PRIVATE_BAD_GATE"
+        check(bad)
+        bad = copy.deepcopy(d)
+        bad["tasks"].append(copy.deepcopy(bad["tasks"][0]))
+        check(bad)
+        bad = copy.deepcopy(d)
+        bad["tasks"][0]["candidates"].append(copy.deepcopy(bad["tasks"][0]["candidates"][0]))
+        check(bad)
+        bad = copy.deepcopy(d)
+        bad["tasks"][0]["systems"].append(copy.deepcopy(bad["tasks"][0]["systems"][0]))
+        check(bad)
+        bad = copy.deepcopy(d)
+        bad["tasks"][0]["systems"][0]["ranked_candidate_ids"][0] = "UNPOOLED_PRIVATE_ID"
+        check(bad)
+
+    def test_invalid_timestamp_not_in_exception_chain_or_traceback(self):
+        # datetime.fromisoformat's own ValueError can include its argument.
+        # A caller collecting a FULL exception traceback must not receive
+        # the malformed private timestamp from an underlying exception.
+        for where in ("baseline", "release"):
+            d = copy.deepcopy(DATA)
+            marker = "PRIVATE_TIMESTAMP_MARKER_" + where.upper()
+            if where == "baseline":
+                d["tasks"][0]["baseline_utc"] = marker
+            else:
+                d["tasks"][0]["candidates"][0]["available_since_utc"] = marker
+            with self.subTest(where=where):
+                try:
+                    evaluate(d)
+                except GoldsetError as exc:
+                    self.assertIn("date-time", str(exc))
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("malformed timestamp must be refused")
+
+    def test_cli_system_exit_has_no_private_decoder_exception_context(self):
+        private_key = "PRIVATE_JSON_KEY_MARKER_20261017"
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "private.json"
+            # The shared decoder rejects duplicate keys, but argparse exit
+            # must not chain its underlying exception with private data.
+            raw = json.dumps({private_key: 1})[:-1] + "," + json.dumps(private_key) + ":2}"
+            path.write_text(raw, encoding="utf-8")
+            with redirect_stderr(io.StringIO()) as stderr:
+                try:
+                    main(["--input", str(path)])
+                except SystemExit as exc:
+                    self.assertEqual(exc.code, 2)
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(private_key, stderr.getvalue())
+                    self.assertNotIn(private_key, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("duplicate research JSON field must fail")
+
+    def test_cli_redacts_private_ids_even_on_invalid_gate(self):
+        d = copy.deepcopy(DATA)
+        d["tasks"][0]["task_id"] = "PRIVATE_TASK_ID_MARKER"
+        d["tasks"][0]["candidates"][0]["id"] = "PRIVATE_CANDIDATE_ID_MARKER"
+        d["tasks"][0]["candidates"][0]["gates"]["license"] = "bad"
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "PRIVATE_FILENAME_MARKER.json"
+            path.write_text(json.dumps(d), encoding="utf-8")
+            stderr = io.StringIO()
+            with redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+                main(["--input", str(path), "--k", "3"])
+            self.assertEqual(caught.exception.code, 2)
+            for private in ("PRIVATE_TASK_ID_MARKER", "PRIVATE_CANDIDATE_ID_MARKER",
+                            "PRIVATE_FILENAME_MARKER"):
+                self.assertNotIn(private, stderr.getvalue())
+            self.assertIn("candidate: gate license", stderr.getvalue())
 
 
 if __name__ == "__main__":
