@@ -6,6 +6,7 @@ import io
 import json
 from pathlib import Path
 import tempfile
+import traceback
 import unittest
 from unittest import mock
 
@@ -237,6 +238,53 @@ class RegistryPairIntegrityTests(unittest.TestCase):
         result = registry.audit_pair_reviews(packet, a, b, *self.manifest_and_plan())
         self.assertFalse(result["reviewers_authenticated_as_real_independent_humans"])
         self.assertFalse(result["meets_issue_15_scientific_acceptance"])
+
+    def test_malformed_registry_timestamp_never_leaks_in_exception_chain(self):
+        marker = "PRIVATE_REGISTRY_TIME_20261017"
+        manifest, plan = self.manifest_and_plan()
+        manifest["observed_at_utc"] = marker
+        try:
+            registry.select_registry(manifest, plan)
+        except registry.RegistryFrameError as error:
+            self.assertIn("invalid UTC", str(error))
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+        else:
+            self.fail("malformed registry timestamp must be refused")
+
+    def test_private_duplicate_json_key_not_retained_in_registry_error_or_cli(self):
+        marker = "PRIVATE_REGISTRY_JSON_KEY_20261017"
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "private-name.json"
+            path.write_text(
+                json.dumps({marker: 1})[:-1] + "," + json.dumps(marker) + ":2}",
+                encoding="utf-8",
+            )
+            try:
+                registry._read(path)
+            except registry.RegistryFrameError as error:
+                self.assertIsNone(error.__cause__)
+                self.assertIsNone(error.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+            else:
+                self.fail("duplicate JSON must be refused")
+            output = Path(folder) / "output.json"
+            stderr = io.StringIO()
+            with redirect_stderr(stderr):
+                try:
+                    registry.main([
+                        "select", "--manifest", str(path), "--plan", str(path),
+                        "--output", str(output)])
+                except SystemExit as error:
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, stderr.getvalue())
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("ambiguous registry JSON must fail")
+            self.assertFalse(output.exists())
 
     def test_direct_reader_reuses_strict_json_guard(self):
         documents = ('{"version": "wrong", "version": "1.0"}',
