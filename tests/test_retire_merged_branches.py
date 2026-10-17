@@ -37,6 +37,7 @@ class FakeClient:
         self.protected = False
         self.pr_merged = True
         self.pr_head = SHA
+        self.pr_payload_override = None
         self.tag_sha = None
         self.race_on_second_ref = False
         self.ref_checks = 0
@@ -108,6 +109,8 @@ class FakeClient:
         if "/branches/" in path:
             return {"protected": self.protected, "commit": {"sha": self.sha}}
         if "/pulls/123" in path:
+            if self.pr_payload_override is not None:
+                return copy.deepcopy(self.pr_payload_override)
             return {"merged": self.pr_merged,
                     "state": "closed", "head": {"ref": NAME, "sha": self.pr_head,
                                                    "repo": {"full_name": REPO}},
@@ -159,6 +162,29 @@ class BranchCleanupTests(unittest.TestCase):
         fake.protected = True
         self.assertEqual(retire_one(fake, REPO, item()), "blocked_protected_or_changed")
         self.assertFalse(fake.deleted)
+
+    def test_missing_or_null_nested_pr_repo_blocks_retirement_without_archive(self):
+        # Merged PRs can have a deleted/absent head repository. That is
+        # unverifiable, not permission to clean up a branch.
+        valid = FakeClient().get(f"/repos/{REPO}/pulls/123")
+        malformed = [
+            [],
+            {},
+            dict(valid, head=None),
+            dict(valid, base=None),
+            dict(valid, head=dict(valid["head"], repo=None)),
+            dict(valid, head=dict(valid["head"], repo=[])),
+            dict(valid, head=dict(valid["head"], repo={})),
+        ]
+        for record in malformed:
+            fake = FakeClient()
+            fake.pr_payload_override = record
+            with self.subTest(shape=str(record)[:65]):
+                results = execute(plan(), fake)
+                self.assertEqual(results[0]["status"],
+                                 "blocked_pr_not_identical_and_merged")
+                self.assertEqual(fake.posts, [])
+                self.assertEqual(fake.deleted, [])
 
     def test_unmerged_or_changed_pr_is_blocked(self):
         for attr, bad in (("pr_merged", False), ("pr_head", "f" * 40)):
