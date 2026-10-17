@@ -23,6 +23,14 @@ from trending_study.data_integrity import (
 
 ID_RE = re.compile(r"NEWS-[0-9]{4}-[0-9]{4}$")
 TRACKING_PARAMS = frozenset(("fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "wbraid", "gbraid"))
+# Only literal, documented marketing names are eligible for the existing
+# heuristic stripping. An arbitrary "utm_*" key may be an origin-defined
+# article/version selector, so a prefix match could silently discard evidence.
+STANDARD_UTM_PARAMS = frozenset((
+    "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+    "utm_id", "utm_source_platform", "utm_creative_format",
+    "utm_marketing_tactic",
+))
 _DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\Z")
 _NUMERIC_IPV4_PART = r"(?:0[xX][0-9A-Fa-f]+|0[0-7]+|[0-9]+)"
 
@@ -65,7 +73,7 @@ def _canonical_url_key(parts):
     query_items = []
     for item in parts.query.split("&") if parts.query else []:
         key = item.partition("=")[0]
-        if key.lower().startswith("utm_") or key.lower() in TRACKING_PARAMS:
+        if key.lower() in STANDARD_UTM_PARAMS or key.lower() in TRACKING_PARAMS:
             continue
         query_items.append((key, item))
     # Even UNIQUE parameters can be order-sensitive for origin routing,
