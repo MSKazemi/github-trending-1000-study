@@ -5,6 +5,7 @@ import json
 import os
 import re
 import sys
+from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 def fetch(path):
@@ -39,8 +40,46 @@ def classify(base, name, protected, open_prs, ahead):
         return "manual-prune-candidate"
     raise ValueError("Invalid ahead count")
 
+def _open_pr_snapshot(prs, repo):
+    """Build a strict PR-head inventory; unknown ownership cannot mean no PR."""
+    open_heads, rows, seen = {}, set(), set()
+    for pr in prs:
+        if not isinstance(pr, dict) or type(pr.get("number")) is not int or pr["number"] <= 0:
+            raise ValueError("Malformed open PR inventory")
+        number = pr["number"]
+        if number in seen:
+            raise ValueError("Duplicate open PR number")
+        seen.add(number)
+        head = pr.get("head")
+        if not isinstance(head, dict) or not isinstance(head.get("ref"), str) or not head["ref"]:
+            raise ValueError("Malformed open PR head")
+        owner = head.get("repo")
+        if not isinstance(owner, dict) or not isinstance(owner.get("full_name"), str):
+            raise ValueError("Unverifiable open PR head repository")
+        full_name = owner["full_name"].lower()
+        rows.add((number, head["ref"], full_name))
+        if full_name == repo.lower():
+            open_heads.setdefault(head["ref"], []).append(number)
+    return open_heads, rows
+
+
+def _quoted_branch(name):
+    """Reject unsafe API-supplied refs; escape URL path separators correctly."""
+    if (not isinstance(name, str) or
+            not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}", name) or
+            name.startswith("refs/") or name.endswith((".", "/")) or ".." in name or
+            any(part in ("", ".", "..") for part in name.split("/"))):
+        raise ValueError("Unsafe Git branch name in inventory")
+    return quote(name, safe="/")
+
+
 def audit(repo, base="main", get=fetch):
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
+    # Reject relative-dot segments BEFORE composing any GitHub API route.
+    # The broad repository-name alphabet alone would otherwise accept
+    # '../name' or 'owner/..' as apparent owner/repo identities.
+    if (not isinstance(repo, str) or
+            not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo) or
+            any(part in (".", "..") for part in repo.split("/"))):
         raise ValueError("Expected owner/repo")
     # The base comes from a CLI argument and must never alter API URL routes.
     if (not isinstance(base, str) or not re.fullmatch(
@@ -66,20 +105,7 @@ def audit(repo, base="main", get=fetch):
     if (len(listed_base) != 1 or
             listed_base[0].get("commit", {}).get("sha") != main_sha):
         raise ValueError("Base SHA moved or missing during branch inventory")
-    open_heads = {}
-    for pr in prs:
-        if not isinstance(pr, dict) or type(pr.get("number")) is not int:
-            raise ValueError("Malformed open PR inventory")
-        head = pr.get("head")
-        if not isinstance(head, dict) or not isinstance(head.get("ref"), str):
-            raise ValueError("Malformed open PR head")
-        owner = head.get("repo")
-        if not isinstance(owner, dict) or not isinstance(owner.get("full_name"), str):
-            # Unknown/deleted repository identity must not be interpreted as
-            # proof that no open PR can depend on an apparently unused ref.
-            raise ValueError("Unverifiable open PR head repository")
-        if owner["full_name"].lower() == repo.lower():
-            open_heads.setdefault(head["ref"], []).append(pr["number"])
+    open_heads, original_prs = _open_pr_snapshot(prs, repo)
     rows, seen = [], set()
     for branch in branches:
         name = branch["name"]
@@ -108,12 +134,67 @@ def audit(repo, base="main", get=fetch):
         rows.append({"branch": name, "sha": sha, "ahead": ahead, "behind": behind, "open_prs": linked_prs, "protected": protected, "decision": classify(base, name, protected, linked_prs, ahead)})
     if base not in seen:
         raise ValueError("Missing base from branch list")
+
+    # A listing and an ancestry comparison are NOT an atomic snapshot.
+    # Before suggesting even a manual prune, re-read every candidate's exact
+    # remote tip AND protection state. Do not use these checks as delete authority:
+    # the separately approved SHA-leased retirement workflow owns mutation.
+    candidates = [row for row in rows if row["decision"] == "manual-prune-candidate"]
+    for row in candidates:
+        detail = get(f"{prefix}/branches/{_quoted_branch(row['branch'])}")
+        if (not isinstance(detail, dict) or detail.get("name") != row["branch"]
+                or not isinstance(detail.get("commit"), dict)
+                or not isinstance(detail["commit"].get("sha"), str)
+                or not re.fullmatch("[0-9a-f]{40}", detail["commit"]["sha"])
+                or type(detail.get("protected")) is not bool):
+            raise ValueError("Cannot safely recheck prune-candidate branch")
+        if (detail["commit"]["sha"] != row["sha"]
+                or detail["protected"] != row["protected"]):
+            row["decision"] = "hold-ref-or-protection-moved-rerun"
+
+    if candidates:
+        # Re-fetch all pages of open PRs: a PR created between the two reads
+        # must not leave an outdated 'no open PR' conclusion in the report.
+        latest_prs = pages(prefix + "/pulls?state=open", get)
+        _, updated_prs = _open_pr_snapshot(latest_prs, repo)
+        if updated_prs != original_prs:
+            for row in candidates:
+                if row["decision"] == "manual-prune-candidate":
+                    row["decision"] = "hold-open-pr-inventory-moved-rerun"
+
+    # Re-list the WHOLE paginated namespace, not just the candidate refs.
+    # A concurrently added/deleted/retargeted source branch makes this a
+    # moving inventory, not a no-loss census; never report a candidate ready.
+    # A second read cannot guarantee atomicity, but it catches a common
+    # inconsistent snapshot failure without any write API calls.
+    latest_branches = pages(prefix + "/branches", get)
+    latest_snapshot = set()
+    for item in latest_branches:
+        if (not isinstance(item, dict) or not isinstance(item.get("name"), str)
+                or not isinstance(item.get("commit"), dict)
+                or not isinstance(item["commit"].get("sha"), str)
+                or not re.fullmatch("[0-9a-f]{40}", item["commit"]["sha"])
+                or type(item.get("protected")) is not bool):
+            raise ValueError("Malformed refreshed branch inventory")
+        latest_snapshot.add((item["name"], item["commit"]["sha"], item["protected"]))
+    if len(latest_snapshot) != len(latest_branches):
+        raise ValueError("Duplicate refreshed branch inventory record")
+    original_snapshot = {(row["branch"], row["sha"], row["protected"]) for row in rows}
+    inventory_stable = latest_snapshot == original_snapshot
+    if not inventory_stable:
+        for row in candidates:
+            if row["decision"] == "manual-prune-candidate":
+                row["decision"] = "hold-branch-inventory-moved-rerun"
+
     final_sha = base_sha()
     if final_sha != main_sha:
         for row in rows:
             if row["decision"] == "manual-prune-candidate":
                 row["decision"] = "hold-base-moved-rerun"
-    return {"repo": repo, "base": base, "base_sha": main_sha, "base_sha_at_end": final_sha, "read_only": True, "branch_count": len(rows), "open_pr_count": len(prs), "branches": rows}
+    return {"repo": repo, "base": base, "base_sha": main_sha,
+            "base_sha_at_end": final_sha, "read_only": True,
+            "branch_inventory_stable_at_second_read": inventory_stable,
+            "branch_count": len(rows), "open_pr_count": len(prs), "branches": rows}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
