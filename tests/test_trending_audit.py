@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import traceback
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -269,6 +270,19 @@ class ChronologicalProxyTests(unittest.TestCase):
         with self.assertRaisesRegex(TrendingAuditError, "cross-split"):
             evaluate_proxy(data)
 
+    def test_private_malformed_feature_timestamp_not_in_nested_error_traceback(self):
+        marker = "PRIVATE_TRENDING_TIMESTAMP_20261017"
+        data = proxy()
+        data["pages"][0]["features"][0]["recorded_at_utc"] = marker
+        try:
+            evaluate_proxy(data)
+        except TrendingAuditError as error:
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+        else:
+            self.fail("malformed feature timestamp must be refused")
+
     def test_future_features_and_missing_metadata_rejected(self):
         for bad in ("2026-10-13T12:00:00Z", "2099-01-01T00:00:00Z"):
             with self.subTest(bad=bad):
@@ -419,6 +433,35 @@ class OfflineCLITests(unittest.TestCase):
                         with self.assertRaises(SystemExit) as caught:
                             main(["coverage", "--input", str(source)])
                     self.assertEqual(caught.exception.code, 2)
+
+    def test_private_duplicate_source_key_absent_from_all_error_contexts(self):
+        marker = "PRIVATE_TRENDING_JSON_KEY_20261017"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "secret-source.json"
+            path.write_text(
+                json.dumps({marker: 1})[:-1] + "," + json.dumps(marker) + ":2}",
+                encoding="utf-8",
+            )
+            try:
+                load_offline_json(path)
+            except TrendingAuditError as error:
+                self.assertIsNone(error.__cause__)
+                self.assertIsNone(error.__context__)
+                self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+            else:
+                self.fail("ambiguous research JSON must fail")
+            stderr = io.StringIO()
+            with contextlib.redirect_stderr(stderr):
+                try:
+                    main(["coverage", "--input", str(path)])
+                except SystemExit as error:
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, stderr.getvalue())
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("ambiguous JSON must fail CLI")
 
     def test_duplicate_json_key_names_do_not_leak_through_cli(self):
         private_name = "private.person@example.invalid"
