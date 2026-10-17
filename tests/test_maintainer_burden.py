@@ -336,5 +336,104 @@ class BurdenTests(unittest.TestCase):
                     self.assertNotIn("PRIVATE_SYMLINK_MARKER", err.getvalue())
 
 
+    def test_coded_outcomes_and_separate_effort_missingness_are_descriptive_only(self):
+        first = card()
+        first["consent_state"] = "consented"
+        first["human_time_minutes"] = {
+            "upstream_review": 2, "upstream_support": 3,
+            "downstream_search": 4, "downstream_implementation": 5,
+            "downstream_review_repair": 6, "downstream_followup": 7,
+        }
+        first["task_accepted_by_independent_reviewer"] = "pass"
+        first["outcomes"].update({
+            "actionability": "pass",
+            "newcomer_comprehension_pass": "fail",
+            "followup_30_day": "completed",
+            "followup_90_day": "not_started",
+            "security_or_privacy_incident": "no",
+        })
+        second = copy.deepcopy(first)
+        second["case_id"] = "FICTIONAL-CASE-002"
+        second["human_time_minutes"] = {field: None for field in FIELDS}
+        second["human_time_minutes"]["downstream_search"] = 8
+        second["task_accepted_by_independent_reviewer"] = "fail"
+        second["outcomes"].update({
+            "actionability": "fail",
+            "newcomer_comprehension_pass": "unknown",
+            "followup_30_day": "missing",
+            "followup_90_day": "unknown",
+            "security_or_privacy_incident": "yes",
+        })
+        withdrawn = card()
+        withdrawn["case_id"] = "FICTIONAL-CASE-003"
+        withdrawn["consent_state"] = "withdrawn"
+        result = summarize([first, second, withdrawn])
+        self.assertEqual(result["case_count"], 3)
+        self.assertEqual(result["consent_state_counts"], {
+            "consented": 2, "not_consented": 0, "withdrawn": 1})
+        self.assertEqual(
+            result["task_acceptance_counts_self_reported_not_authenticated"],
+            {"fail": 1, "pass": 1, "unknown": 1})
+        self.assertEqual(result["upstream_known_partial_minutes_not_a_total"], 5)
+        self.assertEqual(result["downstream_known_partial_minutes_not_a_total"], 30)
+        self.assertEqual(result["known_partial_minutes_not_a_total"], 35)
+        self.assertEqual(result["missing_upstream_component_entries"], 4)
+        self.assertEqual(result["missing_downstream_component_entries"], 7)
+        self.assertEqual(result["missing_component_entries"], 11)
+        self.assertEqual(result["missing_or_not_due_outcome_entries"], 9)
+        counts = result["outcome_counts_self_reported_not_authenticated"]
+        self.assertEqual(counts["actionability"],
+                         {"fail": 1, "pass": 1, "unknown": 1})
+        self.assertEqual(counts["newcomer_comprehension_pass"],
+                         {"fail": 1, "pass": 0, "unknown": 2})
+        self.assertEqual(counts["followup_30_day"],
+                         {"completed": 1, "missing": 1,
+                          "not_started": 1, "unknown": 0})
+        self.assertEqual(counts["followup_90_day"],
+                         {"completed": 0, "missing": 0,
+                          "not_started": 2, "unknown": 1})
+        self.assertEqual(counts["security_or_privacy_incident"],
+                         {"no": 1, "unknown": 1, "yes": 1})
+        self.assertFalse(result["independent_review_authenticated"])
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertIsNone(result["overall_human_minutes"])
+        self.assertIsNone(result["per_accepted_task_minutes"])
+        self.assertNotIn("FICTIONAL-CASE", json.dumps(result))
+
+    def test_unknown_coded_outcome_values_are_rejected_without_echo(self):
+        for name, value in (
+                ("actionability", "wins"),
+                ("newcomer_comprehension_pass", "completed"),
+                ("followup_30_day", "yes"),
+                ("followup_90_day", "approved"),
+                ("security_or_privacy_incident", "pass"),
+                ("actionability", []),
+                ("followup_30_day", {"private": "content"})):
+            record = card()
+            record["consent_state"] = "consented"
+            record["outcomes"][name] = value
+            with self.subTest(name=name, value=type(value).__name__):
+                with self.assertRaisesRegex(BurdenError, "outcome schema"):
+                    summarize([record])
+
+    def test_real_pending_pilot_coded_outcomes_are_not_authenticated(self):
+        record = card()
+        record["synthetic"] = False
+        record["not_empirical_data"] = False
+        record["frame_commit"] = "a" * 40
+        record["consent_state"] = "consented"
+        record["task_accepted_by_independent_reviewer"] = "fail"
+        record["outcomes"]["actionability"] = "fail"
+        record["outcomes"]["newcomer_comprehension_pass"] = "unknown"
+        result = summarize([record])
+        self.assertEqual(result["dataset_kind"], "self_reported_pilot")
+        self.assertEqual(
+            result["task_acceptance_counts_self_reported_not_authenticated"]["fail"], 1)
+        self.assertFalse(result["approved_for_public_release"])
+        self.assertFalse(result["independent_review_authenticated"])
+        self.assertIsNone(result["overall_human_minutes"])
+
+
+
 if __name__ == "__main__":
     unittest.main()
