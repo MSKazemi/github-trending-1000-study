@@ -189,3 +189,46 @@ The earlier draft-only integration branch `integration/five-fix-pr-ci-rehearsal-
 **0/5 source PRs merged at this checkpoint.** There was no submitted independent qualified security/methods/maintainer review on the previous inspection, and that remains a mandatory live recheck before any final merge. The main ruleset/admin protection is also a distinct unfinished issue (#248). None of the related research issues #19, #22, #56, #222 or #279 is complete: synthetic offline CI does not authenticate external users, source rights, package provenance, study sampling/labels, or trial success. Preserve every PR and later require current-head independent review, sequential `expected_head_sha` merges, current-base retests and successful **main push** CI. Do not merge #430 as a duplicate.
 
 **Practical maintainer lessons:** (a) compare original raw URLs before deduplicating scientific evidence, not just decoded query tuples; (b) require realistic negative source/hostname test cases without interpreting a plausible-looking URL as verified; (c) test privacy at full-exception tracebacks as well as stderr; (d) use a hash-exact *combined* CI rehearsal that cannot silently overwrite another branch's distinctive tests, while keeping human acceptance independent from AI-generated checklists; and (e) a successful suite must be pinned to an immutable five-source SHA vector, not to a moving branch label.
+
+## 2026-10-17 authenticated-redirect security checkpoint
+
+**Read-only GitHub checkpoint (2026-10-17):** Thirteen open PRs were found:
+#290, #293, #298, #302, #417, #418, #425, #426, #427, #428, #429,
+#431 and #432. All inspected PRs were still based on
+`main@1e656cfcbceb4995467280b796e77e870c6c5f39`. The original
+security/administrative draft #431 had no submitted GitHub review; #432 was
+also Draft. No qualified independent review or main merge is inferred from
+CI. Keep the explicit human approval, exact-current-base checks and
+post-merge main-CI gates. In particular do not activate privileged branch
+retirement or overwrite protected scientific evidence.
+
+**Concrete #277 security fix on original PR #431:** Python's default urllib
+redirect handler may copy a normal HTTP Authorization header onto a
+redirected request even if Location names another host. The offline,
+previously dormant authenticated GitHub REST client now rejects 30x
+redirects, sends the bearer credential as an *unredirected* header, and
+has synthetic cross-host/same-host negative tests and an explicit threat
+model. The final reviewed patch was recorded at
+`a1e17f4e2753373b90e32b92d11473c9a902fb27` with complete-success
+[run 39056042451](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056042451):
+test 3.10, 3.12, 3.13, 3.14 and research-artifacts (5/5).
+This is a **technical CI pass, not independent qualified security approval**
+or permission to merge/delete branches. PR #431 remains Draft and
+`retire` remains hard-disabled.
+
+**Concurrent #24 input privacy fix:** PR #432 gained a separate contributor's
+exact-schema envelope safeguard: `{"cases": [...]}` is accepted, while
+undeclared top-level private interview/email sidecars are rejected
+with fixed, redacted diagnostics. Its exact head
+`6f7d482b94903efdb1954b99eb28f848636cb290` completed all five CI
+jobs successfully in [run 39056074118](https://github.com/MSKazemi/github-trending-1000-study/actions/runs/39056074118).
+Do not claim independent consent, source review or participant enrollment;
+issue #24 remains open. The concurrent authorship is distinct from
+the #431 authenticated-redirect correction.
+
+**Useful lessons for maintainers:** Test *off-host redirects* as well as the
+initial HTTPS origin when handling credentials. For sensitive research
+records, enforce strict schemas at the **outer batch envelope** as well as
+the case level. Hash- and CI-bound engineering progress is not a substitute
+for an actually independent security or methods reviewer, server-side
+branch protection, or verification of the final merge tree.
