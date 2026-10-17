@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 from unittest.mock import patch
 from trending_study.package_review import FIELDS, PackageReviewError, evaluate, evaluate_file, main
@@ -25,6 +26,27 @@ class PackageReviewTests(unittest.TestCase):
         r = evaluate(candidate())
         self.assertEqual(r["decision"], "defer")
         self.assertFalse(r["automatic_install_approved"])
+
+    def test_private_invalid_timestamps_do_not_leak_from_exception_chains(self):
+        # The caller-controlled value is a runtime variable: on Python 3.11+
+        # a formatted traceback otherwise includes literal source arguments.
+        marker = "PRIVATE_PACKAGE_TIMESTAMP_20261017"
+        for field in ("task_frozen_at_utc", "first_available_at_utc"):
+            record = candidate()
+            if field == "task_frozen_at_utc":
+                record[field] = marker
+            else:
+                record["candidate"][field] = marker
+            with self.subTest(field=field):
+                try:
+                    evaluate(record)
+                except PackageReviewError as exc:
+                    self.assertEqual(str(exc), "invalid timestamp")
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(marker, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("private malformed timestamp must be rejected")
 
     def test_temporally_impossible_release(self):
         p = candidate()
@@ -99,6 +121,51 @@ class PackageReviewTests(unittest.TestCase):
             p["checks"]["known_advisories"]["evidence_url"] = url
             with self.subTest(url=repr(url)), self.assertRaises(PackageReviewError):
                 evaluate(p)
+
+    def test_noncanonical_numeric_ipv4_aliases_rejected_in_evidence_urls(self):
+        # Older HTTP stacks can resolve these spellings to loopback even
+        # though ipaddress.ip_address does not parse them as canonical IPv4.
+        for host in ("127.1", "2130706433", "0x7f000001",
+                     "0177.0.0.1", "0x7f.0.0.1", "192.168.1"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "unknown", "evidence_url": f"https://{host}/evidence"
+            }
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    PackageReviewError, "canonical public evidence host"):
+                evaluate(p)
+        p = candidate()
+        p["checks"]["known_advisories"] = {
+            "status": "unknown",
+            "evidence_url": "https://advisories.example.org/evidence"
+        }
+        self.assertEqual(evaluate(p)["decision"], "defer")
+        self.assertFalse(evaluate(p)["automatic_install_approved"])
+
+    def test_evidence_hosts_require_dns_label_syntax_and_no_single_label_intranet(self):
+        # A public-looking HTTPS scheme cannot turn malformed or private
+        # host spelling into structurally credible review evidence.
+        for host in ("intranet", "build-server", "example..org",
+                     "-example.org", "example-.org", "foo.-bar.org",
+                     "foo.bar-.org", "foo_bar.org",
+                     "a" * 64 + ".org", "host." + "a" * 64,
+                     "x" * 251 + ".org"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "pass", "evidence_url": f"https://{host}/security"
+            }
+            with self.subTest(host=host), self.assertRaisesRegex(
+                    PackageReviewError, "canonical public evidence host"):
+                evaluate(p)
+        for host in ("security.example.org", "security-site.example.org",
+                     "xn--bcher-kva.example.org"):
+            p = candidate()
+            p["checks"]["known_advisories"] = {
+                "status": "unknown", "evidence_url": f"https://{host}/security"
+            }
+            with self.subTest(host=host):
+                self.assertEqual(evaluate(p)["decision"], "defer")
+                self.assertFalse(evaluate(p)["automatic_install_approved"])
 
     def test_unexpected_root_candidate_and_gate_fields_fail_closed(self):
         for level in ("root", "candidate", "gate"):
