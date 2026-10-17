@@ -64,7 +64,7 @@ class ReadonlyRulesetReadbackTests(unittest.TestCase):
         self.assertFalse(report["negative_enforcement_tests_verified"])
         self.assertFalse(report["independent_review_verified"])
         self.assertTrue(report["read_only"])
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls), 4)
 
     def test_active_exact_readback_is_only_configuration_not_actual_enforcement(self):
         get, _, calls = fake_get(self.expected_main, self.expected_archive)
@@ -75,7 +75,52 @@ class ReadonlyRulesetReadbackTests(unittest.TestCase):
         self.assertFalse(report["negative_enforcement_tests_verified"])
         self.assertFalse(report["independent_review_verified"])
         self.assertEqual(set(report["required_checks"]), verifier.EXPECTED_CHECKS)
-        self.assertEqual(len(calls), 4)
+        self.assertEqual(len(calls), 6)
+
+    def test_main_moving_during_ruleset_detail_readback_is_detected(self):
+        getter, _, calls = fake_get(self.expected_main, self.expected_archive)
+        state = {"main_reads": 0}
+        def changing(path):
+            if path == f"/repos/{REPO}/branches/main":
+                state["main_reads"] += 1
+                if state["main_reads"] == 2:
+                    return {"commit": {"sha": "a" * 40}, "protected": True}
+            return getter(path)
+        with self.assertRaisesRegex(verifier.RulesetAuditError, "main or protection changed"):
+            self.audit(changing)
+        self.assertEqual(state["main_reads"], 2)
+        self.assertEqual(len(calls), 3)
+
+    def test_ruleset_list_movement_during_readback_is_detected(self):
+        getter, _, calls = fake_get(self.expected_main, self.expected_archive)
+        state = {"lists": 0}
+        def changing(path):
+            if "/rulesets?" in path:
+                state["lists"] += 1
+                if state["lists"] == 2:
+                    return []
+            return getter(path)
+        with self.assertRaisesRegex(verifier.RulesetAuditError, "inventory changed"):
+            self.audit(changing)
+        self.assertEqual(state["lists"], 2)
+
+    def test_authenticated_readback_rejects_redirect_and_does_not_forward_token(self):
+        from unittest.mock import MagicMock
+        opened = MagicMock()
+        opened.__enter__.return_value.read.return_value = b'[]'
+        gateway = MagicMock()
+        gateway.open.return_value = opened
+        with patch.dict("os.environ", {"GH_TOKEN": "PRIVATE_NO_NETWORK_TOKEN"},
+                        clear=True), patch.object(verifier, "build_opener",
+                                                  return_value=gateway) as opener:
+            self.assertEqual(verifier._get(f"/repos/{REPO}/rulesets"), [])
+        request = gateway.open.call_args.args[0]
+        self.assertNotIn("Authorization", request.headers)
+        self.assertEqual(request.unredirected_hdrs["Authorization"],
+                         "Bearer PRIVATE_NO_NETWORK_TOKEN")
+        redirect_guard = opener.call_args.args[0]
+        self.assertIsNone(redirect_guard.redirect_request(request, None, 302,
+                          "redirect", {}, "https://malicious.example/steal"))
 
     def test_server_can_return_rules_and_checks_in_a_different_order(self):
         get, details, _ = fake_get(self.expected_main, self.expected_archive)

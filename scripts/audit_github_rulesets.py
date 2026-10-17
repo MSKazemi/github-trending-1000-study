@@ -7,7 +7,7 @@ from pathlib import Path
 import os
 import re
 import sys
-from urllib.request import Request, urlopen
+from urllib.request import Request, HTTPRedirectHandler, build_opener
 
 from trending_study.data_integrity import decode_research_json, load_research_json_file
 
@@ -152,7 +152,23 @@ def audit(repo, expected_main_sha, expected_main, expected_archive, get):
             if "source" in matches[0]:
                 _require(matches[0]["source"] == repo, "unexpected inherited ruleset")
             ids[key] = matches[0]["id"]
+    def check_end_snapshot():
+        # This is not an atomic GitHub transaction. Catch common main and
+        # ruleset movement while traversing paginated/detail GET responses.
+        at_end = get(f"/repos/{repo}/branches/main")
+        _require(isinstance(at_end, dict)
+                 and isinstance(at_end.get("commit"), dict)
+                 and at_end["commit"].get("sha") == expected_main_sha
+                 and at_end.get("protected") is main["protected"],
+                 "main or protection changed during ruleset readback")
+        latest = _pages(repo, get)
+        key = lambda row: (row["id"], row.get("name"), row.get("target"),
+                           row.get("enforcement"), row.get("source"))
+        _require(sorted(map(key, latest)) == sorted(map(key, rows)),
+                 "ruleset inventory changed during readback")
+
     if not main["protected"] or len(ids) != len(PAYLOADS):
+        check_end_snapshot()
         return {"repository": repo, "main_sha": expected_main_sha,
                 "configuration_status": "absent_or_partial",
                 "main_protected": main["protected"],
@@ -164,6 +180,7 @@ def audit(repo, expected_main_sha, expected_main, expected_archive, get):
         actual = get(f"/repos/{repo}/rulesets/{ids[key]}")
         expected = expected_main if key == "main" else expected_archive
         _matching_detail(actual, expected, ids[key], repo)
+    check_end_snapshot()
     return {"repository": repo, "main_sha": expected_main_sha,
             "configuration_status": "matching_rulesets_observed_not_enforcement_proof",
             "main_protected": True, "main_ruleset_id": ids["main"],
@@ -174,12 +191,22 @@ def audit(repo, expected_main_sha, expected_main, expected_archive, get):
             "read_only": True}
 
 
+class _DenyGitHubRedirect(HTTPRedirectHandler):
+    """No authenticated GitHub GET may silently follow an HTTP redirect."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def _get(path):
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "trending-study-ruleset-audit"}
+    req = Request("https://api.github.com" + path, headers=headers)
     token = os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN")
     if token:
-        headers["Authorization"] = "Bearer " + token
-    with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=15) as response:
+        # urllib's default redirect machinery can propagate Authorization to
+        # another host. Both prevent forwarding and refuse HTTP 30x entirely.
+        req.add_unredirected_header("Authorization", "Bearer " + token)
+    with build_opener(_DenyGitHubRedirect()).open(req, timeout=15) as response:
         raw = response.read(1_000_001)
     if len(raw) > 1_000_000:
         raise RulesetAuditError("bounded GitHub response exceeded")
