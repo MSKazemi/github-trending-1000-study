@@ -1,13 +1,18 @@
 """Offline task-cost audit regression tests: all values are synthetic."""
 import copy
+from contextlib import redirect_stderr
+import io
+import os
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 
-from trending_study.task_costs import CostAuditError, audit_costs
+from trending_study.task_costs import CostAuditError, _minutes, _read_json, _timestamp, audit_costs, main
+from trending_study.data_integrity import MAX_FILE_BYTES
 from trending_study.trial import TrialError, assign
 
 
@@ -275,15 +280,90 @@ class TaskCostTests(unittest.TestCase):
             ledger_path.write_text(duplicate, encoding="utf-8")
             run = subprocess.run(command, capture_output=True, text=True)
             self.assertNotEqual(run.returncode, 0)
-            self.assertIn("duplicate JSON key", run.stderr)
+            self.assertIn("invalid or unsafe task cost research input", run.stderr)
             self.assertFalse(output.exists())
             ledger_path.write_text(source_text.replace(
                 '"max_human_minutes": 35', '"max_human_minutes": NaN', 1,
             ), encoding="utf-8")
             run = subprocess.run(command, capture_output=True, text=True)
             self.assertNotEqual(run.returncode, 0)
-            self.assertIn("nonfinite/nonstandard", run.stderr)
+            self.assertIn("invalid or unsafe task cost research input", run.stderr)
             self.assertFalse(output.exists())
+
+    def test_private_json_key_never_enters_exception_context_or_cli(self):
+        private = "PRIVATE_COST_PARTICIPANT_KEY_20261017"
+        frame, assignment, outcomes, ledger = inputs()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "private-participant-file.json"
+            source.write_text(
+                json.dumps({private: 1})[:-1] + "," + json.dumps(private) + ":2}",
+                encoding="utf-8",
+            )
+            with self.assertRaises(CostAuditError) as captured:
+                _read_json(source)
+            error = captured.exception
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(private, "".join(traceback.format_exception(error)))
+            assigned = root / "assignments.json"
+            assigned.write_text(json.dumps(assignment), encoding="utf-8")
+            destination = root / "output.json"
+            stderr = io.StringIO()
+            with redirect_stderr(stderr):
+                try:
+                    main([
+                        "--frame", str(FIXTURES / "trial_frame.synthetic.json"),
+                        "--assignments", str(assigned),
+                        "--outcomes", str(FIXTURES / "trial_outcomes.synthetic.json"),
+                        "--input", str(source), "--output", str(destination),
+                    ])
+                except SystemExit as error:
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(private, stderr.getvalue())
+                    self.assertNotIn(source.name, stderr.getvalue())
+                    self.assertNotIn(private, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("malformed private JSON must not be accepted")
+            self.assertFalse(destination.exists())
+
+    def test_special_or_oversized_task_cost_inputs_fail_before_decode(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "ordinary.json"
+            source.write_text("{}", encoding="utf-8")
+            oversized = root / "oversized.json"
+            with oversized.open("wb") as stream:
+                stream.truncate(MAX_FILE_BYTES + 1)
+            targets = [root, oversized]
+            if hasattr(os, "symlink"):
+                alias = root / "alias.json"
+                try:
+                    alias.symlink_to(source)
+                except (OSError, NotImplementedError):
+                    pass
+                else:
+                    targets.append(alias)
+            for item in targets:
+                with self.subTest(kind=item.name):
+                    with self.assertRaisesRegex(CostAuditError, "invalid or unsafe research JSON"):
+                        _read_json(item)
+            # Valid ordinary inputs stay available to the unchanged API.
+            self.assertEqual(_read_json(source), {})
+
+    def test_private_invalid_timestamp_and_large_number_fail_bounded(self):
+        marker = "PRIVATE_COST_START_TIME_20261017"
+        with self.assertRaises(CostAuditError) as captured:
+            _timestamp(marker, "started_at_utc")
+        error = captured.exception
+        self.assertIsNone(error.__cause__)
+        self.assertIsNone(error.__context__)
+        self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+        with self.assertRaisesRegex(CostAuditError, "finite"):
+            _minutes(10 ** 1000, "max_human_minutes")
+        self.assertIsNone(_minutes(None, "max_human_minutes"))
 
     def test_write_once_cli_and_alias_protection(self):
         with tempfile.TemporaryDirectory() as temp:
