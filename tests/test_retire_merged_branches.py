@@ -88,15 +88,15 @@ class FakeClient:
                 raise ApiNotFound("not found")
             self.archive_checks += 1
             if self.archive_moved_after_first_check and self.archive_checks > 1:
-                return {"object": {"sha": "f" * 40}}
-            return {"object": {"sha": self.tag_sha}}
+                return {"object": {"sha": "f" * 40, "type": "commit"}}
+            return {"object": {"sha": self.tag_sha, "type": "commit"}}
         if "/git/ref/heads/" in path:
             if self.absent:
                 raise ApiNotFound("branch already retired")
             self.ref_checks += 1
             if self.race_on_second_ref and self.ref_checks == 2:
                 return {"object": {"sha": "f" * 40}}
-            return {"object": {"sha": self.sha}}
+            return {"object": {"sha": self.sha, "type": "commit"}}
         if path == f"/repos/{REPO}/branches/main":
             self.main_reads += 1
             live_sha = (("f" * 40) if self.main_change_on_read is not None
@@ -125,7 +125,7 @@ class FakeClient:
     def post(self, path, payload):
         self.posts.append((path, payload))
         self.tag_sha = payload["sha"]
-        return {"ref": payload["ref"], "object": {"sha": self.tag_sha}}
+        return {"ref": payload["ref"], "object": {"sha": self.tag_sha, "type": "commit"}}
 
     def delete_with_lease(self, branch, expected_sha):
         if self.tag_sha != SHA:
@@ -150,17 +150,163 @@ class BranchCleanupTests(unittest.TestCase):
                          "refs/tags/" + ARCHIVE_PREFIX + "/" + NAME)
         self.assertEqual(fake.posts[0][1]["sha"], SHA)
 
+    def test_direct_destructive_helper_requires_approved_main(self):
+        fake = FakeClient()
+        # Calling the lower-level helper must not bypass execute()'s
+        # frozen-main approval check, even if all fake rulesets are active.
+        with self.assertRaisesRegex(CleanupError, "approved main SHA"):
+            retire_one(fake, REPO, item())
+        self.assertEqual(fake.ref_checks, 0)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+        # An arbitrary repo argument must not reuse another client's token.
+        with self.assertRaisesRegex(CleanupError, "repository differs"):
+            retire_one(fake, "other/repo", item(),
+                       expected_main_sha="c" * 40)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+        # A direct, explicitly pinned call still checks current main and
+        # blocks before archive publication or leased deletion.
+        fake.main_sha = "f" * 40
+        self.assertEqual(retire_one(
+            fake, REPO, item(), expected_main_sha="c" * 40
+        ), "blocked_main_moved")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_direct_retirement_rejects_unvalidated_items_before_api(self):
+        # The helper is public to in-process callers, not only execute().
+        # No malformed source ref should reach authenticated REST operations,
+        # even through the lower-risk read-only audit path.
+        bad = []
+        for value in ("../main", "feature/../../main", "refs/heads/main",
+                      "feature/", "x\\nprivate", "", "a" * 201):
+            bad.append(dict(item(), branch=value))
+        bad.extend((
+            dict(item(), expected_sha="f"),
+            dict(item(), merge_commit_sha="PUBLIC_BAD_SHA"),
+            dict(item(), merged_pr=True),
+            dict(item(), merged_pr="123"),
+            dict(item(), merged_pr=100000001),
+            dict(item(), extra_private_field="PRIVATE_MARKER"),
+            None,
+            [],
+        ))
+        for obj in bad:
+            for audit_only in (True, False):
+                fake = FakeClient()
+                with self.subTest(value=str(type(obj)), audit_only=audit_only):
+                    with patch.object(fake, "get") as get:
+                        with self.assertRaises(CleanupError):
+                            retire_one(fake, REPO, obj,
+                                       audit_only=audit_only,
+                                       expected_main_sha="c" * 40)
+                        get.assert_not_called()
+                    self.assertFalse(fake.posts)
+                    self.assertFalse(fake.deleted)
+
+    def test_direct_read_only_retirement_rejects_wrong_repository(self):
+        fake = FakeClient()
+        with patch.object(fake, "get") as get:
+            with self.assertRaisesRegex(CleanupError, "repository differs"):
+                retire_one(fake, "attacker/unrelated", item(), audit_only=True)
+            get.assert_not_called()
+
+    def test_malformed_remote_objects_block_without_mutation(self):
+        # GitHub may return null or partial nested JSON. That must produce
+        # a determinate blocked status, not an AttributeError traceback.
+        paths = (
+            (f"/repos/{REPO}/git/ref/heads/{NAME}", "blocked_changed_ref"),
+            (f"/repos/{REPO}/branches/{NAME}", "blocked_protected_or_changed"),
+            (f"/repos/{REPO}/branches/main", "blocked_unverifiable_main"),
+        )
+        malformed = (None, [], {}, {"object": None},
+                     {"object": {"sha": SHA}},  # missing commit type
+                     {"object": {"sha": SHA, "type": "tag"}},
+                     {"object": {"sha": "PRIVATE_INVALID", "type": "commit"}})
+        for target, expected in paths:
+            for payload in malformed:
+                fake = FakeClient()
+                original = fake.get
+                def read(path):
+                    return payload if path == target else original(path)
+                with self.subTest(endpoint=target, payload=type(payload).__name__):
+                    with patch.object(fake, "get", side_effect=read):
+                        self.assertEqual(
+                            retire_one(fake, REPO, item(), audit_only=True,
+                                       expected_main_sha="c" * 40), expected
+                        )
+                    self.assertFalse(fake.posts)
+                    self.assertFalse(fake.deleted)
+
+    def test_malformed_recovery_tag_never_counts_as_preserved(self):
+        tag_path = f"/repos/{REPO}/git/ref/tags/{ARCHIVE_PREFIX}/{NAME}"
+        for payload in (None, [], {"object": None},
+                        {"object": {"sha": SHA}},
+                        {"object": {"sha": SHA, "type": "tag"}}):
+            fake = FakeClient()
+            fake.tag_sha = SHA
+            original = fake.get
+            def read(path):
+                return payload if path == tag_path else original(path)
+            with self.subTest(payload=repr(payload)):
+                with patch.object(fake, "get", side_effect=read):
+                    self.assertEqual(
+                        retire_one(fake, REPO, item(), audit_only=True,
+                                   expected_main_sha="c" * 40),
+                        "blocked_archive_tag_conflict"
+                    )
+                self.assertFalse(fake.posts)
+                self.assertFalse(fake.deleted)
+
+    def test_absent_branch_direct_retirement_checks_archive_ruleset(self):
+        fake = FakeClient()
+        fake.absent = True
+        fake.tag_sha = SHA
+        fake.archive_rules_installed = False
+        with self.assertRaisesRegex(CleanupError, "archive-tag ruleset"):
+            retire_one(fake, REPO, item(), expected_main_sha="c" * 40)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_destructive_batch_stops_at_first_block_but_audit_continues(self):
+        request = plan()
+        request["branches"].append(dict(
+            item(), branch="fix/second-possible-branch", merged_pr=124
+        ))
+        fake = FakeClient()
+        fake.sha = "f" * 40
+        with redirect_stdout(io.StringIO()):
+            rows = execute(request, fake, audit_only=False)
+        self.assertEqual([r["status"] for r in rows], [
+            "blocked_changed_ref", "not_attempted_after_prior_block"
+        ])
+        self.assertEqual(fake.ref_checks, 1)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+        observer = FakeClient()
+        observer.sha = "f" * 40
+        with redirect_stdout(io.StringIO()):
+            all_rows = execute(request, observer, audit_only=True)
+        self.assertEqual(len(all_rows), 2)
+        self.assertTrue(all(r["status"] == "blocked_changed_ref" for r in all_rows))
+        self.assertEqual(observer.ref_checks, 2)
+        self.assertFalse(observer.posts)
+        self.assertFalse(observer.deleted)
+
     def test_changed_head_is_never_archived_or_deleted(self):
         fake = FakeClient()
         fake.sha = "f" * 40
-        self.assertEqual(retire_one(fake, REPO, item()), "blocked_changed_ref")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_changed_ref")
         self.assertEqual(fake.posts, [])
         self.assertEqual(fake.deleted, [])
 
     def test_never_delete_protected_branch(self):
         fake = FakeClient()
         fake.protected = True
-        self.assertEqual(retire_one(fake, REPO, item()), "blocked_protected_or_changed")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_protected_or_changed")
         self.assertFalse(fake.deleted)
 
     def test_missing_or_null_nested_pr_repo_blocks_retirement_without_archive(self):
@@ -191,35 +337,35 @@ class BranchCleanupTests(unittest.TestCase):
             fake = FakeClient()
             setattr(fake, attr, bad)
             with self.subTest(attr=attr):
-                self.assertEqual(retire_one(fake, REPO, item()),
+                self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                                  "blocked_pr_not_identical_and_merged")
                 self.assertFalse(fake.deleted)
 
     def test_open_pr_blocks_branch_retirement(self):
         fake = FakeClient()
         fake.open = [{"number": 9}]
-        self.assertEqual(retire_one(fake, REPO, item()), "blocked_open_pr")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_open_pr")
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
 
     def test_existing_wrong_archival_tag_fails_closed(self):
         fake = FakeClient()
         fake.tag_sha = "f" * 40
-        self.assertEqual(retire_one(fake, REPO, item()), "blocked_archive_tag_conflict")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_archive_tag_conflict")
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
 
     def test_existing_correct_archival_tag_is_idempotently_reused(self):
         fake = FakeClient()
         fake.tag_sha = SHA
-        self.assertEqual(retire_one(fake, REPO, item()), "retired_with_archive_tag")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "retired_with_archive_tag")
         self.assertFalse(fake.posts)
         self.assertEqual(len(fake.deleted), 1)
 
     def test_race_after_archive_blocks_delete(self):
         fake = FakeClient()
         fake.race_on_second_ref = True
-        self.assertEqual(retire_one(fake, REPO, item()), "blocked_raced_branch_update")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_raced_branch_update")
         self.assertEqual(fake.tag_sha, SHA)
         self.assertFalse(fake.deleted)
 
@@ -249,7 +395,7 @@ class BranchCleanupTests(unittest.TestCase):
     def test_not_in_current_main_history_blocks_even_merged_pr(self):
         fake = FakeClient()
         fake.ancestor = False
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_merge_not_in_main")
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
@@ -266,7 +412,7 @@ class BranchCleanupTests(unittest.TestCase):
     def test_new_open_pr_between_checks_blocks_sha_leased_delete(self):
         fake = FakeClient()
         fake.open_on_second_check = True
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_new_open_pr")
         self.assertEqual(fake.open_checks, 2)
         self.assertEqual(fake.tag_sha, SHA)
@@ -275,7 +421,7 @@ class BranchCleanupTests(unittest.TestCase):
     def test_repointed_archive_tag_after_initial_check_blocks_delete(self):
         fake = FakeClient()
         fake.archive_moved_after_first_check = True
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_archive_changed_before_delete")
         self.assertEqual(fake.archive_checks, 2)
         self.assertEqual(fake.tag_sha, SHA)
@@ -284,18 +430,18 @@ class BranchCleanupTests(unittest.TestCase):
     def test_absent_branch_requires_exact_archived_original_sha(self):
         fake = FakeClient()
         fake.absent = True
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_absent_without_archive")
         fake.tag_sha = "f" * 40
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_absent_without_archive")
         fake.tag_sha = SHA
-        self.assertEqual(retire_one(fake, REPO, item()), "already_absent")
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "already_absent")
 
     def test_incomplete_open_pr_listing_is_not_assumed_empty(self):
         fake = FakeClient()
         fake.open = [{"number": n} for n in range(100)]
-        self.assertEqual(retire_one(fake, REPO, item()),
+        self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40),
                          "blocked_incomplete_open_pr_check")
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
@@ -457,7 +603,7 @@ class BranchCleanupTests(unittest.TestCase):
         fake = FakeClient()
         fake.archive_rules_installed = False
         with self.assertRaisesRegex(CleanupError, "archive-tag ruleset"):
-            retire_one(fake, REPO, item())
+            retire_one(fake, REPO, item(), expected_main_sha="c" * 40)
         self.assertFalse(fake.posts)
         self.assertFalse(fake.deleted)
 

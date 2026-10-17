@@ -211,3 +211,64 @@ execution with readback and recovery. This branch's engineering tests are
 **Practical lesson:** missing or malformed remote metadata is not evidence
 that a destructive condition succeeded. Require complete verified nested
 objects before any archive write or SHA-leased mutation.
+
+## 2026-10-17 direct retirement-helper input boundary
+
+A review of the independently callable `retire_one()` helper found that
+`execute()` checked the full operator plan schema, but direct callers
+could submit an unvalidated branch name, commit digest, merge PR number or
+unexpected private sidecar keys before the helper constructed authenticated
+GitHub API requests. A previous patch already required a frozen main commit
+for direct destructive calls. This additional change **reuses the exact
+single-item validator** in both `validate_plan()` and `retire_one()`
+for destructive *and read-only* entry points, and enforces repository/client
+identity before any network request. The negative regression checks
+dot-segment/ref-injection names, malformed digests, noninteger and oversized
+PR numbers, extra fields and invalid object types; none may reach `get()`,
+tag creation or leased deletion. Original CI fixtures still test successful
+offline plan execution.
+
+This prevents one input-validation bypass; it does **not** prove that a
+supplied frozen SHA was actually approved by a human, that live GitHub
+ref/tag protections are installed, or that a real retirement plan is eligible.
+No tag, branch or actual research datum was modified. The privileged workflow
+remains disabled, and independent security/admin review is required.
+
+**Maintainer lesson:** a lower-level privileged helper is itself a trust
+boundary. Apply the same exact-schema and provenance checks there rather
+than assuming every caller used the high-level command.
+
+
+## 2026-10-17 P0 remote-payload and destructive-batch follow-up
+
+**Additional fail-closed review on PR #435:** A legitimate-but-partial
+GitHub REST response (e.g. a null `git/ref.object`, missing
+`branch.commit`, absent `main.commit`, or a tag pointing to an annotated
+tag object rather than the approved commit) could trigger unhandled nested
+attribute access in `retire_one()`. The proposal now reads typed commit
+SHA references conservatively, refuses incomplete ref or main metadata,
+and requires an archive ref to point **directly to the exact original commit**.
+A direct retry for a branch already absent also checks the active immutable
+archive-tag ruleset before returning an apparently successful status.
+Adversarial synthetic tests exercise malformed ref, branch, main and archive
+readbacks without any remote mutations.
+
+A second failure mode was batch continuation: `execute(..., audit_only=False)`
+previously kept attempting subsequent branch retirements even after a
+candidate failed its source/ownership/permission/lease gate. Now a
+destructive pass **stops at the first blocked/error candidate**, records
+all remaining candidates as `not_attempted_after_prior_block`, and reports
+nonzero overall outcome. The *read-only* audit still inspects every candidate
+to help an operator understand the whole plan. This limits the mutation
+blast radius and preserves a machine-readable outcome disposition.
+
+This is **not** a permit to enable branch retirement: live GitHub readback
+still has `main.protected=false` and no active archive rulesets. Original
+plan SHAs are stale, the destructive workflow stays hard-disabled, and
+independent qualified security review plus a separately authorized
+source-preserving recovery plan are mandatory. No real branch or archive tag
+was created, deleted, replaced, or retargeted by this follow-up.
+
+**Practical maintainer lesson:** negative API shapes must become explicit
+blocked decisions, and a destructive batch should stop on the first
+unexpected result rather than attempting unrelated irreversible changes.
