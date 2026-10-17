@@ -156,6 +156,77 @@ class ReuseGateTests(unittest.TestCase):
             self.assertNotIn("PRIVATE_", stderr.getvalue() +
                              "".join(traceback.format_exception(error)))
 
+    def test_duplicate_names_do_not_overwrite_failed_gate_evidence(self):
+        for duplicate_name in ("SYNTHETIC candidate (not a real package)",
+                               "synthetic CANDIDATE (not a real package)",
+                               " SYNTHETIC candidate (not a real package) "):
+            card = copy.deepcopy(CARD)
+            card["candidates"][0]["license_compatibility"] = "failed"
+            another = copy.deepcopy(card["candidates"][0])
+            another["name"] = duplicate_name
+            for gate in ("functional_test", "license_compatibility",
+                         "security_review", "maintenance_review"):
+                another[gate] = "verified"
+            card["candidates"].append(another)
+            with self.subTest(name=duplicate_name):
+                with self.assertRaisesRegex(
+                        InvalidReuseAssessment, "duplicate normalized candidate"):
+                    evaluate(card)
+
+    def test_invalid_nested_state_types_are_controlled_validation_failures(self):
+        for state in ([], {}, ["verified"], {"private": "PRIVATE_GATE"}):
+            card = copy.deepcopy(CARD)
+            card["candidates"][0]["security_review"] = state
+            with self.subTest(state=type(state).__name__):
+                with self.assertRaisesRegex(
+                        InvalidReuseAssessment, "security_review"):
+                    evaluate(card)
+
+    def test_candidate_fields_and_count_are_bounded_without_losing_distinct_rows(self):
+        card = copy.deepcopy(CARD)
+        duplicate = copy.deepcopy(card["candidates"][0])
+        duplicate["private_password"] = "PRIVATE_PASSWORD_MARKER"
+        card["candidates"].append(duplicate)
+        with self.assertRaisesRegex(InvalidReuseAssessment, "unsupported fields"):
+            evaluate(card)
+        card = copy.deepcopy(CARD)
+        card["candidates"][0]["name"] = "Long" * 200
+        with self.assertRaisesRegex(InvalidReuseAssessment, "bounded text"):
+            evaluate(card)
+        card = copy.deepcopy(CARD)
+        card["candidates"] = [
+            dict(card["candidates"][0], name=f"SYNTHETIC-{i}")
+            for i in range(101)
+        ]
+        with self.assertRaisesRegex(InvalidReuseAssessment, "bounded list"):
+            evaluate(card)
+        card = copy.deepcopy(CARD)
+        negative = copy.deepcopy(card["candidates"][0])
+        negative["name"] = "SYNTHETIC different candidate"
+        negative["license_compatibility"] = "failed"
+        card["candidates"].append(negative)
+        result = evaluate(card)
+        self.assertEqual(result["candidate_count"], 2)
+        self.assertEqual(result["unresolved"], [CARD["candidates"][0]["name"]])
+        self.assertEqual(result["failed_gates"], {
+            "SYNTHETIC different candidate": ["license_compatibility"]})
+
+    def test_cli_returns_bounded_error_for_unhashable_gate_status(self):
+        with tempfile.TemporaryDirectory() as folder:
+            card = copy.deepcopy(CARD)
+            card["candidates"][0]["functional_test"] = ["verified"]
+            source = Path(folder) / "PRIVATE_CARD.json"
+            source.write_text(json.dumps(card), encoding="utf-8")
+            proc = subprocess.run(
+                [sys.executable, "-m", "trending_study.reuse_gate",
+                 "--input", str(source)],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("functional_test", proc.stderr)
+            self.assertNotIn("PRIVATE_CARD", proc.stderr)
+            self.assertNotIn("Traceback", proc.stderr)
+
     def test_invalid_status_refused(self):
         card = copy.deepcopy(CARD)
         card["candidates"][0]["functional_test"] = "probably"
