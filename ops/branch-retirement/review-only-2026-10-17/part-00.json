@@ -1,0 +1,259 @@
+{
+  "batch_index": 0,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "audit/branch-merge-readiness-20261016",
+      "sha": "245a8b496673b00917732162eaf2d93b64651634",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 1,
+        "behind_by": 296,
+        "changed_files": 1
+      },
+      "changed_files": [
+        {
+          "path": "docs/reviews/2026-10-16-branch-merge-readiness.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "93ad9de61d74b52677b9568fab1fa9c7cde33881",
+          "main_blob_sha": "93ad9de61d74b52677b9568fab1fa9c7cde33881",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "audit/issue-100-provisional-ledger-preservation-20261016",
+      "sha": "f67990a82fdf15629bba926a7dc6a08cbb145d6b",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 285,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "audit/merge-disposition-20261016-evening",
+      "sha": "520479809983576b7fbe88e2333e51246aa8df11",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 264,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "audit/pr-merge-gate-log-20261013",
+      "sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 1,
+        "behind_by": 715,
+        "changed_files": 1
+      },
+      "changed_files": [
+        {
+          "path": "docs/PR_REVIEW_2026_10_13.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "d90c7b906aa85b33c0c1f7bbf6216e60d5a2295e",
+          "main_blob_sha": "a11802ff43535c705e6fb1a7db2fe047a63f2091",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "chore/enterprise-pr-merge-guardrails-20261013",
+      "sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 5,
+        "behind_by": 748,
+        "changed_files": 9
+      },
+      "changed_files": [
+        {
+          "path": ".github/pull_request_template.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "299a94d1bb5cd79b213721cb7cd275f836791b45",
+          "main_blob_sha": "60d8103709d6e59366a07878b0580831a815acb2",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "1de056ce4190706a7c32dea62b212c0c9e444239",
+          "main_blob_sha": "45728c803651e4f94a448a6dbe84a079ecc15ed3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "AGENTS.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "97fad896243efbb7d9b21b6fc1473dfa24c6d009",
+          "main_blob_sha": "2c23bc09b6b0d2c4064e61eb6a6aec38eeff3810",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "96d75de22258b170b15e67bd899674158ee794a9",
+          "main_blob_sha": "d819e693339929c74996799e082af5aa5a6a56c8",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "README.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "2f750d5c728e003c38f71e82cb4fe78bd3129651",
+          "main_blob_sha": "731772441ac0024a9f94097b74ed5eb104b9999a",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PR_MERGE_QUALITY_POLICY.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b814171f86d0244b0639be4c4f4e42e1200917e7",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PR_REVIEW_CHECKPOINT_2026_10_13.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "d0aa45d7daabebc490fab88e939a55f1358446eb",
+          "main_blob_sha": "0cbace22aa6cb5fd711ef038ebbd19a3562eb973",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "7a9068a05c15d5f7ab02546197de9947ed1c17ab",
+          "main_blob_sha": "750b0f5fe72e69c4d33986cd5a9a056abce2e332",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "research-notes/conversation-checkpoint-2026-10-12.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "cb9b55e507a51b7bb4753042420f90922c39dd3a",
+          "main_blob_sha": "4917d223254203dc171677fd846062952646cce6",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "chore/248-reviewable-ruleset-payloads-20261014",
+      "sha": "2c2494ffb2659c05b965288d6ee294da196a83a5",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 266,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "sha": "fd4209a820479ef2e6242c9a066a0a9e4ea590fe",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 8,
+        "behind_by": 486,
+        "changed_files": 5
+      },
+      "changed_files": [
+        {
+          "path": ".github/pull_request_template.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "60d8103709d6e59366a07878b0580831a815acb2",
+          "main_blob_sha": "60d8103709d6e59366a07878b0580831a815acb2",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/BRANCH_RECONCILIATION_2026_10_14.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "1486cf06d1eded32c7c22e7a36347c6f51610295",
+          "main_blob_sha": "d36a5422ce5f346a7b456927167b18b5a5019319",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/TEN_ISSUE_QUALITY_AND_BRANCH_CHECKPOINT_2026_10_14.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b81a33eb8d1e8eacbcb1db0c6f3a31d87a8359bd",
+          "main_blob_sha": "b81a33eb8d1e8eacbcb1db0c6f3a31d87a8359bd",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "ops/branch-retirement/review-only-2026-10-14.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "bec93d96de57e02431966c36e7950a0bb40631f4",
+          "main_blob_sha": "bec93d96de57e02431966c36e7950a0bb40631f4",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_branch_reconciliation_snapshot.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "fb2757ee2075052e5f877b4661e40fbfa6de3f23",
+          "main_blob_sha": "fb2757ee2075052e5f877b4661e40fbfa6de3f23",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    }
+  ]
+}

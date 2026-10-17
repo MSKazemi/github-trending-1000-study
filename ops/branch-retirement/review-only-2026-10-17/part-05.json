@@ -1,0 +1,387 @@
+{
+  "batch_index": 5,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "quality/extend-canonical-data-integrity-csv-20261013",
+      "sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 4,
+        "behind_by": 711,
+        "changed_files": 4
+      },
+      "changed_files": [
+        {
+          "path": "CONTRIBUTING.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "af7158cf4c0ab10eed9aa0beea6e6e8ca140ab1b",
+          "main_blob_sha": "d819e693339929c74996799e082af5aa5a6a56c8",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/RESEARCH_JSON_INTEGRITY_GATE.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "07bfd81891975956fc0957efe67fc549bc92223d",
+          "main_blob_sha": "6f93753f7f7bcc3ea6a0814c06c9fa93b75a6202",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_data_integrity_csv.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "fda19dc5fb28e928cde89f3be4ebced4773d8671",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/data_integrity.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "541ae1720ac6c288a7fa7304f59140efa45b6f42",
+          "main_blob_sha": "99632c1d42b47653dfc77a4ac3911d4362b33def",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "quality/244-premerge-artifact-gate",
+      "sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 11,
+        "behind_by": 740,
+        "changed_files": 6
+      },
+      "changed_files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "15402a127518d6cd9249341a0cc0921514ac3484",
+          "main_blob_sha": "45728c803651e4f94a448a6dbe84a079ecc15ed3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "85b322a0d8534bfb1d756abd3d54e7b07a7cca4e",
+          "main_blob_sha": "d819e693339929c74996799e082af5aa5a6a56c8",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ENTERPRISE_PR_REVIEW_AND_CI_GATE_2026-10-13.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "25218936d64c42dac0516d09a7d655500bc31b95",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "scripts/__init__.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "4684c5be4c9c84949ddfdbb15b997e5f78f6f37f",
+          "main_blob_sha": "7aed2cc15f04e70822585328d3bafe2fc28c1953",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "scripts/check_artifact_integrity.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "53c7ee471b365d638ddfc15207e0d86de13b36c4",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_artifact_integrity.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "f38fccbbffc5bd48570d3733bef95eab647de887",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/independent-page-qa-2026-10-12",
+      "sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 8,
+        "behind_by": 790,
+        "changed_files": 8
+      },
+      "changed_files": [
+        {
+          "path": "README.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "938c98b3cf0ac6c567530aaf7fb03961e436b569",
+          "main_blob_sha": "731772441ac0024a9f94097b74ed5eb104b9999a",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/DATA_DICTIONARY.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "a2fd89592ec8a2939352ab8e5aebc5b60c54305d",
+          "main_blob_sha": "3f9a5475e02741675ba8139fc34e054f2aa17f16",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PAGE_QA_COMPARISON.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "cc61cfadf42cc185f6c063f7a0a297076a4ccd48",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PARSER_STRUCTURE_QA_2026_10_12.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "e48430543ca6b3cf85e7ddf5c198bcc8ae2e932b",
+          "main_blob_sha": "5ae242a16f4540a3111248d95fe72875d574ed87",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "74efbbf3f46242b9169fe8be79c0efc74ca43c78",
+          "main_blob_sha": "750b0f5fe72e69c4d33986cd5a9a056abce2e332",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "research-notes/conversation-checkpoint-2026-10-12.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "9c7ac9d559d6b3a9d86e779e5c8afdee630af937",
+          "main_blob_sha": "4917d223254203dc171677fd846062952646cce6",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_page_audit.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "c6c855fe92f724d037509ac6ac81034db527dbdb",
+          "main_blob_sha": "77dccd4f12e43360bc9e4b866f068ccfdb7797c5",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/page_audit.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "737d61715d4261eaad5b890cec4fc7d7413cfad0",
+          "main_blob_sha": "42961f04145cc8b61c00c5ba73a14f611feb3061",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue6-trending-overlap-audit-20261012",
+      "sha": "cc37e2014dd0cac3610d287574e2c9c56b82a14f",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 16,
+        "behind_by": 764,
+        "changed_files": 4
+      },
+      "changed_files": [
+        {
+          "path": "docs/TRENDING_OVERLAP_PILOT_2026_10_12.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "28ea83be684743381bc2185d0ef1e640fe509272",
+          "main_blob_sha": "ccfe98eb0820d3d184166b20e96cd2107fe9ef8a",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/trending_overlap.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "7515865d44ca9515fa9c8554a591621b41e6bec5",
+          "main_blob_sha": "7515865d44ca9515fa9c8554a591621b41e6bec5",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_trending_overlap.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "240c3b0a04ce4bc27148d47f1f8326218e1cd59c",
+          "main_blob_sha": "9db214afb968f39f49340e13cfddf534f4ecf27f",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/trending_overlap.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "7a007fc724c237e2132bc19bb9e167cb86042f55",
+          "main_blob_sha": "60ead41305d570c33fb2c7ddedd0cee8570841e2",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue11-evidence-registry-20261012",
+      "sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 4,
+        "behind_by": 764,
+        "changed_files": 4
+      },
+      "changed_files": [
+        {
+          "path": "docs/LESSON_REGISTRY_V1_2026_10_12.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "5ab06b066bbd4394100fca7fd2e7e55ca7185043",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/lesson_registry.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "51a8e0c0ae0faeadb1831ca3e5f8ddf918f80002",
+          "main_blob_sha": "01d8f75fdda459a48ec33483cf73053ab0c2ac4b",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_lesson_registry.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "0d63dd9a38e0c73db37631842c46c4da4870e1ff",
+          "main_blob_sha": "5b36ecb326aecc993b698c68a73d9ed44214d85b",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/lesson_registry.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "8627eb73c7bb5e5ca737a95748dcaf81ca30294b",
+          "main_blob_sha": "300022b93b65ec013b1a308be9d5c7732c405c01",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue22-package-trust-gate-20261012",
+      "sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 4,
+        "behind_by": 764,
+        "changed_files": 4
+      },
+      "changed_files": [
+        {
+          "path": "docs/PACKAGE_TRUST_INSTRUMENT_2026_10_12.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "8ee9fa3b9082c8d58243a0b9c28b59296b71d7a7",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/package_trust.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "ca7518a044003865b2782bb18062c63355b78007",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_package_trust.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b66147fb8906b0a328bfa6b75689e4bbbec700bc",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/package_trust.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b91060841ee6d80016d438174701040527c6428f",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/issue-6-coverage-chronological-proxy-20261014",
+      "sha": "07b83034d4400294ffd016699c9a0cd671f5ec62",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 231,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    }
+  ]
+}

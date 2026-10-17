@@ -1,0 +1,204 @@
+{
+  "batch_index": 3,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "fix/24-maintainer-burden-input-and-overflow-20261016",
+      "sha": "351c4f335eb3358c8d4d58fc4bc1e34a53f285c3",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 180,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/24-unknown-effort-not-zero-20261017",
+      "sha": "b86b99ed0ff391c33c059526cde120cdaad5db25",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 436,
+          "draft": true,
+          "head_sha": "b86b99ed0ff391c33c059526cde120cdaad5db25"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "changed_files": 2
+      },
+      "changed_files": [
+        {
+          "path": "tests/test_maintainer_burden.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "4ab3453934fdcf879dd2a3e0b2760ecc124a7da4",
+          "main_blob_sha": "68e444538e0a6e9f9daf17aba0b6ea01837d91f3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/maintainer_burden.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "14b10dd6386da66599f19122b54773f02906b05e",
+          "main_blob_sha": "7bec5044bd87073e0446698fb16598b4cb3b94f4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/56-news-query-order-20261016",
+      "sha": "b137d301805418c15d335f30b4eb22bcaf00bc7a",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 271,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/56-preserve-unique-query-order-20261017",
+      "sha": "0bbd29e24e4ca867462531092fad43f7ab06073b",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 437,
+          "draft": true,
+          "head_sha": "0bbd29e24e4ca867462531092fad43f7ab06073b"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/NEWS_ORDERED_QUERY_DEDUP_2026_10_16.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "50d27bceea828dd35cd4bb966c6372f40e0b2350",
+          "main_blob_sha": "d678128abb40ed58cd61969554a1f095a42025f7",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_news_corpus.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "05236366138040e70e24316bdeec085a913e4124",
+          "main_blob_sha": "9974586376da00c097f9941eebd81947da15e24d",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/news_corpus.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "1f2dacf1f07d90c926180232a02c555500970f7e",
+          "main_blob_sha": "852971828822b9a1568fd254c3f41b73be449ea6",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/222-cross-source-requisition-collision-20261017",
+      "sha": "3f4178e7096dce55eb007e9c7dd300b17fea086c",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 438,
+          "draft": true,
+          "head_sha": "3f4178e7096dce55eb007e9c7dd300b17fea086c"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/HIRING_INTELLIGENCE_LONGITUDINAL_AND_CODEBOOK.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "c141fc11eff342f24be11d6a2c3f80dcc54af2c1",
+          "main_blob_sha": "00a03861e67e823f847c2163248999a0e39d36ce",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_hiring_observations.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "385b6db8585ef7a6723bc0d206b65b8818f5c3f3",
+          "main_blob_sha": "958645d4205b0a4b77621d51d0ef2899a5094b16",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/hiring_observations.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "1cbfa32715067309538a688c3a06f5ba18f1a9da",
+          "main_blob_sha": "b9611d465a27d373cbfb37faa32e94609a01bb58",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/222-dns-label-syntax-20261016",
+      "sha": "43246acd6dc63b8550f1927d07ad0374a6c2ebcb",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 269,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/222-reject-single-label-public-source-hosts-20261017",
+      "sha": "3327845f303daf5a6535fdf66831505766b1806c",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 192,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    }
+  ]
+}
