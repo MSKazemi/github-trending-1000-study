@@ -1,0 +1,599 @@
+{
+  "schema_version": "1.0",
+  "record_type": "read_only_repo_ref_crosswalk_not_an_authorized_retirement_plan",
+  "observation_date_utc": "2026-10-17",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "source_manifest": {
+    "path": "ops/branch-retirement/approved-merged-pr-branches-2026-10-13.json",
+    "blob_sha": "fcfee54b12c3a36aa89cf5346319e48ae0076d13",
+    "source_main_sha": "6339775d73886b24f746139cdf55a34384f88c33",
+    "candidate_count": 60
+  },
+  "observed_main": {
+    "before_sha": "ce6070a6decea1842f0e5ed5024ab5f92561ef89",
+    "after_sha": "ce6070a6decea1842f0e5ed5024ab5f92561ef89",
+    "stable_between_reads": true,
+    "protected_before": false,
+    "protected_after": false
+  },
+  "observed_inventory": {
+    "branch_pages": [
+      {
+        "page": 1,
+        "count": 54
+      },
+      {
+        "page": 2,
+        "count": 0
+      }
+    ],
+    "archive_tag_refs_with_prefix": 229,
+    "repository_rulesets_count": 0,
+    "open_pr_page_counts": [
+      1,
+      0
+    ]
+  },
+  "summary": {
+    "absent_exact_commit_tag_observed": 59,
+    "present_moved_hold": 1
+  },
+  "open_pr_heads_at_readback": [
+    {
+      "number": 440,
+      "head_ref": "research/24-maintainer-feasibility-report-20261017",
+      "head_sha": "9a58c50d74034f05440e892a585b35ff62b20a54",
+      "head_repo": "MSKazemi/github-trending-1000-study"
+    }
+  ],
+  "manifest_rows": [
+    {
+      "branch": "audit/pr-enterprise-decisions-20261013",
+      "merged_pr": 269,
+      "expected_sha": "e3c793ee3288b02849593871b2d66a4718fe1a35",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "e3c793ee3288b02849593871b2d66a4718fe1a35",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "audit/repository-wide-2026-10-12",
+      "merged_pr": 45,
+      "expected_sha": "f3fe51c38cf4d2ca3cea14c86285486a7924c60e",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "f3fe51c38cf4d2ca3cea14c86285486a7924c60e",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "ci/consolidate-research-csv-integrity-20261013",
+      "merged_pr": 264,
+      "expected_sha": "8e7fde2c95a48a6b059a421c396abc9a72697914",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "8e7fde2c95a48a6b059a421c396abc9a72697914",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "merged_pr": 253,
+      "expected_sha": "2ee638a04d335ef895c5fd981c1b039ee8188d60",
+      "observed_branch_sha": "fd4209a820479ef2e6242c9a066a0a9e4ea590fe",
+      "observed_archive_sha": null,
+      "observed_archive_object_type": null,
+      "classification": "present_moved_hold"
+    },
+    {
+      "branch": "ci/integrate-csv-and-json-number-integrity-20261013",
+      "merged_pr": 262,
+      "expected_sha": "42195e746e2d424a4ea705e4e61c19613f78140f",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "42195e746e2d424a4ea705e4e61c19613f78140f",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "ci/integrate-pr-merge-gate-20261013",
+      "merged_pr": 255,
+      "expected_sha": "f8eeb10ed3986fe961294480b0147db9de6ba220",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "f8eeb10ed3986fe961294480b0147db9de6ba220",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "ci/merge-quality-gates-20261013",
+      "merged_pr": 252,
+      "expected_sha": "20f88be555a170d6f52e6c5f568c905764fc33ce",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "20f88be555a170d6f52e6c5f568c905764fc33ce",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "docs/2026-10-12-industry-tech-outlook",
+      "merged_pr": 60,
+      "expected_sha": "2cd4b73464e37c5cb9929ce1e6b0f8c791955709",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "2cd4b73464e37c5cb9929ce1e6b0f8c791955709",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "docs/2026-source-monitoring-journals-32",
+      "merged_pr": 35,
+      "expected_sha": "a369669ef1911bd3a8c2fbb0ed4095bc42ce839d",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "a369669ef1911bd3a8c2fbb0ed4095bc42ce839d",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "docs/microsoft-cto-research-lens-2026-10-12",
+      "merged_pr": 62,
+      "expected_sha": "0b32afb41ec4ecc87962113e32024bf1d3d2147e",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "0b32afb41ec4ecc87962113e32024bf1d3d2147e",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "docs/preserve-enterprise-pr-guidance-245",
+      "merged_pr": 258,
+      "expected_sha": "a84ef0e76a2384d93a71f7afe7072467383aee12",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "a84ef0e76a2384d93a71f7afe7072467383aee12",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/169-canonical-page-audit-adjudication",
+      "merged_pr": 190,
+      "expected_sha": "d4030bbb407a50327d259cce180f9f667c6cf8e1",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "d4030bbb407a50327d259cce180f9f667c6cf8e1",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/2-independent-page-audit",
+      "merged_pr": 53,
+      "expected_sha": "7944c8b38b088f7c0b39bae8e7200f6d2886b37d",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "7944c8b38b088f7c0b39bae8e7200f6d2886b37d",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/27-pilot-provenance-preflight",
+      "merged_pr": 40,
+      "expected_sha": "c0ab66938cfab4fec1b3f9db95785d3cc4fa025a",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "c0ab66938cfab4fec1b3f9db95785d3cc4fa025a",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/83-first-use-reuse-pilot",
+      "merged_pr": 124,
+      "expected_sha": "2b1263399681279f43dcf43f961eb3ed033caa47",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "2b1263399681279f43dcf43f961eb3ed033caa47",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/immutable-longitudinal-followup-4",
+      "merged_pr": 47,
+      "expected_sha": "64f0c5ee8400e47a00c7d3e6314ce6028a3149e7",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "64f0c5ee8400e47a00c7d3e6314ce6028a3149e7",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/issue-10-audited-task-cost-ledger",
+      "merged_pr": 66,
+      "expected_sha": "1d8763d23046293d02e2fb51c263f8faf45af2fe",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "1d8763d23046293d02e2fb51c263f8faf45af2fe",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/observed-sampling-flow-f01-t02",
+      "merged_pr": 39,
+      "expected_sha": "8c562594e6a3d272fc6ff366a3fc645906bb0636",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "8c562594e6a3d272fc6ff366a3fc645906bb0636",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "feat/research-foundation",
+      "merged_pr": 1,
+      "expected_sha": "05512d0609133f5629727a513e1a02132034a8e5",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "05512d0609133f5629727a513e1a02132034a8e5",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/2-trending-source-access-fail-closed",
+      "merged_pr": 226,
+      "expected_sha": "c04b21a083a447c620eaf364307d6127d59df97d",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "c04b21a083a447c620eaf364307d6127d59df97d",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/canonical-artifact-integrity-csv-20261013",
+      "merged_pr": 265,
+      "expected_sha": "68919c4926f16278441a69c991284c5d9b4e8390",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "68919c4926f16278441a69c991284c5d9b4e8390",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/followup-ledger-invariants-issue4",
+      "merged_pr": 50,
+      "expected_sha": "a1b7e3e58cb8b1094a53127250b6bec363d1beef",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "a1b7e3e58cb8b1094a53127250b6bec363d1beef",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/json-integrity-nested-symlink-20261013",
+      "merged_pr": 261,
+      "expected_sha": "186a77b9a93a9f677fe825eebe2a5ae2c9175692",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "186a77b9a93a9f677fe825eebe2a5ae2c9175692",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/literature-source-provenance-20261013",
+      "merged_pr": 241,
+      "expected_sha": "02efe755ec7b5b53e8a0e84534b87264212fca92",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "02efe755ec7b5b53e8a0e84534b87264212fca92",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/no-clobber-capture-safety-4",
+      "merged_pr": 46,
+      "expected_sha": "5e86221118dbd2fd9968404ec99743cd768dcb42",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "5e86221118dbd2fd9968404ec99743cd768dcb42",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/package-review-url-integrity-20261013",
+      "merged_pr": 270,
+      "expected_sha": "3d4b2abaaa2b46096780eb50cb2ddc3fdc925af2",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "3d4b2abaaa2b46096780eb50cb2ddc3fdc925af2",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/review-trending-overlap-filters-20261013",
+      "merged_pr": 235,
+      "expected_sha": "d6abdb671a508a0685995b43b898d71bf7121da4",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "d6abdb671a508a0685995b43b898d71bf7121da4",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "fix/trending-structural-completeness-2",
+      "merged_pr": 48,
+      "expected_sha": "08f6b1340d2172c1dcaffd26c766bc11916889cd",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "08f6b1340d2172c1dcaffd26c766bc11916889cd",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "quality/energy-model-crosswalk-20261013",
+      "merged_pr": 257,
+      "expected_sha": "91f716c1ad38bc37abd5b1740fb7461e147155a3",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "91f716c1ad38bc37abd5b1740fb7461e147155a3",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "quality/issue22-preserve-purl-source-provenance-20261013",
+      "merged_pr": 243,
+      "expected_sha": "08c1f10751a107c7fb86f0e250bf2590c1380e27",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "08c1f10751a107c7fb86f0e250bf2590c1380e27",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "quality/merge-review-gate-2026-10-13",
+      "merged_pr": 246,
+      "expected_sha": "82d9c7a5802842797061379d097f2d4d5d04b3c3",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "82d9c7a5802842797061379d097f2d4d5d04b3c3",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/2026-10-12-cross-ecosystem-task-intake",
+      "merged_pr": 63,
+      "expected_sha": "a01fea33530d1bc503f80b66121587fe717f458c",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "a01fea33530d1bc503f80b66121587fe717f458c",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/2027-agent-adoption-selection",
+      "merged_pr": 14,
+      "expected_sha": "81c1d6f99206daaddc91416f033e207b18de9cf7",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "81c1d6f99206daaddc91416f033e207b18de9cf7",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/2027-blinded-candidate-review-audit",
+      "merged_pr": 43,
+      "expected_sha": "82f5d71e19fb121ec5b5b367637d566a18715d8a",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "82f5d71e19fb121ec5b5b367637d566a18715d8a",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/2027-task-frame-itt-pilot",
+      "merged_pr": 34,
+      "expected_sha": "b22fc234af45a46855a61cba5b47c504609f2b46",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "b22fc234af45a46855a61cba5b47c504609f2b46",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/ai-era-reuse-practical-mission-41",
+      "merged_pr": 42,
+      "expected_sha": "17e9a0441732c0640ed5f38642c542f5a006702c",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "17e9a0441732c0640ed5f38642c542f5a006702c",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/critical-gaps-ground-truth-2027",
+      "merged_pr": 20,
+      "expected_sha": "6cb57b6d21464b313b689b1b153ba0ab6bb499b2",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "6cb57b6d21464b313b689b1b153ba0ab6bb499b2",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/faculty-methods-review-2026-10-12",
+      "merged_pr": 61,
+      "expected_sha": "ac6a1fe4947ba085408b6296ecf529520dd0772b",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "ac6a1fe4947ba085408b6296ecf529520dd0772b",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/figure-table-register-2027",
+      "merged_pr": 36,
+      "expected_sha": "b1cc4fc4ca9568227c6af019bfa380b188aac360",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "b1cc4fc4ca9568227c6af019bfa380b188aac360",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/independent-task-intake-pilot",
+      "merged_pr": 38,
+      "expected_sha": "54bf3fe04a4495f1a67d1e9b5a168f0a5630f03d",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "54bf3fe04a4495f1a67d1e9b5a168f0a5630f03d",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-11-lesson-registry-oct2026",
+      "merged_pr": 208,
+      "expected_sha": "5a20be9999d93a7fb11667513e41a1829eb99f1b",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "5a20be9999d93a7fb11667513e41a1829eb99f1b",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-12-adoption-metrics-oct2026",
+      "merged_pr": 210,
+      "expected_sha": "b8f5349c51ecca3a48d924e59cea06a68105be97",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "b8f5349c51ecca3a48d924e59cea06a68105be97",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-15-quiet-reuse-frame-oct2026",
+      "merged_pr": 211,
+      "expected_sha": "d25ec750d209237275197ef7855045ef472f9c2f",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "d25ec750d209237275197ef7855045ef472f9c2f",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-18-energy-boundary-oct2026",
+      "merged_pr": 214,
+      "expected_sha": "b04f694bf517f520d3d6a920bcfe58b20bdbf7f6",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "b04f694bf517f520d3d6a920bcfe58b20bdbf7f6",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-19-judged-search-comparison-20261013",
+      "merged_pr": 219,
+      "expected_sha": "6d82dab3af9516fedf2eb2f617fd07ea99d4a85c",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "6d82dab3af9516fedf2eb2f617fd07ea99d4a85c",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-23-lifecycle-break-even-20261013",
+      "merged_pr": 218,
+      "expected_sha": "4db0c782ef4dfb90ce52eb5faa909b8ff10d4964",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "4db0c782ef4dfb90ce52eb5faa909b8ff10d4964",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-24-maintainer-externalities-oct2026",
+      "merged_pr": 217,
+      "expected_sha": "bd4f5416ad5b1e73d4e7d5034edd8c07112b3f5c",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "bd4f5416ad5b1e73d4e7d5034edd8c07112b3f5c",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-5-rubric-agreement-oct2026",
+      "merged_pr": 187,
+      "expected_sha": "12bcc6d4861dd03b65425f73136b9d2a066b5d8b",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "12bcc6d4861dd03b65425f73136b9d2a066b5d8b",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-8-task-usefulness-oct2026",
+      "merged_pr": 206,
+      "expected_sha": "aca6ef0089ca9df452c6a920a6fc32d9f3012f40",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "aca6ef0089ca9df452c6a920a6fc32d9f3012f40",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue-9-cluster-power-sensitivity-20261013",
+      "merged_pr": 227,
+      "expected_sha": "e058829fca1406a1c1a8fdc351aa04b6792b5446",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "e058829fca1406a1c1a8fdc351aa04b6792b5446",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue12-adoption-indicators-20261012",
+      "merged_pr": 185,
+      "expected_sha": "069eed0a833b3ca8a80a1cfac9394e66337f26e9",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "069eed0a833b3ca8a80a1cfac9394e66337f26e9",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/issue5-documentation-rubric-20261012",
+      "merged_pr": 183,
+      "expected_sha": "7a7eb9e92ced3f1ee9fbe93856c0f8c4b97324d9",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "7a7eb9e92ced3f1ee9fbe93856c0f8c4b97324d9",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/open-access-journal-evidence-2026-10-12",
+      "merged_pr": 57,
+      "expected_sha": "bc8c053bf00f09198b7f107343e18caae3aa371e",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "bc8c053bf00f09198b7f107343e18caae3aa371e",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/protocol-reconciliation-gates-2026-10-12",
+      "merged_pr": 51,
+      "expected_sha": "34103bfae09742fce38aca75963f727efea464b6",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "34103bfae09742fce38aca75963f727efea464b6",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "research/task-screen-stage1-issue65-20261012",
+      "merged_pr": 170,
+      "expected_sha": "d15c1e93815fdb9786951ba9192c79ab574b908f",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "d15c1e93815fdb9786951ba9192c79ab574b908f",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "review/harden-trending-overlap-20261013",
+      "merged_pr": 239,
+      "expected_sha": "b11ef3753c8f7889e287e450206263f7eb93d52f",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "b11ef3753c8f7889e287e450206263f7eb93d52f",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "review/pr-merge-audit-2026-10-13",
+      "merged_pr": 249,
+      "expected_sha": "94ccdb66a6c4de6edbc78e7d96503cd6ba6de483",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "94ccdb66a6c4de6edbc78e7d96503cd6ba6de483",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "review/qodo-pr-evidence-crosswalk-20261013",
+      "merged_pr": 271,
+      "expected_sha": "7db7658f376fedf2dc885a1286b462e6c36085c8",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "7db7658f376fedf2dc885a1286b462e6c36085c8",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "strategy/five-year-2027-2031",
+      "merged_pr": 26,
+      "expected_sha": "5a5968fcba9c8c8353a43997237a7db4b005e003",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "5a5968fcba9c8c8353a43997237a7db4b005e003",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    },
+    {
+      "branch": "test/247-broken-evidence-alias-20261013",
+      "merged_pr": 268,
+      "expected_sha": "9772ca8402a706632fb06185be2f4e794fa6ed68",
+      "observed_branch_sha": null,
+      "observed_archive_sha": "9772ca8402a706632fb06185be2f4e794fa6ed68",
+      "observed_archive_object_type": "commit",
+      "classification": "absent_exact_commit_tag_observed"
+    }
+  ],
+  "provenance_limits": [
+    "Reads occurred sequentially or in parallel, not atomically; concurrent changes remain possible.",
+    "Matching tag SHA/type does not prove tag immutability, original 2026-10-13 deletion authorization or server-side protection.",
+    "No branch/tag mutation, source-level scientific adjudication or independently qualified security review is implied.",
+    "The source_manifest.source_main_sha is stale: do not edit it merely to make retirement executable.",
+    "Branch absence plus a matching direct-commit tag is a read-only observation, not proof of how or when deletion occurred.",
+    "Observed main.protected=false and zero rulesets require a separate admin security gate."
+  ]
+}

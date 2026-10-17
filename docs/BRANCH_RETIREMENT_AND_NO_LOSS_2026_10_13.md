@@ -272,3 +272,11 @@ was created, deleted, replaced, or retargeted by this follow-up.
 **Practical maintainer lesson:** negative API shapes must become explicit
 blocked decisions, and a destructive batch should stop on the first
 unexpected result rather than attempting unrelated irreversible changes.
+
+## 2026-10-17 independent-of-manifest read-only ref inventory snapshot
+
+A new machine-readable [source-to-ref crosswalk](reviews/2026-10-17-issue-277-readonly-archive-crosswalk.json) records a bounded live GitHub REST readback against the historical 60-row manifest (blob `fcfee54b12c3a36aa89cf5346319e48ae0076d13`). Of those 60 entries, **59 branch names were absent from the enumerated 54 live branches while their archive refs pointed directly to the exact expected original commit SHAs**. One originally changed branch, `ci/enterprise-pr-qa-gates-issue-240` (PR #253), remained present at `fd4209a820479ef2e6242c9a066a0a9e4ea590fe`, not the manifest's original expected SHA `2ee638a04d335ef895c5fd981c1b039ee8188d60`, and had no matching archive ref under the approved prefix. It remains an explicit hold, **not** a deletion candidate.
+
+The same readback observed **229 archive refs matching the dated prefix**, **0 repository rulesets**, `main.protected=false`, and `main` stable across before/after snapshot checks (`ce6070a6decea1842f0e5ed5024ab5f92561ef89` to `ce6070a6decea1842f0e5ed5024ab5f92561ef89`). These are **operator-independent software-tool observations but not an independently qualified security review**. No tag protection, historical operator authorization, destructive Git action, or scientific verification follows from matching hashes. Tag refs remain mutable without server-enforced rulesets; repeat a read-only crosswalk immediately before any future separately authorized maintenance window. Never replace the frozen plan SHA just to force progress.
+
+**Maintainer lesson:** audit original head SHA, current branch tip, tag *object type* and archive target as separate facts. A tag matching the old SHA reduces provenance uncertainty only at the instant observed; enforce archival immutability before relying on it for any new deletion.
