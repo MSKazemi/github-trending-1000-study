@@ -1,0 +1,236 @@
+{
+  "codebook_version": "hiring-223-codebook-v1.0.0",
+  "dataset_kind": "candidate_leads",
+  "items": [
+    {
+      "item_id": "S01",
+      "row_number": 1,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://openai.com/careers/ai-systems-engineer-codex-agents-san-francisco/"
+    },
+    {
+      "item_id": "S02",
+      "row_number": 2,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://openai.com/careers/software-engineer-codex-core-agents-san-francisco/"
+    },
+    {
+      "item_id": "S03",
+      "row_number": 3,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://openai.com/careers/applied-ai-engineer-codex-core-agent-san-francisco/"
+    },
+    {
+      "item_id": "S04",
+      "row_number": 4,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://openai.com/careers/full-stack-software-engineer-agent-enablement-san-francisco/"
+    },
+    {
+      "item_id": "S05",
+      "row_number": 5,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://job-boards.greenhouse.io/anthropic/jobs/5098025008"
+    },
+    {
+      "item_id": "S06",
+      "row_number": 6,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://job-boards.greenhouse.io/anthropic/jobs/5383610008"
+    },
+    {
+      "item_id": "S07",
+      "row_number": 7,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://job-boards.greenhouse.io/anthropic/jobs/5395767008"
+    },
+    {
+      "item_id": "S08",
+      "row_number": 8,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://job-boards.greenhouse.io/anthropic/jobs/5394943008"
+    },
+    {
+      "item_id": "S09",
+      "row_number": 9,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://cursor.com/careers/software-engineer-agent-harness"
+    },
+    {
+      "item_id": "S10",
+      "row_number": 10,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://cursor.com/careers/software-engineer-agent-evaluation-and-quality"
+    },
+    {
+      "item_id": "S11",
+      "row_number": 11,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "identity_hold",
+      "source_url": "https://cursor.com/fr/careers/software-engineer-rl-environments"
+    },
+    {
+      "item_id": "S12",
+      "row_number": 12,
+      "selected": true,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "selected_pending_recheck",
+      "source_url": "https://cursor.com/careers/software-engineer-bugbot"
+    },
+    {
+      "item_id": "S13",
+      "row_number": 13,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://www.amazon.jobs/en/jobs/10552775/software-development-engineer-agentic-ai-devops"
+    },
+    {
+      "item_id": "S14",
+      "row_number": 14,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://amazon.jobs/en/jobs/10544938/sr-software-development-engineer-agentcore-aws-agentic-ai"
+    },
+    {
+      "item_id": "S15",
+      "row_number": 15,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://www.amazon.jobs/it/jobs/10566212/software-development-engineer-agentic-ai"
+    },
+    {
+      "item_id": "S16",
+      "row_number": 16,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://jobs.ashbyhq.com/cohere/70664617-84f6-4ee8-a4f6-4037ebfda9db/"
+    },
+    {
+      "item_id": "S17",
+      "row_number": 17,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://jobs.ashbyhq.com/cohere/24fe6a0b-6209-4ee0-b622-49c18636d99c/"
+    },
+    {
+      "item_id": "S18",
+      "row_number": 18,
+      "selected": false,
+      "source_index": 0,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://jobs.ashbyhq.com/cohere/1b909aeb-1221-476f-88fe-8300a2065975/"
+    },
+    {
+      "item_id": "E01",
+      "row_number": 1,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Software-Engineer--Agentic-AI_JR2017340"
+    },
+    {
+      "item_id": "E02",
+      "row_number": 2,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "direct_access_unconfirmed",
+      "source_url": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Senior-High-Performance-AI-Engineer--Agentic-AI_JR2025164"
+    },
+    {
+      "item_id": "E03",
+      "row_number": 3,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://nvidia.wd5.myworkdayjobs.com/nvidiaexternalcareersite/job/us-ca-santa-clara/principal-engineer--ai-tooling-and-workflows_jr2020017"
+    },
+    {
+      "item_id": "E04",
+      "row_number": 4,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://www.google.com/about/careers/applications/jobs/results/111103097220014790-senior-software-engineer-agentic-commerce-scaling-serving-latency"
+    },
+    {
+      "item_id": "E05",
+      "row_number": 5,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Software-Engineer--Agentic-AI-Workflow-Applications_JR2016871"
+    },
+    {
+      "item_id": "E06",
+      "row_number": 6,
+      "selected": false,
+      "source_index": 1,
+      "source_observed_date_utc": "2026-10-13",
+      "source_status": "index_text_only",
+      "source_url": "https://nvidia.wd5.myworkdayjobs.com/en-US/nvidiaexternalcareersite/job/India-Pune/Senior-Software-Engineer--RAG-and-Agentic-AI_JR2014987"
+    }
+  ],
+  "sample_id": "hiring-223-direct-read-candidates-2026-10-14",
+  "schema_version": "hiring-223-v1",
+  "sources": [
+    {
+      "path": "references/ai_hiring_job_leads_source_audit_2026-10-13.csv",
+      "rows": 18,
+      "sha256": "69eef325a6994c862ebb4fe7e7eee1363b8eebb67cfc0c0c789f0691460b082b"
+    },
+    {
+      "path": "references/ai_hiring_expansion_leads_2026-10-13.csv",
+      "rows": 6,
+      "sha256": "4ed81699291eb7d0956ed3edb1fd5e21ab4ea07eef15db4282a37d1f3dffce90"
+    }
+  ]
+}

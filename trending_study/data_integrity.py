@@ -7,6 +7,7 @@ validate a study schema, or verify that observations actually occurred.
 import argparse
 import csv
 from decimal import Decimal, InvalidOperation
+import hashlib
 import io
 import json
 import math
@@ -86,8 +87,8 @@ def decode_research_json(raw, label):
 
 
 
-def load_research_json_file(path, max_bytes=MAX_FILE_BYTES):
-    """Read one bounded offline JSON input and decode with canonical strict rules.
+def read_research_input_bytes(path, max_bytes=MAX_FILE_BYTES):
+    """Read the bytes of one bounded offline input (JSON, CSV, ...).
 
     Rejects nonregular files (including FIFOs), refuses leaf symlinks where
     supported, checks the *opened* descriptor and actual bytes read. It is
@@ -121,11 +122,23 @@ def load_research_json_file(path, max_bytes=MAX_FILE_BYTES):
     finally:
         if descriptor is not None:
             os.close(descriptor)
+    return raw
+
+
+def load_research_json_file(path, max_bytes=MAX_FILE_BYTES, *, with_sha256=False):
+    """Read one bounded offline JSON input and decode with canonical strict rules.
+
+    Uses :func:`read_research_input_bytes`. With ``with_sha256=True`` returns
+    ``(value, sha256_hex)`` of the exact bytes that were decoded, so callers
+    can record raw-input provenance without a second (racy) read.
+    """
+    raw = read_research_input_bytes(path, max_bytes)
     try:
-        return decode_research_json(raw, "input")
+        value = decode_research_json(raw, "input")
     except (ResearchJSONError, RecursionError, OverflowError) as exc:
         # Full decoder diagnostics can contain sensitive duplicate-key text.
         raise ResearchJSONError("invalid or ambiguous JSON input") from exc
+    return (value, hashlib.sha256(raw).hexdigest()) if with_sha256 else value
 
 def _check_file(path, root):
     label = str(path.relative_to(root))

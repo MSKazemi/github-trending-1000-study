@@ -232,6 +232,14 @@ python -m trending_study.blind_review audit --pool examples/review_pool.syntheti
 
 See the [2026-10-12 milestone record](docs/REVIEW_MILESTONE_2026-10-12.md) for the evidence status and open scientific gates. No real AI/reuse productivity or sustainability findings are claimed.
 
+### Hiring-signal double-coding agreement instrument (#223, synthetic only)
+
+The [offline hiring agreement instrument](docs/HIRING_AGREEMENT_PILOT_V1_2026-10-14.md) verifies the 24-lead candidate frame against the preserved source ledgers, emits blank coder packets and computes per-theme binary and primary-task nominal Cohen's kappa with missing/abstained ratings kept outside the jointly rated denominator (never imputed as agreement). Committed coder A/B/C files are **fictional**; pseudonyms and attestation fields do not establish real, blind or independent human raters, and no real hiring agreement result exists.
+
+```bash
+python -m trending_study.hiring_agreement verify-frame --frame references/hiring_agreement/pilot_frame_v1.json
+```
+
 ## October 2026: prospective task-candidate intake pilot
 
 An [offline task-intake validator and documented exploratory public-issue frame](docs/PUBLIC_TASK_INTAKE_PILOT_2026-10-12.md) now demonstrate **pre-reuse** deterministic candidate sampling with provenance, preserved pull-request exclusions, and explicit unknown/unreviewed states. The selected open GitHub issues are task leads, **not** verified reusable-software opportunities or randomized study assignments. Human screening, frozen acceptance tests, consent, independent adjudication, and a preregistration decision remain pending. Run `python -m trending_study.task_intake --input examples/task_intake.public_2026-10-12.json --output /tmp/task-intake-audit.json` and inspect the complete ledger.
