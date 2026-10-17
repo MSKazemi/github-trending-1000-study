@@ -4,6 +4,7 @@ No recruitment, timing, identity verification, or causal environmental result
 occurs in this tool. Never publish a named maintainer performance ranking.
 """
 import argparse
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 import json
 import math
@@ -38,6 +39,16 @@ OUTCOME_FIELDS = frozenset((
     "actionability", "newcomer_comprehension_pass", "followup_30_day",
     "followup_90_day", "security_or_privacy_incident",
 ))
+# Provisional *coded* response vocabulary. Never interpret these as verified
+# reviewer judgments, completion timestamps, or evidence of causal benefit.
+OUTCOME_STATES = {
+    "actionability": frozenset(("pass", "fail", "unknown")),
+    "newcomer_comprehension_pass": frozenset(("pass", "fail", "unknown")),
+    "followup_30_day": frozenset(("completed", "missing", "not_started", "unknown")),
+    "followup_90_day": frozenset(("completed", "missing", "not_started", "unknown")),
+    "security_or_privacy_incident": frozenset(("yes", "no", "unknown")),
+}
+
 
 
 def _utc(value):
@@ -64,6 +75,13 @@ def summarize(cards):
     unknown_total = 0
     known_partial_minutes = 0.0
     total_complete_minutes = 0.0
+    upstream_partial_minutes = 0.0
+    downstream_partial_minutes = 0.0
+    unknown_upstream = 0
+    unknown_downstream = 0
+    consent_counts = Counter()
+    acceptance_counts = Counter()
+    outcome_counts = {field: Counter() for field in OUTCOME_STATES}
     synthetic_count = 0
     study_kinds = set()
     for card in cards:
@@ -95,8 +113,9 @@ def summarize(cards):
         outcomes = card["outcomes"]
         if (not isinstance(outcomes, dict)
                 or set(outcomes) != OUTCOME_FIELDS
-                or any(not isinstance(v, str) or not _STATE.fullmatch(v)
-                       for v in outcomes.values())):
+                or any(type(outcomes[field]) is not str
+                       or outcomes[field] not in allowed
+                       for field, allowed in OUTCOME_STATES.items())):
             raise BurdenError("invalid bounded outcome schema")
         synthetic_count += synthetic
         study_kinds.add(synthetic)
@@ -131,6 +150,7 @@ def summarize(cards):
         if not isinstance(times, dict) or set(times) != set(FIELDS):
             raise BurdenError("six nonoverlapping upstream/downstream time categories required")
         known = []
+        known_by_category = {}
         absent = []
         for name in FIELDS:
             t = times[name]
@@ -148,6 +168,7 @@ def summarize(cards):
                 if numeric is None or not math.isfinite(numeric):
                     raise BurdenError("human active minutes must be finite, nonnegative or null")
                 known.append(numeric)
+                known_by_category[name] = numeric
         if consent != "consented" and known:
             raise BurdenError("unconsented/withdrawn case may not publish human work minutes")
         if synthetic and known and card.get("observed_at_utc") is not None:
@@ -160,9 +181,19 @@ def summarize(cards):
         if not math.isfinite(row_minutes):
             raise BurdenError("human minute total exceeds finite numeric range")
         known_partial_minutes += row_minutes
-        if not math.isfinite(known_partial_minutes):
+        upstream_partial_minutes += sum(known_by_category.get(k, 0.0) for k in UPSTREAM)
+        downstream_partial_minutes += sum(known_by_category.get(k, 0.0) for k in DOWNSTREAM)
+        if not all(math.isfinite(v) for v in (
+                known_partial_minutes, upstream_partial_minutes,
+                downstream_partial_minutes)):
             raise BurdenError("human minute total exceeds finite numeric range")
         unknown_total += len(absent)
+        unknown_upstream += sum(k in absent for k in UPSTREAM)
+        unknown_downstream += sum(k in absent for k in DOWNSTREAM)
+        consent_counts[consent] += 1
+        acceptance_counts[card["task_accepted_by_independent_reviewer"]] += 1
+        for field in OUTCOME_STATES:
+            outcome_counts[field][outcomes[field]] += 1
         if not absent:
             complete += 1
             total_complete_minutes += row_minutes
@@ -178,6 +209,22 @@ def summarize(cards):
             "cases_with_accepted_outcome_and_complete_time": accepted_complete,
             "missing_component_entries": unknown_total,
             "known_partial_minutes_not_a_total": known_partial_minutes,
+            "upstream_known_partial_minutes_not_a_total": upstream_partial_minutes,
+            "downstream_known_partial_minutes_not_a_total": downstream_partial_minutes,
+            "missing_upstream_component_entries": unknown_upstream,
+            "missing_downstream_component_entries": unknown_downstream,
+            "consent_state_counts": {key: consent_counts[key]
+                                     for key in sorted(APPROVED_CONSENT)},
+            "task_acceptance_counts_self_reported_not_authenticated": {
+                key: acceptance_counts[key] for key in sorted(STATUS)},
+            "outcome_counts_self_reported_not_authenticated": {
+                field: {value: outcome_counts[field][value]
+                        for value in sorted(OUTCOME_STATES[field])}
+                for field in sorted(OUTCOME_STATES)},
+            "missing_or_not_due_outcome_entries": sum(
+                outcome_counts[field][v]
+                for field in OUTCOME_STATES
+                for v in ("unknown", "missing", "not_started")),
             "complete_case_minutes_not_a_population_estimate": total_complete_minutes if complete else None,
             "overall_human_minutes": (total_complete_minutes
                                       if complete == len(cards) and synthetic_count == 0 else None),
