@@ -14,7 +14,7 @@ from pathlib import Path
 import re
 
 from .blind_review import _exact, _utc, fingerprint
-from .data_integrity import load_research_json_file, read_research_input_bytes
+from .data_integrity import ResearchJSONError, load_research_json_file, read_research_input_bytes
 from .rubric_agreement import _agreement
 from .safe_io import ProvenanceWriteError, disjoint, publish_once
 
@@ -135,7 +135,13 @@ def prepare(frame, reviewer_id="pending_reviewer", root="."):
 
 
 def _time(value, name):
-    timestamp = _utc(value, name)
+    try:
+        timestamp = _utc(value, name)
+    except ValueError:
+        # The shared parser may chain a ValueError that contains the input.
+        timestamp = None
+    if timestamp is None:
+        raise HiringError(f"{name}: invalid UTC timestamp")
     if timestamp > datetime.now(timezone.utc) + timedelta(minutes=5):
         raise HiringError(f"{name}: future timestamp")
     if timestamp < datetime(2026, 10, 13, tzinfo=timezone.utc):
@@ -366,9 +372,21 @@ def main(argv=None):
         print(json.dumps({"output_created": True, "frame_sha256": verification["frame_sha256"],
                           "research_enrollment": "blocked"}))
     except (OSError, ProvenanceWriteError):
-        parser.exit(2, "error: input/output filesystem operation failed; details withheld\n")
-    except (ValueError, TypeError, KeyError, RecursionError) as exc:
-        parser.exit(2, f"error: {exc}\n")
+        failure = "input/output filesystem operation failed; details withheld"
+    except ResearchJSONError:
+        failure = "invalid or ambiguous JSON input"
+    except HiringError as exc:
+        # HiringError messages are fixed structural categories without input
+        # values, while raw file/decoder errors may contain private details.
+        failure = str(exc)
+    except (ValueError, TypeError, KeyError, RecursionError):
+        failure = "invalid or unsafe hiring agreement input"
+    else:
+        failure = None
+    # SystemExit raised inside an except handler retains that handler's
+    # exception as __context__. Leave the handler before terminating.
+    if failure is not None:
+        parser.exit(2, f"error: {failure}\n")
 
 
 if __name__ == "__main__":
