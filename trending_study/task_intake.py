@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
+from .safe_io import disjoint, publish_json
 
 class IntakeError(ValueError):
     pass
@@ -121,13 +122,17 @@ def main(argv=None):
         p.exit(2,"error: invalid or unsafe task-intake JSON input\n")
     try:
         result=sample(frame)
-        out=Path(a.output)
-        out.parent.mkdir(parents=True,exist_ok=True)
-        with out.open("x",encoding="utf-8") as f:
-            json.dump(result,f,indent=2)
-            f.write("\n")
-    except (OSError,ValueError,TypeError) as e:
-        p.exit(2,f"error: {e}\n")
+        # The input and output must not resolve to the same artifact. Reuse
+        # canonical atomic write-once publication rather than exposing a
+        # partially serialized JSON file via open("x") and json.dump.
+        disjoint(a.input,a.output)
+        publish_json(a.output,result)
+    except IntakeError as exc:
+        # IntakeError messages are fixed, nonidentifying schema diagnostics.
+        p.exit(2,f"error: {exc}\n")
+    except (OSError,ValueError,TypeError):
+        # Writer/OS exceptions may include private paths or staged filenames.
+        p.exit(2,"error: could not safely publish task-intake result\n")
     print(json.dumps({"total_rows":result["total_rows"],"selected_issue_candidates":result["selected_issue_candidates"]}))
 
 if __name__=="__main__":
