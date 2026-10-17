@@ -55,7 +55,7 @@ def _stamp(value, label):
 
 # RFC-style DNS labels allow interior hyphens, but not labels beginning or
 # ending with '-' or empty labels. This is a lexical check, not DNS lookup or
-# source permission. Undotted internal-test fixtures remain structurally valid.
+# source permission. A single DNS label is not a verifiable public origin.
 _DNS_LABEL = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
 DNS_HOST = re.compile(rf"{_DNS_LABEL}(?:\.{_DNS_LABEL})*\Z")
 
@@ -68,7 +68,8 @@ def _url(value):
         p = urlsplit(value)
         host = p.hostname
         if (p.scheme != "https" or not host or p.netloc != host or
-                (len(host) > 253 or DNS_HOST.fullmatch(host) is None) or
+                (len(host) > 253 or DNS_HOST.fullmatch(host) is None
+                 or "." not in host) or
                 p.fragment or not p.path.startswith("/")):
             raise ValueError
         # This is a public-source metadata protocol, not a DNS verifier.
