@@ -60,3 +60,8 @@ The CLI `python -m trending_study.reuse_gate --input examples/reuse_check.exampl
 **Limit:** This verifies input structure and error safety only; the evaluator still describes *self-reported* evidence rather than independently authenticated licenses, security advisories, candidate provenance or task success. No package was downloaded, installed or tested against third-party systems. The parent [package review tracker #22](https://github.com/MSKazemi/github-trending-1000-study/issues/22) remains open.
 
 **Practical lesson:** guard untrusted assessment bytes before generating any reuse recommendation. A convenient JSON parser that silently takes the last duplicate key can turn a declared failed gate into a claimed passing gate.
+
+
+### 2026-10-18 full-traceback privacy regression
+
+Input-parser and evaluator failures now produce `SystemExit` **after** the original exception handlers end, preserving the canonical strict bounded reader while keeping full tracebacks free of private source path/key and evaluator exception chains. New direct in-process tests verify `__cause__`, `__context__` and formatted exception stacks, not only subprocess stderr. Synthetic tests do not authenticate external licenses, source identity, safe dependency installation, or real research outcomes. Keep issue #22 open.

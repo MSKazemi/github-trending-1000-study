@@ -1,11 +1,15 @@
 import copy
+from contextlib import redirect_stderr
+import io
+import traceback
+from unittest.mock import patch
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
-from trending_study.reuse_gate import InvalidReuseAssessment, evaluate
+from trending_study.reuse_gate import InvalidReuseAssessment, evaluate, main
 
 
 CARD = {
@@ -114,6 +118,43 @@ class ReuseGateTests(unittest.TestCase):
                     self.assertNotIn("PRIVATE_", proc.stderr)
                     self.assertNotIn("Traceback", proc.stderr)
                     self.assertFalse(proc.stdout.strip())
+
+    def test_cli_private_reader_errors_have_no_exception_context(self):
+        # A sanitized error printed inside except can still leak private input
+        # through SystemExit.__context__ in structured traceback telemetry.
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            missing = root / "PRIVATE_REUSE_INPUT_NOT_FOUND.json"
+            malformed = root / "PRIVATE_DUPLICATE_GATE.json"
+            malformed.write_text('{"PRIVATE_GATE":1,"PRIVATE_GATE":2}', encoding="utf-8")
+            for source in (missing, malformed):
+                with self.subTest(source=source.name):
+                    stderr = io.StringIO()
+                    with redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+                        main(["--input", str(source)])
+                    error = caught.exception
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn("PRIVATE_", stderr.getvalue() +
+                                     "".join(traceback.format_exception(error)))
+
+    def test_cli_evaluator_error_does_not_chain_private_input(self):
+        with tempfile.TemporaryDirectory() as folder:
+            src = Path(folder) / "PRIVATE_ASSESSMENT.json"
+            src.write_text(json.dumps(CARD), encoding="utf-8")
+            with patch("trending_study.reuse_gate.evaluate",
+                       side_effect=ValueError("PRIVATE_NESTED_DETAIL")):
+                stderr = io.StringIO()
+                with redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+                    main(["--input", str(src)])
+            error = caught.exception
+            self.assertEqual(error.code, 2)
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertIn("invalid reuse assessment fields", stderr.getvalue())
+            self.assertNotIn("PRIVATE_", stderr.getvalue() +
+                             "".join(traceback.format_exception(error)))
 
     def test_invalid_status_refused(self):
         card = copy.deepcopy(CARD)

@@ -100,19 +100,26 @@ def main(argv=None):
     args = p.parse_args(argv)
     # Decode the actual, bounded input bytes before classifying a candidate.
     # Duplicate JSON keys could otherwise overwrite a failed security gate.
+    input_failure = False
     try:
         assessment = load_research_json_file(args.input, max_bytes=MAX_FILE_BYTES)
     except (ResearchJSONError, OSError, RecursionError, OverflowError):
-        # Reader/OS exception chains may embed private source paths/keys.
+        # Reader/OS exceptions may contain private source paths or JSON keys.
+        input_failure = True
+    if input_failure:
+        # Raising SystemExit inside except can leak the original exception
+        # via __context__, even when stderr shows a neutral fixed message.
         p.exit(2, "error: invalid or unsafe reuse assessment JSON input\n")
+    evaluation_failure = None
     try:
         result = evaluate(assessment)
     except InvalidReuseAssessment as exc:
-        # The evaluator emits only constant, nonidentifying schema diagnostics.
-        p.exit(2, f"error: {exc}\n")
+        # Evaluator messages are fixed nonidentifying schema diagnostics.
+        evaluation_failure = str(exc)
     except (ValueError, OSError, TypeError, OverflowError, RecursionError):
-        # Malformed nested input must never emit untrusted exception content.
-        p.exit(2, "error: invalid reuse assessment fields\n")
+        evaluation_failure = "invalid reuse assessment fields"
+    if evaluation_failure is not None:
+        p.exit(2, "error: " + evaluation_failure + "\n")
     print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
 
 
