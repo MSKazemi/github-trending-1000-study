@@ -219,12 +219,17 @@ def main(argv=None):
     ap.add_argument("--expected-main-sha", required=True)
     ap.add_argument("--payload-dir", default="ops/rulesets")
     args = ap.parse_args(argv)
+    failure = False
     try:
         directory = Path(args.payload_dir)
         proposed_main = load_research_json_file(directory / "main.json", max_bytes=131072)
         proposed_archive = load_research_json_file(directory / "branch-archive-tags.json", max_bytes=131072)
         result = audit(args.repo, args.expected_main_sha, proposed_main, proposed_archive, _get)
     except (OSError, ValueError, RuntimeError, RecursionError):
+        # argparse.exit raises SystemExit. Invoking it inside this handler
+        # retains possibly private filenames/REST errors in __context__.
+        failure = True
+    if failure:
         ap.exit(2, "error: ruleset audit failed closed; inspect reviewed configuration and live response\n")
     print(json.dumps(result, indent=2, sort_keys=True))
     if result["configuration_status"] == "absent_or_partial":
