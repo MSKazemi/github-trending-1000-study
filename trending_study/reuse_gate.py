@@ -5,7 +5,8 @@ carbon reductions, true code equivalence, or popularity.
 """
 import argparse
 import json
-from pathlib import Path
+
+from .data_integrity import MAX_FILE_BYTES, ResearchJSONError, load_research_json_file
 
 
 class InvalidReuseAssessment(ValueError):
@@ -97,10 +98,21 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="Offline reuse-first evidence gate")
     p.add_argument("--input", required=True, help="JSON assessment file")
     args = p.parse_args(argv)
+    # Decode the actual, bounded input bytes before classifying a candidate.
+    # Duplicate JSON keys could otherwise overwrite a failed security gate.
     try:
-        result = evaluate(json.loads(Path(args.input).read_text(encoding="utf-8")))
-    except (ValueError, OSError) as exc:
+        assessment = load_research_json_file(args.input, max_bytes=MAX_FILE_BYTES)
+    except (ResearchJSONError, OSError, RecursionError, OverflowError):
+        # Reader/OS exception chains may embed private source paths/keys.
+        p.exit(2, "error: invalid or unsafe reuse assessment JSON input\n")
+    try:
+        result = evaluate(assessment)
+    except InvalidReuseAssessment as exc:
+        # The evaluator emits only constant, nonidentifying schema diagnostics.
         p.exit(2, f"error: {exc}\n")
+    except (ValueError, OSError, TypeError, OverflowError, RecursionError):
+        # Malformed nested input must never emit untrusted exception content.
+        p.exit(2, "error: invalid reuse assessment fields\n")
     print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
 
 
