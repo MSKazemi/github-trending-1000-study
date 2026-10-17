@@ -458,3 +458,31 @@ The read-only proposed GitHub ruleset verifier must not claim a matching configu
 When the optional `GH_TOKEN` / `GITHUB_TOKEN` is used for read access, the verifier now marks Authorization **unredirected** and installs a redirect-denial handler, so an HTTP `Location` change cannot forward the bearer token to an unexpected host. A mocked zero-network regression checks both defenses. No credentials were placed in any repository file or tests. The tool remains read-only; server-level branch protection and real negative enforcement tests are **still absent** at the observed baseline. Keep issue #248 open for qualified independent review and actual administrator action.
 
 **Lesson:** readback of security settings is a time-dependent snapshot, not an atomic server transaction or proof the settings prevented an unsafe merge. Defend credentials against HTTP redirect forwarding even in GET-only auditing tools.
+
+## 2026-10-17 technical review and no-secret traceback correction
+
+A final offline inspection found that the read-only ruleset audit invoked
+`argparse.exit` inside a handler for potentially private JSON payload
+decoder or GitHub response failures. Although stderr was generic,
+in-process callers could inspect the underlying `SystemExit.__context__`
+to recover the original filename, private error text or operational details.
+The CLI now raises its fixed exit **after the handler has exited**. Synthetic
+adversarial tests cover both malformed local payloads and injected live GET
+errors, asserting absent cause/context and redacted formatted tracebacks.
+
+**Deployment has NOT occurred:** this PR contains only static reviewed
+ruleset JSON, a read-only audit script, negative tests, and an administrator
+runbook. Its current merge into a newer main does not automatically install
+anything, grant `Administration: write` permissions, verify that main/tags
+are protected or authorize branch retirement. A fresh, authenticated admin
+review must pin a **new exact main SHA** and reproduce the existing
+readback, actual installation and negative enforcement tests. Historical
+expected SHA examples are not instructions to silently substitute a moving
+current SHA. In the 2026-10-17 GitHub readback, `main.protected=false`
+and the repository returned **zero** installed rulesets.
+
+**Maintainer lesson:** store proposed security controls in reviewable JSON
+and test their precise lexical syntax, but count them as **installed** only
+after the live API reports matching active controls and real denied
+unreviewed/failing/stale changes. Even a green five-job test suite is
+insufficient proof of server enforcement.
