@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 
 from trending_study import hiring_agreement as h
@@ -246,6 +247,41 @@ class HiringAgreementTests(unittest.TestCase):
             self.assertEqual(stats["selected_n"], 9)
             self.assertEqual(stats["excluded_n"], 9)
             self.assertEqual(stats["rater_a_exclusions"]["missing"] + stats["rater_b_exclusions"]["missing"], 9)
+
+    def test_private_bad_review_time_does_not_survive_exception_traceback(self):
+        marker = "PRIVATE_HIRING_REVIEW_TIME_20261017"
+        try:
+            h._time(marker, "reviewed_at_utc")
+        except h.HiringError as error:
+            self.assertIn("invalid UTC", str(error))
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+        else:
+            self.fail("invalid review timestamp must be rejected")
+
+    def test_private_duplicate_json_key_does_not_chain_system_exit(self):
+        from contextlib import redirect_stderr
+        import io
+        marker = "PRIVATE_HIRING_JSON_KEY_20261017"
+        with tempfile.TemporaryDirectory() as folder:
+            frame = Path(folder) / "private.json"
+            frame.write_text(
+                json.dumps({marker: 1})[:-1] + "," + json.dumps(marker) + ":2}",
+                encoding="utf-8",
+            )
+            stderr = io.StringIO()
+            with redirect_stderr(stderr):
+                try:
+                    h.main(["verify-frame", "--frame", str(frame), "--root", str(ROOT)])
+                except SystemExit as error:
+                    self.assertEqual(error.code, 2)
+                    self.assertIsNone(error.__cause__)
+                    self.assertIsNone(error.__context__)
+                    self.assertNotIn(marker, stderr.getvalue())
+                    self.assertNotIn(marker, "".join(traceback.format_exception(error)))
+                else:
+                    self.fail("duplicate JSON key must be refused")
 
     def test_cli_write_once_and_collisions(self):
         with tempfile.TemporaryDirectory() as tmp:
