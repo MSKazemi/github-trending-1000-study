@@ -252,6 +252,39 @@ class BurdenTests(unittest.TestCase):
         with self.assertRaisesRegex(BurdenError, "finite numeric range"):
             summarize([a, b])
 
+    def test_nonconsented_or_withdrawn_rows_cannot_retain_task_outcomes(self):
+        for consent in ("not_consented", "withdrawn"):
+            for target in ("accepted", "outcome"):
+                case = card()
+                case["consent_state"] = consent
+                if target == "accepted":
+                    case["task_accepted_by_independent_reviewer"] = "pass"
+                else:
+                    case["outcomes"]["actionability"] = "pass"
+                with self.subTest(consent=consent, target=target):
+                    with self.assertRaisesRegex(
+                            BurdenError, "nonconsented case must not retain"):
+                        summarize([case])
+        # Explicitly unknown and not_started preserve denominator-only rows.
+        self.assertEqual(summarize([card()])["case_count"], 1)
+
+    def test_huge_private_numeric_input_never_survives_exception_chain(self):
+        # Construct the large synthetic value outside the failing call so
+        # Python's formatted source traceback cannot quote its contents.
+        value = 10 ** 400
+        case = card()
+        case["consent_state"] = "consented"
+        case["human_time_minutes"]["upstream_review"] = value
+        try:
+            summarize([case])
+        except BurdenError as error:
+            self.assertIn("finite, nonnegative", str(error))
+            self.assertIsNone(error.__cause__)
+            self.assertIsNone(error.__context__)
+            self.assertNotIn(str(value), "".join(traceback.format_exception(error)))
+        else:
+            self.fail("unrepresentable human minutes must be rejected")
+
     def test_unbounded_python_integer_is_rejected_as_domain_error(self):
         a = card()
         a["consent_state"] = "consented"
