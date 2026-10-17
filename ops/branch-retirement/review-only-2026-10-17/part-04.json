@@ -1,0 +1,734 @@
+{
+  "batch_index": 4,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "fix/247-nested-symlink-clean-merge-20261013",
+      "sha": "368083577709a71875a03ef46a71c598fde01757",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 671,
+        "changed_files": 3
+      },
+      "changed_files": [
+        {
+          "path": "docs/RESEARCH_JSON_INTEGRITY_GATE.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "32a3cc331797c6601a2818b0276e5b7396e48c9c",
+          "main_blob_sha": "6f93753f7f7bcc3ea6a0814c06c9fa93b75a6202",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_data_integrity.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "d89e89b3495160150e544232f2d689fef3482c4c",
+          "main_blob_sha": "c8388ab79d033d903c32cd8d939401ceb2ce206f",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/data_integrity.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "defb8826c97df67a779f011bd0c2f9fbf95ab299",
+          "main_blob_sha": "99632c1d42b47653dfc77a4ac3911d4362b33def",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/277-direct-retire-frozen-main-20261017",
+      "sha": "f09e3310a9f56dc84a79a5afcdb21b3858b98aa9",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 435,
+          "draft": true,
+          "head_sha": "f09e3310a9f56dc84a79a5afcdb21b3858b98aa9"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "changed_files": 2
+      },
+      "changed_files": [
+        {
+          "path": "scripts/retire_merged_branches.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "8459d2f7227f7b68f2cb1069718b3d0711ffed45",
+          "main_blob_sha": "3fb6a70af831212de9a44fdbbf14d3238ab6344c",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_retire_merged_branches.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "093e0bed9d38dcb39807f132666a7cca1f03c25a",
+          "main_blob_sha": "1eb80e32eb7b2f635b1ff20f14dab33ec9b53e7e",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/277-retirement-frozen-main-and-repo-validation-20261016",
+      "sha": "9a965eeb822bfba348e8a620239ef698402e28fe",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 176,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "fix/279-branch-tip-recheck-20261016",
+      "sha": "85f76b0a5a6f7fbb8d3fcf8e367c703d32ea4e8a",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 269,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "integration/five-fix-pr-ci-rehearsal-20261016",
+      "sha": "9b9e781b80305ac614fb53208df26472dfbfbe32",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 284,
+        "changed_files": 17
+      },
+      "changed_files": [
+        {
+          "path": "docs/GOLDSET_ERROR_REDACTION_2026_10_16.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "4f28fb4e47e4b84d1f99e3b3e78da56785ac5a6e",
+          "main_blob_sha": "6fd018810b78a827e688c07b67def104ba8a0d40",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/HIRING_PUBLIC_HOST_SYNTAX_2026_10_16.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "6bf8188391805596c52ae665025490a58aa109e2",
+          "main_blob_sha": "ab4f7ca6684c6193b21cb45a3ac798dd4a81db50",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/NEWS_ORDERED_QUERY_DEDUP_2026_10_16.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "3ad78d7e85020a988ee50f7861c3e9c3e481004d",
+          "main_blob_sha": "d678128abb40ed58cd61969554a1f095a42025f7",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PACKAGE_REVIEW_NUMERIC_HOST_ALIASES_2026_10_16.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "6be9a1b0c310c4e774344f6404d3042c601991cc",
+          "main_blob_sha": "7edd57183f8057c7cc7ba6d6043fd33ca57b3bfe",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-branch-ancestry-33refs.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "1f6182209cbc0af8094508fc89fe3103e52d8500",
+          "main_blob_sha": "1f6182209cbc0af8094508fc89fe3103e52d8500",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-issue-279-prune-candidate-race.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "9970709fb04bc072a8a98200ed0c623168346d49",
+          "main_blob_sha": "9970709fb04bc072a8a98200ed0c623168346d49",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-preserved-2026-10-13-pr-merge-gate-addendum.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "5ad052dd6e374e6614ca365ce7eb4457c26dfe91",
+          "main_blob_sha": "5ad052dd6e374e6614ca365ce7eb4457c26dfe91",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "scripts/branch_lifecycle_audit.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "2188f1456698c3e337a04b929a441c2a65949c27",
+          "main_blob_sha": "2188f1456698c3e337a04b929a441c2a65949c27",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_branch_lifecycle_audit.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "080e9c1e2aa5019a0739fd6814bae51ead0bcbac",
+          "main_blob_sha": "080e9c1e2aa5019a0739fd6814bae51ead0bcbac",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_goldset.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "fbd034a1e169df4002f56e7e957fcb0cf12d178a",
+          "main_blob_sha": "fc3a7afd052e43313e2fe74c35a795774400074d",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_hiring_observations.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "4d24ea15b1120960e7b63e784512649ed6a4cb86",
+          "main_blob_sha": "958645d4205b0a4b77621d51d0ef2899a5094b16",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_news_corpus.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "6f451899af04af8deb2050d64505dfde939200b4",
+          "main_blob_sha": "9974586376da00c097f9941eebd81947da15e24d",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_package_review.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "1f5893a45f0f13a6a084e37ce6c3261243e455a6",
+          "main_blob_sha": "b19cefe52444d021dff98ee7917202980eab6e50",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/goldset.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "5b01174498e94d9802edf25f0c2e2fb112c17d61",
+          "main_blob_sha": "2a6a9aac51df1e538f08b2181bbd9eb0319359c9",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/hiring_observations.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "cd191dd484597c93c11cc995d126b6cde177e496",
+          "main_blob_sha": "b9611d465a27d373cbfb37faa32e94609a01bb58",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/news_corpus.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "fa5c16f50a7fb47fa720a2f8c92ce91f7943cbbd",
+          "main_blob_sha": "852971828822b9a1568fd254c3f41b73be449ea6",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/package_review.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "3810f4ae3661f00972c8c13d938fc5248910a11b",
+          "main_blob_sha": "fb98707cc69bdeae1fed15f5aa19df03ad149af4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "integration/five-pr-no-loss-20261016",
+      "sha": "82e116e288a9f12796e78837651d980ecfacb2b1",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 3,
+        "behind_by": 294,
+        "changed_files": 38
+      },
+      "changed_files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "45728c803651e4f94a448a6dbe84a079ecc15ed3",
+          "main_blob_sha": "45728c803651e4f94a448a6dbe84a079ecc15ed3",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "README.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "731772441ac0024a9f94097b74ed5eb104b9999a",
+          "main_blob_sha": "731772441ac0024a9f94097b74ed5eb104b9999a",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/DATA_DICTIONARY.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "3f9a5475e02741675ba8139fc34e054f2aa17f16",
+          "main_blob_sha": "3f9a5475e02741675ba8139fc34e054f2aa17f16",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/HIRING_AGREEMENT_PILOT_V1_2026-10-14.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "ae472e2fdd2e73470d0acb1521ba28ced2590a57",
+          "main_blob_sha": "38f84a05c81b0d0653c0d5d744f2e5b5fdb3a5a9",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ISSUE_248_RULESET_ADMIN_REVIEW.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b2380b6f6e097cc06c222c3990687e0301dc97d5",
+          "main_blob_sha": "05436965d77483102b4af63be5380e2a85533d00",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/QUIET_REUSE_REGISTRY_PAIR_INTEGRITY.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "0cdc5668e2591363dad9e37fa33d20dc061a4fbd",
+          "main_blob_sha": "1ed01210e984fa58d89185e2bb3d3f5de5e811f9",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/QUIET_REUSE_REGISTRY_PILOT_2026_10_14.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "c9aea512080d4058fa860b2a7cb07f9eafa60f78",
+          "main_blob_sha": "c9aea512080d4058fa860b2a7cb07f9eafa60f78",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "750b0f5fe72e69c4d33986cd5a9a056abce2e332",
+          "main_blob_sha": "750b0f5fe72e69c4d33986cd5a9a056abce2e332",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/TRENDING_ALGORITHM_AUDIT.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "955248de9b7da2fa3ffa3e66623afd4e87a6e889",
+          "main_blob_sha": "955248de9b7da2fa3ffa3e66623afd4e87a6e889",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "61e93211e169c5852333d986dfc33b4240b63d9b",
+          "main_blob_sha": "b0d4a3e0d5ed0434e0b0a9a56c789808a1ee5892",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/TRENDING_OVERLAP_PILOT_2026_10_12.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "ccfe98eb0820d3d184166b20e96cd2107fe9ef8a",
+          "main_blob_sha": "ccfe98eb0820d3d184166b20e96cd2107fe9ef8a",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-14-pr-290-merge-readiness.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "28f30c536e53a7cc7fdaa66521f9f42096c5ad1f",
+          "main_blob_sha": "28f30c536e53a7cc7fdaa66521f9f42096c5ad1f",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-five-pr-combined-ci-rehearsal.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "5f595c9581ce274c3bbfe921ab520400ec7d317d",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-issue-100-provisional-changelog-ledger.csv",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "0e12d6d668423379f4aaf72d4c5da6938ca4c98c",
+          "main_blob_sha": "0e12d6d668423379f4aaf72d4c5da6938ca4c98c",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-16-issue-100-source-preservation.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "01f91970c9c71228fd69f5709161bb374903dc82",
+          "main_blob_sha": "01f91970c9c71228fd69f5709161bb374903dc82",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/trending_language_coverage.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "cf32badecc606b216a506c7638d3667d77af141f",
+          "main_blob_sha": "cf32badecc606b216a506c7638d3667d77af141f",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/trending_rank_proxy.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "72c52327c54bc0ac283b5200d3fc98492bea66b8",
+          "main_blob_sha": "72c52327c54bc0ac283b5200d3fc98492bea66b8",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "ops/rulesets/branch-archive-tags.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "fbb632904a4badccfe5e0b69601c6347078d95b0",
+          "main_blob_sha": "fbb632904a4badccfe5e0b69601c6347078d95b0",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "ops/rulesets/main.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "b2731cd693c0946193b4487ef84ce71f72878d26",
+          "main_blob_sha": "b2731cd693c0946193b4487ef84ce71f72878d26",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "ops/rulesets/review-evidence-2026-10-14.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "4809bd19df461031a4a13364da110518c7efdec9",
+          "main_blob_sha": "4809bd19df461031a4a13364da110518c7efdec9",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "references/hiring_agreement/pilot_frame_v1.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "3fb96f2fd51e4233f7f90c77909f6176a14a15d6",
+          "main_blob_sha": "3fb96f2fd51e4233f7f90c77909f6176a14a15d6",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "research-notes/issue-15-crates-index-bounded-listing-2026-10-14.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "430a28edc3fb9b4a35353c0a3115f876b0e7fbdd",
+          "main_blob_sha": "430a28edc3fb9b4a35353c0a3115f876b0e7fbdd",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "research-notes/issue-15-sampling-plan-2026-10-14.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "dbf497a479f0bce4ce9e624df71112b0ee1b7838",
+          "main_blob_sha": "dbf497a479f0bce4ce9e624df71112b0ee1b7838",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/fixtures/hiring_agreement/adjudication.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "821517972216f11560c23b2a1f267d166aea69a8",
+          "main_blob_sha": "821517972216f11560c23b2a1f267d166aea69a8",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/fixtures/hiring_agreement/coder_a.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "eb888943d96810048debe2578a4984ff95b0600e",
+          "main_blob_sha": "eb888943d96810048debe2578a4984ff95b0600e",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/fixtures/hiring_agreement/coder_b.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "e166e71bda0acb8623d6a6bcd0f368be114359e7",
+          "main_blob_sha": "e166e71bda0acb8623d6a6bcd0f368be114359e7",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_hiring_agreement.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "d956b6c7bcf8dd69d268f1d324119dd217a61f98",
+          "main_blob_sha": "ee15ff0cb136c1dc3a4b16d36efc6fde1deb007a",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_hiring_agreement_acceptance.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "e876d0084a476d9a625299daa1063442e8657c43",
+          "main_blob_sha": "e876d0084a476d9a625299daa1063442e8657c43",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_issue_100_changelog_archive.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "91ae0a7c96b50672cb100a5ca1340a8ff5647e2f",
+          "main_blob_sha": "91ae0a7c96b50672cb100a5ca1340a8ff5647e2f",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_proposed_ruleset_protection.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "223e89a790afa3cea13b09b1fa6e974db72f3646",
+          "main_blob_sha": "73e8716ba2838fccdbd055db0e72e24dcd2424e1",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_quiet_reuse_registry.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "a4a515b9cf3044d6e421f48b627bd68fbeb22171",
+          "main_blob_sha": "a4a515b9cf3044d6e421f48b627bd68fbeb22171",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_quiet_reuse_registry_integrity.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "58213bf1f48201b9bd9776fd62aaf3f30cb32551",
+          "main_blob_sha": "ffb79e8c20d112f28b11d1b545572a0fd4ae1ec3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_trending_audit.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "36475acae1c730b4fd35cd3ce9ab4c62a5800ad5",
+          "main_blob_sha": "4f1a4a50b41bd7335fcd7a40fe5840937ed2442b",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/data_integrity.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "99632c1d42b47653dfc77a4ac3911d4362b33def",
+          "main_blob_sha": "99632c1d42b47653dfc77a4ac3911d4362b33def",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/hiring_agreement.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "a609c85eb986795285205ac176636fbc1d6fb3bf",
+          "main_blob_sha": "9f9576b9f2347c8984b473a5c1feec5cfb8335e5",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/quiet_reuse_registry.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "597d323a7e82c36cc303e5c6fed33c05189239a3",
+          "main_blob_sha": "b1552c091b7c7df1d8b6a3cb1f0f6509b177ba06",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/rubric_agreement.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "ae8f0ef1a7348bf790ff89f6543779e0018831b1",
+          "main_blob_sha": "ae8f0ef1a7348bf790ff89f6543779e0018831b1",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/trending_audit.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "ebc5296279cdd5e3ab6bc2789b6ea9aeb20e8429",
+          "main_blob_sha": "7e1c6e5c23a605e252fa31f34377a26dd49d9ac7",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "quality/canonical-artifact-ci-20261013",
+      "sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 8,
+        "behind_by": 713,
+        "changed_files": 8
+      },
+      "changed_files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "33a987031b22602b4ac893c4fd146f89e9f92e17",
+          "main_blob_sha": "45728c803651e4f94a448a6dbe84a079ecc15ed3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "632c691421d7e0fb608eb7b44a754deab1a824b3",
+          "main_blob_sha": "d819e693339929c74996799e082af5aa5a6a56c8",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PR_AUDIT_2026-10-13.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "ae2ea7e20f49e13686753705a8ecca43bd0d01c3",
+          "main_blob_sha": "ae2ea7e20f49e13686753705a8ecca43bd0d01c3",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PR_MERGE_QUALITY_GATE_2026_10_13.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "2aa90a33981f8a29d9f4e51aea873e501ac5aa6e",
+          "main_blob_sha": "d1d8c9e5fa51922484a0d29491aaf05c32d2a3ac",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/RESEARCH_ARTIFACT_INTEGRITY_GATE_2026-10-13.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "3af1c208c0449729665d731501b8b9b3c88a4eac",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "scripts/__init__.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "7aed2cc15f04e70822585328d3bafe2fc28c1953",
+          "main_blob_sha": "7aed2cc15f04e70822585328d3bafe2fc28c1953",
+          "same_path_blob": true,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "scripts/check_research_artifacts.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "1672293c8e9d7e0a5c8e49acb2738f4630af0296",
+          "main_blob_sha": "46954c0b0c8c0fd435f2fd36113e17e015859e55",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_research_artifacts.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "a084cc02251cf93ca5d15c8551d26b293d55b6a4",
+          "main_blob_sha": "8b940e9ae74f8e715d2d1dc5caaf0dbc3a978581",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "batch_index": 7,
+  "base_commit_sha": "62254996c69fc8c359650b801b6e4935048c4f21",
+  "records": [
+    {
+      "branch": "research/ten-issue-evidence-gates-20261017",
+      "sha": "1e656cfcbceb4995467280b796e77e870c6c5f39",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "behind",
+        "ahead_by": 0,
+        "behind_by": 284,
+        "changed_files": 0
+      },
+      "changed_files": [],
+      "disposition": "hold-ancestor-await-protected-recovery",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/trending-independent-page-qa-issue2",
+      "sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "protected": false,
+      "open_prs": [],
+      "compare": {
+        "status": "diverged",
+        "ahead_by": 17,
+        "behind_by": 791,
+        "changed_files": 11
+      },
+      "changed_files": [
+        {
+          "path": "AGENTS.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "8a006006b07ac8818200dc95901421bb455b84fd",
+          "main_blob_sha": "2c23bc09b6b0d2c4064e61eb6a6aec38eeff3810",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "README.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "c7f5fbec69835f38e0b03aef04292b2cf70e2554",
+          "main_blob_sha": "731772441ac0024a9f94097b74ed5eb104b9999a",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/DATA_DICTIONARY.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "15e18ef04ae1ae1a3b53bd120481737b54209299",
+          "main_blob_sha": "3f9a5475e02741675ba8139fc34e054f2aa17f16",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/ETHICS.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "3a8b7bc754d1ab751963b937772bd78530b07466",
+          "main_blob_sha": "7b802e20f221af5a5013ab1361f5fa80da303d3e",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PAGE_QA_INDEPENDENT_AUDIT_2026_10_12.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "5eb2e295304312f186efa06012da378f2e0667ba",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/PARSER_STRUCTURE_QA_2026_10_12.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "be8e2ff0f86d87090b7a599124b412c21f667e10",
+          "main_blob_sha": "5ae242a16f4540a3111248d95fe72875d574ed87",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/page_qa_manifest.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "68e003c9b07e7e183fdff334aa2bac5fafbaf067",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/page_qa_review_A.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "de87ce47a206735a79c06300a118c32355d430a3",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/page_qa_review_B.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "8c1a2fea9a30847552bd3daaac655f40bc1ef5ba",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_page_qa.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "c857e1e63367dab597229f7564e2be96db772f61",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/page_qa.py",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "6d1944a6c9f2d2f5f2caf6173abc050cea4b06ca",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-diverged-file-and-source-review",
+      "deletion_authorized": false
+    },
+    {
+      "branch": "research/24-maintainer-feasibility-report-20261017",
+      "sha": "132fa159baae50f771b1f5475ec74abce51d4b44",
+      "protected": false,
+      "open_prs": [
+        {
+          "pr": 440,
+          "draft": true,
+          "head_sha": "132fa159baae50f771b1f5475ec74abce51d4b44"
+        }
+      ],
+      "compare": {
+        "status": "ahead",
+        "ahead_by": 9,
+        "behind_by": 0,
+        "changed_files": 8
+      },
+      "changed_files": [
+        {
+          "path": "docs/MAINTAINER_EXTERNALITIES_2027.md",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "70d48d7720fd447ded47d749903d85eb0882845c",
+          "main_blob_sha": "a90b255fb97090be308fcb8f1e8c8798645332a7",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/MAINTAINER_FEASIBILITY_PILOT_PROTOCOL_2026_10_17.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "e276de84086daaf9048338939813f333bb2aa71e",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "docs/reviews/2026-10-17-issue-24-feasibility-evidence-and-open-gates.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "933f64290a4509fae7498b8494b226b31dde4561",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "examples/maintainer_feasibility_batch.synthetic.json",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "830d2c0da327322954df35936b07f8ce11b2c06e",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "templates/maintainer_opt_in_information_draft.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "8aaf244497a160c41ac8a024b926ea1a4ae28fc5",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "templates/maintainer_pilot_task_and_rating_card.md",
+          "change_kind": "added",
+          "previous_path": null,
+          "branch_blob_sha": "6c459ff2e58f8f69f6014e8cc1ba600acaf57b9b",
+          "main_blob_sha": null,
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "tests/test_maintainer_burden.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "7e1613cb442fa9ecfe772dd67f15cc987c2b7638",
+          "main_blob_sha": "68e444538e0a6e9f9daf17aba0b6ea01837d91f3",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        },
+        {
+          "path": "trending_study/maintainer_burden.py",
+          "change_kind": "modified",
+          "previous_path": null,
+          "branch_blob_sha": "cba87654f2ad3704f46cc21d648f7d3756813825",
+          "main_blob_sha": "7bec5044bd87073e0446698fb16598b4cb3b94f4",
+          "same_path_blob": false,
+          "alternate_main_paths": []
+        }
+      ],
+      "disposition": "hold-open-pr",
+      "deletion_authorized": false
+    }
+  ]
+}
