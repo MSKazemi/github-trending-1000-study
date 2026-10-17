@@ -142,3 +142,28 @@ Two synthetic regression methods exercise both nomination and packet-audit bound
 ## Pinned release syntax follow-up (2026-10-16)
 
 The offline nomination validator now refuses noncanonical SemVer numeric spellings with leading zeroes in major/minor/patch or purely numeric prerelease components (for example `01.2.3`, `1.2.03`, `1.2.3-rc.01`). It retains ordinary pinned releases such as `0.2.0-alpha.3` and `2.1.4+build.5`. Six negative fixture versions guard this boundary. This is only lexical consistency with SemVer-style Cargo versions: it does **not** prove that the named crate, version, source artifact, release date, license or any reviewed task-component pair exists or is acceptable. The independently authenticated 50-pair scientific acceptance gate remains entirely unmet.
+
+## 2026-10-17 full-traceback privacy correction
+
+The existing bounded registry pilot returned fixed CLI error *text*, but its
+malformed UTC date converter retained the raw `datetime.fromisoformat`
+`ValueError` as a chained cause. Its shared JSON-loader wrapper used
+`raise ... from None` **inside** the handler, which suppresses printed context
+but does not clear `__context__`. Finally, invoking `argparse.error` inside
+an untrusted read/validation exception could attach raw paths or JSON keys
+to `SystemExit` for telemetry to inspect.
+
+The offline module now raises public bounded errors only **outside** low-level
+exception handlers, and invokes argparse failure after the handler has exited.
+Synthetic tests check full formatted traceback output, explicit exception
+causes/contexts and command-line stderr for private markers. Existing input
+limits, validation contracts, write-once publication, and source records
+remain unchanged.
+
+This is a narrow engineering/privacy improvement, not a guarantee against
+arbitrary caller logs, intentional successful exports, false manifests or
+invented reviewer identity. There is still **no** authenticated repository
+cohort or 50 independently human-reviewed task/package pairs.
+
+**Maintainer lesson:** use complete exception and CLI failure traces in
+negative-input tests. A safe-looking string may hide private nested causes.
