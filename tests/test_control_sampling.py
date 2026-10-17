@@ -24,8 +24,10 @@ class ControlSamplingTests(unittest.TestCase):
         self.assertEqual(r["quota_requested"], 3)
         self.assertEqual(r["selected_count"], 2)
         self.assertFalse(r["quota_fulfilled_in_supplied_frame"])
-        self.assertEqual({x["repository_id"] for x in r["selected"]}, {2001}.union(
-            {x["repository_id"] for x in r["selected"] if x["stratum_id"] == "py_mature_low_w41"}))
+        self.assertEqual(len([x for x in r["selected"]
+                              if x["stratum_id"] == "py_mature_low_w42"]), 1)
+        self.assertIn(2001, [x["repository_id"] for x in r["selected"]])
+        self.assertTrue({x["repository_id"] for x in r["selected"]} <= {1001, 1002, 2001})
         self.assertNotIn(2003, [x["repository_id"] for x in r["selected"]])
         self.assertNotIn(1003, [x["repository_id"] for x in r["selected"]])
         self.assertEqual(r["strata"][1]["observed_trending_held"], 1)
@@ -74,6 +76,39 @@ class ControlSamplingTests(unittest.TestCase):
                 p["frozen_at_utc"] = "2099-01-01T00:00:00Z"
             with self.subTest(target=target), self.assertRaises(ControlFrameError):
                 sample(p)
+
+    def test_source_and_candidate_calendar_week_alignment_is_required(self):
+        for target in ("source_week", "candidate_week"):
+            p = frame()
+            if target == "source_week":
+                p["strata"][0]["calendar_week"] = "2026-W41"
+            else:
+                p["candidates"][0]["snapshot_at_utc"] = "2026-10-11T14:00:00Z"
+            with self.subTest(target=target), self.assertRaisesRegex(
+                    ControlFrameError, "week"):
+                sample(p)
+
+    def test_malformed_scalar_fields_fail_with_domain_error(self):
+        for target in ("kind", "source_kind", "coverage", "eligibility"):
+            p = frame()
+            if target == "kind":
+                p["evidence_kind"] = []
+            elif target == "source_kind":
+                p["source_frames"][0]["source_kind"] = []
+            elif target == "coverage":
+                p["source_frames"][0]["coverage"] = {}
+            else:
+                p["candidates"][0]["eligibility_state"] = []
+            with self.subTest(target=target), self.assertRaises(ControlFrameError):
+                sample(p)
+
+    def test_field_kind_cannot_represent_synthetic_only_source(self):
+        p = frame()
+        p["evidence_kind"] = "field_self_reported"
+        for r in p["source_frames"]:
+            r["source_kind"] = "github_rest_search_metadata"
+        with self.assertRaisesRegex(ControlFrameError, "synthetic"):
+            sample(p)
 
     def test_duplicate_ids_and_profiles_rejected(self):
         for target in ("candidate", "trending", "source", "stratum", "profile"):

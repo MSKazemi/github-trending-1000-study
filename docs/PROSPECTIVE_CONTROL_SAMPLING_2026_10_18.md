@@ -28,3 +28,10 @@ The algorithm sorts each stratum by SHA-256 of fixed namespace + seed + stratum 
 The tests assert deterministic order independence; seed/stratum/status/observed-list hash changes; strict invalid-source/invalid-field rejection; no future leakage; valid and invalid ISO weeks; duplicate IDs and profiles; honest unknown/trending exclusions; empty provisional selection with shortfall reporting; and redacted CLI exception chains. No network call, dependency install, secrets, participant recruitment, live capture, manual annotation, or claims of 1,000 observed repositories occur.
 
 **Practical repository lesson:** the design can enforce stable ID, pre-declared strata and immutable *content commitments* without pretending the sampled frame is random, source-licensed, unbiased, or signed before observation. A good sampling tool should surface denominator failures, not quietly repair them after seeing results.
+
+
+## 2026-10-18 calendar alignment and adversarial type hardening
+
+Following the initial green CI, a further scientific chronology review found that a caller could label a source frame and candidate snapshot with a *different* ISO calendar week than the stratum (for example, a W42 record assigned to W41). The selector now refuses the mismatch in both places, requiring strict source-capture UTC week and candidate baseline UTC week to equal the declared stratum week. The fictional Oct 15 example has been corrected from W41 to **W42**. New synthetic negatives cover mismatched source/candidate weeks, unhashable list/dict scalar fields, and attempts to mark synthetic-only evidence as field observations. Timestamp and calendar parsing errors are raised only after leaving lower-level exception handlers. This is an **internal consistency check**, not authentication of actual snapshot times or pre-outcome measurement.
+
+**Lesson:** declare exposure/baseline week as a validated property of the frozen source evidence, not an arbitrary analyst-supplied label, or a seemingly matched control may introduce calendar-time confounding.

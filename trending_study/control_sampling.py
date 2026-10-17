@@ -44,10 +44,15 @@ def _exact(value, fields, label):
 def _date(value):
     if not isinstance(value, str) or not UTC.fullmatch(value):
         raise ControlFrameError("timestamps require strict UTC seconds and Z suffix")
+    malformed = False
     try:
         instant = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
-        raise ControlFrameError("invalid UTC timestamp") from None
+        malformed = True
+    # Leave the lower-level timestamp parser's exception scope before raising:
+    # full-traceback telemetry must not retain submitted date values.
+    if malformed:
+        raise ControlFrameError("invalid UTC timestamp")
     if instant.utcoffset() != timedelta(0):
         raise ControlFrameError("timestamp is not UTC")
     return instant
@@ -77,10 +82,13 @@ def _stratum(row):
     match = WEEK.fullmatch(week) if isinstance(week, str) else None
     if match is None:
         raise ControlFrameError("calendar_week requires ISO YYYY-Www")
+    invalid_week = False
     try:
         date.fromisocalendar(int(match.group(1)), int(match.group(2)), 1)
     except ValueError:
-        raise ControlFrameError("invalid ISO calendar week") from None
+        invalid_week = True
+    if invalid_week:
+        raise ControlFrameError("invalid ISO calendar week")
     if type(row["quota"]) is not int or not 1 <= row["quota"] <= 10000:
         raise ControlFrameError("quota must be a prespecified positive bounded integer")
     return tuple(row[f] for f in ("frame_id", "language", "project_type",
@@ -103,7 +111,9 @@ def _canonical_hash(payload):
 def sample(payload):
     """Select bounded provisional controls without assuming source completeness."""
     _exact(payload, ROOT, "control frame")
-    if payload["schema_version"] != "1.0" or payload["evidence_kind"] not in KINDS:
+    if (payload["schema_version"] != "1.0"
+            or not isinstance(payload["evidence_kind"], str)
+            or payload["evidence_kind"] not in KINDS):
         raise ControlFrameError("supported schema 1.0 and evidence kind required")
     freeze = _date(payload["frozen_at_utc"])
     if freeze > datetime.now(timezone.utc) + timedelta(minutes=5):
@@ -128,11 +138,14 @@ def sample(payload):
         fid = _id(row["frame_id"], "frame_id")
         if fid in frames:
             raise ControlFrameError("duplicate source frame ID")
-        if row["source_kind"] not in {"github_rest_search_metadata", "synthetic"}:
+        if (not isinstance(row["source_kind"], str)
+                or row["source_kind"] not in {"github_rest_search_metadata", "synthetic"}):
             raise ControlFrameError("source_kind must identify a supported source")
-        if row["coverage"] not in COVERAGE:
+        if not isinstance(row["coverage"], str) or row["coverage"] not in COVERAGE:
             raise ControlFrameError("coverage must disclose source-frame limits")
-        if payload["evidence_kind"] == "field_self_reported" and row["source_kind"] != "github_rest_search_metadata":
+        if payload["evidence_kind"] == "field_self_reported" and (
+                row["source_kind"] != "github_rest_search_metadata"
+                or row["coverage"] == "synthetic_only"):
             raise ControlFrameError("field frames cannot claim synthetic source rows")
         query = row["query"]
         if (not isinstance(query, str) or not 1 <= len(query) <= 500
@@ -153,6 +166,9 @@ def sample(payload):
             raise ControlFrameError("duplicate stratum ID or overlapping source/profile")
         if row["frame_id"] not in frames:
             raise ControlFrameError("stratum references missing source frame")
+        captured = frames[row["frame_id"]].isocalendar()
+        if row["calendar_week"] != f"{captured.year}-W{captured.week:02d}":
+            raise ControlFrameError("stratum calendar week must match source capture week")
         profiles.add(profile)
         groups[sid] = row
 
@@ -176,9 +192,13 @@ def sample(payload):
         frame_id = _id(row["frame_id"], "frame_id")
         if sid not in groups or frame_id != groups[sid]["frame_id"]:
             raise ControlFrameError("candidate and frozen stratum source identity mismatch")
-        if _date(row["snapshot_at_utc"]) > frames[frame_id]:
+        snapshot = _date(row["snapshot_at_utc"])
+        if snapshot > frames[frame_id]:
             raise ControlFrameError("post-source candidate metadata cannot enter frozen frame")
-        if row["eligibility_state"] not in STATES:
+        matched_week = snapshot.isocalendar()
+        if groups[sid]["calendar_week"] != f"{matched_week.year}-W{matched_week.week:02d}":
+            raise ControlFrameError("candidate baseline week must match frozen stratum")
+        if not isinstance(row["eligibility_state"], str) or row["eligibility_state"] not in STATES:
             raise ControlFrameError("explicit preliminary/unknown/excluded eligibility required")
         if rid in trend_ids:
             states[sid]["observed_trending_held"] += 1

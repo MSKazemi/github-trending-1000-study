@@ -7,7 +7,7 @@
     {
       "frame_id": "mock_search_a",
       "source_kind": "synthetic",
-      "query": "fictional language python age mature stars bin low week 2026-W41",
+      "query": "fictional language python age mature stars bin low week 2026-W42",
       "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "captured_at_utc": "2026-10-15T14:00:00Z",
       "coverage": "synthetic_only"
@@ -15,7 +15,7 @@
     {
       "frame_id": "mock_search_b",
       "source_kind": "synthetic",
-      "query": "fictional language rust age young stars bin medium week 2026-W41",
+      "query": "fictional language rust age young stars bin medium week 2026-W42",
       "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "captured_at_utc": "2026-10-15T15:00:00Z",
       "coverage": "synthetic_only"
@@ -23,65 +23,65 @@
   ],
   "strata": [
     {
-      "stratum_id": "py_mature_low_w41",
+      "stratum_id": "py_mature_low_w42",
       "frame_id": "mock_search_a",
       "language": "python",
       "project_type": "library",
       "age_bin": "mature",
       "stars_bin": "low",
-      "calendar_week": "2026-W41",
+      "calendar_week": "2026-W42",
       "quota": 1
     },
     {
-      "stratum_id": "rust_young_medium_w41",
+      "stratum_id": "rust_young_medium_w42",
       "frame_id": "mock_search_b",
       "language": "rust",
       "project_type": "tool",
       "age_bin": "young",
       "stars_bin": "medium",
-      "calendar_week": "2026-W41",
+      "calendar_week": "2026-W42",
       "quota": 2
     }
   ],
   "candidates": [
     {
       "repository_id": 1001,
-      "stratum_id": "py_mature_low_w41",
+      "stratum_id": "py_mature_low_w42",
       "frame_id": "mock_search_a",
       "snapshot_at_utc": "2026-10-15T14:00:00Z",
       "eligibility_state": "eligible_preliminary"
     },
     {
       "repository_id": 1002,
-      "stratum_id": "py_mature_low_w41",
+      "stratum_id": "py_mature_low_w42",
       "frame_id": "mock_search_a",
       "snapshot_at_utc": "2026-10-15T14:00:00Z",
       "eligibility_state": "eligible_preliminary"
     },
     {
       "repository_id": 1003,
-      "stratum_id": "py_mature_low_w41",
+      "stratum_id": "py_mature_low_w42",
       "frame_id": "mock_search_a",
       "snapshot_at_utc": "2026-10-15T14:00:00Z",
       "eligibility_state": "unknown"
     },
     {
       "repository_id": 2001,
-      "stratum_id": "rust_young_medium_w41",
+      "stratum_id": "rust_young_medium_w42",
       "frame_id": "mock_search_b",
       "snapshot_at_utc": "2026-10-15T15:00:00Z",
       "eligibility_state": "eligible_preliminary"
     },
     {
       "repository_id": 2002,
-      "stratum_id": "rust_young_medium_w41",
+      "stratum_id": "rust_young_medium_w42",
       "frame_id": "mock_search_b",
       "snapshot_at_utc": "2026-10-15T15:00:00Z",
       "eligibility_state": "excluded"
     },
     {
       "repository_id": 2003,
-      "stratum_id": "rust_young_medium_w41",
+      "stratum_id": "rust_young_medium_w42",
       "frame_id": "mock_search_b",
       "snapshot_at_utc": "2026-10-15T15:00:00Z",
       "eligibility_state": "eligible_preliminary"
