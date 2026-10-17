@@ -231,6 +231,26 @@ class GoldSetTests(unittest.TestCase):
                 else:
                     self.fail("malformed timestamp must be refused")
 
+    def test_cli_system_exit_has_no_private_decoder_exception_context(self):
+        private_key = "PRIVATE_JSON_KEY_MARKER_20261017"
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "private.json"
+            # The shared decoder rejects duplicate keys, but argparse exit
+            # must not chain its underlying exception with private data.
+            raw = json.dumps({private_key: 1})[:-1] + "," + json.dumps(private_key) + ":2}"
+            path.write_text(raw, encoding="utf-8")
+            with redirect_stderr(io.StringIO()) as stderr:
+                try:
+                    main(["--input", str(path)])
+                except SystemExit as exc:
+                    self.assertEqual(exc.code, 2)
+                    self.assertIsNone(exc.__cause__)
+                    self.assertIsNone(exc.__context__)
+                    self.assertNotIn(private_key, stderr.getvalue())
+                    self.assertNotIn(private_key, "".join(traceback.format_exception(exc)))
+                else:
+                    self.fail("duplicate research JSON field must fail")
+
     def test_cli_redacts_private_ids_even_on_invalid_gate(self):
         d = copy.deepcopy(DATA)
         d["tasks"][0]["task_id"] = "PRIVATE_TASK_ID_MARKER"
