@@ -211,3 +211,29 @@ execution with readback and recovery. This branch's engineering tests are
 **Practical lesson:** missing or malformed remote metadata is not evidence
 that a destructive condition succeeded. Require complete verified nested
 objects before any archive write or SHA-leased mutation.
+
+## 2026-10-17 direct retirement-helper input boundary
+
+A review of the independently callable `retire_one()` helper found that
+`execute()` checked the full operator plan schema, but direct callers
+could submit an unvalidated branch name, commit digest, merge PR number or
+unexpected private sidecar keys before the helper constructed authenticated
+GitHub API requests. A previous patch already required a frozen main commit
+for direct destructive calls. This additional change **reuses the exact
+single-item validator** in both `validate_plan()` and `retire_one()`
+for destructive *and read-only* entry points, and enforces repository/client
+identity before any network request. The negative regression checks
+dot-segment/ref-injection names, malformed digests, noninteger and oversized
+PR numbers, extra fields and invalid object types; none may reach `get()`,
+tag creation or leased deletion. Original CI fixtures still test successful
+offline plan execution.
+
+This prevents one input-validation bypass; it does **not** prove that a
+supplied frozen SHA was actually approved by a human, that live GitHub
+ref/tag protections are installed, or that a real retirement plan is eligible.
+No tag, branch or actual research datum was modified. The privileged workflow
+remains disabled, and independent security/admin review is required.
+
+**Maintainer lesson:** a lower-level privileged helper is itself a trust
+boundary. Apply the same exact-schema and provenance checks there rather
+than assuming every caller used the high-level command.
