@@ -280,3 +280,32 @@ A new machine-readable [source-to-ref crosswalk](reviews/2026-10-17-issue-277-re
 The same readback observed **229 archive refs matching the dated prefix**, **0 repository rulesets**, `main.protected=false`, and `main` stable across before/after snapshot checks (`ce6070a6decea1842f0e5ed5024ab5f92561ef89` to `ce6070a6decea1842f0e5ed5024ab5f92561ef89`). These are **operator-independent software-tool observations but not an independently qualified security review**. No tag protection, historical operator authorization, destructive Git action, or scientific verification follows from matching hashes. Tag refs remain mutable without server-enforced rulesets; repeat a read-only crosswalk immediately before any future separately authorized maintenance window. Never replace the frozen plan SHA just to force progress.
 
 **Maintainer lesson:** audit original head SHA, current branch tip, tag *object type* and archive target as separate facts. A tag matching the old SHA reduces provenance uncertainty only at the instant observed; enforce archival immutability before relying on it for any new deletion.
+
+## 2026-10-17 proposed immutable tag protection (ADMIN ACTION NOT PERFORMED)
+
+An explicitly **uninstalled** ruleset payload is saved as
+[`ops/branch-retirement/immutable-branch-archive-tags.proposed.json`](../ops/branch-retirement/immutable-branch-archive-tags.proposed.json).
+It matches the dormant retirement verifier's *required* name, repository-tag
+scope and active update/deletion restrictions. It is a **reviewable candidate
+configuration**, not an observed effective GitHub policy. The read-only
+ruleset endpoint returned `[]` and `main.protected=false` during this
+audit.
+
+After a qualified repository security review, an authorized administrator
+can create a **tag ruleset** in Repository Settings > Rules > Rulesets,
+optionally using this JSON as a proposal. Choose `Active` enforcement,
+target `refs/tags/branch-archive/**/*`, no exclusions, no bypass actors,
+**restrict updates** and **restrict deletions**. Do **not** restrict
+creation: creation of a new direct-commit archive ref is the first controlled
+step of any eventual retirement. Re-read the exact installed ruleset with
+its ID, verify application to existing dated nested archive tags and
+independently test rejection of unauthorized changes to a dedicated
+disposable test tag without risking real evidence. Separately protect
+`main` with required non-author review, correct check names and no
+unreviewed direct-push bypass. A ruleset configuration readback alone
+does not prove actual server enforcement.
+
+**Never run** the disabled destructive retirement job, re-pin the
+historical source manifest, delete a moved branch or retarget an old
+archive tag merely because this proposal exists. The proposed JSON has not
+been imported and no GitHub repository rules were changed by this work.
