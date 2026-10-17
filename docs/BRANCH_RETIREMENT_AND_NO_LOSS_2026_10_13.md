@@ -272,3 +272,43 @@ was created, deleted, replaced, or retargeted by this follow-up.
 **Practical maintainer lesson:** negative API shapes must become explicit
 blocked decisions, and a destructive batch should stop on the first
 unexpected result rather than attempting unrelated irreversible changes.
+
+## 2026-10-17 independent-of-manifest read-only ref inventory snapshot
+
+A new machine-readable [source-to-ref crosswalk](reviews/2026-10-17-issue-277-readonly-archive-crosswalk.json) records a bounded live GitHub REST readback against the historical 60-row manifest (blob `fcfee54b12c3a36aa89cf5346319e48ae0076d13`). Of those 60 entries, **59 branch names were absent from the enumerated 54 live branches while their archive refs pointed directly to the exact expected original commit SHAs**. One originally changed branch, `ci/enterprise-pr-qa-gates-issue-240` (PR #253), remained present at `fd4209a820479ef2e6242c9a066a0a9e4ea590fe`, not the manifest's original expected SHA `2ee638a04d335ef895c5fd981c1b039ee8188d60`, and had no matching archive ref under the approved prefix. It remains an explicit hold, **not** a deletion candidate.
+
+The same readback observed **229 archive refs matching the dated prefix**, **0 repository rulesets**, `main.protected=false`, and `main` stable across before/after snapshot checks (`ce6070a6decea1842f0e5ed5024ab5f92561ef89` to `ce6070a6decea1842f0e5ed5024ab5f92561ef89`). These are **operator-independent software-tool observations but not an independently qualified security review**. No tag protection, historical operator authorization, destructive Git action, or scientific verification follows from matching hashes. Tag refs remain mutable without server-enforced rulesets; repeat a read-only crosswalk immediately before any future separately authorized maintenance window. Never replace the frozen plan SHA just to force progress.
+
+**Maintainer lesson:** audit original head SHA, current branch tip, tag *object type* and archive target as separate facts. A tag matching the old SHA reduces provenance uncertainty only at the instant observed; enforce archival immutability before relying on it for any new deletion.
+
+## 2026-10-17 proposed immutable tag protection (ADMIN ACTION NOT PERFORMED)
+
+Reuse the already versioned **uninstalled** canonical ruleset proposal:
+[`ops/rulesets/branch-archive-tags.json`](../ops/rulesets/branch-archive-tags.json).
+An overlapping proposed JSON copy had the **identical Git blob SHA**
+`fbb632904a4badccfe5e0b69601c6347078d95b0` and was intentionally omitted to prevent two
+configurations drifting apart. The canonical payload matches the dormant
+retirement verifier's required name, repository-tag scope and update/deletion
+restrictions. This is a reviewable **candidate configuration**, not an
+observed effective GitHub policy. The read-only
+ruleset endpoint returned `[]` and `main.protected=false` during this
+audit.
+
+After a qualified repository security review, an authorized administrator
+can create a **tag ruleset** in Repository Settings > Rules > Rulesets,
+optionally using this JSON as a proposal. Choose `Active` enforcement,
+target `refs/tags/branch-archive/**/*`, no exclusions, no bypass actors,
+**restrict updates** and **restrict deletions**. Do **not** restrict
+creation: creation of a new direct-commit archive ref is the first controlled
+step of any eventual retirement. Re-read the exact installed ruleset with
+its ID, verify application to existing dated nested archive tags and
+independently test rejection of unauthorized changes to a dedicated
+disposable test tag without risking real evidence. Separately protect
+`main` with required non-author review, correct check names and no
+unreviewed direct-push bypass. A ruleset configuration readback alone
+does not prove actual server enforcement.
+
+**Never run** the disabled destructive retirement job, re-pin the
+historical source manifest, delete a moved branch or retarget an old
+archive tag merely because this proposal exists. The proposed JSON has not
+been imported and no GitHub repository rules were changed by this work.
