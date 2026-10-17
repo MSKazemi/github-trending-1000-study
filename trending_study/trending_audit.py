@@ -81,18 +81,27 @@ def _identifiers(ids, label, limit):
 
 
 def _timestamp(value, label):
+    failure = None
     try:
-        return _utc(value, label)
+        timestamp = _utc(value, label)
     except OverlapError as exc:
-        raise TrendingAuditError(str(exc)) from exc
+        # Underlying datetime ValueError can include the private source text.
+        failure = str(exc)
+    if failure is not None:
+        raise TrendingAuditError(failure)
+    return timestamp
 
 
 def _capture_info(capture):
     _fields(capture, CAPTURE_FIELDS, "capture")
+    failure = None
     try:
-        return _capture(capture)
+        result = _capture(capture)
     except OverlapError as exc:
-        raise TrendingAuditError(str(exc)) from exc
+        failure = str(exc)
+    if failure is not None:
+        raise TrendingAuditError(failure)
+    return result
 
 
 def _root(data, version, payload_field):
@@ -391,14 +400,16 @@ def load_offline_json(path):
             raise TrendingAuditError("input exceeds the strict research JSON byte limit")
     finally:
         os.close(descriptor)
+    failure = None
     try:
-        return decode_research_json(raw, path.name)
-    except ResearchJSONError as exc:
-        # Decoder diagnostics can contain duplicate *key names*, which may be
-        # private input. Do not surface them through argparse or CLI logs.
-        raise TrendingAuditError(
-            "malformed strict research JSON (input details withheld)"
-        ) from exc
+        result = decode_research_json(raw, "input")
+    except ResearchJSONError:
+        # Decoder errors can hold raw JSON keys, source bytes or local paths
+        # in __context__. Raise the fixed public error OUTSIDE the handler.
+        failure = "malformed strict research JSON (input details withheld)"
+    if failure is not None:
+        raise TrendingAuditError(failure)
+    return result
 
 
 def main(argv=None):
@@ -406,11 +417,18 @@ def main(argv=None):
     parser.add_argument("mode", choices=("coverage", "proxy"))
     parser.add_argument("--input", type=Path, required=True)
     options = parser.parse_args(argv)
+    failure = None
     try:
         data = load_offline_json(options.input)
         output = evaluate_coverage(data) if options.mode == "coverage" else evaluate_proxy(data)
-    except (TrendingAuditError, OverlapError, OSError, RecursionError) as exc:
-        parser.error(str(exc))
+    except TrendingAuditError as exc:
+        failure = str(exc)
+    except (OverlapError, OSError, ValueError, TypeError, RecursionError):
+        failure = "invalid or unsafe trending audit input"
+    # argparse.error raises SystemExit. Invoke it only after leaving any
+    # low-level data/URL exception handler to avoid chained private details.
+    if failure is not None:
+        parser.error(failure)
     print(json.dumps(output, sort_keys=True, indent=2))
 
 
