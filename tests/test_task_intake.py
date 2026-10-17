@@ -164,6 +164,38 @@ class IntakeTests(unittest.TestCase):
             self.assertFalse(output.exists())
             self.assertEqual(list(root.glob(".capture-pending-*")), [])
 
+    def test_actual_cli_keeps_original_90_16_research_intake(self):
+        # Real entrypoint, not only the pure sampler. The candidate frame
+        # is exploratory, not independently screened or enrolled.
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / "cli-results.json"
+            run = subprocess.run(
+                [sys.executable, "-m", "trending_study.task_intake",
+                 "--input", str(CROSS_ECOSYSTEM_FRAME),
+                 "--output", str(output)],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual(json.loads(run.stdout), {
+                "total_rows": 90, "selected_issue_candidates": 16
+            })
+            report = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual((report["total_rows"],
+                              report["selected_issue_candidates"]), (90, 16))
+            self.assertEqual(sum(x["selection_status"] == "excluded_pr_not_issue"
+                                 for x in report["ledger"]), 46)
+            self.assertEqual(sum(x["selection_status"] ==
+                                 "selected_for_independent_task_screen"
+                                 for x in report["ledger"]), 16)
+            original = json.loads(CROSS_ECOSYSTEM_FRAME.read_text(encoding="utf-8"))
+            self.assertEqual(report["reduced_frame_sha256"],
+                             sample(original)["reduced_frame_sha256"])
+            self.assertTrue(all(x["independent_acceptance_status"] == "not_frozen"
+                                for x in report["ledger"]))
+            self.assertTrue(all(x["experiment_enrollment_status"] ==
+                                "not_eligible_unreviewed"
+                                for x in report["ledger"]))
+
     def test_reject_future_labeled_capture(self):
         x = self.frame()
         x["captured_at_utc"] = "2030-01-01T00:00:00Z"
