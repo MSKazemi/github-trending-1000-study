@@ -265,6 +265,65 @@ def _open_prs(repo, owner, branch):
                        "per_page": 100})
     return f"/repos/{repo}/pulls?{query}"
 
+def _require_immutable_archive_ruleset(client, repo):
+    """Read back active archive-tag protection; never infer enforcement from CI."""
+    root = f"/repos/{repo}/rulesets"
+    rows, seen = [], set()
+    for page in range(1, 11):
+        current = client.get(
+            f"{root}?includes_parents=true&per_page=100&page={page}"
+        )
+        if not isinstance(current, list):
+            raise CleanupError("archive-tag ruleset inventory unavailable")
+        for entry in current:
+            if (not isinstance(entry, dict)
+                    or type(entry.get("id")) is not int
+                    or entry["id"] <= 0 or entry["id"] in seen):
+                raise CleanupError("archive-tag ruleset inventory ambiguous")
+            seen.add(entry["id"])
+            rows.append(entry)
+        if len(current) < 100:
+            break
+    else:
+        raise CleanupError("archive-tag ruleset listing incomplete")
+    matches = [entry for entry in rows
+               if entry.get("name") == "immutable-branch-archive-tags"]
+    if len(matches) != 1:
+        raise CleanupError("archive-tag ruleset missing or duplicated")
+    summary = matches[0]
+    if (summary.get("source") != repo or summary.get("target") != "tag"
+            or summary.get("enforcement") != "active"):
+        raise CleanupError("archive-tag ruleset not active for expected repository")
+    live = client.get(f"{root}/{summary['id']}")
+    if (not isinstance(live, dict)
+            or type(live.get("id")) is not int
+            or live["id"] != summary["id"]
+            or live.get("name") != summary["name"]
+            or live.get("source") != repo
+            or live.get("target") != "tag"
+            or live.get("enforcement") != "active"
+            or live.get("bypass_actors") != []
+            or live.get("conditions") != {
+                "ref_name": {"include": ["refs/tags/branch-archive/**/*"],
+                             "exclude": []}}):
+        raise CleanupError("archive-tag ruleset readback lacks strict protection")
+    rules = live.get("rules")
+    if not isinstance(rules, list):
+        raise CleanupError("archive-tag ruleset rules missing")
+    kinds = {}
+    for rule in rules:
+        if (not isinstance(rule, dict)
+                or not isinstance(rule.get("type"), str)
+                or rule["type"] in kinds):
+            raise CleanupError("archive-tag ruleset rule invalid or duplicated")
+        kinds[rule["type"]] = rule
+    if (set(kinds) != {"update", "deletion"}
+            or not isinstance(kinds["update"].get("parameters"), dict)
+            or kinds["update"]["parameters"].get(
+                "update_allows_fetch_and_merge") is not False):
+        raise CleanupError("archive-tag ruleset mutation restrictions absent")
+
+
 def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
     name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
@@ -319,6 +378,8 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
         return "blocked_merge_not_in_main"
     tag = f"{ARCHIVE_PREFIX}/{name}"
     tag_path = _tag_ref(repo, tag)
+    if not audit_only:
+        _require_immutable_archive_ruleset(client, repo)
     if audit_only:
         # A preflight must disclose a conflicting existing recovery tag now,
         # not report eligibility and defer the conflict to destructive mode.
@@ -367,6 +428,9 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
                 or not isinstance(fresh_main.get("commit"), dict)
                 or fresh_main["commit"].get("sha") != expected_main_sha):
             return "blocked_main_moved_before_delete"
+    # The tag rules could change while the archive is created. Check again
+    # immediately before the final SHA-leased branch mutation.
+    _require_immutable_archive_ruleset(client, repo)
     client.delete_with_lease(name, sha)
     try:
         client.get(ref_path)
@@ -389,6 +453,10 @@ def execute(plan, client, *, audit_only=False):
             or not isinstance(main.get("commit"), dict)
             or main["commit"].get("sha") != plan["source_main_sha"]):
         raise CleanupError("approved main SHA moved; freeze and re-review plan")
+    # A destructive session must stop before any tag is created if immutable
+    # archive protection was never installed by the repository administrator.
+    if not audit_only:
+        _require_immutable_archive_ruleset(client, repo)
     results = []
     for item in plan["branches"]:
         try:

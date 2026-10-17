@@ -176,3 +176,12 @@ CI are still required before merge or future activation.
 **Practical maintainer lesson:** an HTTPS URL and correct initial host do
 not imply an authenticated HTTP client will stay on that host. For token
 requests, check redirect handling and test no-credential-forwarding directly.
+
+
+## 2026-10-17 live immutable archive-tag verification
+
+**Additional P0 protection for #277:** a successful Git SHA lease alone does not keep the *backup* immutable. The retirement engine previously created and verified a recovery tag without checking whether GitHub's separately administered archive-tag ruleset was actually installed. The engine now reads the complete bounded live repository/inherited ruleset inventory, checks the unique active repository tag ruleset, denies bypass actors and narrowed archive globs, and requires both update and deletion protection for `refs/tags/branch-archive/**/*`. Missing, duplicated, inactive, inherited, incomplete or weakened policy fails closed. These checks run at the start of destructive execution, before each recovery-tag mutation and **again immediately before** the Git SHA-leased branch deletion. A mid-operation policy change blocks deletion after an archive tag is created. Read-only audit mode remains available with no installed rules, and the privileged GitHub Actions retirement job remains disabled.
+
+Synthetic tests cover absent protection, inactive/enforcement-only policy, permissive bypasses, partial archive namespaces, absent update/deletion rules, direct function calls and policy movement between archive publication and deletion. No tag/branch has been created or deleted. **This is a safety precondition, not proof of real server enforcement.** GitHub main/tag rules remain uninstalled at the checked readback; #248 and #277 still require owner/admin application, independent qualified security review, a source-preserving plan and controlled real negative-enforcement tests before any destructive work or issue closure.
+
+**Practical lesson:** for no-loss branch cleanup, secure *both ends* of the transfer: an atomic SHA-leased delete protects the source, but a mutable archive tag undermines recovery. Inspect live tag policy as late as possible, and never equate configuration readback with verified denial of unauthorized operations.

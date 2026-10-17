@@ -50,8 +50,36 @@ class FakeClient:
         self.main_sha = "c" * 40
         self.main_reads = 0
         self.main_change_on_read = None
+        self.archive_rules_installed = True
+        self.archive_rules_enforcement = "active"
+        self.archive_rules_bypass = []
+        self.archive_rules_scope = "refs/tags/branch-archive/**/*"
+        self.archive_rules_types = ["update", "deletion"]
+        self.archive_rules_detail_reads = 0
+        self.archive_rules_weaken_after = None
 
     def get(self, path):
+        if path.startswith(f"/repos/{REPO}/rulesets?"):
+            if not self.archive_rules_installed:
+                return []
+            return [{"id": 27, "name": "immutable-branch-archive-tags",
+                     "target": "tag", "enforcement": self.archive_rules_enforcement,
+                     "source": REPO}]
+        if path == f"/repos/{REPO}/rulesets/27":
+            self.archive_rules_detail_reads += 1
+            changed = (self.archive_rules_weaken_after is not None and
+                       self.archive_rules_detail_reads >= self.archive_rules_weaken_after)
+            return {"id": 27, "name": "immutable-branch-archive-tags",
+                    "target": "tag",
+                    "enforcement": "evaluate" if changed else self.archive_rules_enforcement,
+                    "source": REPO, "bypass_actors": self.archive_rules_bypass,
+                    "conditions": {"ref_name": {"include": [self.archive_rules_scope],
+                                                "exclude": []}},
+                    "rules": [({"type": "update",
+                               "parameters": {"update_allows_fetch_and_merge": False}}
+                              if kind == "update" else {"type": kind})
+                              for kind in self.archive_rules_types]}
+
         if path == f"/repos/{REPO}":
             return {"default_branch": "main"}
         if "/git/ref/tags/" in path:
@@ -380,6 +408,51 @@ class BranchCleanupTests(unittest.TestCase):
                     validate_plan(sample)
                 with self.assertRaisesRegex(CleanupError, "invalid repository"):
                     GitHubClient(invalid, "offline-only-fixture-token")
+
+    def test_destructive_mode_requires_live_immutable_archive_ruleset(self):
+        for key, value in (
+            ("archive_rules_installed", False),
+            ("archive_rules_enforcement", "evaluate"),
+            ("archive_rules_bypass", [{"actor_id": 1, "actor_type": "RepositoryRole",
+                                       "bypass_mode": "always"}]),
+            ("archive_rules_scope", "refs/tags/branch-archive/*"),
+            ("archive_rules_types", ["update"]),
+            ("archive_rules_types", ["deletion"]),
+        ):
+            fake = FakeClient()
+            setattr(fake, key, value)
+            with self.subTest(missing_or_weakened=key), self.assertRaisesRegex(
+                    CleanupError, "archive-tag ruleset"):
+                execute(plan(), fake)
+            self.assertFalse(fake.posts)
+            self.assertFalse(fake.deleted)
+
+    def test_direct_retire_one_cannot_bypass_live_archive_policy(self):
+        fake = FakeClient()
+        fake.archive_rules_installed = False
+        with self.assertRaisesRegex(CleanupError, "archive-tag ruleset"):
+            retire_one(fake, REPO, item())
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_archive_rules_changed_after_tag_creation_block_git_lease(self):
+        fake = FakeClient()
+        # One session-wide check, one prior to tag creation, then a final
+        # verification after successful archive publication.
+        fake.archive_rules_weaken_after = 3
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "error_CleanupError")
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertEqual(len(fake.posts), 1)
+        self.assertFalse(fake.deleted)
+
+    def test_read_only_inventory_is_available_without_installed_tag_rules(self):
+        fake = FakeClient()
+        fake.archive_rules_installed = False
+        result = execute(plan(), fake, audit_only=True)
+        self.assertEqual(result[0]["status"], "eligible_read_only")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
 
     def test_stale_approved_main_aborts_before_tags_or_retirement(self):
         fake = FakeClient()
