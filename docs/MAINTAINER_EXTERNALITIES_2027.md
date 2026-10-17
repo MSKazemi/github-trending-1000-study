@@ -76,3 +76,29 @@ and its causal history, not just the string printed at the terminal.
 The CLI accepted both single-case input and a `{"cases": [...]}` batch wrapper. Its old wrapper path ignored arbitrary additional top-level fields, even though individual case and outcome objects were already exact-schema checked. An input with `{"cases": [...], "raw_interview": "..."}` could therefore pass silently and misleadingly appear privacy-minimized. The read-only CLI now requires the wrapper to have **exactly the `cases` key**, passes its value through the same bounded nonempty case-array check, and reports only a fixed category on rejection. An offline regression tests an ordinary multi-case wrapper, forbidden sidecar fields, redacted stderr and malformed arrays. It does not collect, store, transform or approve any human data, and does not authenticate the independent reviewer or missing effort measurements. **#24 remains open** for opt-in ethics and real-methods validation.
 
 **Maintainer lesson:** strict nested schemas do not secure a container if its outer envelope silently ignores undeclared fields. Test envelopes, batches and successful/failed CLI paths, not only individual records.
+
+## 2026-10-17 final privacy follow-up: consent-aware output minimization
+
+During expedited PR review, two additional offline safeguards were necessary:
+
+1. An unrepresentably large Python integer could throw from `float(value)`
+   with a chained low-level exception. Converting that to a public
+   `BurdenError` now happens after leaving the handler, so the original
+   private value is not retained in formatted exception context.
+2. A case with `withdrawn` or `not_consented` could have no observed timing
+   but still carry explicit task acceptance `pass`/`fail` or a non-null
+   downstream success status. A nonconsented row now allows **only unknown
+   acceptance** and bounded `unknown`/`not_started` outcome states, retaining
+   denominator counts without retaining post-withdrawal result judgments.
+
+Synthetic regression tests check both consent states, positive denominator
+continuity, huge integer handling and complete exception traceback privacy.
+
+These changes do not prove an authentic withdrawal, erase external records,
+verify independent reviewer identity, authorize retention or supply real
+participant measurements. Issue #24 remains OPEN until actual opt-in methods,
+human time records, sample/power approval, uncertainty and ethics gates are met.
+
+**Practical lesson:** removing names and timing is insufficient if derived
+success/failure labels remain in a withdrawn person's row; minimize *all*
+person-linked outcomes according to the consent state.
