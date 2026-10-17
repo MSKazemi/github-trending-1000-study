@@ -79,3 +79,11 @@ The offline issue-intake CLI now reads reduced frames with the repository's **sh
 The synthetic regression checks include a duplicate PR key, nonfinite/overflow/underflow numerics, a source symlink, a directory, and an oversized input. These verify software integrity only; they **do not verify** the original GitHub REST source history, independent task acceptability, permissions, consent or actual downstream reuse. Keep [#65](https://github.com/MSKazemi/github-trending-1000-study/issues/65) open for those genuine scientific gates.
 
 **Practical lesson:** reject duplicate raw keys and unsafe file types *before* assigning research eligibility. Checking the validated Python dictionary alone cannot recover a silently overwritten key.
+
+## 2026-10-18 atomic write-once publication correction (engineering issue #449)
+
+The task-intake CLI now uses the shared `safe_io.disjoint` and `safe_io.publish_json` helpers. Successful publication stages complete JSON bytes in a same-directory temporary file, flushes and fsyncs, and hard-links the staged file to a **new-only** destination. Existing targets, symlink targets and aliased input/output paths fail closed; simulated hard-link failures leave no partial published file and clean up temporary stages. CLI write failures have bounded nonidentifying diagnostics and never print the local destination or private OS exception text. The selection algorithm, source frame SHA and 16 candidate leads are unchanged.
+
+The writer guarantees *one-file atomic appearance and no overwrite*, **not** multi-file transactional data storage, cryptographic source authenticity, resilience to power loss beyond the staged-file fsync, or verified consent/independent task acceptance. Local source and output permissions still belong to the operator. This patch does not run a live GitHub query or change the frozen sampling protocol. Scientific issue [#65](https://github.com/MSKazemi/github-trending-1000-study/issues/65) stays open.
+
+**Practical lesson:** `open("x")` is safe against clobbering but **not** a complete-file publication protocol. Reuse atomic staging and verify failure cleanup before treating JSON output as immutable research evidence.

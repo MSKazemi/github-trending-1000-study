@@ -1,4 +1,6 @@
 import copy
+from contextlib import redirect_stderr
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -6,7 +8,8 @@ import sys
 import re
 import tempfile
 import unittest
-from trending_study.task_intake import sample, IntakeError
+from unittest.mock import patch
+from trending_study.task_intake import sample, IntakeError, main
 
 FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.public_2026-10-12.json"
 CROSS_ECOSYSTEM_FRAME = Path(__file__).resolve().parents[1] / "examples" / "task_intake.cross_ecosystem_2026-10-12.json"
@@ -66,7 +69,8 @@ class IntakeTests(unittest.TestCase):
             self.assertEqual(json.loads(out.read_text())["selected_issue_candidates"],6)
             b=subprocess.run(cmd,capture_output=True,text=True)
             self.assertEqual(b.returncode,2)
-            self.assertIn("File exists",b.stderr)
+            self.assertIn("could not safely publish task-intake result",b.stderr)
+            self.assertNotIn(str(out),b.stderr)
 
     def test_cli_rejects_duplicate_pr_flag_and_nonfinite_json_before_classification(self):
         # The duplicate PR flag could silently reclassify a GitHub pull
@@ -112,6 +116,53 @@ class IntakeTests(unittest.TestCase):
                     self.assertIn("invalid or unsafe task-intake JSON input", proc.stderr)
                     self.assertNotIn("PRIVATE_", proc.stderr)
                     self.assertFalse(output.exists())
+
+    def test_cli_rejects_input_output_alias_without_mutating_source(self):
+        original = FRAME.read_bytes()
+        proc = subprocess.run([
+            sys.executable, "-m", "trending_study.task_intake",
+            "--input", str(FRAME), "--output", str(FRAME),
+        ], capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("could not safely publish task-intake result", proc.stderr)
+        self.assertNotIn(str(FRAME), proc.stderr)
+        self.assertEqual(FRAME.read_bytes(), original)
+
+    def test_cli_rejects_output_symlink_without_touching_target(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            target = root / "PRIVATE_RESULT_TARGET.json"
+            target.write_text("ORIGINAL-BYTES", encoding="utf-8")
+            output = root / "output.json"
+            output.symlink_to(target)
+            proc = subprocess.run([
+                sys.executable, "-m", "trending_study.task_intake",
+                "--input", str(FRAME), "--output", str(output),
+            ], capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("could not safely publish task-intake result", proc.stderr)
+            self.assertNotIn("PRIVATE_RESULT_TARGET", proc.stderr)
+            self.assertEqual(target.read_text(encoding="utf-8"), "ORIGINAL-BYTES")
+            self.assertTrue(output.is_symlink())
+
+    def test_cli_publication_failure_does_not_leave_partial_json_or_private_error(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root / "PRIVATE_OUTPUT_MARKER.json"
+            error = io.StringIO()
+            # Simulate the last write-once hard-link failing *after* the
+            # complete JSON bytes have been staged and fsynced.
+            with patch("trending_study.safe_io.os.link",
+                       side_effect=OSError("PRIVATE_DISK_DETAIL")):
+                with redirect_stderr(error), self.assertRaises(SystemExit) as exit:
+                    main(["--input", str(FRAME), "--output", str(output)])
+            self.assertEqual(exit.exception.code, 2)
+            self.assertIn("could not safely publish task-intake result",
+                          error.getvalue())
+            self.assertNotIn("PRIVATE_OUTPUT_MARKER", error.getvalue())
+            self.assertNotIn("PRIVATE_DISK_DETAIL", error.getvalue())
+            self.assertFalse(output.exists())
+            self.assertEqual(list(root.glob(".capture-pending-*")), [])
 
     def test_reject_future_labeled_capture(self):
         x = self.frame()
