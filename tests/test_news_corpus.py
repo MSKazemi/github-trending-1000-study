@@ -62,6 +62,92 @@ class NewsCorpusTests(unittest.TestCase):
             validate_records([(first["id"] + ".json", first),
                               (second["id"] + ".json", second)])
 
+    def test_repeated_query_parameter_order_selects_distinct_sources(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?step=first&step=second"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?step=second&step=first"
+        # Sorting (key,value) pairs would falsely collapse these two ordered
+        # selectors. The validator may not discard either source lead.
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_repeated_query_with_trackers_still_deduplicates(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = (
+            "https://example.org/report?step=first&utm_source=email&step=second"
+        )
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = (
+            "https://EXAMPLE.org/report?step=first&step=second&gclid=abc"
+        )
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([(first["id"] + ".json", first),
+                              (second["id"] + ".json", second)])
+
+    def test_unique_query_parameter_order_remains_normalized(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?a=1&b=2"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?b=2&a=1"
+        with self.assertRaisesRegex(ValueError, "duplicate canonical"):
+            validate_records([(first["id"] + ".json", first),
+                              (second["id"] + ".json", second)])
+
+    def test_raw_percent_encoded_selector_variants_are_not_false_duplicates(self):
+        # parse_qsl would decode these to identical (key, value) tuples,
+        # although a server may route raw encodings to distinct documents.
+        for query_a, query_b in (
+            ("id=alpha%2Fbeta", "id=alpha/beta"),
+            ("term=hello+world", "term=hello%20world"),
+            ("ref=%2e", "ref=."),
+        ):
+            first = copy.deepcopy(self.item)
+            second = copy.deepcopy(self.item)
+            first["canonical_url"] = "https://example.org/report?" + query_a
+            second["id"] = "NEWS-2026-0099"
+            second["canonical_url"] = "https://example.org/report?" + query_b
+            with self.subTest(first=query_a, second=query_b):
+                result = validate_records([(first["id"] + ".json", first),
+                                           (second["id"] + ".json", second)])
+                self.assertEqual(result["distinct_urls"], 2)
+
+    def test_decoded_duplicate_query_keys_preserve_raw_order(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?id=one&%69d=two"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?%69d=two&id=one"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_encoded_tracker_key_is_not_removed_without_source_review(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report?id=1"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report?id=1&utm%5Fsource=email"
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
+    def test_trailing_slash_can_select_distinct_source_documents(self):
+        first = copy.deepcopy(self.item)
+        second = copy.deepcopy(self.item)
+        first["canonical_url"] = "https://example.org/report"
+        second["id"] = "NEWS-2026-0099"
+        second["canonical_url"] = "https://example.org/report/"
+        # Paths may be distinct resources: dedup should not discard either
+        # provisional source lead without a content-level human review.
+        result = validate_records([(first["id"] + ".json", first),
+                                   (second["id"] + ".json", second)])
+        self.assertEqual(result["distinct_urls"], 2)
+
     def test_ref_is_preserved_when_it_may_select_source_version(self):
         first = copy.deepcopy(self.item)
         second = copy.deepcopy(self.item)
@@ -128,6 +214,41 @@ class NewsCorpusTests(unittest.TestCase):
         for url in ("https://bad host.example/record",
                     "https://example.org/\nreport",
                     "https://example.org/\treport"):
+            with self.subTest(url=repr(url)):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = url
+                with self.assertRaisesRegex(ValueError, "whitespace or controls"):
+                    validate_records([(bad["id"] + ".json", bad)])
+
+    def test_public_source_hosts_refuse_private_numeric_and_invalid_dns(self):
+        # URL strings are evidence leads, never network-fetch authorization.
+        invalid_hosts = (
+            "localhost", "build-server", "metadata.google.internal",
+            "internal.example.local", "127.0.0.1", "10.0.0.1",
+            "192.168.0.1", "127.1", "2130706433", "0x7f000001",
+            "0177.0.0.1", "0x7f.0.0.1", "192.168.1",
+            "example..org", "-example.org", "example-.org",
+            "foo_bar.org", "a" * 64 + ".org",
+        )
+        for host in invalid_hosts:
+            with self.subTest(host=host):
+                bad = copy.deepcopy(self.item)
+                bad["canonical_url"] = "https://" + host + "/article"
+                with self.assertRaisesRegex(ValueError, "public source host"):
+                    validate_records([(bad["id"] + ".json", bad)])
+        for host in ("research.example.org", "journals-research.example.org",
+                     "xn--bcher-kva.example.org"):
+            with self.subTest(public_syntax=host):
+                valid = copy.deepcopy(self.item)
+                valid["canonical_url"] = "https://" + host + "/article"
+                self.assertEqual(
+                    validate_records([(valid["id"] + ".json", valid)])["records"], 1
+                )
+
+    def test_source_url_rejects_controls_before_urlsplit_normalizes_them(self):
+        for url in ("https://example.org/article" + chr(127),
+                    "https://example.org/ar" + chr(10) + "ticle",
+                    "https://bad host.example/article"):
             with self.subTest(url=repr(url)):
                 bad = copy.deepcopy(self.item)
                 bad["canonical_url"] = url
