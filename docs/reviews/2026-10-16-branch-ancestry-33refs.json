@@ -1,0 +1,398 @@
+{
+  "schema_version": "1.0",
+  "record_type": "non_destructive_read_only_branch_ancestry_checkpoint",
+  "repository": "MSKazemi/github-trending-1000-study",
+  "observed_utc_date": "2026-10-16",
+  "observed_at_utc": null,
+  "main_sha": "639054a0b98fe29c8bd0d6d72fb16b19fc26bff9",
+  "source_urls": [
+    "https://api.github.com/repos/MSKazemi/github-trending-1000-study/branches?per_page=100&page=1",
+    "https://api.github.com/repos/MSKazemi/github-trending-1000-study/pulls?state=open&per_page=100&page=1",
+    "https://api.github.com/repos/MSKazemi/github-trending-1000-study/git/ref/heads/main",
+    "https://api.github.com/repos/MSKazemi/github-trending-1000-study/rulesets",
+    "https://api.github.com/repos/MSKazemi/github-trending-1000-study/compare/639054a0b98fe29c8bd0d6d72fb16b19fc26bff9...<exact_branch_sha>"
+  ],
+  "source_caveat": "Two GitHub branch-tip inventories were identical at the inspected checkpoints, but GitHub REST responses are not an atomic snapshot. Compare results are separately retrieved and tied to exact commit IDs, not moving branch refs. No exact retrieval clock time or response hashes were captured.",
+  "branch_count": 33,
+  "open_pr_count": 11,
+  "main_protected_at_inspection": false,
+  "ruleset_count_at_inspection": 0,
+  "no_open_pr_branches_with_diverged_commit_histories": 21,
+  "safe_retirement_authorizations": 0,
+  "branches_removed_by_this_checkpoint": 0,
+  "any_scientific_claims_validated": false,
+  "note": "A branch ahead of main does not establish meaningful semantic novelty, and a matching tree does not prove source/rights validity. All 21 require per-file, per-source preservation review and immutable recovery tags and approved protected SHA leases before any retirement. Open PRs are always held.",
+  "branches": [
+    {
+      "branch": "audit/branch-merge-readiness-20261016",
+      "sha": "245a8b496673b00917732162eaf2d93b64651634",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 1,
+      "behind_by": 1,
+      "compare_file_count": 1,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "audit/issue-100-provisional-ledger-preservation-20261016",
+      "sha": "9e8f97478f456f1c6b0ba83dd2fd7a5e04e4682f",
+      "open_prs": [
+        416
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "audit/pr-merge-gate-log-20261013",
+      "sha": "2b460c8e15819afd54e62bed1d7334d0e6a78a8e",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 1,
+      "behind_by": 420,
+      "compare_file_count": 1,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "chore/248-reviewable-ruleset-payloads-20261014",
+      "sha": "8a6f0b4f91a28efb6b87d1ea15aa6144b0158b19",
+      "open_prs": [
+        302
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "chore/enterprise-pr-merge-guardrails-20261013",
+      "sha": "4821e9f137cfef7e6e43f0c967ccdbe1023ec96b",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 5,
+      "behind_by": 453,
+      "compare_file_count": 9,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "ci/enterprise-pr-qa-gates-issue-240",
+      "sha": "fd4209a820479ef2e6242c9a066a0a9e4ea590fe",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 8,
+      "behind_by": 191,
+      "compare_file_count": 5,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "ci/issue-240-canonical-csv-artifact-validation",
+      "sha": "d8916e13fb1b415b3d13b9ce0ff97742dfe0c75e",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 6,
+      "behind_by": 416,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "ci/research-json-integrity-247",
+      "sha": "e98d19fcb58c7833900e9f3a2a79941269b72861",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 9,
+      "behind_by": 418,
+      "compare_file_count": 5,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "ci/restore-canonical-integrity-gate-20261013",
+      "sha": "e19087a17263ea1b4aeb9f96d3401c83b2757749",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 3,
+      "behind_by": 378,
+      "compare_file_count": 2,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "feat/issue-23-lifecycle-sensitivity-envelope-20261016",
+      "sha": "a6646fdf14c8f9062f0ac78660adbad5cceafe12",
+      "open_prs": [
+        421
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "fix/247-nested-symlink-clean-merge-20261013",
+      "sha": "368083577709a71875a03ef46a71c598fde01757",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 3,
+      "behind_by": 376,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "fix/279-branch-tip-recheck-20261016",
+      "sha": "8554cdb47e8a85d3de1cd892b778c9df78c17ea4",
+      "open_prs": [
+        417
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "fix/followup-ledger-gate-issue-4",
+      "sha": "489402cd6378b23195d751eca21f3bc717461f6d",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 3,
+      "behind_by": 496,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "fix/issue-19-goldset-input-safety-20261016",
+      "sha": "2654dddf69f4b9bdfb9170c4aec5458d049d38c8",
+      "open_prs": [
+        420
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "fix/issue-22-license-evidence-public-url-20261016",
+      "sha": "9675bb6e36e7f6352ba323f8ca7a559b1f4e965c",
+      "open_prs": [
+        419
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "fix/issue-222-requisition-closure-interval-20261016",
+      "sha": "b7f0359a1fbe49178ac032133985eefbc1112185",
+      "open_prs": [
+        422
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "main",
+      "sha": "639054a0b98fe29c8bd0d6d72fb16b19fc26bff9",
+      "open_prs": [],
+      "status": "keep-main",
+      "ahead_by": 0,
+      "behind_by": 0
+    },
+    {
+      "branch": "quality/244-premerge-artifact-gate",
+      "sha": "bcad1eaff6176fbc61b297495ede01497422926a",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 11,
+      "behind_by": 445,
+      "compare_file_count": 6,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "quality/canonical-artifact-ci-20261013",
+      "sha": "fd119035a627033503af03c4d4dd1eb8a7eacaa4",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 8,
+      "behind_by": 418,
+      "compare_file_count": 8,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "quality/extend-canonical-data-integrity-csv-20261013",
+      "sha": "aa6c3e68fdac09fe0671e91af1c064caeac06bca",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 4,
+      "behind_by": 416,
+      "compare_file_count": 4,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/independent-page-qa-2026-10-12",
+      "sha": "190327b6e57574b6050b8f55067bad3064ff1d2b",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 8,
+      "behind_by": 495,
+      "compare_file_count": 8,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue-100-github-changelog-ledger-20261016",
+      "sha": "4ffbb5c953cf8d4dd477e9b7a13983845e76867d",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 4,
+      "behind_by": 2,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue-15-registry-cohort-pilot-20261014",
+      "sha": "ada0d56b0fc4c189e5fc67e7ac14c7f1cef1b98b",
+      "open_prs": [
+        293
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "research/issue-22-supply-chain-gate-oct2026",
+      "sha": "9e0ea7654defaf196202739a11e95a349bef0fd1",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 24,
+      "behind_by": 469,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue-223-hiring-blind-agreement",
+      "sha": "69f5edb1d417b1605d0b06b8110921052bfbccd7",
+      "open_prs": [
+        298
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "research/issue-6-coverage-chronological-proxy-20261014",
+      "sha": "1236f12b2a0981cc01f92daddd89189eab25f39a",
+      "open_prs": [
+        290
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "research/issue-6-rank-drift-oct2026",
+      "sha": "38728426909558fda5fcab618ea044eef48c7b8f",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 3,
+      "behind_by": 469,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue-7-literature-ledger-oct2026",
+      "sha": "4172d37e77415ca6eff49266e27a2073b750cee4",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 15,
+      "behind_by": 455,
+      "compare_file_count": 3,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue-7-literature-source-screen-20261016",
+      "sha": "185d25a6f3f05ce826a8f46b24c3d876286cd71a",
+      "open_prs": [
+        418
+      ],
+      "protected": false,
+      "compare_status": "not_requested",
+      "ahead_by": null,
+      "behind_by": null,
+      "status": "hold-open-pr"
+    },
+    {
+      "branch": "research/issue11-evidence-registry-20261012",
+      "sha": "bb87be18c105ae9c54ef2c0fae5401ca3517d5e5",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 4,
+      "behind_by": 469,
+      "compare_file_count": 4,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue22-package-trust-gate-20261012",
+      "sha": "d4619a9a1903ff53efc5fc89d14e54b43b9ea88d",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 4,
+      "behind_by": 469,
+      "compare_file_count": 4,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/issue6-trending-overlap-audit-20261012",
+      "sha": "cc37e2014dd0cac3610d287574e2c9c56b82a14f",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 16,
+      "behind_by": 469,
+      "compare_file_count": 4,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    },
+    {
+      "branch": "research/trending-independent-page-qa-issue2",
+      "sha": "e129d5ac16caff7d983b91d85588bc74b659a0d5",
+      "open_prs": [],
+      "protected": false,
+      "compare_status": "diverged",
+      "ahead_by": 17,
+      "behind_by": 496,
+      "compare_file_count": 11,
+      "status": "hold-diverged-unique-commit-history-needs-file-level-review"
+    }
+  ]
+}
