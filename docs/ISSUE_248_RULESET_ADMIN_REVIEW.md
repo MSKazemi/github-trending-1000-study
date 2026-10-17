@@ -1,5 +1,8 @@
 # Issue #248: reviewable main and archive-tag rulesets
 
+> **2026-10-18 operator option:** See [guarded ruleset installation tool](ISSUE_248_RULESET_INSTALLER_2026_10_18.md) for a GET-only-by-default, pinned-blob preflight and explicit two-stage admin installation/resume command. It does **not** bypass this runbook's independent review or live negative-enforcement tests, and this repository's connected GitHub App cannot apply administrator settings. The detailed manual procedure below remains authoritative.
+
+
 **2026-10-14 — prepared for owner/security review; NOT applied.** The payloads
 implement the administrative portion of the [canonical PR merge gate](PR_MERGE_QUALITY_GATE_2026_10_13.md), not another merge policy. Issue #248 remains
 blocked on actual administrator approval, application and observed enforcement.
