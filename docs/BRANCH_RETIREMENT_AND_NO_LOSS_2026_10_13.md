@@ -237,3 +237,38 @@ remains disabled, and independent security/admin review is required.
 **Maintainer lesson:** a lower-level privileged helper is itself a trust
 boundary. Apply the same exact-schema and provenance checks there rather
 than assuming every caller used the high-level command.
+
+
+## 2026-10-17 P0 remote-payload and destructive-batch follow-up
+
+**Additional fail-closed review on PR #435:** A legitimate-but-partial
+GitHub REST response (e.g. a null `git/ref.object`, missing
+`branch.commit`, absent `main.commit`, or a tag pointing to an annotated
+tag object rather than the approved commit) could trigger unhandled nested
+attribute access in `retire_one()`. The proposal now reads typed commit
+SHA references conservatively, refuses incomplete ref or main metadata,
+and requires an archive ref to point **directly to the exact original commit**.
+A direct retry for a branch already absent also checks the active immutable
+archive-tag ruleset before returning an apparently successful status.
+Adversarial synthetic tests exercise malformed ref, branch, main and archive
+readbacks without any remote mutations.
+
+A second failure mode was batch continuation: `execute(..., audit_only=False)`
+previously kept attempting subsequent branch retirements even after a
+candidate failed its source/ownership/permission/lease gate. Now a
+destructive pass **stops at the first blocked/error candidate**, records
+all remaining candidates as `not_attempted_after_prior_block`, and reports
+nonzero overall outcome. The *read-only* audit still inspects every candidate
+to help an operator understand the whole plan. This limits the mutation
+blast radius and preserves a machine-readable outcome disposition.
+
+This is **not** a permit to enable branch retirement: live GitHub readback
+still has `main.protected=false` and no active archive rulesets. Original
+plan SHAs are stale, the destructive workflow stays hard-disabled, and
+independent qualified security review plus a separately authorized
+source-preserving recovery plan are mandatory. No real branch or archive tag
+was created, deleted, replaced, or retargeted by this follow-up.
+
+**Practical maintainer lesson:** negative API shapes must become explicit
+blocked decisions, and a destructive batch should stop on the first
+unexpected result rather than attempting unrelated irreversible changes.
