@@ -122,3 +122,12 @@ no claim is made that the queries ran at midnight or that the historical
 search results have immutable exports. No PRISMA flow is certified. CI
 ensures these linked source versions are never silently treated as four
 independent empirical studies.
+
+
+## 2026-10-18 offline included-citation host and exception-safety follow-up
+
+A canonical item URL could previously pass the ledger's parser even if its hostname was an intranet single label (`https://intranet/paper`) or structurally invalid DNS (`example..org`, leading/trailing hyphens, underscores or overlong labels). The included-source structural gate now requires at least two ordinary ASCII DNS labels, each at most 63 characters with valid leading/trailing alphanumerics, and an overall host no longer than 253 characters. Valid interior hyphens and ASCII IDNA punycode remain accepted. The existing no-local/private literal IP and noncanonical numeric alias guards remain. All examples and tests are synthetic; a plausible domain is **not** proof of publication, provenance, licensed source rights, safe DNS resolution, or independent bibliographic screening.
+
+Additionally, malformed URL parser failures are converted into generic `LiteratureError` only **after** leaving the source exception handler, so `__cause__`, `__context__` and a formatted full traceback do not retain synthetic private URL parser messages. A new negative test asserts this, alongside malformed-domain negatives and clean positive controls. No DOI, review decision, search count or observed publication claim is newly certified. Issue #7 remains open for actual date-stamped ACM/IEEE/OpenAlex/Scopus screening, source adjudication, independent reviewers and report completeness.
+
+**Practical lesson:** validate *where evidence links could lead a reviewer* as conservatively as package registry URLs, but do not confuse structural URL format with scientific source authenticity. Check full traceback chains instead of only error text.
