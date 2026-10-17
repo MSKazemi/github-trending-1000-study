@@ -271,6 +271,63 @@ def _open_prs(repo, owner, branch):
                        "per_page": 100})
     return f"/repos/{repo}/pulls?{query}"
 
+
+def _all_prs(repo, owner, branch):
+    # An already-closed, unmerged PR may hold unique research/code history.
+    # Checking only state=open would silently permit its source ref removal.
+    query = urlencode({"state": "all", "head": owner + ":" + branch,
+                       "per_page": 100})
+    return f"/repos/{repo}/pulls?{query}"
+
+
+def _review_pr_history(client, repo, owner, branch, expected_sha, selected_pr):
+    """Advisory fail-closed same-repository PR history, not API attestation.
+
+    GitHub's list endpoint does not prove an exhaustive immutable PR record.
+    Refuse exactly-full pages, unknown head repositories, duplicates, any
+    closed-but-unmerged PR, or another merged PR from an unreviewed head.
+    """
+    history = client.get(_all_prs(repo, owner, branch))
+    if not isinstance(history, list) or len(history) >= 100:
+        return "blocked_incomplete_pr_history", None
+    seen = set()
+    fingerprint = []
+    selected_seen = False
+    for row in history:
+        if not isinstance(row, dict):
+            return "blocked_unverifiable_pr_history", None
+        number = row.get("number")
+        if type(number) is not int or number <= 0 or number in seen:
+            return "blocked_unverifiable_pr_history", None
+        seen.add(number)
+        head = row.get("head")
+        head_repo = head.get("repo") if isinstance(head, dict) else None
+        if (not isinstance(head_repo, dict)
+                or head_repo.get("full_name") != repo
+                or head.get("ref") != branch
+                or not isinstance(head.get("sha"), str)
+                or not SHA.fullmatch(head["sha"])):
+            return "blocked_unverifiable_pr_history", None
+        state, merged_at = row.get("state"), row.get("merged_at")
+        if state not in ("closed", "open"):
+            return "blocked_unverifiable_pr_history", None
+        if state == "open":
+            return "blocked_open_pr", None
+        if merged_at is None:
+            return "blocked_closed_unmerged_pr", None
+        if not isinstance(merged_at, str) or not merged_at:
+            return "blocked_unverifiable_pr_history", None
+        if head["sha"] != expected_sha:
+            # Even a merged but *different* source head needs independent
+            # file/source/PR crosswalk before the branch becomes disposable.
+            return "blocked_other_pr_head_requires_review", None
+        if number == selected_pr:
+            selected_seen = True
+        fingerprint.append((number, state, head["sha"], merged_at))
+    if not selected_seen:
+        return "blocked_selected_pr_missing_from_history", None
+    return None, tuple(sorted(fingerprint))
+
 def _require_immutable_archive_ruleset(client, repo):
     """Read back active archive-tag protection; never infer enforcement from CI."""
     root = f"/repos/{repo}/rulesets"
@@ -406,6 +463,10 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
         return "blocked_incomplete_open_pr_check"
     if open_prs:
         return "blocked_open_pr"
+    history_hold, original_history = _review_pr_history(
+        client, repo, owner, name, sha, prno)
+    if history_hold is not None:
+        return history_hold
 
     main = client.get(f"/repos/{repo}/branches/main")
     if (not isinstance(main, dict)
@@ -414,6 +475,10 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     main_sha = main["commit"].get("sha")
     if not isinstance(main_sha, str) or not SHA.fullmatch(main_sha):
         return "blocked_unverifiable_main"
+    if main.get("protected") is not True:
+        # An observed protected=True flag is necessary, not proof of the full
+        # required-review/ruleset policy. Never delete under unprotected main.
+        return "blocked_unprotected_main"
     # The approval plan pins a specific observed main. A later fast-forward
     # must not silently enlarge the originally reviewed deletion scope.
     if expected_main_sha is not None and main_sha != expected_main_sha:
@@ -466,6 +531,14 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
         return "blocked_incomplete_open_pr_check"
     if fresh_open_prs:
         return "blocked_new_open_pr"
+    late_history_hold, late_history = _review_pr_history(
+        client, repo, owner, name, sha, prno)
+    if late_history_hold is not None:
+        return ("blocked_new_closed_unmerged_pr"
+                if late_history_hold == "blocked_closed_unmerged_pr"
+                else late_history_hold)
+    if late_history != original_history:
+        return "blocked_pr_history_changed_before_delete"
     # Archive verification must be as late as the ref lease: a deleted or
     # repointed tag must not be silently treated as valid backup evidence.
     try:
@@ -482,6 +555,8 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
                 or not isinstance(fresh_main.get("commit"), dict)
                 or fresh_main["commit"].get("sha") != expected_main_sha):
             return "blocked_main_moved_before_delete"
+        if fresh_main.get("protected") is not True:
+            return "blocked_unprotected_main_before_delete"
     # The tag rules could change while the archive is created. Check again
     # immediately before the final SHA-leased branch mutation.
     _require_immutable_archive_ruleset(client, repo)
@@ -507,6 +582,8 @@ def execute(plan, client, *, audit_only=False):
             or not isinstance(main.get("commit"), dict)
             or main["commit"].get("sha") != plan["source_main_sha"]):
         raise CleanupError("approved main SHA moved; freeze and re-review plan")
+    if not audit_only and main.get("protected") is not True:
+        raise CleanupError("protected main required before branch retirement")
     # A destructive session must stop before any tag is created if immutable
     # archive protection was never installed by the repository administrator.
     if not audit_only:
