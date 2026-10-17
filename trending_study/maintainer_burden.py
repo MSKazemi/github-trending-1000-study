@@ -62,6 +62,7 @@ def summarize(cards):
     complete = 0
     accepted_complete = 0
     unknown_total = 0
+    observed_component_entries = 0
     known_partial_minutes = 0.0
     total_complete_minutes = 0.0
     synthetic_count = 0
@@ -159,6 +160,7 @@ def summarize(cards):
         row_minutes = sum(known)
         if not math.isfinite(row_minutes):
             raise BurdenError("human minute total exceeds finite numeric range")
+        observed_component_entries += len(known)
         known_partial_minutes += row_minutes
         if not math.isfinite(known_partial_minutes):
             raise BurdenError("human minute total exceeds finite numeric range")
@@ -177,7 +179,10 @@ def summarize(cards):
             "cases_with_complete_time_boundary": complete,
             "cases_with_accepted_outcome_and_complete_time": accepted_complete,
             "missing_component_entries": unknown_total,
-            "known_partial_minutes_not_a_total": known_partial_minutes,
+            "observed_component_entries": observed_component_entries,
+            # No observed human-work component is unknown, never a measured 0.
+            "known_partial_minutes_not_a_total": (known_partial_minutes
+                                                  if observed_component_entries else None),
             "complete_case_minutes_not_a_population_estimate": total_complete_minutes if complete else None,
             "overall_human_minutes": (total_complete_minutes
                                       if complete == len(cards) and synthetic_count == 0 else None),

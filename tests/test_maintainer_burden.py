@@ -22,6 +22,8 @@ class BurdenTests(unittest.TestCase):
         r = summarize([card()])
         self.assertEqual(r["case_count"], 1)
         self.assertEqual(r["missing_component_entries"], 6)
+        self.assertEqual(r["observed_component_entries"], 0)
+        self.assertIsNone(r["known_partial_minutes_not_a_total"])
         self.assertIsNone(r["overall_human_minutes"])
         self.assertIsNone(r["per_accepted_task_minutes"])
         self.assertFalse(r["independent_review_authenticated"])
@@ -38,8 +40,26 @@ class BurdenTests(unittest.TestCase):
         c["human_time_minutes"]["upstream_review"] = 11.5
         r = summarize([c])
         self.assertEqual(r["known_partial_minutes_not_a_total"], 11.5)
+        self.assertEqual(r["observed_component_entries"], 1)
         self.assertIsNone(r["overall_human_minutes"])
         self.assertEqual(r["missing_component_entries"], 5)
+
+    def test_measured_zero_is_distinct_from_no_observations(self):
+        # A missing value may not be interpreted as an observed zero or
+        # used as evidence of zero upstream maintainer cost.
+        empty = summarize([card()])
+        self.assertIsNone(empty["known_partial_minutes_not_a_total"])
+        self.assertEqual(empty["observed_component_entries"], 0)
+
+        measured = card()
+        measured["consent_state"] = "consented"
+        measured["human_time_minutes"]["upstream_review"] = 0
+        result = summarize([measured])
+        self.assertEqual(result["observed_component_entries"], 1)
+        self.assertEqual(result["known_partial_minutes_not_a_total"], 0.0)
+        self.assertEqual(result["missing_component_entries"], 5)
+        self.assertIsNone(result["overall_human_minutes"])
+        self.assertFalse(result["approved_for_public_release"])
 
     def test_duplicate_case_does_not_inflate_independent_count(self):
         with self.assertRaisesRegex(BurdenError, "unique"):
