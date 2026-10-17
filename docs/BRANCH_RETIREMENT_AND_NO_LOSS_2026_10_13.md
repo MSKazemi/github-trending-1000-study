@@ -312,3 +312,14 @@ does not prove actual server enforcement.
 historical source manifest, delete a moved branch or retarget an old
 archive tag merely because this proposal exists. The proposed JSON has not
 been imported and no GitHub repository rules were changed by this work.
+
+
+## 2026-10-18 additional #277 deletion safety preflight (offline proposal)
+
+Review of the canonical cleanup code found that testing only `state=open` PRs and one selected merged PR does **not** exclude closed-but-unmerged PRs from the **same head branch**. An operator could therefore archive/delete a branch that was reused after an abandoned PR, losing the visible workstream ref even if one different PR merged. The proposed guard also requires effective `main.protected=true` before destructive mode; this flag alone is **not** evidence that all required review/status rulesets are enforced.
+
+The revised read-only/destructive preflight must request bounded `state=all&head=owner:branch&per_page=100` PR membership; any closed-unmerged PR, unrecognized/missing ownership, inconsistent selected merged PR, alternate merged head SHA, unknown/duplicate PR row, missing selected PR, or full 100-row page prevents retirement. It compares the history snapshot a second time immediately before the Git force-with-lease delete, detecting new closed-unmerged PRs and altered membership. The Git lease still protects only the branch-ref SHA; it **cannot atomically lease the PR index**, so server-side review policies, archive recovery, actual administrator approval and a separately qualified security review remain required. Unknown is held, never treated as permission to delete.
+
+The disabled `.github/workflows/retire-verified-branches.yml` write job remains **unconditionally disabled**; no rule, archive tag or branch has been changed here. Added synthetic/offline negative tests check closed-unmerged PR history, 100-row pagination ambiguity, missing/duplicate/malformed memberships, a mid-flight new PR, main protection loss, and no destructive Git lease in any rejected case. This is an engineering review artifact for issue #277, **not a completed privileged deletion**. See #248 for verified branch-protection enforcement and #279 for per-branch source/code no-loss adjudication.
+
+**Maintainer lesson:** an apparently merged head commit and a green CI run are insufficient evidence that all work associated with a branch was integrated. Examine *all* PR membership and preserve abandoned histories as well as current successful PRs.

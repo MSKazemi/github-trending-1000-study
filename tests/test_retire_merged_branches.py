@@ -27,6 +27,12 @@ def plan():
             "source_main_sha": "c" * 40, "archive_prefix": ARCHIVE_PREFIX,
             "branches": [item()]}
 
+
+def pr_history_entry(number=123, sha=SHA, merged_at="2026-10-13T12:00:00Z"):
+    return {"number": number, "state": "closed", "merged_at": merged_at,
+            "head": {"ref": NAME, "sha": sha,
+                     "repo": {"full_name": REPO}}}
+
 class FakeClient:
     def __init__(self):
         self.repository = REPO
@@ -46,6 +52,11 @@ class FakeClient:
         self.ancestor = True
         self.open_on_second_check = False
         self.open_checks = 0
+        self.history_override = None
+        self.history_checks = 0
+        self.history_on_second_check = None
+        self.main_protected = True
+        self.protect_main_on_third_read = False
         self.archive_moved_after_first_check = False
         self.archive_checks = 0
         self.main_sha = "c" * 40
@@ -102,7 +113,9 @@ class FakeClient:
             live_sha = (("f" * 40) if self.main_change_on_read is not None
                         and self.main_reads >= self.main_change_on_read
                         else self.main_sha)
-            return {"commit": {"sha": live_sha}}
+            protected = (False if self.protect_main_on_third_read
+                         and self.main_reads >= 3 else self.main_protected)
+            return {"commit": {"sha": live_sha}, "protected": protected}
         if "/compare/" in path:
             return {"status": "ahead" if self.ancestor else "diverged",
                     "behind_by": 0 if self.ancestor else 1}
@@ -116,6 +129,14 @@ class FakeClient:
                                                    "repo": {"full_name": REPO}},
                     "base": {"ref": "main"}, "merge_commit_sha": MERGE}
         if "/pulls?" in path:
+            if "state=all" in path:
+                self.history_checks += 1
+                if (self.history_on_second_check is not None
+                        and self.history_checks >= 2):
+                    return copy.deepcopy(self.history_on_second_check)
+                return copy.deepcopy(
+                    [pr_history_entry()] if self.history_override is None
+                    else self.history_override)
             self.open_checks += 1
             if self.open_on_second_check and self.open_checks > 1:
                 return [{"number": 456}]
@@ -346,6 +367,94 @@ class BranchCleanupTests(unittest.TestCase):
         fake.open = [{"number": 9}]
         self.assertEqual(retire_one(fake, REPO, item(), expected_main_sha="c" * 40), "blocked_open_pr")
         self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_closed_unmerged_pr_history_blocks_even_when_another_pr_merged(self):
+        # A branch can be reused after a closed-unmerged PR. 'open=[]' and
+        # a single merged PR alone cannot establish no-loss retirement.
+        for audit_only in (True, False):
+            fake = FakeClient()
+            fake.history_override = [
+                pr_history_entry(), pr_history_entry(124, merged_at=None),
+            ]
+            with self.subTest(audit_only=audit_only):
+                result = retire_one(fake, REPO, item(), audit_only=audit_only,
+                                    expected_main_sha="c" * 40)
+                self.assertEqual(result, "blocked_closed_unmerged_pr")
+                self.assertEqual(fake.open, [])
+                self.assertFalse(fake.posts)
+                self.assertFalse(fake.deleted)
+
+    def test_ambiguous_missing_and_full_pr_histories_fail_closed(self):
+        for history, outcome in (
+            (None, "blocked_incomplete_pr_history"),
+            ([pr_history_entry(i) for i in range(1, 101)],
+             "blocked_incomplete_pr_history"),
+            ([pr_history_entry(124)],
+             "blocked_selected_pr_missing_from_history"),
+            ([pr_history_entry(), pr_history_entry()],
+             "blocked_unverifiable_pr_history"),
+            ([pr_history_entry(), pr_history_entry(124, sha="f" * 40)],
+             "blocked_other_pr_head_requires_review"),
+            ([dict(pr_history_entry(), head=None)],
+             "blocked_unverifiable_pr_history"),
+        ):
+            fake = FakeClient()
+            fake.history_override = history if history is not None else []
+            # An actual null HTTP response is tested separately below.
+            with self.subTest(status=outcome, count=len(fake.history_override)):
+                actual = retire_one(fake, REPO, item(), audit_only=True,
+                                    expected_main_sha="c" * 40)
+                if history is None:
+                    self.assertEqual(actual, "blocked_selected_pr_missing_from_history")
+                else:
+                    self.assertEqual(actual, outcome)
+                self.assertFalse(fake.posts)
+                self.assertFalse(fake.deleted)
+        fake = FakeClient()
+        original = fake.get
+        def null_history(path):
+            return None if "state=all" in path else original(path)
+        with patch.object(fake, "get", side_effect=null_history):
+            self.assertEqual(retire_one(fake, REPO, item(), audit_only=True,
+                                        expected_main_sha="c" * 40),
+                             "blocked_incomplete_pr_history")
+
+    def test_closed_unmerged_pr_appearing_after_tag_blocks_lease(self):
+        fake = FakeClient()
+        fake.history_on_second_check = [
+            pr_history_entry(), pr_history_entry(456, merged_at=None),
+        ]
+        self.assertEqual(retire_one(fake, REPO, item(),
+                                    expected_main_sha="c" * 40),
+                         "blocked_new_closed_unmerged_pr")
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertEqual(fake.history_checks, 2)
+        self.assertFalse(fake.deleted)
+
+    def test_pr_history_move_after_archive_blocks_lease(self):
+        fake = FakeClient()
+        fake.history_on_second_check = [pr_history_entry(), pr_history_entry(456)]
+        self.assertEqual(retire_one(fake, REPO, item(),
+                                    expected_main_sha="c" * 40),
+                         "blocked_pr_history_changed_before_delete")
+        self.assertFalse(fake.deleted)
+
+    def test_unprotected_main_blocks_destructive_and_audit_paths(self):
+        fake = FakeClient()
+        fake.main_protected = False
+        with self.assertRaisesRegex(CleanupError, "protected main required"):
+            execute(plan(), fake)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+        self.assertEqual(retire_one(fake, REPO, item(), audit_only=True,
+                                    expected_main_sha="c" * 40),
+                         "blocked_unprotected_main")
+        fake = FakeClient()
+        fake.protect_main_on_third_read = True
+        self.assertEqual(execute(plan(), fake)[0]["status"],
+                         "blocked_unprotected_main_before_delete")
+        self.assertEqual(fake.tag_sha, SHA)
         self.assertFalse(fake.deleted)
 
     def test_existing_wrong_archival_tag_fails_closed(self):
