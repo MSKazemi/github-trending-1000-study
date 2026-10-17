@@ -71,3 +71,10 @@ The batch example is deliberately fictional and illustrates pass **and fail**, n
 - [EDPB Guidelines 1/2026 scientific research consultation](https://www.edpb.europa.eu/public-consultations/guidelines-12026-on-processing-of-personal-data-for-scientific-research_it) — a consultation resource, not evidence of final issued guidance or ethics approval.
 
 **Practical lesson for other repositories:** privacy-sensitive studies need both fail-closed code and genuinely external human authorization. A green test cannot turn self-reported “approved” into consent or convert synthetics into an observed environmental/social impact.
+
+
+## Follow-up: all-missing human effort must remain null (2026-10-17)
+
+A review of the overlapping draft PR #436 and this feasibility instrument found that initialized numerical accumulators previously reported `0.0` for a wholly missing six-category time diary. The feasibility addition also reported `0.0` for a direction (upstream or downstream) even when that entire side had **no observed entries**. The code now counts observed component entries overall and per direction, emits `null` for every wholly unobserved subtotal, and reports `0.0` **only where a zero was actually recorded**. Synthetic tests check all-missing, observed zero on each side, and a multi-case partially missing batch. This prevents false assertions that unseen upstream maintainer effort was zero. These fields remain diagnostic, **not** independently authenticated human labor or permission to publish data. All earlier negative/unknown outcome handling is retained.
+
+**Maintainer lesson:** missing-as-zero can be reintroduced by later grouping logic even after it is fixed in a global total. Test the empty set at *every aggregation level* before interpreting costs.

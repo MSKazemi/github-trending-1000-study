@@ -73,6 +73,9 @@ def summarize(cards):
     complete = 0
     accepted_complete = 0
     unknown_total = 0
+    observed_component_entries = 0
+    upstream_observed_entries = 0
+    downstream_observed_entries = 0
     known_partial_minutes = 0.0
     total_complete_minutes = 0.0
     upstream_partial_minutes = 0.0
@@ -180,6 +183,11 @@ def summarize(cards):
         row_minutes = sum(known)
         if not math.isfinite(row_minutes):
             raise BurdenError("human minute total exceeds finite numeric range")
+        # Zero requires an ACTUAL observed entry. Otherwise even a 0.0
+        # partial aggregate would falsely report absent labor as none.
+        observed_component_entries += len(known)
+        upstream_observed_entries += sum(k in known_by_category for k in UPSTREAM)
+        downstream_observed_entries += sum(k in known_by_category for k in DOWNSTREAM)
         known_partial_minutes += row_minutes
         upstream_partial_minutes += sum(known_by_category.get(k, 0.0) for k in UPSTREAM)
         downstream_partial_minutes += sum(known_by_category.get(k, 0.0) for k in DOWNSTREAM)
@@ -208,9 +216,16 @@ def summarize(cards):
             "cases_with_complete_time_boundary": complete,
             "cases_with_accepted_outcome_and_complete_time": accepted_complete,
             "missing_component_entries": unknown_total,
-            "known_partial_minutes_not_a_total": known_partial_minutes,
-            "upstream_known_partial_minutes_not_a_total": upstream_partial_minutes,
-            "downstream_known_partial_minutes_not_a_total": downstream_partial_minutes,
+            "observed_component_entries": observed_component_entries,
+            "observed_upstream_component_entries": upstream_observed_entries,
+            "observed_downstream_component_entries": downstream_observed_entries,
+            # Null is unavailable, not an observed zero; split by direction.
+            "known_partial_minutes_not_a_total": (
+                known_partial_minutes if observed_component_entries else None),
+            "upstream_known_partial_minutes_not_a_total": (
+                upstream_partial_minutes if upstream_observed_entries else None),
+            "downstream_known_partial_minutes_not_a_total": (
+                downstream_partial_minutes if downstream_observed_entries else None),
             "missing_upstream_component_entries": unknown_upstream,
             "missing_downstream_component_entries": unknown_downstream,
             "consent_state_counts": {key: consent_counts[key]

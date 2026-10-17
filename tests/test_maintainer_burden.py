@@ -22,6 +22,12 @@ class BurdenTests(unittest.TestCase):
         r = summarize([card()])
         self.assertEqual(r["case_count"], 1)
         self.assertEqual(r["missing_component_entries"], 6)
+        self.assertEqual(r["observed_component_entries"], 0)
+        self.assertEqual(r["observed_upstream_component_entries"], 0)
+        self.assertEqual(r["observed_downstream_component_entries"], 0)
+        self.assertIsNone(r["known_partial_minutes_not_a_total"])
+        self.assertIsNone(r["upstream_known_partial_minutes_not_a_total"])
+        self.assertIsNone(r["downstream_known_partial_minutes_not_a_total"])
         self.assertIsNone(r["overall_human_minutes"])
         self.assertIsNone(r["per_accepted_task_minutes"])
         self.assertFalse(r["independent_review_authenticated"])
@@ -40,6 +46,44 @@ class BurdenTests(unittest.TestCase):
         self.assertEqual(r["known_partial_minutes_not_a_total"], 11.5)
         self.assertIsNone(r["overall_human_minutes"])
         self.assertEqual(r["missing_component_entries"], 5)
+
+    def test_observed_zero_differs_from_missing_in_each_direction(self):
+        # All-null reports are null, while truly measured zeros remain 0.0.
+        for field, direction in (
+            ("upstream_review", "upstream"),
+            ("downstream_implementation", "downstream"),
+        ):
+            c = card()
+            c["consent_state"] = "consented"
+            c["human_time_minutes"][field] = 0.0
+            with self.subTest(field=field):
+                r = summarize([c])
+                self.assertEqual(r["known_partial_minutes_not_a_total"], 0.0)
+                self.assertEqual(r["observed_component_entries"], 1)
+                self.assertEqual(r[f"{direction}_known_partial_minutes_not_a_total"], 0.0)
+                opposite = "downstream" if direction == "upstream" else "upstream"
+                self.assertIsNone(r[f"{opposite}_known_partial_minutes_not_a_total"])
+                self.assertEqual(r[f"observed_{direction}_component_entries"], 1)
+                self.assertEqual(r[f"observed_{opposite}_component_entries"], 0)
+                self.assertIsNone(r["overall_human_minutes"])
+                self.assertFalse(r["independent_review_authenticated"])
+
+    def test_partial_group_sums_preserve_missingness_across_cases(self):
+        first = card()
+        first["consent_state"] = "consented"
+        first["human_time_minutes"]["upstream_support"] = 9
+        second = card()
+        second["case_id"] = "FICTIONAL-SECOND-CASE"
+        second["consent_state"] = "consented"
+        summary = summarize([first, second])
+        self.assertEqual(summary["known_partial_minutes_not_a_total"], 9)
+        self.assertEqual(summary["upstream_known_partial_minutes_not_a_total"], 9)
+        self.assertIsNone(summary["downstream_known_partial_minutes_not_a_total"])
+        self.assertEqual(summary["observed_component_entries"], 1)
+        self.assertEqual(summary["observed_upstream_component_entries"], 1)
+        self.assertEqual(summary["observed_downstream_component_entries"], 0)
+        self.assertEqual(summary["missing_component_entries"], 11)
+        self.assertIsNone(summary["overall_human_minutes"])
 
     def test_duplicate_case_does_not_inflate_independent_count(self):
         with self.assertRaisesRegex(BurdenError, "unique"):
