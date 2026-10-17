@@ -149,3 +149,30 @@ not passed to Git. This is defense in depth and still assumes a trusted runner,
 executable path and HTTPS proxy/CA environment. No credential was used on a
 real Git remote and the destructive workflow remains disabled. Final-head CI
 and independent security review remain required.
+
+## 2026-10-17 authenticated API redirect hard stop
+
+A focused security review of the existing privileged `GitHubClient.request`
+found a concrete standard-library risk: Python's default
+`urllib.request.HTTPRedirectHandler` can propagate an ordinary
+`Authorization` header to a redirected Request, including when a GitHub
+API endpoint returns `Location: https://other-host/...`. That would give
+an unexpected redirect target access to the bearer token if automatically
+followed. A synthetic, no-network redirect regression verifies the risk
+boundary without exposing any real credential.
+
+The proposed client now sends the GitHub bearer header as an
+**unredirected header** and creates an opener with an explicit redirect
+denial handler. Any HTTP 30x response is an error, including same-host
+renames; it must trigger operator review rather than automatic token-bearing
+retries. No live GitHub API request, archive publication, branch deletion or
+privileged retirement took place. This is a defense against automatic
+redirect forwarding, **not** proof that a malicious inherited proxy,
+runner/CA trust configuration, account permissions, or future network
+transport is fully secure. The destructive workflow remains disabled and
+independent qualified security review, a new authorized plan and exact-head
+CI are still required before merge or future activation.
+
+**Practical maintainer lesson:** an HTTPS URL and correct initial host do
+not imply an authenticated HTTP client will stay on that host. For token
+requests, check redirect handling and test no-credential-forwarding directly.
