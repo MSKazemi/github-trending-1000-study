@@ -181,3 +181,21 @@ Input: `schema_version=1.1`, `dataset_kind=synthetic|self_reported`, `lessons[]`
 | `superseded_by` | another same-file lesson ID | Noncyclic replacement trail |
 
 `effect_size=null` means unmeasured, not zero. A numeric effect too large for a finite floating-point representation is rejected rather than crashing the command-line validator. `null_compatible` does not prove no effect. Synthetic validated claims fail closed; self-reported validated entries still need independent review. See [issue #11 audit](LESSON_REGISTRY_AUDIT_2026_10.md).
+
+## Trending comparison companion instruments (issue #6, 2026-10-14)
+
+**Separate from the official cohort schema.** Both tools are offline, self-reported or synthetic, not observational enrollment. See [contracts, tests and limitations](TRENDING_COVERAGE_AND_RANK_PROXY_2026_10_14.md).
+
+| Input version | Field | Meaning / boundary |
+| --- | --- | --- |
+| `trending-coverage-1.0` | `surfaces[].frame_id`, `frame_as_of_utc`, `frame_source_sha256`, `frame_definition`, `frame_sampling` | Explicitly predeclared finite ID frame with self-reported provenance and design; source authenticity not verified |
+| `trending-coverage-1.0` | `frame_page_url`, `frame_window`, `frame_language_filter` | Declared pre-capture surface identity must exactly match later capture to prevent denominator substitution; frame timestamp must strictly predate the page and have a distinct source digest |
+| `trending-coverage-1.0` | `eligible_repository_ids`, `capture` | Unique positive stable repository IDs in frame; strict existing page URL, window, language and ranked IDs contract |
+| Coverage report | `denominator_predeclared_frame_ids`, `numerator_observed_frame_ids`, `frame_observed_fraction` | `|frame|`, `|frame intersect observed page|`, and their ratio; this is **not** population recall |
+| Coverage report | `page_ids_outside_frame`, `cross_language_population_coverage=null` | Reports page IDs absent from specified frame; intentionally does not aggregate overlapping language frames |
+| `trending-rank-proxy-1.0` | `protocol_locked_at_utc`, `protocol_reference`, `pages[].capture` | Self-reported lock, reproducible chronological split and matched page surface; lock is **not** authenticated preregistration |
+| `trending-rank-proxy-1.0` | `features[].repository_id`, `recorded_at_utc`, `feature_source_sha256` | One strictly pre-capture timestamped feature row per already displayed repository; feature digest distinct from page digest, no unknown-to-zero coercion, signed 64-bit numeric limits |
+| `trending-rank-proxy-1.0` | `prior_7d_star_delta`, `prior_stars`, `prior_forks` | Previous seven-day **API-derived** count difference and two previous point-in-time counts, **not** later page labels or same-day backfill; self-reported until independently checked |
+| Proxy report | `train_macro_accuracy_by_predictor`, `selected_predictor_train_only`, `heldout_page_scores`, `heldout_macro_pairwise_accuracy` | Single-feature baseline selected only on pre-lock pages; ties get half credit, n(n-1)/2 within-page pairs (cap 250,000 across pages), page-macro holdout scoring; no inference about GitHub's hidden ranking |
+
+All new companion outputs retain `independent_verification=false` and `eligible_for_confirmatory_cohort=false`. Never equate a GitHub Trending surface appearance with a valid user, sustainable growth, functionality or permission to collect real pages.
