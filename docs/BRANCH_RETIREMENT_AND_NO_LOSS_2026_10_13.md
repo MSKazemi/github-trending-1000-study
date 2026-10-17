@@ -87,3 +87,127 @@ does not constitute independent security review or retirement authorization.
 ## 2026-10-15 privileged Git transport isolation follow-up (proposed PR #294)
 
 The dormant SHA-leased deletion transport is additionally hardened on PR #294: discard inherited `GIT_CONFIG_*` and tracing environment, suppress system/global configuration, disable Git hooks using `core.hooksPath=os.devnull` at command invocation, and keep the one narrowly scoped ephemeral HTTPS authorization header. A synthetic regression checks these controls even when host configuration tries to override hooks/credentials. No authorized branch deletion or live credential use has occurred. This does **not** grant approval to enable privileged cleanup, establish archive-tag protection, or replace independent security review. Recheck the exact final head and CI after this addition.
+
+## 2026-10-16 issue #277 proposed frozen-main and repository-path hardening
+
+**Status: proposed patch for independent security review, not a deployed/approved retirement.** A code review found that the original validated `source_main_sha` field was **not enforced** during execution: the command could use the live `main` for ancestry checks even after the operator-approved plan's base snapshot became stale. The original repository-name regex also accepted a bare `.` or `..` owner/repository component, potentially making an authenticated REST path or Git remote ambiguous.
+
+This proposed correction rejects dot-segment repository identities both when parsing a plan and when constructing a `GitHubClient`. It fails **before any archive/tag mutation** unless current `main` equals the exact `source_main_sha` pinned in the approved plan, and rechecks it for each retirement candidate and again directly before its leased deletion. The corresponding offline tests simulate stale initial state, a change between initial preflight and candidate validation, and a change after the recovery tag was created; in every case **no branch deletion occurs**.
+
+The original 60-branch allowlist remains intentionally unchanged at main SHA `6339775d73886b24f746139cdf55a34384f88c33`. It **must fail** against the newer observed main SHA rather than silently replacing an approval or treating current metadata as historical evidence. A qualified reviewer must prepare an independently reviewed **new immutable plan** when a future maintenance window is authorized, retaining original tags, recorded SHA histories, negative tests and source decisions. Never relabel stale evidence by merely editing a hash.
+
+These checks narrow a time-of-check/time-of-use window but do **not** create an atomic transaction across GitHub `main`, PR creation and archived refs. The existing exact-SHA Git push lease only protects the **branch being deleted**. Actual server-enforced main and archive-tag rulesets, qualified independent review, an operator maintenance freeze for new PRs, read-only live preflight, and a separately approved manual destructive mode remain mandatory. The workflow's unconditional `false &&` destructive-job guard stays intact. No branches were retired by this patch.
+
+**Practical maintainer lesson:** a frozen SHA field must be an *enforced precondition*, not decorative metadata. Test owner/repo identities with `./` and `../` adversarial cases, reject source-state drift between checks, preserve exact original provenance, and prefer refusing to delete rather than making a cleanup count look complete.
+
+## 2026-10-17 strict privileged cleanup-plan input follow-up
+
+A separate fail-closed review found that the dormant retirement CLI originally
+used a **stat-then-unbounded-read** of the operator plan, with Python's permissive
+JSON decoding. A replaced plan file, leaf symlink, FIFO, duplicated JSON
+property, NaN/Infinity literal or nonintegral `merged_pr` could escape the
+reviewed byte/schema preconditions. Plan fields including the frozen main SHA
+must not be subject to ambiguous last-key-wins JSON parsing.
+
+The proposed script now opens the plan once with descriptor-level regular-file
+checks, nonblocking and no-follow flags where supported, and a **35,000-byte
+actual-read bound**. JSON decoding refuses duplicate keys, NaN/Infinity,
+floating-point and overlong integer spellings. Parser failures use fixed
+messages that do not expose a private plan path or field. The retirement plan,
+archived original commits, approval snapshot, and disabled destructive GitHub
+Actions job remain unchanged. Adversarial offline tests cover ambiguous keys,
+malformed numeric spellings, symlink/directory/oversize files, no GitHub-client
+construction on invalid input, and a valid offline dry run.
+
+This script is deliberately executable as `python scripts/retire_merged_branches.py`
+(the documented workflow form); direct file execution does not include the
+repository root in Python's module import path, so the standalone privileged
+boundary implements a small strict decoder instead of depending on an implicit
+PYTHONPATH or dynamically importing another module. This is format safety,
+**not** plan authorship/signature verification or a full hostile-filesystem
+sandbox; directory ancestry, permissions and atomicity of changing GitHub refs
+remain separate security problems. New exact-head CI and independent qualified
+human security review are required before merge. Absolutely no branch deletion
+or privileged execution occurred.
+
+**Practical maintainer lesson:** evaluate the exact bytes used by a privileged
+operation, not merely a prior file-size check. Reject duplicate JSON keys
+before they can alter an approved source SHA or branch list.
+
+## 2026-10-17 privileged Git environment hardening
+
+The same focused retirement preflight found that dropping only `GIT_CONFIG_*`
+and trace variables left dangerous inherited Git controls such as
+`GIT_SSL_NO_VERIFY=1`, `GIT_ASKPASS`, and `GIT_EXEC_PATH` intact. With an
+ephemeral Authorization header attached to a privileged HTTPS Git process,
+these settings could disable TLS verification or invoke untrusted helpers.
+The proposed Git subprocess environment now drops **all** inherited `GIT_*`
+variables plus `SSH_ASKPASS` / `SSH_ASKPASS_REQUIRE`, and then explicitly
+sets only the required safe Git config, trace-disable and noninteractive flags.
+A synthetic subprocess inspection injects hostile values and asserts they are
+not passed to Git. This is defense in depth and still assumes a trusted runner,
+executable path and HTTPS proxy/CA environment. No credential was used on a
+real Git remote and the destructive workflow remains disabled. Final-head CI
+and independent security review remain required.
+
+## 2026-10-17 authenticated API redirect hard stop
+
+A focused security review of the existing privileged `GitHubClient.request`
+found a concrete standard-library risk: Python's default
+`urllib.request.HTTPRedirectHandler` can propagate an ordinary
+`Authorization` header to a redirected Request, including when a GitHub
+API endpoint returns `Location: https://other-host/...`. That would give
+an unexpected redirect target access to the bearer token if automatically
+followed. A synthetic, no-network redirect regression verifies the risk
+boundary without exposing any real credential.
+
+The proposed client now sends the GitHub bearer header as an
+**unredirected header** and creates an opener with an explicit redirect
+denial handler. Any HTTP 30x response is an error, including same-host
+renames; it must trigger operator review rather than automatic token-bearing
+retries. No live GitHub API request, archive publication, branch deletion or
+privileged retirement took place. This is a defense against automatic
+redirect forwarding, **not** proof that a malicious inherited proxy,
+runner/CA trust configuration, account permissions, or future network
+transport is fully secure. The destructive workflow remains disabled and
+independent qualified security review, a new authorized plan and exact-head
+CI are still required before merge or future activation.
+
+**Practical maintainer lesson:** an HTTPS URL and correct initial host do
+not imply an authenticated HTTP client will stay on that host. For token
+requests, check redirect handling and test no-credential-forwarding directly.
+
+
+## 2026-10-17 live immutable archive-tag verification
+
+**Additional P0 protection for #277:** a successful Git SHA lease alone does not keep the *backup* immutable. The retirement engine previously created and verified a recovery tag without checking whether GitHub's separately administered archive-tag ruleset was actually installed. The engine now reads the complete bounded live repository/inherited ruleset inventory, checks the unique active repository tag ruleset, denies bypass actors and narrowed archive globs, and requires both update and deletion protection for `refs/tags/branch-archive/**/*`. Missing, duplicated, inactive, inherited, incomplete or weakened policy fails closed. These checks run at the start of destructive execution, before each recovery-tag mutation and **again immediately before** the Git SHA-leased branch deletion. A mid-operation policy change blocks deletion after an archive tag is created. Read-only audit mode remains available with no installed rules, and the privileged GitHub Actions retirement job remains disabled.
+
+Synthetic tests cover absent protection, inactive/enforcement-only policy, permissive bypasses, partial archive namespaces, absent update/deletion rules, direct function calls and policy movement between archive publication and deletion. No tag/branch has been created or deleted. **This is a safety precondition, not proof of real server enforcement.** GitHub main/tag rules remain uninstalled at the checked readback; #248 and #277 still require owner/admin application, independent qualified security review, a source-preserving plan and controlled real negative-enforcement tests before any destructive work or issue closure.
+
+**Practical lesson:** for no-loss branch cleanup, secure *both ends* of the transfer: an atomic SHA-leased delete protects the source, but a mutable archive tag undermines recovery. Inspect live tag policy as late as possible, and never equate configuration readback with verified denial of unauthorized operations.
+
+## 2026-10-17 malformed merged-PR metadata must fail closed
+
+The read-only/privileged branch retirement verifier previously assumed that a
+merged PR's nested `head.repo` and `base` fields were always objects.
+A deleted fork or partially returned API payload can contain `null` there;
+the resulting `AttributeError` interrupted the audit rather than producing
+a determinate **blocked** row. The verifier now requires complete nested
+object shapes and returns `blocked_pr_not_identical_and_merged` before
+creating an archive or calling a deletion lease. Offline adversarial tests
+cover missing/null/non-object PR and nested repository/base data and confirm
+**zero archive writes and zero deletions**.
+
+**Non-negotiable operational hold:** As verified on 2026-10-17,
+`main.protected=false` and repository rulesets were empty. The cleanup
+workflow's destructive job remains unconditionally disabled; this merge
+must not remove that hold. The original 2026-10-13 branch manifest's frozen
+`source_main_sha` remains stale and must not be silently refreshed. Actual
+cleanup needs enforced immutable archive tags, a new independently reviewed
+SHA-pinned plan, a live authorized preflight, and a separately approved manual
+execution with readback and recovery. This branch's engineering tests are
+**not** security review or authorization to delete any refs.
+
+**Practical lesson:** missing or malformed remote metadata is not evidence
+that a destructive condition succeeded. Require complete verified nested
+objects before any archive write or SHA-leased mutation.

@@ -9,11 +9,12 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 SHA = re.compile(r"[a-f0-9]{40}\Z")
 BRANCH = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}\Z")
@@ -25,6 +26,15 @@ class CleanupError(ValueError):
 
 class ApiNotFound(CleanupError):
     """Explicit 404, not a passed permission check."""
+
+
+def _safe_repo(repository):
+    """Reject dot-segment API paths before using the approved repo identity."""
+    if (not isinstance(repository, str) or not REPO.fullmatch(repository)
+            or any(part in (".", "..") for part in repository.split("/"))):
+        raise CleanupError("invalid repository")
+    return repository
+
 
 def _safe_name(s):
     if (not isinstance(s, str) or not BRANCH.fullmatch(s)
@@ -46,8 +56,7 @@ def validate_plan(plan):
         raise CleanupError("unexpected cleanup plan schema")
     if plan["schema_version"] != "1.0":
         raise CleanupError("unsupported plan version")
-    if not isinstance(plan["repository"], str) or not REPO.fullmatch(plan["repository"]):
-        raise CleanupError("invalid repository")
+    _safe_repo(plan["repository"])
     _sha(plan["source_main_sha"])
     if plan["archive_prefix"] != ARCHIVE_PREFIX:
         raise CleanupError("unapproved archive namespace")
@@ -70,26 +79,101 @@ def validate_plan(plan):
         seen.add(name)
     return plan
 
+def _load_strict_plan(path):
+    """Read one bounded regular JSON plan without following leaf symlinks.
+
+    This privileged standalone script is executed by file path in Actions, so
+    it cannot reliably import the package-level research JSON loader. Apply
+    the same fail-closed checks here rather than trusting stat-then-read.
+    """
+    path = Path(path)
+    if path.is_symlink():
+        raise CleanupError("cleanup plan must be a non-symlink regular file")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    flags |= getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError:
+        raise CleanupError("cannot safely open cleanup plan") from None
+    try:
+        info = os.fstat(descriptor)
+        if not stat.S_ISREG(info.st_mode):
+            raise CleanupError("cleanup plan must be a regular file")
+        if info.st_size > 35000:
+            raise CleanupError("cleanup plan exceeds 35 KB")
+        with os.fdopen(descriptor, "rb", closefd=False) as stream:
+            raw = stream.read(35001)
+        if len(raw) > 35000:
+            raise CleanupError("cleanup plan exceeds 35 KB")
+    except OSError:
+        raise CleanupError("cannot safely read cleanup plan") from None
+    finally:
+        os.close(descriptor)
+
+    def unique_keys(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise CleanupError("ambiguous duplicate cleanup plan field")
+            result[key] = value
+        return result
+
+    def reject_number(_literal):
+        raise CleanupError("unsupported cleanup plan numeric literal")
+
+    def bounded_integer(literal):
+        # Only the positive, <=100,000,000 merged_pr field uses JSON numbers.
+        if len(literal.lstrip("-")) > 9:
+            raise CleanupError("cleanup plan integer exceeds bound")
+        return int(literal)
+
+    try:
+        return json.loads(
+            raw.decode("utf-8"), object_pairs_hook=unique_keys,
+            parse_constant=reject_number, parse_float=reject_number,
+            parse_int=bounded_integer,
+        )
+    except (ValueError, UnicodeError, OverflowError, RecursionError):
+        # Parser messages might contain attacker-controlled keys or paths.
+        raise CleanupError("invalid or ambiguous cleanup plan JSON") from None
+
+
+class _RejectAuthenticatedRedirect(HTTPRedirectHandler):
+    """Fail closed on HTTP 30x rather than forwarding GitHub bearer tokens."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        # urllib's default redirect handler copies Authorization to a newly
+        # constructed Request, including when Location names another host.
+        # GitHub API operations must never authorize such a redirect.
+        return None
+
+
 class GitHubClient:
     """Bounded GitHub REST client; never logs tokens or response bodies."""
 
     def __init__(self, repository, token):
         if not token:
             raise CleanupError("GITHUB_TOKEN required for mutation")
-        self.repository = repository
+        self.repository = _safe_repo(repository)
         self.token = token
 
     def request(self, method, path, payload=None):
         data = None if payload is None else json.dumps(payload).encode("utf-8")
         req = Request("https://api.github.com" + path, data=data,
                       method=method, headers={
-            "Authorization": "Bearer " + self.token,
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
             "User-Agent": "research-branch-retirement/1.0",
         })
+        # Defense in depth: even if redirect policy changes, never copy the
+        # bearer token onto an automatically constructed redirected request.
+        req.add_unredirected_header("Authorization", "Bearer " + self.token)
         try:
-            with urlopen(req, timeout=20) as response:
+            # urllib's default HTTPRedirectHandler retains Authorization on
+            # off-host redirects. Reject all redirects for this privileged
+            # API client, including same-host aliases and renamed repos.
+            with build_opener(_RejectAuthenticatedRedirect()).open(
+                    req, timeout=20) as response:
                 raw = response.read(2_000_000)
                 return json.loads(raw) if raw else None
         except HTTPError as exc:
@@ -123,9 +207,14 @@ class GitHubClient:
         # Inherited Git config can change transport behavior, enable helpers,
         # or expose our ephemeral HTTP header. A privileged cleanup job must not
         # trust the runner's system/global config or GIT_CONFIG_PARAMETERS.
+        # Drop every inherited Git control variable, not only trace/config:
+        # GIT_SSL_NO_VERIFY can disable TLS verification and GIT_ASKPASS or
+        # GIT_EXEC_PATH can invoke untrusted local programs with the ephemeral
+        # Authorization header available in their inherited environment.
+        # Re-introduce only deliberately chosen GIT_* controls below.
         env = {key: value for key, value in os.environ.items()
-               if not key.startswith(("GIT_TRACE", "GIT_CONFIG_"))
-               and key != "GIT_CURL_VERBOSE"}
+               if not key.startswith("GIT_")
+               and key not in ("SSH_ASKPASS", "SSH_ASKPASS_REQUIRE")}
         env.update({
             "GIT_CONFIG_NOSYSTEM": "1",
             "GIT_CONFIG_GLOBAL": os.devnull,
@@ -176,7 +265,66 @@ def _open_prs(repo, owner, branch):
                        "per_page": 100})
     return f"/repos/{repo}/pulls?{query}"
 
-def retire_one(client, repo, item, *, audit_only=False):
+def _require_immutable_archive_ruleset(client, repo):
+    """Read back active archive-tag protection; never infer enforcement from CI."""
+    root = f"/repos/{repo}/rulesets"
+    rows, seen = [], set()
+    for page in range(1, 11):
+        current = client.get(
+            f"{root}?includes_parents=true&per_page=100&page={page}"
+        )
+        if not isinstance(current, list):
+            raise CleanupError("archive-tag ruleset inventory unavailable")
+        for entry in current:
+            if (not isinstance(entry, dict)
+                    or type(entry.get("id")) is not int
+                    or entry["id"] <= 0 or entry["id"] in seen):
+                raise CleanupError("archive-tag ruleset inventory ambiguous")
+            seen.add(entry["id"])
+            rows.append(entry)
+        if len(current) < 100:
+            break
+    else:
+        raise CleanupError("archive-tag ruleset listing incomplete")
+    matches = [entry for entry in rows
+               if entry.get("name") == "immutable-branch-archive-tags"]
+    if len(matches) != 1:
+        raise CleanupError("archive-tag ruleset missing or duplicated")
+    summary = matches[0]
+    if (summary.get("source") != repo or summary.get("target") != "tag"
+            or summary.get("enforcement") != "active"):
+        raise CleanupError("archive-tag ruleset not active for expected repository")
+    live = client.get(f"{root}/{summary['id']}")
+    if (not isinstance(live, dict)
+            or type(live.get("id")) is not int
+            or live["id"] != summary["id"]
+            or live.get("name") != summary["name"]
+            or live.get("source") != repo
+            or live.get("target") != "tag"
+            or live.get("enforcement") != "active"
+            or live.get("bypass_actors") != []
+            or live.get("conditions") != {
+                "ref_name": {"include": ["refs/tags/branch-archive/**/*"],
+                             "exclude": []}}):
+        raise CleanupError("archive-tag ruleset readback lacks strict protection")
+    rules = live.get("rules")
+    if not isinstance(rules, list):
+        raise CleanupError("archive-tag ruleset rules missing")
+    kinds = {}
+    for rule in rules:
+        if (not isinstance(rule, dict)
+                or not isinstance(rule.get("type"), str)
+                or rule["type"] in kinds):
+            raise CleanupError("archive-tag ruleset rule invalid or duplicated")
+        kinds[rule["type"]] = rule
+    if (set(kinds) != {"update", "deletion"}
+            or not isinstance(kinds["update"].get("parameters"), dict)
+            or kinds["update"]["parameters"].get(
+                "update_allows_fetch_and_merge") is not False):
+        raise CleanupError("archive-tag ruleset mutation restrictions absent")
+
+
+def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
     name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
     ref_path = _git_ref(repo, name)
@@ -199,11 +347,21 @@ def retire_one(client, repo, item, *, audit_only=False):
             or branch.get("commit", {}).get("sha") != sha):
         return "blocked_protected_or_changed"
     pr = client.get(f"/repos/{repo}/pulls/{prno}")
-    if (pr.get("merged") is not True or pr.get("state") != "closed"
-            or pr.get("head", {}).get("ref") != name
-            or pr.get("head", {}).get("sha") != sha
-            or pr.get("head", {}).get("repo", {}).get("full_name") != repo
-            or pr.get("base", {}).get("ref") != "main"
+    # GitHub can return null head.repo for a deleted repository, and APIs
+    # can return partial/malformed nested objects. These are NOT evidence
+    # of a verified merged branch; fail closed without dereferencing None.
+    if not isinstance(pr, dict):
+        return "blocked_pr_not_identical_and_merged"
+    head = pr.get("head")
+    base = pr.get("base")
+    if not isinstance(head, dict) or not isinstance(base, dict):
+        return "blocked_pr_not_identical_and_merged"
+    head_repo = head.get("repo")
+    if (not isinstance(head_repo, dict)
+            or pr.get("merged") is not True or pr.get("state") != "closed"
+            or head.get("ref") != name or head.get("sha") != sha
+            or head_repo.get("full_name") != repo
+            or base.get("ref") != "main"
             or pr.get("merge_commit_sha") != item["merge_commit_sha"]):
         return "blocked_pr_not_identical_and_merged"
     owner = repo.split("/", 1)[0]
@@ -217,6 +375,10 @@ def retire_one(client, repo, item, *, audit_only=False):
     main_sha = (main or {}).get("commit", {}).get("sha")
     if not isinstance(main_sha, str) or not SHA.fullmatch(main_sha):
         return "blocked_unverifiable_main"
+    # The approval plan pins a specific observed main. A later fast-forward
+    # must not silently enlarge the originally reviewed deletion scope.
+    if expected_main_sha is not None and main_sha != expected_main_sha:
+        return "blocked_main_moved"
     ancestry = client.get(
         f"/repos/{repo}/compare/{item['merge_commit_sha']}...{main_sha}"
     )
@@ -226,6 +388,8 @@ def retire_one(client, repo, item, *, audit_only=False):
         return "blocked_merge_not_in_main"
     tag = f"{ARCHIVE_PREFIX}/{name}"
     tag_path = _tag_ref(repo, tag)
+    if not audit_only:
+        _require_immutable_archive_ruleset(client, repo)
     if audit_only:
         # A preflight must disclose a conflicting existing recovery tag now,
         # not report eligibility and defer the conflict to destructive mode.
@@ -266,6 +430,17 @@ def retire_one(client, repo, item, *, audit_only=False):
     if (not isinstance(late_archive, dict)
             or late_archive.get("object", {}).get("sha") != sha):
         return "blocked_archive_changed_before_delete"
+    if expected_main_sha is not None:
+        # The main ref can move while tags are being prepared. This extra
+        # check reduces stale-plan risk; it is not an atomic multi-ref lease.
+        fresh_main = client.get(f"/repos/{repo}/branches/main")
+        if (not isinstance(fresh_main, dict)
+                or not isinstance(fresh_main.get("commit"), dict)
+                or fresh_main["commit"].get("sha") != expected_main_sha):
+            return "blocked_main_moved_before_delete"
+    # The tag rules could change while the archive is created. Check again
+    # immediately before the final SHA-leased branch mutation.
+    _require_immutable_archive_ruleset(client, repo)
     client.delete_with_lease(name, sha)
     try:
         client.get(ref_path)
@@ -278,12 +453,25 @@ def execute(plan, client, *, audit_only=False):
     if client.repository != plan["repository"]:
         raise CleanupError("GITHUB_REPOSITORY disagrees with approved cleanup plan")
     repo = plan["repository"]
-    if client.get(f"/repos/{repo}").get("default_branch") != "main":
+    metadata = client.get(f"/repos/{repo}")
+    if not isinstance(metadata, dict) or metadata.get("default_branch") != "main":
         raise CleanupError("default branch changed; abort cleanup")
+    # source_main_sha must be an enforcement precondition, not decorative
+    # manifest metadata. Abort before creating even a recovery tag.
+    main = client.get(f"/repos/{repo}/branches/main")
+    if (not isinstance(main, dict)
+            or not isinstance(main.get("commit"), dict)
+            or main["commit"].get("sha") != plan["source_main_sha"]):
+        raise CleanupError("approved main SHA moved; freeze and re-review plan")
+    # A destructive session must stop before any tag is created if immutable
+    # archive protection was never installed by the repository administrator.
+    if not audit_only:
+        _require_immutable_archive_ruleset(client, repo)
     results = []
     for item in plan["branches"]:
         try:
-            status = retire_one(client, repo, item, audit_only=audit_only)
+            status = retire_one(client, repo, item, audit_only=audit_only,
+                                expected_main_sha=plan["source_main_sha"])
         except CleanupError as exc:
             status = "error_" + type(exc).__name__
         print(f"#{item['merged_pr']} {item['branch']}: {status}", flush=True)
@@ -300,9 +488,7 @@ def main(argv=None):
                         help="Exact operator confirmation for destructive mode")
     args = parser.parse_args(argv)
     try:
-        if args.plan.stat().st_size > 35000:
-            raise CleanupError("cleanup plan exceeds 35 KB")
-        plan = validate_plan(json.loads(args.plan.read_text(encoding="utf-8")))
+        plan = validate_plan(_load_strict_plan(args.plan))
         if args.execute and args.audit_live:
             raise CleanupError("choose exactly one mode")
         if args.execute and args.confirm != "RETIRE_VERIFIED_MERGED_BRANCHES":
@@ -324,8 +510,12 @@ def main(argv=None):
                                                 for r in records),
                           "needs_review": blocked}, indent=2))
         return 1 if blocked else 0
-    except (CleanupError, ValueError, OSError) as exc:
+    except CleanupError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except (ValueError, OSError):
+        # Never expose local private plan paths or embedded field names.
+        print("error: invalid cleanup input or remote operation", file=sys.stderr)
         return 2
 
 if __name__ == "__main__":

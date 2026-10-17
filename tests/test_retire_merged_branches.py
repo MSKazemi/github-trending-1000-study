@@ -1,6 +1,10 @@
 """Offline negative tests for fail-closed, non-loss branch retirement."""
 import copy
+from contextlib import redirect_stderr, redirect_stdout
+import io
+import json
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -33,6 +37,7 @@ class FakeClient:
         self.protected = False
         self.pr_merged = True
         self.pr_head = SHA
+        self.pr_payload_override = None
         self.tag_sha = None
         self.race_on_second_ref = False
         self.ref_checks = 0
@@ -43,8 +48,39 @@ class FakeClient:
         self.open_checks = 0
         self.archive_moved_after_first_check = False
         self.archive_checks = 0
+        self.main_sha = "c" * 40
+        self.main_reads = 0
+        self.main_change_on_read = None
+        self.archive_rules_installed = True
+        self.archive_rules_enforcement = "active"
+        self.archive_rules_bypass = []
+        self.archive_rules_scope = "refs/tags/branch-archive/**/*"
+        self.archive_rules_types = ["update", "deletion"]
+        self.archive_rules_detail_reads = 0
+        self.archive_rules_weaken_after = None
 
     def get(self, path):
+        if path.startswith(f"/repos/{REPO}/rulesets?"):
+            if not self.archive_rules_installed:
+                return []
+            return [{"id": 27, "name": "immutable-branch-archive-tags",
+                     "target": "tag", "enforcement": self.archive_rules_enforcement,
+                     "source": REPO}]
+        if path == f"/repos/{REPO}/rulesets/27":
+            self.archive_rules_detail_reads += 1
+            changed = (self.archive_rules_weaken_after is not None and
+                       self.archive_rules_detail_reads >= self.archive_rules_weaken_after)
+            return {"id": 27, "name": "immutable-branch-archive-tags",
+                    "target": "tag",
+                    "enforcement": "evaluate" if changed else self.archive_rules_enforcement,
+                    "source": REPO, "bypass_actors": self.archive_rules_bypass,
+                    "conditions": {"ref_name": {"include": [self.archive_rules_scope],
+                                                "exclude": []}},
+                    "rules": [({"type": "update",
+                               "parameters": {"update_allows_fetch_and_merge": False}}
+                              if kind == "update" else {"type": kind})
+                              for kind in self.archive_rules_types]}
+
         if path == f"/repos/{REPO}":
             return {"default_branch": "main"}
         if "/git/ref/tags/" in path:
@@ -62,13 +98,19 @@ class FakeClient:
                 return {"object": {"sha": "f" * 40}}
             return {"object": {"sha": self.sha}}
         if path == f"/repos/{REPO}/branches/main":
-            return {"commit": {"sha": "c" * 40}}
+            self.main_reads += 1
+            live_sha = (("f" * 40) if self.main_change_on_read is not None
+                        and self.main_reads >= self.main_change_on_read
+                        else self.main_sha)
+            return {"commit": {"sha": live_sha}}
         if "/compare/" in path:
             return {"status": "ahead" if self.ancestor else "diverged",
                     "behind_by": 0 if self.ancestor else 1}
         if "/branches/" in path:
             return {"protected": self.protected, "commit": {"sha": self.sha}}
         if "/pulls/123" in path:
+            if self.pr_payload_override is not None:
+                return copy.deepcopy(self.pr_payload_override)
             return {"merged": self.pr_merged,
                     "state": "closed", "head": {"ref": NAME, "sha": self.pr_head,
                                                    "repo": {"full_name": REPO}},
@@ -120,6 +162,29 @@ class BranchCleanupTests(unittest.TestCase):
         fake.protected = True
         self.assertEqual(retire_one(fake, REPO, item()), "blocked_protected_or_changed")
         self.assertFalse(fake.deleted)
+
+    def test_missing_or_null_nested_pr_repo_blocks_retirement_without_archive(self):
+        # Merged PRs can have a deleted/absent head repository. That is
+        # unverifiable, not permission to clean up a branch.
+        valid = FakeClient().get(f"/repos/{REPO}/pulls/123")
+        malformed = [
+            [],
+            {},
+            dict(valid, head=None),
+            dict(valid, base=None),
+            dict(valid, head=dict(valid["head"], repo=None)),
+            dict(valid, head=dict(valid["head"], repo=[])),
+            dict(valid, head=dict(valid["head"], repo={})),
+        ]
+        for record in malformed:
+            fake = FakeClient()
+            fake.pr_payload_override = record
+            with self.subTest(shape=str(record)[:65]):
+                results = execute(plan(), fake)
+                self.assertEqual(results[0]["status"],
+                                 "blocked_pr_not_identical_and_merged")
+                self.assertEqual(fake.posts, [])
+                self.assertEqual(fake.deleted, [])
 
     def test_unmerged_or_changed_pr_is_blocked(self):
         for attr, bad in (("pr_merged", False), ("pr_head", "f" * 40)):
@@ -319,6 +384,183 @@ class BranchCleanupTests(unittest.TestCase):
         p["delete_all"] = True
         with self.assertRaises(CleanupError):
             validate_plan(p)
+
+    def test_rest_client_rejects_bearer_redirects_without_network(self):
+        # Python's default HTTPRedirectHandler copies normal Authorization
+        # headers when Location changes the host. Only the initial verified
+        # api.github.com request may receive our test bearer token.
+        from urllib.error import HTTPError
+        client = GitHubClient(REPO, "OFFLINE_FIXTURE_TOKEN")
+        endpoint = f"/repos/{REPO}/branches/main"
+        for location in ("https://other.invalid/collect-token",
+                         "https://api.github.com/renamed/repository"):
+            with self.subTest(location=location):
+                response = HTTPError(
+                    "https://api.github.com" + endpoint, 302, "Found",
+                    {"Location": location}, None,
+                )
+                with patch("scripts.retire_merged_branches.build_opener") as maker:
+                    maker.return_value.open.side_effect = response
+                    with self.assertRaisesRegex(CleanupError, "HTTP 302"):
+                        client.get(endpoint)
+                    self.assertEqual(maker.call_count, 1)
+                    handler = maker.call_args.args[0]
+                    request = maker.return_value.open.call_args.args[0]
+                    self.assertEqual(
+                        request.full_url, "https://api.github.com" + endpoint
+                    )
+                    self.assertNotIn("Authorization", request.headers)
+                    self.assertEqual(
+                        request.unredirected_hdrs["Authorization"],
+                        "Bearer OFFLINE_FIXTURE_TOKEN"
+                    )
+                    # A real opener invokes this method for HTTP redirects:
+                    # returning None forces HTTPError, not a follow-up call.
+                    self.assertIsNone(handler.redirect_request(
+                        request, None, 302, "Found",
+                        {"Location": location}, location
+                    ))
+                    self.assertEqual(maker.return_value.open.call_count, 1)
+
+    def test_repo_dot_segments_are_rejected_before_any_api_or_git_use(self):
+        # A broad owner/repo regex previously accepted '../name' and 'owner/..'.
+        # These must never enter an authenticated GitHub API path or Git URL.
+        for invalid in ("../name", "owner/..", "./name", "owner/.",
+                        "/name", "owner/", "owner/../other", None):
+            with self.subTest(repository=invalid):
+                sample = plan()
+                sample["repository"] = invalid
+                with self.assertRaisesRegex(CleanupError, "invalid repository"):
+                    validate_plan(sample)
+                with self.assertRaisesRegex(CleanupError, "invalid repository"):
+                    GitHubClient(invalid, "offline-only-fixture-token")
+
+    def test_destructive_mode_requires_live_immutable_archive_ruleset(self):
+        for key, value in (
+            ("archive_rules_installed", False),
+            ("archive_rules_enforcement", "evaluate"),
+            ("archive_rules_bypass", [{"actor_id": 1, "actor_type": "RepositoryRole",
+                                       "bypass_mode": "always"}]),
+            ("archive_rules_scope", "refs/tags/branch-archive/*"),
+            ("archive_rules_types", ["update"]),
+            ("archive_rules_types", ["deletion"]),
+        ):
+            fake = FakeClient()
+            setattr(fake, key, value)
+            with self.subTest(missing_or_weakened=key), self.assertRaisesRegex(
+                    CleanupError, "archive-tag ruleset"):
+                execute(plan(), fake)
+            self.assertFalse(fake.posts)
+            self.assertFalse(fake.deleted)
+
+    def test_direct_retire_one_cannot_bypass_live_archive_policy(self):
+        fake = FakeClient()
+        fake.archive_rules_installed = False
+        with self.assertRaisesRegex(CleanupError, "archive-tag ruleset"):
+            retire_one(fake, REPO, item())
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_archive_rules_changed_after_tag_creation_block_git_lease(self):
+        fake = FakeClient()
+        # One session-wide check, one prior to tag creation, then a final
+        # verification after successful archive publication.
+        fake.archive_rules_weaken_after = 3
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "error_CleanupError")
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertEqual(len(fake.posts), 1)
+        self.assertFalse(fake.deleted)
+
+    def test_read_only_inventory_is_available_without_installed_tag_rules(self):
+        fake = FakeClient()
+        fake.archive_rules_installed = False
+        result = execute(plan(), fake, audit_only=True)
+        self.assertEqual(result[0]["status"], "eligible_read_only")
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_stale_approved_main_aborts_before_tags_or_retirement(self):
+        fake = FakeClient()
+        fake.main_sha = "f" * 40
+        with self.assertRaisesRegex(CleanupError, "approved main SHA moved"):
+            execute(plan(), fake)
+        self.assertEqual(fake.main_reads, 1)
+        self.assertEqual(fake.ref_checks, 0)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_read_only_audit_also_refuses_stale_plan_main(self):
+        fake = FakeClient()
+        fake.main_sha = "f" * 40
+        with self.assertRaisesRegex(CleanupError, "approved main SHA moved"):
+            execute(plan(), fake, audit_only=True)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_main_moved_after_initial_preflight_blocks_archive(self):
+        fake = FakeClient()
+        fake.main_change_on_read = 2
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "blocked_main_moved")
+        self.assertEqual(fake.main_reads, 2)
+        self.assertFalse(fake.posts)
+        self.assertFalse(fake.deleted)
+
+    def test_main_moved_after_archive_blocks_final_leased_delete(self):
+        fake = FakeClient()
+        fake.main_change_on_read = 3
+        result = execute(plan(), fake)
+        self.assertEqual(result[0]["status"], "blocked_main_moved_before_delete")
+        self.assertGreaterEqual(fake.main_reads, 3)
+        self.assertEqual(fake.tag_sha, SHA)
+        self.assertEqual(len(fake.posts), 1)
+        self.assertFalse(fake.deleted)
+
+    def test_privileged_plan_loader_rejects_duplicate_keys_and_nonstandard_numbers(self):
+        baseline = json.dumps(plan())
+        invalid = (
+            baseline.replace('"schema_version": ', '"schema_version": "1.0", "schema_version": ', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": NaN', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": Infinity', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": 1.0', 1),
+            baseline.replace('"merged_pr": 123', '"merged_pr": 999999999999999999999', 1),
+            baseline.replace('"repository": ', '"PRIVATE_SECRET_MARKER": 1, "repository": ', 1),
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "PRIVATE_PLAN_FILENAME_MARKER.json"
+            for raw in invalid:
+                with self.subTest(raw=raw[:36]):
+                    source.write_text(raw, encoding="utf-8")
+                    stderr = io.StringIO()
+                    with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                        with redirect_stderr(stderr):
+                            self.assertEqual(main(["--plan", str(source), "--audit-live"]), 2)
+                    client.assert_not_called()
+                    self.assertNotIn("PRIVATE_PLAN_FILENAME_MARKER", stderr.getvalue())
+                    self.assertNotIn("PRIVATE_SECRET_MARKER", stderr.getvalue())
+
+    def test_privileged_plan_loader_rejects_symlinks_nonregular_and_grown_files(self):
+        with tempfile.TemporaryDirectory() as folder:
+            parent = Path(folder)
+            valid = parent / "safe-plan.json"
+            valid.write_text(json.dumps(plan()), encoding="utf-8")
+            symlink = parent / "PRIVATE_SYMLINK_MARKER.json"
+            symlink.symlink_to(valid)
+            oversized = parent / "oversized.json"
+            oversized.write_text(" " * 35001, encoding="utf-8")
+            for source in (symlink, parent, oversized):
+                with self.subTest(kind=source.name):
+                    stderr = io.StringIO()
+                    with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                        with redirect_stderr(stderr):
+                            self.assertEqual(main(["--plan", str(source), "--audit-live"]), 2)
+                    client.assert_not_called()
+                    self.assertNotIn("PRIVATE_SYMLINK_MARKER", stderr.getvalue())
+            with patch("scripts.retire_merged_branches.GitHubClient") as client:
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(main(["--plan", str(valid)]), 0)
+            client.assert_not_called()
 
     def test_repo_mismatch_stops_before_actions(self):
         fake = FakeClient()
