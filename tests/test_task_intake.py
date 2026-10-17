@@ -68,6 +68,51 @@ class IntakeTests(unittest.TestCase):
             self.assertEqual(b.returncode,2)
             self.assertIn("File exists",b.stderr)
 
+    def test_cli_rejects_duplicate_pr_flag_and_nonfinite_json_before_classification(self):
+        # The duplicate PR flag could silently reclassify a GitHub pull
+        # request if a permissive json.loads reader kept the second value.
+        duplicate = FRAME.read_text(encoding="utf-8").replace(
+            '"is_pull_request": true',
+            '"is_pull_request": true, "is_pull_request": false', 1)
+        self.assertIn('"is_pull_request": false', duplicate)
+        for raw in (duplicate, '{"x":NaN}', '{"x":Infinity}',
+                    '{"x":1e999}', '{"x":1e-999}'):
+            with self.subTest(raw=raw[:60]), tempfile.TemporaryDirectory() as folder:
+                parent = Path(folder)
+                source = parent / "PRIVATE_SOURCE_FRAME.json"
+                output = parent / "result.json"
+                source.write_text(raw, encoding="utf-8")
+                proc = subprocess.run(
+                    [sys.executable, "-m", "trending_study.task_intake",
+                     "--input", str(source), "--output", str(output)],
+                    capture_output=True, text=True,
+                )
+                self.assertEqual(proc.returncode, 2)
+                self.assertIn("invalid or unsafe task-intake JSON input", proc.stderr)
+                self.assertNotIn("PRIVATE_SOURCE_FRAME", proc.stderr)
+                self.assertNotIn("is_pull_request", proc.stderr)
+                self.assertFalse(output.exists())
+
+    def test_cli_rejects_unsafe_and_oversized_task_frame(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            link = root / "PRIVATE_SYMLINK_INPUT.json"
+            link.symlink_to(FRAME)
+            oversize = root / "PRIVATE_TOO_BIG.json"
+            oversize.write_bytes(b" " * (16 * 1024 * 1024 + 1))
+            for source in (link, root, oversize):
+                with self.subTest(source=source.name):
+                    output = root / "new-result.json"
+                    proc = subprocess.run(
+                        [sys.executable, "-m", "trending_study.task_intake",
+                         "--input", str(source), "--output", str(output)],
+                        capture_output=True, text=True,
+                    )
+                    self.assertEqual(proc.returncode, 2)
+                    self.assertIn("invalid or unsafe task-intake JSON input", proc.stderr)
+                    self.assertNotIn("PRIVATE_", proc.stderr)
+                    self.assertFalse(output.exists())
+
     def test_reject_future_labeled_capture(self):
         x = self.frame()
         x["captured_at_utc"] = "2030-01-01T00:00:00Z"

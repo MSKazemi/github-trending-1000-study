@@ -71,3 +71,11 @@ An additional [bounded independent REST-identity and issue-status recheck](TASK_
 - Issue [#2](https://github.com/MSKazemi/github-trending-1000-study/issues/2): independently audited **actual Trending** capture remains blocked by source-access review and field human QA; this REST task frame does not satisfy it.
 - Issues [#21](https://github.com/MSKazemi/github-trending-1000-study/issues/21) and [#25](https://github.com/MSKazemi/github-trending-1000-study/issues/25) may have been closed for **tooling implementation**; this frame does not complete their real human task, consent or randomized-study acceptance criteria.
 - [Gold-standard method](REUSE_GOLD_STANDARD_2027.md), [task experiment draft](PREREGISTRATION_DRAFT_2027.md) and [protocol freeze status](PROTOCOL_FREEZE_STATUS_2026_10_12.md) remain authoritative until a reviewed prospective amendment is formally approved.
+
+## 2026-10-18 input integrity correction (engineering issue #446)
+
+The offline issue-intake CLI now reads reduced frames with the repository's **shared bounded and descriptor-checked strict JSON loader**. It refuses ambiguous duplicate keys (including repeated `is_pull_request` values that could falsely admit excluded PR rows), nonstandard and unrepresentable numbers, symlinks, directories and oversized files **before** selecting candidates. A safe generic CLI diagnostic does not disclose the input filename or object-key contents. The previously frozen 90-row/16-selected exploratory fixture and SHA-256 selection algorithm are **unchanged**. No network calls or real human screening are introduced.
+
+The synthetic regression checks include a duplicate PR key, nonfinite/overflow/underflow numerics, a source symlink, a directory, and an oversized input. These verify software integrity only; they **do not verify** the original GitHub REST source history, independent task acceptability, permissions, consent or actual downstream reuse. Keep [#65](https://github.com/MSKazemi/github-trending-1000-study/issues/65) open for those genuine scientific gates.
+
+**Practical lesson:** reject duplicate raw keys and unsafe file types *before* assigning research eligibility. Checking the validated Python dictionary alone cannot recover a silently overwritten key.
