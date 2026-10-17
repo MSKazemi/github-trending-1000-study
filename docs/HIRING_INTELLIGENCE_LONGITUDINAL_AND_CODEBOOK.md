@@ -48,3 +48,21 @@ No claims of representativeness or company rankings from raw role counts. Publis
 ## Offline seed integrity regression (2026-10-13)
 
 `python -m unittest tests.test_hiring_intelligence_seed -v` checks the original and audited seed plus the expansion ledger for CSV structure, expected employer/ATS URL formats (not verified identities), record identity, uniqueness within and across ledgers, source-access types, unknown posting dates, title-only provenance, and preserved identity holds. The tests run without network access; passing them **does not authenticate an employer posting, its live status, a job's first-publication date, reviewer independence, or the asserted paraphrases**. Source and scientific signoff remain separate mandatory gates before company-level claims or confirmatory analysis.
+
+## 2026-10-17 cross-source requisition identity hold (issue #222)
+
+The offline longitudinal validator originally keyed histories only by
+`(employer_id, requisition_id)`. Two independently declared job boards/ATS
+sources can reuse the same requisition text without referring to the same
+role; silently combining those rows corrupts the attempted observation and
+missingness denominator. In this provisional v1 contract, when one employer
+and requisition label is observed through more than one `source_id`, the
+validator now rejects the ambiguous join pending independent source/linkage
+adjudication. A synthetic negative fixture exercises same-ID cross-source
+collision; a positive control retains distinct identifiers from the same
+employer. No real employer, source or job state is asserted. A future
+versioned, reviewer-supported equivalence map may support verified joins.
+
+**Practical lesson:** a local string identifier is not globally unique;
+freeze its source namespace and record uncertain cross-system aliases rather
+than manufacturing certainty from coincident labels.

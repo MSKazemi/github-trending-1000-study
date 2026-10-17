@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 import re
 import stat
-from urllib.parse import unquote_plus, urlsplit
+from urllib.parse import urlsplit
 
 # Reuse the canonical offline research decoder instead of interpreting
 # duplicate keys, NaN/Infinity, or extreme numeric literals differently.
@@ -68,14 +68,11 @@ def _canonical_url_key(parts):
         if key.lower().startswith("utm_") or key.lower() in TRACKING_PARAMS:
             continue
         query_items.append((key, item))
-    # Detect keys that become equal only after decoding, but preserve their
-    # original spelling and sequence. Encoded keys are not safely sortable.
-    decoded_names = [unquote_plus(key) for key, _ in query_items]
-    order_sensitive = (len(decoded_names) != len(set(decoded_names))
-                       or any("%" in key or "+" in key for key, _ in query_items))
-    query = tuple(item for _, item in (
-        query_items if order_sensitive else sorted(query_items)
-    ))
+    # Even UNIQUE parameters can be order-sensitive for origin routing,
+    # signing, or first-match server logic. Without authenticating the
+    # original article, never conflate distinct meaningful query sequences.
+    # Marketing trackers remain a stated heuristic, not a fact-check.
+    query = tuple(item for _, item in query_items)
     # A trailing slash can identify a different resource on the same host:
     # /report and /report/ must not be silently conflated as source evidence.
     # Empty path and explicit root slash share the HTTP root request path.

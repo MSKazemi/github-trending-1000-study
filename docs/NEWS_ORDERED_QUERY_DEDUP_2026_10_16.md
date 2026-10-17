@@ -63,3 +63,20 @@ The 20 provisional items do not constitute a complete screening/correction/right
 ## Maintainer lesson
 
 When deduplicating documents, a normalized URL is only an *indexing key*, not proof of identical events. Preserve ambiguous source leads for review instead of suppressing possible counterevidence.
+
+## 2026-10-17 correction: preserve even unique-key query order
+
+The 2026-10-16 rule above that sorted retained **unique** query parameter
+names is now superseded. A query containing `a=1&b=2` may be interpreted
+differently from `b=2&a=1` by an origin application or an order-sensitive
+signature even if neither key repeats. Sorting could therefore silently
+suppress one provisional evidence lead. The updated code preserves **all raw
+remaining meaningful query-item order** after literal known marketing keys
+are stripped. Two additional synthetic regressions test ordinary unique
+keys and distinct tracking-tainted variants. The already documented tracker
+stripping remains a heuristic with residual collision risk; no real webpage,
+publisher identity or event has been authenticated. The trade-off is extra
+leads for manual review, explicitly preferable to silent source loss.
+
+**Practical lesson:** URL normalization can reduce review workload but it
+cannot replace a separately adjudicated content/event duplicate decision.

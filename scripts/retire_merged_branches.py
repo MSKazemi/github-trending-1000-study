@@ -65,19 +65,25 @@ def validate_plan(plan):
         raise CleanupError("cleanup plan must list 1 to 70 approved branches")
     seen = set()
     for row in items:
-        if not isinstance(row, dict) or set(row) != {
-            "branch", "expected_sha", "merged_pr", "merge_commit_sha"
-        }:
-            raise CleanupError("missing or extra branch anchoring field")
-        name = _safe_name(row["branch"])
-        _sha(row["expected_sha"])
-        _sha(row["merge_commit_sha"])
-        if type(row["merged_pr"]) is not int or not 1 <= row["merged_pr"] <= 100000000:
-            raise CleanupError("invalid merged PR number")
+        name = _validate_retirement_item(row)
         if name in seen:
             raise CleanupError("duplicate cleanup branch")
         seen.add(name)
     return plan
+
+
+def _validate_retirement_item(row):
+    """Enforce the same bounded, exact item schema at every entrypoint."""
+    if not isinstance(row, dict) or set(row) != {
+        "branch", "expected_sha", "merged_pr", "merge_commit_sha"
+    }:
+        raise CleanupError("missing or extra branch anchoring field")
+    name = _safe_name(row["branch"])
+    _sha(row["expected_sha"])
+    _sha(row["merge_commit_sha"])
+    if type(row["merged_pr"]) is not int or not 1 <= row["merged_pr"] <= 100000000:
+        raise CleanupError("invalid merged PR number")
+    return name
 
 def _load_strict_plan(path):
     """Read one bounded regular JSON plan without following leaf symlinks.
@@ -324,9 +330,33 @@ def _require_immutable_archive_ruleset(client, repo):
         raise CleanupError("archive-tag ruleset mutation restrictions absent")
 
 
+def _commit_ref_sha(reply):
+    """Only a well-formed, direct commit Git ref can anchor a recovery SHA."""
+    if not isinstance(reply, dict):
+        return None
+    obj = reply.get("object")
+    if not isinstance(obj, dict) or obj.get("type") != "commit":
+        return None
+    value = obj.get("sha")
+    return value if isinstance(value, str) and SHA.fullmatch(value) else None
+
+
 def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
     """Fail closed if ref/PR/ownership/backup diverge from frozen plan."""
-    name, sha, prno = item["branch"], item["expected_sha"], item["merged_pr"]
+    # Even direct audit-only callers must not send malformed branch names or
+    # inconsistent repository identities to an authenticated API client.
+    if _safe_repo(repo) != client.repository:
+        raise CleanupError("approved repository differs from client")
+    name = _validate_retirement_item(item)
+    sha, prno = item["expected_sha"], item["merged_pr"]
+    # This helper is callable directly, outside execute(plan,...). Never let
+    # a direct destructive caller skip the reviewed main-SHA precondition.
+    if not audit_only:
+        if expected_main_sha is None:
+            raise CleanupError("destructive retirement requires approved main SHA")
+        _sha(expected_main_sha)
+    elif expected_main_sha is not None:
+        _sha(expected_main_sha)
     ref_path = _git_ref(repo, name)
     try:
         ref = client.get(ref_path)
@@ -338,13 +368,19 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
             saved = client.get(archive)
         except ApiNotFound:
             return "blocked_absent_without_archive"
-        return ("already_absent" if saved.get("object", {}).get("sha") == sha
+        # In a destructive direct-call retry, a mutable recovery tag is not
+        # sufficient evidence for claiming an original head is preserved.
+        if not audit_only:
+            _require_immutable_archive_ruleset(client, repo)
+        return ("already_absent" if _commit_ref_sha(saved) == sha
                 else "blocked_absent_without_archive")
-    if ref.get("object", {}).get("sha") != sha:
+    if _commit_ref_sha(ref) != sha:
         return "blocked_changed_ref"
     branch = client.get(_protected_branch(repo, name))
-    if (branch.get("protected") is not False
-            or branch.get("commit", {}).get("sha") != sha):
+    if (not isinstance(branch, dict)
+            or branch.get("protected") is not False
+            or not isinstance(branch.get("commit"), dict)
+            or branch["commit"].get("sha") != sha):
         return "blocked_protected_or_changed"
     pr = client.get(f"/repos/{repo}/pulls/{prno}")
     # GitHub can return null head.repo for a deleted repository, and APIs
@@ -372,7 +408,10 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
         return "blocked_open_pr"
 
     main = client.get(f"/repos/{repo}/branches/main")
-    main_sha = (main or {}).get("commit", {}).get("sha")
+    if (not isinstance(main, dict)
+            or not isinstance(main.get("commit"), dict)):
+        return "blocked_unverifiable_main"
+    main_sha = main["commit"].get("sha")
     if not isinstance(main_sha, str) or not SHA.fullmatch(main_sha):
         return "blocked_unverifiable_main"
     # The approval plan pins a specific observed main. A later fast-forward
@@ -398,23 +437,29 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
             archived = client.get(tag_path)
         except ApiNotFound:
             return "eligible_read_only"
-        if (not isinstance(archived, dict)
-                or not isinstance(archived.get("object"), dict)
-                or archived["object"].get("sha") != sha):
+        if _commit_ref_sha(archived) != sha:
             return "blocked_archive_tag_conflict"
         return "eligible_read_only"
     try:
         present = client.get(tag_path)
-        if present.get("object", {}).get("sha") != sha:
+        if _commit_ref_sha(present) != sha:
             return "blocked_archive_tag_conflict"
     except ApiNotFound:
         client.post(f"/repos/{repo}/git/refs",
                     {"ref": "refs/tags/" + tag, "sha": sha})
-    if client.get(tag_path).get("object", {}).get("sha") != sha:
+    try:
+        published_archive = client.get(tag_path)
+    except ApiNotFound:
+        return "blocked_unverified_archive"
+    if _commit_ref_sha(published_archive) != sha:
         return "blocked_unverified_archive"
     # Preflight before the final remote compare-and-delete transaction.
     # Only the subsequent git receive-pack lease can exclude a late writer.
-    if client.get(ref_path).get("object", {}).get("sha") != sha:
+    try:
+        fresh_ref = client.get(ref_path)
+    except ApiNotFound:
+        return "blocked_raced_branch_update"
+    if _commit_ref_sha(fresh_ref) != sha:
         return "blocked_raced_branch_update"
     fresh_open_prs = client.get(_open_prs(repo, owner, name))
     if not isinstance(fresh_open_prs, list) or len(fresh_open_prs) >= 100:
@@ -427,8 +472,7 @@ def retire_one(client, repo, item, *, audit_only=False, expected_main_sha=None):
         late_archive = client.get(tag_path)
     except ApiNotFound:
         return "blocked_archive_disappeared_before_delete"
-    if (not isinstance(late_archive, dict)
-            or late_archive.get("object", {}).get("sha") != sha):
+    if _commit_ref_sha(late_archive) != sha:
         return "blocked_archive_changed_before_delete"
     if expected_main_sha is not None:
         # The main ref can move while tags are being prepared. This extra
@@ -468,7 +512,7 @@ def execute(plan, client, *, audit_only=False):
     if not audit_only:
         _require_immutable_archive_ruleset(client, repo)
     results = []
-    for item in plan["branches"]:
+    for index, item in enumerate(plan["branches"]):
         try:
             status = retire_one(client, repo, item, audit_only=audit_only,
                                 expected_main_sha=plan["source_main_sha"])
@@ -476,6 +520,16 @@ def execute(plan, client, *, audit_only=False):
             status = "error_" + type(exc).__name__
         print(f"#{item['merged_pr']} {item['branch']}: {status}", flush=True)
         results.append({"branch": item["branch"], "status": status})
+        if not audit_only and status not in {"retired_with_archive_tag", "already_absent"}:
+            # Stop the destructive batch after the first failed precondition.
+            # Do not apply unrelated ref mutations using a partially failed
+            # security/ownership/ancestry snapshot. Retain a full disposition.
+            for skipped in plan["branches"][index + 1:]:
+                withheld = "not_attempted_after_prior_block"
+                print(f"#{skipped['merged_pr']} {skipped['branch']}: {withheld}",
+                      flush=True)
+                results.append({"branch": skipped["branch"], "status": withheld})
+            break
     return results
 
 def main(argv=None):
